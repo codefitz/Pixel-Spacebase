@@ -1,9 +1,7 @@
 /*
- * Pixel Dungeon
- * Copyright (C) 2012-2015  Oleg Dolya
- *
- * Shattered Pixel Dungeon
- * Copyright (C) 2014-2016 Evan Debenham
+ * Pixel Dungeon, Copyright (C) 2012-2015  Oleg Dolya
+ * Shattered Pixel Dungeon, Copyright (C) 2014-2016 Evan Debenham
+ * Pixel Spacebase, Copyright (C) 2017 Wes Fitzpatrick
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
+
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -84,7 +83,6 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
-import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
 
@@ -95,10 +93,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public abstract class Level implements Bundlable {
-	
-	public static enum Feeling {
-		NONE,
-		CHASM,
+
+    public enum Feeling {
+        NONE,
+        CHASM,
 		WATER,
 		GRASS,
 		DARK
@@ -107,8 +105,8 @@ public abstract class Level implements Bundlable {
 	protected int width;
 	protected int height;
 	protected int length;
-	
-	protected static final float TIME_TO_RESPAWN	= 50;
+
+    private static final float TIME_TO_RESPAWN = 50;
 
 	public int version;
 	public int[] map;
@@ -282,15 +280,21 @@ public abstract class Level implements Bundlable {
 		Random.seed();
 	}
 
-	protected void setupSize(){
-		if (width == 0 || height == 0)
-			width = height = 32;
-		length = width * height;
-	}
-	
-	public void reset() {
-		
-		for (Mob mob : mobs.toArray( new Mob[0] )) {
+    // Randomised Level Sizing
+    protected void setupSize() {
+        if (width == 0 || height == 0) {
+            width = Random.Int(16, 52);
+            int high = width >= 44 ? 36 : 52;
+            int low = width <= 24 ? 30 : 16;
+            height = Random.Int(low, high);
+            //width = height = 32;
+            length = width * height;
+        }
+    }
+
+    public void reset() {
+
+        for (Mob mob : mobs.toArray( new Mob[0] )) {
 			if (!mob.reset()) {
 				mobs.remove( mob );
 			}
@@ -500,9 +504,11 @@ public abstract class Level implements Bundlable {
 				if (mobs.size() < nMobs()) {
 
 					Mob mob = Bestiary.mutable( Dungeon.depth );
-					mob.state = mob.WANDERING;
-					mob.pos = randomRespawnCell();
-					if (Dungeon.hero.isAlive() && mob.pos != -1 && distance(Dungeon.hero.pos, mob.pos) >= 4) {
+                    if (mob != null) {
+                        mob.state = mob.WANDERING;
+                    }
+                    mob.pos = randomRespawnCell();
+                    if (Dungeon.hero.isAlive() && mob.pos != -1 && distance(Dungeon.hero.pos, mob.pos) >= 4) {
 						GameScene.add( mob );
 						if (Statistics.amuletObtained) {
 							mob.beckon( Dungeon.hero.pos );
@@ -895,11 +901,11 @@ public abstract class Level implements Bundlable {
 				sense = Math.max( ((MindVision)b).distance, sense );
 			}
 		}
-		
-		if ((sighted && sense > 1) || !sighted) {
-			
-			int ax = Math.max( 0, cx - sense );
-			int bx = Math.min( cx + sense, width() - 1 );
+
+        if (!sighted || sense > 1) {
+
+            int ax = Math.max(0, cx - sense);
+            int bx = Math.min( cx + sense, width() - 1 );
 			int ay = Math.max( 0, cy - sense );
 			int by = Math.min( cy + sense, height() - 1 );
 
