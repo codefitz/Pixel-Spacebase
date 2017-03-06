@@ -108,7 +108,8 @@ public class WndSadGhost extends Window {
             Dungeon.level.drop(reward, ghost.pos).sprite.drop();
         }
 
-        ghost.yell(Messages.get(this, "farewell"));
+        // wafitz.v1 - Ghost now recognises you!
+        ghost.yell("Farewell, " + Dungeon.hero.heroClass.title() + "!");
         ghost.die(null);
 
         Ghost.Quest.complete();

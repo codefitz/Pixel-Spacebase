@@ -113,6 +113,7 @@ public class Ghost extends NPC {
 
         Sample.INSTANCE.play(Assets.SND_GHOST);
 
+        // wafitz.1 - Annoying popup relegated to log
         if (Quest.given) {
             if (Quest.weapon != null) {
                 if (Quest.processed) {
@@ -121,13 +122,16 @@ public class Ghost extends NPC {
                     switch (Quest.type) {
                         case 1:
                         default:
-                            GameScene.show(new WndQuest(this, Messages.get(this, "rat_2")));
+                            //GameScene.show(new WndQuest(this, Messages.get(this, "rat_2")));
+                            GLog.w(Messages.get(this, "rat_2"));
                             break;
                         case 2:
-                            GameScene.show(new WndQuest(this, Messages.get(this, "gnoll_2")));
+                            //GameScene.show(new WndQuest(this, Messages.get(this, "gnoll_2")));
+                            GLog.w(Messages.get(this, "gnoll_2"));
                             break;
                         case 3:
-                            GameScene.show(new WndQuest(this, Messages.get(this, "crab_2")));
+                            //GameScene.show(new WndQuest(this, Messages.get(this, "crab_2")));
+                            GLog.w(Messages.get(this, "crab_2"));
                             break;
                     }
 

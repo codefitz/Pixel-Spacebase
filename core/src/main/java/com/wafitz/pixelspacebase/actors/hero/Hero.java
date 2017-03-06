@@ -119,6 +119,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
+import static com.wafitz.pixelspacebase.items.potions.PotionOfHealing.heal;
+
 public class Hero extends Char {
 
     {
@@ -1124,11 +1126,8 @@ public class Hero extends Char {
                 curAction = new HeroAction.Attack(ch);
             }
 
-        } else if ((heap = Dungeon.level.heaps.get(cell)) != null
-                //moving to an item doesn't auto-pickup when enemies are near...
-                && (visibleEnemies.size() == 0 || cell == pos ||
-                //...but only for standard heaps, chests and similar open as normal.
-                (heap.type != Type.HEAP && heap.type != Type.FOR_SALE))) {
+        } else if ((heap = Dungeon.level.heaps.get(cell)) != null) {
+            // wafitz.v1: Auto pickup no matter what
 
             switch (heap.type) {
                 case HEAP:
@@ -1279,6 +1278,9 @@ public class Hero extends Char {
         curAction = null;
 
         Ankh ankh = null;
+
+        // wafitz.v1 - God Mode - Remove after testing (for release)
+        heal(Dungeon.hero);
 
         //look for ankhs in player inventory, prioritize ones which are blessed.
         for (Item item : belongings) {

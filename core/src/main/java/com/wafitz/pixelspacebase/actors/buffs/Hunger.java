@@ -91,7 +91,8 @@ public class Hunger extends Buff implements Hero.Doom {
                     hero.damage(1, this);
                     statusUpdated = true;
 
-                    hero.interrupt();
+                    // wafitz.v1 - No more interruptions - I donn't need to be reminded every 10 steps
+                    //hero.interrupt();
 
                 } else if (newLevel >= HUNGRY && level < HUNGRY) {
 

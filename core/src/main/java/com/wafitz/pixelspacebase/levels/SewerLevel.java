@@ -25,7 +25,16 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.DungeonTilemap;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Ghost;
 import com.wafitz.pixelspacebase.effects.Ripple;
+import com.wafitz.pixelspacebase.items.BrokenSeal;
 import com.wafitz.pixelspacebase.items.DewVial;
+import com.wafitz.pixelspacebase.items.Generator;
+import com.wafitz.pixelspacebase.items.Heap;
+import com.wafitz.pixelspacebase.items.armor.ClothArmor;
+import com.wafitz.pixelspacebase.items.bags.PotionBandolier;
+import com.wafitz.pixelspacebase.items.bags.SeedPouch;
+import com.wafitz.pixelspacebase.items.bags.WandHolster;
+import com.wafitz.pixelspacebase.items.food.Food;
+import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicMapping;
 import com.wafitz.pixelspacebase.levels.traps.AlarmTrap;
 import com.wafitz.pixelspacebase.levels.traps.ChillingTrap;
 import com.wafitz.pixelspacebase.levels.traps.FlockTrap;
@@ -133,6 +142,27 @@ public class SewerLevel extends RegularLevel {
             }
 
         placeSign();
+
+        // wafitz.v1 - Hero belongings are now to be found in the entrance, later I will randomly place this somewhere on the level
+        if (Dungeon.depth <= 1) {
+            while (true) {
+                int pos = pointToCell(roomEntrance.random());
+                if (pos != entrance && traps.get(pos) == null
+                        && findMob(pos) == null && pos != Terrain.SIGN) {
+                    drop(Generator.random(), pos).type = Heap.Type.CHEST;
+                    drop(new ClothArmor().identify(), pos);
+                    drop(new Food().identify(), pos);
+                    // Testing
+                    drop(new ScrollOfMagicMapping().identify(), pos);
+                    drop(new SeedPouch().identify(), pos);
+                    drop(new WandHolster().identify(), pos);
+                    drop(new PotionBandolier().identify(), pos);
+                    drop(new BrokenSeal().identify(), pos);
+                    break;
+                }
+                break;
+            }
+        }
     }
 
     @Override

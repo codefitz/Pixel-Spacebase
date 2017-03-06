@@ -22,12 +22,8 @@ package com.wafitz.pixelspacebase.actors.hero;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Challenges;
 import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.items.BrokenSeal;
-import com.wafitz.pixelspacebase.items.armor.ClothArmor;
 import com.wafitz.pixelspacebase.items.artifacts.CloakOfShadows;
-import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.potions.PotionOfHealing;
 import com.wafitz.pixelspacebase.items.potions.PotionOfMindVision;
 import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicMapping;
@@ -83,11 +79,13 @@ public enum HeroClass {
     }
 
     private static void initCommon(Hero hero) {
-        if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
-            (hero.belongings.armor = new ClothArmor()).identify();
+        // wafitz.v1 - Hero has just woken up - should be naked I reckon - go hunt for clothes and weapons.
 
-        if (!Dungeon.isChallenged(Challenges.NO_FOOD))
-            new Food().identify().collect();
+        //if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
+        //    (hero.belongings.armor = new ClothArmor()).identify();
+
+        //if (!Dungeon.isChallenged(Challenges.NO_FOOD))
+        //    new Food().identify().collect();
     }
 
     public Badges.Badge masteryBadge() {
@@ -109,7 +107,8 @@ public enum HeroClass {
         Dart darts = new Dart(8);
         darts.identify().collect();
 
-        if (Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR)) {
+        // wafitz.v1 - Breaks naked plot
+        /*if (Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR)) {
             if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
                 hero.belongings.armor.affixSeal(new BrokenSeal());
             Dungeon.quickslot.setSlot(0, darts);
@@ -120,7 +119,7 @@ public enum HeroClass {
                 Dungeon.quickslot.setSlot(0, seal);
             }
             Dungeon.quickslot.setSlot(1, darts);
-        }
+        }*/
 
         new PotionOfHealing().setKnown();
     }

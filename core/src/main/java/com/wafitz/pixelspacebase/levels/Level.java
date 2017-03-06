@@ -284,9 +284,7 @@ public abstract class Level implements Bundlable {
     protected void setupSize() {
         if (width == 0 || height == 0) {
             width = Random.Int(16, 52);
-            int high = width >= 44 ? 36 : 52;
-            int low = width <= 24 ? 30 : 16;
-            height = Random.Int(low, high);
+            height = Random.Int(width <= 24 ? 30 : 16, width >= 44 ? 36 : 52);
             //width = height = 32;
             length = width * height;
         }

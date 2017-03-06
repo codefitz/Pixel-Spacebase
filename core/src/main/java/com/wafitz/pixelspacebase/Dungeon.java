@@ -294,8 +294,9 @@ public class Dungeon {
         return result;
     }
 
+    // wafitz.v1 - You get a shop, you get a shop, every level get's a shop!
     public static boolean shopOnLevel() {
-        return depth == 6 || depth == 11 || depth == 16;
+        return true;
     }
 
     public static boolean bossLevel() {

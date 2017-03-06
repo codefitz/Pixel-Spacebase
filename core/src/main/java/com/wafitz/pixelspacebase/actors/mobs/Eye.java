@@ -48,8 +48,9 @@ public class Eye extends Mob {
     {
         spriteClass = EyeSprite.class;
 
-        HP = HT = 100;
-        defenseSkill = 20;
+        // wafitz.v1 - Nerf him for the lower levels, might make him neutral later
+        HP = HT = Dungeon.depth * 4;
+        defenseSkill = Dungeon.depth;
         viewDistance = Light.DISTANCE;
 
         EXP = 13;
@@ -72,7 +73,7 @@ public class Eye extends Mob {
 
     @Override
     public int attackSkill(Char target) {
-        return 30;
+        return Dungeon.depth + 4;
     }
 
     @Override
@@ -175,7 +176,7 @@ public class Eye extends Mob {
             }
 
             if (hit(this, ch, true)) {
-                ch.damage(Random.NormalIntRange(30, 50), this);
+                ch.damage(Random.NormalIntRange(Dungeon.depth, Dungeon.depth + 6), this);
 
                 if (Dungeon.visible[pos]) {
                     ch.sprite.flash();

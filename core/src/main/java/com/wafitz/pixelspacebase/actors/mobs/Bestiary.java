@@ -69,20 +69,20 @@ public class Bestiary {
 
         switch (depth) {
             case 1:
-                chances = new float[]{1};
-                classes = new Class<?>[]{Rat.class};
+                chances = new float[]{1, 0.2f};
+                classes = new Class<?>[]{Rat.class, Eye.class};
                 break;
             case 2:
-                chances = new float[]{1, 1};
-                classes = new Class<?>[]{Rat.class, Gnoll.class};
+                chances = new float[]{1, 1, 0.2f};
+                classes = new Class<?>[]{Rat.class, Gnoll.class, Eye.class};
                 break;
             case 3:
-                chances = new float[]{2, 4, 1, 1};
-                classes = new Class<?>[]{Rat.class, Gnoll.class, Crab.class, Swarm.class};
+                chances = new float[]{2, 4, 1, 1, 0.2f};
+                classes = new Class<?>[]{Rat.class, Gnoll.class, Crab.class, Swarm.class, Eye.class};
                 break;
             case 4:
-                chances = new float[]{1, 2, 3, 1, 0.01f, 0.01f};
-                classes = new Class<?>[]{Rat.class, Gnoll.class, Crab.class, Swarm.class, Skeleton.class, Thief.class};
+                chances = new float[]{1, 2, 3, 1, 0.2f, 0.01f};
+                classes = new Class<?>[]{Rat.class, Gnoll.class, Crab.class, Swarm.class, Eye.class, Thief.class};
                 break;
 
             case 5:

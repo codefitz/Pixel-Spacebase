@@ -63,8 +63,9 @@ public class RenderedTextMultiline extends Component {
         if (text != null && !text.equals("")) {
             //conversion for chinese text
 
-            // wafitzv1: This was causing a syntax error on commit
-            chinese = text.replaceAll("[/p{Han}]", "").length() != text.length();
+            // wafitz.v0: This was causing a syntax error on commit
+            // But it now seems to squeeze all English chars together
+            chinese = text.replaceAll("[\\\\p{Han}]", "").length() != text.length();
 
             if (chinese) {
                 tokens = Arrays.asList(text.split(""));
