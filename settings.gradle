@@ -1,1 +1,1 @@
-include ':core', ':SPD-classes'
+include ':core', ':pd-classes'
