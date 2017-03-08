@@ -93,16 +93,19 @@ public class FogOfWar extends Image {
         updated = new Rect(0, 0, pWidth, pHeight);
     }
 
+    // wafitz.v2: Fixed pHeight
     public synchronized void updateFog() {
-        updated.set(0, 0, pWidth, pWidth);
+        updated.set(0, 0, pWidth, pHeight);
     }
 
     public synchronized void updateFogArea(int x, int y, int w, int h) {
         updated.union(x, y);
         updated.union(x + w, y + h);
+        // wafitz.v2: Avoid out of bounds error
+        updated = updated.intersect(new Rect(0, 0, pWidth, pHeight));
     }
 
-    public synchronized void moveToUpdating() {
+    private synchronized void moveToUpdating() {
         updating = new Rect(updated);
         updated.setEmpty();
     }
@@ -150,7 +153,7 @@ public class FogOfWar extends Image {
 
         private IntBuffer pixels;
 
-        public FogTexture(int w, int h) {
+        FogTexture(int w, int h) {
             super();
             width = w;
             height = h;

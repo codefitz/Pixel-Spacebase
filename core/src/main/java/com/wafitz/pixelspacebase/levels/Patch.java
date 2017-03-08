@@ -20,14 +20,19 @@
  */
 package com.wafitz.pixelspacebase.levels;
 
+import android.util.Log;
+
 import com.watabou.utils.Random;
 
 public class Patch {
 
     public static boolean[] generate(Level level, float seed, int nGen) {
 
+        // wafitz.v2 : Fixed height
         int w = level.width();
-        int h = level.width();
+        int h = level.height();
+
+        Log.d("Patch: ", "Width: " + w + ", Height: " + h);
 
         boolean[] cur = new boolean[level.length()];
         boolean[] off = new boolean[level.length()];

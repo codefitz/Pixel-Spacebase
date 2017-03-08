@@ -20,6 +20,8 @@
  */
 package com.wafitz.pixelspacebase.windows;
 
+import android.util.Log;
+
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -100,9 +102,10 @@ public class WndSettings extends WndTabbed {
 
     private class ScreenTab extends Group {
 
-        public ScreenTab() {
+        ScreenTab() {
             super();
 
+            Log.d("WndSettings: ", "Default zoom: " + PixelScene.defaultZoom);
             OptionSlider scale = new OptionSlider(Messages.get(this, "scale"),
                     (int) Math.ceil(2 * Game.density) + "X",
                     PixelScene.maxDefaultZoom + "X",
@@ -112,6 +115,7 @@ public class WndSettings extends WndTabbed {
                 protected void onChange() {
                     if (getSelectedValue() != PixelSpacebase.scale()) {
                         PixelSpacebase.scale(getSelectedValue());
+                        Log.d("WndSettings: ", "Default zoom now set to: " + PixelScene.defaultZoom);
                         PixelSpacebase.switchNoFade((Class<? extends PixelScene>) PixelSpacebase.scene().getClass(), new Game.SceneChangeCallback() {
                             @Override
                             public void beforeCreate() {
@@ -197,7 +201,7 @@ public class WndSettings extends WndTabbed {
 
     private class UITab extends Group {
 
-        public UITab() {
+        UITab() {
             super();
 
             RenderedText barDesc = PixelScene.renderText(Messages.get(this, "mode"), 9);
@@ -296,7 +300,7 @@ public class WndSettings extends WndTabbed {
 
     private class AudioTab extends Group {
 
-        public AudioTab() {
+        AudioTab() {
             OptionSlider musicVol = new OptionSlider(Messages.get(this, "music_vol"), "0", "10", 0, 10) {
                 @Override
                 protected void onChange() {

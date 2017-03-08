@@ -56,16 +56,16 @@ public class PixelScene extends Scene {
     public static int defaultZoom = 0;
     public static int maxDefaultZoom = 0;
     public static int maxScreenZoom = 0;
-    public static float minZoom;
-    public static float maxZoom;
+    static float minZoom;
+    static float maxZoom;
 
     public static Camera uiCamera;
 
     //stylized pixel font
     public static BitmapText.Font pixelFont;
     //These represent various mipmaps of the same font
-    public static BitmapText.Font font1x;
-    public static BitmapText.Font font2x;
+    private static BitmapText.Font font1x;
+    private static BitmapText.Font font2x;
 
     @Override
     public void create() {
@@ -86,6 +86,11 @@ public class PixelScene extends Scene {
         maxDefaultZoom = (int) Math.min(Game.width / minWidth, Game.height / minHeight);
         maxScreenZoom = (int) Math.min(Game.dispWidth / minWidth, Game.dispHeight / minHeight);
         defaultZoom = PixelSpacebase.scale();
+
+        // wafitz.v2: Larger UI for fingers and thumbs
+        PixelSpacebase.scale(7);
+        // wafitz.v2: 3 shall be the number. 4 shalt thou not count. 5 is right out.
+        PixelSpacebase.quickSlots(3);
 
         if (defaultZoom < Math.ceil(Game.density * 2) || defaultZoom > maxDefaultZoom) {
             defaultZoom = (int) Math.ceil(Game.density * 2.5);
@@ -136,10 +141,10 @@ public class PixelScene extends Scene {
         Touchscreen.event.removeAll();
     }
 
-    public static BitmapText.Font font;
+    private static BitmapText.Font font;
     public static float scale;
 
-    public static void chooseFont(float size) {
+    private static void chooseFont(float size) {
         chooseFont(size, defaultZoom);
     }
 
@@ -257,7 +262,7 @@ public class PixelScene extends Scene {
         Game.scene().add(banner);
     }
 
-    protected static class Fader extends ColorBlock {
+    private static class Fader extends ColorBlock {
 
         private static float FADE_TIME = 1f;
 
@@ -265,7 +270,7 @@ public class PixelScene extends Scene {
 
         private float time;
 
-        public Fader(int color, boolean light) {
+        Fader(int color, boolean light) {
             super(uiCamera.width, uiCamera.height, color);
 
             this.light = light;
@@ -303,7 +308,7 @@ public class PixelScene extends Scene {
 
     private static class PixelCamera extends Camera {
 
-        public PixelCamera(float zoom) {
+        PixelCamera(float zoom) {
             super(
                     (int) (Game.width - Math.ceil(Game.width / zoom) * zoom) / 2,
                     (int) (Game.height - Math.ceil(Game.height / zoom) * zoom) / 2,
