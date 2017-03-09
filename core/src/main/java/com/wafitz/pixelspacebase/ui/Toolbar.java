@@ -85,23 +85,16 @@ public class Toolbar extends Component {
         add(btnSearch = new Tool(44, 0, 20, 26) {
             @Override
             protected void onClick() {
-                if (!Dungeon.hero.search(true)) {
-                    GameScene.selectCell(informer);
-                    examining = true;
-                }
+                Dungeon.hero.search(true);
 
-                /*if (!examining) {
-                    GameScene.selectCell(informer);
-                    examining = true;
-                } else {
-                    informer.onSelect(null);
-                    Dungeon.hero.search(true);
-                }*/
+                // wafitz.v2 Swapped the function, you're probably using search more than examine.
+
             }
 
             @Override
             protected boolean onLongClick() {
-                Dungeon.hero.search(true);
+                GameScene.selectCell(informer);
+                examining = true;
                 return true;
             }
         });
