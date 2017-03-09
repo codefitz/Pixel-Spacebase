@@ -129,7 +129,7 @@ public class Hero extends Char {
 
     public static final int MAX_LEVEL = 30;
 
-    public static final int STARTING_STR = 10;
+    private static final int STARTING_STR = 10;
 
     private static final float TIME_TO_REST = 1f;
     private static final float TIME_TO_SEARCH = 2f;
@@ -157,7 +157,7 @@ public class Hero extends Char {
     public int STR;
     public boolean weakened = false;
 
-    public float awareness;
+    private float awareness;
 
     public int lvl = 1;
     public int exp = 0;
@@ -178,7 +178,7 @@ public class Hero extends Char {
 
         belongings = new Belongings(this);
 
-        visibleEnemies = new ArrayList<Mob>();
+        visibleEnemies = new ArrayList<>();
     }
 
     public int STR() {
@@ -1277,10 +1277,14 @@ public class Hero extends Char {
 
         curAction = null;
 
-        Ankh ankh = null;
-
         // wafitz.v1 - God Mode - Remove after testing (for release)
         heal(Dungeon.hero);
+        if (isAlive()) {
+            new Flare(8, 32).color(0xFFFF66, true).show(sprite, 2f);
+            return;
+        }
+
+        Ankh ankh = null;
 
         //look for ankhs in player inventory, prioritize ones which are blessed.
         for (Item item : belongings) {
@@ -1354,7 +1358,7 @@ public class Hero extends Char {
 
         int pos = Dungeon.hero.pos;
 
-        ArrayList<Integer> passable = new ArrayList<Integer>();
+        ArrayList<Integer> passable = new ArrayList<>();
         for (Integer ofs : PathFinder.NEIGHBOURS8) {
             int cell = pos + ofs;
             if ((Level.passable[cell] || Level.avoid[cell]) && Dungeon.level.heaps.get(cell) == null) {
@@ -1363,7 +1367,7 @@ public class Hero extends Char {
         }
         Collections.shuffle(passable);
 
-        ArrayList<Item> items = new ArrayList<Item>(Dungeon.hero.belongings.backpack.items);
+        ArrayList<Item> items = new ArrayList<>(Dungeon.hero.belongings.backpack.items);
         for (Integer cell : passable) {
             if (items.isEmpty()) {
                 break;
@@ -1476,6 +1480,18 @@ public class Hero extends Char {
         super.onOperateComplete();
     }
 
+    /*private static CellSelector.Listener informer = new CellSelector.Listener() {
+        @Override
+        public void onSelect(Integer cell) {
+            GameScene.examineCell(cell);
+        }
+
+        @Override
+        public String prompt() {
+            return "Select a cell to examine";
+        }
+    };*/
+
     public boolean search(boolean intentional) {
 
         boolean smthFound = false;
@@ -1537,6 +1553,7 @@ public class Hero extends Char {
                         ScrollOfMagicMapping.discover(p);
 
                         smthFound = true;
+                        //informer.onSelect(null);
 
                         if (foresight != null && !foresight.isCursed())
                             foresight.charge();
@@ -1546,7 +1563,7 @@ public class Hero extends Char {
         }
 
 
-        if (intentional) {
+        if (smthFound && intentional) {
             sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "search"));
             sprite.operate(pos);
             if (foresight != null && foresight.isCursed()) {
@@ -1562,6 +1579,8 @@ public class Hero extends Char {
             GLog.w(Messages.get(this, "noticed_smth"));
             Sample.INSTANCE.play(Assets.SND_SECRET);
             interrupt();
+        /*} else if (intentional) {
+                GameScene.selectCell(informer);*/
         }
 
         return smthFound;
@@ -1586,7 +1605,7 @@ public class Hero extends Char {
 
     @Override
     public HashSet<Class<?>> immunities() {
-        HashSet<Class<?>> immunities = new HashSet<Class<?>>();
+        HashSet<Class<?>> immunities = new HashSet<>();
         for (Buff buff : buffs()) {
             for (Class<?> immunity : buff.immunities)
                 immunities.add(immunity);

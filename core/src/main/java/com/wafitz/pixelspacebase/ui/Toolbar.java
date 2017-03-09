@@ -25,7 +25,6 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.DungeonTilemap;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.CellSelector;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
@@ -86,13 +85,18 @@ public class Toolbar extends Component {
         add(btnSearch = new Tool(44, 0, 20, 26) {
             @Override
             protected void onClick() {
-                if (!examining) {
+                if (!Dungeon.hero.search(true)) {
+                    GameScene.selectCell(informer);
+                    examining = true;
+                }
+
+                /*if (!examining) {
                     GameScene.selectCell(informer);
                     examining = true;
                 } else {
                     informer.onSelect(null);
                     Dungeon.hero.search(true);
-                }
+                }*/
             }
 
             @Override
@@ -274,7 +278,7 @@ public class Toolbar extends Component {
 
         @Override
         public String prompt() {
-            return Messages.get(Toolbar.class, "examine_prompt");
+            return "Select something to examine it.";
         }
     };
 
@@ -284,7 +288,7 @@ public class Toolbar extends Component {
 
         private Image base;
 
-        public Tool(int x, int y, int width, int height) {
+        Tool(int x, int y, int width, int height) {
             super();
 
             hotArea.blockWhenInactive = true;
@@ -346,14 +350,14 @@ public class Toolbar extends Component {
         private int borderLeft = 2;
         private int borderRight = 2;
 
-        public QuickslotTool(int x, int y, int width, int height, int slotNum) {
+        QuickslotTool(int x, int y, int width, int height, int slotNum) {
             super(x, y, width, height);
 
             slot = new QuickSlotButton(slotNum);
             add(slot);
         }
 
-        public void border(int left, int right) {
+        void border(int left, int right) {
             borderLeft = left;
             borderRight = right;
             layout();
@@ -372,7 +376,7 @@ public class Toolbar extends Component {
         }
     }
 
-    public static class PickedUpItem extends ItemSprite {
+    static class PickedUpItem extends ItemSprite {
 
         private static final float DISTANCE = DungeonTilemap.SIZE;
         private static final float DURATION = 0.2f;
@@ -383,7 +387,7 @@ public class Toolbar extends Component {
 
         private boolean rising = false;
 
-        public PickedUpItem() {
+        PickedUpItem() {
             super();
 
             originToCenter();
