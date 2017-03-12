@@ -144,7 +144,7 @@ public abstract class Level implements Bundlable {
     public SparseArray<Trap> traps;
     public HashSet<CustomTileVisual> customTiles;
 
-    protected ArrayList<Item> itemsToSpawn = new ArrayList<>();
+    ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
     protected Group visuals;
 
@@ -152,7 +152,7 @@ public abstract class Level implements Bundlable {
     public int color2 = 0x88CC44;
 
     //FIXME this is sloppy. Should be able to keep track of this without static variables
-    protected static boolean pitRoomNeeded = false;
+    static boolean pitRoomNeeded = false;
     public static boolean weakFloorCreated = false;
 
     private static final String VERSION = "version";
@@ -333,14 +333,14 @@ public abstract class Level implements Bundlable {
         weakFloorCreated = false;
 
         //for pre-0.3.0c saves
-        if (version < 44) {
+        /*if (version < 44) {
             map = Terrain.convertTrapsFrom43(map, traps);
         }
 
         //for pre-0.4.3 saves
         if (version < 130) {
             map = Terrain.convertTilesFrom129(map);
-        }
+        }*/
 
         Collection<Bundlable> collection = bundle.getCollection(HEAPS);
         for (Bundlable h : collection) {
@@ -565,7 +565,7 @@ public abstract class Level implements Bundlable {
         return null;
     }
 
-    protected void buildFlagMaps() {
+    void buildFlagMaps() {
 
         fieldOfView = new boolean[length()];
 
@@ -615,7 +615,7 @@ public abstract class Level implements Bundlable {
         set(pos, Terrain.EMBERS);
     }
 
-    protected void cleanWalls() {
+    void cleanWalls() {
         discoverable = new boolean[length()];
 
         for (int i = 0; i < length(); i++) {
@@ -661,7 +661,7 @@ public abstract class Level implements Bundlable {
         solid[cell] = (flags & Terrain.SOLID) != 0;
         avoid[cell] = (flags & Terrain.AVOID) != 0;
         pit[cell] = (flags & Terrain.PIT) != 0;
-        water[cell] = terrain == Terrain.WATER;
+        water[cell] = (flags & Terrain.WATER) != 0;
     }
 
     public Heap drop(Item item, int cell) {
@@ -767,7 +767,8 @@ public abstract class Level implements Bundlable {
     }
 
     public void disarmTrap(int pos) {
-        set(pos, Terrain.INACTIVE_TRAP);
+        // wafitz.v4: 'Reset' vent so it can be lighted
+        set(pos, Terrain.HIGH_GRASS);
         GameScene.updateMap(pos);
     }
 
@@ -980,7 +981,7 @@ public abstract class Level implements Bundlable {
                 (tile % width == 0 || tile % width == width - 1));
     }
 
-    public Point cellToPoint(int cell) {
+    Point cellToPoint(int cell) {
         return new Point(cell % width(), cell / width());
     }
 

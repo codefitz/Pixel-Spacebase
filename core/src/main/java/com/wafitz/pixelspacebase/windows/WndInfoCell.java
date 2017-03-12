@@ -71,13 +71,15 @@ public class WndInfoCell extends Window {
             desc += vis.desc();
         } else {
 
-            if (tile == Terrain.WATER) {
+            // wafitz.v4: We want it to display custom wet tile
+
+            /*if (tile == Terrain.WATER) {
                 Image water = new Image(Dungeon.level.waterTex());
                 water.frame(0, 0, DungeonTilemap.SIZE, DungeonTilemap.SIZE);
                 titlebar.icon(water);
-            } else {
+            } else {*/
                 titlebar.icon(DungeonTilemap.tile(cell, tile));
-            }
+            //}
             titlebar.label(Dungeon.level.tileName(tile));
             desc += Dungeon.level.tileDesc(tile);
 

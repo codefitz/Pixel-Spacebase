@@ -47,7 +47,8 @@ public class ShopkeeperSprite extends MobSprite {
         idle();
     }
 
-    @Override
+    // wafitz.v4: Janitor robots don't toss coins
+    /*@Override
     public void onComplete(Animation anim) {
         super.onComplete(anim);
 
@@ -60,5 +61,5 @@ public class ShopkeeperSprite extends MobSprite {
             coin.speed.y = -40;
             coin.acc.y = +160;
         }
-    }
+    }*/
 }

@@ -82,6 +82,7 @@ public class Alchemy extends Blob {
     @Override
     public void use(BlobEmitter emitter) {
         super.use(emitter);
-        emitter.start(Speck.factory(Speck.BUBBLE), 0.4f, 0);
+        // wafitz.v4: Alchemy terminal now shines occasionally
+        emitter.start(Speck.factory(Speck.LIGHT), 6, 0);
     }
 }

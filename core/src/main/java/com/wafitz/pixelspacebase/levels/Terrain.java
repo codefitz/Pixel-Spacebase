@@ -20,17 +20,6 @@
  */
 package com.wafitz.pixelspacebase.levels;
 
-import com.wafitz.pixelspacebase.levels.traps.AlarmTrap;
-import com.wafitz.pixelspacebase.levels.traps.FireTrap;
-import com.wafitz.pixelspacebase.levels.traps.GrippingTrap;
-import com.wafitz.pixelspacebase.levels.traps.LightningTrap;
-import com.wafitz.pixelspacebase.levels.traps.ParalyticTrap;
-import com.wafitz.pixelspacebase.levels.traps.PoisonTrap;
-import com.wafitz.pixelspacebase.levels.traps.SummoningTrap;
-import com.wafitz.pixelspacebase.levels.traps.ToxicTrap;
-import com.wafitz.pixelspacebase.levels.traps.Trap;
-import com.watabou.utils.SparseArray;
-
 public class Terrain {
 
     public static final int CHASM = 0;
@@ -65,16 +54,17 @@ public class Terrain {
     public static final int BOOKSHELF = 27;
     public static final int ALCHEMY = 28;
 
-    public static final int WATER = 29;
+    // wafitz.v4 Changed to default, doesn't affect game tiles though...
+    public static final int WATER = 63;
 
-    public static final int PASSABLE = 0x01;
-    public static final int LOS_BLOCKING = 0x02;
-    public static final int FLAMABLE = 0x04;
+    static final int PASSABLE = 0x01;
+    static final int LOS_BLOCKING = 0x02;
+    static final int FLAMABLE = 0x04;
     public static final int SECRET = 0x08;
-    public static final int SOLID = 0x10;
-    public static final int AVOID = 0x20;
-    public static final int LIQUID = 0x40;
-    public static final int PIT = 0x80;
+    static final int SOLID = 0x10;
+    static final int AVOID = 0x20;
+    static final int LIQUID = 0x40;
+    static final int PIT = 0x80;
 
     public static final int[] flags = new int[256];
 
@@ -125,7 +115,8 @@ public class Terrain {
         }
     }
 
-    //converts terrain values from pre versioncode 120 (0.4.3) saves
+    // wafitz.v4 No longer needed as Pixel Spacebase starts above v0.4.3
+    /*//converts terrain values from pre versioncode 120 (0.4.3) saves
     //TODO: remove when no longer supporting saves from 0.4.2b and under
     public static int[] convertTilesFrom129(int[] map) {
         for (int i = 0; i < map.length; i++) {
@@ -146,6 +137,7 @@ public class Terrain {
         return map;
     }
 
+    // wafitz.v4 No longer needed as Pixel Spacebase starts above v0.3.0
     //converts terrain values from pre versioncode 44 (0.3.0c) saves
     //TODO: remove when no longer supporting saves from 0.3.0b and under
     public static int[] convertTrapsFrom43(int[] map, SparseArray<Trap> traps) {
@@ -243,7 +235,7 @@ public class Terrain {
             map[i] = c;
         }
         return map;
-    }
+    }*/
 
 
 }

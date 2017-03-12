@@ -145,7 +145,6 @@ public class SewerLevel extends RegularLevel {
 
         // wafitz.v1 - Hero belongings are now to be found in the entrance, later I will randomly place this somewhere on the level
         if (Dungeon.depth <= 1) {
-            while (true) {
                 int pos = pointToCell(roomEntrance.random());
                 if (pos != entrance && traps.get(pos) == null
                         && findMob(pos) == null && pos != Terrain.SIGN) {
@@ -158,10 +157,7 @@ public class SewerLevel extends RegularLevel {
                     drop(new WandHolster().identify(), pos);
                     drop(new PotionBandolier().identify(), pos);
                     drop(new BrokenSeal().identify(), pos);
-                    break;
                 }
-                break;
-            }
         }
     }
 
@@ -184,10 +180,11 @@ public class SewerLevel extends RegularLevel {
         return visuals;
     }
 
-    public static void addSewerVisuals(Level level, Group group) {
+    static void addSewerVisuals(Level level, Group group) {
         for (int i = 0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WALL_DECO) {
-                group.add(new Sink(i));
+                // wafitz.v4: Lights don't leak!
+                //group.add(new Sink(i));
             }
         }
     }
@@ -256,7 +253,7 @@ public class SewerLevel extends RegularLevel {
         }
     }
 
-    public static final class WaterParticle extends PixelParticle {
+    private static final class WaterParticle extends PixelParticle {
 
         public WaterParticle() {
             super();

@@ -43,7 +43,7 @@ public class DungeonTilemap extends Tilemap {
     private static DungeonTilemap instance;
 
     //Used to map dungeon tiles to their default visual values
-    public static SparseIntArray defaultVisuals = new SparseIntArray(32);
+    private static SparseIntArray defaultVisuals = new SparseIntArray(32);
 
     static {
         defaultVisuals.put(Terrain.CHASM, 0);
@@ -82,7 +82,7 @@ public class DungeonTilemap extends Tilemap {
     }
 
     //These alt visuals will trigger 50% of the time
-    public static SparseIntArray commonAltVisuals = new SparseIntArray(32);
+    private static SparseIntArray commonAltVisuals = new SparseIntArray(32);
 
     static {
         commonAltVisuals.put(1, 38);
@@ -97,7 +97,7 @@ public class DungeonTilemap extends Tilemap {
     }
 
     //These alt visuals trigger 10% of the time (and also override common alts when they show up)
-    public static SparseIntArray rareAltVisuals = new SparseIntArray(32);
+    private static SparseIntArray rareAltVisuals = new SparseIntArray(32);
 
     static {
         rareAltVisuals.put(1, 47);
@@ -113,7 +113,7 @@ public class DungeonTilemap extends Tilemap {
     );
 
     //tiles that can stitch with chasms (from above), and which visual represents the stitching
-    public static SparseIntArray chasmStitcheable = new SparseIntArray(32);
+    private static SparseIntArray chasmStitcheable = new SparseIntArray(32);
 
     static {
         //floor
@@ -272,9 +272,10 @@ public class DungeonTilemap extends Tilemap {
         return true;
     }
 
+    // wafitz.v4: Found it! Put translucent water tile back in!
     @Override
     protected boolean needsRender(int pos) {
         return (Level.discoverable[pos] || data[pos] == defaultVisuals.get(Terrain.CHASM))
-                && data[pos] != defaultVisuals.get(Terrain.WATER);
+                /*&& data[pos] != defaultVisuals.get(Terrain.WATER)*/;
     }
 }

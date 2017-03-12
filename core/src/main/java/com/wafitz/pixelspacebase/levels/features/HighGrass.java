@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
-import com.wafitz.pixelspacebase.effects.particles.LeafParticle;
+import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.Dewdrop;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
@@ -102,7 +102,9 @@ public class HighGrass {
             }
         }
 
-        CellEmitter.get(pos).burst(LeafParticle.LEVEL_SPECIFIC, leaves);
+        // wafitz.v4: No more leaves for lights/vents
+        //CellEmitter.get(pos).burst(LeafParticle.LEVEL_SPECIFIC, leaves);
+        CellEmitter.get(pos).burst(ElmoParticle.FACTORY, 1);
         if (Dungeon.visible[pos])
             Dungeon.observe();
     }

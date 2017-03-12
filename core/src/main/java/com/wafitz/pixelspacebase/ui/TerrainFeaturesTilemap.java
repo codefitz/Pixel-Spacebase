@@ -100,7 +100,9 @@ public class TerrainFeaturesTilemap extends Tilemap {
         if (traps.get(pos) != null) {
             Trap trap = traps.get(pos);
             if (!trap.visible)
-                return -1;
+                //return -1;
+                // wafitz.v4 All vents to be visible
+                return (Trap.BLACK) + (trap.shape * 16);
             else
                 return (trap.active ? trap.color : Trap.BLACK) + (trap.shape * 16);
         }
