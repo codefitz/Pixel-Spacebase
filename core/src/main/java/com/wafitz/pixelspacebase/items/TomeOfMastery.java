@@ -39,9 +39,9 @@ import java.util.ArrayList;
 
 public class TomeOfMastery extends Item {
 
-    public static final float TIME_TO_READ = 10;
+    private static final float TIME_TO_READ = 10;
 
-    public static final String AC_READ = "READ";
+    private static final String AC_READ = "READ";
 
     {
         stackable = false;
@@ -69,19 +69,19 @@ public class TomeOfMastery extends Item {
             HeroSubClass way1 = null;
             HeroSubClass way2 = null;
             switch (hero.heroClass) {
-                case WARRIOR:
+                case COMMANDER:
                     way1 = HeroSubClass.GLADIATOR;
                     way2 = HeroSubClass.BERSERKER;
                     break;
-                case MAGE:
+                case DM3000:
                     way1 = HeroSubClass.BATTLEMAGE;
                     way2 = HeroSubClass.WARLOCK;
                     break;
-                case ROGUE:
+                case SHAPESHIFTER:
                     way1 = HeroSubClass.FREERUNNER;
                     way2 = HeroSubClass.ASSASSIN;
                     break;
-                case HUNTRESS:
+                case CAPTAIN:
                     way1 = HeroSubClass.SNIPER;
                     way2 = HeroSubClass.WARDEN;
                     break;

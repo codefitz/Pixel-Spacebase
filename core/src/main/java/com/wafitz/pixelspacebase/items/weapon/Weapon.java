@@ -27,8 +27,8 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
-import com.wafitz.pixelspacebase.items.rings.RingOfFuror;
-import com.wafitz.pixelspacebase.items.rings.RingOfSharpshooting;
+import com.wafitz.pixelspacebase.items.rings.FurorModule;
+import com.wafitz.pixelspacebase.items.rings.TargetingModule;
 import com.wafitz.pixelspacebase.items.weapon.curses.Annoying;
 import com.wafitz.pixelspacebase.items.weapon.curses.Displacing;
 import com.wafitz.pixelspacebase.items.weapon.curses.Exhausting;
@@ -146,7 +146,7 @@ abstract public class Weapon extends KindOfWeapon {
         float ACC = this.ACC;
 
         if (this instanceof MissileWeapon) {
-            int bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim.class);
+            int bonus = TargetingModule.getBonus(hero, TargetingModule.Aim.class);
             ACC *= (float) (Math.pow(1.2, bonus));
         }
 
@@ -157,13 +157,13 @@ abstract public class Weapon extends KindOfWeapon {
     public float speedFactor(Hero hero) {
 
         int encumrance = STRReq() - hero.STR();
-        if (this instanceof MissileWeapon && hero.heroClass == HeroClass.HUNTRESS) {
+        if (this instanceof MissileWeapon && hero.heroClass == HeroClass.CAPTAIN) {
             encumrance -= 2;
         }
 
         float DLY = imbue.delayFactor(this.DLY);
 
-        int bonus = RingOfFuror.getBonus(hero, RingOfFuror.Furor.class);
+        int bonus = FurorModule.getBonus(hero, FurorModule.Furor.class);
 
         DLY = (float) (0.2 + (DLY - 0.2) * Math.pow(0.85, bonus));
 
@@ -181,7 +181,7 @@ abstract public class Weapon extends KindOfWeapon {
 
         int damage = super.damageRoll(hero);
 
-        if (this instanceof MeleeWeapon || (this instanceof MissileWeapon && hero.heroClass == HeroClass.HUNTRESS)) {
+        if (this instanceof MeleeWeapon || (this instanceof MissileWeapon && hero.heroClass == HeroClass.CAPTAIN)) {
             int exStr = hero.STR() - STRReq();
             if (exStr > 0) {
                 damage += Random.IntRange(0, exStr);
@@ -254,7 +254,7 @@ abstract public class Weapon extends KindOfWeapon {
         return enchant(ench);
     }
 
-    public boolean hasEnchant(Class<? extends Enchantment> type) {
+    protected boolean hasEnchant(Class<? extends Enchantment> type) {
         return enchantment != null && enchantment.getClass() == type;
     }
 

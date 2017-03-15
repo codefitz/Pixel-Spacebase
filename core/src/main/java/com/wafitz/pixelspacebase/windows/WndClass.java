@@ -76,7 +76,7 @@ public class WndClass extends WndTabbed {
 
         private Group page;
 
-        public RankingTab(String label, Group page) {
+        RankingTab(String label, Group page) {
             super(label);
             this.page = page;
         }
@@ -98,7 +98,7 @@ public class WndClass extends WndTabbed {
         public float height;
         public float width;
 
-        public PerksTab() {
+        PerksTab() {
             super();
 
             float dotWidth = 0;
@@ -145,21 +145,21 @@ public class WndClass extends WndTabbed {
         public float height;
         public float width;
 
-        public MasteryTab() {
+        MasteryTab() {
             super();
 
             String message = null;
             switch (cl) {
-                case WARRIOR:
+                case COMMANDER:
                     message = HeroSubClass.GLADIATOR.desc() + "\n\n" + HeroSubClass.BERSERKER.desc();
                     break;
-                case MAGE:
+                case DM3000:
                     message = HeroSubClass.BATTLEMAGE.desc() + "\n\n" + HeroSubClass.WARLOCK.desc();
                     break;
-                case ROGUE:
+                case SHAPESHIFTER:
                     message = HeroSubClass.FREERUNNER.desc() + "\n\n" + HeroSubClass.ASSASSIN.desc();
                     break;
-                case HUNTRESS:
+                case CAPTAIN:
                     message = HeroSubClass.SNIPER.desc() + "\n\n" + HeroSubClass.WARDEN.desc();
                     break;
             }

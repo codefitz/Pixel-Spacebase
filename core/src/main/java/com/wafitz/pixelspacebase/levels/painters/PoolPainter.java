@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.actors.mobs.Piranha;
+import com.wafitz.pixelspacebase.actors.mobs.WaterThing;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -76,11 +76,12 @@ public class PoolPainter extends Painter {
         level.addItemToSpawn(new PotionOfInvisibility());
 
         for (int i = 0; i < NPIRANHAS; i++) {
-            Piranha piranha = new Piranha();
+            WaterThing waterThing = new WaterThing();
             do {
-                piranha.pos = level.pointToCell(room.random());
-            } while (level.map[piranha.pos] != Terrain.WATER || level.findMob(piranha.pos) != null);
-            level.mobs.add(piranha);
+                waterThing.pos = level.pointToCell(room.random());
+            }
+            while (level.map[waterThing.pos] != Terrain.WATER || level.findMob(waterThing.pos) != null);
+            level.mobs.add(waterThing);
         }
     }
 

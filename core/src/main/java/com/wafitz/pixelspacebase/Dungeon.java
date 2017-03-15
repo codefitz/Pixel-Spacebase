@@ -29,14 +29,14 @@ import com.wafitz.pixelspacebase.actors.buffs.MindVision;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Blacksmith;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Ghost;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Imp;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Wandmaker;
-import com.wafitz.pixelspacebase.items.Ankh;
+import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.rings.Ring;
+import com.wafitz.pixelspacebase.items.rings.Module;
 import com.wafitz.pixelspacebase.items.scrolls.Scroll;
 import com.wafitz.pixelspacebase.levels.CavesBossLevel;
 import com.wafitz.pixelspacebase.levels.CavesLevel;
@@ -48,11 +48,11 @@ import com.wafitz.pixelspacebase.levels.HallsLevel;
 import com.wafitz.pixelspacebase.levels.LastLevel;
 import com.wafitz.pixelspacebase.levels.LastShopLevel;
 import com.wafitz.pixelspacebase.levels.Level;
+import com.wafitz.pixelspacebase.levels.OperationsBossLevel;
+import com.wafitz.pixelspacebase.levels.OperationsLevel;
 import com.wafitz.pixelspacebase.levels.PrisonBossLevel;
 import com.wafitz.pixelspacebase.levels.PrisonLevel;
 import com.wafitz.pixelspacebase.levels.Room;
-import com.wafitz.pixelspacebase.levels.SewerBossLevel;
-import com.wafitz.pixelspacebase.levels.SewerLevel;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.StartScene;
@@ -154,7 +154,7 @@ public class Dungeon {
 
         Scroll.initLabels();
         Potion.initColors();
-        Ring.initGems();
+        Module.initGems();
 
         transmutation = Random.IntRange(6, 14);
 
@@ -171,14 +171,14 @@ public class Dungeon {
         depth = 0;
         gold = 0;
 
-        droppedItems = new SparseArray<ArrayList<Item>>();
+        droppedItems = new SparseArray<>();
 
         for (limitedDrops a : limitedDrops.values())
             a.count = 0;
 
-        chapters = new HashSet<Integer>();
+        chapters = new HashSet<>();
 
-        Ghost.Quest.reset();
+        Hologram.Quest.reset();
         Wandmaker.Quest.reset();
         Blacksmith.Quest.reset();
         Imp.Quest.reset();
@@ -214,10 +214,10 @@ public class Dungeon {
             case 2:
             case 3:
             case 4:
-                level = new SewerLevel();
+                level = new OperationsLevel();
                 break;
             case 5:
-                level = new SewerBossLevel();
+                level = new OperationsBossLevel();
                 break;
             case 6:
             case 7:
@@ -285,7 +285,7 @@ public class Dungeon {
         return seedForDepth(depth);
     }
 
-    public static long seedForDepth(int depth) {
+    private static long seedForDepth(int depth) {
         Random.seed(seed);
         for (int i = 0; i < depth; i++)
             Random.Long(); //we don't care about these values, just need to go through them
@@ -340,7 +340,7 @@ public class Dungeon {
         int depth = Dungeon.depth + 1;
         ArrayList<Item> dropped = Dungeon.droppedItems.get(depth);
         if (dropped == null) {
-            Dungeon.droppedItems.put(depth, dropped = new ArrayList<Item>());
+            Dungeon.droppedItems.put(depth, dropped = new ArrayList<>());
         }
         dropped.add(item);
     }
@@ -407,13 +407,13 @@ public class Dungeon {
     private static final String QUESTS = "quests";
     private static final String BADGES = "badges";
 
-    public static String gameFile(HeroClass cl) {
+    static String gameFile(HeroClass cl) {
         switch (cl) {
-            case WARRIOR:
+            case COMMANDER:
                 return WR_GAME_FILE;
-            case MAGE:
+            case DM3000:
                 return MG_GAME_FILE;
-            case HUNTRESS:
+            case CAPTAIN:
                 return RN_GAME_FILE;
             default:
                 return RG_GAME_FILE;
@@ -422,18 +422,18 @@ public class Dungeon {
 
     private static String depthFile(HeroClass cl) {
         switch (cl) {
-            case WARRIOR:
+            case COMMANDER:
                 return WR_DEPTH_FILE;
-            case MAGE:
+            case DM3000:
                 return MG_DEPTH_FILE;
-            case HUNTRESS:
+            case CAPTAIN:
                 return RN_DEPTH_FILE;
             default:
                 return RG_DEPTH_FILE;
         }
     }
 
-    public static void saveGame(String fileName) throws IOException {
+    private static void saveGame(String fileName) throws IOException {
         try {
             Bundle bundle = new Bundle();
 
@@ -466,7 +466,7 @@ public class Dungeon {
             bundle.put(CHAPTERS, ids);
 
             Bundle quests = new Bundle();
-            Ghost.Quest.storeInBundle(quests);
+            Hologram.Quest.storeInBundle(quests);
             Wandmaker.Quest.storeInBundle(quests);
             Blacksmith.Quest.storeInBundle(quests);
             Imp.Quest.storeInBundle(quests);
@@ -480,7 +480,7 @@ public class Dungeon {
 
             Scroll.save(bundle);
             Potion.save(bundle);
-            Ring.save(bundle);
+            Module.save(bundle);
 
             Actor.storeNextID(bundle);
 
@@ -498,7 +498,7 @@ public class Dungeon {
         }
     }
 
-    public static void saveLevel() throws IOException {
+    private static void saveLevel() throws IOException {
         Bundle bundle = new Bundle();
         bundle.put(LEVEL, level);
 
@@ -555,7 +555,7 @@ public class Dungeon {
 
         Scroll.restore(bundle);
         Potion.restore(bundle);
-        Ring.restore(bundle);
+        Module.restore(bundle);
 
         quickslot.restorePlaceholders(bundle);
 
@@ -567,7 +567,7 @@ public class Dungeon {
                 value.count = value.ordinal() < dropValues.length ?
                         dropValues[value.ordinal()] : 0;
 
-            chapters = new HashSet<Integer>();
+            chapters = new HashSet<>();
             int ids[] = bundle.getIntArray(CHAPTERS);
             if (ids != null) {
                 for (int id : ids) {
@@ -577,12 +577,12 @@ public class Dungeon {
 
             Bundle quests = bundle.getBundle(QUESTS);
             if (!quests.isNull()) {
-                Ghost.Quest.restoreFromBundle(quests);
+                Hologram.Quest.restoreFromBundle(quests);
                 Wandmaker.Quest.restoreFromBundle(quests);
                 Blacksmith.Quest.restoreFromBundle(quests);
                 Imp.Quest.restoreFromBundle(quests);
             } else {
-                Ghost.Quest.reset();
+                Hologram.Quest.reset();
                 Wandmaker.Quest.reset();
                 Blacksmith.Quest.reset();
                 Imp.Quest.reset();
@@ -608,9 +608,9 @@ public class Dungeon {
         Journal.restoreFromBundle(bundle);
         Generator.restoreFromBundle(bundle);
 
-        droppedItems = new SparseArray<ArrayList<Item>>();
+        droppedItems = new SparseArray<>();
         for (int i = 2; i <= Statistics.deepestFloor + 1; i++) {
-            ArrayList<Item> dropped = new ArrayList<Item>();
+            ArrayList<Item> dropped = new ArrayList<>();
             if (bundle.contains(Messages.format(DROPPED, i)))
                 for (Bundlable b : bundle.getCollection(Messages.format(DROPPED, i))) {
                     dropped.add((Item) b);
@@ -647,7 +647,7 @@ public class Dungeon {
         GamesInProgress.delete(cl);
     }
 
-    public static Bundle gameBundle(String fileName) throws IOException {
+    static Bundle gameBundle(String fileName) throws IOException {
 
         InputStream input = Game.instance.openFileInput(fileName);
         Bundle bundle = Bundle.read(input);
@@ -656,7 +656,7 @@ public class Dungeon {
         return bundle;
     }
 
-    public static void preview(GamesInProgress.Info info, Bundle bundle) {
+    static void preview(GamesInProgress.Info info, Bundle bundle) {
         info.depth = bundle.getInt(DEPTH);
         info.challenges = (bundle.getInt(CHALLENGES) != 0);
         if (info.depth == -1) {
@@ -666,7 +666,7 @@ public class Dungeon {
     }
 
     public static void fail(Class cause) {
-        if (hero.belongings.getItem(Ankh.class) == null) {
+        if (hero.belongings.getItem(Clone.class) == null) {
             Rankings.INSTANCE.submit(false, cause);
         }
     }

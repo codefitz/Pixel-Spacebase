@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.actors.mobs;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
-import com.wafitz.pixelspacebase.items.Gold;
+import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.BruteSprite;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
@@ -33,7 +33,7 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-public class Brute extends Mob {
+class Brute extends Mob {
 
     {
         spriteClass = BruteSprite.class;
@@ -44,7 +44,7 @@ public class Brute extends Mob {
         EXP = 8;
         maxLvl = 15;
 
-        loot = Gold.class;
+        loot = Parts.class;
         lootChance = 0.5f;
     }
 

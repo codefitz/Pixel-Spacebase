@@ -144,9 +144,9 @@ public class HeroSprite extends CharSprite {
         return on;
     }
 
-    public static TextureFilm tiers() {
+    static TextureFilm tiers() {
         if (tiers == null) {
-            SmartTexture texture = TextureCache.get(Assets.ROGUE);
+            SmartTexture texture = TextureCache.get(Assets.SHAPESHIFTER);
             tiers = new TextureFilm(texture, texture.width, FRAME_HEIGHT);
         }
 

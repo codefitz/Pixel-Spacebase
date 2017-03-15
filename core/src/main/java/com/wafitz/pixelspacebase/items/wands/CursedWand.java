@@ -36,7 +36,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Frost;
 import com.wafitz.pixelspacebase.actors.buffs.Recharging;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.actors.mobs.Mimic;
+import com.wafitz.pixelspacebase.actors.mobs.ConfusedShapeshifter;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Sheep;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
@@ -75,14 +75,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 //helper class to contain all the cursed wand zapping logic, so the main wand class doesn't get huge.
-public class CursedWand {
+class CursedWand {
 
     private static float COMMON_CHANCE = 0.6f;
     private static float UNCOMMON_CHANCE = 0.3f;
     private static float RARE_CHANCE = 0.09f;
     private static float VERY_RARE_CHANCE = 0.01f;
 
-    public static void cursedZap(final Wand wand, final Hero user, final Ballistica bolt) {
+    static void cursedZap(final Wand wand, final Hero user, final Ballistica bolt) {
         switch (Random.chances(new float[]{COMMON_CHANCE, UNCOMMON_CHANCE, RARE_CHANCE, VERY_RARE_CHANCE})) {
             case 0:
             default:
@@ -380,17 +380,17 @@ public class CursedWand {
             case 1:
                 cursedFX(user, bolt, new Callback() {
                     public void call() {
-                        Mimic mimic = Mimic.spawnAt(bolt.collisionPos, new ArrayList<Item>());
-                        mimic.adjustStats(Dungeon.depth + 10);
-                        mimic.HP = mimic.HT;
+                        ConfusedShapeshifter confusedShapeshifter = ConfusedShapeshifter.spawnAt(bolt.collisionPos, new ArrayList<Item>());
+                        confusedShapeshifter.adjustStats(Dungeon.depth + 10);
+                        confusedShapeshifter.HP = confusedShapeshifter.HT;
                         Item reward;
                         do {
                             reward = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
                                     Generator.Category.RING, Generator.Category.WAND));
                         } while (reward.level() < 2 && !(reward instanceof MissileWeapon));
                         Sample.INSTANCE.play(Assets.SND_MIMIC, 1, 1, 0.5f);
-                        mimic.items.clear();
-                        mimic.items.add(reward);
+                        confusedShapeshifter.items.clear();
+                        confusedShapeshifter.items.add(reward);
 
                         wand.wandUsed();
                     }

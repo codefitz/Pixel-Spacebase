@@ -42,7 +42,7 @@ import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Languages;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.sprites.GhostSprite;
+import com.wafitz.pixelspacebase.sprites.HologramSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.wafitz.pixelspacebase.windows.WndQuest;
@@ -67,13 +67,13 @@ public class DriedRose extends Artifact {
         defaultAction = AC_SUMMON;
     }
 
-    protected static boolean talkedTo = false;
-    protected static boolean firstSummon = false;
+    private static boolean talkedTo = false;
+    private static boolean firstSummon = false;
     protected static boolean spawned = false;
 
     public int droppedPetals = 0;
 
-    public static final String AC_SUMMON = "SUMMON";
+    private static final String AC_SUMMON = "SUMMON";
 
     public DriedRose() {
         super();
@@ -100,7 +100,7 @@ public class DriedRose extends Artifact {
             else if (charge != chargeCap) GLog.i(Messages.get(this, "no_charge"));
             else if (cursed) GLog.i(Messages.get(this, "cursed"));
             else {
-                ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
+                ArrayList<Integer> spawnPoints = new ArrayList<>();
                 for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
                     int p = hero.pos + PathFinder.NEIGHBOURS8[i];
                     if (Actor.findChar(p) == null && (Level.passable[p] || Level.avoid[p])) {
@@ -198,7 +198,7 @@ public class DriedRose extends Artifact {
         droppedPetals = bundle.getInt(PETALS);
     }
 
-    public class roseRecharge extends ArtifactBuff {
+    private class roseRecharge extends ArtifactBuff {
 
         @Override
         public boolean act() {
@@ -216,7 +216,7 @@ public class DriedRose extends Artifact {
                 }
             } else if (cursed && Random.Int(100) == 0) {
 
-                ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
+                ArrayList<Integer> spawnPoints = new ArrayList<>();
 
                 for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
                     int p = target.pos + PathFinder.NEIGHBOURS8[i];
@@ -279,7 +279,7 @@ public class DriedRose extends Artifact {
     public static class GhostHero extends NPC {
 
         {
-            spriteClass = GhostSprite.class;
+            spriteClass = HologramSprite.class;
 
             flying = true;
 
@@ -289,19 +289,19 @@ public class DriedRose extends Artifact {
             ally = true;
         }
 
-        public GhostHero() {
+        GhostHero() {
             super();
 
             //double heroes defence skill
             defenseSkill = (Dungeon.hero.lvl + 4) * 2;
         }
 
-        public GhostHero(int roseLevel) {
+        GhostHero(int roseLevel) {
             this();
             HP = HT = 10 + roseLevel * 4;
         }
 
-        public void saySpawned() {
+        void saySpawned() {
             if (Messages.lang() != Languages.ENGLISH) return; //don't say anything if not on english
             int i = (Dungeon.depth - 1) / 5;
             if (chooseEnemy() == null)
@@ -316,13 +316,13 @@ public class DriedRose extends Artifact {
             Sample.INSTANCE.play(Assets.SND_GHOST);
         }
 
-        public void sayDefeated() {
+        void sayDefeated() {
             if (Messages.lang() != Languages.ENGLISH) return; //don't say anything if not on english
             yell(Random.element(VOICE_DEFEATED[Dungeon.bossLevel() ? 1 : 0]));
             Sample.INSTANCE.play(Assets.SND_GHOST);
         }
 
-        public void sayHeroKilled() {
+        void sayHeroKilled() {
             if (Messages.lang() != Languages.ENGLISH) return; //don't say anything if not on english
             yell(Random.element(VOICE_HEROKILLED));
             Sample.INSTANCE.play(Assets.SND_GHOST);
@@ -358,7 +358,7 @@ public class DriedRose extends Artifact {
         protected Char chooseEnemy() {
             if (enemy == null || !enemy.isAlive() || !Dungeon.level.mobs.contains(enemy) || state == WANDERING) {
 
-                HashSet<Mob> enemies = new HashSet<Mob>();
+                HashSet<Mob> enemies = new HashSet<>();
                 for (Mob mob : Dungeon.level.mobs) {
                     if (mob.hostile && Level.fieldOfView[mob.pos] && mob.state != mob.PASSIVE) {
                         enemies.add(mob);
@@ -425,7 +425,7 @@ public class DriedRose extends Artifact {
             super.destroy();
         }
 
-        private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+        private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 
         static {
             IMMUNITIES.add(ToxicGas.class);
@@ -449,7 +449,7 @@ public class DriedRose extends Artifact {
                 "hopefully you may succeed where I failed...";
 
         //1st index - depth type, 2nd index - specific line.
-        public static final String[][] VOICE_AMBIENT = {
+        static final String[][] VOICE_AMBIENT = {
                 {
                         "These sewers were once safe, some even lived here in the winter...",
                         "I wonder what happened to the guard patrols, did they give up?...",
@@ -476,14 +476,14 @@ public class DriedRose extends Artifact {
         };
 
         //1st index - depth type, 2nd index - boss or not, 3rd index - specific line.
-        public static final String[][][] VOICE_ENEMIES = {
+        static final String[][][] VOICE_ENEMIES = {
                 {
                         {
                                 "Let's make the sewers safe again...",
                                 "If the guards couldn't defeat them, perhaps we can...",
                                 "These crabs are extremely annoying..."
                         }, {
-                        "Beware Goo!...",
+                        "Beware FeralShapeshifter!...",
                         "Many of my friends died to this thing, time for vengeance...",
                         "Such an abomination cannot be allowed to live..."
                 }
@@ -537,7 +537,7 @@ public class DriedRose extends Artifact {
         };
 
         //1st index - Yog or not, 2nd index - specific line.
-        public static final String[][] VOICE_BOSSBEATEN = {
+        static final String[][] VOICE_BOSSBEATEN = {
                 {
                         "Yes!",
                         "Victory!"
@@ -548,7 +548,7 @@ public class DriedRose extends Artifact {
         };
 
         //1st index - boss or not, 2nd index - specific line.
-        public static final String[][] VOICE_DEFEATED = {
+        static final String[][] VOICE_DEFEATED = {
                 {
                         "Good luck...",
                         "I will return...",
@@ -560,13 +560,13 @@ public class DriedRose extends Artifact {
         }
         };
 
-        public static final String[] VOICE_HEROKILLED = {
+        static final String[] VOICE_HEROKILLED = {
                 "nooo...",
                 "no...",
                 "I couldn't help them..."
         };
 
-        public static final String[] VOICE_BLESSEDANKH = {
+        static final String[] VOICE_BLESSEDANKH = {
                 "Incredible!...",
                 "Wish I had one of those...",
                 "How did you survive that?..."

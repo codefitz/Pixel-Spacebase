@@ -21,9 +21,9 @@
 package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.actors.mobs.npcs.RatKing;
-import com.wafitz.pixelspacebase.items.Gold;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -64,7 +64,7 @@ public class RatKingPainter extends Painter {
             return;
         }
 
-        Item prize = new Gold(Random.IntRange(1, 25));
+        Item prize = new Parts(Random.IntRange(1, 25));
 
         level.drop(prize, pos).type = Heap.Type.CHEST;
     }

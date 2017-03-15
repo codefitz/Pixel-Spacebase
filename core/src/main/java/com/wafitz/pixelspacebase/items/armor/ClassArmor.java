@@ -43,7 +43,7 @@ abstract public class ClassArmor extends Armor {
 
     private int armorTier;
 
-    public ClassArmor() {
+    ClassArmor() {
         super(6);
     }
 
@@ -52,21 +52,21 @@ abstract public class ClassArmor extends Armor {
         ClassArmor classArmor = null;
 
         switch (owner.heroClass) {
-            case WARRIOR:
-                classArmor = new WarriorArmor();
+            case COMMANDER:
+                classArmor = new SpaceWizard();
                 BrokenSeal seal = armor.checkSeal();
                 if (seal != null) {
                     classArmor.affixSeal(seal);
                 }
                 break;
-            case ROGUE:
-                classArmor = new RogueArmor();
+            case SHAPESHIFTER:
+                classArmor = new Eldridge();
                 break;
-            case MAGE:
-                classArmor = new MageArmor();
+            case DM3000:
+                classArmor = new DM3000Armor();
                 break;
-            case HUNTRESS:
-                classArmor = new HuntressArmor();
+            case CAPTAIN:
+                classArmor = new PowerSuit();
                 break;
         }
 

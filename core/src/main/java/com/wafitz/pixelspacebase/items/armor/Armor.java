@@ -65,7 +65,7 @@ public class Armor extends EquipableItem {
 
     private static final int HITS_TO_KNOW = 10;
 
-    protected static final String AC_DETACH = "DETACH";
+    static final String AC_DETACH = "DETACH";
 
     public int tier;
 
@@ -181,7 +181,7 @@ public class Armor extends EquipableItem {
         }
     }
 
-    public BrokenSeal checkSeal() {
+    BrokenSeal checkSeal() {
         return seal;
     }
 
@@ -230,7 +230,7 @@ public class Armor extends EquipableItem {
         return DRMin(level());
     }
 
-    public int DRMin(int lvl) {
+    private int DRMin(int lvl) {
         if (glyph != null && glyph instanceof Stone)
             return 2 + 2 * lvl;
         else
@@ -288,7 +288,7 @@ public class Armor extends EquipableItem {
 
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(Armor.class, "too_heavy");
-            } else if (Dungeon.hero.heroClass == HeroClass.ROGUE && Dungeon.hero.STR() > STRReq()) {
+            } else if (Dungeon.hero.heroClass == HeroClass.SHAPESHIFTER && Dungeon.hero.STR() > STRReq()) {
                 info += " " + Messages.get(Armor.class, "excess_str");
             }
         } else {
@@ -472,7 +472,7 @@ public class Armor extends EquipableItem {
             return 0;
         }
 
-        public boolean checkOwner(Char owner) {
+        protected boolean checkOwner(Char owner) {
             if (!owner.isAlive() && owner instanceof Hero) {
 
                 Dungeon.fail(getClass());

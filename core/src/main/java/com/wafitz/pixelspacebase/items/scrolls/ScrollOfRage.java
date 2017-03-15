@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.buffs.Amok;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Invisibility;
-import com.wafitz.pixelspacebase.actors.mobs.Mimic;
+import com.wafitz.pixelspacebase.actors.mobs.ConfusedShapeshifter;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Heap;
@@ -52,7 +52,7 @@ public class ScrollOfRage extends Scroll {
 
         for (Heap heap : Dungeon.level.heaps.values()) {
             if (heap.type == Heap.Type.MIMIC) {
-                Mimic m = Mimic.spawnAt(heap.pos, heap.items);
+                ConfusedShapeshifter m = ConfusedShapeshifter.spawnAt(heap.pos, heap.items);
                 if (m != null) {
                     m.beckon(curUser.pos);
                     heap.destroy();

@@ -349,9 +349,9 @@ public class GameScene extends PixelScene {
 
         if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
             if (Dungeon.depth < Statistics.deepestFloor) {
-                GLog.h(Messages.get(this, "welcome_back"), Dungeon.depth);
+                GLog.h(Messages.get(this, "welcome_back"), Dungeon.depth, Dungeon.hero.givenName());
             } else {
-                GLog.h(Messages.get(this, "welcome"), Dungeon.depth);
+                GLog.h(Messages.get(this, "welcome"), Dungeon.depth, Dungeon.hero.givenName());
                 Sample.INSTANCE.play(Assets.SND_DESCEND);
             }
 
@@ -870,7 +870,7 @@ public class GameScene extends PixelScene {
         }
     }
 
-    public static void examineObject(Object o) {
+    private static void examineObject(Object o) {
         if (o == Dungeon.hero) {
             GameScene.show(new WndHero());
         } else if (o instanceof Mob) {

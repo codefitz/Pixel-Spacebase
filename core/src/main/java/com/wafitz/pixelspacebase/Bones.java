@@ -22,8 +22,8 @@ package com.wafitz.pixelspacebase;
 
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.Generator;
-import com.wafitz.pixelspacebase.items.Gold;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.watabou.noosa.Game;
@@ -97,7 +97,7 @@ public class Bones {
 
             Iterator<Item> iterator = hero.belongings.backpack.iterator();
             Item curItem;
-            ArrayList<Item> items = new ArrayList<Item>();
+            ArrayList<Item> items = new ArrayList<>();
             while (iterator.hasNext()) {
                 curItem = iterator.next();
                 if (curItem.bones)
@@ -117,9 +117,9 @@ public class Bones {
         }
         if (item == null) {
             if (Dungeon.gold > 50) {
-                item = new Gold(Random.NormalIntRange(50, Dungeon.gold));
+                item = new Parts(Random.NormalIntRange(50, Dungeon.gold));
             } else {
-                item = new Gold(50);
+                item = new Parts(50);
             }
         }
         return item;
@@ -163,10 +163,10 @@ public class Bones {
                             return artifact;
                         } catch (Exception e) {
                             PixelSpacebase.reportException(e);
-                            return new Gold(item.price());
+                            return new Parts(item.price());
                         }
                     } else {
-                        return new Gold(item.price());
+                        return new Parts(item.price());
                     }
                 }
 

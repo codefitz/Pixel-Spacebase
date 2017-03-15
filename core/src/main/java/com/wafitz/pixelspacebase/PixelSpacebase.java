@@ -27,6 +27,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
+import com.wafitz.pixelspacebase.actors.mobs.ToughXeno;
 import com.wafitz.pixelspacebase.messages.Languages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
@@ -93,14 +94,14 @@ public class PixelSpacebase extends Game {
 
         //0.3.3
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.actors.mobs.FetidRat.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Ghost$FetidRat");
+                ToughXeno.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$ToughXeno");
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.actors.mobs.GnollTrickster.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Ghost$GnollTrickster");
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$GnollTrickster");
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.actors.mobs.GreatCrab.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Ghost$GreatCrab");
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$GreatCrab");
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.plants.Rotberry.class,
                 "com.wafitz.pixelspacebase.actors.mobs.npcs.Wandmaker$Rotberry");
@@ -497,8 +498,7 @@ public class PixelSpacebase extends Game {
     }
 
     public static boolean classicFont() {
-        return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT,
-                (language() != Languages.KOREAN && language() != Languages.CHINESE));
+        return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT, true);
     }
 
     public static void lastClass(int value) {

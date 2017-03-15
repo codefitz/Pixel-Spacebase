@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.Monk;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.quest.DwarfToken;
-import com.wafitz.pixelspacebase.items.rings.Ring;
+import com.wafitz.pixelspacebase.items.rings.Module;
 import com.wafitz.pixelspacebase.levels.CityLevel;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -131,7 +131,7 @@ public class Imp extends NPC {
         private static boolean given;
         private static boolean completed;
 
-        public static Ring reward;
+        public static Module reward;
 
         public static void reset() {
             spawned = false;
@@ -173,7 +173,7 @@ public class Imp extends NPC {
 
                 given = node.getBoolean(GIVEN);
                 completed = node.getBoolean(COMPLETED);
-                reward = (Ring) node.get(REWARD);
+                reward = (Module) node.get(REWARD);
             }
         }
 
@@ -192,7 +192,7 @@ public class Imp extends NPC {
                 given = false;
 
                 do {
-                    reward = (Ring) Generator.random(Generator.Category.RING);
+                    reward = (Module) Generator.random(Generator.Category.RING);
                 } while (reward.cursed);
                 reward.upgrade(2);
                 reward.cursed = true;

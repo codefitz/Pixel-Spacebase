@@ -48,7 +48,7 @@ import com.wafitz.pixelspacebase.effects.CheckedCell;
 import com.wafitz.pixelspacebase.effects.Flare;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Amulet;
-import com.wafitz.pixelspacebase.items.Ankh;
+import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.Dewdrop;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Heap.Type;
@@ -71,13 +71,13 @@ import com.wafitz.pixelspacebase.items.keys.Key;
 import com.wafitz.pixelspacebase.items.potions.Potion;
 import com.wafitz.pixelspacebase.items.potions.PotionOfMight;
 import com.wafitz.pixelspacebase.items.potions.PotionOfStrength;
-import com.wafitz.pixelspacebase.items.rings.RingOfElements;
-import com.wafitz.pixelspacebase.items.rings.RingOfEvasion;
-import com.wafitz.pixelspacebase.items.rings.RingOfForce;
-import com.wafitz.pixelspacebase.items.rings.RingOfFuror;
-import com.wafitz.pixelspacebase.items.rings.RingOfHaste;
-import com.wafitz.pixelspacebase.items.rings.RingOfMight;
-import com.wafitz.pixelspacebase.items.rings.RingOfTenacity;
+import com.wafitz.pixelspacebase.items.rings.ElementsModule;
+import com.wafitz.pixelspacebase.items.rings.EvasionModule;
+import com.wafitz.pixelspacebase.items.rings.ForceModule;
+import com.wafitz.pixelspacebase.items.rings.FurorModule;
+import com.wafitz.pixelspacebase.items.rings.PowerModule;
+import com.wafitz.pixelspacebase.items.rings.SpeedModule;
+import com.wafitz.pixelspacebase.items.rings.SteelModule;
 import com.wafitz.pixelspacebase.items.scrolls.Scroll;
 import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicMapping;
 import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicalInfusion;
@@ -87,8 +87,8 @@ import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.levels.features.AlchemyPot;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
+import com.wafitz.pixelspacebase.levels.features.CraftingTerminal;
 import com.wafitz.pixelspacebase.levels.features.Sign;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.plants.Earthroot;
@@ -134,7 +134,7 @@ public class Hero extends Char {
     private static final float TIME_TO_REST = 1f;
     private static final float TIME_TO_SEARCH = 2f;
 
-    public HeroClass heroClass = HeroClass.ROGUE;
+    public HeroClass heroClass = HeroClass.SHAPESHIFTER;
     public HeroSubClass subClass = HeroSubClass.NONE;
 
     private int attackSkill = 10;
@@ -184,7 +184,7 @@ public class Hero extends Char {
     public int STR() {
         int STR = this.STR;
 
-        STR += RingOfMight.getBonus(this, RingOfMight.Might.class);
+        STR += PowerModule.getBonus(this, PowerModule.Might.class);
 
         return weakened ? STR - 2 : STR;
     }
@@ -282,7 +282,7 @@ public class Hero extends Char {
     @Override
     public int defenseSkill(Char enemy) {
 
-        int bonus = RingOfEvasion.getBonus(this, RingOfEvasion.Evasion.class);
+        int bonus = EvasionModule.getBonus(this, EvasionModule.Evasion.class);
 
         float evasion = (float) Math.pow(1.125, bonus);
         if (paralysed > 0) {
@@ -296,7 +296,7 @@ public class Hero extends Char {
         } else {
 
             bonus = 0;
-            if (heroClass == HeroClass.ROGUE) bonus += -aEnc;
+            if (heroClass == HeroClass.SHAPESHIFTER) bonus += -aEnc;
 
             if (belongings.armor != null && belongings.armor.hasGlyph(Swiftness.class))
                 bonus += 5 + belongings.armor.level() * 1.5f;
@@ -328,13 +328,13 @@ public class Hero extends Char {
     public int damageRoll() {
         KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
         int dmg;
-        int bonus = RingOfForce.getBonus(this, RingOfForce.Force.class);
+        int bonus = ForceModule.getBonus(this, ForceModule.Force.class);
 
         if (wep != null) {
             dmg = wep.damageRoll(this) + bonus;
         } else {
             if (bonus != 0) {
-                dmg = RingOfForce.damageRoll(this);
+                dmg = ForceModule.damageRoll(this);
             } else {
                 dmg = Random.NormalIntRange(1, Math.max(STR() - 8, 1));
             }
@@ -352,7 +352,7 @@ public class Hero extends Char {
 
         float speed = super.speed();
 
-        int hasteLevel = RingOfHaste.getBonus(this, RingOfHaste.Haste.class);
+        int hasteLevel = SpeedModule.getBonus(this, SpeedModule.Haste.class);
 
         if (hasteLevel != 0)
             speed *= Math.pow(1.2, hasteLevel);
@@ -430,7 +430,7 @@ public class Hero extends Char {
             //Normally putting furor speed on unarmed attacks would be unnecessary
             //But there's going to be that one guy who gets a furor+force ring combo
             //This is for that one guy, you shall get your fists of fury!
-            int bonus = RingOfFuror.getBonus(this, RingOfFuror.Furor.class);
+            int bonus = FurorModule.getBonus(this, FurorModule.Furor.class);
             return (float) (0.2 + (1 - 0.2) * Math.pow(0.85, bonus));
         }
     }
@@ -624,7 +624,7 @@ public class Hero extends Char {
         if (Dungeon.visible[dst]) {
 
             ready();
-            AlchemyPot.operate(this, dst);
+            CraftingTerminal.operate(this, dst);
             return false;
 
         } else if (getCloser(dst)) {
@@ -948,13 +948,13 @@ public class Hero extends Char {
             dmg = thorns.proc(dmg, (src instanceof Char ? (Char) src : null), this);
         }
 
-        int tenacity = RingOfTenacity.getBonus(this, RingOfTenacity.Tenacity.class);
+        int tenacity = SteelModule.getBonus(this, SteelModule.Tenacity.class);
         if (tenacity != 0) //(HT - HP)/HT = heroes current % missing health.
             dmg = (int) Math.ceil((float) dmg * Math.pow(0.85, tenacity * ((float) (HT - HP) / HT)));
 
         //TODO improve this when I have proper damage source logic
         if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)
-                && RingOfElements.FULL.contains(src.getClass())) {
+                && ElementsModule.FULL.contains(src.getClass())) {
             dmg -= Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax()) / 2;
         }
 
@@ -1221,7 +1221,7 @@ public class Hero extends Char {
 
     void updateAwareness() {
         awareness = (float) (1 - Math.pow(
-                (heroClass == HeroClass.ROGUE ? 0.85 : 0.90),
+                (heroClass == HeroClass.SHAPESHIFTER ? 0.85 : 0.90),
                 (1 + Math.min(lvl, 9)) * 0.5
         ));
     }
@@ -1264,7 +1264,7 @@ public class Hero extends Char {
     public int stealth() {
         int stealth = super.stealth();
 
-        stealth += RingOfEvasion.getBonus(this, RingOfEvasion.Evasion.class);
+        stealth += EvasionModule.getBonus(this, EvasionModule.Evasion.class);
 
         if (belongings.armor != null && belongings.armor.hasGlyph(Obfuscation.class)) {
             stealth += belongings.armor.level();
@@ -1284,18 +1284,18 @@ public class Hero extends Char {
             return;
         }
 
-        Ankh ankh = null;
+        Clone clone = null;
 
         //look for ankhs in player inventory, prioritize ones which are blessed.
         for (Item item : belongings) {
-            if (item instanceof Ankh) {
-                if (ankh == null || ((Ankh) item).isBlessed()) {
-                    ankh = (Ankh) item;
+            if (item instanceof Clone) {
+                if (clone == null || ((Clone) item).isBlessed()) {
+                    clone = (Clone) item;
                 }
             }
         }
 
-        if (ankh != null && ankh.isBlessed()) {
+        if (clone != null && clone.isBlessed()) {
             this.HP = HT / 4;
 
             //ensures that you'll get to act first in almost any case, to prevent reviving and then instantly dieing again.
@@ -1305,7 +1305,7 @@ public class Hero extends Char {
             new Flare(8, 32).color(0xFFFF66, true).show(sprite, 2f);
             CellEmitter.get(this.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
 
-            ankh.detach(belongings.backpack);
+            clone.detach(belongings.backpack);
 
             Sample.INSTANCE.play(Assets.SND_TELEPORT);
             GLog.w(Messages.get(this, "revive"));
@@ -1317,14 +1317,14 @@ public class Hero extends Char {
         Actor.fixTime();
         super.die(cause);
 
-        if (ankh == null) {
+        if (clone == null) {
 
             reallyDie(cause);
 
         } else {
 
             Dungeon.deleteGame(Dungeon.hero.heroClass, false);
-            GameScene.show(new WndResurrect(ankh, cause));
+            GameScene.show(new WndResurrect(clone, cause));
 
         }
     }
@@ -1599,7 +1599,7 @@ public class Hero extends Char {
 
     @Override
     public HashSet<Class<?>> resistances() {
-        RingOfElements.Resistance r = buff(RingOfElements.Resistance.class);
+        ElementsModule.Resistance r = buff(ElementsModule.Resistance.class);
         return r == null ? super.resistances() : r.resistances();
     }
 

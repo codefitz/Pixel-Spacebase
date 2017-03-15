@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Frost;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.actors.mobs.Mimic;
+import com.wafitz.pixelspacebase.actors.mobs.ConfusedShapeshifter;
 import com.wafitz.pixelspacebase.actors.mobs.Wraith;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
@@ -88,7 +88,7 @@ public class Heap implements Bundlable {
     public ItemSprite sprite;
     public boolean seen = false;
 
-    public LinkedList<Item> items = new LinkedList<Item>();
+    public LinkedList<Item> items = new LinkedList<>();
 
     public int image() {
         switch (type) {
@@ -120,7 +120,7 @@ public class Heap implements Bundlable {
     public void open(Hero hero) {
         switch (type) {
             case MIMIC:
-                if (Mimic.spawnAt(pos, items) != null) {
+                if (ConfusedShapeshifter.spawnAt(pos, items) != null) {
                     destroy();
                 } else {
                     type = Type.CHEST;
@@ -213,7 +213,7 @@ public class Heap implements Bundlable {
     public void burn() {
 
         if (type == Type.MIMIC) {
-            Mimic m = Mimic.spawnAt(pos, items);
+            ConfusedShapeshifter m = ConfusedShapeshifter.spawnAt(pos, items);
             if (m != null) {
                 Buff.affect(m, Burning.class).reignite(m);
                 m.sprite.emitter().burst(FlameParticle.FACTORY, 5);
@@ -279,8 +279,6 @@ public class Heap implements Bundlable {
 
         if (type != Type.HEAP) {
 
-            return;
-
         } else {
 
             for (Item item : items.toArray(new Item[0])) {
@@ -312,7 +310,7 @@ public class Heap implements Bundlable {
     public void freeze() {
 
         if (type == Type.MIMIC) {
-            Mimic m = Mimic.spawnAt(pos, items);
+            ConfusedShapeshifter m = ConfusedShapeshifter.spawnAt(pos, items);
             if (m != null) {
                 Buff.prolong(m, Frost.class, Frost.duration(m) * Random.Float(1.0f, 1.5f));
                 destroy();
@@ -449,7 +447,7 @@ public class Heap implements Bundlable {
         Sample.INSTANCE.play(Assets.SND_BURNING);
     }
 
-    public static void evaporateFX(int pos) {
+    private static void evaporateFX(int pos) {
         CellEmitter.get(pos).burst(Speck.factory(Speck.STEAM), 5);
     }
 
@@ -523,7 +521,7 @@ public class Heap implements Bundlable {
         pos = bundle.getInt(POS);
         seen = bundle.getBoolean(SEEN);
         type = Type.valueOf(bundle.getString(TYPE));
-        items = new LinkedList<Item>((Collection<Item>) ((Collection<?>) bundle.getCollection(ITEMS)));
+        items = new LinkedList<>((Collection<Item>) ((Collection<?>) bundle.getCollection(ITEMS)));
         items.removeAll(Collections.singleton(null));
     }
 

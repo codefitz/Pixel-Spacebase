@@ -33,7 +33,7 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.glyphs.Brimstone;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
-import com.wafitz.pixelspacebase.items.rings.RingOfElements.Resistance;
+import com.wafitz.pixelspacebase.items.rings.ElementsModule.Resistance;
 import com.wafitz.pixelspacebase.items.scrolls.Scroll;
 import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicalInfusion;
 import com.wafitz.pixelspacebase.items.scrolls.ScrollOfUpgrade;

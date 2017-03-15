@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.actors.mobs.Bee;
+import com.wafitz.pixelspacebase.actors.mobs.Drone;
 import com.wafitz.pixelspacebase.effects.Pushing;
 import com.wafitz.pixelspacebase.effects.Splash;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -41,7 +41,7 @@ import java.util.ArrayList;
 
 public class Honeypot extends Item {
 
-    public static final String AC_SHATTER = "SHATTER";
+    private static final String AC_SHATTER = "SHATTER";
 
     {
         image = ItemSpriteSheet.HONEYPOT;
@@ -95,7 +95,7 @@ public class Honeypot extends Item {
 
         int newPos = pos;
         if (Actor.findChar(pos) != null) {
-            ArrayList<Integer> candidates = new ArrayList<Integer>();
+            ArrayList<Integer> candidates = new ArrayList<>();
             boolean[] passable = Level.passable;
 
             for (int n : PathFinder.NEIGHBOURS4) {
@@ -109,20 +109,20 @@ public class Honeypot extends Item {
         }
 
         if (newPos != -1) {
-            Bee bee = new Bee();
-            bee.spawn(Dungeon.depth);
-            bee.setPotInfo(pos, owner);
-            bee.HP = bee.HT;
-            bee.pos = newPos;
+            Drone drone = new Drone();
+            drone.spawn(Dungeon.depth);
+            drone.setPotInfo(pos, owner);
+            drone.HP = drone.HT;
+            drone.pos = newPos;
 
-            GameScene.add(bee);
-            Actor.addDelayed(new Pushing(bee, pos, newPos), -1f);
+            GameScene.add(drone);
+            Actor.addDelayed(new Pushing(drone, pos, newPos), -1f);
 
-            bee.sprite.alpha(0);
-            bee.sprite.parent.add(new AlphaTweener(bee.sprite, 1, 0.15f));
+            drone.sprite.alpha(0);
+            drone.sprite.parent.add(new AlphaTweener(drone.sprite, 1, 0.15f));
 
             Sample.INSTANCE.play(Assets.SND_BEE);
-            return new ShatteredPot().setBee(bee);
+            return new ShatteredPot().setBee(drone);
         } else {
             return this;
         }
@@ -154,7 +154,7 @@ public class Honeypot extends Item {
         private int myBee;
         private int beeDepth;
 
-        public Item setBee(Char bee) {
+        Item setBee(Char bee) {
             myBee = bee.id();
             beeDepth = Dungeon.depth;
             return this;
@@ -194,9 +194,9 @@ public class Honeypot extends Item {
             if (Dungeon.depth != beeDepth)
                 return;
 
-            Bee bee = (Bee) Actor.findById(myBee);
-            if (bee != null)
-                bee.setPotInfo(cell, holder);
+            Drone drone = (Drone) Actor.findById(myBee);
+            if (drone != null)
+                drone.setPotInfo(cell, holder);
         }
 
         @Override

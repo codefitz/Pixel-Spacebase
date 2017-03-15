@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Ghost;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.items.wands.Wand;
 import com.wafitz.pixelspacebase.levels.traps.LightningTrap;
@@ -79,7 +79,7 @@ public class GreatCrab extends Crab {
     public void die(Object cause) {
         super.die(cause);
 
-        Ghost.Quest.process();
+        Hologram.Quest.process();
 
         Dungeon.level.drop(new MysteryMeat(), pos);
         Dungeon.level.drop(new MysteryMeat(), pos).sprite.drop();

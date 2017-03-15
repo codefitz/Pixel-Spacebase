@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.rings.Ring;
+import com.wafitz.pixelspacebase.items.rings.Module;
 import com.wafitz.pixelspacebase.items.wands.Wand;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -93,7 +93,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
                 removeCurse(Dungeon.hero);
             }
 
-        } else if (item instanceof Ring) {
+        } else if (item instanceof Module) {
             boolean wasCursed = item.cursed;
 
             item.upgrade();
@@ -117,12 +117,12 @@ public class ScrollOfUpgrade extends InventoryScroll {
         hero.sprite.emitter().start(Speck.factory(Speck.UP), 0.2f, 3);
     }
 
-    public static void weakenCurse(Hero hero) {
+    private static void weakenCurse(Hero hero) {
         GLog.p(Messages.get(ScrollOfUpgrade.class, "weaken_curse"));
         hero.sprite.emitter().start(ShadowParticle.UP, 0.05f, 5);
     }
 
-    public static void removeCurse(Hero hero) {
+    private static void removeCurse(Hero hero) {
         GLog.p(Messages.get(ScrollOfUpgrade.class, "remove_curse"));
         hero.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
     }

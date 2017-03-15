@@ -168,13 +168,13 @@ public enum Icons {
 
     public static Image get(HeroClass cl) {
         switch (cl) {
-            case WARRIOR:
+            case COMMANDER:
                 return get(WARRIOR);
-            case MAGE:
+            case DM3000:
                 return get(MAGE);
-            case ROGUE:
+            case SHAPESHIFTER:
                 return get(ROGUE);
-            case HUNTRESS:
+            case CAPTAIN:
                 return get(HUNTRESS);
             default:
                 return null;

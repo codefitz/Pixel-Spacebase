@@ -28,23 +28,23 @@ import com.wafitz.pixelspacebase.levels.painters.BossExitPainter;
 import com.wafitz.pixelspacebase.levels.painters.CryptPainter;
 import com.wafitz.pixelspacebase.levels.painters.EntrancePainter;
 import com.wafitz.pixelspacebase.levels.painters.ExitPainter;
-import com.wafitz.pixelspacebase.levels.painters.GardenPainter;
 import com.wafitz.pixelspacebase.levels.painters.LaboratoryPainter;
 import com.wafitz.pixelspacebase.levels.painters.LibraryPainter;
-import com.wafitz.pixelspacebase.levels.painters.MagicWellPainter;
+import com.wafitz.pixelspacebase.levels.painters.LiveVentsPainter;
 import com.wafitz.pixelspacebase.levels.painters.MassGravePainter;
+import com.wafitz.pixelspacebase.levels.painters.MedicalPainter;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
+import com.wafitz.pixelspacebase.levels.painters.PartsShop;
 import com.wafitz.pixelspacebase.levels.painters.PassagePainter;
 import com.wafitz.pixelspacebase.levels.painters.PitPainter;
 import com.wafitz.pixelspacebase.levels.painters.PoolPainter;
 import com.wafitz.pixelspacebase.levels.painters.RatKingPainter;
 import com.wafitz.pixelspacebase.levels.painters.RitualSitePainter;
 import com.wafitz.pixelspacebase.levels.painters.RotGardenPainter;
-import com.wafitz.pixelspacebase.levels.painters.ShopPainter;
 import com.wafitz.pixelspacebase.levels.painters.StandardPainter;
 import com.wafitz.pixelspacebase.levels.painters.StatuePainter;
 import com.wafitz.pixelspacebase.levels.painters.StoragePainter;
-import com.wafitz.pixelspacebase.levels.painters.TrapsPainter;
+import com.wafitz.pixelspacebase.levels.painters.TerminalPainter;
 import com.wafitz.pixelspacebase.levels.painters.TreasuryPainter;
 import com.wafitz.pixelspacebase.levels.painters.TunnelPainter;
 import com.wafitz.pixelspacebase.levels.painters.VaultPainter;
@@ -64,8 +64,8 @@ import java.util.LinkedHashMap;
 
 public class Room extends Rect implements Graph.Node, Bundlable {
 
-    public ArrayList<Room> neigbours = new ArrayList<Room>();
-    public LinkedHashMap<Room, Door> connected = new LinkedHashMap<Room, Door>();
+    ArrayList<Room> neigbours = new ArrayList<>();
+    public LinkedHashMap<Room, Door> connected = new LinkedHashMap<>();
 
     public int distance;
     public int price = 1;
@@ -78,17 +78,17 @@ public class Room extends Rect implements Graph.Node, Bundlable {
         BOSS_EXIT(BossExitPainter.class),
         TUNNEL(TunnelPainter.class),
         PASSAGE(PassagePainter.class),
-        SHOP(ShopPainter.class),
+        SHOP(PartsShop.class),
         BLACKSMITH(BlacksmithPainter.class),
         TREASURY(TreasuryPainter.class),
         ARMORY(ArmoryPainter.class),
         LIBRARY(LibraryPainter.class),
         LABORATORY(LaboratoryPainter.class),
         VAULT(VaultPainter.class),
-        TRAPS(TrapsPainter.class),
+        TRAPS(LiveVentsPainter.class),
         STORAGE(StoragePainter.class),
-        MAGIC_WELL(MagicWellPainter.class),
-        GARDEN(GardenPainter.class),
+        MAGIC_WELL(TerminalPainter.class),
+        GARDEN(MedicalPainter.class),
         CRYPT(CryptPainter.class),
         STATUE(StatuePainter.class),
         POOL(PoolPainter.class),
@@ -125,12 +125,12 @@ public class Room extends Rect implements Graph.Node, Bundlable {
         }
     }
 
-    private static final ArrayList<Type> ALL_SPEC = new ArrayList<Type>(Arrays.asList(
+    private static final ArrayList<Type> ALL_SPEC = new ArrayList<>(Arrays.asList(
             Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
             Type.TREASURY, Type.TRAPS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
     ));
 
-    public static ArrayList<Type> SPECIALS = new ArrayList<Type>(Arrays.asList(
+    static ArrayList<Type> SPECIALS = new ArrayList<>(Arrays.asList(
             Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
             Type.TREASURY, Type.TRAPS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
     ));
@@ -146,7 +146,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
                 Random.Int(top + 1 + m, bottom - m));
     }
 
-    public void addNeigbour(Room other) {
+    void addNeigbour(Room other) {
 
         Rect i = intersect(other);
         if ((i.width() == 0 && i.height() >= 3) ||
@@ -157,7 +157,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 
     }
 
-    public void connect(Room room) {
+    void connect(Room room) {
         if (!connected.containsKey(room)) {
             connected.put(room, null);
             room.connected.put(this, null);
@@ -236,7 +236,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
         }
     }
 
-    public static void useType(Type type) {
+    static void useType(Type type) {
         if (SPECIALS.remove(type)) {
             SPECIALS.add(type);
         }

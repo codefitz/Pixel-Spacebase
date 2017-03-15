@@ -42,8 +42,8 @@ import com.wafitz.pixelspacebase.effects.Wound;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
-import com.wafitz.pixelspacebase.items.rings.RingOfAccuracy;
-import com.wafitz.pixelspacebase.items.rings.RingOfWealth;
+import com.wafitz.pixelspacebase.items.rings.AccuracyModule;
+import com.wafitz.pixelspacebase.items.rings.TechModule;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Level.Feeling;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -71,8 +71,8 @@ public abstract class Mob extends Char {
     public AiState SLEEPING = new Sleeping();
     public AiState HUNTING = new Hunting();
     public AiState WANDERING = new Wandering();
-    public AiState FLEEING = new Fleeing();
-    public AiState PASSIVE = new Passive();
+    AiState FLEEING = new Fleeing();
+    protected AiState PASSIVE = new Passive();
     public AiState state = SLEEPING;
 
     public Class<? extends CharSprite> spriteClass;
@@ -85,10 +85,10 @@ public abstract class Mob extends Char {
     protected int maxLvl = Hero.MAX_LEVEL;
 
     protected Char enemy;
-    protected boolean enemySeen;
-    protected boolean alerted = false;
+    boolean enemySeen;
+    private boolean alerted = false;
 
-    protected static final float TIME_TO_WAKE_UP = 1f;
+    private static final float TIME_TO_WAKE_UP = 1f;
 
     public boolean hostile = true;
     public boolean ally = false;
@@ -123,16 +123,22 @@ public abstract class Mob extends Char {
         super.restoreFromBundle(bundle);
 
         String state = bundle.getString(STATE);
-        if (state.equals(Sleeping.TAG)) {
-            this.state = SLEEPING;
-        } else if (state.equals(Wandering.TAG)) {
-            this.state = WANDERING;
-        } else if (state.equals(Hunting.TAG)) {
-            this.state = HUNTING;
-        } else if (state.equals(Fleeing.TAG)) {
-            this.state = FLEEING;
-        } else if (state.equals(Passive.TAG)) {
-            this.state = PASSIVE;
+        switch (state) {
+            case Sleeping.TAG:
+                this.state = SLEEPING;
+                break;
+            case Wandering.TAG:
+                this.state = WANDERING;
+                break;
+            case Hunting.TAG:
+                this.state = HUNTING;
+                break;
+            case Fleeing.TAG:
+                this.state = FLEEING;
+                break;
+            case Passive.TAG:
+                this.state = PASSIVE;
+                break;
         }
 
         enemySeen = bundle.getBoolean(SEEN);
@@ -439,7 +445,7 @@ public abstract class Mob extends Char {
         boolean seen = enemySeen || (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack());
         if (seen && paralysed == 0) {
             int defenseSkill = this.defenseSkill;
-            int penalty = RingOfAccuracy.getBonus(enemy, RingOfAccuracy.Accuracy.class);
+            int penalty = AccuracyModule.getBonus(enemy, AccuracyModule.Accuracy.class);
             if (penalty != 0 && enemy == Dungeon.hero)
                 defenseSkill *= Math.pow(0.75, penalty);
             return defenseSkill;
@@ -542,7 +548,7 @@ public abstract class Mob extends Char {
         super.die(cause);
 
         float lootChance = this.lootChance;
-        int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
+        int bonus = TechModule.getBonus(Dungeon.hero, TechModule.Wealth.class);
         lootChance *= Math.pow(1.15, bonus);
 
         if (Random.Float() < lootChance && Dungeon.hero.lvl <= maxLvl + 2) {
@@ -609,15 +615,15 @@ public abstract class Mob extends Char {
         return enemySeen && (target == Dungeon.hero.pos);
     }
 
-    public interface AiState {
+    interface AiState {
         boolean act(boolean enemyInFOV, boolean justAlerted);
 
         String status();
     }
 
-    protected class Sleeping implements AiState {
+    private class Sleeping implements AiState {
 
-        public static final String TAG = "SLEEPING";
+        static final String TAG = "SLEEPING";
 
         @Override
         public boolean act(boolean enemyInFOV, boolean justAlerted) {
@@ -655,9 +661,9 @@ public abstract class Mob extends Char {
         }
     }
 
-    protected class Wandering implements AiState {
+    class Wandering implements AiState {
 
-        public static final String TAG = "WANDERING";
+        static final String TAG = "WANDERING";
 
         @Override
         public boolean act(boolean enemyInFOV, boolean justAlerted) {
@@ -692,9 +698,9 @@ public abstract class Mob extends Char {
         }
     }
 
-    protected class Hunting implements AiState {
+    class Hunting implements AiState {
 
-        public static final String TAG = "HUNTING";
+        static final String TAG = "HUNTING";
 
         @Override
         public boolean act(boolean enemyInFOV, boolean justAlerted) {
@@ -731,9 +737,9 @@ public abstract class Mob extends Char {
         }
     }
 
-    protected class Fleeing implements AiState {
+    class Fleeing implements AiState {
 
-        public static final String TAG = "FLEEING";
+        static final String TAG = "FLEEING";
 
         @Override
         public boolean act(boolean enemyInFOV, boolean justAlerted) {
@@ -769,9 +775,9 @@ public abstract class Mob extends Char {
         }
     }
 
-    protected class Passive implements AiState {
+    private class Passive implements AiState {
 
-        public static final String TAG = "PASSIVE";
+        static final String TAG = "PASSIVE";
 
         @Override
         public boolean act(boolean enemyInFOV, boolean justAlerted) {

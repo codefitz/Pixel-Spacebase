@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.windows;
 import com.wafitz.pixelspacebase.Rankings;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.items.Ankh;
+import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
@@ -42,7 +42,7 @@ public class WndResurrect extends Window {
     public static WndResurrect instance;
     public static Object causeOfDeath;
 
-    public WndResurrect(final Ankh ankh, Object causeOfDeath) {
+    public WndResurrect(final Clone clone, Object causeOfDeath) {
 
         super();
 
@@ -50,8 +50,8 @@ public class WndResurrect extends Window {
         WndResurrect.causeOfDeath = causeOfDeath;
 
         IconTitle titlebar = new IconTitle();
-        titlebar.icon(new ItemSprite(ankh.image(), null));
-        titlebar.label(ankh.name());
+        titlebar.icon(new ItemSprite(clone.image(), null));
+        titlebar.label(clone.name());
         titlebar.setRect(0, 0, WIDTH, 0);
         add(titlebar);
 

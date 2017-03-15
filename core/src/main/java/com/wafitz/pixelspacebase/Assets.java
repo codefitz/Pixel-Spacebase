@@ -42,10 +42,10 @@ public class Assets {
     public static final String SHADOW = "shadow.png";
     public static final String BOSSHP = "boss_hp.png";
 
-    public static final String WARRIOR = "captain.png";
-    public static final String MAGE = "dm3000.png";
-    public static final String ROGUE = "shapeshifter.png";
-    public static final String HUNTRESS = "officer.png";
+    public static final String COMMANDER = "commander.png";
+    public static final String DM3000 = "dm3000.png";
+    public static final String SHAPESHIFTER = "shapeshifter.png";
+    public static final String CAPTAIN = "captain.png";
     public static final String AVATARS = "avatars.png";
     public static final String PET = "pet.png";
 

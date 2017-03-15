@@ -62,7 +62,7 @@ public class ChangesScene extends PixelScene {
                     "_-_ Flail max damage increased by ~15%\n" +
                     "_-_ Wand of Frost damage reduction increased\n" +
                     "\t \tfrom 5% per turn of chill to 7.5%\n" +
-                    "_-_ Ring of Furor speed bonus reduced by\n" +
+                    "_-_ Module of Furor speed bonus reduced by\n" +
                     "\t \t~15% for slow weapons, ~0% for fast weapons\n" +
                     "_-_ Reduced sacrificial curse bleed by ~33%\n" +
                     "\n" +

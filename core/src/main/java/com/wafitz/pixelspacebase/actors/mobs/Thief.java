@@ -27,9 +27,9 @@ import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.Gold;
 import com.wafitz.pixelspacebase.items.Honeypot;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.items.artifacts.MasterThievesArmband;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
@@ -108,7 +108,7 @@ public class Thief extends Mob {
             Dungeon.limitedDrops.armband.drop();
             return super.createLoot();
         } else
-            return new Gold(Random.NormalIntRange(100, 250));
+            return new Parts(Random.NormalIntRange(100, 250));
     }
 
     @Override
@@ -133,7 +133,7 @@ public class Thief extends Mob {
     @Override
     public int defenseProc(Char enemy, int damage) {
         if (state == FLEEING) {
-            Dungeon.level.drop(new Gold(), pos).sprite.drop();
+            Dungeon.level.drop(new Parts(), pos).sprite.drop();
         }
 
         return super.defenseProc(enemy, damage);

@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.items.potions.Potion;
 import com.wafitz.pixelspacebase.items.potions.PotionOfMight;
 import com.wafitz.pixelspacebase.items.potions.PotionOfStrength;
-import com.wafitz.pixelspacebase.items.rings.RingOfElements.Resistance;
+import com.wafitz.pixelspacebase.items.rings.ElementsModule.Resistance;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;

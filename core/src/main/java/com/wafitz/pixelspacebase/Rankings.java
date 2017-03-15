@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.DM300;
-import com.wafitz.pixelspacebase.actors.mobs.Goo;
+import com.wafitz.pixelspacebase.actors.mobs.FeralShapeshifter;
 import com.wafitz.pixelspacebase.actors.mobs.King;
 import com.wafitz.pixelspacebase.actors.mobs.Tengu;
 import com.wafitz.pixelspacebase.actors.mobs.Yog;
@@ -39,7 +39,7 @@ import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.bags.Bag;
 import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.rings.Ring;
+import com.wafitz.pixelspacebase.items.rings.Module;
 import com.wafitz.pixelspacebase.items.scrolls.Scroll;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.messages.Languages;
@@ -162,7 +162,7 @@ public enum Rankings {
         //include worn rings
         if (belongings.misc1 != null) belongings.backpack.items.add(belongings.misc1);
         if (belongings.misc2 != null) belongings.backpack.items.add(belongings.misc2);
-        Ring.saveSelectively(handler, belongings.backpack.items);
+        Module.saveSelectively(handler, belongings.backpack.items);
         rec.gameData.put(HANDLERS, handler);
 
         //restore items now that we're done saving
@@ -181,7 +181,7 @@ public enum Rankings {
         Bundle handler = data.getBundle(HANDLERS);
         Scroll.restore(handler);
         Potion.restore(handler);
-        Ring.restore(handler);
+        Module.restore(handler);
 
         Badges.loadLocal(data.getBundle(BADGES));
 
@@ -244,7 +244,7 @@ public enum Rankings {
                 }
             }
 
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 
@@ -271,14 +271,14 @@ public enum Rankings {
         public boolean win;
 
         public HeroClass heroClass;
-        public int armorTier;
+        int armorTier;
         public int herolevel;
         public int depth;
 
         public Bundle gameData;
         public String gameID;
 
-        public int score;
+        int score;
 
         public String desc() {
             if (cause == null) {
@@ -309,7 +309,7 @@ public enum Rankings {
             if (bundle.contains(REASON)) {
                 String info = bundle.getString(REASON).toLowerCase(Locale.ENGLISH);
                 if (info.equals("obtained the amulet of yendor")) cause = Amulet.class;
-                else if (info.contains("goo")) cause = Goo.class;
+                else if (info.contains("goo")) cause = FeralShapeshifter.class;
                 else if (info.contains("tengu")) cause = Tengu.class;
                 else if (info.contains("dm-300")) cause = DM300.class;
                 else if (info.contains("king")) cause = King.class;

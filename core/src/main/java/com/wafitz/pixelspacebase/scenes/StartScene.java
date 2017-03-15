@@ -150,7 +150,7 @@ public class StartScene extends PixelScene {
         float centralHeight = buttonY - title.y - title.height();
 
         HeroClass[] classes = {
-                HeroClass.WARRIOR, HeroClass.MAGE, HeroClass.ROGUE, HeroClass.HUNTRESS
+                HeroClass.COMMANDER, HeroClass.DM3000, HeroClass.SHAPESHIFTER, HeroClass.CAPTAIN
         };
         for (HeroClass cl : classes) {
             ClassShield shield = new ClassShield(cl);
@@ -250,7 +250,7 @@ public class StartScene extends PixelScene {
         }
         shields.get(curClass = cl).highlight(true);
 
-        if (cl != HeroClass.HUNTRESS || huntressUnlocked) {
+        if (cl != HeroClass.CAPTAIN || huntressUnlocked) {
 
             unlock.visible = false;
 
@@ -311,7 +311,7 @@ public class StartScene extends PixelScene {
 
         private RenderedText secondary;
 
-        public GameButton(String primary) {
+        GameButton(String primary) {
             super(primary);
 
             this.secondary.text(null);
@@ -341,7 +341,7 @@ public class StartScene extends PixelScene {
             align(secondary);
         }
 
-        public void secondary(String text, boolean highlighted) {
+        void secondary(String text, boolean highlighted) {
             secondary.text(text);
 
             secondary.hardlight(highlighted ? SECONDARY_COLOR_H : SECONDARY_COLOR_N);
@@ -373,7 +373,7 @@ public class StartScene extends PixelScene {
         private int normal;
         private int highlighted;
 
-        public ClassShield(HeroClass cl) {
+        ClassShield(HeroClass cl) {
             super();
 
             this.cl = cl;
@@ -448,7 +448,7 @@ public class StartScene extends PixelScene {
             }
         }
 
-        public void highlight(boolean value) {
+        void highlight(boolean value) {
             if (value) {
                 brightness = 1.0f;
                 name.hardlight(highlighted);
@@ -469,7 +469,7 @@ public class StartScene extends PixelScene {
 
         private Image image;
 
-        public ChallengeButton() {
+        ChallengeButton() {
             super();
 
             width = image.width;

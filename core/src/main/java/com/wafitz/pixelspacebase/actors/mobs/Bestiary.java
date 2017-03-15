@@ -41,7 +41,7 @@ public class Bestiary {
         Class<? extends Mob> cl = (Class<? extends Mob>) mobClass(depth);
 
         if (Random.Int(30) == 0) {
-            if (cl == Rat.class) {
+            if (cl == Xenomorph.class) {
                 cl = Albino.class;
             } else if (cl == Thief.class) {
                 cl = Bandit.class;
@@ -70,24 +70,24 @@ public class Bestiary {
         switch (depth) {
             case 1:
                 chances = new float[]{1, 0.2f};
-                classes = new Class<?>[]{Rat.class, Eye.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class};
                 break;
             case 2:
                 chances = new float[]{1, 1, 0.2f};
-                classes = new Class<?>[]{Rat.class, Gnoll.class, Eye.class};
+                classes = new Class<?>[]{Xenomorph.class, Gnoll.class, Eye.class};
                 break;
             case 3:
                 chances = new float[]{2, 4, 1, 1, 0.2f};
-                classes = new Class<?>[]{Rat.class, Gnoll.class, Crab.class, Swarm.class, Eye.class};
+                classes = new Class<?>[]{Xenomorph.class, Gnoll.class, Crab.class, Swarm.class, Eye.class};
                 break;
             case 4:
                 chances = new float[]{1, 2, 3, 1, 0.2f, 0.01f};
-                classes = new Class<?>[]{Rat.class, Gnoll.class, Crab.class, Swarm.class, Eye.class, Thief.class};
+                classes = new Class<?>[]{Xenomorph.class, Gnoll.class, Crab.class, Swarm.class, Eye.class, Thief.class};
                 break;
 
             case 5:
                 chances = new float[]{1};
-                classes = new Class<?>[]{Goo.class};
+                classes = new Class<?>[]{FeralShapeshifter.class};
                 break;
 
             case 6:

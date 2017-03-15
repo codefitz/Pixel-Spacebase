@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.actors.buffs;
 
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.items.rings.RingOfElements.Resistance;
+import com.wafitz.pixelspacebase.items.rings.ElementsModule.Resistance;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
 

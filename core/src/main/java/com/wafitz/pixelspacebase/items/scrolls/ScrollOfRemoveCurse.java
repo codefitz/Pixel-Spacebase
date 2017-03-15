@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.bags.Bag;
-import com.wafitz.pixelspacebase.items.rings.Ring;
+import com.wafitz.pixelspacebase.items.rings.Module;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -79,7 +79,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
                     procced = true;
                 }
             }
-            if (item instanceof Ring && item.level() <= 0) {
+            if (item instanceof Module && item.level() <= 0) {
                 item.upgrade(1 - item.level());
             }
             if (item instanceof Bag) {

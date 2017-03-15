@@ -22,13 +22,13 @@ package com.wafitz.pixelspacebase.items;
 
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.PixelSpacebase;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Ghost;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.armor.ClothArmor;
-import com.wafitz.pixelspacebase.items.armor.LeatherArmor;
-import com.wafitz.pixelspacebase.items.armor.MailArmor;
-import com.wafitz.pixelspacebase.items.armor.PlateArmor;
-import com.wafitz.pixelspacebase.items.armor.ScaleArmor;
+import com.wafitz.pixelspacebase.items.armor.HoverPod;
+import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
+import com.wafitz.pixelspacebase.items.armor.Loader;
+import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
+import com.wafitz.pixelspacebase.items.armor.Uniform;
 import com.wafitz.pixelspacebase.items.artifacts.AlchemistsToolkit;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
 import com.wafitz.pixelspacebase.items.artifacts.CapeOfThorns;
@@ -60,18 +60,18 @@ import com.wafitz.pixelspacebase.items.potions.PotionOfParalyticGas;
 import com.wafitz.pixelspacebase.items.potions.PotionOfPurity;
 import com.wafitz.pixelspacebase.items.potions.PotionOfStrength;
 import com.wafitz.pixelspacebase.items.potions.PotionOfToxicGas;
-import com.wafitz.pixelspacebase.items.rings.Ring;
-import com.wafitz.pixelspacebase.items.rings.RingOfAccuracy;
-import com.wafitz.pixelspacebase.items.rings.RingOfElements;
-import com.wafitz.pixelspacebase.items.rings.RingOfEvasion;
-import com.wafitz.pixelspacebase.items.rings.RingOfForce;
-import com.wafitz.pixelspacebase.items.rings.RingOfFuror;
-import com.wafitz.pixelspacebase.items.rings.RingOfHaste;
-import com.wafitz.pixelspacebase.items.rings.RingOfMagic;
-import com.wafitz.pixelspacebase.items.rings.RingOfMight;
-import com.wafitz.pixelspacebase.items.rings.RingOfSharpshooting;
-import com.wafitz.pixelspacebase.items.rings.RingOfTenacity;
-import com.wafitz.pixelspacebase.items.rings.RingOfWealth;
+import com.wafitz.pixelspacebase.items.rings.AccuracyModule;
+import com.wafitz.pixelspacebase.items.rings.ElementsModule;
+import com.wafitz.pixelspacebase.items.rings.EvasionModule;
+import com.wafitz.pixelspacebase.items.rings.ForceModule;
+import com.wafitz.pixelspacebase.items.rings.FurorModule;
+import com.wafitz.pixelspacebase.items.rings.Module;
+import com.wafitz.pixelspacebase.items.rings.PowerModule;
+import com.wafitz.pixelspacebase.items.rings.ScienceModule;
+import com.wafitz.pixelspacebase.items.rings.SpeedModule;
+import com.wafitz.pixelspacebase.items.rings.SteelModule;
+import com.wafitz.pixelspacebase.items.rings.TargetingModule;
+import com.wafitz.pixelspacebase.items.rings.TechModule;
 import com.wafitz.pixelspacebase.items.scrolls.Scroll;
 import com.wafitz.pixelspacebase.items.scrolls.ScrollOfIdentify;
 import com.wafitz.pixelspacebase.items.scrolls.ScrollOfLullaby;
@@ -164,11 +164,11 @@ public class Generator {
         POTION(500, Potion.class),
         SCROLL(400, Scroll.class),
         WAND(40, Wand.class),
-        RING(15, Ring.class),
+        RING(15, Module.class),
         ARTIFACT(15, Artifact.class),
         SEED(50, Plant.Seed.class),
         FOOD(0, Food.class),
-        GOLD(500, Gold.class);
+        GOLD(500, Parts.class);
 
         public Class<?>[] classes;
         public float[] probs;
@@ -200,14 +200,14 @@ public class Generator {
             {0, 2, 8, 20, 70}
     };
 
-    private static HashMap<Category, Float> categoryProbs = new HashMap<Generator.Category, Float>();
+    private static HashMap<Category, Float> categoryProbs = new HashMap<>();
 
     private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
 
     static {
 
         Category.GOLD.classes = new Class<?>[]{
-                Gold.class};
+                Parts.class};
         Category.GOLD.probs = new float[]{1};
 
         Category.SCROLL.classes = new Class<?>[]{
@@ -315,11 +315,11 @@ public class Generator {
 
         //see Generator.randomArmor
         Category.ARMOR.classes = new Class<?>[]{
-                ClothArmor.class,
-                LeatherArmor.class,
-                MailArmor.class,
-                ScaleArmor.class,
-                PlateArmor.class};
+                Uniform.class,
+                SpaceSuit.class,
+                HunterSpaceSuit.class,
+                HoverPod.class,
+                Loader.class};
         Category.ARMOR.probs = new float[]{0, 0, 0, 0, 0};
 
         Category.FOOD.classes = new Class<?>[]{
@@ -329,17 +329,17 @@ public class Generator {
         Category.FOOD.probs = new float[]{4, 1, 0};
 
         Category.RING.classes = new Class<?>[]{
-                RingOfAccuracy.class,
-                RingOfEvasion.class,
-                RingOfElements.class,
-                RingOfForce.class,
-                RingOfFuror.class,
-                RingOfHaste.class,
-                RingOfMagic.class, //currently removed from drop tables, pending rework
-                RingOfMight.class,
-                RingOfSharpshooting.class,
-                RingOfTenacity.class,
-                RingOfWealth.class};
+                AccuracyModule.class,
+                EvasionModule.class,
+                ElementsModule.class,
+                ForceModule.class,
+                FurorModule.class,
+                SpeedModule.class,
+                ScienceModule.class, //currently removed from drop tables, pending rework
+                PowerModule.class,
+                TargetingModule.class,
+                SteelModule.class,
+                TechModule.class};
         Category.RING.probs = new float[]{1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1};
 
         Category.ARTIFACT.classes = new Class<?>[]{
@@ -520,12 +520,12 @@ public class Generator {
         Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
 
         //checks for dried rose quest completion, adds the rose in accordingly.
-        if (Ghost.Quest.completed()) Category.ARTIFACT.probs[10] = 1;
+        if (Hologram.Quest.completed()) Category.ARTIFACT.probs[10] = 1;
 
-        spawnedArtifacts = new ArrayList<String>();
+        spawnedArtifacts = new ArrayList<>();
     }
 
-    private static ArrayList<String> spawnedArtifacts = new ArrayList<String>();
+    private static ArrayList<String> spawnedArtifacts = new ArrayList<>();
 
     private static final String ARTIFACTS = "artifacts";
 

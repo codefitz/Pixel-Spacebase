@@ -23,12 +23,12 @@ package com.wafitz.pixelspacebase.levels.traps;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.actors.mobs.Statue;
+import com.wafitz.pixelspacebase.actors.mobs.OldWarBot;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.sprites.StatueSprite;
+import com.wafitz.pixelspacebase.sprites.OldWarBotSprite;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
@@ -63,7 +63,7 @@ public class GuardianTrap extends Trap {
 
     }
 
-    public static class Guardian extends Statue {
+    private static class Guardian extends OldWarBot {
 
         {
             spriteClass = GuardianSprite.class;
@@ -92,7 +92,7 @@ public class GuardianTrap extends Trap {
 
     }
 
-    public static class GuardianSprite extends StatueSprite {
+    private static class GuardianSprite extends OldWarBotSprite {
 
         public GuardianSprite() {
             super();

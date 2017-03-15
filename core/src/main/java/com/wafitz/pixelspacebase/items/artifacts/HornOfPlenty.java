@@ -61,8 +61,8 @@ public class HornOfPlenty extends Artifact {
 
     private static final float TIME_TO_EAT = 3f;
 
-    public static final String AC_EAT = "EAT";
-    public static final String AC_STORE = "STORE";
+    private static final String AC_EAT = "EAT";
+    private static final String AC_STORE = "STORE";
 
     protected WndBag.Mode mode = WndBag.Mode.FOOD;
 
@@ -93,19 +93,19 @@ public class HornOfPlenty extends Artifact {
 
                 //if you get at least 80 food energy from the horn
                 switch (hero.heroClass) {
-                    case WARRIOR:
+                    case COMMANDER:
                         if (hero.HP < hero.HT) {
                             hero.HP = Math.min(hero.HP + 5, hero.HT);
                             hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
                         }
                         break;
-                    case MAGE:
+                    case DM3000:
                         //1 charge
                         Buff.affect(hero, Recharging.class, 4f);
                         ScrollOfRecharging.charge(hero);
                         break;
-                    case ROGUE:
-                    case HUNTRESS:
+                    case SHAPESHIFTER:
+                    case CAPTAIN:
                         break;
                 }
 

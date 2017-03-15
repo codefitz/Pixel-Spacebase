@@ -38,7 +38,7 @@ import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.rings.Ring;
+import com.wafitz.pixelspacebase.items.rings.Module;
 import com.wafitz.pixelspacebase.items.weapon.melee.MagesStaff;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -129,7 +129,7 @@ public class WandOfTransfusion extends Wand {
                     Sample.INSTANCE.play(Assets.SND_BURNING);
                 }
 
-                int lvldiffFromBase = item.level() - (item instanceof Ring ? 1 : 0);
+                int lvldiffFromBase = item.level() - (item instanceof Module ? 1 : 0);
                 if (lvldiffFromBase < 0) {
                     item.upgrade(-lvldiffFromBase);
                     CellEmitter.get(cell).start(Speck.factory(Speck.UP), 0.2f, 3);

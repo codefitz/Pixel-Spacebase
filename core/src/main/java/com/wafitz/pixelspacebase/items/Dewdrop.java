@@ -42,7 +42,7 @@ public class Dewdrop extends Item {
     @Override
     public boolean doPickUp(Hero hero) {
 
-        DewVial vial = hero.belongings.getItem(DewVial.class);
+        AirTank vial = hero.belongings.getItem(AirTank.class);
 
         if (hero.HP < hero.HT || vial == null || vial.isFull()) {
 

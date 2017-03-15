@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.PinCushion;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.rings.RingOfSharpshooting;
+import com.wafitz.pixelspacebase.items.rings.TargetingModule;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Projecting;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -77,9 +77,9 @@ abstract public class MissileWeapon extends Weapon {
                 miss(cell);
             } else if (!(this instanceof Boomerang)) {
 
-                int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting.Aim.class);
+                int bonus = TargetingModule.getBonus(curUser, TargetingModule.Aim.class);
 
-                if (curUser.heroClass == HeroClass.HUNTRESS && enemy.buff(PinCushion.class) == null)
+                if (curUser.heroClass == HeroClass.CAPTAIN && enemy.buff(PinCushion.class) == null)
                     bonus += 3;
 
                 if (Random.Float() > Math.pow(0.7, bonus)) {
@@ -94,7 +94,7 @@ abstract public class MissileWeapon extends Weapon {
     }
 
     protected void miss(int cell) {
-        int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting.Aim.class);
+        int bonus = TargetingModule.getBonus(curUser, TargetingModule.Aim.class);
 
         //degraded ring of sharpshooting will even make missed shots break.
         if (Random.Float() < Math.pow(0.6, -bonus))
@@ -141,7 +141,7 @@ abstract public class MissileWeapon extends Weapon {
 
         if (STRReq() > Dungeon.hero.STR()) {
             info += " " + Messages.get(Weapon.class, "too_heavy");
-        } else if (Dungeon.hero.heroClass == HeroClass.HUNTRESS && Dungeon.hero.STR() > STRReq()) {
+        } else if (Dungeon.hero.heroClass == HeroClass.CAPTAIN && Dungeon.hero.STR() > STRReq()) {
             info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
         }
 

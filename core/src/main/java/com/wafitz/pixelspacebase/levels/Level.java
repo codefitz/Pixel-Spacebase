@@ -26,8 +26,8 @@ import com.wafitz.pixelspacebase.DungeonTilemap;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.blobs.Alchemy;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
+import com.wafitz.pixelspacebase.actors.blobs.Craft;
 import com.wafitz.pixelspacebase.actors.blobs.WellWater;
 import com.wafitz.pixelspacebase.actors.buffs.Awareness;
 import com.wafitz.pixelspacebase.actors.buffs.Blindness;
@@ -58,13 +58,13 @@ import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.potions.PotionOfHealing;
 import com.wafitz.pixelspacebase.items.potions.PotionOfMight;
 import com.wafitz.pixelspacebase.items.potions.PotionOfStrength;
-import com.wafitz.pixelspacebase.items.rings.RingOfWealth;
+import com.wafitz.pixelspacebase.items.rings.TechModule;
 import com.wafitz.pixelspacebase.items.scrolls.Scroll;
 import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicalInfusion;
 import com.wafitz.pixelspacebase.items.scrolls.ScrollOfUpgrade;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.Door;
-import com.wafitz.pixelspacebase.levels.features.HighGrass;
+import com.wafitz.pixelspacebase.levels.features.OffVent;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.levels.traps.Trap;
 import com.wafitz.pixelspacebase.mechanics.ShadowCaster;
@@ -194,7 +194,7 @@ public abstract class Level implements Bundlable {
         if (!(Dungeon.bossLevel() || Dungeon.depth == 21) /*final shop floor*/) {
             addItemToSpawn(Generator.random(Generator.Category.FOOD));
 
-            int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
+            int bonus = TechModule.getBonus(Dungeon.hero, TechModule.Wealth.class);
 
             if (Dungeon.posNeeded()) {
                 if (Random.Float() > Math.pow(0.925, bonus))
@@ -806,7 +806,7 @@ public abstract class Level implements Bundlable {
                 break;
 
             case Terrain.HIGH_GRASS:
-                HighGrass.trample(this, cell, ch);
+                OffVent.trample(this, cell, ch);
                 break;
 
             case Terrain.WELL:
@@ -815,7 +815,7 @@ public abstract class Level implements Bundlable {
 
             case Terrain.ALCHEMY:
                 if (ch == null) {
-                    Alchemy.transmute(cell);
+                    Craft.transmute(cell);
                 }
                 break;
 
@@ -931,7 +931,7 @@ public abstract class Level implements Bundlable {
                         fieldOfView[p + i] = true;
 
                 }
-            } else if (((Hero) c).heroClass == HeroClass.HUNTRESS) {
+            } else if (((Hero) c).heroClass == HeroClass.CAPTAIN) {
                 for (Mob mob : mobs) {
                     int p = mob.pos;
                     if (distance(c.pos, p) == 2) {

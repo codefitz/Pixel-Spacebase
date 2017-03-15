@@ -35,7 +35,7 @@ public class Camouflage extends Armor.Glyph {
 
     @Override
     public int proc(Armor armor, Char attacker, Char defender, int damage) {
-        //no proc effect, see HighGrass.trample
+        //no proc effect, see OffVent.trample
         return damage;
     }
 

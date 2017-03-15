@@ -23,11 +23,11 @@ package com.wafitz.pixelspacebase.windows;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Shopkeeper;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.PartsBot;
 import com.wafitz.pixelspacebase.items.EquipableItem;
-import com.wafitz.pixelspacebase.items.Gold;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.items.artifacts.MasterThievesArmband;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
@@ -151,9 +151,9 @@ public class WndTradeItem extends Window {
                             }
                         } else {
                             for (Mob mob : Dungeon.level.mobs) {
-                                if (mob instanceof Shopkeeper) {
+                                if (mob instanceof PartsBot) {
                                     mob.yell(Messages.get(mob, "thief"));
-                                    ((Shopkeeper) mob).flee();
+                                    ((PartsBot) mob).flee();
                                     break;
                                 }
                             }
@@ -186,7 +186,7 @@ public class WndTradeItem extends Window {
 
         if (owner != null) {
             owner.hide();
-            Shopkeeper.sell();
+            PartsBot.sell();
         }
     }
 
@@ -230,7 +230,7 @@ public class WndTradeItem extends Window {
 
         int price = item.price();
 
-        new Gold(price).doPickUp(hero);
+        new Parts(price).doPickUp(hero);
     }
 
     private void sellOne(Item item) {
@@ -244,7 +244,7 @@ public class WndTradeItem extends Window {
             item = item.detach(hero.belongings.backpack);
             int price = item.price();
 
-            new Gold(price).doPickUp(hero);
+            new Parts(price).doPickUp(hero);
         }
     }
 

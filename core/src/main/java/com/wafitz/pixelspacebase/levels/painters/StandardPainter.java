@@ -22,9 +22,9 @@ package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.items.Generator;
-import com.wafitz.pixelspacebase.items.Gold;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -137,7 +137,7 @@ public class StandardPainter extends Painter {
             int pos = w > h ?
                     room.left + 1 + shift + i * 2 + (room.top + 2 + Random.Int(h - 2)) * level.width() :
                     (room.left + 2 + Random.Int(w - 2)) + (room.top + 1 + shift + i * 2) * level.width();
-            level.drop(i == index ? Generator.random() : new Gold().random(), pos).type = Heap.Type.TOMB;
+            level.drop(i == index ? Generator.random() : new Parts().random(), pos).type = Heap.Type.TOMB;
         }
     }
 

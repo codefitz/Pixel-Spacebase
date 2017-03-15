@@ -21,11 +21,11 @@
 package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.items.Gold;
+import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.sprites.GnollSprite;
 import com.watabou.utils.Random;
 
-public class Gnoll extends Mob {
+class Gnoll extends Mob {
 
     {
         spriteClass = GnollSprite.class;
@@ -36,7 +36,7 @@ public class Gnoll extends Mob {
         EXP = 2;
         maxLvl = 8;
 
-        loot = Gold.class;
+        loot = Parts.class;
         lootChance = 0.5f;
     }
 

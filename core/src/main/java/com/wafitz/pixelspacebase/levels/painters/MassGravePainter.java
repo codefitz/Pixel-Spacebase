@@ -23,9 +23,9 @@ package com.wafitz.pixelspacebase.levels.painters;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.actors.mobs.Skeleton;
 import com.wafitz.pixelspacebase.items.Generator;
-import com.wafitz.pixelspacebase.items.Gold;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.items.potions.PotionOfLiquidFlame;
 import com.wafitz.pixelspacebase.items.quest.CorpseDust;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -65,10 +65,10 @@ public class MassGravePainter extends Painter {
         ArrayList<Item> items = new ArrayList<>();
         //100% corpse dust, 2x100% 1 coin, 2x30% coins, 1x60% random item, 1x30% armor
         items.add(new CorpseDust());
-        items.add(new Gold(1));
-        items.add(new Gold(1));
-        if (Random.Float() <= 0.3f) items.add(new Gold());
-        if (Random.Float() <= 0.3f) items.add(new Gold());
+        items.add(new Parts(1));
+        items.add(new Parts(1));
+        if (Random.Float() <= 0.3f) items.add(new Parts());
+        if (Random.Float() <= 0.3f) items.add(new Parts());
         if (Random.Float() <= 0.6f) items.add(Generator.random());
         if (Random.Float() <= 0.3f) items.add(Generator.randomArmor());
 

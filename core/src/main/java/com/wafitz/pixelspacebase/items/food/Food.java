@@ -42,7 +42,7 @@ public class Food extends Item {
 
     private static final float TIME_TO_EAT = 3f;
 
-    public static final String AC_EAT = "EAT";
+    static final String AC_EAT = "EAT";
 
     public float energy = Hunger.HUNGRY;
     public String message = Messages.get(this, "eat_msg");
@@ -76,19 +76,19 @@ public class Food extends Item {
             GLog.i(message);
 
             switch (hero.heroClass) {
-                case WARRIOR:
+                case COMMANDER:
                     if (hero.HP < hero.HT) {
                         hero.HP = Math.min(hero.HP + 5, hero.HT);
                         hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
                     }
                     break;
-                case MAGE:
+                case DM3000:
                     //1 charge
                     Buff.affect(hero, Recharging.class, 4f);
                     ScrollOfRecharging.charge(hero);
                     break;
-                case ROGUE:
-                case HUNTRESS:
+                case SHAPESHIFTER:
+                case CAPTAIN:
                     break;
             }
 

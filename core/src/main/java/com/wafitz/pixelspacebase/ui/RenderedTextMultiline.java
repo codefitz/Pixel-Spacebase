@@ -21,6 +21,8 @@
 
 package com.wafitz.pixelspacebase.ui;
 
+import android.util.Log;
+
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
@@ -32,7 +34,7 @@ import java.util.List;
 public class RenderedTextMultiline extends Component {
 
     private int maxWidth = Integer.MAX_VALUE;
-    public int nLines;
+    int nLines;
 
     private String text;
     private List<String> tokens;
@@ -61,18 +63,13 @@ public class RenderedTextMultiline extends Component {
         this.text = text;
 
         if (text != null && !text.equals("")) {
-            //conversion for chinese text
 
-            // wafitz.v0: This was causing a syntax error on commit
-            // But it now seems to squeeze all English chars together
-            chinese = text.replaceAll("[\\\\p{Han}]", "").length() != text.length();
-
-            if (chinese) {
-                tokens = Arrays.asList(text.split(""));
-            } else {
-                tokens = Arrays.asList(text.split("(?<= )|(?= )|(?<=\n)|(?=\n)"));
-            }
+            // I am not sure what the deal with this check was but it always returned true for English,
+            // therefore as I'm not translating Chinese - I've removed this code completely because
+            // It was squishing my dialogue text together.
+            tokens = Arrays.asList(text.split("(?<= )|(?= )|(?<=\n)|(?=\n)"));
             build();
+
         }
     }
 
@@ -131,6 +128,7 @@ public class RenderedTextMultiline extends Component {
                 if (height < word.baseLine()) height = word.baseLine();
 
             }
+            Log.d("wafitz.v4: ", "RenderedTextMultiline, build str = " + str);
         }
         layout();
     }

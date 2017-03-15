@@ -33,7 +33,7 @@ import com.wafitz.pixelspacebase.items.bags.ScrollHolder;
 import com.wafitz.pixelspacebase.items.bags.SeedPouch;
 import com.wafitz.pixelspacebase.items.bags.WandHolster;
 import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.rings.Ring;
+import com.wafitz.pixelspacebase.items.rings.Module;
 import com.wafitz.pixelspacebase.items.scrolls.Scroll;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
@@ -173,7 +173,7 @@ public class Badges {
     }
 
     private static HashSet<Badge> global;
-    private static HashSet<Badge> local = new HashSet<Badges.Badge>();
+    private static HashSet<Badge> local = new HashSet<>();
 
     private static boolean saveNeeded = false;
 
@@ -188,13 +188,13 @@ public class Badges {
     private static final String BADGES = "badges";
 
     private static HashSet<Badge> restore(Bundle bundle) {
-        HashSet<Badge> badges = new HashSet<Badge>();
+        HashSet<Badge> badges = new HashSet<>();
         if (bundle == null) return badges;
 
         String[] names = bundle.getStringArray(BADGES);
-        for (int i = 0; i < names.length; i++) {
+        for (String name : names) {
             try {
-                badges.add(Badge.valueOf(names[i]));
+                badges.add(Badge.valueOf(name));
             } catch (Exception e) {
                 PixelSpacebase.reportException(e);
             }
@@ -213,11 +213,11 @@ public class Badges {
         bundle.put(BADGES, names);
     }
 
-    public static void loadLocal(Bundle bundle) {
+    static void loadLocal(Bundle bundle) {
         local = restore(bundle);
     }
 
-    public static void saveLocal(Bundle bundle) {
+    static void saveLocal(Bundle bundle) {
         store(bundle, local);
     }
 
@@ -231,7 +231,7 @@ public class Badges {
                 global = restore(bundle);
 
             } catch (IOException e) {
-                global = new HashSet<Badge>();
+                global = new HashSet<>();
             }
         }
     }
@@ -461,7 +461,7 @@ public class Badges {
 
     public static void validateAllRingsIdentified() {
         if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
-                !local.contains(Badge.ALL_RINGS_IDENTIFIED) && Ring.allKnown()) {
+                !local.contains(Badge.ALL_RINGS_IDENTIFIED) && Module.allKnown()) {
 
             Badge badge = Badge.ALL_RINGS_IDENTIFIED;
             local.add(badge);
@@ -517,7 +517,7 @@ public class Badges {
         }
     }
 
-    public static void validateAllItemsIdentified() {
+    private static void validateAllItemsIdentified() {
         if (!global.contains(Badge.ALL_ITEMS_IDENTIFIED) &&
                 global.contains(Badge.ALL_POTIONS_IDENTIFIED) &&
                 global.contains(Badge.ALL_SCROLLS_IDENTIFIED) &&
@@ -608,16 +608,16 @@ public class Badges {
 
             if (badge == Badge.BOSS_SLAIN_1) {
                 switch (Dungeon.hero.heroClass) {
-                    case WARRIOR:
+                    case COMMANDER:
                         badge = Badge.BOSS_SLAIN_1_WARRIOR;
                         break;
-                    case MAGE:
+                    case DM3000:
                         badge = Badge.BOSS_SLAIN_1_MAGE;
                         break;
-                    case ROGUE:
+                    case SHAPESHIFTER:
                         badge = Badge.BOSS_SLAIN_1_ROGUE;
                         break;
-                    case HUNTRESS:
+                    case CAPTAIN:
                         badge = Badge.BOSS_SLAIN_1_HUNTRESS;
                         break;
                 }
@@ -698,16 +698,16 @@ public class Badges {
 
         Badge badge = null;
         switch (Dungeon.hero.heroClass) {
-            case WARRIOR:
+            case COMMANDER:
                 badge = Badge.MASTERY_WARRIOR;
                 break;
-            case MAGE:
+            case DM3000:
                 badge = Badge.MASTERY_MAGE;
                 break;
-            case ROGUE:
+            case SHAPESHIFTER:
                 badge = Badge.MASTERY_ROGUE;
                 break;
-            case HUNTRESS:
+            case CAPTAIN:
                 badge = Badge.MASTERY_HUNTRESS;
                 break;
         }
@@ -780,16 +780,16 @@ public class Badges {
         displayBadge(badge);
 
         switch (Dungeon.hero.heroClass) {
-            case WARRIOR:
+            case COMMANDER:
                 badge = Badge.VICTORY_WARRIOR;
                 break;
-            case MAGE:
+            case DM3000:
                 badge = Badge.VICTORY_MAGE;
                 break;
-            case ROGUE:
+            case SHAPESHIFTER:
                 badge = Badge.VICTORY_ROGUE;
                 break;
-            case HUNTRESS:
+            case CAPTAIN:
                 badge = Badge.VICTORY_HUNTRESS;
                 break;
         }
@@ -812,10 +812,10 @@ public class Badges {
     public static void validateTutorial() {
         Badge badge = null;
         switch (Dungeon.hero.heroClass) {
-            case WARRIOR:
+            case COMMANDER:
                 badge = Badge.TUTORIAL_WARRIOR;
                 break;
-            case MAGE:
+            case DM3000:
                 badge = Badge.TUTORIAL_MAGE;
                 break;
             default:
@@ -863,7 +863,7 @@ public class Badges {
         PixelScene.showBadge(Badge.SUPPORTER);
     }
 
-    public static void validateGamesPlayed() {
+    static void validateGamesPlayed() {
         Badge badge = null;
         if (Rankings.INSTANCE.totalNumber >= 10) {
             badge = Badge.GAMES_PLAYED_1;
@@ -885,7 +885,7 @@ public class Badges {
         displayBadge(Badge.HAPPY_END);
     }
 
-    public static void validateChampion() {
+    static void validateChampion() {
         displayBadge(Badge.CHAMPION);
     }
 
@@ -927,7 +927,7 @@ public class Badges {
 
     public static List<Badge> filtered(boolean global) {
 
-        HashSet<Badge> filtered = new HashSet<Badge>(global ? Badges.global : Badges.local);
+        HashSet<Badge> filtered = new HashSet<>(global ? Badges.global : Badges.local);
 
         Iterator<Badge> iterator = filtered.iterator();
         while (iterator.hasNext()) {
@@ -959,7 +959,7 @@ public class Badges {
         leaveBest(filtered, Badge.VICTORY, Badge.CHAMPION);
         leaveBest(filtered, Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge.GAMES_PLAYED_3, Badge.GAMES_PLAYED_4);
 
-        ArrayList<Badge> list = new ArrayList<Badge>(filtered);
+        ArrayList<Badge> list = new ArrayList<>(filtered);
         Collections.sort(list);
 
         return list;

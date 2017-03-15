@@ -55,7 +55,7 @@ public abstract class Wand extends Item {
 
     private static final int USAGES_TO_KNOW = 20;
 
-    public static final String AC_ZAP = "ZAP";
+    private static final String AC_ZAP = "ZAP";
 
     private static final float TIME_TO_ZAP = 1f;
 
@@ -63,13 +63,13 @@ public abstract class Wand extends Item {
     public int curCharges = maxCharges;
     public float partialCharge = 0f;
 
-    protected Charger charger;
+    private Charger charger;
 
     private boolean curChargeKnown = false;
 
-    protected int usagesToKnow = USAGES_TO_KNOW;
+    int usagesToKnow = USAGES_TO_KNOW;
 
-    protected int collisionProperties = Ballistica.MAGIC_BOLT;
+    int collisionProperties = Ballistica.MAGIC_BOLT;
 
     {
         defaultAction = AC_ZAP;
@@ -220,7 +220,7 @@ public abstract class Wand extends Item {
         return this;
     }
 
-    public void updateLevel() {
+    private void updateLevel() {
         maxCharges = Math.min(initialCharges() + level(), 10);
         curCharges = Math.min(curCharges, maxCharges);
     }
@@ -247,14 +247,14 @@ public abstract class Wand extends Item {
         particle.radiateXY(0.5f);
     }
 
-    protected void wandUsed() {
+    void wandUsed() {
         usagesToKnow -= cursed ? 1 : chargesPerCast();
         curCharges -= cursed ? 1 : chargesPerCast();
         if (!isIdentified() && usagesToKnow <= 0) {
             identify();
             GLog.w(Messages.get(Wand.class, "identify", name()));
         } else {
-            if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
+            if (curUser.heroClass == HeroClass.DM3000) levelKnown = true;
             updateQuickslot();
         }
 
@@ -325,7 +325,7 @@ public abstract class Wand extends Item {
         partialCharge = bundle.getFloat(PARTIALCHARGE);
     }
 
-    protected static CellSelector.Listener zapper = new CellSelector.Listener() {
+    private static CellSelector.Listener zapper = new CellSelector.Listener() {
 
         @Override
         public void onSelect(Integer target) {

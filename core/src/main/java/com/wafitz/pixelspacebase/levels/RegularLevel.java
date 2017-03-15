@@ -30,11 +30,11 @@ import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.rings.RingOfWealth;
+import com.wafitz.pixelspacebase.items.rings.TechModule;
 import com.wafitz.pixelspacebase.items.scrolls.Scroll;
 import com.wafitz.pixelspacebase.levels.Room.Type;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
-import com.wafitz.pixelspacebase.levels.painters.ShopPainter;
+import com.wafitz.pixelspacebase.levels.painters.PartsShop;
 import com.wafitz.pixelspacebase.levels.traps.ChillingTrap;
 import com.wafitz.pixelspacebase.levels.traps.ExplosiveTrap;
 import com.wafitz.pixelspacebase.levels.traps.FireTrap;
@@ -53,12 +53,12 @@ import java.util.List;
 
 public abstract class RegularLevel extends Level {
 
-    protected ArrayList<Room> rooms;
+    ArrayList<Room> rooms;
 
-    protected Room roomEntrance;
-    protected Room roomExit;
+    Room roomEntrance;
+    Room roomExit;
 
-    protected ArrayList<Room.Type> specials;
+    private ArrayList<Room.Type> specials;
 
     public int secretDoors;
 
@@ -133,7 +133,7 @@ public abstract class RegularLevel extends Level {
         if (Dungeon.shopOnLevel()) {
             Room shop = null;
             for (Room r : roomEntrance.connected.keySet()) {
-                if (r.connected.size() == 1 && ((r.width() - 1) * (r.height() - 1) >= ShopPainter.spaceNeeded())) {
+                if (r.connected.size() == 1 && ((r.width() - 1) * (r.height() - 1) >= PartsShop.spaceNeeded())) {
                     shop = r;
                     break;
                 }
@@ -146,7 +146,7 @@ public abstract class RegularLevel extends Level {
             }
         }
 
-        specials = new ArrayList<Room.Type>(Room.SPECIALS);
+        specials = new ArrayList<>(Room.SPECIALS);
         if (Dungeon.bossLevel(Dungeon.depth + 1)) {
             specials.remove(Room.Type.WEAK_FLOOR);
         }
@@ -170,7 +170,7 @@ public abstract class RegularLevel extends Level {
         return true;
     }
 
-    protected void placeSign() {
+    void placeSign() {
         while (true) {
             int pos = pointToCell(roomEntrance.random());
             if (pos != entrance && traps.get(pos) == null && findMob(pos) == null) {
@@ -180,7 +180,7 @@ public abstract class RegularLevel extends Level {
         }
     }
 
-    protected boolean initRooms() {
+    boolean initRooms() {
 
         rooms = new ArrayList<>();
         split(new Rect(0, 0, width() - 1, height() - 1));
@@ -296,7 +296,7 @@ public abstract class RegularLevel extends Level {
         return true;
     }
 
-    protected void paintWater() {
+    void paintWater() {
         boolean[] lake = water();
         for (int i = 0; i < length(); i++) {
             if (map[i] == Terrain.EMPTY && lake[i]) {
@@ -305,7 +305,7 @@ public abstract class RegularLevel extends Level {
         }
     }
 
-    protected void paintGrass() {
+    void paintGrass() {
         boolean[] grass = grass();
 
         if (feeling == Feeling.GRASS) {
@@ -337,7 +337,7 @@ public abstract class RegularLevel extends Level {
 
     protected abstract boolean[] grass();
 
-    protected void placeTraps() {
+    private void placeTraps() {
 
         int nTraps = nTraps();
         float[] trapChances = trapChances();
@@ -378,7 +378,7 @@ public abstract class RegularLevel extends Level {
         }
     }
 
-    protected int nTraps() {
+    private int nTraps() {
         return Random.NormalIntRange(1, 4 + (Dungeon.depth / 2));
     }
 
@@ -390,10 +390,10 @@ public abstract class RegularLevel extends Level {
         return new float[]{1};
     }
 
-    protected int minRoomSize = 7;
-    protected int maxRoomSize = 9;
+    int minRoomSize = 7;
+    private int maxRoomSize = 9;
 
-    protected void split(Rect rect) {
+    private void split(Rect rect) {
 
         int w = rect.width();
         int h = rect.height();
@@ -469,7 +469,7 @@ public abstract class RegularLevel extends Level {
         }
     }
 
-    protected void paintDoors(Room r) {
+    private void paintDoors(Room r) {
         for (Room n : r.connected.keySet()) {
 
             if (joinRooms(r, n)) {
@@ -514,7 +514,7 @@ public abstract class RegularLevel extends Level {
         }
     }
 
-    protected boolean joinRooms(Room r, Room n) {
+    private boolean joinRooms(Room r, Room n) {
 
         if (r.type != Room.Type.STANDARD || n.type != Room.Type.STANDARD) {
             return false;
@@ -618,7 +618,7 @@ public abstract class RegularLevel extends Level {
     @Override
     public int randomRespawnCell() {
         int count = 0;
-        int cell = -1;
+        int cell;
 
         while (true) {
 
@@ -642,7 +642,7 @@ public abstract class RegularLevel extends Level {
     @Override
     public int randomDestination() {
 
-        int cell = -1;
+        int cell;
 
         while (true) {
 
@@ -663,7 +663,7 @@ public abstract class RegularLevel extends Level {
     protected void createItems() {
 
         int nItems = 3;
-        int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
+        int bonus = TechModule.getBonus(Dungeon.hero, TechModule.Wealth.class);
 
         //just incase someone gets a ridiculous ring, cap this at 80%
         bonus = Math.min(bonus, 10);
@@ -672,7 +672,7 @@ public abstract class RegularLevel extends Level {
         }
 
         for (int i = 0; i < nItems; i++) {
-            Heap.Type type = null;
+            Heap.Type type;
             switch (Random.Int(20)) {
                 case 0:
                     type = Heap.Type.SKELETON;
@@ -716,7 +716,7 @@ public abstract class RegularLevel extends Level {
         }
     }
 
-    protected Room randomRoom(Room.Type type, int tries) {
+    private Room randomRoom(Room.Type type, int tries) {
         for (int i = 0; i < tries; i++) {
             Room room = Random.element(rooms);
             if (room.type == type) {
@@ -736,7 +736,7 @@ public abstract class RegularLevel extends Level {
         return null;
     }
 
-    protected int randomDropCell() {
+    private int randomDropCell() {
         while (true) {
             Room room = randomRoom(Room.Type.STANDARD, 1);
             if (room != null) {

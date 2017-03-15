@@ -40,10 +40,10 @@ import com.watabou.utils.Bundle;
 
 public enum HeroClass {
 
-    WARRIOR("warrior"),
-    MAGE("mage"),
-    ROGUE("rogue"),
-    HUNTRESS("huntress");
+    COMMANDER("warrior"),
+    DM3000("mage"),
+    SHAPESHIFTER("rogue"),
+    CAPTAIN("huntress");
 
     private String title;
 
@@ -58,19 +58,19 @@ public enum HeroClass {
         initCommon(hero);
 
         switch (this) {
-            case WARRIOR:
+            case COMMANDER:
                 initWarrior(hero);
                 break;
 
-            case MAGE:
+            case DM3000:
                 initMage(hero);
                 break;
 
-            case ROGUE:
+            case SHAPESHIFTER:
                 initRogue(hero);
                 break;
 
-            case HUNTRESS:
+            case CAPTAIN:
                 initHuntress(hero);
                 break;
         }
@@ -82,7 +82,7 @@ public enum HeroClass {
         // wafitz.v1 - Hero has just woken up - should be naked I reckon - go hunt for clothes and weapons.
 
         //if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
-        //    (hero.belongings.armor = new ClothArmor()).identify();
+        //    (hero.belongings.armor = new Uniform()).identify();
 
         //if (!Dungeon.isChallenged(Challenges.NO_FOOD))
         //    new Food().identify().collect();
@@ -90,13 +90,13 @@ public enum HeroClass {
 
     public Badges.Badge masteryBadge() {
         switch (this) {
-            case WARRIOR:
+            case COMMANDER:
                 return Badges.Badge.MASTERY_WARRIOR;
-            case MAGE:
+            case DM3000:
                 return Badges.Badge.MASTERY_MAGE;
-            case ROGUE:
+            case SHAPESHIFTER:
                 return Badges.Badge.MASTERY_ROGUE;
-            case HUNTRESS:
+            case CAPTAIN:
                 return Badges.Badge.MASTERY_HUNTRESS;
         }
         return null;
@@ -176,14 +176,14 @@ public enum HeroClass {
     public String spritesheet() {
 
         switch (this) {
-            case WARRIOR:
-                return Assets.WARRIOR;
-            case MAGE:
-                return Assets.MAGE;
-            case ROGUE:
-                return Assets.ROGUE;
-            case HUNTRESS:
-                return Assets.HUNTRESS;
+            case COMMANDER:
+                return Assets.COMMANDER;
+            case DM3000:
+                return Assets.DM3000;
+            case SHAPESHIFTER:
+                return Assets.SHAPESHIFTER;
+            case CAPTAIN:
+                return Assets.CAPTAIN;
         }
 
         return null;
@@ -192,7 +192,7 @@ public enum HeroClass {
     public String[] perks() {
 
         switch (this) {
-            case WARRIOR:
+            case COMMANDER:
                 return new String[]{
                         Messages.get(HeroClass.class, "warrior_perk1"),
                         Messages.get(HeroClass.class, "warrior_perk2"),
@@ -200,7 +200,7 @@ public enum HeroClass {
                         Messages.get(HeroClass.class, "warrior_perk4"),
                         Messages.get(HeroClass.class, "warrior_perk5"),
                 };
-            case MAGE:
+            case DM3000:
                 return new String[]{
                         Messages.get(HeroClass.class, "mage_perk1"),
                         Messages.get(HeroClass.class, "mage_perk2"),
@@ -208,7 +208,7 @@ public enum HeroClass {
                         Messages.get(HeroClass.class, "mage_perk4"),
                         Messages.get(HeroClass.class, "mage_perk5"),
                 };
-            case ROGUE:
+            case SHAPESHIFTER:
                 return new String[]{
                         Messages.get(HeroClass.class, "rogue_perk1"),
                         Messages.get(HeroClass.class, "rogue_perk2"),
@@ -217,7 +217,7 @@ public enum HeroClass {
                         Messages.get(HeroClass.class, "rogue_perk5"),
                         Messages.get(HeroClass.class, "rogue_perk6"),
                 };
-            case HUNTRESS:
+            case CAPTAIN:
                 return new String[]{
                         Messages.get(HeroClass.class, "huntress_perk1"),
                         Messages.get(HeroClass.class, "huntress_perk2"),
@@ -238,6 +238,6 @@ public enum HeroClass {
 
     public static HeroClass restoreInBundle(Bundle bundle) {
         String value = bundle.getString(CLASS);
-        return value.length() > 0 ? valueOf(value) : ROGUE;
+        return value.length() > 0 ? valueOf(value) : SHAPESHIFTER;
     }
 }

@@ -56,11 +56,11 @@ public class WellWater extends Blob {
         area.union(pos % Dungeon.level.width(), pos / Dungeon.level.width());
 
         if (Dungeon.visible[pos]) {
-            if (this instanceof WaterOfAwareness) {
+            if (this instanceof KnowledgebaseTerminal) {
                 Journal.add(Feature.WELL_OF_AWARENESS);
-            } else if (this instanceof WaterOfHealth) {
+            } else if (this instanceof MedicalTerminal) {
                 Journal.add(Feature.WELL_OF_HEALTH);
-            } else if (this instanceof WaterOfTransmutation) {
+            } else if (this instanceof DiffusionalTerminal) {
                 Journal.add(Feature.WELL_OF_TRANSMUTATION);
             }
         }
@@ -139,7 +139,7 @@ public class WellWater extends Blob {
 
     public static void affectCell(int cell) {
 
-        Class<?>[] waters = {WaterOfHealth.class, WaterOfAwareness.class, WaterOfTransmutation.class};
+        Class<?>[] waters = {MedicalTerminal.class, KnowledgebaseTerminal.class, DiffusionalTerminal.class};
 
         for (Class<?> waterClass : waters) {
             WellWater water = (WellWater) Dungeon.level.blobs.get(waterClass);

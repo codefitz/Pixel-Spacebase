@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.actors.blobs.Alchemy;
+import com.wafitz.pixelspacebase.actors.blobs.Craft;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
@@ -53,9 +53,9 @@ public class LaboratoryPainter extends Painter {
         }
         set(level, pot, Terrain.ALCHEMY);
 
-        Alchemy alchemy = new Alchemy();
-        alchemy.seed(level, pot.x + level.width() * pot.y, 1);
-        level.blobs.put(Alchemy.class, alchemy);
+        Craft craft = new Craft();
+        craft.seed(level, pot.x + level.width() * pot.y, 1);
+        level.blobs.put(Craft.class, craft);
 
         int n = Random.IntRange(2, 3);
         for (int i = 0; i < n; i++) {

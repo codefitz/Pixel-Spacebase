@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.sprites.AlbinoSprite;
 import com.watabou.utils.Random;
 
-public class Albino extends Rat {
+public class Albino extends Xenomorph {
 
     {
         spriteClass = AlbinoSprite.class;

@@ -32,7 +32,7 @@ import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.KindofMisc;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
-import com.wafitz.pixelspacebase.items.rings.Ring;
+import com.wafitz.pixelspacebase.items.rings.Module;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Boomerang;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -95,14 +95,14 @@ public class CursingTrap extends Trap {
         KindofMisc misc1 = hero.belongings.misc1;
         if (misc1 instanceof Artifact) {
             priorityCurse.add(misc1);
-        } else if (misc1 instanceof Ring) {
+        } else if (misc1 instanceof Module) {
             canCurse.add(misc1);
         }
 
         KindofMisc misc2 = hero.belongings.misc2;
         if (misc2 instanceof Artifact) {
             priorityCurse.add(misc2);
-        } else if (misc2 instanceof Ring) {
+        } else if (misc2 instanceof Module) {
             canCurse.add(misc2);
         }
 

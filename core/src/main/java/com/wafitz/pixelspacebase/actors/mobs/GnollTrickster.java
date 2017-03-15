@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.actors.blobs.Fire;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Ghost;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.weapon.missiles.CurareDart;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -103,7 +103,7 @@ public class GnollTrickster extends Gnoll {
     public void die(Object cause) {
         super.die(cause);
 
-        Ghost.Quest.process();
+        Hologram.Quest.process();
     }
 
     private static final String COMBO = "combo";

@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.actors.mobs.Statue;
+import com.wafitz.pixelspacebase.actors.mobs.OldWarBot;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
@@ -66,8 +66,8 @@ public class StatuePainter extends Painter {
 
         }
 
-        Statue statue = new Statue();
-        statue.pos = cx + cy * level.width();
-        level.mobs.add(statue);
+        OldWarBot oldWarBot = new OldWarBot();
+        oldWarBot.pos = cx + cy * level.width();
+        level.mobs.add(oldWarBot);
     }
 }
