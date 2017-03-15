@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.wafitz.pixelspacebase.actors.mobs.ToughXeno;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicalInfusion;
 import com.wafitz.pixelspacebase.messages.Languages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
@@ -55,8 +56,8 @@ public class PixelSpacebase extends Game {
                 "com.wafitz.pixelspacebase.items.weapon.enchantments.Swing");
 
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicalInfusion.class,
-                "com.wafitz.pixelspacebase.items.scrolls.ScrollOfWeaponUpgrade");
+                ScriptOfMagicalInfusion.class,
+                "com.wafitz.pixelspacebase.items.scripts.WeaponUpgradeScript");
 
         // 0.2.4d
         com.watabou.utils.Bundle.addAlias(

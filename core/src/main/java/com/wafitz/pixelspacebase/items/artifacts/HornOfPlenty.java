@@ -33,7 +33,7 @@ import com.wafitz.pixelspacebase.effects.SpellSprite;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.food.Blandfruit;
 import com.wafitz.pixelspacebase.items.food.Food;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfRecharging;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfRecharging;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -71,7 +71,7 @@ public class HornOfPlenty extends Artifact {
         ArrayList<String> actions = super.actions(hero);
         if (isEquipped(hero) && charge > 0)
             actions.add(AC_EAT);
-        if (isEquipped(hero) && level() < 30 && !cursed)
+        if (isEquipped(hero) && level() < 30 && !malfunctioning)
             actions.add(AC_STORE);
         return actions;
     }
@@ -102,7 +102,7 @@ public class HornOfPlenty extends Artifact {
                     case DM3000:
                         //1 charge
                         Buff.affect(hero, Recharging.class, 4f);
-                        ScrollOfRecharging.charge(hero);
+                        ScriptOfRecharging.charge(hero);
                         break;
                     case SHAPESHIFTER:
                     case CAPTAIN:
@@ -147,11 +147,11 @@ public class HornOfPlenty extends Artifact {
         String desc = super.desc();
 
         if (isEquipped(Dungeon.hero)) {
-            if (!cursed) {
+            if (!malfunctioning) {
                 if (level() < levelCap)
                     desc += "\n\n" + Messages.get(this, "desc_hint");
             } else {
-                desc += "\n\n" + Messages.get(this, "desc_cursed");
+                desc += "\n\n" + Messages.get(this, "desc_malfunctioning");
             }
         }
 
@@ -216,7 +216,7 @@ public class HornOfPlenty extends Artifact {
         @Override
         public void onSelect(Item item) {
             if (item != null && item instanceof Food) {
-                if (item instanceof Blandfruit && ((Blandfruit) item).potionAttrib == null) {
+                if (item instanceof Blandfruit && ((Blandfruit) item).experimentalTechAttrib == null) {
                     GLog.w(Messages.get(HornOfPlenty.class, "reject"));
                 } else {
                     Hero hero = Dungeon.hero;

@@ -319,8 +319,8 @@ public class PixelScene extends Scene {
 
         @Override
         protected void updateMatrix() {
-            float sx = align(this, scroll.x + shakeX);
-            float sy = align(this, scroll.y + shakeY);
+            float sx = align(this, script.x + shakeX);
+            float sy = align(this, script.y + shakeY);
 
             matrix[0] = +zoom * invW2;
             matrix[5] = -zoom * invH2;

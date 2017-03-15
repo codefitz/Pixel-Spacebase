@@ -42,8 +42,8 @@ import com.wafitz.pixelspacebase.effects.Wound;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
-import com.wafitz.pixelspacebase.items.rings.AccuracyModule;
-import com.wafitz.pixelspacebase.items.rings.TechModule;
+import com.wafitz.pixelspacebase.items.modules.AccuracyModule;
+import com.wafitz.pixelspacebase.items.modules.TechModule;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Level.Feeling;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -71,8 +71,8 @@ public abstract class Mob extends Char {
     public AiState SLEEPING = new Sleeping();
     public AiState HUNTING = new Hunting();
     public AiState WANDERING = new Wandering();
-    AiState FLEEING = new Fleeing();
-    protected AiState PASSIVE = new Passive();
+    public AiState FLEEING = new Fleeing();
+    public AiState PASSIVE = new Passive();
     public AiState state = SLEEPING;
 
     public Class<? extends CharSprite> spriteClass;
@@ -615,7 +615,7 @@ public abstract class Mob extends Char {
         return enemySeen && (target == Dungeon.hero.pos);
     }
 
-    interface AiState {
+    public interface AiState {
         boolean act(boolean enemyInFOV, boolean justAlerted);
 
         String status();

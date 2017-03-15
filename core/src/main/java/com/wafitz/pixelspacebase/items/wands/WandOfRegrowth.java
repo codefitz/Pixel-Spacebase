@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
 import com.wafitz.pixelspacebase.items.Dewdrop;
 import com.wafitz.pixelspacebase.items.Generator;
-import com.wafitz.pixelspacebase.items.weapon.melee.MagesStaff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -73,8 +73,8 @@ public class WandOfRegrowth extends Wand {
             if (!(c == Terrain.EMPTY ||
                     c == Terrain.EMBERS ||
                     c == Terrain.EMPTY_DECO ||
-                    c == Terrain.GRASS ||
-                    c == Terrain.HIGH_GRASS)) {
+                    c == Terrain.LIGHTEDVENT ||
+                    c == Terrain.OFFVENT)) {
                 i.remove();
             }
         }
@@ -94,7 +94,7 @@ public class WandOfRegrowth extends Wand {
             if (c == Terrain.EMPTY ||
                     c == Terrain.EMBERS ||
                     c == Terrain.EMPTY_DECO) {
-                Level.set(i, Terrain.GRASS);
+                Level.set(i, Terrain.LIGHTEDVENT);
             }
 
             Char ch = Actor.findChar(i);
@@ -165,7 +165,7 @@ public class WandOfRegrowth extends Wand {
     }
 
     @Override
-    public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+    public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
         //like pre-nerf vampiric enchantment, except with herbal healing buff
 
         int level = Math.max(0, staff.level());
@@ -232,7 +232,7 @@ public class WandOfRegrowth extends Wand {
     }
 
     @Override
-    public void staffFx(MagesStaff.StaffParticle particle) {
+    public void staffFx(DM3000Staff.StaffParticle particle) {
         particle.color(ColorMath.random(0x004400, 0x88CC44));
         particle.am = 1f;
         particle.setLifespan(1f);
@@ -243,7 +243,7 @@ public class WandOfRegrowth extends Wand {
         particle.y += dst;
     }
 
-    public static class Dewcatcher extends Plant {
+    private static class Dewcatcher extends Plant {
 
         {
             image = 12;
@@ -254,7 +254,7 @@ public class WandOfRegrowth extends Wand {
 
             int nDrops = Random.NormalIntRange(2, 8);
 
-            ArrayList<Integer> candidates = new ArrayList<Integer>();
+            ArrayList<Integer> candidates = new ArrayList<>();
             for (int i : PathFinder.NEIGHBOURS8) {
                 if (Level.passable[pos + i]) {
                     candidates.add(pos + i);
@@ -277,7 +277,7 @@ public class WandOfRegrowth extends Wand {
         }
     }
 
-    public static class Seedpod extends Plant {
+    private static class Seedpod extends Plant {
 
         {
             image = 13;
@@ -288,7 +288,7 @@ public class WandOfRegrowth extends Wand {
 
             int nSeeds = Random.NormalIntRange(1, 5);
 
-            ArrayList<Integer> candidates = new ArrayList<Integer>();
+            ArrayList<Integer> candidates = new ArrayList<>();
             for (int i : PathFinder.NEIGHBOURS8) {
                 if (Level.passable[pos + i]) {
                     candidates.add(pos + i);

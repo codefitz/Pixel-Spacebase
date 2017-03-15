@@ -47,10 +47,10 @@ abstract public class KindOfWeapon extends EquipableItem {
 
             updateQuickslot();
 
-            cursedKnown = true;
-            if (cursed) {
-                equipCursed(hero);
-                GLog.n(Messages.get(KindOfWeapon.class, "cursed"));
+            malfunctioningKnown = true;
+            if (malfunctioning) {
+                equipMalfunctioning(hero);
+                GLog.n(Messages.get(KindOfWeapon.class, "malfunctioning"));
             }
 
             hero.spendAndNext(TIME_TO_EQUIP);

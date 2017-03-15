@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.DungeonTilemap;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.levels.traps.Trap;
+import com.wafitz.pixelspacebase.levels.vents.Vent;
 import com.wafitz.pixelspacebase.plants.Plant;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
@@ -35,7 +35,7 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
 
-//TODO add in a proper set of vfx for plants growing/withering, grass burning, discovering traps
+//TODO add in a proper set of vfx for plants growing/withering, lightedvent burning, discovering vents
 public class TerrainFeaturesTilemap extends Tilemap {
 
     public static final int SIZE = 16;
@@ -46,13 +46,13 @@ public class TerrainFeaturesTilemap extends Tilemap {
     private float[] tileVariance;
 
     private SparseArray<Plant> plants;
-    private SparseArray<Trap> traps;
+    private SparseArray<Vent> vents;
 
-    public TerrainFeaturesTilemap(SparseArray<Plant> plants, SparseArray<Trap> traps) {
+    public TerrainFeaturesTilemap(SparseArray<Plant> plants, SparseArray<Vent> vents) {
         super(Assets.TERRAIN_FEATURES, new TextureFilm(Assets.TERRAIN_FEATURES, SIZE, SIZE));
 
         this.plants = plants;
-        this.traps = traps;
+        this.vents = vents;
 
         Random.seed(Dungeon.seedCurDepth());
         tileVariance = new float[Dungeon.level.map.length];
@@ -97,23 +97,23 @@ public class TerrainFeaturesTilemap extends Tilemap {
     }
 
     private int getTileVisual(int pos, int tile) {
-        if (traps.get(pos) != null) {
-            Trap trap = traps.get(pos);
-            if (!trap.visible)
+        if (vents.get(pos) != null) {
+            Vent vent = vents.get(pos);
+            if (!vent.visible)
                 //return -1;
                 // wafitz.v4 All vents to be visible
-                return (Trap.BLACK) + (trap.shape * 16);
+                return (Vent.BLACK) + (vent.shape * 16);
             else
-                return (trap.active ? trap.color : Trap.BLACK) + (trap.shape * 16);
+                return (vent.active ? vent.color : Vent.BLACK) + (vent.shape * 16);
         }
 
         if (plants.get(pos) != null) {
             return plants.get(pos).image + 7 * 16;
         }
 
-        if (tile == Terrain.HIGH_GRASS) {
+        if (tile == Terrain.OFFVENT) {
             return 9 + 16 * ((Dungeon.depth - 1) / 5) + (tileVariance[pos] > 0.5f ? 1 : 0);
-        } else if (tile == Terrain.GRASS) {
+        } else if (tile == Terrain.LIGHTEDVENT) {
             return 11 + 16 * ((Dungeon.depth - 1) / 5) + (tileVariance[pos] > 0.5f ? 1 : 0);
         } else if (tile == Terrain.EMBERS) {
             return 13 + (tileVariance[pos] > 0.5f ? 1 : 0);

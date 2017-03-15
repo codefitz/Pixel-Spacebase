@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.Honeypot;
+import com.wafitz.pixelspacebase.items.DroneController;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.items.artifacts.MasterThievesArmband;
@@ -97,8 +97,8 @@ public class Thief extends Mob {
         if (item != null) {
             Dungeon.level.drop(item, pos).sprite.drop();
             //updates position
-            if (item instanceof Honeypot.ShatteredPot)
-                ((Honeypot.ShatteredPot) item).setHolder(this);
+            if (item instanceof DroneController.ShatteredPot)
+                ((DroneController.ShatteredPot) item).setHolder(this);
         }
     }
 
@@ -149,13 +149,13 @@ public class Thief extends Mob {
             Dungeon.quickslot.clearItem(item);
             item.updateQuickslot();
 
-            if (item instanceof Honeypot) {
-                this.item = ((Honeypot) item).shatter(this, this.pos);
+            if (item instanceof DroneController) {
+                this.item = ((DroneController) item).shatter(this, this.pos);
                 item.detach(hero.belongings.backpack);
             } else {
                 this.item = item.detach(hero.belongings.backpack);
-                if (item instanceof Honeypot.ShatteredPot)
-                    ((Honeypot.ShatteredPot) item).setHolder(this);
+                if (item instanceof DroneController.ShatteredPot)
+                    ((DroneController.ShatteredPot) item).setHolder(this);
             }
 
             return true;

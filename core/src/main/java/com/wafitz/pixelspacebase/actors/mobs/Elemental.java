@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Chill;
 import com.wafitz.pixelspacebase.actors.buffs.Frost;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.potions.PotionOfLiquidFlame;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLiquidFlame;
 import com.wafitz.pixelspacebase.items.wands.WandOfFireblast;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Blazing;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -35,7 +35,7 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-public class Elemental extends Mob {
+class Elemental extends Mob {
 
     {
         spriteClass = ElementalSprite.class;
@@ -48,7 +48,7 @@ public class Elemental extends Mob {
 
         flying = true;
 
-        loot = new PotionOfLiquidFlame();
+        loot = new ExperimentalTechOfLiquidFlame();
         lootChance = 0.1f;
 
         properties.add(Property.DEMONIC);

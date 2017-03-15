@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.potions.PotionOfInvisibility;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfInvisibility;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
@@ -63,7 +63,7 @@ public class Blindweed extends Plant {
             image = ItemSpriteSheet.SEED_BLINDWEED;
 
             plantClass = Blindweed.class;
-            alchemyClass = PotionOfInvisibility.class;
+            alchemyClass = ExperimentalTechOfInvisibility.class;
         }
     }
 }

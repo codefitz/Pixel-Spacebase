@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class Uniform extends Armor {
 
     {
-        image = ItemSpriteSheet.ARMOR_CLOTH;
+        image = ItemSpriteSheet.ARMOR_UNIFORM;
 
         bones = false; //Finding them in bones would be semi-frequent and disappointing.
     }

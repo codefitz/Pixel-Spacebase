@@ -21,9 +21,9 @@
 package com.wafitz.pixelspacebase.windows;
 
 import com.wafitz.pixelspacebase.PixelSpacebase;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
+import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
@@ -31,7 +31,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.ui.RedButton;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
-import com.wafitz.pixelspacebase.ui.ScrollPane;
+import com.wafitz.pixelspacebase.ui.ScriptPane;
 import com.wafitz.pixelspacebase.ui.Window;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.ui.Component;
@@ -47,11 +47,11 @@ public class WndCatalogs extends WndTabbed {
 
     private RedButton btnJournal;
     private RedButton btnTitle;
-    private ScrollPane list;
+    private ScriptPane list;
 
     private ArrayList<ListItem> items = new ArrayList<>();
 
-    private static boolean showPotions = true;
+    private static boolean showExperimentalTech = true;
 
     public WndCatalogs() {
 
@@ -77,7 +77,7 @@ public class WndCatalogs extends WndTabbed {
         PixelScene.align(btnTitle);
         add(btnTitle);
 
-        list = new ScrollPane(new Component()) {
+        list = new ScriptPane(new Component()) {
             @Override
             public void onClick(float x, float y) {
                 int size = items.size();
@@ -91,19 +91,19 @@ public class WndCatalogs extends WndTabbed {
         add(list);
         list.setRect(0, btnTitle.height() + 1, width, height - btnTitle.height() - 1);
 
-        boolean showPotions = WndCatalogs.showPotions;
+        boolean showExperimentalTech = WndCatalogs.showExperimentalTech;
         Tab[] tabs = {
-                new LabeledTab(Messages.get(this, "potions")) {
+                new LabeledTab(Messages.get(this, "ExperimentalTech")) {
                     protected void select(boolean value) {
                         super.select(value);
-                        WndCatalogs.showPotions = value;
+                        WndCatalogs.showExperimentalTech = value;
                         updateList();
                     }
                 },
-                new LabeledTab(Messages.get(this, "scrolls")) {
+                new LabeledTab(Messages.get(this, "scripts")) {
                     protected void select(boolean value) {
                         super.select(value);
-                        WndCatalogs.showPotions = !value;
+                        WndCatalogs.showExperimentalTech = !value;
                         updateList();
                     }
                 }
@@ -114,7 +114,7 @@ public class WndCatalogs extends WndTabbed {
 
         layoutTabs();
 
-        select(showPotions ? 0 : 1);
+        select(showExperimentalTech ? 0 : 1);
     }
 
     private void updateList() {
@@ -123,10 +123,10 @@ public class WndCatalogs extends WndTabbed {
 
         Component content = list.content();
         content.clear();
-        list.scrollTo(0, 0);
+        list.scriptTo(0, 0);
 
         float pos = 0;
-        for (Class<? extends Item> itemClass : showPotions ? Potion.getKnown() : Scroll.getKnown()) {
+        for (Class<? extends Item> itemClass : showExperimentalTech ? ExperimentalTech.getKnown() : Script.getKnown()) {
             ListItem item = new ListItem(itemClass);
             item.setRect(0, pos, width, ITEM_HEIGHT);
             content.add(item);
@@ -135,7 +135,7 @@ public class WndCatalogs extends WndTabbed {
             pos += item.height();
         }
 
-        for (Class<? extends Item> itemClass : showPotions ? Potion.getUnknown() : Scroll.getUnknown()) {
+        for (Class<? extends Item> itemClass : showExperimentalTech ? ExperimentalTech.getUnknown() : Script.getUnknown()) {
             ListItem item = new ListItem(itemClass);
             item.setRect(0, pos, width, ITEM_HEIGHT);
             content.add(item);
@@ -157,7 +157,7 @@ public class WndCatalogs extends WndTabbed {
         private RenderedTextMultiline label;
         private ColorBlock line;
 
-        public ListItem(Class<? extends Item> cl) {
+        ListItem(Class<? extends Item> cl) {
             super();
 
             try {

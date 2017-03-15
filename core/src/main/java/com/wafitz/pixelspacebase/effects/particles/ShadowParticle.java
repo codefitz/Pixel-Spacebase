@@ -36,10 +36,10 @@ public class ShadowParticle extends PixelParticle.Shrinking {
         }
     };
 
-    public static final Emitter.Factory CURSE = new Factory() {
+    public static final Emitter.Factory MALFUNCTION = new Factory() {
         @Override
         public void emit(Emitter emitter, int index, float x, float y) {
-            ((ShadowParticle) emitter.recycle(ShadowParticle.class)).resetCurse(x, y);
+            ((ShadowParticle) emitter.recycle(ShadowParticle.class)).resetMalfunction(x, y);
         }
     };
 
@@ -62,7 +62,7 @@ public class ShadowParticle extends PixelParticle.Shrinking {
         left = lifespan = 0.5f;
     }
 
-    public void resetCurse(float x, float y) {
+    private void resetMalfunction(float x, float y) {
         revive();
 
         size = 8;
@@ -73,7 +73,7 @@ public class ShadowParticle extends PixelParticle.Shrinking {
         this.y = y - speed.y * lifespan;
     }
 
-    public void resetUp(float x, float y) {
+    private void resetUp(float x, float y) {
         revive();
 
         speed.set(Random.Float(-8, +8), Random.Float(-32, -48));

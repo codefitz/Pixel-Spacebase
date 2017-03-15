@@ -33,7 +33,7 @@ public class AltarPainter extends Painter {
     public static void paint(Level level, Room room) {
 
         fill(level, room, Terrain.WALL);
-        fill(level, room, 1, Dungeon.bossLevel(Dungeon.depth + 1) ? Terrain.HIGH_GRASS : Terrain.CHASM);
+        fill(level, room, 1, Dungeon.bossLevel(Dungeon.depth + 1) ? Terrain.OFFVENT : Terrain.CHASM);
 
         Point c = room.center();
         Room.Door door = room.entrance();
@@ -52,7 +52,7 @@ public class AltarPainter extends Painter {
         fill(level, c.x - 1, c.y - 1, 3, 3, Terrain.EMBERS);
         set(level, c, Terrain.PEDESTAL);
 
-        //TODO: find some use for sacrificial fire... but not the vanilla one. scroll of wipe out is too strong.
+        //TODO: find some use for sacrificial fire... but not the vanilla one. script of wipe out is too strong.
         /*SacrificialFire fire = (SacrificialFire)level.blobs.get( SacrificialFire.class );
         if (fire == null) {
 			fire = new SacrificialFire();

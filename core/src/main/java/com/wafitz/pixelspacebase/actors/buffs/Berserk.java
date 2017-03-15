@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.actors.buffs;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.effects.SpellSprite;
-import com.wafitz.pixelspacebase.items.BrokenSeal.WarriorShield;
+import com.wafitz.pixelspacebase.items.BrokenSeal.CommanderShield;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -109,7 +109,7 @@ public class Berserk extends Buff {
     public boolean berserking() {
         if (target.HP == 0 && state == State.NORMAL) {
 
-            WarriorShield shield = target.buff(WarriorShield.class);
+            CommanderShield shield = target.buff(CommanderShield.class);
             if (shield != null) {
                 state = State.BERSERK;
                 BuffIndicator.refreshHero();

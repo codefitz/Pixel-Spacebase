@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Amok;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Corruption;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
-import com.wafitz.pixelspacebase.items.weapon.melee.MagesStaff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -92,7 +92,7 @@ public class WandOfCorruption extends Wand {
     }
 
     @Override
-    public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+    public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
         // lvl 0 - 25%
         // lvl 1 - 40%
         // lvl 2 - 50%
@@ -108,7 +108,7 @@ public class WandOfCorruption extends Wand {
     }
 
     @Override
-    public void staffFx(MagesStaff.StaffParticle particle) {
+    public void staffFx(DM3000Staff.StaffParticle particle) {
         particle.color(0);
         particle.am = 0.6f;
         particle.setLifespan(2f);

@@ -22,7 +22,7 @@ The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/E
 * Smoother gameplay
 * Item tweaks
 * Level size generation completely random
-* Shop generation
+* Workshop generation
 
 ### Changes in progress:
 

@@ -40,7 +40,7 @@ public class Window extends Group implements Signal.Listener<Key> {
 
     protected int yOffset;
 
-    protected TouchArea blocker;
+    private TouchArea blocker;
     protected ShadowBox shadow;
     protected NinePatch chrome;
 
@@ -103,7 +103,7 @@ public class Window extends Group implements Signal.Listener<Key> {
         camera.x = (int) (Game.width - camera.width * camera.zoom) / 2;
         camera.y = (int) (Game.height - camera.height * camera.zoom) / 2;
         camera.y -= yOffset * camera.zoom;
-        camera.scroll.set(chrome.x, chrome.y);
+        camera.script.set(chrome.x, chrome.y);
         Camera.add(camera);
 
         shadow.boxRect(

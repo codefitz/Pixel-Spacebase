@@ -177,7 +177,7 @@ public class OperationsBossLevel extends RegularLevel {
 
 
         paintWater();
-        paintGrass();
+        paintLightedVents();
 
         return true;
     }
@@ -186,7 +186,7 @@ public class OperationsBossLevel extends RegularLevel {
         return Patch.generate(this, 0.5f, 5);
     }
 
-    protected boolean[] grass() {
+    protected boolean[] lightedvent() {
         return Patch.generate(this, 0.40f, 4);
     }
 

@@ -31,7 +31,7 @@ import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.ui.Icons;
 import com.wafitz.pixelspacebase.ui.RedButton;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
-import com.wafitz.pixelspacebase.ui.ScrollPane;
+import com.wafitz.pixelspacebase.ui.ScriptPane;
 import com.wafitz.pixelspacebase.ui.Window;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
@@ -49,7 +49,7 @@ public class WndJournal extends Window {
 
     private RedButton btnTitle;
     private RedButton btnCatalogues;
-    private ScrollPane list;
+    private ScriptPane list;
 
     public WndJournal() {
 
@@ -125,7 +125,7 @@ public class WndJournal extends Window {
 
         content.setSize(WIDTH, pos);
 
-        list = new ScrollPane(content);
+        list = new ScriptPane(content);
         add(list);
 
         list.setRect(0, btnTitle.height() + 1, WIDTH, height - btnTitle.height() - 1);
@@ -138,7 +138,7 @@ public class WndJournal extends Window {
         private ColorBlock line;
         private Image icon;
 
-        public ListItem(String text, int d) {
+        ListItem(String text, int d) {
             super();
 
             feature.text(text);

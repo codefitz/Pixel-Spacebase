@@ -39,15 +39,15 @@ public class Tilemap extends Visual {
 
 	protected int[] data;
 	protected int mapWidth;
-	protected int mapHeight;
+	private int mapHeight;
 	protected int size;
 
 	private float cellW;
 	private float cellH;
 
 	protected float[] vertices;
-	protected FloatBuffer quads;
-	protected Vertexbuffer buffer;
+	private FloatBuffer quads;
+	private Vertexbuffer buffer;
 
 	private volatile Rect updated;
 	private boolean fullUpdate;
@@ -102,7 +102,7 @@ public class Tilemap extends Visual {
 		updated.setEmpty();
 	}
 
-	protected void updateVertices() {
+	private void updateVertices() {
 
 		moveToUpdating();
 
@@ -202,9 +202,9 @@ public class Tilemap extends Visual {
 		}
 
 		Camera c = Camera.main;
-		camX = (int)c.scroll.x/16;
-		camY = (int)c.scroll.y/16;
-		camW = (int)Math.ceil(c.width/cellW);
+		camX = (int) c.script.x / 16;
+		camY = (int) c.script.y / 16;
+		camW = (int) Math.ceil(c.width / cellW);
 		camH = (int)Math.ceil(c.height/cellH);
 
 		if (camX >= mapWidth

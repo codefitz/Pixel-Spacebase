@@ -22,10 +22,10 @@ package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.mobs.WaterThing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfInvisibility;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.potions.PotionOfInvisibility;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
@@ -34,7 +34,7 @@ import com.watabou.utils.Random;
 
 public class PoolPainter extends Painter {
 
-    private static final int NPIRANHAS = 3;
+    private static final int NWATERTHINGS = 3;
 
     public static void paint(Level level, Room room) {
 
@@ -73,9 +73,9 @@ public class PoolPainter extends Painter {
                 Random.Int(3) == 0 ? Heap.Type.CHEST : Heap.Type.HEAP;
         set(level, pos, Terrain.PEDESTAL);
 
-        level.addItemToSpawn(new PotionOfInvisibility());
+        level.addItemToSpawn(new ExperimentalTechOfInvisibility());
 
-        for (int i = 0; i < NPIRANHAS; i++) {
+        for (int i = 0; i < NWATERTHINGS; i++) {
             WaterThing waterThing = new WaterThing();
             do {
                 waterThing.pos = level.pointToCell(room.random());
@@ -95,14 +95,14 @@ public class PoolPainter extends Painter {
                 return prize;
         }
 
-        //1 floor set higher in probability, never cursed
+        //1 floor set higher in probability, never malfunctioning
         do {
             if (Random.Int(2) == 0) {
                 prize = Generator.randomWeapon((Dungeon.depth / 5) + 1);
             } else {
                 prize = Generator.randomArmor((Dungeon.depth / 5) + 1);
             }
-        } while (prize.cursed);
+        } while (prize.malfunctioning);
 
         //33% chance for an extra update.
         if (!(prize instanceof MissileWeapon) && Random.Int(3) == 0) {

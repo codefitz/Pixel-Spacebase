@@ -44,7 +44,7 @@ import java.util.ArrayList;
 
 public class EtherealChains extends Artifact {
 
-    public static final String AC_CAST = "CAST";
+    private static final String AC_CAST = "CAST";
 
     {
         image = ItemSpriteSheet.ARTIFACT_CHAINS;
@@ -61,7 +61,7 @@ public class EtherealChains extends Artifact {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        if (isEquipped(hero) && charge > 0 && !cursed)
+        if (isEquipped(hero) && charge > 0 && !malfunctioning)
             actions.add(AC_CAST);
         return actions;
     }
@@ -83,8 +83,8 @@ public class EtherealChains extends Artifact {
                 GLog.i(Messages.get(this, "no_charge"));
                 QuickSlotButton.cancel();
 
-            } else if (cursed) {
-                GLog.w(Messages.get(this, "cursed"));
+            } else if (malfunctioning) {
+                GLog.w(Messages.get(this, "malfunctioning"));
                 QuickSlotButton.cancel();
 
             } else {
@@ -209,8 +209,8 @@ public class EtherealChains extends Artifact {
 
         if (isEquipped(Dungeon.hero)) {
             desc += "\n\n";
-            if (cursed)
-                desc += Messages.get(this, "desc_cursed");
+            if (malfunctioning)
+                desc += Messages.get(this, "desc_malfunctioning");
             else
                 desc += Messages.get(this, "desc_equipped");
         }
@@ -223,9 +223,9 @@ public class EtherealChains extends Artifact {
         public boolean act() {
             int chargeTarget = 5 + (level() * 2);
             LockedFloor lock = target.buff(LockedFloor.class);
-            if (charge < chargeTarget && !cursed && (lock == null || lock.regenOn())) {
+            if (charge < chargeTarget && !malfunctioning && (lock == null || lock.regenOn())) {
                 partialCharge += 1 / (40f - (chargeTarget - charge) * 2f);
-            } else if (cursed && Random.Int(100) == 0) {
+            } else if (malfunctioning && Random.Int(100) == 0) {
                 Buff.prolong(target, Cripple.class, 10f);
             }
 
@@ -242,7 +242,7 @@ public class EtherealChains extends Artifact {
         }
 
         public void gainExp(float levelPortion) {
-            if (cursed) return;
+            if (malfunctioning) return;
 
             exp += Math.round(levelPortion * 100);
 

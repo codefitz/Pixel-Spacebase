@@ -27,14 +27,8 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
-import com.wafitz.pixelspacebase.items.rings.FurorModule;
-import com.wafitz.pixelspacebase.items.rings.TargetingModule;
-import com.wafitz.pixelspacebase.items.weapon.curses.Annoying;
-import com.wafitz.pixelspacebase.items.weapon.curses.Displacing;
-import com.wafitz.pixelspacebase.items.weapon.curses.Exhausting;
-import com.wafitz.pixelspacebase.items.weapon.curses.Fragile;
-import com.wafitz.pixelspacebase.items.weapon.curses.Sacrificial;
-import com.wafitz.pixelspacebase.items.weapon.curses.Wayward;
+import com.wafitz.pixelspacebase.items.modules.FurorModule;
+import com.wafitz.pixelspacebase.items.modules.TargetingModule;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Blazing;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Chilling;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Dazzling;
@@ -48,6 +42,12 @@ import com.wafitz.pixelspacebase.items.weapon.enchantments.Unstable;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Venomous;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Vorpal;
+import com.wafitz.pixelspacebase.items.weapon.malfunctions.Annoying;
+import com.wafitz.pixelspacebase.items.weapon.malfunctions.Displacing;
+import com.wafitz.pixelspacebase.items.weapon.malfunctions.Exhausting;
+import com.wafitz.pixelspacebase.items.weapon.malfunctions.Fragile;
+import com.wafitz.pixelspacebase.items.weapon.malfunctions.Sacrificial;
+import com.wafitz.pixelspacebase.items.weapon.malfunctions.Wayward;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -199,7 +199,7 @@ abstract public class Weapon extends KindOfWeapon {
 
     public Item upgrade(boolean enchant) {
 
-        if (enchant && (enchantment == null || enchantment.curse())) {
+        if (enchant && (enchantment == null || enchantment.malfunction())) {
             enchant(Enchantment.random());
         } else if (!enchant && Random.Float() > Math.pow(0.9, level())) {
             enchant(null);
@@ -210,16 +210,16 @@ abstract public class Weapon extends KindOfWeapon {
 
     @Override
     public String name() {
-        return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name(super.name()) : super.name();
+        return enchantment != null && (malfunctioningKnown || !enchantment.malfunction()) ? enchantment.name(super.name()) : super.name();
     }
 
     @Override
     public Item random() {
         float roll = Random.Float();
         if (roll < 0.3f) {
-            //30% chance to be level 0 and cursed
-            enchant(Enchantment.randomCurse());
-            cursed = true;
+            //30% chance to be level 0 and malfunctioning
+            enchant(Enchantment.randomMalfunction());
+            malfunctioning = true;
             return this;
         } else if (roll < 0.75f) {
             //45% chance to be level 0
@@ -231,7 +231,7 @@ abstract public class Weapon extends KindOfWeapon {
             upgrade(2);
         }
 
-        //if not cursed, 10% chance to be enchanted (7% overall)
+        //if not malfunctioning, 10% chance to be enchanted (7% overall)
         if (Random.Int(10) == 0)
             enchant();
 
@@ -259,16 +259,16 @@ abstract public class Weapon extends KindOfWeapon {
     }
 
     public boolean hasGoodEnchant() {
-        return enchantment != null && !enchantment.curse();
+        return enchantment != null && !enchantment.malfunction();
     }
 
-    public boolean hasCurseEnchant() {
-        return enchantment != null && enchantment.curse();
+    public boolean hasMalfunctionEnchant() {
+        return enchantment != null && enchantment.malfunction();
     }
 
     @Override
     public ItemSprite.Glowing glowing() {
-        return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.glowing() : null;
+        return enchantment != null && (malfunctioningKnown || !enchantment.malfunction()) ? enchantment.glowing() : null;
     }
 
     public static abstract class Enchantment implements Bundlable {
@@ -282,17 +282,17 @@ abstract public class Weapon extends KindOfWeapon {
                 5, 5, 5, 5, 5, 5,
                 2, 2, 2};
 
-        private static final Class<?>[] curses = new Class<?>[]{
+        private static final Class<?>[] malfunctions = new Class<?>[]{
                 Annoying.class, Displacing.class, Exhausting.class, Fragile.class, Sacrificial.class, Wayward.class
         };
 
         public abstract int proc(Weapon weapon, Char attacker, Char defender, int damage);
 
         public String name() {
-            if (!curse())
+            if (!malfunction())
                 return name(Messages.get(this, "enchant"));
             else
-                return name(Messages.get(Item.class, "curse"));
+                return name(Messages.get(Item.class, "malfunction"));
         }
 
         public String name(String weaponName) {
@@ -303,7 +303,7 @@ abstract public class Weapon extends KindOfWeapon {
             return Messages.get(this, "desc");
         }
 
-        public boolean curse() {
+        public boolean malfunction() {
             return false;
         }
 
@@ -328,9 +328,9 @@ abstract public class Weapon extends KindOfWeapon {
         }
 
         @SuppressWarnings("unchecked")
-        public static Enchantment randomCurse() {
+        public static Enchantment randomMalfunction() {
             try {
-                return ((Class<Enchantment>) Random.oneOf(curses)).newInstance();
+                return ((Class<Enchantment>) Random.oneOf(malfunctions)).newInstance();
             } catch (Exception e) {
                 PixelSpacebase.reportException(e);
                 return null;

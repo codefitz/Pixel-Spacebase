@@ -50,7 +50,7 @@ public class Foliage extends Blob {
                     volume += off[cell];
 
                     if (map[cell] == Terrain.EMBERS) {
-                        map[cell] = Terrain.GRASS;
+                        map[cell] = Terrain.LIGHTEDVENT;
                         GameScene.updateMap(cell);
                     }
 

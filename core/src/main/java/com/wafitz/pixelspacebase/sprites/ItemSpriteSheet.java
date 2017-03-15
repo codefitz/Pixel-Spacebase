@@ -35,11 +35,11 @@ public class ItemSpriteSheet {
     public static final int NULLWARN = PLACEHOLDERS + 0;
     public static final int WEAPON_HOLDER = PLACEHOLDERS + 1;
     public static final int ARMOR_HOLDER = PLACEHOLDERS + 2;
-    public static final int RING_HOLDER = PLACEHOLDERS + 3;
+    public static final int MODULE_HOLDER = PLACEHOLDERS + 3;
     public static final int SOMETHING = PLACEHOLDERS + 4;
 
     private static final int UNCOLLECTIBLE = xy(9, 1);   //8 slots
-    public static final int GOLD = UNCOLLECTIBLE + 0;
+    public static final int PARTS = UNCOLLECTIBLE + 0;
     public static final int DEWDROP = UNCOLLECTIBLE + 1;
     public static final int PETAL = UNCOLLECTIBLE + 2;
     public static final int SANDBAG = UNCOLLECTIBLE + 3;
@@ -55,7 +55,7 @@ public class ItemSpriteSheet {
     public static final int CRYSTAL_CHEST = CONTAINERS + 6;
 
     private static final int SINGLE_USE = xy(1, 3);   //32 slots
-    public static final int ANKH = SINGLE_USE + 0;
+    public static final int CLONE = SINGLE_USE + 0;
     public static final int STYLUS = SINGLE_USE + 1;
     public static final int WEIGHT = SINGLE_USE + 2;
     public static final int SEAL = SINGLE_USE + 3;
@@ -79,7 +79,7 @@ public class ItemSpriteSheet {
     public static final int KNUCKLEDUSTER = WEP_TIER1 + 2;
     public static final int RAPIER = WEP_TIER1 + 3;
     public static final int DAGGER = WEP_TIER1 + 4;
-    public static final int MAGES_STAFF = WEP_TIER1 + 5;
+    public static final int DM3000_STAFF = WEP_TIER1 + 5;
 
     private static final int WEP_TIER2 = xy(9, 7);   //8 slots
     public static final int SHORTSWORD = WEP_TIER2 + 0;
@@ -122,15 +122,15 @@ public class ItemSpriteSheet {
     public static final int TOMAHAWK = MISSILE_WEP + 6;
 
     private static final int ARMOR = xy(1, 11);  //16 slots
-    public static final int ARMOR_CLOTH = ARMOR + 0;
-    public static final int ARMOR_LEATHER = ARMOR + 1;
-    public static final int ARMOR_MAIL = ARMOR + 2;
-    public static final int ARMOR_SCALE = ARMOR + 3;
-    public static final int ARMOR_PLATE = ARMOR + 4;
-    public static final int ARMOR_WARRIOR = ARMOR + 5;
-    public static final int ARMOR_MAGE = ARMOR + 6;
-    public static final int ARMOR_ROGUE = ARMOR + 7;
-    public static final int ARMOR_HUNTRESS = ARMOR + 8;
+    public static final int ARMOR_UNIFORM = ARMOR + 0;
+    public static final int ARMOR_SPACESUIT = ARMOR + 1;
+    public static final int ARMOR_HUNTER = ARMOR + 2;
+    public static final int HOVERPOD = ARMOR + 3;
+    public static final int LOADER = ARMOR + 4;
+    public static final int ARMOR_COMMANDER = ARMOR + 5;
+    public static final int ARMOR_DM3000 = ARMOR + 6;
+    public static final int ARMOR_SHAPESHIFTER = ARMOR + 7;
+    public static final int ARMOR_CAPTAIN = ARMOR + 8;
 
     //32 free slots
 
@@ -149,19 +149,19 @@ public class ItemSpriteSheet {
     public static final int WAND_REGROWTH = WANDS + 11;
     public static final int WAND_TRANSFUSION = WANDS + 12;
 
-    private static final int RINGS = xy(1, 15);  //16 slots
-    public static final int RING_GARNET = RINGS + 0;
-    public static final int RING_RUBY = RINGS + 1;
-    public static final int RING_TOPAZ = RINGS + 2;
-    public static final int RING_EMERALD = RINGS + 3;
-    public static final int RING_ONYX = RINGS + 4;
-    public static final int RING_OPAL = RINGS + 5;
-    public static final int RING_TOURMALINE = RINGS + 6;
-    public static final int RING_SAPPHIRE = RINGS + 7;
-    public static final int RING_AMETHYST = RINGS + 8;
-    public static final int RING_QUARTZ = RINGS + 9;
-    public static final int RING_AGATE = RINGS + 10;
-    public static final int RING_DIAMOND = RINGS + 11;
+    private static final int MODULES = xy(1, 15);  //16 slots
+    public static final int MODULE_GARNET = MODULES + 0;
+    public static final int MODULE_RUBY = MODULES + 1;
+    public static final int MODULE_TOPAZ = MODULES + 2;
+    public static final int MODULE_EMERALD = MODULES + 3;
+    public static final int MODULE_ONYX = MODULES + 4;
+    public static final int MODULE_OPAL = MODULES + 5;
+    public static final int MODULE_TOURMALINE = MODULES + 6;
+    public static final int MODULE_SAPPHIRE = MODULES + 7;
+    public static final int MODULE_AMETHYST = MODULES + 8;
+    public static final int MODULE_QUARTZ = MODULES + 9;
+    public static final int MODULE_AGATE = MODULES + 10;
+    public static final int MODULE_DIAMOND = MODULES + 11;
 
     private static final int ARTIFACTS = xy(1, 16);  //32 slots
     public static final int ARTIFACT_CLOAK = ARTIFACTS + 0;
@@ -190,33 +190,33 @@ public class ItemSpriteSheet {
 
     //32 free slots
 
-    private static final int SCROLLS = xy(1, 20);  //16 slots
-    public static final int SCROLL_KAUNAN = SCROLLS + 0;
-    public static final int SCROLL_SOWILO = SCROLLS + 1;
-    public static final int SCROLL_LAGUZ = SCROLLS + 2;
-    public static final int SCROLL_YNGVI = SCROLLS + 3;
-    public static final int SCROLL_GYFU = SCROLLS + 4;
-    public static final int SCROLL_RAIDO = SCROLLS + 5;
-    public static final int SCROLL_ISAZ = SCROLLS + 6;
-    public static final int SCROLL_MANNAZ = SCROLLS + 7;
-    public static final int SCROLL_NAUDIZ = SCROLLS + 8;
-    public static final int SCROLL_BERKANAN = SCROLLS + 9;
-    public static final int SCROLL_ODAL = SCROLLS + 10;
-    public static final int SCROLL_TIWAZ = SCROLLS + 11;
+    private static final int SCRIPTS = xy(1, 20);  //16 slots
+    public static final int KAUNAN_SCRIPT = SCRIPTS + 0;
+    public static final int SOWILO_SCRIPT = SCRIPTS + 1;
+    public static final int LAGUZ_SCRIPT = SCRIPTS + 2;
+    public static final int YNGVI_SCRIPT = SCRIPTS + 3;
+    public static final int GYFU_SCRIPT = SCRIPTS + 4;
+    public static final int RAIDO_SCRIPT = SCRIPTS + 5;
+    public static final int ISAZ_SCRIPT = SCRIPTS + 6;
+    public static final int MANNAZ_SCRIPT = SCRIPTS + 7;
+    public static final int NAUDIZ_SCRIPT = SCRIPTS + 8;
+    public static final int BERKANAN_SCRIPT = SCRIPTS + 9;
+    public static final int ODAL_SCRIPT = SCRIPTS + 10;
+    public static final int TIWAZ_SCRIPT = SCRIPTS + 11;
 
-    private static final int POTIONS = xy(1, 21);  //16 slots
-    public static final int POTION_CRIMSON = POTIONS + 0;
-    public static final int POTION_AMBER = POTIONS + 1;
-    public static final int POTION_GOLDEN = POTIONS + 2;
-    public static final int POTION_JADE = POTIONS + 3;
-    public static final int POTION_TURQUOISE = POTIONS + 4;
-    public static final int POTION_AZURE = POTIONS + 5;
-    public static final int POTION_INDIGO = POTIONS + 6;
-    public static final int POTION_MAGENTA = POTIONS + 7;
-    public static final int POTION_BISTRE = POTIONS + 8;
-    public static final int POTION_CHARCOAL = POTIONS + 9;
-    public static final int POTION_SILVER = POTIONS + 10;
-    public static final int POTION_IVORY = POTIONS + 11;
+    private static final int EXPERIMENTALTECH = xy(1, 21);  //16 slots
+    public static final int CRIMSON_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 0;
+    public static final int AMBER_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 1;
+    public static final int GOLDEN_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 2;
+    public static final int JADE_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 3;
+    public static final int TURQUOISE_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 4;
+    public static final int AZURE_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 5;
+    public static final int INDIGO_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 6;
+    public static final int MAGENTA_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 7;
+    public static final int BISTRE_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 8;
+    public static final int CHARCOAL_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 9;
+    public static final int SILVER_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 10;
+    public static final int IVORY_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 11;
 
     private static final int SEEDS = xy(1, 22);  //16 slots
     public static final int SEED_ROTBERRY = SEEDS + 0;

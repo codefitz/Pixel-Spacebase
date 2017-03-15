@@ -36,10 +36,10 @@ public enum Icons {
     MASTERY,
     WATA,
     SHPX,
-    WARRIOR,
-    MAGE,
-    ROGUE,
-    HUNTRESS,
+    COMMANDER,
+    DM3000,
+    SHAPESHIFTER,
+    CAPTAIN,
     CLOSE,
     DEPTH,
     DEPTH_LG,
@@ -47,8 +47,8 @@ public enum Icons {
     ALERT,
     BACKPACK,
     SEED_POUCH,
-    SCROLL_HOLDER,
-    POTION_BANDOLIER,
+    SCRIPT_HOLDER,
+    EXPERIMENTALTECH_BANDOLIER,
     WAND_HOLSTER,
     CHECKED,
     UNCHECKED,
@@ -96,16 +96,16 @@ public enum Icons {
             case SHPX:
                 icon.frame(icon.texture.uvRect(64, 44, 80, 60));
                 break;
-            case WARRIOR:
+            case COMMANDER:
                 icon.frame(icon.texture.uvRect(0, 29, 16, 45));
                 break;
-            case MAGE:
+            case DM3000:
                 icon.frame(icon.texture.uvRect(16, 29, 32, 45));
                 break;
-            case ROGUE:
+            case SHAPESHIFTER:
                 icon.frame(icon.texture.uvRect(32, 29, 48, 45));
                 break;
-            case HUNTRESS:
+            case CAPTAIN:
                 icon.frame(icon.texture.uvRect(48, 29, 64, 45));
                 break;
             case CLOSE:
@@ -126,7 +126,7 @@ public enum Icons {
             case BACKPACK:
                 icon.frame(icon.texture.uvRect(58, 0, 68, 10));
                 break;
-            case SCROLL_HOLDER:
+            case SCRIPT_HOLDER:
                 icon.frame(icon.texture.uvRect(68, 0, 78, 10));
                 break;
             case SEED_POUCH:
@@ -135,7 +135,7 @@ public enum Icons {
             case WAND_HOLSTER:
                 icon.frame(icon.texture.uvRect(88, 0, 98, 10));
                 break;
-            case POTION_BANDOLIER:
+            case EXPERIMENTALTECH_BANDOLIER:
                 icon.frame(icon.texture.uvRect(98, 0, 108, 10));
                 break;
             case CHECKED:
@@ -169,13 +169,13 @@ public enum Icons {
     public static Image get(HeroClass cl) {
         switch (cl) {
             case COMMANDER:
-                return get(WARRIOR);
+                return get(COMMANDER);
             case DM3000:
-                return get(MAGE);
+                return get(DM3000);
             case SHAPESHIFTER:
-                return get(ROGUE);
+                return get(SHAPESHIFTER);
             case CAPTAIN:
-                return get(HUNTRESS);
+                return get(CAPTAIN);
             default:
                 return null;
         }

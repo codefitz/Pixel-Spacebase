@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.Beam;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.PurpleParticle;
-import com.wafitz.pixelspacebase.items.weapon.melee.MagesStaff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -107,8 +107,8 @@ public class WandOfDisintegration extends DamageWand {
     }
 
     @Override
-    public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-        //no direct effect, see magesStaff.reachfactor
+    public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
+        //no direct effect, see dm3000Staff.reachfactor
     }
 
     private int distance() {
@@ -124,7 +124,7 @@ public class WandOfDisintegration extends DamageWand {
     }
 
     @Override
-    public void staffFx(MagesStaff.StaffParticle particle) {
+    public void staffFx(DM3000Staff.StaffParticle particle) {
         particle.color(0x220022);
         particle.am = 0.6f;
         particle.setLifespan(1f);

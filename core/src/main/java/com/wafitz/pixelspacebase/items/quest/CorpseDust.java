@@ -43,8 +43,8 @@ public class CorpseDust extends Item {
     {
         image = ItemSpriteSheet.DUST;
 
-        cursed = true;
-        cursedKnown = true;
+        malfunctioning = true;
+        malfunctioningKnown = true;
 
         unique = true;
     }
@@ -82,7 +82,7 @@ public class CorpseDust extends Item {
         }
     }
 
-    public static class DustGhostSpawner extends Buff {
+    private static class DustGhostSpawner extends Buff {
 
         int spawnPower = 0;
 

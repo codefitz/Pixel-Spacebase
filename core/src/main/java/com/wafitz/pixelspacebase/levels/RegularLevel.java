@@ -26,20 +26,20 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.rings.TechModule;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
+import com.wafitz.pixelspacebase.items.modules.TechModule;
+import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.levels.Room.Type;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
-import com.wafitz.pixelspacebase.levels.painters.PartsShop;
-import com.wafitz.pixelspacebase.levels.traps.ChillingTrap;
-import com.wafitz.pixelspacebase.levels.traps.ExplosiveTrap;
-import com.wafitz.pixelspacebase.levels.traps.FireTrap;
-import com.wafitz.pixelspacebase.levels.traps.Trap;
-import com.wafitz.pixelspacebase.levels.traps.WornTrap;
+import com.wafitz.pixelspacebase.levels.painters.Workshop;
+import com.wafitz.pixelspacebase.levels.vents.ChillingVent;
+import com.wafitz.pixelspacebase.levels.vents.ExplosiveVent;
+import com.wafitz.pixelspacebase.levels.vents.FireVent;
+import com.wafitz.pixelspacebase.levels.vents.Vent;
+import com.wafitz.pixelspacebase.levels.vents.WornVent;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
 import com.watabou.utils.PathFinder;
@@ -130,19 +130,19 @@ public abstract class RegularLevel extends Level {
             }
         }
 
-        if (Dungeon.shopOnLevel()) {
-            Room shop = null;
+        if (Dungeon.workshopOnLevel()) {
+            Room workshop = null;
             for (Room r : roomEntrance.connected.keySet()) {
-                if (r.connected.size() == 1 && ((r.width() - 1) * (r.height() - 1) >= PartsShop.spaceNeeded())) {
-                    shop = r;
+                if (r.connected.size() == 1 && ((r.width() - 1) * (r.height() - 1) >= Workshop.spaceNeeded())) {
+                    workshop = r;
                     break;
                 }
             }
 
-            if (shop == null) {
+            if (workshop == null) {
                 return false;
             } else {
-                shop.type = Room.Type.SHOP;
+                workshop.type = Room.Type.WORKSHOP;
             }
         }
 
@@ -163,9 +163,9 @@ public abstract class RegularLevel extends Level {
 
         paint();
         paintWater();
-        paintGrass();
+        paintLightedVents();
 
-        placeTraps();
+        placeVents();
 
         return true;
     }
@@ -173,7 +173,7 @@ public abstract class RegularLevel extends Level {
     void placeSign() {
         while (true) {
             int pos = pointToCell(roomEntrance.random());
-            if (pos != entrance && traps.get(pos) == null && findMob(pos) == null) {
+            if (pos != entrance && vents.get(pos) == null && findMob(pos) == null) {
                 map[pos] = Terrain.SIGN;
                 break;
             }
@@ -305,43 +305,43 @@ public abstract class RegularLevel extends Level {
         }
     }
 
-    void paintGrass() {
-        boolean[] grass = grass();
+    void paintLightedVents() {
+        boolean[] lightedvent = lightedvent();
 
-        if (feeling == Feeling.GRASS) {
+        if (feeling == Feeling.LIGHTEDVENT) {
 
             for (Room room : rooms) {
                 if (room.type != Type.NULL && room.type != Type.PASSAGE && room.type != Type.TUNNEL) {
-                    grass[(room.left + 1) + (room.top + 1) * width()] = true;
-                    grass[(room.right - 1) + (room.top + 1) * width()] = true;
-                    grass[(room.left + 1) + (room.bottom - 1) * width()] = true;
-                    grass[(room.right - 1) + (room.bottom - 1) * width()] = true;
+                    lightedvent[(room.left + 1) + (room.top + 1) * width()] = true;
+                    lightedvent[(room.right - 1) + (room.top + 1) * width()] = true;
+                    lightedvent[(room.left + 1) + (room.bottom - 1) * width()] = true;
+                    lightedvent[(room.right - 1) + (room.bottom - 1) * width()] = true;
                 }
             }
         }
 
         for (int i = width() + 1; i < length() - width() - 1; i++) {
-            if (map[i] == Terrain.EMPTY && grass[i]) {
+            if (map[i] == Terrain.EMPTY && lightedvent[i]) {
                 int count = 1;
                 for (int n : PathFinder.NEIGHBOURS8) {
-                    if (grass[i + n]) {
+                    if (lightedvent[i + n]) {
                         count++;
                     }
                 }
-                map[i] = (Random.Float() < count / 12f) ? Terrain.HIGH_GRASS : Terrain.GRASS;
+                map[i] = (Random.Float() < count / 12f) ? Terrain.OFFVENT : Terrain.LIGHTEDVENT;
             }
         }
     }
 
     protected abstract boolean[] water();
 
-    protected abstract boolean[] grass();
+    protected abstract boolean[] lightedvent();
 
-    private void placeTraps() {
+    private void placeVents() {
 
-        int nTraps = nTraps();
-        float[] trapChances = trapChances();
-        Class<?>[] trapClasses = trapClasses();
+        int nVents = nVents();
+        float[] ventChances = ventChances();
+        Class<?>[] ventClasses = ventClasses();
 
         ArrayList<Integer> validCells = new ArrayList<>();
 
@@ -349,7 +349,7 @@ public abstract class RegularLevel extends Level {
             if (map[i] == Terrain.EMPTY) {
 
                 if (Dungeon.depth == 1) {
-                    //extra check to prevent annoying inactive traps in hallways on floor 1
+                    //extra check to prevent annoying inactive vents in hallways on floor 1
                     Room r = room(i);
                     if (r != null && r.type != Type.TUNNEL) {
                         validCells.add(i);
@@ -360,33 +360,33 @@ public abstract class RegularLevel extends Level {
         }
 
         //no more than one trap every 5 valid tiles.
-        nTraps = Math.min(nTraps, validCells.size() / 5);
+        nVents = Math.min(nVents, validCells.size() / 5);
 
-        for (int i = 0; i < nTraps; i++) {
+        for (int i = 0; i < nVents; i++) {
 
-            Integer trapPos = Random.element(validCells);
-            validCells.remove(trapPos); //removes the integer object, not at the index
+            Integer ventPos = Random.element(validCells);
+            validCells.remove(ventPos); //removes the integer object, not at the index
 
             try {
-                Trap trap = ((Trap) trapClasses[Random.chances(trapChances)].newInstance()).hide();
-                setTrap(trap, trapPos);
-                //some traps will not be hidden
-                map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
+                Vent vent = ((Vent) ventClasses[Random.chances(ventChances)].newInstance()).hide();
+                setVent(vent, ventPos);
+                //some vents will not be hidden
+                map[ventPos] = vent.visible ? Terrain.VENT : Terrain.HIDDEN_VENT;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    private int nTraps() {
+    private int nVents() {
         return Random.NormalIntRange(1, 4 + (Dungeon.depth / 2));
     }
 
-    protected Class<?>[] trapClasses() {
-        return new Class<?>[]{WornTrap.class};
+    protected Class<?>[] ventClasses() {
+        return new Class<?>[]{WornVent.class};
     }
 
-    protected float[] trapChances() {
+    protected float[] ventChances() {
         return new float[]{1};
     }
 
@@ -684,7 +684,7 @@ public abstract class RegularLevel extends Level {
                     type = Heap.Type.CHEST;
                     break;
                 case 5:
-                    type = Dungeon.depth > 1 ? Heap.Type.MIMIC : Heap.Type.CHEST;
+                    type = Dungeon.depth > 1 ? Heap.Type.CONFUSEDSHAPESHIFTER : Heap.Type.CHEST;
                     break;
                 default:
                     type = Heap.Type.HEAP;
@@ -696,17 +696,17 @@ public abstract class RegularLevel extends Level {
             int cell;
             do {
                 cell = randomDropCell();
-                if (item instanceof Scroll) {
-                    while (traps.get(cell) instanceof FireTrap) {
+                if (item instanceof Script) {
+                    while (vents.get(cell) instanceof FireVent) {
                         cell = randomDropCell();
                     }
 
-                } else if (item instanceof Potion) {
-                    while (traps.get(cell) instanceof ChillingTrap) {
+                } else if (item instanceof ExperimentalTech) {
+                    while (vents.get(cell) instanceof ChillingVent) {
                         cell = randomDropCell();
                     }
                 }
-            } while (traps.get(cell) instanceof ExplosiveTrap);
+            } while (vents.get(cell) instanceof ExplosiveVent);
             drop(item, cell).type = Heap.Type.HEAP;
         }
 

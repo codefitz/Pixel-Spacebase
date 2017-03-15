@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
-import com.wafitz.pixelspacebase.items.potions.PotionOfLevitation;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLevitation;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
 public class Stormvine extends Plant {
@@ -47,7 +47,7 @@ public class Stormvine extends Plant {
             image = ItemSpriteSheet.SEED_STORMVINE;
 
             plantClass = Stormvine.class;
-            alchemyClass = PotionOfLevitation.class;
+            alchemyClass = ExperimentalTechOfLevitation.class;
         }
     }
 }

@@ -28,9 +28,9 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.quest.DarkGold;
+import com.wafitz.pixelspacebase.items.quest.DarkParts;
 import com.wafitz.pixelspacebase.items.quest.Pickaxe;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfUpgrade;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Room.Type;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -67,7 +67,7 @@ public class Blacksmith extends NPC {
         if (!Quest.given) {
 
             GameScene.show(new WndQuest(this,
-                    Quest.alternative ? Messages.get(this, "blood_1") : Messages.get(this, "gold_1")) {
+                    Quest.alternative ? Messages.get(this, "blood_1") : Messages.get(this, "parts_1")) {
 
                 @Override
                 public void onBackPressed() {
@@ -109,17 +109,17 @@ public class Blacksmith extends NPC {
             } else {
 
                 Pickaxe pick = Dungeon.hero.belongings.getItem(Pickaxe.class);
-                DarkGold gold = Dungeon.hero.belongings.getItem(DarkGold.class);
+                DarkParts parts = Dungeon.hero.belongings.getItem(DarkParts.class);
                 if (pick == null) {
                     tell(Messages.get(this, "lost_pick"));
-                } else if (gold == null || gold.quantity() < 15) {
-                    tell(Messages.get(this, "gold_2"));
+                } else if (parts == null || parts.quantity() < 15) {
+                    tell(Messages.get(this, "parts_2"));
                 } else {
                     if (pick.isEquipped(Dungeon.hero)) {
                         pick.doUnequip(Dungeon.hero, false);
                     }
                     pick.detach(Dungeon.hero.belongings.backpack);
-                    gold.detachAll(Dungeon.hero.belongings.backpack);
+                    parts.detachAll(Dungeon.hero.belongings.backpack);
                     tell(Messages.get(this, "completed"));
 
                     Quest.completed = true;
@@ -158,8 +158,8 @@ public class Blacksmith extends NPC {
             return Messages.get(Blacksmith.class, "un_ided");
         }
 
-        if (item1.cursed || item2.cursed) {
-            return Messages.get(Blacksmith.class, "cursed");
+        if (item1.malfunctioning || item2.malfunctioning) {
+            return Messages.get(Blacksmith.class, "malfunctioning");
         }
 
         if (item1.level() < 0 || item2.level() < 0) {
@@ -185,7 +185,7 @@ public class Blacksmith extends NPC {
         }
 
         Sample.INSTANCE.play(Assets.SND_EVOKE);
-        ScrollOfUpgrade.upgrade(Dungeon.hero);
+        ScriptOfUpgrade.upgrade(Dungeon.hero);
         Item.evoke(Dungeon.hero);
 
         if (first.isEquipped(Dungeon.hero)) {

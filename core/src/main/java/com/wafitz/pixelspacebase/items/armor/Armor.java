@@ -31,12 +31,6 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.BrokenSeal;
 import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.armor.curses.AntiEntropy;
-import com.wafitz.pixelspacebase.items.armor.curses.Corrosion;
-import com.wafitz.pixelspacebase.items.armor.curses.Displacement;
-import com.wafitz.pixelspacebase.items.armor.curses.Metabolism;
-import com.wafitz.pixelspacebase.items.armor.curses.Multiplicity;
-import com.wafitz.pixelspacebase.items.armor.curses.Stench;
 import com.wafitz.pixelspacebase.items.armor.glyphs.Affection;
 import com.wafitz.pixelspacebase.items.armor.glyphs.AntiMagic;
 import com.wafitz.pixelspacebase.items.armor.glyphs.Brimstone;
@@ -50,6 +44,12 @@ import com.wafitz.pixelspacebase.items.armor.glyphs.Stone;
 import com.wafitz.pixelspacebase.items.armor.glyphs.Swiftness;
 import com.wafitz.pixelspacebase.items.armor.glyphs.Thorns;
 import com.wafitz.pixelspacebase.items.armor.glyphs.Viscosity;
+import com.wafitz.pixelspacebase.items.armor.malfunctions.AntiEntropy;
+import com.wafitz.pixelspacebase.items.armor.malfunctions.Corrosion;
+import com.wafitz.pixelspacebase.items.armor.malfunctions.Displacement;
+import com.wafitz.pixelspacebase.items.armor.malfunctions.Metabolism;
+import com.wafitz.pixelspacebase.items.armor.malfunctions.Multiplicity;
+import com.wafitz.pixelspacebase.items.armor.malfunctions.Stench;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.HeroSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
@@ -120,7 +120,7 @@ public class Armor extends EquipableItem {
         super.execute(hero, action);
 
         if (action.equals(AC_DETACH) && seal != null) {
-            BrokenSeal.WarriorShield sealBuff = hero.buff(BrokenSeal.WarriorShield.class);
+            BrokenSeal.CommanderShield sealBuff = hero.buff(BrokenSeal.CommanderShield.class);
             if (sealBuff != null) sealBuff.setArmor(null);
 
             if (seal.level() > 0) {
@@ -144,10 +144,10 @@ public class Armor extends EquipableItem {
 
             hero.belongings.armor = this;
 
-            cursedKnown = true;
-            if (cursed) {
-                equipCursed(hero);
-                GLog.n(Messages.get(Armor.class, "equip_cursed"));
+            malfunctioningKnown = true;
+            if (malfunctioning) {
+                equipMalfunctioning(hero);
+                GLog.n(Messages.get(Armor.class, "equip_malfunctioning"));
             }
 
             ((HeroSprite) hero.sprite).updateArmor();
@@ -166,18 +166,18 @@ public class Armor extends EquipableItem {
 
     @Override
     public void activate(Char ch) {
-        if (seal != null) Buff.affect(ch, BrokenSeal.WarriorShield.class).setArmor(this);
+        if (seal != null) Buff.affect(ch, BrokenSeal.CommanderShield.class).setArmor(this);
     }
 
     public void affixSeal(BrokenSeal seal) {
         this.seal = seal;
         if (seal.level() > 0) {
-            //doesn't trigger upgrading logic such as affecting curses/glyphs
+            //doesn't trigger upgrading logic such as affecting malfunctions/glyphs
             level(level() + 1);
             Badges.validateItemLevelAquired(this);
         }
         if (isEquipped(Dungeon.hero)) {
-            Buff.affect(Dungeon.hero, BrokenSeal.WarriorShield.class).setArmor(this);
+            Buff.affect(Dungeon.hero, BrokenSeal.CommanderShield.class).setArmor(this);
         }
     }
 
@@ -197,7 +197,7 @@ public class Armor extends EquipableItem {
             hero.belongings.armor = null;
             ((HeroSprite) hero.sprite).updateArmor();
 
-            BrokenSeal.WarriorShield sealBuff = hero.buff(BrokenSeal.WarriorShield.class);
+            BrokenSeal.CommanderShield sealBuff = hero.buff(BrokenSeal.CommanderShield.class);
             if (sealBuff != null) sealBuff.setArmor(null);
 
             return true;
@@ -244,7 +244,7 @@ public class Armor extends EquipableItem {
 
     public Item upgrade(boolean inscribe) {
 
-        if (inscribe && (glyph == null || glyph.curse())) {
+        if (inscribe && (glyph == null || glyph.malfunction())) {
             inscribe(Glyph.random());
         } else if (!inscribe && Random.Float() > Math.pow(0.9, level())) {
             inscribe(null);
@@ -276,7 +276,7 @@ public class Armor extends EquipableItem {
 
     @Override
     public String name() {
-        return glyph != null && (cursedKnown || !glyph.curse()) ? glyph.name(super.name()) : super.name();
+        return glyph != null && (malfunctioningKnown || !glyph.malfunction()) ? glyph.name(super.name()) : super.name();
     }
 
     @Override
@@ -299,15 +299,15 @@ public class Armor extends EquipableItem {
             }
         }
 
-        if (glyph != null && (cursedKnown || !glyph.curse())) {
+        if (glyph != null && (malfunctioningKnown || !glyph.malfunction())) {
             info += "\n\n" + Messages.get(Armor.class, "inscribed", glyph.name());
             info += " " + glyph.desc();
         }
 
-        if (cursed && isEquipped(Dungeon.hero)) {
-            info += "\n\n" + Messages.get(Armor.class, "cursed_worn");
-        } else if (cursedKnown && cursed) {
-            info += "\n\n" + Messages.get(Armor.class, "cursed");
+        if (malfunctioning && isEquipped(Dungeon.hero)) {
+            info += "\n\n" + Messages.get(Armor.class, "malfunctioning_worn");
+        } else if (malfunctioningKnown && malfunctioning) {
+            info += "\n\n" + Messages.get(Armor.class, "malfunctioning");
         } else if (seal != null) {
             info += "\n\n" + Messages.get(Armor.class, "seal_attached");
         }
@@ -329,9 +329,9 @@ public class Armor extends EquipableItem {
     public Item random() {
         float roll = Random.Float();
         if (roll < 0.3f) {
-            //30% chance to be level 0 and cursed
-            inscribe(Glyph.randomCurse());
-            cursed = true;
+            //30% chance to be level 0 and malfunctioning
+            inscribe(Glyph.randomMalfunction());
+            malfunctioning = true;
             return this;
         } else if (roll < 0.75f) {
             //45% chance to be level 0
@@ -343,7 +343,7 @@ public class Armor extends EquipableItem {
             upgrade(2);
         }
 
-        //if not cursed, 16.67% chance to be inscribed (11.67% overall)
+        //if not malfunctioning, 16.67% chance to be inscribed (11.67% overall)
         if (Random.Int(6) == 0)
             inscribe();
 
@@ -372,7 +372,7 @@ public class Armor extends EquipableItem {
         if (hasGoodGlyph()) {
             price *= 1.5;
         }
-        if (cursedKnown && (cursed || hasCurseGlyph())) {
+        if (malfunctioningKnown && (malfunctioning || hasMalfunctionGlyph())) {
             price /= 2;
         }
         if (levelKnown && level() > 0) {
@@ -406,16 +406,16 @@ public class Armor extends EquipableItem {
     }
 
     public boolean hasGoodGlyph() {
-        return glyph != null && !glyph.curse();
+        return glyph != null && !glyph.malfunction();
     }
 
-    public boolean hasCurseGlyph() {
-        return glyph != null && glyph.curse();
+    public boolean hasMalfunctionGlyph() {
+        return glyph != null && glyph.malfunction();
     }
 
     @Override
     public ItemSprite.Glowing glowing() {
-        return glyph != null && (cursedKnown || !glyph.curse()) ? glyph.glowing() : null;
+        return glyph != null && (malfunctioningKnown || !glyph.malfunction()) ? glyph.glowing() : null;
     }
 
     public static abstract class Glyph implements Bundlable {
@@ -429,17 +429,17 @@ public class Armor extends EquipableItem {
                 5, 5, 5, 5, 5, 5,
                 2, 2, 2};
 
-        private static final Class<?>[] curses = new Class<?>[]{
+        private static final Class<?>[] bugs = new Class<?>[]{
                 AntiEntropy.class, Corrosion.class, Displacement.class, Metabolism.class, Multiplicity.class, Stench.class
         };
 
         public abstract int proc(Armor armor, Char attacker, Char defender, int damage);
 
         public String name() {
-            if (!curse())
+            if (!malfunction())
                 return name(Messages.get(this, "glyph"));
             else
-                return name(Messages.get(Item.class, "curse"));
+                return name(Messages.get(Item.class, "malfunction"));
         }
 
         public String name(String armorName) {
@@ -450,7 +450,7 @@ public class Armor extends EquipableItem {
             return Messages.get(this, "desc");
         }
 
-        public boolean curse() {
+        public boolean malfunction() {
             return false;
         }
 
@@ -497,9 +497,9 @@ public class Armor extends EquipableItem {
         }
 
         @SuppressWarnings("unchecked")
-        public static Glyph randomCurse() {
+        public static Glyph randomMalfunction() {
             try {
-                return ((Class<Glyph>) Random.oneOf(curses)).newInstance();
+                return ((Class<Glyph>) Random.oneOf(bugs)).newInstance();
             } catch (Exception e) {
                 PixelSpacebase.reportException(e);
                 return null;

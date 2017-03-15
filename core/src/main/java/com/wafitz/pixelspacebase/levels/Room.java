@@ -34,7 +34,6 @@ import com.wafitz.pixelspacebase.levels.painters.LiveVentsPainter;
 import com.wafitz.pixelspacebase.levels.painters.MassGravePainter;
 import com.wafitz.pixelspacebase.levels.painters.MedicalPainter;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
-import com.wafitz.pixelspacebase.levels.painters.PartsShop;
 import com.wafitz.pixelspacebase.levels.painters.PassagePainter;
 import com.wafitz.pixelspacebase.levels.painters.PitPainter;
 import com.wafitz.pixelspacebase.levels.painters.PoolPainter;
@@ -49,6 +48,7 @@ import com.wafitz.pixelspacebase.levels.painters.TreasuryPainter;
 import com.wafitz.pixelspacebase.levels.painters.TunnelPainter;
 import com.wafitz.pixelspacebase.levels.painters.VaultPainter;
 import com.wafitz.pixelspacebase.levels.painters.WeakFloorPainter;
+import com.wafitz.pixelspacebase.levels.painters.Workshop;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
@@ -78,14 +78,14 @@ public class Room extends Rect implements Graph.Node, Bundlable {
         BOSS_EXIT(BossExitPainter.class),
         TUNNEL(TunnelPainter.class),
         PASSAGE(PassagePainter.class),
-        SHOP(PartsShop.class),
+        WORKSHOP(Workshop.class),
         BLACKSMITH(BlacksmithPainter.class),
         TREASURY(TreasuryPainter.class),
         ARMORY(ArmoryPainter.class),
         LIBRARY(LibraryPainter.class),
         LABORATORY(LaboratoryPainter.class),
         VAULT(VaultPainter.class),
-        TRAPS(LiveVentsPainter.class),
+        VENTS(LiveVentsPainter.class),
         STORAGE(StoragePainter.class),
         MAGIC_WELL(TerminalPainter.class),
         GARDEN(MedicalPainter.class),
@@ -127,12 +127,12 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 
     private static final ArrayList<Type> ALL_SPEC = new ArrayList<>(Arrays.asList(
             Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
-            Type.TREASURY, Type.TRAPS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
+            Type.TREASURY, Type.VENTS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
     ));
 
     static ArrayList<Type> SPECIALS = new ArrayList<>(Arrays.asList(
             Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
-            Type.TREASURY, Type.TRAPS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
+            Type.TREASURY, Type.VENTS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
     ));
 
     public Type type = Type.NULL;

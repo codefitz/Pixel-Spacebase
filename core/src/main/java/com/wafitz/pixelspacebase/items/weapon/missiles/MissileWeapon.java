@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.PinCushion;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.rings.TargetingModule;
+import com.wafitz.pixelspacebase.items.modules.TargetingModule;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Projecting;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -145,15 +145,15 @@ abstract public class MissileWeapon extends Weapon {
             info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
         }
 
-        if (enchantment != null && (cursedKnown || !enchantment.curse())) {
+        if (enchantment != null && (malfunctioningKnown || !enchantment.malfunction())) {
             info += "\n\n" + Messages.get(Weapon.class, "enchanted", enchantment.name());
             info += " " + Messages.get(enchantment, "desc");
         }
 
-        if (cursed && isEquipped(Dungeon.hero)) {
-            info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
-        } else if (cursedKnown && cursed) {
-            info += "\n\n" + Messages.get(Weapon.class, "cursed");
+        if (malfunctioning && isEquipped(Dungeon.hero)) {
+            info += "\n\n" + Messages.get(Weapon.class, "malfunctioning_worn");
+        } else if (malfunctioningKnown && malfunctioning) {
+            info += "\n\n" + Messages.get(Weapon.class, "malfunctioning");
         }
 
         info += "\n\n" + Messages.get(MissileWeapon.class, "distance");

@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ShaftParticle;
-import com.wafitz.pixelspacebase.items.potions.PotionOfHealing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -58,7 +58,7 @@ public class Sungrass extends Plant {
             image = ItemSpriteSheet.SEED_SUNGRASS;
 
             plantClass = Sungrass.class;
-            alchemyClass = PotionOfHealing.class;
+            alchemyClass = ExperimentalTechOfHealing.class;
 
             bones = true;
         }

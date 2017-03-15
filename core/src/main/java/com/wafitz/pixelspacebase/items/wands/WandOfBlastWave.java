@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.effects.Effects;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
 import com.wafitz.pixelspacebase.effects.Pushing;
-import com.wafitz.pixelspacebase.items.weapon.melee.MagesStaff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -144,7 +144,7 @@ public class WandOfBlastWave extends DamageWand {
 
     @Override
     //behaves just like glyph of Repulsion
-    public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+    public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
         int level = Math.max(0, staff.level());
 
         // lvl 0 - 25%
@@ -164,7 +164,7 @@ public class WandOfBlastWave extends DamageWand {
     }
 
     @Override
-    public void staffFx(MagesStaff.StaffParticle particle) {
+    public void staffFx(DM3000Staff.StaffParticle particle) {
         particle.color(0x664422);
         particle.am = 0.6f;
         particle.setLifespan(3f);
@@ -173,7 +173,7 @@ public class WandOfBlastWave extends DamageWand {
         particle.radiateXY(2.5f);
     }
 
-    public static class BlastWave extends Image {
+    private static class BlastWave extends Image {
 
         private static final float TIME_TO_FADE = 0.2f;
 
@@ -206,7 +206,7 @@ public class WandOfBlastWave extends DamageWand {
             }
         }
 
-        public static void blast(int pos) {
+        static void blast(int pos) {
             Group parent = Dungeon.hero.sprite.parent;
             BlastWave b = (BlastWave) parent.recycle(BlastWave.class);
             parent.bringToFront(b);

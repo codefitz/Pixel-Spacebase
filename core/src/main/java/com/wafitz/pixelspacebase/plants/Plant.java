@@ -116,7 +116,7 @@ public abstract class Plant implements Bundlable {
 
     public static class Seed extends Item {
 
-        public static final String AC_PLANT = "PLANT";
+        static final String AC_PLANT = "PLANT";
 
         private static final float TIME_TO_PLANT = 1f;
 
@@ -138,7 +138,7 @@ public abstract class Plant implements Bundlable {
 
         @Override
         protected void onThrow(int cell) {
-            if (Dungeon.level.map[cell] == Terrain.ALCHEMY || Level.pit[cell] || Dungeon.level.traps.get(cell) != null) {
+            if (Dungeon.level.map[cell] == Terrain.ALCHEMY || Level.pit[cell] || Dungeon.level.vents.get(cell) != null) {
                 super.onThrow(cell);
             } else {
                 Dungeon.level.plant(this, cell);

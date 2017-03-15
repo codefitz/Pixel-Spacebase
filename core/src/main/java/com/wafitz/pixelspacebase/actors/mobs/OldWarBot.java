@@ -54,7 +54,7 @@ public class OldWarBot extends Mob {
 
         do {
             weapon = (Weapon) Generator.random(Generator.Category.WEAPON);
-        } while (!(weapon instanceof MeleeWeapon) || weapon.cursed);
+        } while (!(weapon instanceof MeleeWeapon) || weapon.malfunctioning);
 
         weapon.identify();
         weapon.enchant(Enchantment.random());
@@ -80,7 +80,7 @@ public class OldWarBot extends Mob {
     @Override
     protected boolean act() {
         if (Dungeon.visible[pos]) {
-            Journal.add(Journal.Feature.STATUE);
+            Journal.add(Journal.Feature.OLDWARBOT);
         }
         return super.act();
     }
@@ -138,7 +138,7 @@ public class OldWarBot extends Mob {
 
     @Override
     public void destroy() {
-        Journal.remove(Journal.Feature.STATUE);
+        Journal.remove(Journal.Feature.OLDWARBOT);
         super.destroy();
     }
 

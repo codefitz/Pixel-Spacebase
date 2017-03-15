@@ -31,7 +31,7 @@ public class Chrome {
         BUTTON,
         TAG,
         GEM,
-        SCROLL,
+        SCRIPT,
         TAB_SET,
         TAB_SELECTED,
         TAB_UNSELECTED
@@ -52,7 +52,7 @@ public class Chrome {
                 return new NinePatch(Asset, 22, 18, 16, 14, 3);
             case GEM:
                 return new NinePatch(Asset, 0, 32, 32, 32, 13);
-            case SCROLL:
+            case SCRIPT:
                 return new NinePatch(Asset, 32, 32, 32, 32, 5, 11, 5, 11);
             case TAB_SET:
                 return new NinePatch(Asset, 64, 0, 20, 20, 6);

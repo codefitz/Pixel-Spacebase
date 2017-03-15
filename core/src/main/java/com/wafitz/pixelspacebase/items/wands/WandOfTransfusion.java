@@ -38,8 +38,8 @@ import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.rings.Module;
-import com.wafitz.pixelspacebase.items.weapon.melee.MagesStaff;
+import com.wafitz.pixelspacebase.items.modules.Module;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -121,10 +121,10 @@ public class WandOfTransfusion extends Wand {
         } else if (heap != null && heap.type == Heap.Type.HEAP) {
             Item item = heap.peek();
 
-            //30% + 10%*lvl chance to uncurse the item and reset it to base level if degraded.
+            //30% + 10%*lvl chance to fix the item and reset it to base level if degraded.
             if (item != null && Random.Float() <= 0.3f + level() * 0.1f) {
-                if (item.cursed) {
-                    item.cursed = false;
+                if (item.malfunctioning) {
+                    item.malfunctioning = false;
                     CellEmitter.get(cell).start(ShadowParticle.UP, 0.05f, 10);
                     Sample.INSTANCE.play(Assets.SND_BURNING);
                 }
@@ -137,24 +137,24 @@ public class WandOfTransfusion extends Wand {
                 }
             }
 
-            //if we find some trampled grass...
-        } else if (Dungeon.level.map[cell] == Terrain.GRASS) {
+            //if we find some trampled lightedvent...
+        } else if (Dungeon.level.map[cell] == Terrain.LIGHTEDVENT) {
 
-            //regrow one grass tile, suuuuuper useful...
-            Level.set(cell, Terrain.HIGH_GRASS);
+            //regrow one lightedvent tile, suuuuuper useful...
+            Level.set(cell, Terrain.OFFVENT);
             GameScene.updateMap(cell);
             CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 4);
 
             //If we find embers...
         } else if (Dungeon.level.map[cell] == Terrain.EMBERS) {
 
-            //30% + 3%*lvl chance to grow a random plant, or just regrow grass.
+            //30% + 3%*lvl chance to grow a random plant, or just regrow lightedvent.
             if (Random.Float() <= 0.3f + level() * 0.03f) {
                 Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), cell);
                 CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 8);
                 GameScene.updateMap(cell);
             } else {
-                Level.set(cell, Terrain.HIGH_GRASS);
+                Level.set(cell, Terrain.OFFVENT);
                 GameScene.updateMap(cell);
                 CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 4);
             }
@@ -187,7 +187,7 @@ public class WandOfTransfusion extends Wand {
     }
 
     @Override
-    public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+    public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
         // lvl 0 - 10%
         // lvl 1 - 18%
         // lvl 2 - 25%
@@ -207,7 +207,7 @@ public class WandOfTransfusion extends Wand {
     }
 
     @Override
-    public void staffFx(MagesStaff.StaffParticle particle) {
+    public void staffFx(DM3000Staff.StaffParticle particle) {
         particle.color(0xCC0000);
         particle.am = 0.6f;
         particle.setLifespan(1f);

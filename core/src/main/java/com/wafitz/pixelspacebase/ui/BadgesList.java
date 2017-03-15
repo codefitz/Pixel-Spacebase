@@ -33,9 +33,9 @@ import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
 
-public class BadgesList extends ScrollPane {
+public class BadgesList extends ScriptPane {
 
-    private ArrayList<ListItem> items = new ArrayList<ListItem>();
+    private ArrayList<ListItem> items = new ArrayList<>();
 
     public BadgesList(boolean global) {
         super(new Component());
@@ -87,7 +87,7 @@ public class BadgesList extends ScrollPane {
         private Image icon;
         private RenderedText label;
 
-        public ListItem(Badges.Badge badge) {
+        ListItem(Badges.Badge badge) {
             super();
 
             this.badge = badge;

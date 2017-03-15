@@ -71,7 +71,7 @@ public class StartScene extends PixelScene {
     private GameButton btnLoad;
     private GameButton btnNewGame;
 
-    private boolean huntressUnlocked;
+    private boolean captainUnlocked;
     private Group unlock;
 
     public static HeroClass curClass;
@@ -198,7 +198,7 @@ public class StartScene extends PixelScene {
         unlock = new Group();
         add(unlock);
 
-        if (!(huntressUnlocked = Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3))) {
+        if (!(captainUnlocked = Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3))) {
 
             RenderedTextMultiline text = PixelScene.renderMultiline(Messages.get(this, "unlock"), 9);
             text.maxWidth((int) width);
@@ -250,7 +250,7 @@ public class StartScene extends PixelScene {
         }
         shields.get(curClass = cl).highlight(true);
 
-        if (cl != HeroClass.CAPTAIN || huntressUnlocked) {
+        if (cl != HeroClass.CAPTAIN || captainUnlocked) {
 
             unlock.visible = false;
 

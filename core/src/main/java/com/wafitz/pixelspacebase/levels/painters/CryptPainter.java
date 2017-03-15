@@ -73,13 +73,13 @@ public class CryptPainter extends Painter {
         //1 floor set higher than normal
         Armor prize = Generator.randomArmor((Dungeon.depth / 5) + 1);
 
-        //if it isn't already cursed, give it a free upgrade
-        if (!prize.cursed) {
+        //if it isn't already malfunctioning, give it a free upgrade
+        if (!prize.malfunctioning) {
             prize.upgrade();
-            //curse the armor, unless it has a glyph
+            //malfunction the armor, unless it has a glyph
             if (!prize.hasGoodGlyph()) {
-                prize.cursed = prize.cursedKnown = true;
-                prize.inscribe(Armor.Glyph.randomCurse());
+                prize.malfunctioning = prize.malfunctioningKnown = true;
+                prize.inscribe(Armor.Glyph.randomMalfunction());
             }
         }
 

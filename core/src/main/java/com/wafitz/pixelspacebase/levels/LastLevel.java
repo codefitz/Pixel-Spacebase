@@ -151,10 +151,10 @@ public class LastLevel extends Level {
         switch (tile) {
             case Terrain.WATER:
                 return Messages.get(HallsLevel.class, "water_name");
-            case Terrain.GRASS:
-                return Messages.get(HallsLevel.class, "grass_name");
-            case Terrain.HIGH_GRASS:
-                return Messages.get(HallsLevel.class, "high_grass_name");
+            case Terrain.LIGHTEDVENT:
+                return Messages.get(HallsLevel.class, "lightedvent_name");
+            case Terrain.OFFVENT:
+                return Messages.get(HallsLevel.class, "off_vent_name");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
                 return Messages.get(HallsLevel.class, "statue_name");

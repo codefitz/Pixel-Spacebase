@@ -24,9 +24,9 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Weakness;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.potions.PotionOfHealing;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -52,7 +52,7 @@ public class Warlock extends Mob implements Callback {
         EXP = 11;
         maxLvl = 21;
 
-        loot = Generator.Category.POTION;
+        loot = Generator.Category.EXPERIMENTALTECH;
         lootChance = 0.83f;
 
         properties.add(Property.UNDEAD);
@@ -131,7 +131,7 @@ public class Warlock extends Mob implements Callback {
     public Item createLoot() {
         Item loot = super.createLoot();
 
-        if (loot instanceof PotionOfHealing) {
+        if (loot instanceof ExperimentalTechOfHealing) {
 
             //count/10 chance of not dropping potion
             if (Random.Int(10) - Dungeon.limitedDrops.warlockHP.count < 0) {

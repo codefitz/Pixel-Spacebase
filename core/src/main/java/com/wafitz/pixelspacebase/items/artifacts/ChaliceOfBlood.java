@@ -44,12 +44,12 @@ public class ChaliceOfBlood extends Artifact {
         levelCap = 10;
     }
 
-    public static final String AC_PRICK = "PRICK";
+    private static final String AC_PRICK = "PRICK";
 
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        if (isEquipped(hero) && level() < levelCap && !cursed)
+        if (isEquipped(hero) && level() < levelCap && !malfunctioning)
             actions.add(AC_PRICK);
         return actions;
     }
@@ -101,7 +101,7 @@ public class ChaliceOfBlood extends Artifact {
             damage = 1;
         } else {
             Sample.INSTANCE.play(Assets.SND_CURSED);
-            hero.sprite.emitter().burst(ShadowParticle.CURSE, 4 + (damage / 10));
+            hero.sprite.emitter().burst(ShadowParticle.MALFUNCTION, 4 + (damage / 10));
         }
 
         hero.damage(damage, this);
@@ -141,8 +141,8 @@ public class ChaliceOfBlood extends Artifact {
 
         if (isEquipped(Dungeon.hero)) {
             desc += "\n\n";
-            if (cursed)
-                desc += Messages.get(this, "desc_cursed");
+            if (malfunctioning)
+                desc += Messages.get(this, "desc_malfunctioning");
             else if (level() == 0)
                 desc += Messages.get(this, "desc_1");
             else if (level() < levelCap)

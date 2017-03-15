@@ -29,8 +29,8 @@ import com.wafitz.pixelspacebase.actors.buffs.Charm;
 import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Sleep;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfLullaby;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfLullaby;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -42,7 +42,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class Succubus extends Mob {
+class Succubus extends Mob {
 
     private static final int BLINK_DELAY = 5;
 
@@ -58,7 +58,7 @@ public class Succubus extends Mob {
         EXP = 12;
         maxLvl = 25;
 
-        loot = new ScrollOfLullaby();
+        loot = new ScriptOfLullaby();
         lootChance = 0.05f;
 
         properties.add(Property.DEMONIC);
@@ -122,7 +122,7 @@ public class Succubus extends Mob {
             }
         }
 
-        ScrollOfTeleportation.appear(this, cell);
+        ScriptOfTeleportation.appear(this, cell);
 
         delay = BLINK_DELAY;
     }

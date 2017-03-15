@@ -28,7 +28,7 @@ public class DroneSprite extends MobSprite {
     public DroneSprite() {
         super();
 
-        texture(Assets.BEE);
+        texture(Assets.DRONE);
 
         TextureFilm frames = new TextureFilm(texture, 16, 16);
 

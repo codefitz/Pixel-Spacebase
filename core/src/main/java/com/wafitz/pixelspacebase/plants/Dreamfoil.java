@@ -33,7 +33,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.buffs.Weakness;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.items.potions.PotionOfPurity;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfPurity;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -69,7 +69,7 @@ public class Dreamfoil extends Plant {
             image = ItemSpriteSheet.SEED_DREAMFOIL;
 
             plantClass = Dreamfoil.class;
-            alchemyClass = PotionOfPurity.class;
+            alchemyClass = ExperimentalTechOfPurity.class;
         }
     }
 }

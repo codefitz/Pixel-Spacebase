@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.Fire;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
-import com.wafitz.pixelspacebase.items.potions.PotionOfLiquidFlame;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLiquidFlame;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
@@ -50,7 +50,7 @@ public class Firebloom extends Plant {
             image = ItemSpriteSheet.SEED_FIREBLOOM;
 
             plantClass = Firebloom.class;
-            alchemyClass = PotionOfLiquidFlame.class;
+            alchemyClass = ExperimentalTechOfLiquidFlame.class;
         }
     }
 }

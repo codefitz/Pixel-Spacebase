@@ -110,7 +110,7 @@ public class Toolbar extends Component {
         add(btnQuick[0] = new QuickslotTool(64, 0, 22, 24, 0));
 
         add(btnInventory = new Tool(0, 0, 24, 26) {
-            private GoldIndicator gold;
+            private PartsIndicator parts;
 
             @Override
             protected void onClick() {
@@ -125,14 +125,14 @@ public class Toolbar extends Component {
             @Override
             protected void createChildren() {
                 super.createChildren();
-                gold = new GoldIndicator();
-                add(gold);
+                parts = new PartsIndicator();
+                add(parts);
             }
 
             @Override
             protected void layout() {
                 super.layout();
-                gold.fill(this);
+                parts.fill(this);
             }
 
         });

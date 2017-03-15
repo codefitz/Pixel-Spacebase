@@ -22,10 +22,10 @@ package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.blobs.Craft;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
-import com.wafitz.pixelspacebase.items.potions.Potion;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -74,9 +74,9 @@ public class LaboratoryPainter extends Painter {
 
     private static Item prize(Level level) {
 
-        Item prize = level.findPrizeItem(Potion.class);
+        Item prize = level.findPrizeItem(ExperimentalTech.class);
         if (prize == null)
-            prize = Generator.random(Generator.Category.POTION);
+            prize = Generator.random(Generator.Category.EXPERIMENTALTECH);
 
         return prize;
     }

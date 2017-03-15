@@ -26,10 +26,10 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.effects.Chains;
 import com.wafitz.pixelspacebase.effects.Pushing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.potions.PotionOfHealing;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -39,7 +39,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-public class Guard extends Mob {
+class Guard extends Mob {
 
     //they can only use their chains once
     private boolean chainsUsed = false;
@@ -152,12 +152,12 @@ public class Guard extends Mob {
             } while (loot.tier >= 4 && Random.Int(2) == 0);
             loot.level(0);
             return loot;
-            //otherwise, we may drop a health potion. overall chance is 7/(8 * (7 + potions dropped))
-            //with 0 potions dropped that simplifies to 1/8
+            //otherwise, we may drop a health potion. overall chance is 7/(8 * (7 + ExperimentalTech dropped))
+            //with 0 ExperimentalTech dropped that simplifies to 1/8
         } else {
             if (Random.Int(7 + Dungeon.limitedDrops.guardHP.count) < 7) {
                 Dungeon.limitedDrops.guardHP.drop();
-                return new PotionOfHealing();
+                return new ExperimentalTechOfHealing();
             }
         }
 

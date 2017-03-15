@@ -52,12 +52,12 @@ public class CraftingTerminal {
         if (heap == null)
             while (items.hasNext() && !foundFruit) {
                 curItem = items.next();
-                if (curItem instanceof Blandfruit && ((Blandfruit) curItem).potionAttrib == null) {
+                if (curItem instanceof Blandfruit && ((Blandfruit) curItem).experimentalTechAttrib == null) {
                     GameScene.show(
                             new WndOptions(Messages.get(CraftingTerminal.class, "pot"),
                                     Messages.get(CraftingTerminal.class, "options"),
                                     Messages.get(CraftingTerminal.class, "fruit"),
-                                    Messages.get(CraftingTerminal.class, "potion")) {
+                                    Messages.get(CraftingTerminal.class, "experimentaltech")) {
                                 @Override
                                 protected void onSelect(int index) {
                                     if (index == 0) {

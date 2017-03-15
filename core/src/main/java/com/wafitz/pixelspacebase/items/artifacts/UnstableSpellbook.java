@@ -28,10 +28,10 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfIdentify;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicMapping;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfRemoveCurse;
+import com.wafitz.pixelspacebase.items.scripts.FixScript;
+import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfIdentify;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -58,22 +58,22 @@ public class UnstableSpellbook extends Artifact {
         defaultAction = AC_READ;
     }
 
-    public static final String AC_READ = "READ";
-    public static final String AC_ADD = "ADD";
+    private static final String AC_READ = "READ";
+    private static final String AC_ADD = "ADD";
 
-    private final ArrayList<Class> scrolls = new ArrayList<>();
+    private final ArrayList<Class> scripts = new ArrayList<>();
 
-    protected WndBag.Mode mode = WndBag.Mode.SCROLL;
+    protected WndBag.Mode mode = WndBag.Mode.SCRIPT;
 
     public UnstableSpellbook() {
         super();
 
-        Class<?>[] scrollClasses = Generator.Category.SCROLL.classes;
-        float[] probs = Generator.Category.SCROLL.probs.clone(); //array of primitives, clone gives deep copy.
+        Class<?>[] scriptClasses = Generator.Category.SCRIPT.classes;
+        float[] probs = Generator.Category.SCRIPT.probs.clone(); //array of primitives, clone gives deep copy.
         int i = Random.chances(probs);
 
         while (i != -1) {
-            scrolls.add(scrollClasses[i]);
+            scripts.add(scriptClasses[i]);
             probs[i] = 0;
 
             i = Random.chances(probs);
@@ -83,9 +83,9 @@ public class UnstableSpellbook extends Artifact {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        if (isEquipped(hero) && charge > 0 && !cursed)
+        if (isEquipped(hero) && charge > 0 && !malfunctioning)
             actions.add(AC_READ);
-        if (isEquipped(hero) && level() < levelCap && !cursed)
+        if (isEquipped(hero) && level() < levelCap && !malfunctioning)
             actions.add(AC_ADD);
         return actions;
     }
@@ -100,21 +100,21 @@ public class UnstableSpellbook extends Artifact {
             if (hero.buff(Blindness.class) != null) GLog.w(Messages.get(this, "blinded"));
             else if (!isEquipped(hero)) GLog.i(Messages.get(Artifact.class, "need_to_equip"));
             else if (charge == 0) GLog.i(Messages.get(this, "no_charge"));
-            else if (cursed) GLog.i(Messages.get(this, "cursed"));
+            else if (malfunctioning) GLog.i(Messages.get(this, "malfunctioning"));
             else {
                 charge--;
 
-                Scroll scroll;
+                Script script;
                 do {
-                    scroll = (Scroll) Generator.random(Generator.Category.SCROLL);
-                } while (scroll == null ||
-                        //gotta reduce the rate on these scrolls or that'll be all the item does.
-                        ((scroll instanceof ScrollOfIdentify ||
-                                scroll instanceof ScrollOfRemoveCurse ||
-                                scroll instanceof ScrollOfMagicMapping) && Random.Int(2) == 0));
+                    script = (Script) Generator.random(Generator.Category.SCRIPT);
+                } while (script == null ||
+                        //gotta reduce the rate on these scripts or that'll be all the item does.
+                        ((script instanceof ScriptOfIdentify ||
+                                script instanceof FixScript ||
+                                script instanceof ScriptOfMagicMapping) && Random.Int(2) == 0));
 
-                scroll.ownedByBook = true;
-                scroll.execute(hero, AC_READ);
+                script.ownedByBook = true;
+                script.execute(hero, AC_READ);
             }
 
         } else if (action.equals(AC_ADD)) {
@@ -132,8 +132,8 @@ public class UnstableSpellbook extends Artifact {
         chargeCap = (((level() + 1) / 2) + 3);
 
         //for artifact transmutation.
-        while (scrolls.size() > (levelCap - 1 - level()))
-            scrolls.remove(0);
+        while (scripts.size() > (levelCap - 1 - level()))
+            scripts.remove(0);
 
         return super.upgrade();
     }
@@ -142,36 +142,36 @@ public class UnstableSpellbook extends Artifact {
     public String desc() {
         String desc = super.desc();
 
-        if (cursed && isEquipped(Dungeon.hero)) {
-            desc += "\n\n" + Messages.get(this, "desc_cursed");
+        if (malfunctioning && isEquipped(Dungeon.hero)) {
+            desc += "\n\n" + Messages.get(this, "desc_malfunctioning");
         }
 
         if (level() < levelCap)
-            if (scrolls.size() > 0) {
+            if (scripts.size() > 0) {
                 desc += "\n\n" + Messages.get(this, "desc_index");
-                desc += "\n" + Messages.get(scrolls.get(0), "name");
-                if (scrolls.size() > 1) desc += "\n" + Messages.get(scrolls.get(1), "name");
+                desc += "\n" + Messages.get(scripts.get(0), "name");
+                if (scripts.size() > 1) desc += "\n" + Messages.get(scripts.get(1), "name");
             }
 
         return desc;
     }
 
-    private static final String SCROLLS = "scrolls";
+    private static final String SCRIPTS = "scripts";
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
-        bundle.put(SCROLLS, scrolls.toArray(new Class[scrolls.size()]));
+        bundle.put(SCRIPTS, scripts.toArray(new Class[scripts.size()]));
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        scrolls.clear();
-        Collections.addAll(scrolls, bundle.getClassArray(SCROLLS));
-        if (scrolls.contains(null)) {
+        scripts.clear();
+        Collections.addAll(scripts, bundle.getClassArray(SCRIPTS));
+        if (scripts.contains(null)) {
             //compatability with pre-0.3.4, just give them a maxed book.
-            scrolls.clear();
+            scripts.clear();
             level(levelCap);
             chargeCap = 8;
         }
@@ -181,7 +181,7 @@ public class UnstableSpellbook extends Artifact {
         @Override
         public boolean act() {
             LockedFloor lock = target.buff(LockedFloor.class);
-            if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
+            if (charge < chargeCap && !malfunctioning && (lock == null || lock.regenOn())) {
                 partialCharge += 1 / (150f - (chargeCap - charge) * 15f);
 
                 if (partialCharge >= 1) {
@@ -205,27 +205,27 @@ public class UnstableSpellbook extends Artifact {
     protected WndBag.Listener itemSelector = new WndBag.Listener() {
         @Override
         public void onSelect(Item item) {
-            if (item != null && item instanceof Scroll && item.isIdentified()) {
+            if (item != null && item instanceof Script && item.isIdentified()) {
                 Hero hero = Dungeon.hero;
-                for (int i = 0; (i <= 1 && i < scrolls.size()); i++) {
-                    if (scrolls.get(i).equals(item.getClass())) {
+                for (int i = 0; (i <= 1 && i < scripts.size()); i++) {
+                    if (scripts.get(i).equals(item.getClass())) {
                         hero.sprite.operate(hero.pos);
                         hero.busy();
                         hero.spend(2f);
                         Sample.INSTANCE.play(Assets.SND_BURNING);
                         hero.sprite.emitter().burst(ElmoParticle.FACTORY, 12);
 
-                        scrolls.remove(i);
+                        scripts.remove(i);
                         item.detach(hero.belongings.backpack);
 
                         upgrade();
-                        GLog.i(Messages.get(UnstableSpellbook.class, "infuse_scroll"));
+                        GLog.i(Messages.get(UnstableSpellbook.class, "infuse_script"));
                         return;
                     }
                 }
-                GLog.w(Messages.get(UnstableSpellbook.class, "unable_scroll"));
-            } else if (item instanceof Scroll && !item.isIdentified())
-                GLog.w(Messages.get(UnstableSpellbook.class, "unknown_scroll"));
+                GLog.w(Messages.get(UnstableSpellbook.class, "buggy_script"));
+            } else if (item instanceof Script && !item.isIdentified())
+                GLog.w(Messages.get(UnstableSpellbook.class, "unknown_script"));
         }
     };
 }

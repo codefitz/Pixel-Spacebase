@@ -22,27 +22,27 @@ package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.PixelSpacebase;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLevitation;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.potions.PotionOfLevitation;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.levels.traps.BlazingTrap;
-import com.wafitz.pixelspacebase.levels.traps.ConfusionTrap;
-import com.wafitz.pixelspacebase.levels.traps.DisintegrationTrap;
-import com.wafitz.pixelspacebase.levels.traps.ExplosiveTrap;
-import com.wafitz.pixelspacebase.levels.traps.FlockTrap;
-import com.wafitz.pixelspacebase.levels.traps.GrimTrap;
-import com.wafitz.pixelspacebase.levels.traps.ParalyticTrap;
-import com.wafitz.pixelspacebase.levels.traps.SpearTrap;
-import com.wafitz.pixelspacebase.levels.traps.SummoningTrap;
-import com.wafitz.pixelspacebase.levels.traps.TeleportationTrap;
-import com.wafitz.pixelspacebase.levels.traps.ToxicTrap;
-import com.wafitz.pixelspacebase.levels.traps.Trap;
-import com.wafitz.pixelspacebase.levels.traps.VenomTrap;
-import com.wafitz.pixelspacebase.levels.traps.WarpingTrap;
+import com.wafitz.pixelspacebase.levels.vents.BlazingVent;
+import com.wafitz.pixelspacebase.levels.vents.ConfusionVent;
+import com.wafitz.pixelspacebase.levels.vents.DisintegrationVent;
+import com.wafitz.pixelspacebase.levels.vents.ExplosiveVent;
+import com.wafitz.pixelspacebase.levels.vents.FlockVent;
+import com.wafitz.pixelspacebase.levels.vents.GrimVent;
+import com.wafitz.pixelspacebase.levels.vents.ParalyticVent;
+import com.wafitz.pixelspacebase.levels.vents.SpearVent;
+import com.wafitz.pixelspacebase.levels.vents.SummoningVent;
+import com.wafitz.pixelspacebase.levels.vents.TeleportationVent;
+import com.wafitz.pixelspacebase.levels.vents.ToxicVent;
+import com.wafitz.pixelspacebase.levels.vents.VenomVent;
+import com.wafitz.pixelspacebase.levels.vents.Vent;
+import com.wafitz.pixelspacebase.levels.vents.WarpingVent;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -52,26 +52,26 @@ public class LiveVentsPainter extends Painter {
 
         fill(level, room, Terrain.WALL);
 
-        Class<? extends Trap> trapClass;
+        Class<? extends Vent> ventClass;
         switch (Random.Int(5)) {
             case 0:
             default:
-                trapClass = SpearTrap.class;
+                ventClass = SpearVent.class;
                 break;
             case 1:
-                trapClass = !Dungeon.bossLevel(Dungeon.depth + 1) ? null : SummoningTrap.class;
+                ventClass = !Dungeon.bossLevel(Dungeon.depth + 1) ? null : SummoningVent.class;
                 break;
             case 2:
             case 3:
             case 4:
-                trapClass = Random.oneOf(levelTraps[Dungeon.depth / 5]);
+                ventClass = Random.oneOf(levelVents[Dungeon.depth / 5]);
                 break;
         }
 
-        if (trapClass == null) {
+        if (ventClass == null) {
             fill(level, room, 1, Terrain.CHASM);
         } else {
-            fill(level, room, 1, Terrain.TRAP);
+            fill(level, room, 1, Terrain.VENT);
         }
 
         Room.Door door = room.entrance();
@@ -101,9 +101,9 @@ public class LiveVentsPainter extends Painter {
 
         for (Point p : room.getPoints()) {
             int cell = level.pointToCell(p);
-            if (level.map[cell] == Terrain.TRAP) {
+            if (level.map[cell] == Terrain.VENT) {
                 try {
-                    level.setTrap(trapClass.newInstance().reveal(), cell);
+                    level.setVent(ventClass.newInstance().reveal(), cell);
                 } catch (Exception e) {
                     PixelSpacebase.reportException(e);
                 }
@@ -121,7 +121,7 @@ public class LiveVentsPainter extends Painter {
             level.drop(prize(level), pos);
         }
 
-        level.addItemToSpawn(new PotionOfLevitation());
+        level.addItemToSpawn(new ExperimentalTechOfLevitation());
     }
 
     private static Item prize(Level level) {
@@ -153,16 +153,16 @@ public class LiveVentsPainter extends Painter {
     }
 
     @SuppressWarnings("unchecked")
-    private static Class<? extends Trap>[][] levelTraps = new Class[][]{
+    private static Class<? extends Vent>[][] levelVents = new Class[][]{
             //sewers
-            {ToxicTrap.class, TeleportationTrap.class, FlockTrap.class},
+            {ToxicVent.class, TeleportationVent.class, FlockVent.class},
             //prison
-            {ConfusionTrap.class, ExplosiveTrap.class, ParalyticTrap.class},
+            {ConfusionVent.class, ExplosiveVent.class, ParalyticVent.class},
             //caves
-            {BlazingTrap.class, VenomTrap.class, ExplosiveTrap.class},
+            {BlazingVent.class, VenomVent.class, ExplosiveVent.class},
             //city
-            {WarpingTrap.class, VenomTrap.class, DisintegrationTrap.class},
+            {WarpingVent.class, VenomVent.class, DisintegrationVent.class},
             //halls, muahahahaha
-            {GrimTrap.class}
+            {GrimVent.class}
     };
 }

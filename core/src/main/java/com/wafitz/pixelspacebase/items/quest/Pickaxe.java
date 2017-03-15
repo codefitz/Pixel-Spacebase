@@ -46,9 +46,9 @@ import java.util.ArrayList;
 
 public class Pickaxe extends Weapon {
 
-    public static final String AC_MINE = "MINE";
+    private static final String AC_MINE = "MINE";
 
-    public static final float TIME_TO_MINE = 2;
+    private static final float TIME_TO_MINE = 2;
 
     private static final Glowing BLOODY = new Glowing(0x550000);
 
@@ -116,11 +116,11 @@ public class Pickaxe extends Weapon {
                             Level.set(pos, Terrain.WALL);
                             GameScene.updateMap(pos);
 
-                            DarkGold gold = new DarkGold();
-                            if (gold.doPickUp(Dungeon.hero)) {
-                                GLog.i(Messages.get(Dungeon.hero, "you_now_have", gold.name()));
+                            DarkParts parts = new DarkParts();
+                            if (parts.doPickUp(Dungeon.hero)) {
+                                GLog.i(Messages.get(Dungeon.hero, "you_now_have", parts.name()));
                             } else {
-                                Dungeon.level.drop(gold, hero.pos).sprite.drop();
+                                Dungeon.level.drop(parts, hero.pos).sprite.drop();
                             }
 
                             Hunger hunger = hero.buff(Hunger.class);

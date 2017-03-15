@@ -35,12 +35,12 @@ import com.wafitz.pixelspacebase.actors.mobs.King;
 import com.wafitz.pixelspacebase.actors.mobs.Tengu;
 import com.wafitz.pixelspacebase.actors.mobs.Yog;
 import com.wafitz.pixelspacebase.items.Amulet;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.bags.Bag;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.rings.Module;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
+import com.wafitz.pixelspacebase.items.modules.Module;
+import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.messages.Languages;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -118,7 +118,7 @@ public enum Rankings {
     }
 
     private int score(boolean win) {
-        return (Statistics.goldCollected + Dungeon.hero.lvl * (win ? 26 : Dungeon.depth) * 100) * (win ? 2 : 1);
+        return (Statistics.partsCollected + Dungeon.hero.lvl * (win ? 26 : Dungeon.depth) * 100) * (win ? 2 : 1);
     }
 
     public static final String HERO = "hero";
@@ -157,8 +157,8 @@ public enum Rankings {
 
         //save handler information
         Bundle handler = new Bundle();
-        Scroll.saveSelectively(handler, belongings.backpack.items);
-        Potion.saveSelectively(handler, belongings.backpack.items);
+        Script.saveSelectively(handler, belongings.backpack.items);
+        ExperimentalTech.saveSelectively(handler, belongings.backpack.items);
         //include worn rings
         if (belongings.misc1 != null) belongings.backpack.items.add(belongings.misc1);
         if (belongings.misc2 != null) belongings.backpack.items.add(belongings.misc2);
@@ -179,8 +179,8 @@ public enum Rankings {
         QuickSlotButton.reset();
 
         Bundle handler = data.getBundle(HANDLERS);
-        Scroll.restore(handler);
-        Potion.restore(handler);
+        Script.restore(handler);
+        ExperimentalTech.restore(handler);
         Module.restore(handler);
 
         Badges.loadLocal(data.getBundle(BADGES));
@@ -309,7 +309,7 @@ public enum Rankings {
             if (bundle.contains(REASON)) {
                 String info = bundle.getString(REASON).toLowerCase(Locale.ENGLISH);
                 if (info.equals("obtained the amulet of yendor")) cause = Amulet.class;
-                else if (info.contains("goo")) cause = FeralShapeshifter.class;
+                else if (info.contains("feralshapeshifter")) cause = FeralShapeshifter.class;
                 else if (info.contains("tengu")) cause = Tengu.class;
                 else if (info.contains("dm-300")) cause = DM300.class;
                 else if (info.contains("king")) cause = King.class;

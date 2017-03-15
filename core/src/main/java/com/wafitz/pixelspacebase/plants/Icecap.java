@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.plants;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.blobs.Fire;
 import com.wafitz.pixelspacebase.actors.blobs.Freezing;
-import com.wafitz.pixelspacebase.items.potions.PotionOfFrost;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfFrost;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.BArray;
@@ -54,7 +54,7 @@ public class Icecap extends Plant {
             image = ItemSpriteSheet.SEED_ICECAP;
 
             plantClass = Icecap.class;
-            alchemyClass = PotionOfFrost.class;
+            alchemyClass = ExperimentalTechOfFrost.class;
         }
     }
 }

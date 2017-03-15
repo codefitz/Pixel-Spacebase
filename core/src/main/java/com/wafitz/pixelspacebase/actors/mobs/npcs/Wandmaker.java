@@ -120,16 +120,16 @@ public class Wandmaker extends NPC {
             String msg2 = "";
             switch (Dungeon.hero.heroClass) {
                 case COMMANDER:
-                    msg1 += Messages.get(this, "intro_warrior");
+                    msg1 += Messages.get(this, "intro_commander");
                     break;
                 case SHAPESHIFTER:
-                    msg1 += Messages.get(this, "intro_rogue");
+                    msg1 += Messages.get(this, "intro_shapeshifter");
                     break;
                 case DM3000:
-                    msg1 += Messages.get(this, "intro_mage", Dungeon.hero.givenName());
+                    msg1 += Messages.get(this, "intro_dm3000", Dungeon.hero.givenName());
                     break;
                 case CAPTAIN:
-                    msg1 += Messages.get(this, "intro_huntress");
+                    msg1 += Messages.get(this, "intro_captain");
                     break;
             }
 
@@ -271,14 +271,14 @@ public class Wandmaker extends NPC {
 
                     given = false;
                     wand1 = (Wand) Generator.random(Generator.Category.WAND);
-                    wand1.cursed = false;
+                    wand1.malfunctioning = false;
                     wand1.identify();
                     wand1.upgrade();
 
                     do {
                         wand2 = (Wand) Generator.random(Generator.Category.WAND);
                     } while (wand2.getClass().equals(wand1.getClass()));
-                    wand2.cursed = false;
+                    wand2.malfunctioning = false;
                     wand2.identify();
                     wand2.upgrade();
 

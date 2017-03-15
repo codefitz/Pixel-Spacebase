@@ -28,7 +28,7 @@ public class ConfusedShapeshifterSprite extends MobSprite {
     public ConfusedShapeshifterSprite() {
         super();
 
-        texture(Assets.MIMIC);
+        texture(Assets.CONFUSEDSHAPESHIFTER);
 
         TextureFilm frames = new TextureFilm(texture, 16, 16);
 

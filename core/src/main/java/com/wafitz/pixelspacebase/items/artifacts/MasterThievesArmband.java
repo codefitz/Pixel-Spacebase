@@ -53,8 +53,8 @@ public class MasterThievesArmband extends Artifact {
     }
 
     public class Thievery extends ArtifactBuff {
-        public void collect(int gold) {
-            charge += gold / 2;
+        public void collect(int parts) {
+            charge += parts / 2;
         }
 
         @Override
@@ -88,7 +88,7 @@ public class MasterThievesArmband extends Artifact {
         }
 
         public float stealChance(int value) {
-            //get lvl*50 gold or lvl*3.33% item value of free charge, whichever is less.
+            //get lvl*50 parts or lvl*3.33% item value of free charge, whichever is less.
             int chargeBonus = Math.min(level() * 50, (value * level()) / 30);
             return (((float) charge + chargeBonus) / value);
         }

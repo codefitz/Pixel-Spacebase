@@ -24,7 +24,7 @@ public class Terrain {
 
     public static final int CHASM = 0;
     public static final int EMPTY = 1;
-    public static final int GRASS = 2;
+    public static final int LIGHTEDVENT = 2;
     public static final int EMPTY_WELL = 3;
     public static final int WALL = 4;
     public static final int DOOR = 5;
@@ -37,12 +37,12 @@ public class Terrain {
     public static final int WALL_DECO = 12;
     public static final int BARRICADE = 13;
     public static final int EMPTY_SP = 14;
-    public static final int HIGH_GRASS = 15;
+    public static final int OFFVENT = 15;
 
     public static final int SECRET_DOOR = 16;
-    public static final int SECRET_TRAP = 17;
-    public static final int TRAP = 18;
-    public static final int INACTIVE_TRAP = 19;
+    public static final int HIDDEN_VENT = 17;
+    public static final int VENT = 18;
+    public static final int INACTIVE_VENT = 19;
 
     public static final int EMPTY_DECO = 20;
     public static final int LOCKED_EXIT = 21;
@@ -71,7 +71,7 @@ public class Terrain {
     static {
         flags[CHASM] = AVOID | PIT;
         flags[EMPTY] = PASSABLE;
-        flags[GRASS] = PASSABLE | FLAMABLE;
+        flags[LIGHTEDVENT] = PASSABLE | FLAMABLE;
         flags[EMPTY_WELL] = PASSABLE;
         flags[WATER] = PASSABLE | LIQUID;
         flags[WALL] = LOS_BLOCKING | SOLID;
@@ -85,12 +85,12 @@ public class Terrain {
         flags[WALL_DECO] = flags[WALL];
         flags[BARRICADE] = FLAMABLE | SOLID | LOS_BLOCKING;
         flags[EMPTY_SP] = flags[EMPTY];
-        flags[HIGH_GRASS] = PASSABLE | LOS_BLOCKING | FLAMABLE;
+        flags[OFFVENT] = PASSABLE | LOS_BLOCKING | FLAMABLE;
 
         flags[SECRET_DOOR] = flags[WALL] | SECRET;
-        flags[SECRET_TRAP] = flags[EMPTY] | SECRET;
-        flags[TRAP] = AVOID;
-        flags[INACTIVE_TRAP] = flags[EMPTY];
+        flags[HIDDEN_VENT] = flags[EMPTY] | SECRET;
+        flags[VENT] = AVOID;
+        flags[INACTIVE_VENT] = flags[EMPTY];
 
         flags[EMPTY_DECO] = flags[EMPTY];
         flags[LOCKED_EXIT] = SOLID;
@@ -108,8 +108,8 @@ public class Terrain {
         switch (terr) {
             case SECRET_DOOR:
                 return DOOR;
-            case SECRET_TRAP:
-                return TRAP;
+            case HIDDEN_VENT:
+                return VENT;
             default:
                 return terr;
         }
@@ -140,7 +140,7 @@ public class Terrain {
     // wafitz.v4 No longer needed as Pixel Spacebase starts above v0.3.0
     //converts terrain values from pre versioncode 44 (0.3.0c) saves
     //TODO: remove when no longer supporting saves from 0.3.0b and under
-    public static int[] convertTrapsFrom43(int[] map, SparseArray<Trap> traps) {
+    public static int[] convertTrapsFrom43(int[] map, SparseArray<Vent> vents) {
         for (int i = 0; i < map.length; i++) {
 
             int c = map[i];
@@ -156,79 +156,79 @@ public class Terrain {
                 c -= 14; //41-46 becomes 27-32
             }
 
-            //trap tiles, must be converted to general trap tiles and specific traps instantiated
+            //trap tiles, must be converted to general trap tiles and specific vents instantiated
             else if (c >= 17 && c <= 40) {
                 //this is going to be messy...
-                Trap trap = null;
+                Vent trap = null;
                 switch (c) {
                     case 17:
-                        trap = new ToxicTrap().reveal();
+                        trap = new ToxicVent().reveal();
                         break;
                     case 18:
-                        trap = new ToxicTrap().hide();
+                        trap = new ToxicVent().hide();
                         break;
 
                     case 19:
-                        trap = new FireTrap().reveal();
+                        trap = new FireVent().reveal();
                         break;
                     case 20:
-                        trap = new FireTrap().hide();
+                        trap = new FireVent().hide();
                         break;
 
                     case 21:
-                        trap = new ParalyticTrap().reveal();
+                        trap = new ParalyticVent().reveal();
                         break;
                     case 22:
-                        trap = new ParalyticTrap().hide();
+                        trap = new ParalyticVent().hide();
                         break;
 
                     case 23:
-                        c = INACTIVE_TRAP;
+                        c = INACTIVE_VENT;
                         trap = null;
                         break;
 
                     case 27:
-                        trap = new PoisonTrap().reveal();
+                        trap = new PoisonVent().reveal();
                         break;
                     case 28:
-                        trap = new PoisonTrap().hide();
+                        trap = new PoisonVent().hide();
                         break;
 
                     case 30:
-                        trap = new AlarmTrap().reveal();
+                        trap = new AlarmVent().reveal();
                         break;
                     case 31:
-                        trap = new AlarmTrap().hide();
+                        trap = new AlarmVent().hide();
                         break;
 
                     case 32:
-                        trap = new LightningTrap().reveal();
+                        trap = new LightningVent().reveal();
                         break;
                     case 33:
-                        trap = new LightningTrap().hide();
+                        trap = new LightningVent().hide();
                         break;
 
                     case 37:
-                        trap = new GrippingTrap().reveal();
+                        trap = new GrippingVent().reveal();
                         break;
                     case 38:
-                        trap = new GrippingTrap().hide();
+                        trap = new GrippingVent().hide();
                         break;
 
                     case 39:
-                        trap = new SummoningTrap().reveal();
+                        trap = new SummoningVent().reveal();
                         break;
                     case 40:
-                        trap = new SummoningTrap().hide();
+                        trap = new SummoningVent().hide();
                         break;
                 }
                 if (trap != null) {
                     trap.set(i);
-                    traps.put(trap.pos, trap);
+                    vents.put(trap.pos, trap);
                     if (trap.visible)
-                        c = TRAP;
+                        c = VENT;
                     else
-                        c = SECRET_TRAP;
+                        c = HIDDEN_VENT;
                 }
             }
 

@@ -36,7 +36,7 @@ import com.wafitz.pixelspacebase.effects.MagicMissile;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.bags.Bag;
 import com.wafitz.pixelspacebase.items.bags.WandHolster;
-import com.wafitz.pixelspacebase.items.weapon.melee.MagesStaff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.CellSelector;
@@ -102,7 +102,7 @@ public abstract class Wand extends Item {
 
     protected abstract void onZap(Ballistica attack);
 
-    public abstract void onHit(MagesStaff staff, Char attacker, Char defender, int damage);
+    public abstract void onHit(DM3000Staff staff, Char attacker, Char defender, int damage);
 
     @Override
     public boolean collect(Bag container) {
@@ -171,8 +171,8 @@ public abstract class Wand extends Item {
 
         desc += "\n\n" + statsDesc();
 
-        if (cursed && cursedKnown)
-            desc += "\n\n" + Messages.get(Wand.class, "cursed");
+        if (malfunctioning && malfunctioningKnown)
+            desc += "\n\n" + Messages.get(Wand.class, "malfunctioning");
 
         return desc;
     }
@@ -201,7 +201,7 @@ public abstract class Wand extends Item {
         super.upgrade();
 
         if (Random.Float() > Math.pow(0.9, level()))
-            cursed = false;
+            malfunctioning = false;
 
         updateLevel();
         curCharges = Math.min(curCharges + 1, maxCharges);
@@ -238,7 +238,7 @@ public abstract class Wand extends Item {
         Sample.INSTANCE.play(Assets.SND_ZAP);
     }
 
-    public void staffFx(MagesStaff.StaffParticle particle) {
+    public void staffFx(DM3000Staff.StaffParticle particle) {
         particle.color(0xFFFFFF);
         particle.am = 0.3f;
         particle.setLifespan(1f);
@@ -248,8 +248,8 @@ public abstract class Wand extends Item {
     }
 
     void wandUsed() {
-        usagesToKnow -= cursed ? 1 : chargesPerCast();
-        curCharges -= cursed ? 1 : chargesPerCast();
+        usagesToKnow -= malfunctioning ? 1 : chargesPerCast();
+        curCharges -= malfunctioning ? 1 : chargesPerCast();
         if (!isIdentified() && usagesToKnow <= 0) {
             identify();
             GLog.w(Messages.get(Wand.class, "identify", name()));
@@ -274,8 +274,8 @@ public abstract class Wand extends Item {
 
         upgrade(n);
         if (Random.Float() < 0.3f) {
-            cursed = true;
-            cursedKnown = false;
+            malfunctioning = true;
+            malfunctioningKnown = false;
         }
 
         return this;
@@ -284,7 +284,7 @@ public abstract class Wand extends Item {
     @Override
     public int price() {
         int price = 75;
-        if (cursed && cursedKnown) {
+        if (malfunctioning && malfunctioningKnown) {
             price /= 2;
         }
         if (levelKnown) {
@@ -350,15 +350,15 @@ public abstract class Wand extends Item {
                 else
                     QuickSlotButton.target(Actor.findChar(cell));
 
-                if (curWand.curCharges >= (curWand.cursed ? 1 : curWand.chargesPerCast())) {
+                if (curWand.curCharges >= (curWand.malfunctioning ? 1 : curWand.chargesPerCast())) {
 
                     curUser.busy();
 
-                    if (curWand.cursed) {
-                        CursedWand.cursedZap(curWand, curUser, new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT));
-                        if (!curWand.cursedKnown) {
-                            curWand.cursedKnown = true;
-                            GLog.n(Messages.get(Wand.class, "curse_discover", curWand.name()));
+                    if (curWand.malfunctioning) {
+                        MalfunctioningWand.malfunctioningZap(curWand, curUser, new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT));
+                        if (!curWand.malfunctioningKnown) {
+                            curWand.malfunctioningKnown = true;
+                            GLog.n(Messages.get(Wand.class, "malfunction_discover", curWand.name()));
                         }
                     } else {
                         curWand.fx(shot, new Callback() {

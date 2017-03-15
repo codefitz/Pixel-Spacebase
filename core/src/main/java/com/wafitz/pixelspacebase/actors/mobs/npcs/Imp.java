@@ -28,8 +28,8 @@ import com.wafitz.pixelspacebase.actors.mobs.Golem;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.Monk;
 import com.wafitz.pixelspacebase.items.Generator;
+import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.quest.DwarfToken;
-import com.wafitz.pixelspacebase.items.rings.Module;
 import com.wafitz.pixelspacebase.levels.CityLevel;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -192,10 +192,10 @@ public class Imp extends NPC {
                 given = false;
 
                 do {
-                    reward = (Module) Generator.random(Generator.Category.RING);
-                } while (reward.cursed);
+                    reward = (Module) Generator.random(Generator.Category.MODULE);
+                } while (reward.malfunctioning);
                 reward.upgrade(2);
-                reward.cursed = true;
+                reward.malfunctioning = true;
             }
         }
 

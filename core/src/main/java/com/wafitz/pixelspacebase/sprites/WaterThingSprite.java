@@ -29,7 +29,7 @@ public class WaterThingSprite extends MobSprite {
     public WaterThingSprite() {
         super();
 
-        texture(Assets.PIRANHA);
+        texture(Assets.WATERTHING);
 
         TextureFilm frames = new TextureFilm(texture, 12, 16);
 

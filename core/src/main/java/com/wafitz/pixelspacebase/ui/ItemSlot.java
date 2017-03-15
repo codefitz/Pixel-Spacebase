@@ -22,12 +22,12 @@ package com.wafitz.pixelspacebase.ui;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.keys.Key;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
+import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -43,25 +43,25 @@ public class ItemSlot extends Button {
     public static final int DEGRADED = 0xFF4444;
     public static final int UPGRADED = 0x44FF44;
     public static final int FADED = 0x999999;
-    public static final int WARNING = 0xFF8800;
+    private static final int WARNING = 0xFF8800;
 
     private static final float ENABLED = 1.0f;
     private static final float DISABLED = 0.3f;
 
     protected ItemSprite icon;
     protected Item item;
-    protected BitmapText topLeft;
-    protected BitmapText topRight;
-    protected BitmapText bottomRight;
-    protected Image bottomRightIcon;
-    protected boolean iconVisible = true;
+    private BitmapText topLeft;
+    private BitmapText topRight;
+    private BitmapText bottomRight;
+    private Image bottomRightIcon;
+    private boolean iconVisible = true;
 
     private static final String TXT_STRENGTH = ":%d";
     private static final String TXT_TYPICAL_STR = "%d?";
     private static final String TXT_KEY_DEPTH = "\u007F%d";
 
     private static final String TXT_LEVEL = "%+d";
-    private static final String TXT_CURSED = "";//"-";
+    private static final String TXT_MALFUNCTIONING = "";//"-";
 
     // Special "virtual items"
     public static final Item CHEST = new Item() {
@@ -69,22 +69,22 @@ public class ItemSlot extends Button {
             return ItemSpriteSheet.CHEST;
         }
     };
-    public static final Item LOCKED_CHEST = new Item() {
+    static final Item LOCKED_CHEST = new Item() {
         public int image() {
             return ItemSpriteSheet.LOCKED_CHEST;
         }
     };
-    public static final Item CRYSTAL_CHEST = new Item() {
+    static final Item CRYSTAL_CHEST = new Item() {
         public int image() {
             return ItemSpriteSheet.CRYSTAL_CHEST;
         }
     };
-    public static final Item TOMB = new Item() {
+    static final Item TOMB = new Item() {
         public int image() {
             return ItemSpriteSheet.TOMB;
         }
     };
-    public static final Item SKELETON = new Item() {
+    static final Item SKELETON = new Item() {
         public int image() {
             return ItemSpriteSheet.BONES;
         }
@@ -230,22 +230,22 @@ public class ItemSlot extends Button {
         int level = item.visiblyUpgraded();
 
         if (level != 0) {
-            bottomRight.text(item.levelKnown ? Messages.format(TXT_LEVEL, level) : TXT_CURSED);
+            bottomRight.text(item.levelKnown ? Messages.format(TXT_LEVEL, level) : TXT_MALFUNCTIONING);
             bottomRight.measure();
             bottomRight.hardlight(level > 0 ? UPGRADED : DEGRADED);
-        } else if (item instanceof Scroll || item instanceof Potion) {
+        } else if (item instanceof Script || item instanceof ExperimentalTech) {
             bottomRight.text(null);
 
             Integer iconInt;
-            if (item instanceof Scroll) {
-                iconInt = ((Scroll) item).initials();
+            if (item instanceof Script) {
+                iconInt = ((Script) item).initials();
             } else {
-                iconInt = ((Potion) item).initials();
+                iconInt = ((ExperimentalTech) item).initials();
             }
             if (iconInt != null && iconVisible) {
                 bottomRightIcon = new Image(Assets.CONS_ICONS);
                 int left = iconInt * 7;
-                int top = item instanceof Potion ? 0 : 8;
+                int top = item instanceof ExperimentalTech ? 0 : 8;
                 bottomRightIcon.frame(left, top, 7, 8);
                 add(bottomRightIcon);
             }
@@ -269,7 +269,7 @@ public class ItemSlot extends Button {
         if (bottomRightIcon != null) bottomRightIcon.alpha(alpha);
     }
 
-    public void showParams(boolean TL, boolean TR, boolean BR) {
+    void showParams(boolean TL, boolean TR, boolean BR) {
         if (TL) add(topLeft);
         else remove(topLeft);
 

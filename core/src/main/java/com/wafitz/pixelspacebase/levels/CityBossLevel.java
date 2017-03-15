@@ -238,8 +238,8 @@ public class CityBossLevel extends Level {
         switch (tile) {
             case Terrain.WATER:
                 return Messages.get(CityLevel.class, "water_name");
-            case Terrain.HIGH_GRASS:
-                return Messages.get(CityLevel.class, "high_grass_name");
+            case Terrain.OFFVENT:
+                return Messages.get(CityLevel.class, "off_vent_name");
             default:
                 return super.tileName(tile);
         }

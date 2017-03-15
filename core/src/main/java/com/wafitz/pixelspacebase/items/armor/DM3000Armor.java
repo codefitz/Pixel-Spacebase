@@ -35,7 +35,7 @@ import com.watabou.noosa.audio.Sample;
 class DM3000Armor extends ClassArmor {
 
     {
-        image = ItemSpriteSheet.ARMOR_MAGE;
+        image = ItemSpriteSheet.ARMOR_DM3000;
     }
 
     @Override

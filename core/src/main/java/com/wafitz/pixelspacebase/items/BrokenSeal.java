@@ -38,15 +38,15 @@ import java.util.ArrayList;
 
 public class BrokenSeal extends Item {
 
-    public static final String AC_AFFIX = "AFFIX";
+    private static final String AC_AFFIX = "AFFIX";
 
     //only to be used from the quickslot, for tutorial purposes mostly.
-    public static final String AC_INFO = "INFO_WINDOW";
+    private static final String AC_INFO = "INFO_WINDOW";
 
     {
         image = ItemSpriteSheet.SEAL;
 
-        cursedKnown = levelKnown = true;
+        malfunctioningKnown = levelKnown = true;
         unique = true;
         bones = false;
 
@@ -74,19 +74,19 @@ public class BrokenSeal extends Item {
     }
 
     @Override
-    //scroll of upgrade can be used directly once, same as upgrading armor the seal is affixed to then removing it.
+    //script of upgrade can be used directly once, same as upgrading armor the seal is affixed to then removing it.
     public boolean isUpgradable() {
         return level() == 0;
     }
 
-    protected static WndBag.Listener armorSelector = new WndBag.Listener() {
+    private static WndBag.Listener armorSelector = new WndBag.Listener() {
         @Override
         public void onSelect(Item item) {
             if (item != null && item instanceof Armor) {
                 Armor armor = (Armor) item;
                 if (!armor.levelKnown) {
                     GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
-                } else if (armor.cursed || armor.level() < 0) {
+                } else if (armor.malfunctioning || armor.level() < 0) {
                     GLog.w(Messages.get(BrokenSeal.class, "degraded_armor"));
                 } else {
                     GLog.p(Messages.get(BrokenSeal.class, "affix"));
@@ -100,7 +100,7 @@ public class BrokenSeal extends Item {
         }
     };
 
-    public static class WarriorShield extends Buff {
+    public static class CommanderShield extends Buff {
 
         private Armor armor;
         private float partialShield;

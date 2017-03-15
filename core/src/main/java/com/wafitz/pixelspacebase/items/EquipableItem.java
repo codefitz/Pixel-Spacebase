@@ -33,8 +33,8 @@ import java.util.ArrayList;
 
 public abstract class EquipableItem extends Item {
 
-    public static final String AC_EQUIP = "EQUIP";
-    public static final String AC_UNEQUIP = "UNEQUIP";
+    protected static final String AC_EQUIP = "EQUIP";
+    private static final String AC_UNEQUIP = "UNEQUIP";
 
     {
         bones = true;
@@ -85,8 +85,8 @@ public abstract class EquipableItem extends Item {
         super.cast(user, dst);
     }
 
-    public static void equipCursed(Hero hero) {
-        hero.sprite.emitter().burst(ShadowParticle.CURSE, 6);
+    public static void equipMalfunctioning(Hero hero) {
+        hero.sprite.emitter().burst(ShadowParticle.MALFUNCTION, 6);
         Sample.INSTANCE.play(Assets.SND_CURSED);
     }
 
@@ -98,8 +98,8 @@ public abstract class EquipableItem extends Item {
 
     public boolean doUnequip(Hero hero, boolean collect, boolean single) {
 
-        if (cursed) {
-            GLog.w(Messages.get(EquipableItem.class, "unequip_cursed"));
+        if (malfunctioning) {
+            GLog.w(Messages.get(EquipableItem.class, "unequip_malfunctioning"));
             return false;
         }
 

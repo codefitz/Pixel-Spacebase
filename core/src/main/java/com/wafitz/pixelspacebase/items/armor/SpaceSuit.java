@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class SpaceSuit extends Armor {
 
     {
-        image = ItemSpriteSheet.ARMOR_LEATHER;
+        image = ItemSpriteSheet.ARMOR_SPACESUIT;
     }
 
     public SpaceSuit() {

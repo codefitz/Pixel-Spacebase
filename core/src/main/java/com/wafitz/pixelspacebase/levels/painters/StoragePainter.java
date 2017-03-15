@@ -20,10 +20,10 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
+import com.wafitz.pixelspacebase.items.DroneController;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLiquidFlame;
 import com.wafitz.pixelspacebase.items.Generator;
-import com.wafitz.pixelspacebase.items.Honeypot;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.potions.PotionOfLiquidFlame;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -47,14 +47,14 @@ public class StoragePainter extends Painter {
                 pos = level.pointToCell(room.random());
             } while (level.map[pos] != floor);
             if (honeyPot) {
-                level.drop(new Honeypot(), pos);
+                level.drop(new DroneController(), pos);
                 honeyPot = false;
             } else
                 level.drop(prize(level), pos);
         }
 
         room.entrance().set(Room.Door.Type.BARRICADE);
-        level.addItemToSpawn(new PotionOfLiquidFlame());
+        level.addItemToSpawn(new ExperimentalTechOfLiquidFlame());
     }
 
     private static Item prize(Level level) {
@@ -66,10 +66,10 @@ public class StoragePainter extends Painter {
         }
 
         return Generator.random(Random.oneOf(
-                Generator.Category.POTION,
-                Generator.Category.SCROLL,
+                Generator.Category.EXPERIMENTALTECH,
+                Generator.Category.SCRIPT,
                 Generator.Category.FOOD,
-                Generator.Category.GOLD
+                Generator.Category.PARTS
         ));
     }
 }

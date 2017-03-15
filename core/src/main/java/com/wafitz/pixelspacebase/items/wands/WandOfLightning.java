@@ -27,9 +27,9 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Lightning;
 import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Shocking;
-import com.wafitz.pixelspacebase.items.weapon.melee.MagesStaff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.levels.Level;
-import com.wafitz.pixelspacebase.levels.traps.LightningTrap;
+import com.wafitz.pixelspacebase.levels.vents.LightningVent;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -50,7 +50,7 @@ public class WandOfLightning extends DamageWand {
 
     private ArrayList<Char> affected = new ArrayList<>();
 
-    ArrayList<Lightning.Arc> arcs = new ArrayList<>();
+    private ArrayList<Lightning.Arc> arcs = new ArrayList<>();
 
     public int min(int lvl) {
         return 5 + lvl;
@@ -73,7 +73,7 @@ public class WandOfLightning extends DamageWand {
 
         for (Char ch : affected) {
             processSoulMark(ch, chargesPerCast());
-            ch.damage(Math.round(damageRoll() * multipler), LightningTrap.LIGHTNING);
+            ch.damage(Math.round(damageRoll() * multipler), LightningVent.LIGHTNING);
 
             if (ch == Dungeon.hero) Camera.main.shake(2, 0.3f);
             ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
@@ -87,7 +87,7 @@ public class WandOfLightning extends DamageWand {
     }
 
     @Override
-    public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+    public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
         //acts like shocking enchantment
         new Shocking().proc(staff, attacker, defender, damage);
     }
@@ -139,7 +139,7 @@ public class WandOfLightning extends DamageWand {
     }
 
     @Override
-    public void staffFx(MagesStaff.StaffParticle particle) {
+    public void staffFx(DM3000Staff.StaffParticle particle) {
         particle.color(0xFFFFFF);
         particle.am = 0.6f;
         particle.setLifespan(0.6f);

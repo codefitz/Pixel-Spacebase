@@ -53,15 +53,15 @@ import java.util.Comparator;
 
 public class Item implements Bundlable {
 
-    protected static final String TXT_TO_STRING_LVL = "%s %+d";
-    protected static final String TXT_TO_STRING_X = "%s x%d";
+    private static final String TXT_TO_STRING_LVL = "%s %+d";
+    private static final String TXT_TO_STRING_X = "%s x%d";
 
-    protected static final float TIME_TO_THROW = 1.0f;
+    private static final float TIME_TO_THROW = 1.0f;
     protected static final float TIME_TO_PICK_UP = 1.0f;
-    protected static final float TIME_TO_DROP = 0.5f;
+    private static final float TIME_TO_DROP = 0.5f;
 
-    public static final String AC_DROP = "DROP";
-    public static final String AC_THROW = "THROW";
+    private static final String AC_DROP = "DROP";
+    protected static final String AC_THROW = "THROW";
 
     public String defaultAction;
     public boolean usesTargeting;
@@ -76,8 +76,8 @@ public class Item implements Bundlable {
 
     public boolean levelKnown = false;
 
-    public boolean cursed;
-    public boolean cursedKnown;
+    public boolean malfunctioning;
+    public boolean malfunctioningKnown;
 
     // Unique items persist through revival
     public boolean unique = false;
@@ -93,7 +93,7 @@ public class Item implements Bundlable {
     };
 
     public ArrayList<String> actions(Hero hero) {
-        ArrayList<String> actions = new ArrayList<String>();
+        ArrayList<String> actions = new ArrayList<>();
         actions.add(AC_DROP);
         actions.add(AC_THROW);
         return actions;
@@ -281,7 +281,7 @@ public class Item implements Bundlable {
 
     public Item upgrade() {
 
-        cursed = false;
+        malfunctioning = false;
         this.level++;
 
         updateQuickslot();
@@ -316,8 +316,8 @@ public class Item implements Bundlable {
         return levelKnown ? level : 0;
     }
 
-    public boolean visiblyCursed() {
-        return cursed && cursedKnown;
+    public boolean visiblyMalfunctioning() {
+        return malfunctioning && malfunctioningKnown;
     }
 
     public boolean isUpgradable() {
@@ -325,7 +325,7 @@ public class Item implements Bundlable {
     }
 
     public boolean isIdentified() {
-        return levelKnown && cursedKnown;
+        return levelKnown && malfunctioningKnown;
     }
 
     public boolean isEquipped(Hero hero) {
@@ -335,7 +335,7 @@ public class Item implements Bundlable {
     public Item identify() {
 
         levelKnown = true;
-        cursedKnown = true;
+        malfunctioningKnown = true;
 
         return this;
     }
@@ -428,8 +428,8 @@ public class Item implements Bundlable {
     private static final String QUANTITY = "quantity";
     private static final String LEVEL = "level";
     private static final String LEVEL_KNOWN = "levelKnown";
-    private static final String CURSED = "cursed";
-    private static final String CURSED_KNOWN = "cursedKnown";
+    private static final String MALFUNCTIONING = "malfunctioning";
+    private static final String MALFUNCTIONING_KNOWN = "malfunctioningKnown";
     private static final String OLDSLOT = "quickslot";
     private static final String QUICKSLOT = "quickslotpos";
 
@@ -438,8 +438,8 @@ public class Item implements Bundlable {
         bundle.put(QUANTITY, quantity);
         bundle.put(LEVEL, level);
         bundle.put(LEVEL_KNOWN, levelKnown);
-        bundle.put(CURSED, cursed);
-        bundle.put(CURSED_KNOWN, cursedKnown);
+        bundle.put(MALFUNCTIONING, malfunctioning);
+        bundle.put(MALFUNCTIONING_KNOWN, malfunctioningKnown);
         if (Dungeon.quickslot.contains(this)) {
             bundle.put(QUICKSLOT, Dungeon.quickslot.getSlot(this));
         }
@@ -449,7 +449,7 @@ public class Item implements Bundlable {
     public void restoreFromBundle(Bundle bundle) {
         quantity = bundle.getInt(QUANTITY);
         levelKnown = bundle.getBoolean(LEVEL_KNOWN);
-        cursedKnown = bundle.getBoolean(CURSED_KNOWN);
+        malfunctioningKnown = bundle.getBoolean(MALFUNCTIONING_KNOWN);
 
         int level = bundle.getInt(LEVEL);
         if (level > 0) {
@@ -458,7 +458,7 @@ public class Item implements Bundlable {
             degrade(-level);
         }
 
-        cursed = bundle.getBoolean(CURSED);
+        malfunctioning = bundle.getBoolean(MALFUNCTIONING);
 
         //only want to populate slot on first load.
         if (Dungeon.hero == null) {
@@ -514,7 +514,7 @@ public class Item implements Bundlable {
 
     protected static Hero curUser = null;
     protected static Item curItem = null;
-    protected static CellSelector.Listener thrower = new CellSelector.Listener() {
+    private static CellSelector.Listener thrower = new CellSelector.Listener() {
         @Override
         public void onSelect(Integer target) {
             if (target != null) {

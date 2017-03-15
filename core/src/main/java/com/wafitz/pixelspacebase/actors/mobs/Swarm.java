@@ -28,8 +28,8 @@ import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Corruption;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.effects.Pushing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.potions.PotionOfHealing;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.levels.features.Door;
@@ -40,7 +40,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class Swarm extends Mob {
+class Swarm extends Mob {
 
     {
         spriteClass = SwarmSprite.class;
@@ -53,13 +53,13 @@ public class Swarm extends Mob {
 
         flying = true;
 
-        loot = new PotionOfHealing();
+        loot = new ExperimentalTechOfHealing();
         lootChance = 0.1667f; //by default, see die()
     }
 
     private static final float SPLIT_DELAY = 1f;
 
-    int generation = 0;
+    private int generation = 0;
 
     private static final String GENERATION = "generation";
 

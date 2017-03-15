@@ -48,7 +48,7 @@ public class WndStory extends Window {
     public static final int ID_CITY = 3;
     public static final int ID_HALLS = 4;
 
-    private static final SparseArray<String> CHAPTERS = new SparseArray<String>();
+    private static final SparseArray<String> CHAPTERS = new SparseArray<>();
 
     static {
         CHAPTERS.put(ID_SEWERS, "sewers");
@@ -62,8 +62,8 @@ public class WndStory extends Window {
 
     private float delay;
 
-    public WndStory(String text) {
-        super(0, 0, Chrome.get(Chrome.Type.SCROLL));
+    protected WndStory(String text) {
+        super(0, 0, Chrome.get(Chrome.Type.SCRIPT));
 
         tf = PixelScene.renderMultiline(text, 7);
         tf.maxWidth(PixelSpacebase.landscape() ?

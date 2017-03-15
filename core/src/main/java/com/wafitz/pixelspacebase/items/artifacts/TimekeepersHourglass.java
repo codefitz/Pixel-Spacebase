@@ -54,7 +54,7 @@ public class TimekeepersHourglass extends Artifact {
         defaultAction = AC_ACTIVATE;
     }
 
-    public static final String AC_ACTIVATE = "ACTIVATE";
+    private static final String AC_ACTIVATE = "ACTIVATE";
 
     //keeps track of generated sandbags.
     public int sandBags = 0;
@@ -62,7 +62,7 @@ public class TimekeepersHourglass extends Artifact {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        if (isEquipped(hero) && charge > 0 && !cursed)
+        if (isEquipped(hero) && charge > 0 && !malfunctioning)
             actions.add(AC_ACTIVATE);
         return actions;
     }
@@ -82,7 +82,7 @@ public class TimekeepersHourglass extends Artifact {
                     GLog.i(Messages.get(this, "deactivate"));
                 }
             } else if (charge <= 1) GLog.i(Messages.get(this, "no_charge"));
-            else if (cursed) GLog.i(Messages.get(this, "cursed"));
+            else if (malfunctioning) GLog.i(Messages.get(this, "malfunctioning"));
             else GameScene.show(
                         new WndOptions(Messages.get(this, "name"),
                                 Messages.get(this, "prompt"),
@@ -151,12 +151,12 @@ public class TimekeepersHourglass extends Artifact {
         String desc = super.desc();
 
         if (isEquipped(Dungeon.hero)) {
-            if (!cursed) {
+            if (!malfunctioning) {
                 if (level() < levelCap)
                     desc += "\n\n" + Messages.get(this, "desc_hint");
 
             } else
-                desc += "\n\n" + Messages.get(this, "desc_cursed");
+                desc += "\n\n" + Messages.get(this, "desc_malfunctioning");
         }
         return desc;
     }
@@ -192,12 +192,12 @@ public class TimekeepersHourglass extends Artifact {
         }
     }
 
-    public class hourglassRecharge extends ArtifactBuff {
+    private class hourglassRecharge extends ArtifactBuff {
         @Override
         public boolean act() {
 
             LockedFloor lock = target.buff(LockedFloor.class);
-            if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
+            if (charge < chargeCap && !malfunctioning && (lock == null || lock.regenOn())) {
                 partialCharge += 1 / (60f - (chargeCap - charge) * 2f);
 
                 if (partialCharge >= 1) {
@@ -208,7 +208,7 @@ public class TimekeepersHourglass extends Artifact {
                         partialCharge = 0;
                     }
                 }
-            } else if (cursed && Random.Int(10) == 0)
+            } else if (malfunctioning && Random.Int(10) == 0)
                 ((Hero) target).spend(TICK);
 
             updateQuickslot();
@@ -270,7 +270,7 @@ public class TimekeepersHourglass extends Artifact {
 
         float partialTime = 0f;
 
-        ArrayList<Integer> presses = new ArrayList<Integer>();
+        ArrayList<Integer> presses = new ArrayList<>();
 
         public boolean processTime(float time) {
             partialTime += time;
@@ -359,7 +359,7 @@ public class TimekeepersHourglass extends Artifact {
         @Override
         public boolean doPickUp(Hero hero) {
             TimekeepersHourglass hourglass = hero.belongings.getItem(TimekeepersHourglass.class);
-            if (hourglass != null && !hourglass.cursed) {
+            if (hourglass != null && !hourglass.malfunctioning) {
                 hourglass.upgrade();
                 Sample.INSTANCE.play(Assets.SND_DEWDROP);
                 if (hourglass.level() == hourglass.levelCap)

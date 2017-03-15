@@ -40,7 +40,7 @@ public class Parts extends Item {
     private static final String TXT_VALUE = "%+d";
 
     {
-        image = ItemSpriteSheet.GOLD;
+        image = ItemSpriteSheet.PARTS;
         stackable = true;
     }
 
@@ -60,9 +60,9 @@ public class Parts extends Item {
     @Override
     public boolean doPickUp(Hero hero) {
 
-        Dungeon.gold += quantity;
-        Statistics.goldCollected += quantity;
-        Badges.validateGoldCollected();
+        Dungeon.parts += quantity;
+        Statistics.partsCollected += quantity;
+        Badges.validatePartsCollected();
 
         MasterThievesArmband.Thievery thievery = hero.buff(MasterThievesArmband.Thievery.class);
         if (thievery != null)

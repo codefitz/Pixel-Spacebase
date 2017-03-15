@@ -42,7 +42,7 @@ class SpaceWizard extends ClassArmor {
     private static int SHOCK_TIME = 3;
 
     {
-        image = ItemSpriteSheet.ARMOR_WARRIOR;
+        image = ItemSpriteSheet.ARMOR_COMMANDER;
     }
 
     @Override

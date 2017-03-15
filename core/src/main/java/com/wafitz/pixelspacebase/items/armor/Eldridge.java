@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.CellSelector;
@@ -40,7 +40,7 @@ import com.watabou.noosa.audio.Sample;
 class Eldridge extends ClassArmor {
 
     {
-        image = ItemSpriteSheet.ARMOR_ROGUE;
+        image = ItemSpriteSheet.ARMOR_SHAPESHIFTER;
     }
 
     @Override
@@ -72,7 +72,7 @@ class Eldridge extends ClassArmor {
                     }
                 }
 
-                ScrollOfTeleportation.appear(curUser, target);
+                ScriptOfTeleportation.appear(curUser, target);
                 CellEmitter.get(target).burst(Speck.factory(Speck.WOOL), 10);
                 Sample.INSTANCE.play(Assets.SND_PUFF);
                 Dungeon.level.press(target, curUser);

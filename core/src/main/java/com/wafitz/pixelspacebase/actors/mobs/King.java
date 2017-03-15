@@ -35,8 +35,8 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.ArmorKit;
 import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfPsionicBlast;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfPsionicBlast;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
 import com.wafitz.pixelspacebase.items.wands.WandOfDisintegration;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
 import com.wafitz.pixelspacebase.levels.CityBossLevel;
@@ -206,7 +206,7 @@ public class King extends Mob {
                         undead.pos = j;
                         GameScene.add(undead);
 
-                        ScrollOfTeleportation.appear(undead, j);
+                        ScriptOfTeleportation.appear(undead, j);
                         new Flare(3, 32).color(0x000000, false).show(undead.sprite, 2f);
 
                         PathFinder.distance[j] = Integer.MAX_VALUE;
@@ -233,7 +233,7 @@ public class King extends Mob {
     static {
         RESISTANCES.add(ToxicGas.class);
         RESISTANCES.add(Grim.class);
-        RESISTANCES.add(ScrollOfPsionicBlast.class);
+        RESISTANCES.add(ScriptOfPsionicBlast.class);
         RESISTANCES.add(WandOfDisintegration.class);
     }
 
@@ -254,7 +254,7 @@ public class King extends Mob {
         return IMMUNITIES;
     }
 
-    public static class Undead extends Mob {
+    private static class Undead extends Mob {
 
         public static int count = 0;
 

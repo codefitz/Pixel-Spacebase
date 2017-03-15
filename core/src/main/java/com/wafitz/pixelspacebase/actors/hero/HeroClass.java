@@ -23,15 +23,15 @@ package com.wafitz.pixelspacebase.actors.hero;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMindVision;
 import com.wafitz.pixelspacebase.items.artifacts.CloakOfShadows;
-import com.wafitz.pixelspacebase.items.potions.PotionOfHealing;
-import com.wafitz.pixelspacebase.items.potions.PotionOfMindVision;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicMapping;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfUpgrade;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
 import com.wafitz.pixelspacebase.items.wands.WandOfMagicMissile;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dagger;
 import com.wafitz.pixelspacebase.items.weapon.melee.Knuckles;
-import com.wafitz.pixelspacebase.items.weapon.melee.MagesStaff;
 import com.wafitz.pixelspacebase.items.weapon.melee.WornShortsword;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Boomerang;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Dart;
@@ -40,10 +40,10 @@ import com.watabou.utils.Bundle;
 
 public enum HeroClass {
 
-    COMMANDER("warrior"),
-    DM3000("mage"),
-    SHAPESHIFTER("rogue"),
-    CAPTAIN("huntress");
+    COMMANDER("commander"),
+    DM3000("dm3000"),
+    SHAPESHIFTER("shapeshifter"),
+    CAPTAIN("captain");
 
     private String title;
 
@@ -59,19 +59,19 @@ public enum HeroClass {
 
         switch (this) {
             case COMMANDER:
-                initWarrior(hero);
+                initCommander(hero);
                 break;
 
             case DM3000:
-                initMage(hero);
+                initDM3000(hero);
                 break;
 
             case SHAPESHIFTER:
-                initRogue(hero);
+                initShapeshifter(hero);
                 break;
 
             case CAPTAIN:
-                initHuntress(hero);
+                initCaptain(hero);
                 break;
         }
 
@@ -91,24 +91,24 @@ public enum HeroClass {
     public Badges.Badge masteryBadge() {
         switch (this) {
             case COMMANDER:
-                return Badges.Badge.MASTERY_WARRIOR;
+                return Badges.Badge.MASTERY_COMMANDER;
             case DM3000:
-                return Badges.Badge.MASTERY_MAGE;
+                return Badges.Badge.MASTERY_DM3000;
             case SHAPESHIFTER:
-                return Badges.Badge.MASTERY_ROGUE;
+                return Badges.Badge.MASTERY_SHAPESHIFTER;
             case CAPTAIN:
-                return Badges.Badge.MASTERY_HUNTRESS;
+                return Badges.Badge.MASTERY_CAPTAIN;
         }
         return null;
     }
 
-    private static void initWarrior(Hero hero) {
+    private static void initCommander(Hero hero) {
         (hero.belongings.weapon = new WornShortsword()).identify();
         Dart darts = new Dart(8);
         darts.identify().collect();
 
         // wafitz.v1 - Breaks naked plot
-        /*if (Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR)) {
+        /*if (Badges.isUnlocked(Badges.Badge.TUTORIAL_COMMANDER)) {
             if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
                 hero.belongings.armor.affixSeal(new BrokenSeal());
             Dungeon.quickslot.setSlot(0, darts);
@@ -121,16 +121,16 @@ public enum HeroClass {
             Dungeon.quickslot.setSlot(1, darts);
         }*/
 
-        new PotionOfHealing().setKnown();
+        new ExperimentalTechOfHealing().setKnown();
     }
 
-    private static void initMage(Hero hero) {
-        MagesStaff staff;
+    private static void initDM3000(Hero hero) {
+        DM3000Staff staff;
 
-        if (Badges.isUnlocked(Badges.Badge.TUTORIAL_MAGE)) {
-            staff = new MagesStaff(new WandOfMagicMissile());
+        if (Badges.isUnlocked(Badges.Badge.TUTORIAL_DM3000)) {
+            staff = new DM3000Staff(new WandOfMagicMissile());
         } else {
-            staff = new MagesStaff();
+            staff = new DM3000Staff();
             new WandOfMagicMissile().identify().collect();
         }
 
@@ -139,10 +139,10 @@ public enum HeroClass {
 
         Dungeon.quickslot.setSlot(0, staff);
 
-        new ScrollOfUpgrade().setKnown();
+        new ScriptOfUpgrade().setKnown();
     }
 
-    private static void initRogue(Hero hero) {
+    private static void initShapeshifter(Hero hero) {
         (hero.belongings.weapon = new Dagger()).identify();
 
         CloakOfShadows cloak = new CloakOfShadows();
@@ -155,10 +155,10 @@ public enum HeroClass {
         Dungeon.quickslot.setSlot(0, cloak);
         Dungeon.quickslot.setSlot(1, darts);
 
-        new ScrollOfMagicMapping().setKnown();
+        new ScriptOfMagicMapping().setKnown();
     }
 
-    private static void initHuntress(Hero hero) {
+    private static void initCaptain(Hero hero) {
 
         (hero.belongings.weapon = new Knuckles()).identify();
         Boomerang boomerang = new Boomerang();
@@ -166,7 +166,7 @@ public enum HeroClass {
 
         Dungeon.quickslot.setSlot(0, boomerang);
 
-        new PotionOfMindVision().setKnown();
+        new ExperimentalTechOfMindVision().setKnown();
     }
 
     public String title() {
@@ -194,36 +194,36 @@ public enum HeroClass {
         switch (this) {
             case COMMANDER:
                 return new String[]{
-                        Messages.get(HeroClass.class, "warrior_perk1"),
-                        Messages.get(HeroClass.class, "warrior_perk2"),
-                        Messages.get(HeroClass.class, "warrior_perk3"),
-                        Messages.get(HeroClass.class, "warrior_perk4"),
-                        Messages.get(HeroClass.class, "warrior_perk5"),
+                        Messages.get(HeroClass.class, "commander_perk1"),
+                        Messages.get(HeroClass.class, "commander_perk2"),
+                        Messages.get(HeroClass.class, "commander_perk3"),
+                        Messages.get(HeroClass.class, "commander_perk4"),
+                        Messages.get(HeroClass.class, "commander_perk5"),
                 };
             case DM3000:
                 return new String[]{
-                        Messages.get(HeroClass.class, "mage_perk1"),
-                        Messages.get(HeroClass.class, "mage_perk2"),
-                        Messages.get(HeroClass.class, "mage_perk3"),
-                        Messages.get(HeroClass.class, "mage_perk4"),
-                        Messages.get(HeroClass.class, "mage_perk5"),
+                        Messages.get(HeroClass.class, "dm3000_perk1"),
+                        Messages.get(HeroClass.class, "dm3000_perk2"),
+                        Messages.get(HeroClass.class, "dm3000_perk3"),
+                        Messages.get(HeroClass.class, "dm3000_perk4"),
+                        Messages.get(HeroClass.class, "dm3000_perk5"),
                 };
             case SHAPESHIFTER:
                 return new String[]{
-                        Messages.get(HeroClass.class, "rogue_perk1"),
-                        Messages.get(HeroClass.class, "rogue_perk2"),
-                        Messages.get(HeroClass.class, "rogue_perk3"),
-                        Messages.get(HeroClass.class, "rogue_perk4"),
-                        Messages.get(HeroClass.class, "rogue_perk5"),
-                        Messages.get(HeroClass.class, "rogue_perk6"),
+                        Messages.get(HeroClass.class, "shapeshifter_perk1"),
+                        Messages.get(HeroClass.class, "shapeshifter_perk2"),
+                        Messages.get(HeroClass.class, "shapeshifter_perk3"),
+                        Messages.get(HeroClass.class, "shapeshifter_perk4"),
+                        Messages.get(HeroClass.class, "shapeshifter_perk5"),
+                        Messages.get(HeroClass.class, "shapeshifter_perk6"),
                 };
             case CAPTAIN:
                 return new String[]{
-                        Messages.get(HeroClass.class, "huntress_perk1"),
-                        Messages.get(HeroClass.class, "huntress_perk2"),
-                        Messages.get(HeroClass.class, "huntress_perk3"),
-                        Messages.get(HeroClass.class, "huntress_perk4"),
-                        Messages.get(HeroClass.class, "huntress_perk5"),
+                        Messages.get(HeroClass.class, "captain_perk1"),
+                        Messages.get(HeroClass.class, "captain_perk2"),
+                        Messages.get(HeroClass.class, "captain_perk3"),
+                        Messages.get(HeroClass.class, "captain_perk4"),
+                        Messages.get(HeroClass.class, "captain_perk5"),
                 };
         }
 

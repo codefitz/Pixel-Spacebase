@@ -37,7 +37,7 @@ import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.artifacts.CapeOfThorns;
 import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfPsionicBlast;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfPsionicBlast;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -95,7 +95,7 @@ public class DM300 extends Mob {
     public void move(int step) {
         super.move(step);
 
-        if (Dungeon.level.map[step] == Terrain.INACTIVE_TRAP && HP < HT) {
+        if (Dungeon.level.map[step] == Terrain.INACTIVE_VENT && HP < HT) {
 
             HP += Random.Int(1, HT - HP);
             sprite.emitter().burst(ElmoParticle.FACTORY, 5);
@@ -169,7 +169,7 @@ public class DM300 extends Mob {
 
     static {
         RESISTANCES.add(Grim.class);
-        RESISTANCES.add(ScrollOfPsionicBlast.class);
+        RESISTANCES.add(ScriptOfPsionicBlast.class);
     }
 
     @Override

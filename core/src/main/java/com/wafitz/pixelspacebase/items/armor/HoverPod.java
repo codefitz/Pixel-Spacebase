@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class HoverPod extends Armor {
 
     {
-        image = ItemSpriteSheet.ARMOR_SCALE;
+        image = ItemSpriteSheet.HOVERPOD;
     }
 
     public HoverPod() {

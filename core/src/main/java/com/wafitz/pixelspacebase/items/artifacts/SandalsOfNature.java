@@ -54,8 +54,8 @@ public class SandalsOfNature extends Artifact {
         defaultAction = AC_ROOT;
     }
 
-    public static final String AC_FEED = "FEED";
-    public static final String AC_ROOT = "ROOT";
+    private static final String AC_FEED = "FEED";
+    private static final String AC_ROOT = "ROOT";
 
     protected WndBag.Mode mode = WndBag.Mode.SEED;
 
@@ -64,7 +64,7 @@ public class SandalsOfNature extends Artifact {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        if (isEquipped(hero) && level() < 3 && !cursed)
+        if (isEquipped(hero) && level() < 3 && !malfunctioning)
             actions.add(AC_FEED);
         if (isEquipped(hero) && charge > 0)
             actions.add(AC_ROOT);
@@ -106,10 +106,10 @@ public class SandalsOfNature extends Artifact {
         if (isEquipped(Dungeon.hero)) {
             desc += "\n\n";
 
-            if (!cursed)
+            if (!malfunctioning)
                 desc += Messages.get(this, "desc_hint");
             else
-                desc += Messages.get(this, "desc_cursed");
+                desc += Messages.get(this, "desc_malfunctioning");
 
             if (level() > 0)
                 desc += "\n\n" + Messages.get(this, "desc_ability");

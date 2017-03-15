@@ -23,8 +23,8 @@ package com.wafitz.pixelspacebase.actors.mobs;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.Speck;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.potions.PotionOfHealing;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric;
 import com.wafitz.pixelspacebase.sprites.BatSprite;
 import com.watabou.utils.Random;
@@ -45,7 +45,7 @@ public class Bat extends Mob {
 
         flying = true;
 
-        loot = new PotionOfHealing();
+        loot = new ExperimentalTechOfHealing();
         lootChance = 0.1667f; //by default, see die()
     }
 

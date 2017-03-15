@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class Loader extends Armor {
 
     {
-        image = ItemSpriteSheet.ARMOR_PLATE;
+        image = ItemSpriteSheet.LOADER;
     }
 
     public Loader() {

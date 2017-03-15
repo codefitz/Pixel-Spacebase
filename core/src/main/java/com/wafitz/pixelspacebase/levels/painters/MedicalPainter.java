@@ -35,8 +35,8 @@ public class MedicalPainter extends Painter {
     public static void paint(Level level, Room room) {
 
         fill(level, room, Terrain.WALL);
-        fill(level, room, 1, Terrain.HIGH_GRASS);
-        fill(level, room, 2, Terrain.GRASS);
+        fill(level, room, 1, Terrain.OFFVENT);
+        fill(level, room, 2, Terrain.LIGHTEDVENT);
 
         room.entrance().set(Room.Door.Type.REGULAR);
 

@@ -25,24 +25,24 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.DungeonTilemap;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Imp;
 import com.wafitz.pixelspacebase.levels.Room.Type;
-import com.wafitz.pixelspacebase.levels.traps.BlazingTrap;
-import com.wafitz.pixelspacebase.levels.traps.CursingTrap;
-import com.wafitz.pixelspacebase.levels.traps.DisarmingTrap;
-import com.wafitz.pixelspacebase.levels.traps.ExplosiveTrap;
-import com.wafitz.pixelspacebase.levels.traps.FlockTrap;
-import com.wafitz.pixelspacebase.levels.traps.FrostTrap;
-import com.wafitz.pixelspacebase.levels.traps.GrippingTrap;
-import com.wafitz.pixelspacebase.levels.traps.GuardianTrap;
-import com.wafitz.pixelspacebase.levels.traps.LightningTrap;
-import com.wafitz.pixelspacebase.levels.traps.OozeTrap;
-import com.wafitz.pixelspacebase.levels.traps.PitfallTrap;
-import com.wafitz.pixelspacebase.levels.traps.RockfallTrap;
-import com.wafitz.pixelspacebase.levels.traps.SpearTrap;
-import com.wafitz.pixelspacebase.levels.traps.SummoningTrap;
-import com.wafitz.pixelspacebase.levels.traps.TeleportationTrap;
-import com.wafitz.pixelspacebase.levels.traps.VenomTrap;
-import com.wafitz.pixelspacebase.levels.traps.WarpingTrap;
-import com.wafitz.pixelspacebase.levels.traps.WeakeningTrap;
+import com.wafitz.pixelspacebase.levels.vents.BlazingVent;
+import com.wafitz.pixelspacebase.levels.vents.DisarmingVent;
+import com.wafitz.pixelspacebase.levels.vents.ExplosiveVent;
+import com.wafitz.pixelspacebase.levels.vents.FlockVent;
+import com.wafitz.pixelspacebase.levels.vents.FrostVent;
+import com.wafitz.pixelspacebase.levels.vents.GrippingVent;
+import com.wafitz.pixelspacebase.levels.vents.GuardianVent;
+import com.wafitz.pixelspacebase.levels.vents.LightningVent;
+import com.wafitz.pixelspacebase.levels.vents.MalfunctioningVent;
+import com.wafitz.pixelspacebase.levels.vents.OozeVent;
+import com.wafitz.pixelspacebase.levels.vents.PitfallVent;
+import com.wafitz.pixelspacebase.levels.vents.RockfallVent;
+import com.wafitz.pixelspacebase.levels.vents.SpearVent;
+import com.wafitz.pixelspacebase.levels.vents.SummoningVent;
+import com.wafitz.pixelspacebase.levels.vents.TeleportationVent;
+import com.wafitz.pixelspacebase.levels.vents.VenomVent;
+import com.wafitz.pixelspacebase.levels.vents.WarpingVent;
+import com.wafitz.pixelspacebase.levels.vents.WeakeningVent;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
@@ -71,20 +71,20 @@ public class CityLevel extends RegularLevel {
         return Patch.generate(this, feeling == Feeling.WATER ? 0.65f : 0.45f, 4);
     }
 
-    protected boolean[] grass() {
-        return Patch.generate(this, feeling == Feeling.GRASS ? 0.60f : 0.40f, 3);
+    protected boolean[] lightedvent() {
+        return Patch.generate(this, feeling == Feeling.LIGHTEDVENT ? 0.60f : 0.40f, 3);
     }
 
     @Override
-    protected Class<?>[] trapClasses() {
-        return new Class[]{BlazingTrap.class, FrostTrap.class, SpearTrap.class, VenomTrap.class,
-                ExplosiveTrap.class, GrippingTrap.class, LightningTrap.class, RockfallTrap.class, OozeTrap.class, WeakeningTrap.class,
-                CursingTrap.class, FlockTrap.class, GuardianTrap.class, PitfallTrap.class, SummoningTrap.class, TeleportationTrap.class,
-                DisarmingTrap.class, WarpingTrap.class};
+    protected Class<?>[] ventClasses() {
+        return new Class[]{BlazingVent.class, FrostVent.class, SpearVent.class, VenomVent.class,
+                ExplosiveVent.class, GrippingVent.class, LightningVent.class, RockfallVent.class, OozeVent.class, WeakeningVent.class,
+                MalfunctioningVent.class, FlockVent.class, GuardianVent.class, PitfallVent.class, SummoningVent.class, TeleportationVent.class,
+                DisarmingVent.class, WarpingVent.class};
     }
 
     @Override
-    protected float[] trapChances() {
+    protected float[] ventChances() {
         return new float[]{8, 8, 8, 8,
                 4, 4, 4, 4, 4, 4,
                 2, 2, 2, 2, 2, 2,
@@ -130,8 +130,8 @@ public class CityLevel extends RegularLevel {
         switch (tile) {
             case Terrain.WATER:
                 return Messages.get(CityLevel.class, "water_name");
-            case Terrain.HIGH_GRASS:
-                return Messages.get(CityLevel.class, "high_grass_name");
+            case Terrain.OFFVENT:
+                return Messages.get(CityLevel.class, "off_vent_name");
             default:
                 return super.tileName(tile);
         }
@@ -166,7 +166,7 @@ public class CityLevel extends RegularLevel {
         return visuals;
     }
 
-    public static void addCityVisuals(Level level, Group group) {
+    static void addCityVisuals(Level level, Group group) {
         for (int i = 0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WALL_DECO) {
                 group.add(new Smoke(i));
@@ -187,7 +187,7 @@ public class CityLevel extends RegularLevel {
             }
         };
 
-        public Smoke(int pos) {
+        Smoke(int pos) {
             super();
 
             this.pos = pos;
@@ -206,7 +206,7 @@ public class CityLevel extends RegularLevel {
         }
     }
 
-    public static final class SmokeParticle extends PixelParticle {
+    private static final class SmokeParticle extends PixelParticle {
 
         public SmokeParticle() {
             super();

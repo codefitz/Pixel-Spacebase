@@ -39,7 +39,7 @@ public class FeralShapeshifterSprite extends MobSprite {
     public FeralShapeshifterSprite() {
         super();
 
-        texture(Assets.GOO);
+        texture(Assets.FERALSHAPESHIFTER);
 
         TextureFilm frames = new TextureFilm(texture, 20, 14);
 

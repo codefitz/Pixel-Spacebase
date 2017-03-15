@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.PoisonParticle;
-import com.wafitz.pixelspacebase.items.potions.PotionOfToxicGas;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfToxicGas;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
 public class Sorrowmoss extends Plant {
@@ -54,7 +54,7 @@ public class Sorrowmoss extends Plant {
             image = ItemSpriteSheet.SEED_SORROWMOSS;
 
             plantClass = Sorrowmoss.class;
-            alchemyClass = PotionOfToxicGas.class;
+            alchemyClass = ExperimentalTechOfToxicGas.class;
         }
     }
 }

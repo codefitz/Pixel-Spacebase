@@ -24,32 +24,32 @@ import com.watabou.utils.Bundle;
 
 public class Statistics {
 
-    public static int goldCollected;
+    public static int partsCollected;
     public static int deepestFloor;
     public static int enemiesSlain;
     public static int foodEaten;
-    public static int potionsCooked;
-    public static int piranhasKilled;
+    public static int experimentalTechCooked;
+    public static int waterThings;
     public static int nightHunt;
-    public static int ankhsUsed;
+    public static int clonesSpent;
 
     public static float duration;
 
     public static boolean qualifiedForNoKilling = false;
-    public static boolean completedWithNoKilling = false;
+    static boolean completedWithNoKilling = false;
 
     public static boolean amuletObtained = false;
 
     public static void reset() {
 
-        goldCollected = 0;
+        partsCollected = 0;
         deepestFloor = 0;
         enemiesSlain = 0;
         foodEaten = 0;
-        potionsCooked = 0;
-        piranhasKilled = 0;
+        experimentalTechCooked = 0;
+        waterThings = 0;
         nightHunt = 0;
-        ankhsUsed = 0;
+        clonesSpent = 0;
 
         duration = 0;
 
@@ -59,39 +59,39 @@ public class Statistics {
 
     }
 
-    private static final String GOLD = "score";
+    private static final String PARTS = "score";
     private static final String DEEPEST = "maxDepth";
     private static final String SLAIN = "enemiesSlain";
     private static final String FOOD = "foodEaten";
-    private static final String ALCHEMY = "potionsCooked";
-    private static final String PIRANHAS = "priranhas";
+    private static final String ALCHEMY = "experimentalTechCooked";
+    private static final String WATERTHINGS = "priranhas";
     private static final String NIGHT = "nightHunt";
-    private static final String ANKHS = "ankhsUsed";
+    private static final String CLONES = "clonesSpent";
     private static final String DURATION = "duration";
     private static final String AMULET = "amuletObtained";
 
     public static void storeInBundle(Bundle bundle) {
-        bundle.put(GOLD, goldCollected);
+        bundle.put(PARTS, partsCollected);
         bundle.put(DEEPEST, deepestFloor);
         bundle.put(SLAIN, enemiesSlain);
         bundle.put(FOOD, foodEaten);
-        bundle.put(ALCHEMY, potionsCooked);
-        bundle.put(PIRANHAS, piranhasKilled);
+        bundle.put(ALCHEMY, experimentalTechCooked);
+        bundle.put(WATERTHINGS, waterThings);
         bundle.put(NIGHT, nightHunt);
-        bundle.put(ANKHS, ankhsUsed);
+        bundle.put(CLONES, clonesSpent);
         bundle.put(DURATION, duration);
         bundle.put(AMULET, amuletObtained);
     }
 
     public static void restoreFromBundle(Bundle bundle) {
-        goldCollected = bundle.getInt(GOLD);
+        partsCollected = bundle.getInt(PARTS);
         deepestFloor = bundle.getInt(DEEPEST);
         enemiesSlain = bundle.getInt(SLAIN);
         foodEaten = bundle.getInt(FOOD);
-        potionsCooked = bundle.getInt(ALCHEMY);
-        piranhasKilled = bundle.getInt(PIRANHAS);
+        experimentalTechCooked = bundle.getInt(ALCHEMY);
+        waterThings = bundle.getInt(WATERTHINGS);
         nightHunt = bundle.getInt(NIGHT);
-        ankhsUsed = bundle.getInt(ANKHS);
+        clonesSpent = bundle.getInt(CLONES);
         duration = bundle.getFloat(DURATION);
         amuletObtained = bundle.getBoolean(AMULET);
     }

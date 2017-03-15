@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class HunterSpaceSuit extends Armor {
 
     {
-        image = ItemSpriteSheet.ARMOR_MAIL;
+        image = ItemSpriteSheet.ARMOR_HUNTER;
     }
 
     public HunterSpaceSuit() {

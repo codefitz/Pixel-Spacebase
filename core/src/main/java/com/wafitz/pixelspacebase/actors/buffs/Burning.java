@@ -33,10 +33,10 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.glyphs.Brimstone;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
-import com.wafitz.pixelspacebase.items.rings.ElementsModule.Resistance;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicalInfusion;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfUpgrade;
+import com.wafitz.pixelspacebase.items.modules.ElementsModule.Resistance;
+import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicalInfusion;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -92,8 +92,8 @@ public class Burning extends Buff implements Hero.Doom {
 
                     hero.damage(damage, this);
                     Item item = hero.belongings.randomUnequipped();
-                    if (item instanceof Scroll
-                            && !(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
+                    if (item instanceof Script
+                            && !(item instanceof ScriptOfUpgrade || item instanceof ScriptOfMagicalInfusion)) {
 
                         item = item.detach(hero.belongings.backpack);
                         GLog.w(Messages.get(this, "burnsup", Messages.capitalize(item.toString())));
@@ -123,8 +123,8 @@ public class Burning extends Buff implements Hero.Doom {
 
                 Item item = ((Thief) target).item;
 
-                if (item instanceof Scroll &&
-                        !(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
+                if (item instanceof Script &&
+                        !(item instanceof ScriptOfUpgrade || item instanceof ScriptOfMagicalInfusion)) {
                     target.sprite.emitter().burst(ElmoParticle.FACTORY, 6);
                     ((Thief) target).item = null;
                 }

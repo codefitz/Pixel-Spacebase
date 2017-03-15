@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfPsionicBlast;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfPsionicBlast;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ConfusedShapeshifterSprite;
@@ -165,7 +165,7 @@ public class ConfusedShapeshifter extends Mob {
                 m.items.add(Generator.randomWeapon().identify());
                 break;
             case 4:
-                m.items.add(Generator.random(Generator.Category.RING).identify());
+                m.items.add(Generator.random(Generator.Category.MODULE).identify());
                 break;
         }
 
@@ -175,7 +175,7 @@ public class ConfusedShapeshifter extends Mob {
     private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 
     static {
-        IMMUNITIES.add(ScrollOfPsionicBlast.class);
+        IMMUNITIES.add(ScriptOfPsionicBlast.class);
     }
 
     @Override

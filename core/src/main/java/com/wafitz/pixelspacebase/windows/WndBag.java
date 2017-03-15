@@ -28,17 +28,17 @@ import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.EquipableItem;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.bags.Bag;
-import com.wafitz.pixelspacebase.items.bags.PotionBandolier;
-import com.wafitz.pixelspacebase.items.bags.ScrollHolder;
+import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
+import com.wafitz.pixelspacebase.items.bags.ScriptHolder;
 import com.wafitz.pixelspacebase.items.bags.SeedPouch;
 import com.wafitz.pixelspacebase.items.bags.WandHolster;
 import com.wafitz.pixelspacebase.items.food.Food;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
+import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.items.wands.Wand;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
@@ -62,7 +62,7 @@ public class WndBag extends WndTabbed {
     public enum Mode {
         ALL,
         UNIDENTIFED,
-        UNIDED_OR_CURSED,
+        UNIDED_OR_MALFUNCTIONING,
         UPGRADEABLE,
         QUICKSLOT,
         FOR_SALE,
@@ -72,8 +72,8 @@ public class WndBag extends WndTabbed {
         WAND,
         SEED,
         FOOD,
-        POTION,
-        SCROLL,
+        EXPERIMENTALTECH,
+        SCRIPT,
         EQUIPMENT
     }
 
@@ -130,8 +130,8 @@ public class WndBag extends WndTabbed {
         Bag[] bags = {
                 stuff.backpack,
                 stuff.getItem(SeedPouch.class),
-                stuff.getItem(ScrollHolder.class),
-                stuff.getItem(PotionBandolier.class),
+                stuff.getItem(ScriptHolder.class),
+                stuff.getItem(ExperimentalTechBandolier.class),
                 stuff.getItem(WandHolster.class)};
 
         for (Bag b : bags) {
@@ -172,8 +172,8 @@ public class WndBag extends WndTabbed {
         Belongings stuff = Dungeon.hero.belongings;
         placeItem(stuff.weapon != null ? stuff.weapon : new Placeholder(ItemSpriteSheet.WEAPON_HOLDER));
         placeItem(stuff.armor != null ? stuff.armor : new Placeholder(ItemSpriteSheet.ARMOR_HOLDER));
-        placeItem(stuff.misc1 != null ? stuff.misc1 : new Placeholder(ItemSpriteSheet.RING_HOLDER));
-        placeItem(stuff.misc2 != null ? stuff.misc2 : new Placeholder(ItemSpriteSheet.RING_HOLDER));
+        placeItem(stuff.misc1 != null ? stuff.misc1 : new Placeholder(ItemSpriteSheet.MODULE_HOLDER));
+        placeItem(stuff.misc2 != null ? stuff.misc2 : new Placeholder(ItemSpriteSheet.MODULE_HOLDER));
 
         boolean backpack = (container == Dungeon.hero.belongings.backpack);
         if (!backpack) {
@@ -196,7 +196,7 @@ public class WndBag extends WndTabbed {
         if (container == Dungeon.hero.belongings.backpack) {
             row = nRows - 1;
             col = nCols - 1;
-            placeItem(new Parts(Dungeon.gold));
+            placeItem(new Parts(Dungeon.parts));
         }
     }
 
@@ -280,12 +280,12 @@ public class WndBag extends WndTabbed {
         private Image icon() {
             if (bag instanceof SeedPouch) {
                 return Icons.get(Icons.SEED_POUCH);
-            } else if (bag instanceof ScrollHolder) {
-                return Icons.get(Icons.SCROLL_HOLDER);
+            } else if (bag instanceof ScriptHolder) {
+                return Icons.get(Icons.SCRIPT_HOLDER);
             } else if (bag instanceof WandHolster) {
                 return Icons.get(Icons.WAND_HOLSTER);
-            } else if (bag instanceof PotionBandolier) {
-                return Icons.get(Icons.POTION_BANDOLIER);
+            } else if (bag instanceof ExperimentalTechBandolier) {
+                return Icons.get(Icons.EXPERIMENTALTECH_BANDOLIER);
             } else {
                 return Icons.get(Icons.BACKPACK);
             }
@@ -355,7 +355,7 @@ public class WndBag extends WndTabbed {
             if (item != null) {
 
                 bg.texture(TextureCache.createSolid(item.isEquipped(Dungeon.hero) ? EQUIPPED : NORMAL));
-                if (item.cursed && item.cursedKnown) {
+                if (item.malfunctioning && item.malfunctioningKnown) {
                     bg.ra = +0.3f;
                     bg.ga = -0.15f;
                 } else if (!item.isIdentified()) {
@@ -367,10 +367,10 @@ public class WndBag extends WndTabbed {
                     enable(false);
                 } else {
                     enable(
-                            mode == Mode.FOR_SALE && (item.price() > 0) && (!item.isEquipped(Dungeon.hero) || !item.cursed) ||
+                            mode == Mode.FOR_SALE && (item.price() > 0) && (!item.isEquipped(Dungeon.hero) || !item.malfunctioning) ||
                                     mode == Mode.UPGRADEABLE && item.isUpgradable() ||
                                     mode == Mode.UNIDENTIFED && !item.isIdentified() ||
-                                    mode == Mode.UNIDED_OR_CURSED && ((item instanceof EquipableItem || item instanceof Wand) && (!item.isIdentified() || item.cursed)) ||
+                                    mode == Mode.UNIDED_OR_MALFUNCTIONING && ((item instanceof EquipableItem || item instanceof Wand) && (!item.isIdentified() || item.malfunctioning)) ||
                                     mode == Mode.QUICKSLOT && (item.defaultAction != null) ||
                                     mode == Mode.WEAPON && (item instanceof MeleeWeapon || item instanceof Boomerang) ||
                                     mode == Mode.ARMOR && (item instanceof Armor) ||
@@ -378,20 +378,20 @@ public class WndBag extends WndTabbed {
                                     mode == Mode.WAND && (item instanceof Wand) ||
                                     mode == Mode.SEED && (item instanceof Seed) ||
                                     mode == Mode.FOOD && (item instanceof Food) ||
-                                    mode == Mode.POTION && (item instanceof Potion) ||
-                                    mode == Mode.SCROLL && (item instanceof Scroll) ||
+                                    mode == Mode.EXPERIMENTALTECH && (item instanceof ExperimentalTech) ||
+                                    mode == Mode.SCRIPT && (item instanceof Script) ||
                                     mode == Mode.EQUIPMENT && (item instanceof EquipableItem) ||
                                     mode == Mode.ALL
                     );
-                    //extra logic for cursed weapons or armor
-                    if (!active && mode == Mode.UNIDED_OR_CURSED) {
+                    //extra logic for malfunctioning weapons or armor
+                    if (!active && mode == Mode.UNIDED_OR_MALFUNCTIONING) {
                         if (item instanceof Weapon) {
                             Weapon w = (Weapon) item;
-                            enable(w.hasCurseEnchant());
+                            enable(w.hasMalfunctionEnchant());
                         }
                         if (item instanceof Armor) {
                             Armor a = (Armor) item;
-                            enable(a.hasCurseGlyph());
+                            enable(a.hasMalfunctionGlyph());
                         }
                     }
                 }

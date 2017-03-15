@@ -37,7 +37,7 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ShaftParticle;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfPsionicBlast;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfPsionicBlast;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Languages;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -83,7 +83,7 @@ public class DriedRose extends Artifact {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        if (isEquipped(hero) && charge == chargeCap && !cursed)
+        if (isEquipped(hero) && charge == chargeCap && !malfunctioning)
             actions.add(AC_SUMMON);
         return actions;
     }
@@ -98,7 +98,7 @@ public class DriedRose extends Artifact {
             if (spawned) GLog.i(Messages.get(this, "spawned"));
             else if (!isEquipped(hero)) GLog.i(Messages.get(Artifact.class, "need_to_equip"));
             else if (charge != chargeCap) GLog.i(Messages.get(this, "no_charge"));
-            else if (cursed) GLog.i(Messages.get(this, "cursed"));
+            else if (malfunctioning) GLog.i(Messages.get(this, "malfunctioning"));
             else {
                 ArrayList<Integer> spawnPoints = new ArrayList<>();
                 for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
@@ -143,13 +143,13 @@ public class DriedRose extends Artifact {
         String desc = super.desc();
 
         if (isEquipped(Dungeon.hero)) {
-            if (!cursed) {
+            if (!malfunctioning) {
 
                 if (level() < levelCap)
                     desc += "\n\n" + Messages.get(this, "desc_hint");
 
             } else
-                desc += "\n\n" + Messages.get(this, "desc_cursed");
+                desc += "\n\n" + Messages.get(this, "desc_malfunctioning");
         }
 
         return desc;
@@ -204,7 +204,7 @@ public class DriedRose extends Artifact {
         public boolean act() {
 
             LockedFloor lock = target.buff(LockedFloor.class);
-            if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
+            if (charge < chargeCap && !malfunctioning && (lock == null || lock.regenOn())) {
                 partialCharge += 1 / 5f; //500 turns to a full charge
                 if (partialCharge > 1) {
                     charge++;
@@ -214,7 +214,7 @@ public class DriedRose extends Artifact {
                         GLog.p(Messages.get(DriedRose.class, "charged"));
                     }
                 }
-            } else if (cursed && Random.Int(100) == 0) {
+            } else if (malfunctioning && Random.Int(100) == 0) {
 
                 ArrayList<Integer> spawnPoints = new ArrayList<>();
 
@@ -311,8 +311,8 @@ public class DriedRose extends Artifact {
             Sample.INSTANCE.play(Assets.SND_GHOST);
         }
 
-        public void sayAnhk() {
-            yell(Random.element(VOICE_BLESSEDANKH));
+        public void sayClone() {
+            yell(Random.element(VOICE_BLESSEDCLONE));
             Sample.INSTANCE.play(Assets.SND_GHOST);
         }
 
@@ -431,7 +431,7 @@ public class DriedRose extends Artifact {
             IMMUNITIES.add(ToxicGas.class);
             IMMUNITIES.add(VenomGas.class);
             IMMUNITIES.add(Burning.class);
-            IMMUNITIES.add(ScrollOfPsionicBlast.class);
+            IMMUNITIES.add(ScriptOfPsionicBlast.class);
         }
 
         @Override
@@ -460,7 +460,7 @@ public class DriedRose extends Artifact {
                 "I can't imagine what went on when this place was abandoned..."
         }, {
                 "No human or dwarf has been here for a very long time...",
-                "Something must have gone very wrong, for the dwarves to abandon a gold mine...",
+                "Something must have gone very wrong, for the dwarves to abandon a parts mine...",
                 "I feel great evil lurking below..."
         }, {
                 "The dwarves were industrious, but greedy...",
@@ -566,7 +566,7 @@ public class DriedRose extends Artifact {
                 "I couldn't help them..."
         };
 
-        static final String[] VOICE_BLESSEDANKH = {
+        static final String[] VOICE_BLESSEDCLONE = {
                 "Incredible!...",
                 "Wish I had one of those...",
                 "How did you survive that?..."

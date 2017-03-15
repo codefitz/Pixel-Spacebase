@@ -44,7 +44,7 @@ public class OffVent {
 
     public static void trample(Level level, int pos, Char ch) {
 
-        Level.set(pos, Terrain.GRASS);
+        Level.set(pos, Terrain.LIGHTEDVENT);
         GameScene.updateMap(pos);
 
         if (!Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
@@ -53,7 +53,7 @@ public class OffVent {
             if (ch != null) {
                 SandalsOfNature.Naturalism naturalism = ch.buff(SandalsOfNature.Naturalism.class);
                 if (naturalism != null) {
-                    if (!naturalism.isCursed()) {
+                    if (!naturalism.isMalfunctioning()) {
                         naturalismLevel = naturalism.itemLevel() + 1;
                         naturalism.charge();
                     } else {

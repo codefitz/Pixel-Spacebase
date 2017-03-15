@@ -61,7 +61,7 @@ public class PitPainter extends Painter {
         level.drop(new IronKey(Dungeon.depth), remains).type = Type.SKELETON;
         int loot = Random.Int(3);
         if (loot == 0) {
-            level.drop(Generator.random(Generator.Category.RING), remains);
+            level.drop(Generator.random(Generator.Category.MODULE), remains);
         } else if (loot == 1) {
             level.drop(Generator.random(Generator.Category.ARTIFACT), remains);
         } else {
@@ -86,10 +86,10 @@ public class PitPainter extends Painter {
         }
 
         return Generator.random(Random.oneOf(
-                Generator.Category.POTION,
-                Generator.Category.SCROLL,
+                Generator.Category.EXPERIMENTALTECH,
+                Generator.Category.SCRIPT,
                 Generator.Category.FOOD,
-                Generator.Category.GOLD
+                Generator.Category.PARTS
         ));
     }
 }

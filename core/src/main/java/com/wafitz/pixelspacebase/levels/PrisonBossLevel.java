@@ -33,8 +33,8 @@ import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
 import com.wafitz.pixelspacebase.levels.painters.MazePainter;
-import com.wafitz.pixelspacebase.levels.traps.SpearTrap;
-import com.wafitz.pixelspacebase.levels.traps.Trap;
+import com.wafitz.pixelspacebase.levels.vents.SpearVent;
+import com.wafitz.pixelspacebase.levels.vents.Vent;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.plants.Plant;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -127,7 +127,7 @@ public class PrisonBossLevel extends Level {
         entrance = 5 + 2 * 32;
         exit = 0;
 
-        resetTraps();
+        resetVents();
 
         return true;
     }
@@ -215,15 +215,15 @@ public class PrisonBossLevel extends Level {
         }
     }
 
-    private void resetTraps() {
-        traps.clear();
+    private void resetVents() {
+        vents.clear();
 
         for (int i = 0; i < length(); i++) {
-            if (map[i] == Terrain.INACTIVE_TRAP) {
-                Trap t = new SpearTrap().reveal();
+            if (map[i] == Terrain.INACTIVE_VENT) {
+                Vent t = new SpearVent().reveal();
                 t.active = false;
-                setTrap(t, i);
-                map[i] = Terrain.INACTIVE_TRAP;
+                setVent(t, i);
+                map[i] = Terrain.INACTIVE_VENT;
             }
         }
     }
@@ -245,7 +245,7 @@ public class PrisonBossLevel extends Level {
             blob.fullyClear();
         }
         addVisuals(); //this also resets existing visuals
-        resetTraps();
+        resetVents();
 
 
         GameScene.resetMap();
@@ -379,7 +379,7 @@ public class PrisonBossLevel extends Level {
     private static final int e = Terrain.EMPTY;
     private static final int S = Terrain.SIGN;
 
-    private static final int T = Terrain.INACTIVE_TRAP;
+    private static final int T = Terrain.INACTIVE_VENT;
 
     private static final int E = Terrain.ENTRANCE;
     private static final int X = Terrain.EXIT;
@@ -526,7 +526,7 @@ public class PrisonBossLevel extends Level {
                     W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
 
 
-    public static class exitVisual extends CustomTileVisual {
+    private static class exitVisual extends CustomTileVisual {
 
         {
             name = "prison exit";

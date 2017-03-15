@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.plants;
 
 import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.items.potions.PotionOfStrength;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfStrength;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
 public class Rotberry extends Plant {
@@ -40,7 +40,7 @@ public class Rotberry extends Plant {
             image = ItemSpriteSheet.SEED_ROTBERRY;
 
             plantClass = Rotberry.class;
-            alchemyClass = PotionOfStrength.class;
+            alchemyClass = ExperimentalTechOfStrength.class;
         }
     }
 }

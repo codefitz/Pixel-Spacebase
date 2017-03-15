@@ -27,8 +27,8 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.potions.PotionOfMindVision;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfTeleportation;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMindVision;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
 public class Fadeleaf extends Plant {
@@ -43,7 +43,7 @@ public class Fadeleaf extends Plant {
 
         if (ch instanceof Hero) {
 
-            ScrollOfTeleportation.teleportHero((Hero) ch);
+            ScriptOfTeleportation.teleportHero((Hero) ch);
             ((Hero) ch).curAction = null;
 
         } else if (ch instanceof Mob && !ch.properties().contains(Char.Property.IMMOVABLE)) {
@@ -77,7 +77,7 @@ public class Fadeleaf extends Plant {
             image = ItemSpriteSheet.SEED_FADELEAF;
 
             plantClass = Fadeleaf.class;
-            alchemyClass = PotionOfMindVision.class;
+            alchemyClass = ExperimentalTechOfMindVision.class;
         }
     }
 }

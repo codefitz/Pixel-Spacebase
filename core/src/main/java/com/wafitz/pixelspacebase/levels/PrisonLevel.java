@@ -27,21 +27,21 @@ import com.wafitz.pixelspacebase.actors.mobs.npcs.Wandmaker;
 import com.wafitz.pixelspacebase.effects.Halo;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
 import com.wafitz.pixelspacebase.levels.Room.Type;
-import com.wafitz.pixelspacebase.levels.traps.AlarmTrap;
-import com.wafitz.pixelspacebase.levels.traps.ChillingTrap;
-import com.wafitz.pixelspacebase.levels.traps.ConfusionTrap;
-import com.wafitz.pixelspacebase.levels.traps.FireTrap;
-import com.wafitz.pixelspacebase.levels.traps.FlashingTrap;
-import com.wafitz.pixelspacebase.levels.traps.FlockTrap;
-import com.wafitz.pixelspacebase.levels.traps.GrippingTrap;
-import com.wafitz.pixelspacebase.levels.traps.LightningTrap;
-import com.wafitz.pixelspacebase.levels.traps.OozeTrap;
-import com.wafitz.pixelspacebase.levels.traps.ParalyticTrap;
-import com.wafitz.pixelspacebase.levels.traps.PoisonTrap;
-import com.wafitz.pixelspacebase.levels.traps.SpearTrap;
-import com.wafitz.pixelspacebase.levels.traps.SummoningTrap;
-import com.wafitz.pixelspacebase.levels.traps.TeleportationTrap;
-import com.wafitz.pixelspacebase.levels.traps.ToxicTrap;
+import com.wafitz.pixelspacebase.levels.vents.AlarmVent;
+import com.wafitz.pixelspacebase.levels.vents.ChillingVent;
+import com.wafitz.pixelspacebase.levels.vents.ConfusionVent;
+import com.wafitz.pixelspacebase.levels.vents.FireVent;
+import com.wafitz.pixelspacebase.levels.vents.FlashingVent;
+import com.wafitz.pixelspacebase.levels.vents.FlockVent;
+import com.wafitz.pixelspacebase.levels.vents.GrippingVent;
+import com.wafitz.pixelspacebase.levels.vents.LightningVent;
+import com.wafitz.pixelspacebase.levels.vents.OozeVent;
+import com.wafitz.pixelspacebase.levels.vents.ParalyticVent;
+import com.wafitz.pixelspacebase.levels.vents.PoisonVent;
+import com.wafitz.pixelspacebase.levels.vents.SpearVent;
+import com.wafitz.pixelspacebase.levels.vents.SummoningVent;
+import com.wafitz.pixelspacebase.levels.vents.TeleportationVent;
+import com.wafitz.pixelspacebase.levels.vents.ToxicVent;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
@@ -69,19 +69,19 @@ public class PrisonLevel extends RegularLevel {
         return Patch.generate(this, feeling == Feeling.WATER ? 0.65f : 0.45f, 4);
     }
 
-    protected boolean[] grass() {
-        return Patch.generate(this, feeling == Feeling.GRASS ? 0.60f : 0.40f, 3);
+    protected boolean[] lightedvent() {
+        return Patch.generate(this, feeling == Feeling.LIGHTEDVENT ? 0.60f : 0.40f, 3);
     }
 
     @Override
-    protected Class<?>[] trapClasses() {
-        return new Class[]{ChillingTrap.class, FireTrap.class, PoisonTrap.class, SpearTrap.class, ToxicTrap.class,
-                AlarmTrap.class, FlashingTrap.class, GrippingTrap.class, ParalyticTrap.class, LightningTrap.class, OozeTrap.class,
-                ConfusionTrap.class, FlockTrap.class, SummoningTrap.class, TeleportationTrap.class,};
+    protected Class<?>[] ventClasses() {
+        return new Class[]{ChillingVent.class, FireVent.class, PoisonVent.class, SpearVent.class, ToxicVent.class,
+                AlarmVent.class, FlashingVent.class, GrippingVent.class, ParalyticVent.class, LightningVent.class, OozeVent.class,
+                ConfusionVent.class, FlockVent.class, SummoningVent.class, TeleportationVent.class,};
     }
 
     @Override
-    protected float[] trapChances() {
+    protected float[] ventChances() {
         return new float[]{4, 4, 4, 4,
                 2, 2, 2, 2, 2, 2,
                 1, 1, 1, 1};
@@ -177,7 +177,7 @@ public class PrisonLevel extends RegularLevel {
         return visuals;
     }
 
-    public static void addPrisonVisuals(Level level, Group group) {
+    static void addPrisonVisuals(Level level, Group group) {
         for (int i = 0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WALL_DECO) {
                 group.add(new Torch(i));
@@ -185,11 +185,11 @@ public class PrisonLevel extends RegularLevel {
         }
     }
 
-    public static class Torch extends Emitter {
+    private static class Torch extends Emitter {
 
         private int pos;
 
-        public Torch(int pos) {
+        Torch(int pos) {
             super();
 
             this.pos = pos;

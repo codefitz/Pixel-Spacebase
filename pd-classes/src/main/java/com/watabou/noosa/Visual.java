@@ -154,8 +154,8 @@ public class Visual extends Gizmo {
 	public float height() {
 		return height * scale.y;
 	}
-	
-	protected void updateMotion() {
+
+	private void updateMotion() {
 
 		if (acc.x != 0)
 			speed.x += acc.x * Game.elapsed;
@@ -265,15 +265,15 @@ public class Visual extends Gizmo {
 		if (c == null || !visible) return false;
 
 		//x coord
-		if (x > c.scroll.x + c.width)
+		if (x > c.script.x + c.width)
 			return false;
-		else if (!(x >= c.scroll.x || x + width() >= c.scroll.x))
+		else if (!(x >= c.script.x || x + width() >= c.script.x))
 			return false;
 
 		//y coord
-		if (y > c.scroll.y + c.height)
+		if (y > c.script.y + c.height)
 			return false;
-		else if (!(y >= c.scroll.y || y + height() >= c.scroll.y))
+		else if (!(y >= c.script.y || y + height() >= c.script.y))
 			return false;
 
 		return true;

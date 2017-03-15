@@ -34,7 +34,7 @@ import com.watabou.utils.Random;
 public class Artifact extends KindofMisc {
 
     protected Buff passiveBuff;
-    protected Buff activeBuff;
+    Buff activeBuff;
 
     //level is used internally to track upgrades to artifacts, size/logic varies per artifact.
     //already inherited from item superclass
@@ -49,7 +49,7 @@ public class Artifact extends KindofMisc {
     //better to keep charge as an int and use a separate float than casting.
     protected float partialCharge = 0;
     //the maximum charge, varies per artifact, not all artifacts use this.
-    protected int chargeCap = 0;
+    int chargeCap = 0;
 
     //used by some artifacts to keep track of duration of effects or cooldowns to use.
     protected int cooldown = 0;
@@ -123,9 +123,9 @@ public class Artifact extends KindofMisc {
 
     @Override
     public String info() {
-        if (cursed && cursedKnown && !isEquipped(Dungeon.hero)) {
+        if (malfunctioning && malfunctioningKnown && !isEquipped(Dungeon.hero)) {
 
-            return desc() + "\n\n" + Messages.get(Artifact.class, "curse_known");
+            return desc() + "\n\n" + Messages.get(Artifact.class, "malfunction_known");
 
         } else {
 
@@ -159,9 +159,9 @@ public class Artifact extends KindofMisc {
     }
 
     //converts class names to be more concise and readable.
-    protected String convertName(String className) {
+    String convertName(String className) {
         //removes known redundant parts of names.
-        className = className.replaceFirst("ScrollOf|PotionOf", "");
+        className = className.replaceFirst("ScriptOf|ExperimentalTechOf", "");
 
         //inserts a space infront of every uppercase character
         className = className.replaceAll("(\\p{Ll})(\\p{Lu})", "$1 $2");
@@ -172,7 +172,7 @@ public class Artifact extends KindofMisc {
     @Override
     public Item random() {
         if (Random.Float() < 0.3f) {
-            cursed = true;
+            malfunctioning = true;
         }
         return this;
     }
@@ -182,7 +182,7 @@ public class Artifact extends KindofMisc {
         int price = 100;
         if (level() > 0)
             price += 20 * visiblyUpgraded();
-        if (cursed && cursedKnown) {
+        if (malfunctioning && malfunctioningKnown) {
             price /= 2;
         }
         if (price < 1) {
@@ -206,8 +206,8 @@ public class Artifact extends KindofMisc {
             return level();
         }
 
-        public boolean isCursed() {
-            return cursed;
+        public boolean isMalfunctioning() {
+            return malfunctioning;
         }
 
     }

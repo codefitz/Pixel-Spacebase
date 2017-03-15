@@ -78,7 +78,7 @@ public class Wraith extends Mob {
         return 10 + level;
     }
 
-    public void adjustStats(int level) {
+    private void adjustStats(int level) {
         this.level = level;
         defenseSkill = attackSkill(null) * 5;
         enemySeen = true;
@@ -111,7 +111,7 @@ public class Wraith extends Mob {
             w.sprite.alpha(0);
             w.sprite.parent.add(new AlphaTweener(w.sprite, 1, 0.5f));
 
-            w.sprite.emitter().burst(ShadowParticle.CURSE, 5);
+            w.sprite.emitter().burst(ShadowParticle.MALFUNCTION, 5);
 
             return w;
         } else {

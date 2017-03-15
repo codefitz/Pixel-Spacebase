@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.EarthParticle;
-import com.wafitz.pixelspacebase.items.potions.PotionOfParalyticGas;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfParalyticGas;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -58,7 +58,7 @@ public class Earthroot extends Plant {
             image = ItemSpriteSheet.SEED_EARTHROOT;
 
             plantClass = Earthroot.class;
-            alchemyClass = PotionOfParalyticGas.class;
+            alchemyClass = ExperimentalTechOfParalyticGas.class;
 
             bones = true;
         }

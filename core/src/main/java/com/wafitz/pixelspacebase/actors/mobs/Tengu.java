@@ -33,13 +33,13 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.TomeOfMastery;
 import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicMapping;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfPsionicBlast;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfPsionicBlast;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.PrisonBossLevel;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.levels.traps.SpearTrap;
+import com.wafitz.pixelspacebase.levels.vents.SpearVent;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -166,15 +166,15 @@ public class Tengu extends Mob {
     private void jump() {
 
         for (int i = 0; i < 4; i++) {
-            int trapPos;
+            int ventPos;
             do {
-                trapPos = Random.Int(Dungeon.level.length());
-            } while (!Level.fieldOfView[trapPos] || Level.solid[trapPos]);
+                ventPos = Random.Int(Dungeon.level.length());
+            } while (!Level.fieldOfView[ventPos] || Level.solid[ventPos]);
 
-            if (Dungeon.level.map[trapPos] == Terrain.INACTIVE_TRAP) {
-                Dungeon.level.setTrap(new SpearTrap().reveal(), trapPos);
-                Level.set(trapPos, Terrain.TRAP);
-                ScrollOfMagicMapping.discover(trapPos);
+            if (Dungeon.level.map[ventPos] == Terrain.INACTIVE_VENT) {
+                Dungeon.level.setVent(new SpearVent().reveal(), ventPos);
+                Level.set(ventPos, Terrain.VENT);
+                ScriptOfMagicMapping.discover(ventPos);
             }
         }
 
@@ -186,7 +186,7 @@ public class Tengu extends Mob {
             do {
                 newPos = Random.Int(Dungeon.level.length());
             } while (
-                    !(Dungeon.level.map[newPos] == Terrain.INACTIVE_TRAP || Dungeon.level.map[newPos] == Terrain.TRAP) ||
+                    !(Dungeon.level.map[newPos] == Terrain.INACTIVE_VENT || Dungeon.level.map[newPos] == Terrain.VENT) ||
                             Level.solid[newPos] ||
                             Dungeon.level.adjacent(newPos, enemy.pos) ||
                             Actor.findChar(newPos) != null);
@@ -231,7 +231,7 @@ public class Tengu extends Mob {
         RESISTANCES.add(ToxicGas.class);
         RESISTANCES.add(Poison.class);
         RESISTANCES.add(Grim.class);
-        RESISTANCES.add(ScrollOfPsionicBlast.class);
+        RESISTANCES.add(ScriptOfPsionicBlast.class);
     }
 
     @Override

@@ -25,20 +25,20 @@ import com.wafitz.pixelspacebase.Journal.Feature;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.effects.BlobEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMight;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfStrength;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Generator.Category;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.potions.PotionOfMight;
-import com.wafitz.pixelspacebase.items.potions.PotionOfStrength;
-import com.wafitz.pixelspacebase.items.rings.Module;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicalInfusion;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfUpgrade;
+import com.wafitz.pixelspacebase.items.modules.Module;
+import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicalInfusion;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
 import com.wafitz.pixelspacebase.items.wands.Wand;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
-import com.wafitz.pixelspacebase.items.weapon.melee.MagesStaff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.plants.Plant;
@@ -49,16 +49,16 @@ public class DiffusionalTerminal extends WellWater {
     @Override
     protected Item affectItem(Item item) {
 
-        if (item instanceof MagesStaff) {
-            item = changeStaff((MagesStaff) item);
+        if (item instanceof DM3000Staff) {
+            item = changeStaff((DM3000Staff) item);
         } else if (item instanceof MeleeWeapon) {
             item = changeWeapon((MeleeWeapon) item);
-        } else if (item instanceof Scroll) {
-            item = changeScroll((Scroll) item);
-        } else if (item instanceof Potion) {
-            item = changePotion((Potion) item);
+        } else if (item instanceof Script) {
+            item = changeScript((Script) item);
+        } else if (item instanceof ExperimentalTech) {
+            item = changeExperimentalTech((ExperimentalTech) item);
         } else if (item instanceof Module) {
-            item = changeRing((Module) item);
+            item = changeModule((Module) item);
         } else if (item instanceof Wand) {
             item = changeWand((Wand) item);
         } else if (item instanceof Plant.Seed) {
@@ -83,7 +83,7 @@ public class DiffusionalTerminal extends WellWater {
         emitter.start(Speck.factory(Speck.CHANGE), 0.2f, 0);
     }
 
-    private MagesStaff changeStaff(MagesStaff staff) {
+    private DM3000Staff changeStaff(DM3000Staff staff) {
         Class<? extends Wand> wandClass = staff.wandClass();
 
         if (wandClass == null) {
@@ -123,18 +123,18 @@ public class DiffusionalTerminal extends WellWater {
 
         n.enchantment = w.enchantment;
         n.levelKnown = w.levelKnown;
-        n.cursedKnown = w.cursedKnown;
-        n.cursed = w.cursed;
+        n.malfunctioningKnown = w.malfunctioningKnown;
+        n.malfunctioning = w.malfunctioning;
         n.imbue = w.imbue;
 
         return n;
 
     }
 
-    private Module changeRing(Module r) {
+    private Module changeModule(Module r) {
         Module n;
         do {
-            n = (Module) Generator.random(Category.RING);
+            n = (Module) Generator.random(Category.MODULE);
         } while (n.getClass() == r.getClass());
 
         n.level(0);
@@ -147,8 +147,8 @@ public class DiffusionalTerminal extends WellWater {
         }
 
         n.levelKnown = r.levelKnown;
-        n.cursedKnown = r.cursedKnown;
-        n.cursed = r.cursed;
+        n.malfunctioningKnown = r.malfunctioningKnown;
+        n.malfunctioning = r.malfunctioning;
 
         return n;
     }
@@ -157,8 +157,8 @@ public class DiffusionalTerminal extends WellWater {
         Artifact n = Generator.randomArtifact();
 
         if (n != null) {
-            n.cursedKnown = a.cursedKnown;
-            n.cursed = a.cursed;
+            n.malfunctioningKnown = a.malfunctioningKnown;
+            n.malfunctioning = a.malfunctioning;
             n.levelKnown = a.levelKnown;
             n.transferUpgrade(a.visiblyUpgraded());
         }
@@ -177,8 +177,8 @@ public class DiffusionalTerminal extends WellWater {
         n.upgrade(w.level());
 
         n.levelKnown = w.levelKnown;
-        n.cursedKnown = w.cursedKnown;
-        n.cursed = w.cursed;
+        n.malfunctioningKnown = w.malfunctioningKnown;
+        n.malfunctioning = w.malfunctioning;
 
         return n;
     }
@@ -194,39 +194,39 @@ public class DiffusionalTerminal extends WellWater {
         return n;
     }
 
-    private Scroll changeScroll(Scroll s) {
-        if (s instanceof ScrollOfUpgrade) {
+    private Script changeScript(Script s) {
+        if (s instanceof ScriptOfUpgrade) {
 
-            return new ScrollOfMagicalInfusion();
+            return new ScriptOfMagicalInfusion();
 
-        } else if (s instanceof ScrollOfMagicalInfusion) {
+        } else if (s instanceof ScriptOfMagicalInfusion) {
 
-            return new ScrollOfUpgrade();
+            return new ScriptOfUpgrade();
 
         } else {
 
-            Scroll n;
+            Script n;
             do {
-                n = (Scroll) Generator.random(Category.SCROLL);
+                n = (Script) Generator.random(Category.SCRIPT);
             } while (n.getClass() == s.getClass());
             return n;
         }
     }
 
-    private Potion changePotion(Potion p) {
-        if (p instanceof PotionOfStrength) {
+    private ExperimentalTech changeExperimentalTech(ExperimentalTech p) {
+        if (p instanceof ExperimentalTechOfStrength) {
 
-            return new PotionOfMight();
+            return new ExperimentalTechOfMight();
 
-        } else if (p instanceof PotionOfMight) {
+        } else if (p instanceof ExperimentalTechOfMight) {
 
-            return new PotionOfStrength();
+            return new ExperimentalTechOfStrength();
 
         } else {
 
-            Potion n;
+            ExperimentalTech n;
             do {
-                n = (Potion) Generator.random(Category.POTION);
+                n = (ExperimentalTech) Generator.random(Category.EXPERIMENTALTECH);
             } while (n.getClass() == p.getClass());
             return n;
         }

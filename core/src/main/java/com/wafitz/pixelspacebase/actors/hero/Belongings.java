@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.bags.Bag;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
 import com.wafitz.pixelspacebase.items.keys.Key;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfRemoveCurse;
+import com.wafitz.pixelspacebase.items.scripts.FixScript;
 import com.wafitz.pixelspacebase.items.wands.Wand;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.watabou.utils.Bundle;
@@ -52,7 +52,7 @@ public class Belongings implements Iterable<Item> {
     public int[] ironKeys = new int[26];
     public int[] specialKeys = new int[26]; //golden or boss keys
 
-    public Belongings(Hero owner) {
+    Belongings(Hero owner) {
         this.owner = owner;
 
         backpack = new Bag() {{
@@ -169,19 +169,19 @@ public class Belongings implements Iterable<Item> {
             Badges.validateItemLevelAquired(misc2);
         }
         for (Item item : backpack) {
-            item.cursedKnown = true;
+            item.malfunctioningKnown = true;
         }
     }
 
-    public void uncurseEquipped() {
-        ScrollOfRemoveCurse.uncurse(owner, armor, weapon, misc1, misc2);
+    public void fixEquipped() {
+        FixScript.fix(owner, armor, weapon, misc1, misc2);
     }
 
     public Item randomUnequipped() {
         return Random.element(backpack.items);
     }
 
-    public void resurrect(int depth) {
+    void resurrect(int depth) {
 
         for (Item item : backpack.items.toArray(new Item[0])) {
             if (item instanceof Key) {
@@ -201,21 +201,21 @@ public class Belongings implements Iterable<Item> {
         }
 
         if (weapon != null) {
-            weapon.cursed = false;
+            weapon.malfunctioning = false;
             weapon.activate(owner);
         }
 
         if (armor != null) {
-            armor.cursed = false;
+            armor.malfunctioning = false;
             armor.activate(owner);
         }
 
         if (misc1 != null) {
-            misc1.cursed = false;
+            misc1.malfunctioning = false;
             misc1.activate(owner);
         }
         if (misc2 != null) {
-            misc2.cursed = false;
+            misc2.malfunctioning = false;
             misc2.activate(owner);
         }
     }

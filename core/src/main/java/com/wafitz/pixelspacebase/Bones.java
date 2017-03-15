@@ -116,8 +116,8 @@ public class Bones {
             }
         }
         if (item == null) {
-            if (Dungeon.gold > 50) {
-                item = new Parts(Random.NormalIntRange(50, Dungeon.gold));
+            if (Dungeon.parts > 50) {
+                item = new Parts(Random.NormalIntRange(50, Dungeon.parts));
             } else {
                 item = new Parts(50);
             }
@@ -157,8 +157,8 @@ public class Bones {
                                     item.visiblyUpgraded(),
                                     1 + ((Dungeon.depth * 3) / 10)));
 
-                            artifact.cursed = true;
-                            artifact.cursedKnown = true;
+                            artifact.malfunctioning = true;
+                            artifact.malfunctioningKnown = true;
 
                             return artifact;
                         } catch (Exception e) {
@@ -171,8 +171,8 @@ public class Bones {
                 }
 
                 if (item.isUpgradable()) {
-                    item.cursed = true;
-                    item.cursedKnown = true;
+                    item.malfunctioning = true;
+                    item.malfunctioningKnown = true;
                     if (item.isUpgradable()) {
                         //gain 1 level every 3.333 floors down plus one additional level.
                         int lvl = 1 + ((Dungeon.depth * 3) / 10);

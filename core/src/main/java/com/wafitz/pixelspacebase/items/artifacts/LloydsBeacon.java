@@ -31,7 +31,7 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.CellSelector;
@@ -51,14 +51,14 @@ import java.util.ArrayList;
 
 public class LloydsBeacon extends Artifact {
 
-    public static final float TIME_TO_USE = 1;
+    private static final float TIME_TO_USE = 1;
 
-    public static final String AC_ZAP = "ZAP";
-    public static final String AC_SET = "SET";
-    public static final String AC_RETURN = "RETURN";
+    private static final String AC_ZAP = "ZAP";
+    private static final String AC_SET = "SET";
+    private static final String AC_RETURN = "RETURN";
 
     public int returnDepth = -1;
-    public int returnPos;
+    private int returnPos;
 
     {
         image = ItemSpriteSheet.ARTIFACT_BEACON;
@@ -156,7 +156,7 @@ public class LloydsBeacon extends Artifact {
         } else if (action == AC_RETURN) {
 
             if (returnDepth == Dungeon.depth) {
-                ScrollOfTeleportation.appear(hero, returnPos);
+                ScriptOfTeleportation.appear(hero, returnPos);
                 Dungeon.level.press(returnPos, hero);
                 Dungeon.observe();
                 GameScene.updateFog();
@@ -178,7 +178,7 @@ public class LloydsBeacon extends Artifact {
         }
     }
 
-    protected CellSelector.Listener zapper = new CellSelector.Listener() {
+    private CellSelector.Listener zapper = new CellSelector.Listener() {
 
         @Override
         public void onSelect(Integer target) {
@@ -190,14 +190,14 @@ public class LloydsBeacon extends Artifact {
             updateQuickslot();
 
             if (Actor.findChar(target) == curUser) {
-                ScrollOfTeleportation.teleportHero(curUser);
+                ScriptOfTeleportation.teleportHero(curUser);
                 curUser.spendAndNext(1f);
             } else {
                 final Ballistica bolt = new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT);
                 final Char ch = Actor.findChar(bolt.collisionPos);
 
                 if (ch == curUser) {
-                    ScrollOfTeleportation.teleportHero(curUser);
+                    ScriptOfTeleportation.teleportHero(curUser);
                     curUser.spendAndNext(1f);
                 } else {
                     Sample.INSTANCE.play(Assets.SND_ZAP);
@@ -221,7 +221,7 @@ public class LloydsBeacon extends Artifact {
 
                                 if (pos == -1 || Dungeon.bossLevel()) {
 
-                                    GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
+                                    GLog.w(Messages.get(ScriptOfTeleportation.class, "no_tele"));
 
                                 } else if (ch.properties().contains(Char.Property.IMMOVABLE)) {
 
@@ -281,11 +281,11 @@ public class LloydsBeacon extends Artifact {
         return returnDepth != -1 ? WHITE : null;
     }
 
-    public class beaconRecharge extends ArtifactBuff {
+    private class beaconRecharge extends ArtifactBuff {
         @Override
         public boolean act() {
             LockedFloor lock = target.buff(LockedFloor.class);
-            if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
+            if (charge < chargeCap && !malfunctioning && (lock == null || lock.regenOn())) {
                 partialCharge += 1 / (100f - (chargeCap - charge) * 10f);
 
                 if (partialCharge >= 1) {

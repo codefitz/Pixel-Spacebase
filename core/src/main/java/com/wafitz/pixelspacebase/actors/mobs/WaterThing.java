@@ -102,8 +102,8 @@ public class WaterThing extends Mob {
         Dungeon.level.drop(new MysteryMeat(), pos).sprite.drop();
         super.die(cause);
 
-        Statistics.piranhasKilled++;
-        Badges.validatePiranhasKilled();
+        Statistics.waterThings++;
+        Badges.validateWaterThingshasKilled();
     }
 
     @Override

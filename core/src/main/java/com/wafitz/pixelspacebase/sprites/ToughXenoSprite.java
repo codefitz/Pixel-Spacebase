@@ -33,7 +33,7 @@ public class ToughXenoSprite extends MobSprite {
     public ToughXenoSprite() {
         super();
 
-        texture(Assets.RAT);
+        texture(Assets.XENOMORPH);
 
         TextureFilm frames = new TextureFilm(texture, 16, 15);
 

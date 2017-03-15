@@ -28,7 +28,7 @@ public class AlbinoSprite extends MobSprite {
     public AlbinoSprite() {
         super();
 
-        texture(Assets.RAT);
+        texture(Assets.XENOMORPH);
 
         TextureFilm frames = new TextureFilm(texture, 16, 15);
 

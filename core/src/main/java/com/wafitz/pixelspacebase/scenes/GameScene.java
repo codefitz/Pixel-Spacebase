@@ -39,18 +39,18 @@ import com.wafitz.pixelspacebase.effects.Flare;
 import com.wafitz.pixelspacebase.effects.FloatingText;
 import com.wafitz.pixelspacebase.effects.Ripple;
 import com.wafitz.pixelspacebase.effects.SpellSprite;
+import com.wafitz.pixelspacebase.items.DroneController;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Heap;
-import com.wafitz.pixelspacebase.items.Honeypot;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.bags.PotionBandolier;
-import com.wafitz.pixelspacebase.items.bags.ScrollHolder;
+import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
+import com.wafitz.pixelspacebase.items.bags.ScriptHolder;
 import com.wafitz.pixelspacebase.items.bags.SeedPouch;
 import com.wafitz.pixelspacebase.items.bags.WandHolster;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
-import com.wafitz.pixelspacebase.levels.traps.Trap;
+import com.wafitz.pixelspacebase.levels.vents.Vent;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.plants.Plant;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
@@ -81,7 +81,7 @@ import com.wafitz.pixelspacebase.windows.WndInfoCell;
 import com.wafitz.pixelspacebase.windows.WndInfoItem;
 import com.wafitz.pixelspacebase.windows.WndInfoMob;
 import com.wafitz.pixelspacebase.windows.WndInfoPlant;
-import com.wafitz.pixelspacebase.windows.WndInfoTrap;
+import com.wafitz.pixelspacebase.windows.WndInfoVent;
 import com.wafitz.pixelspacebase.windows.WndMessage;
 import com.wafitz.pixelspacebase.windows.WndOptions;
 import com.wafitz.pixelspacebase.windows.WndStory;
@@ -126,7 +126,7 @@ public class GameScene extends PixelScene {
     private Group levelVisuals;
     private Group ripples;
     private Group plants;
-    private Group traps;
+    private Group vents;
     private Group heaps;
     private Group mobs;
     private Group emitters;
@@ -193,7 +193,7 @@ public class GameScene extends PixelScene {
             addCustomTile(visual.create());
         }
 
-        terrainFeatures = new TerrainFeaturesTilemap(Dungeon.level.plants, Dungeon.level.traps);
+        terrainFeatures = new TerrainFeaturesTilemap(Dungeon.level.plants, Dungeon.level.vents);
         terrain.add(terrainFeatures);
 
         levelVisuals = Dungeon.level.addVisuals();
@@ -292,11 +292,11 @@ public class GameScene extends PixelScene {
 
         switch (InterlevelScene.mode) {
             case RESURRECT:
-                ScrollOfTeleportation.appear(Dungeon.hero, Dungeon.level.entrance);
+                ScriptOfTeleportation.appear(Dungeon.hero, Dungeon.level.entrance);
                 new Flare(8, 32).color(0xFFFF66, true).show(hero, 2f);
                 break;
             case RETURN:
-                ScrollOfTeleportation.appear(Dungeon.hero, Dungeon.hero.pos);
+                ScriptOfTeleportation.appear(Dungeon.hero, Dungeon.hero.pos);
                 break;
             case FALL:
                 Chasm.heroLand();
@@ -330,12 +330,12 @@ public class GameScene extends PixelScene {
         if (dropped != null) {
             for (Item item : dropped) {
                 int pos = Dungeon.level.randomRespawnCell();
-                if (item instanceof Potion) {
-                    ((Potion) item).shatter(pos);
+                if (item instanceof ExperimentalTech) {
+                    ((ExperimentalTech) item).shatter(pos);
                 } else if (item instanceof Plant.Seed) {
                     Dungeon.level.plant((Plant.Seed) item, pos);
-                } else if (item instanceof Honeypot) {
-                    Dungeon.level.drop(((Honeypot) item).shatter(null, pos), pos);
+                } else if (item instanceof DroneController) {
+                    Dungeon.level.drop(((DroneController) item).shatter(null, pos), pos);
                 } else {
                     Dungeon.level.drop(item, pos);
                 }
@@ -362,8 +362,8 @@ public class GameScene extends PixelScene {
                 case WATER:
                     GLog.w(Messages.get(this, "water"));
                     break;
-                case GRASS:
-                    GLog.w(Messages.get(this, "grass"));
+                case LIGHTEDVENT:
+                    GLog.w(Messages.get(this, "lightedvent"));
                     break;
                 case DARK:
                     GLog.w(Messages.get(this, "dark"));
@@ -536,7 +536,7 @@ public class GameScene extends PixelScene {
 
     }
 
-    private void addTrapSprite(Trap trap) {
+    private void addVentSprite(Vent vent) {
 
     }
 
@@ -589,9 +589,9 @@ public class GameScene extends PixelScene {
         }
     }
 
-    public static void add(Trap trap) {
+    public static void add(Vent vent) {
         if (scene != null) {
-            scene.addTrapSprite(trap);
+            scene.addVentSprite(vent);
         }
     }
 
@@ -777,10 +777,10 @@ public class GameScene extends PixelScene {
         WndBag wnd =
                 mode == Mode.SEED ?
                         WndBag.getBag(SeedPouch.class, listener, mode, title) :
-                        mode == Mode.SCROLL ?
-                                WndBag.getBag(ScrollHolder.class, listener, mode, title) :
-                                mode == Mode.POTION ?
-                                        WndBag.getBag(PotionBandolier.class, listener, mode, title) :
+                        mode == Mode.SCRIPT ?
+                                WndBag.getBag(ScriptHolder.class, listener, mode, title) :
+                                mode == Mode.EXPERIMENTALTECH ?
+                                        WndBag.getBag(ExperimentalTechBandolier.class, listener, mode, title) :
                                         mode == Mode.WAND ?
                                                 WndBag.getBag(WandHolster.class, listener, mode, title) :
                                                 WndBag.lastBag(listener, mode, title);
@@ -848,10 +848,10 @@ public class GameScene extends PixelScene {
             names.add(Messages.titleCase(plant.plantName));
         }
 
-        Trap trap = Dungeon.level.traps.get(cell);
-        if (trap != null && trap.visible) {
-            objects.add(trap);
-            names.add(Messages.titleCase(trap.name));
+        Vent vent = Dungeon.level.vents.get(cell);
+        if (vent != null && vent.visible) {
+            objects.add(vent);
+            names.add(Messages.titleCase(vent.name));
         }
 
         if (objects.isEmpty()) {
@@ -884,8 +884,8 @@ public class GameScene extends PixelScene {
             }
         } else if (o instanceof Plant) {
             GameScene.show(new WndInfoPlant((Plant) o));
-        } else if (o instanceof Trap) {
-            GameScene.show(new WndInfoTrap((Trap) o));
+        } else if (o instanceof Vent) {
+            GameScene.show(new WndInfoVent((Vent) o));
         } else {
             GameScene.show(new WndMessage(Messages.get(GameScene.class, "dont_know")));
         }

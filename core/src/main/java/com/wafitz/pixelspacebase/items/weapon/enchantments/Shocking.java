@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.effects.Lightning;
 import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.levels.Level;
-import com.wafitz.pixelspacebase.levels.traps.LightningTrap;
+import com.wafitz.pixelspacebase.levels.vents.LightningVent;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -78,12 +78,12 @@ public class Shocking extends Weapon.Enchantment {
         }
 
         affected.add(ch);
-        ch.damage(Level.water[ch.pos] && !ch.flying ? damage * 2 : damage, LightningTrap.LIGHTNING);
+        ch.damage(Level.water[ch.pos] && !ch.flying ? damage * 2 : damage, LightningVent.LIGHTNING);
 
         ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
         ch.sprite.flash();
 
-        HashSet<Char> ns = new HashSet<Char>();
+        HashSet<Char> ns = new HashSet<>();
         for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
             Char n = Actor.findChar(ch.pos + PathFinder.NEIGHBOURS8[i]);
             if (n != null && !affected.contains(n)) {

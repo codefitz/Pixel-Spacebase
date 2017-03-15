@@ -26,15 +26,15 @@ import com.wafitz.pixelspacebase.actors.mobs.Bandit;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.Senior;
 import com.wafitz.pixelspacebase.actors.mobs.Shielded;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
-import com.wafitz.pixelspacebase.items.bags.PotionBandolier;
-import com.wafitz.pixelspacebase.items.bags.ScrollHolder;
+import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
+import com.wafitz.pixelspacebase.items.bags.ScriptHolder;
 import com.wafitz.pixelspacebase.items.bags.SeedPouch;
 import com.wafitz.pixelspacebase.items.bags.WandHolster;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.rings.Module;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
+import com.wafitz.pixelspacebase.items.modules.Module;
+import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -58,22 +58,22 @@ public class Badges {
         MONSTERS_SLAIN_2(1),
         MONSTERS_SLAIN_3(2),
         MONSTERS_SLAIN_4(3),
-        GOLD_COLLECTED_1(4),
-        GOLD_COLLECTED_2(5),
-        GOLD_COLLECTED_3(6),
-        GOLD_COLLECTED_4(7),
+        PARTS_COLLECTED_1(4),
+        PARTS_COLLECTED_2(5),
+        PARTS_COLLECTED_3(6),
+        PARTS_COLLECTED_4(7),
         LEVEL_REACHED_1(8),
         LEVEL_REACHED_2(9),
         LEVEL_REACHED_3(10),
         LEVEL_REACHED_4(11),
-        ALL_POTIONS_IDENTIFIED(16),
-        ALL_SCROLLS_IDENTIFIED(17),
-        ALL_RINGS_IDENTIFIED(18),
+        ALL_EXPERIMENTAL_TECH_IDENTIFIED(16),
+        ALL_SCRIPTS_IDENTIFIED(17),
+        ALL_MODULES_IDENTIFIED(18),
         ALL_WANDS_IDENTIFIED(19),
         ALL_ITEMS_IDENTIFIED(35, true),
         BAG_BOUGHT_SEED_POUCH,
-        BAG_BOUGHT_SCROLL_HOLDER,
-        BAG_BOUGHT_POTION_BANDOLIER,
+        BAG_BOUGHT_SCRIPT_HOLDER,
+        BAG_BOUGHT_EXPERIMENTAL_TECH_BANDOLIER,
         BAG_BOUGHT_WAND_HOLSTER,
         ALL_BAGS_BOUGHT(23),
         DEATH_FROM_FIRE(24),
@@ -83,10 +83,10 @@ public class Badges {
         DEATH_FROM_GLYPH(57),
         DEATH_FROM_FALLING(59),
         YASD(34, true),
-        BOSS_SLAIN_1_WARRIOR,
-        BOSS_SLAIN_1_MAGE,
-        BOSS_SLAIN_1_ROGUE,
-        BOSS_SLAIN_1_HUNTRESS,
+        BOSS_SLAIN_1_COMMANDER,
+        BOSS_SLAIN_1_DM3000,
+        BOSS_SLAIN_1_SHAPESHIFTER,
+        BOSS_SLAIN_1_CAPTAIN,
         BOSS_SLAIN_1(12),
         BOSS_SLAIN_2(13),
         BOSS_SLAIN_3(14),
@@ -101,8 +101,8 @@ public class Badges {
         BOSS_SLAIN_3_SNIPER,
         BOSS_SLAIN_3_WARDEN,
         BOSS_SLAIN_3_ALL_SUBCLASSES(33, true),
-        RING_OF_HAGGLER(20),
-        RING_OF_THORNS(21),
+        HAGGLERMODULE(20),
+        THORNMODULE(21),
         STRENGTH_ATTAINED_1(40),
         STRENGTH_ATTAINED_2(41),
         STRENGTH_ATTAINED_3(42),
@@ -111,10 +111,10 @@ public class Badges {
         FOOD_EATEN_2(45),
         FOOD_EATEN_3(46),
         FOOD_EATEN_4(47),
-        MASTERY_WARRIOR,
-        MASTERY_MAGE,
-        MASTERY_ROGUE,
-        MASTERY_HUNTRESS,
+        MASTERY_COMMANDER,
+        MASTERY_DM3000,
+        MASTERY_SHAPESHIFTER,
+        MASTERY_CAPTAIN,
         ITEM_LEVEL_1(48),
         ITEM_LEVEL_2(49),
         ITEM_LEVEL_3(50),
@@ -125,22 +125,22 @@ public class Badges {
         RARE_SENIOR,
         RARE_ACIDIC,
         RARE(37, true),
-        TUTORIAL_WARRIOR,
-        TUTORIAL_MAGE,
-        VICTORY_WARRIOR,
-        VICTORY_MAGE,
-        VICTORY_ROGUE,
-        VICTORY_HUNTRESS,
+        TUTORIAL_COMMANDER,
+        TUTORIAL_DM3000,
+        VICTORY_COMMANDER,
+        VICTORY_DM3000,
+        VICTORY_SHAPESHIFTER,
+        VICTORY_CAPTAIN,
         VICTORY(22),
         VICTORY_ALL_CLASSES(36, true),
         MASTERY_COMBO(56),
-        POTIONS_COOKED_1(52),
-        POTIONS_COOKED_2(53),
-        POTIONS_COOKED_3(54),
-        POTIONS_COOKED_4(55),
+        EXPERIMENTAL_TECH_COOKED_1(52),
+        EXPERIMENTAL_TECH_COOKED_2(53),
+        EXPERIMENTAL_TECH_COOKED_3(54),
+        EXPERIMENTAL_TECH_COOKED_4(55),
         NO_MONSTERS_SLAIN(28),
         GRIM_WEAPON(29),
-        PIRANHAS(30),
+        WATERTHINGS(30),
         NIGHT_HUNTER(58),
         GAMES_PLAYED_1(60, true),
         GAMES_PLAYED_2(61, true),
@@ -276,23 +276,23 @@ public class Badges {
         displayBadge(badge);
     }
 
-    public static void validateGoldCollected() {
+    public static void validatePartsCollected() {
         Badge badge = null;
 
-        if (!local.contains(Badge.GOLD_COLLECTED_1) && Statistics.goldCollected >= 100) {
-            badge = Badge.GOLD_COLLECTED_1;
+        if (!local.contains(Badge.PARTS_COLLECTED_1) && Statistics.partsCollected >= 100) {
+            badge = Badge.PARTS_COLLECTED_1;
             local.add(badge);
         }
-        if (!local.contains(Badge.GOLD_COLLECTED_2) && Statistics.goldCollected >= 500) {
-            badge = Badge.GOLD_COLLECTED_2;
+        if (!local.contains(Badge.PARTS_COLLECTED_2) && Statistics.partsCollected >= 500) {
+            badge = Badge.PARTS_COLLECTED_2;
             local.add(badge);
         }
-        if (!local.contains(Badge.GOLD_COLLECTED_3) && Statistics.goldCollected >= 2500) {
-            badge = Badge.GOLD_COLLECTED_3;
+        if (!local.contains(Badge.PARTS_COLLECTED_3) && Statistics.partsCollected >= 2500) {
+            badge = Badge.PARTS_COLLECTED_3;
             local.add(badge);
         }
-        if (!local.contains(Badge.GOLD_COLLECTED_4) && Statistics.goldCollected >= 7500) {
-            badge = Badge.GOLD_COLLECTED_4;
+        if (!local.contains(Badge.PARTS_COLLECTED_4) && Statistics.partsCollected >= 7500) {
+            badge = Badge.PARTS_COLLECTED_4;
             local.add(badge);
         }
 
@@ -368,34 +368,34 @@ public class Badges {
         displayBadge(badge);
     }
 
-    public static void validatePotionsCooked() {
+    public static void validateExperimentalTechCooked() {
         Badge badge = null;
 
-        if (!local.contains(Badge.POTIONS_COOKED_1) && Statistics.potionsCooked >= 3) {
-            badge = Badge.POTIONS_COOKED_1;
+        if (!local.contains(Badge.EXPERIMENTAL_TECH_COOKED_1) && Statistics.experimentalTechCooked >= 3) {
+            badge = Badge.EXPERIMENTAL_TECH_COOKED_1;
             local.add(badge);
         }
-        if (!local.contains(Badge.POTIONS_COOKED_2) && Statistics.potionsCooked >= 6) {
-            badge = Badge.POTIONS_COOKED_2;
+        if (!local.contains(Badge.EXPERIMENTAL_TECH_COOKED_2) && Statistics.experimentalTechCooked >= 6) {
+            badge = Badge.EXPERIMENTAL_TECH_COOKED_2;
             local.add(badge);
         }
-        if (!local.contains(Badge.POTIONS_COOKED_3) && Statistics.potionsCooked >= 9) {
-            badge = Badge.POTIONS_COOKED_3;
+        if (!local.contains(Badge.EXPERIMENTAL_TECH_COOKED_3) && Statistics.experimentalTechCooked >= 9) {
+            badge = Badge.EXPERIMENTAL_TECH_COOKED_3;
             local.add(badge);
         }
-        if (!local.contains(Badge.POTIONS_COOKED_4) && Statistics.potionsCooked >= 12) {
-            badge = Badge.POTIONS_COOKED_4;
+        if (!local.contains(Badge.EXPERIMENTAL_TECH_COOKED_4) && Statistics.experimentalTechCooked >= 12) {
+            badge = Badge.EXPERIMENTAL_TECH_COOKED_4;
             local.add(badge);
         }
 
         displayBadge(badge);
     }
 
-    public static void validatePiranhasKilled() {
+    public static void validateWaterThingshasKilled() {
         Badge badge = null;
 
-        if (!local.contains(Badge.PIRANHAS) && Statistics.piranhasKilled >= 6) {
-            badge = Badge.PIRANHAS;
+        if (!local.contains(Badge.WATERTHINGS) && Statistics.waterThings >= 6) {
+            badge = Badge.WATERTHINGS;
             local.add(badge);
         }
 
@@ -406,7 +406,7 @@ public class Badges {
 
         // This method should be called:
         // 1) When an item is obtained (Item.collect)
-        // 2) When an item is upgraded (ScrollOfUpgrade, ScrollOfWeaponUpgrade, ShortSword, WandOfMagicMissile)
+        // 2) When an item is upgraded (ScriptOfUpgrade, WeaponUpgradeScript, ShortSword, WandOfMagicMissile)
         // 3) When an item is identified
 
         // Note that artifacts should never trigger this badge as they are alternatively upgraded
@@ -435,11 +435,11 @@ public class Badges {
         displayBadge(badge);
     }
 
-    public static void validateAllPotionsIdentified() {
+    public static void validateAllExperimentalTechIdentified() {
         if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
-                !local.contains(Badge.ALL_POTIONS_IDENTIFIED) && Potion.allKnown()) {
+                !local.contains(Badge.ALL_EXPERIMENTAL_TECH_IDENTIFIED) && ExperimentalTech.allKnown()) {
 
-            Badge badge = Badge.ALL_POTIONS_IDENTIFIED;
+            Badge badge = Badge.ALL_EXPERIMENTAL_TECH_IDENTIFIED;
             local.add(badge);
             displayBadge(badge);
 
@@ -447,11 +447,11 @@ public class Badges {
         }
     }
 
-    public static void validateAllScrollsIdentified() {
+    public static void validateAllScriptsIdentified() {
         if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
-                !local.contains(Badge.ALL_SCROLLS_IDENTIFIED) && Scroll.allKnown()) {
+                !local.contains(Badge.ALL_SCRIPTS_IDENTIFIED) && Script.allKnown()) {
 
-            Badge badge = Badge.ALL_SCROLLS_IDENTIFIED;
+            Badge badge = Badge.ALL_SCRIPTS_IDENTIFIED;
             local.add(badge);
             displayBadge(badge);
 
@@ -459,11 +459,11 @@ public class Badges {
         }
     }
 
-    public static void validateAllRingsIdentified() {
+    public static void validateAllModulesIdentified() {
         if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
-                !local.contains(Badge.ALL_RINGS_IDENTIFIED) && Module.allKnown()) {
+                !local.contains(Badge.ALL_MODULES_IDENTIFIED) && Module.allKnown()) {
 
-            Badge badge = Badge.ALL_RINGS_IDENTIFIED;
+            Badge badge = Badge.ALL_MODULES_IDENTIFIED;
             local.add(badge);
             displayBadge(badge);
 
@@ -492,10 +492,10 @@ public class Badges {
         Badge badge = null;
         if (bag instanceof SeedPouch) {
             badge = Badge.BAG_BOUGHT_SEED_POUCH;
-        } else if (bag instanceof ScrollHolder) {
-            badge = Badge.BAG_BOUGHT_SCROLL_HOLDER;
-        } else if (bag instanceof PotionBandolier) {
-            badge = Badge.BAG_BOUGHT_POTION_BANDOLIER;
+        } else if (bag instanceof ScriptHolder) {
+            badge = Badge.BAG_BOUGHT_SCRIPT_HOLDER;
+        } else if (bag instanceof ExperimentalTechBandolier) {
+            badge = Badge.BAG_BOUGHT_EXPERIMENTAL_TECH_BANDOLIER;
         } else if (bag instanceof WandHolster) {
             badge = Badge.BAG_BOUGHT_WAND_HOLSTER;
         }
@@ -506,8 +506,8 @@ public class Badges {
 
             if (!local.contains(Badge.ALL_BAGS_BOUGHT) &&
                     local.contains(Badge.BAG_BOUGHT_SEED_POUCH) &&
-                    local.contains(Badge.BAG_BOUGHT_SCROLL_HOLDER) &&
-                    local.contains(Badge.BAG_BOUGHT_POTION_BANDOLIER) &&
+                    local.contains(Badge.BAG_BOUGHT_SCRIPT_HOLDER) &&
+                    local.contains(Badge.BAG_BOUGHT_EXPERIMENTAL_TECH_BANDOLIER) &&
                     local.contains(Badge.BAG_BOUGHT_WAND_HOLSTER)) {
 
                 badge = Badge.ALL_BAGS_BOUGHT;
@@ -519,9 +519,9 @@ public class Badges {
 
     private static void validateAllItemsIdentified() {
         if (!global.contains(Badge.ALL_ITEMS_IDENTIFIED) &&
-                global.contains(Badge.ALL_POTIONS_IDENTIFIED) &&
-                global.contains(Badge.ALL_SCROLLS_IDENTIFIED) &&
-                global.contains(Badge.ALL_RINGS_IDENTIFIED)) {
+                global.contains(Badge.ALL_EXPERIMENTAL_TECH_IDENTIFIED) &&
+                global.contains(Badge.ALL_SCRIPTS_IDENTIFIED) &&
+                global.contains(Badge.ALL_MODULES_IDENTIFIED)) {
             //global.contains( Badge.ALL_WANDS_IDENTIFIED )) {
 
             Badge badge = Badge.ALL_ITEMS_IDENTIFIED;
@@ -609,16 +609,16 @@ public class Badges {
             if (badge == Badge.BOSS_SLAIN_1) {
                 switch (Dungeon.hero.heroClass) {
                     case COMMANDER:
-                        badge = Badge.BOSS_SLAIN_1_WARRIOR;
+                        badge = Badge.BOSS_SLAIN_1_COMMANDER;
                         break;
                     case DM3000:
-                        badge = Badge.BOSS_SLAIN_1_MAGE;
+                        badge = Badge.BOSS_SLAIN_1_DM3000;
                         break;
                     case SHAPESHIFTER:
-                        badge = Badge.BOSS_SLAIN_1_ROGUE;
+                        badge = Badge.BOSS_SLAIN_1_SHAPESHIFTER;
                         break;
                     case CAPTAIN:
-                        badge = Badge.BOSS_SLAIN_1_HUNTRESS;
+                        badge = Badge.BOSS_SLAIN_1_CAPTAIN;
                         break;
                 }
                 local.add(badge);
@@ -627,10 +627,10 @@ public class Badges {
                     saveNeeded = true;
                 }
 
-                if (global.contains(Badge.BOSS_SLAIN_1_WARRIOR) &&
-                        global.contains(Badge.BOSS_SLAIN_1_MAGE) &&
-                        global.contains(Badge.BOSS_SLAIN_1_ROGUE) &&
-                        global.contains(Badge.BOSS_SLAIN_1_HUNTRESS)) {
+                if (global.contains(Badge.BOSS_SLAIN_1_COMMANDER) &&
+                        global.contains(Badge.BOSS_SLAIN_1_DM3000) &&
+                        global.contains(Badge.BOSS_SLAIN_1_SHAPESHIFTER) &&
+                        global.contains(Badge.BOSS_SLAIN_1_CAPTAIN)) {
 
                     badge = Badge.BOSS_SLAIN_1_ALL_CLASSES;
                     if (!global.contains(badge)) {
@@ -699,16 +699,16 @@ public class Badges {
         Badge badge = null;
         switch (Dungeon.hero.heroClass) {
             case COMMANDER:
-                badge = Badge.MASTERY_WARRIOR;
+                badge = Badge.MASTERY_COMMANDER;
                 break;
             case DM3000:
-                badge = Badge.MASTERY_MAGE;
+                badge = Badge.MASTERY_DM3000;
                 break;
             case SHAPESHIFTER:
-                badge = Badge.MASTERY_ROGUE;
+                badge = Badge.MASTERY_SHAPESHIFTER;
                 break;
             case CAPTAIN:
-                badge = Badge.MASTERY_HUNTRESS;
+                badge = Badge.MASTERY_CAPTAIN;
                 break;
         }
 
@@ -727,18 +727,18 @@ public class Badges {
     }
 
     //TODO: Replace this badge, delayed until an eventual badge rework
-    public static void validateRingOfHaggler() {
-        if (!local.contains(Badge.RING_OF_HAGGLER)/* && new RingOfThorns().isKnown()*/) {
-            Badge badge = Badge.RING_OF_HAGGLER;
+    public static void validateHagglerModule() {
+        if (!local.contains(Badge.HAGGLERMODULE)/* && new RingOfThorns().isKnown()*/) {
+            Badge badge = Badge.HAGGLERMODULE;
             local.add(badge);
             displayBadge(badge);
         }
     }
 
     //TODO: Replace this badge, delayed until an eventual badge rework
-    public static void validateRingOfThorns() {
-        if (!local.contains(Badge.RING_OF_THORNS)/* && new RingOfThorns().isKnown()*/) {
-            Badge badge = Badge.RING_OF_THORNS;
+    public static void validateThornsModule() {
+        if (!local.contains(Badge.THORNMODULE)/* && new RingOfThorns().isKnown()*/) {
+            Badge badge = Badge.THORNMODULE;
             local.add(badge);
             displayBadge(badge);
         }
@@ -781,16 +781,16 @@ public class Badges {
 
         switch (Dungeon.hero.heroClass) {
             case COMMANDER:
-                badge = Badge.VICTORY_WARRIOR;
+                badge = Badge.VICTORY_COMMANDER;
                 break;
             case DM3000:
-                badge = Badge.VICTORY_MAGE;
+                badge = Badge.VICTORY_DM3000;
                 break;
             case SHAPESHIFTER:
-                badge = Badge.VICTORY_ROGUE;
+                badge = Badge.VICTORY_SHAPESHIFTER;
                 break;
             case CAPTAIN:
-                badge = Badge.VICTORY_HUNTRESS;
+                badge = Badge.VICTORY_CAPTAIN;
                 break;
         }
         local.add(badge);
@@ -799,10 +799,10 @@ public class Badges {
             saveNeeded = true;
         }
 
-        if (global.contains(Badge.VICTORY_WARRIOR) &&
-                global.contains(Badge.VICTORY_MAGE) &&
-                global.contains(Badge.VICTORY_ROGUE) &&
-                global.contains(Badge.VICTORY_HUNTRESS)) {
+        if (global.contains(Badge.VICTORY_COMMANDER) &&
+                global.contains(Badge.VICTORY_DM3000) &&
+                global.contains(Badge.VICTORY_SHAPESHIFTER) &&
+                global.contains(Badge.VICTORY_CAPTAIN)) {
 
             badge = Badge.VICTORY_ALL_CLASSES;
             displayBadge(badge);
@@ -813,10 +813,10 @@ public class Badges {
         Badge badge = null;
         switch (Dungeon.hero.heroClass) {
             case COMMANDER:
-                badge = Badge.TUTORIAL_WARRIOR;
+                badge = Badge.TUTORIAL_COMMANDER;
                 break;
             case DM3000:
-                badge = Badge.TUTORIAL_MAGE;
+                badge = Badge.TUTORIAL_DM3000;
                 break;
             default:
                 break;
@@ -938,21 +938,21 @@ public class Badges {
         }
 
         leaveBest(filtered, Badge.MONSTERS_SLAIN_1, Badge.MONSTERS_SLAIN_2, Badge.MONSTERS_SLAIN_3, Badge.MONSTERS_SLAIN_4);
-        leaveBest(filtered, Badge.GOLD_COLLECTED_1, Badge.GOLD_COLLECTED_2, Badge.GOLD_COLLECTED_3, Badge.GOLD_COLLECTED_4);
+        leaveBest(filtered, Badge.PARTS_COLLECTED_1, Badge.PARTS_COLLECTED_2, Badge.PARTS_COLLECTED_3, Badge.PARTS_COLLECTED_4);
         leaveBest(filtered, Badge.BOSS_SLAIN_1, Badge.BOSS_SLAIN_2, Badge.BOSS_SLAIN_3, Badge.BOSS_SLAIN_4);
         leaveBest(filtered, Badge.LEVEL_REACHED_1, Badge.LEVEL_REACHED_2, Badge.LEVEL_REACHED_3, Badge.LEVEL_REACHED_4);
         leaveBest(filtered, Badge.STRENGTH_ATTAINED_1, Badge.STRENGTH_ATTAINED_2, Badge.STRENGTH_ATTAINED_3, Badge.STRENGTH_ATTAINED_4);
         leaveBest(filtered, Badge.FOOD_EATEN_1, Badge.FOOD_EATEN_2, Badge.FOOD_EATEN_3, Badge.FOOD_EATEN_4);
         leaveBest(filtered, Badge.ITEM_LEVEL_1, Badge.ITEM_LEVEL_2, Badge.ITEM_LEVEL_3, Badge.ITEM_LEVEL_4);
-        leaveBest(filtered, Badge.POTIONS_COOKED_1, Badge.POTIONS_COOKED_2, Badge.POTIONS_COOKED_3, Badge.POTIONS_COOKED_4);
+        leaveBest(filtered, Badge.EXPERIMENTAL_TECH_COOKED_1, Badge.EXPERIMENTAL_TECH_COOKED_2, Badge.EXPERIMENTAL_TECH_COOKED_3, Badge.EXPERIMENTAL_TECH_COOKED_4);
         leaveBest(filtered, Badge.BOSS_SLAIN_1_ALL_CLASSES, Badge.BOSS_SLAIN_3_ALL_SUBCLASSES);
         leaveBest(filtered, Badge.DEATH_FROM_FIRE, Badge.YASD);
         leaveBest(filtered, Badge.DEATH_FROM_GAS, Badge.YASD);
         leaveBest(filtered, Badge.DEATH_FROM_HUNGER, Badge.YASD);
         leaveBest(filtered, Badge.DEATH_FROM_POISON, Badge.YASD);
-        leaveBest(filtered, Badge.ALL_POTIONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
-        leaveBest(filtered, Badge.ALL_SCROLLS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
-        leaveBest(filtered, Badge.ALL_RINGS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
+        leaveBest(filtered, Badge.ALL_EXPERIMENTAL_TECH_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
+        leaveBest(filtered, Badge.ALL_SCRIPTS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
+        leaveBest(filtered, Badge.ALL_MODULES_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
         leaveBest(filtered, Badge.ALL_WANDS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
         leaveBest(filtered, Badge.VICTORY, Badge.VICTORY_ALL_CLASSES);
         leaveBest(filtered, Badge.VICTORY, Badge.HAPPY_END);

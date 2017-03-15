@@ -30,14 +30,14 @@ import java.util.ArrayList;
 
 public class Camera extends Gizmo {
 
-	protected static ArrayList<Camera> all = new ArrayList<Camera>();
+	protected static ArrayList<Camera> all = new ArrayList<>();
 	
 	protected static float invW2;
 	protected static float invH2;
 	
 	public static Camera main;
 
-	public boolean fullScreen;
+	protected boolean fullScreen;
 
 	public float zoom;
 	
@@ -50,8 +50,8 @@ public class Camera extends Gizmo {
 	int screenHeight;
 	
 	public float[] matrix;
-	
-	public PointF scroll;
+
+	public PointF script;
 	public Visual target;
 	
 	private float shakeMagX		= 10f;
@@ -89,8 +89,8 @@ public class Camera extends Gizmo {
 		all.remove( camera );
 		return camera;
 	}
-	
-	public static void updateAll() {
+
+	static void updateAll() {
 		int length = all.size();
 		for (int i=0; i < length; i++) {
 			Camera c = all.get( i );
@@ -121,9 +121,9 @@ public class Camera extends Gizmo {
 		
 		screenWidth = (int)(width * zoom);
 		screenHeight = (int)(height * zoom);
-		
-		scroll = new PointF();
-		
+
+		script = new PointF();
+
 		matrix = new float[16];
 		Matrix.setIdentity( matrix );
 	}
@@ -136,8 +136,8 @@ public class Camera extends Gizmo {
 	
 	public void zoom( float value ) {
 		zoom( value,
-			scroll.x + width / 2,
-			scroll.y + height / 2 );
+				script.x + width / 2,
+				script.y + height / 2);
 	}
 	
 	public void zoom( float value, float fx, float fy ) {
@@ -183,12 +183,12 @@ public class Camera extends Gizmo {
 	public boolean hitTest( float x, float y ) {
 		return x >= this.x && y >= this.y && x < this.x + screenWidth && y < this.y + screenHeight;
 	}
-	
-	public void focusOn( float x, float y ) {
-		scroll.set( x - width / 2, y - height / 2 );
+
+	private void focusOn(float x, float y) {
+		script.set(x - width / 2, y - height / 2);
 	}
-	
-	public void focusOn( PointF point ) {
+
+	private void focusOn(PointF point) {
 		focusOn( point.x, point.y );
 	}
 	
@@ -198,14 +198,14 @@ public class Camera extends Gizmo {
 	
 	public PointF screenToCamera( int x, int y ) {
 		return new PointF(
-			(x - this.x) / zoom + scroll.x,
-			(y - this.y) / zoom + scroll.y );
+				(x - this.x) / zoom + script.x,
+				(y - this.y) / zoom + script.y);
 	}
 	
 	public Point cameraToScreen( float x, float y ) {
 		return new Point(
-			(int)((x - scroll.x) * zoom + this.x),
-			(int)((y - scroll.y) * zoom + this.y));
+				(int) ((x - script.x) * zoom + this.x),
+				(int) ((y - script.y) * zoom + this.y));
 	}
 	
 	public float screenWidth() {
@@ -223,14 +223,14 @@ public class Camera extends Gizmo {
 		Matrix.scale( matrix, 2f / G.width, -2f / G.height );
 		Matrix.translate( matrix, x, y );
 		Matrix.scale( matrix, zoom, zoom );
-		Matrix.translate( matrix, scroll.x, scroll.y );*/
+		Matrix.translate( matrix, script.x, script.y );*/
 		
 		matrix[0] = +zoom * invW2;
 		matrix[5] = -zoom * invH2;
-		
-		matrix[12] = -1 + x * invW2 - (scroll.x + shakeX) * matrix[0];
-		matrix[13] = +1 - y * invH2 - (scroll.y + shakeY) * matrix[5];
-		
+
+		matrix[12] = -1 + x * invW2 - (script.x + shakeX) * matrix[0];
+		matrix[13] = +1 - y * invH2 - (script.y + shakeY) * matrix[5];
+
 	}
 	
 	public void shake( float magnitude, float duration ) {

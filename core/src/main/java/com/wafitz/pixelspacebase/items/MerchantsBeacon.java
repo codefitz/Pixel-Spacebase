@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.items;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.PartsBot;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.MakerBot;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 
@@ -56,7 +56,7 @@ public class MerchantsBeacon extends Item {
 
         if (action.equals(AC_USE)) {
             detach(hero.belongings.backpack);
-            PartsBot.sell();
+            MakerBot.sell();
             Sample.INSTANCE.play(Assets.SND_BEACON);
         }
 

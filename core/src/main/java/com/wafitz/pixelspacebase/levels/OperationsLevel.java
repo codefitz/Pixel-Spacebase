@@ -30,19 +30,19 @@ import com.wafitz.pixelspacebase.items.BrokenSeal;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.armor.Uniform;
-import com.wafitz.pixelspacebase.items.bags.PotionBandolier;
+import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
 import com.wafitz.pixelspacebase.items.bags.SeedPouch;
 import com.wafitz.pixelspacebase.items.bags.WandHolster;
 import com.wafitz.pixelspacebase.items.food.Food;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicMapping;
-import com.wafitz.pixelspacebase.levels.traps.AlarmTrap;
-import com.wafitz.pixelspacebase.levels.traps.ChillingTrap;
-import com.wafitz.pixelspacebase.levels.traps.FlockTrap;
-import com.wafitz.pixelspacebase.levels.traps.OozeTrap;
-import com.wafitz.pixelspacebase.levels.traps.SummoningTrap;
-import com.wafitz.pixelspacebase.levels.traps.TeleportationTrap;
-import com.wafitz.pixelspacebase.levels.traps.ToxicTrap;
-import com.wafitz.pixelspacebase.levels.traps.WornTrap;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
+import com.wafitz.pixelspacebase.levels.vents.AlarmVent;
+import com.wafitz.pixelspacebase.levels.vents.ChillingVent;
+import com.wafitz.pixelspacebase.levels.vents.FlockVent;
+import com.wafitz.pixelspacebase.levels.vents.OozeVent;
+import com.wafitz.pixelspacebase.levels.vents.SummoningVent;
+import com.wafitz.pixelspacebase.levels.vents.TeleportationVent;
+import com.wafitz.pixelspacebase.levels.vents.ToxicVent;
+import com.wafitz.pixelspacebase.levels.vents.WornVent;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.noosa.Game;
@@ -74,21 +74,21 @@ public class OperationsLevel extends RegularLevel {
         return Patch.generate(this, feeling == Feeling.WATER ? 0.60f : 0.45f, 5);
     }
 
-    protected boolean[] grass() {
-        return Patch.generate(this, feeling == Feeling.GRASS ? 0.60f : 0.40f, 4);
+    protected boolean[] lightedvent() {
+        return Patch.generate(this, feeling == Feeling.LIGHTEDVENT ? 0.60f : 0.40f, 4);
     }
 
     @Override
-    protected Class<?>[] trapClasses() {
+    protected Class<?>[] ventClasses() {
         return Dungeon.depth == 1 ?
-                new Class<?>[]{WornTrap.class} :
-                new Class<?>[]{ChillingTrap.class, ToxicTrap.class, WornTrap.class,
-                        AlarmTrap.class, OozeTrap.class,
-                        FlockTrap.class, SummoningTrap.class, TeleportationTrap.class,};
+                new Class<?>[]{WornVent.class} :
+                new Class<?>[]{ChillingVent.class, ToxicVent.class, WornVent.class,
+                        AlarmVent.class, OozeVent.class,
+                        FlockVent.class, SummoningVent.class, TeleportationVent.class,};
     }
 
     @Override
-    protected float[] trapChances() {
+    protected float[] ventChances() {
         return Dungeon.depth == 1 ?
                 new float[]{1} :
                 new float[]{4, 4, 4,
@@ -146,16 +146,16 @@ public class OperationsLevel extends RegularLevel {
         // wafitz.v1 - Hero belongings are now to be found in the entrance, later I will randomly place this somewhere on the level
         if (Dungeon.depth <= 1) {
                 int pos = pointToCell(roomEntrance.random());
-                if (pos != entrance && traps.get(pos) == null
+            if (pos != entrance && vents.get(pos) == null
                         && findMob(pos) == null && pos != Terrain.SIGN) {
                     drop(Generator.random(), pos).type = Heap.Type.CHEST;
                     drop(new Uniform().identify(), pos);
                     drop(new Food().identify(), pos);
                     // Testing
-                    drop(new ScrollOfMagicMapping().identify(), pos);
+                drop(new ScriptOfMagicMapping().identify(), pos);
                     drop(new SeedPouch().identify(), pos);
                     drop(new WandHolster().identify(), pos);
-                    drop(new PotionBandolier().identify(), pos);
+                drop(new ExperimentalTechBandolier().identify(), pos);
                     drop(new BrokenSeal().identify(), pos);
                 }
         }
@@ -163,9 +163,9 @@ public class OperationsLevel extends RegularLevel {
 
     @Override
     protected void createItems() {
-        if (!Dungeon.limitedDrops.dewVial.dropped() && Random.Int(4 - Dungeon.depth) == 0) {
+        if (!Dungeon.limitedDrops.airTank.dropped() && Random.Int(4 - Dungeon.depth) == 0) {
             addItemToSpawn(new AirTank());
-            Dungeon.limitedDrops.dewVial.drop();
+            Dungeon.limitedDrops.airTank.drop();
         }
 
         Hologram.Quest.spawn(this);

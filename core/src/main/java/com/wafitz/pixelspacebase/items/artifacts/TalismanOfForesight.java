@@ -52,12 +52,12 @@ public class TalismanOfForesight extends Artifact {
         defaultAction = AC_SCRY;
     }
 
-    public static final String AC_SCRY = "SCRY";
+    private static final String AC_SCRY = "SCRY";
 
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        if (isEquipped(hero) && charge == chargeCap && !cursed)
+        if (isEquipped(hero) && charge == chargeCap && !malfunctioning)
             actions.add(AC_SCRY);
         return actions;
     }
@@ -108,11 +108,11 @@ public class TalismanOfForesight extends Artifact {
         String desc = super.desc();
 
         if (isEquipped(Dungeon.hero)) {
-            if (!cursed) {
+            if (!malfunctioning) {
                 desc += "\n\n" + Messages.get(this, "desc_worn");
 
             } else {
-                desc += "\n\n" + Messages.get(this, "desc_cursed");
+                desc += "\n\n" + Messages.get(this, "desc_malfunctioning");
             }
         }
 
@@ -157,7 +157,7 @@ public class TalismanOfForesight extends Artifact {
                 }
             }
 
-            if (smthFound && !cursed) {
+            if (smthFound && !malfunctioning) {
                 if (warn == 0) {
                     GLog.w(Messages.get(this, "uneasy"));
                     if (target instanceof Hero) {
@@ -174,7 +174,7 @@ public class TalismanOfForesight extends Artifact {
 
             //fully charges in 2500 turns at lvl=0, scaling to 1000 turns at lvl = 10.
             LockedFloor lock = target.buff(LockedFloor.class);
-            if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
+            if (charge < chargeCap && !malfunctioning && (lock == null || lock.regenOn())) {
                 partialCharge += 0.04 + (level() * 0.006);
 
                 if (partialCharge > 1 && charge < chargeCap) {

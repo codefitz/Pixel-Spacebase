@@ -29,7 +29,7 @@ import com.watabou.utils.Random;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class Degradation extends Group {
+class Degradation extends Group {
 
     private static int[] WEAPON = {
             +2, -2,
@@ -58,7 +58,7 @@ public class Degradation extends Group {
             +1, +2
     };
 
-    private static int[] RING = {
+    private static int[] MODULE = {
             0, -1,
             -1, 0,
             0, 0,
@@ -88,8 +88,8 @@ public class Degradation extends Group {
         return new Degradation(p, ARMOR);
     }
 
-    public static Degradation ring(PointF p) {
-        return new Degradation(p, RING);
+    public static Degradation module(PointF p) {
+        return new Degradation(p, MODULE);
     }
 
     public static Degradation wand(PointF p) {

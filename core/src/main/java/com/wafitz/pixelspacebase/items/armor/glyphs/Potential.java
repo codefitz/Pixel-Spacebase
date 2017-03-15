@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.Lightning;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.armor.Armor.Glyph;
-import com.wafitz.pixelspacebase.levels.traps.LightningTrap;
+import com.wafitz.pixelspacebase.levels.vents.LightningVent;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSprite.Glowing;
 import com.watabou.noosa.Camera;
@@ -46,7 +46,7 @@ public class Potential extends Glyph {
 
             shockDmg *= Math.pow(0.9, level);
 
-            defender.damage(shockDmg, LightningTrap.LIGHTNING);
+            defender.damage(shockDmg, LightningVent.LIGHTNING);
 
             checkOwner(defender);
             if (defender == Dungeon.hero) {

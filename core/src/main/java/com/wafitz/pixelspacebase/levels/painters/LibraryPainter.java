@@ -24,9 +24,9 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfIdentify;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfRemoveCurse;
+import com.wafitz.pixelspacebase.items.scripts.FixScript;
+import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfIdentify;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -76,7 +76,7 @@ public class LibraryPainter extends Painter {
             } while (level.map[pos] != Terrain.EMPTY || level.heaps.get(pos) != null);
             Item item;
             if (i == 0)
-                item = Random.Int(2) == 0 ? new ScrollOfIdentify() : new ScrollOfRemoveCurse();
+                item = Random.Int(2) == 0 ? new ScriptOfIdentify() : new FixScript();
             else
                 item = prize(level);
             level.drop(item, pos);
@@ -88,9 +88,9 @@ public class LibraryPainter extends Painter {
 
     private static Item prize(Level level) {
 
-        Item prize = level.findPrizeItem(Scroll.class);
+        Item prize = level.findPrizeItem(Script.class);
         if (prize == null)
-            prize = Generator.random(Generator.Category.SCROLL);
+            prize = Generator.random(Generator.Category.SCRIPT);
 
         return prize;
     }

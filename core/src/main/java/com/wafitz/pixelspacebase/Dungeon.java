@@ -33,11 +33,11 @@ import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Imp;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Wandmaker;
 import com.wafitz.pixelspacebase.items.Clone;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.rings.Module;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
+import com.wafitz.pixelspacebase.items.modules.Module;
+import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.levels.CavesBossLevel;
 import com.wafitz.pixelspacebase.levels.CavesLevel;
 import com.wafitz.pixelspacebase.levels.CityBossLevel;
@@ -46,7 +46,7 @@ import com.wafitz.pixelspacebase.levels.DeadEndLevel;
 import com.wafitz.pixelspacebase.levels.HallsBossLevel;
 import com.wafitz.pixelspacebase.levels.HallsLevel;
 import com.wafitz.pixelspacebase.levels.LastLevel;
-import com.wafitz.pixelspacebase.levels.LastShopLevel;
+import com.wafitz.pixelspacebase.levels.LastWorkshopLevel;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.OperationsBossLevel;
 import com.wafitz.pixelspacebase.levels.OperationsLevel;
@@ -82,8 +82,8 @@ public class Dungeon {
     //TODO: this is fairly brittle when it comes to bundling, should look into a more flexible solution.
     public enum limitedDrops {
         //limited world drops
-        strengthPotions,
-        upgradeScrolls,
+        strengthTech,
+        upgradeScripts,
         arcaneStyli,
 
         //all unlimited health potion sources (except guards, which are at the bottom.
@@ -99,10 +99,10 @@ public class Dungeon {
         armband,
 
         //containers
-        dewVial,
+        airTank,
         seedBag,
-        scrollBag,
-        potionBag,
+        scriptBag,
+        experimentalTechBag,
         wandBag,
 
         guardHP;
@@ -127,7 +127,7 @@ public class Dungeon {
     public static QuickSlot quickslot = new QuickSlot();
 
     public static int depth;
-    public static int gold;
+    public static int parts;
 
     public static HashSet<Integer> chapters;
 
@@ -152,8 +152,8 @@ public class Dungeon {
 
         Random.seed(seed);
 
-        Scroll.initLabels();
-        Potion.initColors();
+        Script.initLabels();
+        ExperimentalTech.initColors();
         Module.initGems();
 
         transmutation = Random.IntRange(6, 14);
@@ -169,7 +169,7 @@ public class Dungeon {
         QuickSlotButton.reset();
 
         depth = 0;
-        gold = 0;
+        parts = 0;
 
         droppedItems = new SparseArray<>();
 
@@ -247,7 +247,7 @@ public class Dungeon {
                 level = new CityBossLevel();
                 break;
             case 21:
-                level = new LastShopLevel();
+                level = new LastWorkshopLevel();
                 break;
             case 22:
             case 23:
@@ -295,7 +295,7 @@ public class Dungeon {
     }
 
     // wafitz.v1 - You get a shop, you get a shop, every level get's a shop!
-    public static boolean shopOnLevel() {
+    public static boolean workshopOnLevel() {
         return true;
     }
 
@@ -347,7 +347,7 @@ public class Dungeon {
 
     public static boolean posNeeded() {
         //2 POS each floor set
-        int posLeftThisSet = 2 - (limitedDrops.strengthPotions.count - (depth / 5) * 2);
+        int posLeftThisSet = 2 - (limitedDrops.strengthTech.count - (depth / 5) * 2);
         if (posLeftThisSet <= 0) return false;
 
         int floorThisSet = (depth % 5);
@@ -362,11 +362,11 @@ public class Dungeon {
 
     public static boolean souNeeded() {
         //3 SOU each floor set
-        int souLeftThisSet = 3 - (limitedDrops.upgradeScrolls.count - (depth / 5) * 3);
+        int souLeftThisSet = 3 - (limitedDrops.upgradeScripts.count - (depth / 5) * 3);
         if (souLeftThisSet <= 0) return false;
 
         int floorThisSet = (depth % 5);
-        //chance is floors left / scrolls left
+        //chance is floors left / scripts left
         return Random.Int(5 - floorThisSet) < souLeftThisSet;
     }
 
@@ -376,18 +376,18 @@ public class Dungeon {
         if (asLeftThisSet <= 0) return false;
 
         int floorThisSet = (depth % 5);
-        //chance is floors left / scrolls left
+        //chance is floors left / scripts left
         return Random.Int(5 - floorThisSet) < asLeftThisSet;
     }
 
     private static final String RG_GAME_FILE = "game.dat";
     private static final String RG_DEPTH_FILE = "depth%d.dat";
 
-    private static final String WR_GAME_FILE = "warrior.dat";
-    private static final String WR_DEPTH_FILE = "warrior%d.dat";
+    private static final String WR_GAME_FILE = "commander.dat";
+    private static final String WR_DEPTH_FILE = "commander%d.dat";
 
-    private static final String MG_GAME_FILE = "mage.dat";
-    private static final String MG_DEPTH_FILE = "mage%d.dat";
+    private static final String MG_GAME_FILE = "dm3000.dat";
+    private static final String MG_DEPTH_FILE = "dm3000%d.dat";
 
     private static final String RN_GAME_FILE = "ranger.dat";
     private static final String RN_DEPTH_FILE = "ranger%d.dat";
@@ -396,12 +396,12 @@ public class Dungeon {
     private static final String SEED = "seed";
     private static final String CHALLENGES = "challenges";
     private static final String HERO = "hero";
-    private static final String GOLD = "gold";
+    private static final String PARTS = "parts";
     private static final String DEPTH = "depth";
     private static final String DROPPED = "dropped%d";
     private static final String LEVEL = "level";
     private static final String LIMDROPS = "limiteddrops";
-    private static final String DV = "dewVial";
+    private static final String DV = "airTank";
     private static final String WT = "transmutation";
     private static final String CHAPTERS = "chapters";
     private static final String QUESTS = "quests";
@@ -442,7 +442,7 @@ public class Dungeon {
             bundle.put(SEED, seed);
             bundle.put(CHALLENGES, challenges);
             bundle.put(HERO, hero);
-            bundle.put(GOLD, gold);
+            bundle.put(PARTS, parts);
             bundle.put(DEPTH, depth);
 
             for (int d : droppedItems.keyArray()) {
@@ -478,8 +478,8 @@ public class Dungeon {
             Journal.storeInBundle(bundle);
             Generator.storeInBundle(bundle);
 
-            Scroll.save(bundle);
-            Potion.save(bundle);
+            Script.save(bundle);
+            ExperimentalTech.save(bundle);
             Module.save(bundle);
 
             Actor.storeNextID(bundle);
@@ -553,8 +553,8 @@ public class Dungeon {
         Dungeon.level = null;
         Dungeon.depth = -1;
 
-        Scroll.restore(bundle);
-        Potion.restore(bundle);
+        Script.restore(bundle);
+        ExperimentalTech.restore(bundle);
         Module.restore(bundle);
 
         quickslot.restorePlaceholders(bundle);
@@ -601,7 +601,7 @@ public class Dungeon {
         hero = null;
         hero = (Hero) bundle.get(HERO);
 
-        gold = bundle.getInt(GOLD);
+        parts = bundle.getInt(PARTS);
         depth = bundle.getInt(DEPTH);
 
         Statistics.restoreFromBundle(bundle);

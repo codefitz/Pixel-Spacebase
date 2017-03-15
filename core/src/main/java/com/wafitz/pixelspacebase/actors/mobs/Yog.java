@@ -39,7 +39,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.effects.Pushing;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfPsionicBlast;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfPsionicBlast;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -193,7 +193,7 @@ public class Yog extends Mob {
         IMMUNITIES.add(Sleep.class);
         IMMUNITIES.add(Burning.class);
         IMMUNITIES.add(ToxicGas.class);
-        IMMUNITIES.add(ScrollOfPsionicBlast.class);
+        IMMUNITIES.add(ScriptOfPsionicBlast.class);
         IMMUNITIES.add(Vertigo.class);
     }
 
@@ -208,7 +208,7 @@ public class Yog extends Mob {
         BossHealthBar.assignBoss(this);
     }
 
-    public static class RottingFist extends Mob {
+    private static class RottingFist extends Mob {
 
         private static final int REGENERATION = 4;
 
@@ -274,7 +274,7 @@ public class Yog extends Mob {
         static {
             RESISTANCES.add(ToxicGas.class);
             RESISTANCES.add(Grim.class);
-            RESISTANCES.add(ScrollOfPsionicBlast.class);
+            RESISTANCES.add(ScriptOfPsionicBlast.class);
         }
 
         @Override
@@ -401,7 +401,7 @@ public class Yog extends Mob {
             IMMUNITIES.add(Sleep.class);
             IMMUNITIES.add(Terror.class);
             IMMUNITIES.add(Burning.class);
-            IMMUNITIES.add(ScrollOfPsionicBlast.class);
+            IMMUNITIES.add(ScriptOfPsionicBlast.class);
             IMMUNITIES.add(Vertigo.class);
         }
 
@@ -411,7 +411,7 @@ public class Yog extends Mob {
         }
     }
 
-    public static class Larva extends Mob {
+    private static class Larva extends Mob {
 
         {
             spriteClass = LarvaSprite.class;

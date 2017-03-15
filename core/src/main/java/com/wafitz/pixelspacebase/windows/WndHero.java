@@ -90,7 +90,7 @@ public class WndHero extends WndTabbed {
 
         private float pos;
 
-        public StatsTab() {
+        StatsTab() {
 
             Hero hero = Dungeon.hero;
 
@@ -114,7 +114,7 @@ public class WndHero extends WndTabbed {
 
             pos += GAP;
 
-            statSlot(Messages.get(this, "gold"), Statistics.goldCollected);
+            statSlot(Messages.get(this, "parts"), Statistics.partsCollected);
             statSlot(Messages.get(this, "depth"), Statistics.deepestFloor);
 
             pos += GAP;
@@ -150,7 +150,7 @@ public class WndHero extends WndTabbed {
 
         private float pos;
 
-        public BuffsTab() {
+        BuffsTab() {
             for (Buff buff : Dungeon.hero.buffs()) {
                 if (buff.icon() != BuffIndicator.NONE) {
                     BuffSlot slot = new BuffSlot(buff);
@@ -172,7 +172,7 @@ public class WndHero extends WndTabbed {
             Image icon;
             RenderedText txt;
 
-            public BuffSlot(Buff buff) {
+            BuffSlot(Buff buff) {
                 super();
                 this.buff = buff;
                 int index = buff.icon();

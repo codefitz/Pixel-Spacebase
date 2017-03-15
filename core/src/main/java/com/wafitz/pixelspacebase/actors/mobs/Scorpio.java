@@ -26,9 +26,9 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
-import com.wafitz.pixelspacebase.items.potions.PotionOfHealing;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.sprites.ScorpioSprite;
@@ -36,7 +36,7 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-public class Scorpio extends Mob {
+class Scorpio extends Mob {
 
     {
         spriteClass = ScorpioSprite.class;
@@ -48,7 +48,7 @@ public class Scorpio extends Mob {
         EXP = 14;
         maxLvl = 25;
 
-        loot = new PotionOfHealing();
+        loot = new ExperimentalTechOfHealing();
         lootChance = 0.2f;
 
         properties.add(Property.DEMONIC);

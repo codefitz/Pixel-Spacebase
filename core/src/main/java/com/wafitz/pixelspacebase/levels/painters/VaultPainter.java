@@ -75,7 +75,7 @@ public class VaultPainter extends Painter {
     private static Item prize(Level level) {
         return Generator.random(Random.oneOf(
                 Generator.Category.WAND,
-                Generator.Category.RING,
+                Generator.Category.MODULE,
                 Generator.Category.ARTIFACT
         ));
     }

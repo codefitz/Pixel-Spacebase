@@ -28,7 +28,7 @@ public class OldWarBotSprite extends MobSprite {
     public OldWarBotSprite() {
         super();
 
-        texture(Assets.STATUE);
+        texture(Assets.OLDWARBOT);
 
         TextureFilm frames = new TextureFilm(texture, 12, 15);
 

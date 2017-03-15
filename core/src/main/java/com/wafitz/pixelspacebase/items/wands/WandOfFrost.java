@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.actors.buffs.FlavourBuff;
 import com.wafitz.pixelspacebase.actors.buffs.Frost;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
 import com.wafitz.pixelspacebase.items.Heap;
-import com.wafitz.pixelspacebase.items.weapon.melee.MagesStaff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -96,7 +96,7 @@ public class WandOfFrost extends DamageWand {
     }
 
     @Override
-    public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+    public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
         Chill chill = defender.buff(Chill.class);
         if (chill != null && Random.IntRange(2, 10) > chill.cooldown()) {
             //need to delay this through an actor so that the freezing isn't broken by taking damage from the staff hit.
@@ -114,7 +114,7 @@ public class WandOfFrost extends DamageWand {
     }
 
     @Override
-    public void staffFx(MagesStaff.StaffParticle particle) {
+    public void staffFx(DM3000Staff.StaffParticle particle) {
         particle.color(0x88CCFF);
         particle.am = 0.6f;
         particle.setLifespan(2f);

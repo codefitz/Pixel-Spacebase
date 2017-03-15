@@ -37,20 +37,20 @@ import com.wafitz.pixelspacebase.effects.Splash;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfExperience;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMight;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfStrength;
 import com.wafitz.pixelspacebase.items.artifacts.AlchemistsToolkit;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
 import com.wafitz.pixelspacebase.items.food.Blandfruit;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.FrozenCarpaccio;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.potions.PotionOfExperience;
-import com.wafitz.pixelspacebase.items.potions.PotionOfHealing;
-import com.wafitz.pixelspacebase.items.potions.PotionOfMight;
-import com.wafitz.pixelspacebase.items.potions.PotionOfStrength;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicalInfusion;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfUpgrade;
+import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicalInfusion;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
 import com.wafitz.pixelspacebase.items.wands.Wand;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.plants.Plant.Seed;
@@ -67,7 +67,7 @@ import java.util.LinkedList;
 
 public class Heap implements Bundlable {
 
-    private static final int SEEDS_TO_POTION = 3;
+    private static final int SEEDS_TO_EXPERIMENTALTECH = 3;
 
     public enum Type {
         HEAP,
@@ -78,7 +78,7 @@ public class Heap implements Bundlable {
         TOMB,
         SKELETON,
         REMAINS,
-        MIMIC
+        CONFUSEDSHAPESHIFTER
     }
 
     public Type type = Type.HEAP;
@@ -96,7 +96,7 @@ public class Heap implements Bundlable {
             case FOR_SALE:
                 return size() > 0 ? items.peek().image() : 0;
             case CHEST:
-            case MIMIC:
+            case CONFUSEDSHAPESHIFTER:
                 return ItemSpriteSheet.CHEST;
             case LOCKED_CHEST:
                 return ItemSpriteSheet.LOCKED_CHEST;
@@ -119,7 +119,7 @@ public class Heap implements Bundlable {
 
     public void open(Hero hero) {
         switch (type) {
-            case MIMIC:
+            case CONFUSEDSHAPESHIFTER:
                 if (ConfusedShapeshifter.spawnAt(pos, items) != null) {
                     destroy();
                 } else {
@@ -133,9 +133,9 @@ public class Heap implements Bundlable {
             case SKELETON:
                 CellEmitter.center(pos).start(Speck.factory(Speck.RATTLE), 0.1f, 3);
                 for (Item item : items) {
-                    if (item.cursed) {
+                    if (item.malfunctioning) {
                         if (Wraith.spawnAt(pos) == null) {
-                            hero.sprite.emitter().burst(ShadowParticle.CURSE, 6);
+                            hero.sprite.emitter().burst(ShadowParticle.MALFUNCTION, 6);
                             hero.damage(hero.HP / 2, this);
                         }
                         Sample.INSTANCE.play(Assets.SND_CURSED);
@@ -146,7 +146,7 @@ public class Heap implements Bundlable {
             default:
         }
 
-        if (type != Type.MIMIC) {
+        if (type != Type.CONFUSEDSHAPESHIFTER) {
             type = Type.HEAP;
             sprite.link();
             sprite.drop();
@@ -212,7 +212,7 @@ public class Heap implements Bundlable {
 
     public void burn() {
 
-        if (type == Type.MIMIC) {
+        if (type == Type.CONFUSEDSHAPESHIFTER) {
             ConfusedShapeshifter m = ConfusedShapeshifter.spawnAt(pos, items);
             if (m != null) {
                 Buff.affect(m, Burning.class).reignite(m);
@@ -229,8 +229,8 @@ public class Heap implements Bundlable {
         boolean evaporated = false;
 
         for (Item item : items.toArray(new Item[0])) {
-            if (item instanceof Scroll
-                    && !(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
+            if (item instanceof Script
+                    && !(item instanceof ScriptOfUpgrade || item instanceof ScriptOfMagicalInfusion)) {
                 items.remove(item);
                 burnt = true;
             } else if (item instanceof Dewdrop) {
@@ -270,7 +270,7 @@ public class Heap implements Bundlable {
     public void explode() {
 
         //breaks open most standard containers, mimics die.
-        if (type == Type.MIMIC || type == Type.CHEST || type == Type.SKELETON) {
+        if (type == Type.CONFUSEDSHAPESHIFTER || type == Type.CHEST || type == Type.SKELETON) {
             type = Type.HEAP;
             sprite.link();
             sprite.drop();
@@ -283,9 +283,9 @@ public class Heap implements Bundlable {
 
             for (Item item : items.toArray(new Item[0])) {
 
-                if (item instanceof Potion) {
+                if (item instanceof ExperimentalTech) {
                     items.remove(item);
-                    ((Potion) item).shatter(pos);
+                    ((ExperimentalTech) item).shatter(pos);
 
                 } else if (item instanceof Bomb) {
                     items.remove(item);
@@ -309,7 +309,7 @@ public class Heap implements Bundlable {
 
     public void freeze() {
 
-        if (type == Type.MIMIC) {
+        if (type == Type.CONFUSEDSHAPESHIFTER) {
             ConfusedShapeshifter m = ConfusedShapeshifter.spawnAt(pos, items);
             if (m != null) {
                 Buff.prolong(m, Frost.class, Frost.duration(m) * Random.Float(1.0f, 1.5f));
@@ -326,10 +326,10 @@ public class Heap implements Bundlable {
             if (item instanceof MysteryMeat) {
                 replace(item, FrozenCarpaccio.cook((MysteryMeat) item));
                 frozen = true;
-            } else if (item instanceof Potion
-                    && !(item instanceof PotionOfStrength || item instanceof PotionOfMight)) {
+            } else if (item instanceof ExperimentalTech
+                    && !(item instanceof ExperimentalTechOfStrength || item instanceof ExperimentalTechOfMight)) {
                 items.remove(item);
-                ((Potion) item).shatter(pos);
+                ((ExperimentalTech) item).shatter(pos);
                 frozen = true;
             } else if (item instanceof Bomb) {
                 ((Bomb) item).fuse = null;
@@ -384,12 +384,12 @@ public class Heap implements Bundlable {
         AlchemistsToolkit.alchemy alchemy = Dungeon.hero.buff(AlchemistsToolkit.alchemy.class);
         int bonus = alchemy != null ? alchemy.itemLevel() : -1;
 
-        if (bonus != -1 ? alchemy.tryCook(count) : count >= SEEDS_TO_POTION) {
+        if (bonus != -1 ? alchemy.tryCook(count) : count >= SEEDS_TO_EXPERIMENTALTECH) {
 
             CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
             Sample.INSTANCE.play(Assets.SND_PUFF);
 
-            Item potion;
+            Item experimentaltech;
 
             if (Random.Int(count + bonus) == 0) {
 
@@ -397,10 +397,10 @@ public class Heap implements Bundlable {
 
                 destroy();
 
-                Statistics.potionsCooked++;
-                Badges.validatePotionsCooked();
+                Statistics.experimentalTechCooked++;
+                Badges.validateExperimentalTechCooked();
 
-                potion = Generator.random(Generator.Category.POTION);
+                experimentaltech = Generator.random(Generator.Category.EXPERIMENTALTECH);
 
             } else {
 
@@ -409,14 +409,14 @@ public class Heap implements Bundlable {
 
                 destroy();
 
-                Statistics.potionsCooked++;
-                Badges.validatePotionsCooked();
+                Statistics.experimentalTechCooked++;
+                Badges.validateExperimentalTechCooked();
 
                 if (itemClass == null) {
-                    potion = Generator.random(Generator.Category.POTION);
+                    experimentaltech = Generator.random(Generator.Category.EXPERIMENTALTECH);
                 } else {
                     try {
-                        potion = itemClass.newInstance();
+                        experimentaltech = itemClass.newInstance();
                     } catch (Exception e) {
                         PixelSpacebase.reportException(e);
                         return null;
@@ -424,18 +424,18 @@ public class Heap implements Bundlable {
                 }
             }
 
-            //not a buff per-se, meant to cancel out higher potion accuracy when ppl are farming for potions of exp.
+            //not a buff per-se, meant to cancel out higher experimentaltech accuracy when ppl are farming for ExperimentalTech of exp.
             if (bonus > 0)
                 if (Random.Int(1000 / bonus) == 0)
-                    return new PotionOfExperience();
+                    return new ExperimentalTechOfExperience();
 
-            while (potion instanceof PotionOfHealing && Random.Int(10) < Dungeon.limitedDrops.cookingHP.count)
-                potion = Generator.random(Generator.Category.POTION);
+            while (experimentaltech instanceof ExperimentalTechOfHealing && Random.Int(10) < Dungeon.limitedDrops.cookingHP.count)
+                experimentaltech = Generator.random(Generator.Category.EXPERIMENTALTECH);
 
-            if (potion instanceof PotionOfHealing)
+            if (experimentaltech instanceof ExperimentalTechOfHealing)
                 Dungeon.limitedDrops.cookingHP.count++;
 
-            return potion;
+            return experimentaltech;
 
         } else {
             return null;
@@ -468,7 +468,7 @@ public class Heap implements Bundlable {
     public String toString() {
         switch (type) {
             case CHEST:
-            case MIMIC:
+            case CONFUSEDSHAPESHIFTER:
                 return Messages.get(this, "chest");
             case LOCKED_CHEST:
                 return Messages.get(this, "locked_chest");
@@ -488,7 +488,7 @@ public class Heap implements Bundlable {
     public String info() {
         switch (type) {
             case CHEST:
-            case MIMIC:
+            case CONFUSEDSHAPESHIFTER:
                 return Messages.get(this, "chest_desc");
             case LOCKED_CHEST:
                 return Messages.get(this, "locked_chest_desc");
@@ -498,7 +498,7 @@ public class Heap implements Bundlable {
                 else if (peek() instanceof Wand)
                     return Messages.get(this, "crystal_chest_desc", Messages.get(this, "wand"));
                 else
-                    return Messages.get(this, "crystal_chest_desc", Messages.get(this, "ring"));
+                    return Messages.get(this, "crystal_chest_desc", Messages.get(this, "module"));
             case TOMB:
                 return Messages.get(this, "tomb_desc");
             case SKELETON:

@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.windows;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.PartsBot;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.MakerBot;
 import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -125,7 +125,7 @@ public class WndTradeItem extends Window {
                 }
             };
             btnBuy.setRect(0, pos + GAP, WIDTH, BTN_HEIGHT);
-            btnBuy.enable(price <= Dungeon.gold);
+            btnBuy.enable(price <= Dungeon.parts);
             add(btnBuy);
 
             RedButton btnCancel = new RedButton(Messages.get(this, "cancel")) {
@@ -151,9 +151,9 @@ public class WndTradeItem extends Window {
                             }
                         } else {
                             for (Mob mob : Dungeon.level.mobs) {
-                                if (mob instanceof PartsBot) {
+                                if (mob instanceof MakerBot) {
                                     mob.yell(Messages.get(mob, "thief"));
-                                    ((PartsBot) mob).flee();
+                                    ((MakerBot) mob).flee();
                                     break;
                                 }
                             }
@@ -186,7 +186,7 @@ public class WndTradeItem extends Window {
 
         if (owner != null) {
             owner.hide();
-            PartsBot.sell();
+            MakerBot.sell();
         }
     }
 
@@ -259,7 +259,7 @@ public class WndTradeItem extends Window {
         Item item = heap.pickUp();
 
         int price = price(item);
-        Dungeon.gold -= price;
+        Dungeon.parts -= price;
 
         if (!item.doPickUp(hero)) {
             Dungeon.level.drop(item, heap.pos).sprite.drop();

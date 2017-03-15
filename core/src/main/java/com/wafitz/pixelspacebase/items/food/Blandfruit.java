@@ -27,19 +27,19 @@ import com.wafitz.pixelspacebase.actors.buffs.FireImbue;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
 import com.wafitz.pixelspacebase.actors.buffs.ToxicImbue;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfExperience;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfFrost;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfInvisibility;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLevitation;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLiquidFlame;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMindVision;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfParalyticGas;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfPurity;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfStrength;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfToxicGas;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.potions.PotionOfExperience;
-import com.wafitz.pixelspacebase.items.potions.PotionOfFrost;
-import com.wafitz.pixelspacebase.items.potions.PotionOfHealing;
-import com.wafitz.pixelspacebase.items.potions.PotionOfInvisibility;
-import com.wafitz.pixelspacebase.items.potions.PotionOfLevitation;
-import com.wafitz.pixelspacebase.items.potions.PotionOfLiquidFlame;
-import com.wafitz.pixelspacebase.items.potions.PotionOfMindVision;
-import com.wafitz.pixelspacebase.items.potions.PotionOfParalyticGas;
-import com.wafitz.pixelspacebase.items.potions.PotionOfPurity;
-import com.wafitz.pixelspacebase.items.potions.PotionOfStrength;
-import com.wafitz.pixelspacebase.items.potions.PotionOfToxicGas;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.plants.Plant.Seed;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
@@ -49,8 +49,8 @@ import com.watabou.utils.Bundle;
 
 public class Blandfruit extends Food {
 
-    public Potion potionAttrib = null;
-    public ItemSprite.Glowing potionGlow = null;
+    public ExperimentalTech experimentalTechAttrib = null;
+    private ItemSprite.Glowing experimentalTechGlow = null;
 
     {
         stackable = true;
@@ -66,11 +66,11 @@ public class Blandfruit extends Food {
     @Override
     public boolean isSimilar(Item item) {
         if (item instanceof Blandfruit) {
-            if (potionAttrib == null) {
-                if (((Blandfruit) item).potionAttrib == null)
+            if (experimentalTechAttrib == null) {
+                if (((Blandfruit) item).experimentalTechAttrib == null)
                     return true;
-            } else if (((Blandfruit) item).potionAttrib != null) {
-                if (((Blandfruit) item).potionAttrib.getClass() == potionAttrib.getClass())
+            } else if (((Blandfruit) item).experimentalTechAttrib != null) {
+                if (((Blandfruit) item).experimentalTechAttrib.getClass() == experimentalTechAttrib.getClass())
                     return true;
             }
         }
@@ -80,7 +80,7 @@ public class Blandfruit extends Food {
     @Override
     public void execute(Hero hero, String action) {
 
-        if (action.equals(AC_EAT) && potionAttrib == null) {
+        if (action.equals(AC_EAT) && experimentalTechAttrib == null) {
 
             GLog.w(Messages.get(this, "raw"));
             return;
@@ -89,22 +89,22 @@ public class Blandfruit extends Food {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_EAT) && potionAttrib != null) {
+        if (action.equals(AC_EAT) && experimentalTechAttrib != null) {
 
-            if (potionAttrib instanceof PotionOfFrost) {
+            if (experimentalTechAttrib instanceof ExperimentalTechOfFrost) {
                 GLog.i(Messages.get(this, "ice_msg"));
                 FrozenCarpaccio.effect(hero);
-            } else if (potionAttrib instanceof PotionOfLiquidFlame) {
+            } else if (experimentalTechAttrib instanceof ExperimentalTechOfLiquidFlame) {
                 GLog.i(Messages.get(this, "fire_msg"));
                 Buff.affect(hero, FireImbue.class).set(FireImbue.DURATION);
-            } else if (potionAttrib instanceof PotionOfToxicGas) {
+            } else if (experimentalTechAttrib instanceof ExperimentalTechOfToxicGas) {
                 GLog.i(Messages.get(this, "toxic_msg"));
                 Buff.affect(hero, ToxicImbue.class).set(ToxicImbue.DURATION);
-            } else if (potionAttrib instanceof PotionOfParalyticGas) {
+            } else if (experimentalTechAttrib instanceof ExperimentalTechOfParalyticGas) {
                 GLog.i(Messages.get(this, "para_msg"));
                 Buff.affect(hero, EarthImbue.class, EarthImbue.DURATION);
             } else {
-                potionAttrib.apply(hero);
+                experimentalTechAttrib.apply(hero);
             }
 
         }
@@ -112,7 +112,7 @@ public class Blandfruit extends Food {
 
     @Override
     public String desc() {
-        if (potionAttrib == null) return super.desc();
+        if (experimentalTechAttrib == null) return super.desc();
         else return Messages.get(this, "desc_cooked");
     }
 
@@ -124,7 +124,7 @@ public class Blandfruit extends Food {
     public Item cook(Seed seed) {
 
         try {
-            return imbuePotion((Potion) seed.alchemyClass.newInstance());
+            return imbueExperimentalTech((ExperimentalTech) seed.alchemyClass.newInstance());
         } catch (Exception e) {
             PixelSpacebase.reportException(e);
             return null;
@@ -132,62 +132,62 @@ public class Blandfruit extends Food {
 
     }
 
-    public Item imbuePotion(Potion potion) {
+    private Item imbueExperimentalTech(ExperimentalTech experimentalTech) {
 
-        potionAttrib = potion;
-        potionAttrib.ownedByFruit = true;
+        experimentalTechAttrib = experimentalTech;
+        experimentalTechAttrib.ownedByFruit = true;
 
-        potionAttrib.image = ItemSpriteSheet.BLANDFRUIT;
+        experimentalTechAttrib.image = ItemSpriteSheet.BLANDFRUIT;
 
-        if (potionAttrib instanceof PotionOfHealing) {
+        if (experimentalTechAttrib instanceof ExperimentalTechOfHealing) {
             name = Messages.get(this, "sunfruit");
-            potionGlow = new ItemSprite.Glowing(0x2EE62E);
-        } else if (potionAttrib instanceof PotionOfStrength) {
+            experimentalTechGlow = new ItemSprite.Glowing(0x2EE62E);
+        } else if (experimentalTechAttrib instanceof ExperimentalTechOfStrength) {
             name = Messages.get(this, "rotfruit");
-            potionGlow = new ItemSprite.Glowing(0xCC0022);
-        } else if (potionAttrib instanceof PotionOfParalyticGas) {
+            experimentalTechGlow = new ItemSprite.Glowing(0xCC0022);
+        } else if (experimentalTechAttrib instanceof ExperimentalTechOfParalyticGas) {
             name = Messages.get(this, "earthfruit");
-            potionGlow = new ItemSprite.Glowing(0x67583D);
-        } else if (potionAttrib instanceof PotionOfInvisibility) {
+            experimentalTechGlow = new ItemSprite.Glowing(0x67583D);
+        } else if (experimentalTechAttrib instanceof ExperimentalTechOfInvisibility) {
             name = Messages.get(this, "blindfruit");
-            potionGlow = new ItemSprite.Glowing(0xE5D273);
-        } else if (potionAttrib instanceof PotionOfLiquidFlame) {
+            experimentalTechGlow = new ItemSprite.Glowing(0xE5D273);
+        } else if (experimentalTechAttrib instanceof ExperimentalTechOfLiquidFlame) {
             name = Messages.get(this, "firefruit");
-            potionGlow = new ItemSprite.Glowing(0xFF7F00);
-        } else if (potionAttrib instanceof PotionOfFrost) {
+            experimentalTechGlow = new ItemSprite.Glowing(0xFF7F00);
+        } else if (experimentalTechAttrib instanceof ExperimentalTechOfFrost) {
             name = Messages.get(this, "icefruit");
-            potionGlow = new ItemSprite.Glowing(0x66B3FF);
-        } else if (potionAttrib instanceof PotionOfMindVision) {
+            experimentalTechGlow = new ItemSprite.Glowing(0x66B3FF);
+        } else if (experimentalTechAttrib instanceof ExperimentalTechOfMindVision) {
             name = Messages.get(this, "fadefruit");
-            potionGlow = new ItemSprite.Glowing(0xB8E6CF);
-        } else if (potionAttrib instanceof PotionOfToxicGas) {
+            experimentalTechGlow = new ItemSprite.Glowing(0xB8E6CF);
+        } else if (experimentalTechAttrib instanceof ExperimentalTechOfToxicGas) {
             name = Messages.get(this, "sorrowfruit");
-            potionGlow = new ItemSprite.Glowing(0xA15CE5);
-        } else if (potionAttrib instanceof PotionOfLevitation) {
+            experimentalTechGlow = new ItemSprite.Glowing(0xA15CE5);
+        } else if (experimentalTechAttrib instanceof ExperimentalTechOfLevitation) {
             name = Messages.get(this, "stormfruit");
-            potionGlow = new ItemSprite.Glowing(0x1C3A57);
-        } else if (potionAttrib instanceof PotionOfPurity) {
+            experimentalTechGlow = new ItemSprite.Glowing(0x1C3A57);
+        } else if (experimentalTechAttrib instanceof ExperimentalTechOfPurity) {
             name = Messages.get(this, "dreamfruit");
-            potionGlow = new ItemSprite.Glowing(0x8E2975);
-        } else if (potionAttrib instanceof PotionOfExperience) {
+            experimentalTechGlow = new ItemSprite.Glowing(0x8E2975);
+        } else if (experimentalTechAttrib instanceof ExperimentalTechOfExperience) {
             name = Messages.get(this, "starfruit");
-            potionGlow = new ItemSprite.Glowing(0xA79400);
+            experimentalTechGlow = new ItemSprite.Glowing(0xA79400);
         }
 
         return this;
     }
 
-    public static final String POTIONATTRIB = "potionattrib";
+    private static final String EXPERIMENTAILTECHATTRIB = "experimentaltechattrib";
 
     @Override
     public void cast(final Hero user, int dst) {
-        if (potionAttrib instanceof PotionOfLiquidFlame ||
-                potionAttrib instanceof PotionOfToxicGas ||
-                potionAttrib instanceof PotionOfParalyticGas ||
-                potionAttrib instanceof PotionOfFrost ||
-                potionAttrib instanceof PotionOfLevitation ||
-                potionAttrib instanceof PotionOfPurity) {
-            potionAttrib.cast(user, dst);
+        if (experimentalTechAttrib instanceof ExperimentalTechOfLiquidFlame ||
+                experimentalTechAttrib instanceof ExperimentalTechOfToxicGas ||
+                experimentalTechAttrib instanceof ExperimentalTechOfParalyticGas ||
+                experimentalTechAttrib instanceof ExperimentalTechOfFrost ||
+                experimentalTechAttrib instanceof ExperimentalTechOfLevitation ||
+                experimentalTechAttrib instanceof ExperimentalTechOfPurity) {
+            experimentalTechAttrib.cast(user, dst);
             detach(user.belongings.backpack);
         } else {
             super.cast(user, dst);
@@ -198,20 +198,20 @@ public class Blandfruit extends Food {
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
-        bundle.put(POTIONATTRIB, potionAttrib);
+        bundle.put(EXPERIMENTAILTECHATTRIB, experimentalTechAttrib);
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        if (bundle.contains(POTIONATTRIB)) {
-            imbuePotion((Potion) bundle.get(POTIONATTRIB));
+        if (bundle.contains(EXPERIMENTAILTECHATTRIB)) {
+            imbueExperimentalTech((ExperimentalTech) bundle.get(EXPERIMENTAILTECHATTRIB));
         }
     }
 
     @Override
     public ItemSprite.Glowing glowing() {
-        return potionGlow;
+        return experimentalTechGlow;
     }
 
 }

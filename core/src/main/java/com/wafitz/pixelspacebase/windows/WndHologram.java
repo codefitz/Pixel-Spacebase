@@ -50,8 +50,8 @@ public class WndHologram extends Window {
             case 1:
             default:
                 titlebar.icon(new ToughXenoSprite());
-                titlebar.label(Messages.get(this, "rat_title"));
-                message = PixelScene.renderMultiline(Messages.get(this, "rat") + Messages.get(this, "give_item"), 6);
+                titlebar.label(Messages.get(this, "xenomorph_title"));
+                message = PixelScene.renderMultiline(Messages.get(this, "xenomorph") + Messages.get(this, "give_item"), 6);
                 break;
             case 2:
                 titlebar.icon(new GnollTricksterSprite());

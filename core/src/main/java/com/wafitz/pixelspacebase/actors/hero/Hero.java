@@ -50,6 +50,9 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Amulet;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.Dewdrop;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMight;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfStrength;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
@@ -68,20 +71,17 @@ import com.wafitz.pixelspacebase.items.artifacts.HornOfPlenty;
 import com.wafitz.pixelspacebase.items.artifacts.TalismanOfForesight;
 import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
 import com.wafitz.pixelspacebase.items.keys.Key;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.potions.PotionOfMight;
-import com.wafitz.pixelspacebase.items.potions.PotionOfStrength;
-import com.wafitz.pixelspacebase.items.rings.ElementsModule;
-import com.wafitz.pixelspacebase.items.rings.EvasionModule;
-import com.wafitz.pixelspacebase.items.rings.ForceModule;
-import com.wafitz.pixelspacebase.items.rings.FurorModule;
-import com.wafitz.pixelspacebase.items.rings.PowerModule;
-import com.wafitz.pixelspacebase.items.rings.SpeedModule;
-import com.wafitz.pixelspacebase.items.rings.SteelModule;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicMapping;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicalInfusion;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfUpgrade;
+import com.wafitz.pixelspacebase.items.modules.ElementsModule;
+import com.wafitz.pixelspacebase.items.modules.EvasionModule;
+import com.wafitz.pixelspacebase.items.modules.ForceModule;
+import com.wafitz.pixelspacebase.items.modules.FurorModule;
+import com.wafitz.pixelspacebase.items.modules.PowerModule;
+import com.wafitz.pixelspacebase.items.modules.SpeedModule;
+import com.wafitz.pixelspacebase.items.modules.SteelModule;
+import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicalInfusion;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
@@ -119,7 +119,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-import static com.wafitz.pixelspacebase.items.potions.PotionOfHealing.heal;
+import static com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing.heal;
 
 public class Hero extends Char {
 
@@ -655,8 +655,8 @@ public class Hero extends Char {
                     } else {
 
                         boolean important =
-                                ((item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion) && ((Scroll) item).isKnown()) ||
-                                        ((item instanceof PotionOfStrength || item instanceof PotionOfMight) && ((Potion) item).isKnown());
+                                ((item instanceof ScriptOfUpgrade || item instanceof ScriptOfMagicalInfusion) && ((Script) item).isKnown()) ||
+                                        ((item instanceof ExperimentalTechOfStrength || item instanceof ExperimentalTechOfMight) && ((ExperimentalTech) item).isKnown());
                         if (important) {
                             GLog.p(Messages.get(this, "you_now_have", item.name()));
                         } else {
@@ -1309,7 +1309,7 @@ public class Hero extends Char {
 
             Sample.INSTANCE.play(Assets.SND_TELEPORT);
             GLog.w(Messages.get(this, "revive"));
-            Statistics.ankhsUsed++;
+            Statistics.clonesSpent++;
 
             return;
         }
@@ -1528,8 +1528,8 @@ public class Hero extends Char {
 
         TalismanOfForesight.Foresight foresight = buff(TalismanOfForesight.Foresight.class);
 
-        //cursed talisman of foresight makes unintentionally finding things impossible.
-        if (foresight != null && foresight.isCursed()) {
+        //malfunctioning talisman of foresight makes unintentionally finding things impossible.
+        if (foresight != null && foresight.isMalfunctioning()) {
             level = -1;
         }
 
@@ -1550,12 +1550,12 @@ public class Hero extends Char {
 
                         Dungeon.level.discover(p);
 
-                        ScrollOfMagicMapping.discover(p);
+                        ScriptOfMagicMapping.discover(p);
 
                         smthFound = true;
                         //informer.onSelect(null);
 
-                        if (foresight != null && !foresight.isCursed())
+                        if (foresight != null && !foresight.isMalfunctioning())
                             foresight.charge();
                     }
                 }
@@ -1566,7 +1566,7 @@ public class Hero extends Char {
         if (smthFound && intentional) {
             sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "search"));
             sprite.operate(pos);
-            if (foresight != null && foresight.isCursed()) {
+            if (foresight != null && foresight.isMalfunctioning()) {
                 GLog.n(Messages.get(this, "search_distracted"));
                 spendAndNext(TIME_TO_SEARCH * 3);
             } else {
@@ -1589,7 +1589,7 @@ public class Hero extends Char {
     public void resurrect(int resetLevel) {
 
         HP = HT;
-        Dungeon.gold = 0;
+        Dungeon.parts = 0;
         exp = 0;
 
         belongings.resurrect(resetLevel);

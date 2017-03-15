@@ -33,7 +33,7 @@ public class CellSelector extends TouchArea {
 
     public Listener listener = null;
 
-    public boolean enabled;
+    private boolean enabled;
 
     private float dragThreshold;
 
@@ -158,7 +158,7 @@ public class CellSelector extends TouchArea {
                 lastPos.set(t.current);
 
             } else if (dragging) {
-                camera.scroll.offset(PointF.diff(lastPos, t.current).invScale(camera.zoom));
+                camera.script.offset(PointF.diff(lastPos, t.current).invScale(camera.zoom));
                 lastPos.set(t.current);
             }
         }

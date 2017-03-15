@@ -55,17 +55,17 @@ public class Assets {
     public static final String SPECKS = "specks.png";
     public static final String EFFECTS = "effects.png";
 
-    public static final String RAT = "xenomorph.png";
+    public static final String XENOMORPH = "xenomorph.png";
     public static final String GNOLL = "gnoll.png";
     public static final String CRAB = "crab.png";
-    public static final String GOO = "feral_shapeshifter.png";
+    public static final String FERALSHAPESHIFTER = "feral_shapeshifter.png";
     public static final String SWARM = "swarm.png";
     public static final String SKELETON = "skeleton.png";
     public static final String SHAMAN = "shaman.png";
     public static final String THIEF = "thief.png";
     public static final String TENGU = "tengu.png";
     public static final String SHEEP = "sheep.png";
-    public static final String KEEPER = "parts_bot.png";
+    public static final String KEEPER = "makerbot.png";
     public static final String BAT = "bat.png";
     public static final String BRUTE = "brute.png";
     public static final String SPINNER = "spinner.png";
@@ -77,8 +77,8 @@ public class Assets {
     public static final String GOLEM = "golem.png";
     public static final String UNDEAD = "undead.png";
     public static final String KING = "king.png";
-    public static final String STATUE = "war_bot.png";
-    public static final String PIRANHA = "water_things.png";
+    public static final String OLDWARBOT = "war_bot.png";
+    public static final String WATERTHING = "water_things.png";
     public static final String EYE = "eye.png";
     public static final String SUCCUBUS = "succubus.png";
     public static final String SCORPIO = "scorpio.png";
@@ -91,8 +91,8 @@ public class Assets {
     public static final String TROLL = "blacksmith.png";
     public static final String IMP = "demon.png";
     public static final String RATKING = "ratking.png";
-    public static final String BEE = "drone.png";
-    public static final String MIMIC = "confused_shapeshifter.png";
+    public static final String DRONE = "drone.png";
+    public static final String CONFUSEDSHAPESHIFTER = "confused_shapeshifter.png";
     public static final String ROT_LASH = "rot_lasher.png";
     public static final String ROT_HEART = "rot_heart.png";
     public static final String GUARD = "guard.png";

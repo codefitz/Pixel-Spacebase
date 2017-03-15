@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.levels.traps.FireTrap;
+import com.wafitz.pixelspacebase.levels.vents.FireVent;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -34,7 +34,7 @@ public class BlacksmithPainter extends Painter {
     public static void paint(Level level, Room room) {
 
         fill(level, room, Terrain.WALL);
-        fill(level, room, 1, Terrain.TRAP);
+        fill(level, room, 1, Terrain.VENT);
         fill(level, room, 2, Terrain.EMPTY_SP);
 
         for (int i = 0; i < 2; i++) {
@@ -62,8 +62,8 @@ public class BlacksmithPainter extends Painter {
 
         for (Point p : room.getPoints()) {
             int cell = level.pointToCell(p);
-            if (level.map[cell] == Terrain.TRAP) {
-                level.setTrap(new FireTrap().reveal(), cell);
+            if (level.map[cell] == Terrain.VENT) {
+                level.setVent(new FireVent().reveal(), cell);
             }
         }
     }

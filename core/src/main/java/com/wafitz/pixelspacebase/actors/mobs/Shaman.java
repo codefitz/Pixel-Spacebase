@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.levels.Level;
-import com.wafitz.pixelspacebase.levels.traps.LightningTrap;
+import com.wafitz.pixelspacebase.levels.vents.LightningVent;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
@@ -50,7 +50,7 @@ public class Shaman extends Mob implements Callback {
         EXP = 6;
         maxLvl = 14;
 
-        loot = Generator.Category.SCROLL;
+        loot = Generator.Category.SCRIPT;
         lootChance = 0.33f;
     }
 
@@ -95,7 +95,7 @@ public class Shaman extends Mob implements Callback {
                 if (Level.water[enemy.pos] && !enemy.flying) {
                     dmg *= 1.5f;
                 }
-                enemy.damage(dmg, LightningTrap.LIGHTNING);
+                enemy.damage(dmg, LightningVent.LIGHTNING);
 
                 enemy.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
                 enemy.sprite.flash();
@@ -125,7 +125,7 @@ public class Shaman extends Mob implements Callback {
     private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 
     static {
-        RESISTANCES.add(LightningTrap.Electricity.class);
+        RESISTANCES.add(LightningVent.Electricity.class);
     }
 
     @Override

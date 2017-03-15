@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Bless;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.items.potions.PotionOfExperience;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfExperience;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
@@ -52,7 +52,7 @@ public class Starflower extends Plant {
             image = ItemSpriteSheet.SEED_STARFLOWER;
 
             plantClass = Starflower.class;
-            alchemyClass = PotionOfExperience.class;
+            alchemyClass = ExperimentalTechOfExperience.class;
         }
     }
 }

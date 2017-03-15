@@ -33,8 +33,8 @@ import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
-import com.wafitz.pixelspacebase.levels.traps.ToxicTrap;
-import com.wafitz.pixelspacebase.levels.traps.Trap;
+import com.wafitz.pixelspacebase.levels.vents.ToxicVent;
+import com.wafitz.pixelspacebase.levels.vents.Vent;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.noosa.Camera;
@@ -151,10 +151,10 @@ public class CavesBossLevel extends Level {
 
         for (int i = 0; i < length(); i++) {
             if (map[i] == Terrain.EMPTY && Random.Int(6) == 0) {
-                map[i] = Terrain.INACTIVE_TRAP;
-                Trap t = new ToxicTrap().reveal();
+                map[i] = Terrain.INACTIVE_VENT;
+                Vent t = new ToxicVent().reveal();
                 t.active = false;
-                setTrap(t, i);
+                setVent(t, i);
             }
         }
 
@@ -194,7 +194,7 @@ public class CavesBossLevel extends Level {
         int sign;
         do {
             sign = Random.Int(ROOM_LEFT, ROOM_RIGHT) + Random.Int(ROOM_TOP, ROOM_BOTTOM) * width();
-        } while (sign == entrance || map[sign] == Terrain.INACTIVE_TRAP);
+        } while (sign == entrance || map[sign] == Terrain.INACTIVE_VENT);
         map[sign] = Terrain.SIGN;
     }
 
@@ -284,10 +284,10 @@ public class CavesBossLevel extends Level {
     @Override
     public String tileName(int tile) {
         switch (tile) {
-            case Terrain.GRASS:
-                return Messages.get(CavesLevel.class, "grass_name");
-            case Terrain.HIGH_GRASS:
-                return Messages.get(CavesLevel.class, "high_grass_name");
+            case Terrain.LIGHTEDVENT:
+                return Messages.get(CavesLevel.class, "lightedvent_name");
+            case Terrain.OFFVENT:
+                return Messages.get(CavesLevel.class, "off_vent_name");
             case Terrain.WATER:
                 return Messages.get(CavesLevel.class, "water_name");
             default:
@@ -302,8 +302,8 @@ public class CavesBossLevel extends Level {
                 return Messages.get(CavesLevel.class, "entrance_desc");
             case Terrain.EXIT:
                 return Messages.get(CavesLevel.class, "exit_desc");
-            case Terrain.HIGH_GRASS:
-                return Messages.get(CavesLevel.class, "high_grass_desc");
+            case Terrain.OFFVENT:
+                return Messages.get(CavesLevel.class, "off_vent_desc");
             case Terrain.WALL_DECO:
                 return Messages.get(CavesLevel.class, "wall_deco_desc");
             case Terrain.BOOKSHELF:

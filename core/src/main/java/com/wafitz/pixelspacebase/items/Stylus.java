@@ -83,8 +83,8 @@ public class Stylus extends Item {
         if (!armor.isIdentified()) {
             GLog.w(Messages.get(this, "identify"));
             return;
-        } else if (armor.cursed || armor.hasCurseGlyph()) {
-            GLog.w(Messages.get(this, "cursed"));
+        } else if (armor.malfunctioning || armor.hasMalfunctionGlyph()) {
+            GLog.w(Messages.get(this, "malfunctioning"));
             return;
         }
 

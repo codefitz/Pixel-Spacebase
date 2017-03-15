@@ -24,13 +24,13 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Thief;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMight;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfStrength;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.food.FrozenCarpaccio;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.potions.PotionOfMight;
-import com.wafitz.pixelspacebase.items.potions.PotionOfStrength;
-import com.wafitz.pixelspacebase.items.rings.ElementsModule.Resistance;
+import com.wafitz.pixelspacebase.items.modules.ElementsModule.Resistance;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
@@ -57,12 +57,12 @@ public class Frost extends FlavourBuff {
 
                 Hero hero = (Hero) target;
                 Item item = hero.belongings.randomUnequipped();
-                if (item instanceof Potion
-                        && !(item instanceof PotionOfStrength || item instanceof PotionOfMight)) {
+                if (item instanceof ExperimentalTech
+                        && !(item instanceof ExperimentalTechOfStrength || item instanceof ExperimentalTechOfMight)) {
 
                     item = item.detach(hero.belongings.backpack);
                     GLog.w(Messages.get(this, "freezes", item.toString()));
-                    ((Potion) item).shatter(hero.pos);
+                    ((ExperimentalTech) item).shatter(hero.pos);
 
                 } else if (item instanceof MysteryMeat) {
 
@@ -78,8 +78,8 @@ public class Frost extends FlavourBuff {
 
                 Item item = ((Thief) target).item;
 
-                if (item instanceof Potion && !(item instanceof PotionOfStrength || item instanceof PotionOfMight)) {
-                    ((Potion) ((Thief) target).item).shatter(target.pos);
+                if (item instanceof ExperimentalTech && !(item instanceof ExperimentalTechOfStrength || item instanceof ExperimentalTechOfMight)) {
+                    ((ExperimentalTech) ((Thief) target).item).shatter(target.pos);
                     ((Thief) target).item = null;
                 }
 

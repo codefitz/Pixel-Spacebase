@@ -31,7 +31,7 @@ import com.watabou.noosa.ui.Component;
 
 public class Archs extends Component {
 
-    private static final float SCROLL_SPEED = 20f;
+    private static final float SPEED_SCRIPT = 20f;
 
     private SkinnedBlock arcsBg;
     private SkinnedBlock arcsFg;
@@ -86,7 +86,7 @@ public class Archs extends Component {
 
         super.update();
 
-        float shift = Game.elapsed * SCROLL_SPEED;
+        float shift = Game.elapsed * SPEED_SCRIPT;
         if (reversed) {
             shift = -shift;
         }

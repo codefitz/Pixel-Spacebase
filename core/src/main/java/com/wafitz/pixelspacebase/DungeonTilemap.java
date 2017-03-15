@@ -48,7 +48,7 @@ public class DungeonTilemap extends Tilemap {
     static {
         defaultVisuals.put(Terrain.CHASM, 0);
         defaultVisuals.put(Terrain.EMPTY, 1);
-        defaultVisuals.put(Terrain.GRASS, 2);
+        defaultVisuals.put(Terrain.LIGHTEDVENT, 2);
         defaultVisuals.put(Terrain.EMPTY_WELL, 3);
         defaultVisuals.put(Terrain.WALL, 4);
         defaultVisuals.put(Terrain.DOOR, 5);
@@ -61,12 +61,12 @@ public class DungeonTilemap extends Tilemap {
         defaultVisuals.put(Terrain.WALL_DECO, 12);
         defaultVisuals.put(Terrain.BARRICADE, 13);
         defaultVisuals.put(Terrain.EMPTY_SP, 14);
-        defaultVisuals.put(Terrain.HIGH_GRASS, 15);
+        defaultVisuals.put(Terrain.OFFVENT, 15);
 
         defaultVisuals.put(Terrain.SECRET_DOOR, defaultVisuals.get(Terrain.WALL));
-        defaultVisuals.put(Terrain.SECRET_TRAP, defaultVisuals.get(Terrain.EMPTY));
-        defaultVisuals.put(Terrain.TRAP, defaultVisuals.get(Terrain.EMPTY));
-        defaultVisuals.put(Terrain.INACTIVE_TRAP, defaultVisuals.get(Terrain.EMPTY));
+        defaultVisuals.put(Terrain.HIDDEN_VENT, defaultVisuals.get(Terrain.EMPTY));
+        defaultVisuals.put(Terrain.VENT, defaultVisuals.get(Terrain.EMPTY));
+        defaultVisuals.put(Terrain.INACTIVE_VENT, defaultVisuals.get(Terrain.EMPTY));
 
         defaultVisuals.put(Terrain.EMPTY_DECO, 16);
         defaultVisuals.put(Terrain.LOCKED_EXIT, 17);
@@ -105,10 +105,10 @@ public class DungeonTilemap extends Tilemap {
 
     //These tiles can stitch with water
     public static List waterStitcheable = Arrays.asList(
-            Terrain.EMPTY, Terrain.GRASS, Terrain.EMPTY_WELL,
+            Terrain.EMPTY, Terrain.LIGHTEDVENT, Terrain.EMPTY_WELL,
             Terrain.ENTRANCE, Terrain.EXIT, Terrain.EMBERS,
-            Terrain.BARRICADE, Terrain.HIGH_GRASS, Terrain.SECRET_TRAP,
-            Terrain.TRAP, Terrain.INACTIVE_TRAP, Terrain.EMPTY_DECO,
+            Terrain.BARRICADE, Terrain.OFFVENT, Terrain.HIDDEN_VENT,
+            Terrain.VENT, Terrain.INACTIVE_VENT, Terrain.EMPTY_DECO,
             Terrain.SIGN, Terrain.WELL, Terrain.STATUE, Terrain.ALCHEMY
     );
 
@@ -118,9 +118,9 @@ public class DungeonTilemap extends Tilemap {
     static {
         //floor
         chasmStitcheable.put(Terrain.EMPTY, 32);
-        chasmStitcheable.put(Terrain.GRASS, 32);
+        chasmStitcheable.put(Terrain.LIGHTEDVENT, 32);
         chasmStitcheable.put(Terrain.EMPTY_WELL, 32);
-        chasmStitcheable.put(Terrain.HIGH_GRASS, 32);
+        chasmStitcheable.put(Terrain.OFFVENT, 32);
         chasmStitcheable.put(Terrain.EMPTY_DECO, 32);
         chasmStitcheable.put(Terrain.SIGN, 32);
         chasmStitcheable.put(Terrain.EMPTY_WELL, 32);

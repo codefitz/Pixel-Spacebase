@@ -23,9 +23,9 @@ package com.wafitz.pixelspacebase.items.artifacts;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.potions.Potion;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -45,39 +45,40 @@ public class AlchemistsToolkit extends Artifact {
         levelCap = 10;
     }
 
-    public static final String AC_BREW = "BREW";
+    private static final String AC_BREW = "BREW";
 
     //arrays used in containing potion collections for mix logic.
-    public final ArrayList<String> combination = new ArrayList<String>();
-    public ArrayList<String> curGuess = new ArrayList<String>();
-    public ArrayList<String> bstGuess = new ArrayList<String>();
+    private final ArrayList<String> combination = new ArrayList<>();
+    private ArrayList<String> curGuess = new ArrayList<>();
+    private ArrayList<String> bstGuess = new ArrayList<>();
 
-    public int numWrongPlace = 0;
-    public int numRight = 0;
+    private int numWrongPlace = 0;
+    private int numRight = 0;
 
-    private int seedsToPotion = 0;
+    private int seedsToExperimentalTech = 0;
 
-    protected String inventoryTitle = "Select a potion";
-    protected WndBag.Mode mode = WndBag.Mode.POTION;
+    private String inventoryTitle = "Select experimental tech";
+    protected WndBag.Mode mode = WndBag.Mode.EXPERIMENTALTECH;
 
     public AlchemistsToolkit() {
         super();
 
-        Generator.Category cat = Generator.Category.POTION;
+        Generator.Category cat = Generator.Category.EXPERIMENTALTECH;
         for (int i = 1; i <= 3; i++) {
-            String potion;
+            String experimentaltech;
             do {
-                potion = convertName(cat.classes[Random.chances(cat.probs)].getSimpleName());
-                //forcing the player to use experience potions would be completely unfair.
-            } while (combination.contains(potion) || potion.equals("Experience"));
-            combination.add(potion);
+                experimentaltech = convertName(cat.classes[Random.chances(cat.probs)].getSimpleName());
+                //forcing the player to use experience ExperimentalTech would be completely unfair.
+            }
+            while (combination.contains(experimentaltech) || experimentaltech.equals("Experience"));
+            combination.add(experimentaltech);
         }
     }
 
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        if (isEquipped(hero) && level() < levelCap && !cursed)
+        if (isEquipped(hero) && level() < levelCap && !malfunctioning)
             actions.add(AC_BREW);
         return actions;
     }
@@ -92,16 +93,16 @@ public class AlchemistsToolkit extends Artifact {
         }
     }
 
-    public void guessBrew() {
+    private void guessBrew() {
         if (curGuess.size() != 3)
             return;
 
         int numWrongPlace = 0;
         int numRight = 0;
 
-        for (String potion : curGuess) {
-            if (combination.contains(potion)) {
-                if (curGuess.indexOf(potion) == combination.indexOf(potion)) {
+        for (String experimentaltech : curGuess) {
+            if (combination.contains(experimentaltech)) {
+                if (curGuess.indexOf(experimentaltech) == combination.indexOf(experimentaltech)) {
                     numRight++;
                 } else {
                     numWrongPlace++;
@@ -116,31 +117,31 @@ public class AlchemistsToolkit extends Artifact {
 
         if (score == 0) {
 
-            GLog.i("Your mixture is complete, but none of the potions you used seem to react well. " +
+            GLog.i("Your mixture is complete, but none of the ExperimentalTech you used seem to react well. " +
                     "The brew is useless, you throw it away.");
 
         } else if (score > level()) {
 
             level(score);
-            seedsToPotion = 0;
+            seedsToExperimentalTech = 0;
             bstGuess = curGuess;
             this.numRight = numRight;
             this.numWrongPlace = numWrongPlace;
 
             if (level() == 10) {
-                bstGuess = new ArrayList<String>();
+                bstGuess = new ArrayList<>();
                 GLog.p("The mixture you've created seems perfect, you don't think there is any way to improve it!");
             } else {
-                GLog.w("you finish mixing potions, " + brewDesc(numWrongPlace, numRight) +
+                GLog.w("you finish mixing ExperimentalTech, " + brewDesc(numWrongPlace, numRight) +
                         ". This is your best brew yet!");
             }
 
         } else {
 
-            GLog.w("you finish mixing potions, " + brewDesc(numWrongPlace, numRight) +
+            GLog.w("you finish mixing ExperimentalTech, " + brewDesc(numWrongPlace, numRight) +
                     ". This brew isn't as good as the current one, you throw it away.");
         }
-        curGuess = new ArrayList<String>();
+        curGuess = new ArrayList<>();
 
     }
 
@@ -165,23 +166,23 @@ public class AlchemistsToolkit extends Artifact {
     @Override
     public String desc() {
         String result = "This toolkit contains a number of regents and herbs used to improve the process of " +
-                "cooking potions.\n\n";
+                "cooking ExperimentalTech.\n\n";
 
         if (isEquipped(Dungeon.hero))
-            if (cursed)
-                result += "The cursed toolkit has bound itself to your side, and refuses to let you use alchemy.\n\n";
+            if (malfunctioning)
+                result += "The malfunctioning toolkit has bound itself to your side, and refuses to let you use alchemy.\n\n";
             else
                 result += "The toolkit rests on your hip, the various tools inside make a light jingling sound as you move.\n\n";
 
         if (level() == 0) {
             result += "The toolkit seems to be missing a key tool, a catalyst mixture. You'll have to make your own " +
-                    "out of three common potions to get the most out of the toolkit.";
+                    "out of three common ExperimentalTech to get the most out of the toolkit.";
         } else if (level() == 10) {
             result += "The mixture you have created seems perfect, and the toolkit is working at maximum efficiency.";
         } else if (!bstGuess.isEmpty()) {
             result += "Your current best mixture is made from: " + bstGuess.get(0) + ", " + bstGuess.get(1) + ", "
                     + bstGuess.get(2) + ", in that order.\n\n";
-            result += "Of the potions in that mix, " + brewDesc(numWrongPlace, numRight) + ".";
+            result += "Of the ExperimentalTech in that mix, " + brewDesc(numWrongPlace, numRight) + ".";
 
             //would only trigger if an upgraded toolkit was gained through transmutation or bones.
         } else {
@@ -198,7 +199,7 @@ public class AlchemistsToolkit extends Artifact {
     private static final String NUMWRONGPLACE = "numwrongplace";
     private static final String NUMRIGHT = "numright";
 
-    private static final String SEEDSTOPOTION = "seedstopotion";
+    private static final String SEEDSTOEXPERIMENTALTECH = "seedstoexperimentaltech";
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -206,7 +207,7 @@ public class AlchemistsToolkit extends Artifact {
         bundle.put(NUMWRONGPLACE, numWrongPlace);
         bundle.put(NUMRIGHT, numRight);
 
-        bundle.put(SEEDSTOPOTION, seedsToPotion);
+        bundle.put(SEEDSTOEXPERIMENTALTECH, seedsToExperimentalTech);
 
         bundle.put(COMBINATION, combination.toArray(new String[combination.size()]));
         bundle.put(CURGUESS, curGuess.toArray(new String[curGuess.size()]));
@@ -219,7 +220,7 @@ public class AlchemistsToolkit extends Artifact {
         numWrongPlace = bundle.getInt(NUMWRONGPLACE);
         numRight = bundle.getInt(NUMRIGHT);
 
-        seedsToPotion = bundle.getInt(SEEDSTOPOTION);
+        seedsToExperimentalTech = bundle.getInt(SEEDSTOEXPERIMENTALTECH);
 
         combination.clear();
         Collections.addAll(combination, bundle.getStringArray(COMBINATION));
@@ -234,18 +235,18 @@ public class AlchemistsToolkit extends Artifact {
 
             //this logic is handled inside the class with a variable so that it may be stored.
             //to prevent manipulation where a player could keep throwing in 1-2 seeds until they get lucky.
-            if (seedsToPotion == 0) {
+            if (seedsToExperimentalTech == 0) {
                 if (Random.Int(20) < 10 + level()) {
                     if (Random.Int(20) < level()) {
-                        seedsToPotion = 1;
+                        seedsToExperimentalTech = 1;
                     } else
-                        seedsToPotion = 2;
+                        seedsToExperimentalTech = 2;
                 } else
-                    seedsToPotion = 3;
+                    seedsToExperimentalTech = 3;
             }
 
-            if (count >= seedsToPotion) {
-                seedsToPotion = 0;
+            if (count >= seedsToExperimentalTech) {
+                seedsToExperimentalTech = 0;
                 return true;
             } else
                 return false;
@@ -257,7 +258,7 @@ public class AlchemistsToolkit extends Artifact {
     protected WndBag.Listener itemSelector = new WndBag.Listener() {
         @Override
         public void onSelect(Item item) {
-            if (item != null && item instanceof Potion && item.isIdentified()) {
+            if (item != null && item instanceof ExperimentalTech && item.isIdentified()) {
                 if (!curGuess.contains(convertName(item.getClass().getSimpleName()))) {
 
                     Hero hero = Dungeon.hero;
@@ -275,10 +276,10 @@ public class AlchemistsToolkit extends Artifact {
                         GLog.i("You mix the " + item.name() + " into your current brew.");
                     }
                 } else {
-                    GLog.w("Your current brew already contains that potion.");
+                    GLog.w("Your current brew already contains that tech.");
                 }
             } else if (item != null) {
-                GLog.w("You need to select an identified potion.");
+                GLog.w("You need to select an identified tech.");
             }
         }
     };

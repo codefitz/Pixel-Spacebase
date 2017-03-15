@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.levels.traps.FireTrap;
+import com.wafitz.pixelspacebase.levels.vents.FireVent;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -44,7 +44,7 @@ public class StandardPainter extends Painter {
         if (!Dungeon.bossLevel() && Random.Int(5) == 0) {
             switch (Random.Int(6)) {
                 case 0:
-                    if (level.feeling != Level.Feeling.GRASS) {
+                    if (level.feeling != Level.Feeling.LIGHTEDVENT) {
                         if (Math.min(room.width(), room.height()) >= 4 && Math.max(room.width(), room.height()) >= 6) {
                             paintGraveyard(level, room);
                             return;
@@ -104,18 +104,18 @@ public class StandardPainter extends Painter {
                         t = Terrain.EMPTY;
                         break;
                     case 1:
-                        t = Terrain.TRAP;
-                        level.setTrap(new FireTrap().reveal(), cell);
+                        t = Terrain.VENT;
+                        level.setVent(new FireVent().reveal(), cell);
                         break;
                     case 2:
-                        t = Terrain.SECRET_TRAP;
-                        level.setTrap(new FireTrap().hide(), cell);
+                        t = Terrain.HIDDEN_VENT;
+                        level.setVent(new FireVent().hide(), cell);
                         break;
                     case 3:
-                        t = Terrain.INACTIVE_TRAP;
-                        FireTrap trap = new FireTrap();
-                        trap.reveal().active = false;
-                        level.setTrap(trap, cell);
+                        t = Terrain.INACTIVE_VENT;
+                        FireVent vent = new FireVent();
+                        vent.reveal().active = false;
+                        level.setVent(vent, cell);
                         break;
                 }
                 level.map[cell] = t;
@@ -124,7 +124,7 @@ public class StandardPainter extends Painter {
     }
 
     private static void paintGraveyard(Level level, Room room) {
-        fill(level, room.left + 1, room.top + 1, room.width() - 1, room.height() - 1, Terrain.GRASS);
+        fill(level, room.left + 1, room.top + 1, room.width() - 1, room.height() - 1, Terrain.LIGHTEDVENT);
 
         int w = room.width() - 1;
         int h = room.height() - 1;
@@ -146,11 +146,11 @@ public class StandardPainter extends Painter {
 
         if (room.width() > room.height()) {
             for (int i = room.left + 2; i < room.right; i += 2) {
-                fill(level, i, room.top + 1, 1, room.height() - 1, Terrain.HIGH_GRASS);
+                fill(level, i, room.top + 1, 1, room.height() - 1, Terrain.OFFVENT);
             }
         } else {
             for (int i = room.top + 2; i < room.bottom; i += 2) {
-                fill(level, room.left + 1, i, room.width() - 1, 1, Terrain.HIGH_GRASS);
+                fill(level, room.left + 1, i, room.width() - 1, 1, Terrain.OFFVENT);
             }
         }
     }
@@ -182,8 +182,8 @@ public class StandardPainter extends Painter {
         }
 
         level.drop(Generator.random(Random.oneOf(
-                Generator.Category.POTION,
-                Generator.Category.SCROLL)), (room.center().x + center.y * level.width()));
+                Generator.Category.EXPERIMENTALTECH,
+                Generator.Category.SCRIPT)), (room.center().x + center.y * level.width()));
     }
 
     private static void paintBridge(Level level, Room room) {

@@ -34,7 +34,7 @@ import com.wafitz.pixelspacebase.ui.BadgesList;
 import com.wafitz.pixelspacebase.ui.Icons;
 import com.wafitz.pixelspacebase.ui.ItemSlot;
 import com.wafitz.pixelspacebase.ui.RedButton;
-import com.wafitz.pixelspacebase.ui.ScrollPane;
+import com.wafitz.pixelspacebase.ui.ScriptPane;
 import com.wafitz.pixelspacebase.ui.Window;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -122,7 +122,7 @@ public class WndRanking extends WndTabbed {
 
         private Group page;
 
-        public RankingTab(String label, Group page) {
+        RankingTab(String label, Group page) {
             super(label);
             this.page = page;
         }
@@ -140,7 +140,7 @@ public class WndRanking extends WndTabbed {
 
         private int GAP = 4;
 
-        public StatsTab() {
+        StatsTab() {
             super();
 
             if (Dungeon.challenges > 0) GAP--;
@@ -182,13 +182,13 @@ public class WndRanking extends WndTabbed {
 
             pos = statSlot(this, Messages.get(this, "depth"), Integer.toString(Statistics.deepestFloor), pos);
             pos = statSlot(this, Messages.get(this, "enemies"), Integer.toString(Statistics.enemiesSlain), pos);
-            pos = statSlot(this, Messages.get(this, "gold"), Integer.toString(Statistics.goldCollected), pos);
+            pos = statSlot(this, Messages.get(this, "parts"), Integer.toString(Statistics.partsCollected), pos);
 
             pos += GAP;
 
             pos = statSlot(this, Messages.get(this, "food"), Integer.toString(Statistics.foodEaten), pos);
-            pos = statSlot(this, Messages.get(this, "alchemy"), Integer.toString(Statistics.potionsCooked), pos);
-            pos = statSlot(this, Messages.get(this, "ankhs"), Integer.toString(Statistics.ankhsUsed), pos);
+            pos = statSlot(this, Messages.get(this, "alchemy"), Integer.toString(Statistics.experimentalTechCooked), pos);
+            pos = statSlot(this, Messages.get(this, "clones"), Integer.toString(Statistics.clonesSpent), pos);
         }
 
         private float statSlot(Group parent, String label, String value, float pos) {
@@ -211,7 +211,7 @@ public class WndRanking extends WndTabbed {
 
         private float pos;
 
-        public ItemsTab() {
+        ItemsTab() {
             super();
 
             Belongings stuff = Dungeon.hero.belongings;
@@ -258,12 +258,12 @@ public class WndRanking extends WndTabbed {
 
     private class BadgesTab extends Group {
 
-        public BadgesTab() {
+        BadgesTab() {
             super();
 
             camera = WndRanking.this.camera;
 
-            ScrollPane list = new BadgesList(false);
+            ScriptPane list = new BadgesList(false);
             add(list);
 
             list.setSize(WIDTH, HEIGHT);
@@ -280,14 +280,14 @@ public class WndRanking extends WndTabbed {
         private ColorBlock bg;
         private RenderedText name;
 
-        public ItemButton(Item item) {
+        ItemButton(Item item) {
 
             super();
 
             this.item = item;
 
             slot.item(item);
-            if (item.cursed && item.cursedKnown) {
+            if (item.malfunctioning && item.malfunctioningKnown) {
                 bg.ra = +0.2f;
                 bg.ga = -0.1f;
             } else if (!item.isIdentified()) {
@@ -299,7 +299,8 @@ public class WndRanking extends WndTabbed {
         @Override
         protected void createChildren() {
 
-            bg = new ColorBlock(HEIGHT, HEIGHT, 0x9953564D);
+            // wafitz.v5: Fixed Height declaration
+            bg = new ColorBlock(WIDTH, HEIGHT, 0x9953564D);
             add(bg);
 
             slot = new ItemSlot();
@@ -316,7 +317,7 @@ public class WndRanking extends WndTabbed {
             bg.x = x;
             bg.y = y;
 
-            slot.setRect(x, y, HEIGHT, HEIGHT);
+            slot.setRect(x, y, WIDTH, HEIGHT);
             PixelScene.align(slot);
 
             name.x = slot.right() + 2;
@@ -365,7 +366,7 @@ public class WndRanking extends WndTabbed {
 
         @Override
         protected void createChildren() {
-            bg = new ColorBlock(HEIGHT, HEIGHT, 0x9953564D);
+            bg = new ColorBlock(WIDTH, HEIGHT, 0x9953564D);
             add(bg);
 
             super.createChildren();

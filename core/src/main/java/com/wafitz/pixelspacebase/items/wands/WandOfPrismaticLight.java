@@ -34,8 +34,8 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.RainbowParticle;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicMapping;
-import com.wafitz.pixelspacebase.items.weapon.melee.MagesStaff;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -113,7 +113,7 @@ public class WandOfPrismaticLight extends DamageWand {
                     Dungeon.level.discover(cell);
 
                     GameScene.discoverTile(cell, terr);
-                    ScrollOfMagicMapping.discover(cell);
+                    ScriptOfMagicMapping.discover(cell);
 
                     noticed = true;
                 }
@@ -135,13 +135,13 @@ public class WandOfPrismaticLight extends DamageWand {
     }
 
     @Override
-    public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+    public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
         //cripples enemy
         Buff.prolong(defender, Cripple.class, 1f + staff.level());
     }
 
     @Override
-    public void staffFx(MagesStaff.StaffParticle particle) {
+    public void staffFx(DM3000Staff.StaffParticle particle) {
         particle.color(Random.Int(0x1000000));
         particle.am = 0.5f;
         particle.setLifespan(1f);

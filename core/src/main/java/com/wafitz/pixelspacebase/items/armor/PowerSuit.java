@@ -37,7 +37,7 @@ class PowerSuit extends ClassArmor {
 
 
     {
-        image = ItemSpriteSheet.ARMOR_HUNTRESS;
+        image = ItemSpriteSheet.ARMOR_CAPTAIN;
     }
 
     private HashMap<Callback, Mob> targets = new HashMap<>();

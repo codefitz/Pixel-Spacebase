@@ -40,7 +40,7 @@ public class RotGardenPainter extends Painter {
         level.addItemToSpawn(new IronKey(Dungeon.depth));
 
         fill(level, room, Terrain.WALL);
-        fill(level, room, 1, Terrain.GRASS);
+        fill(level, room, 1, Terrain.LIGHTEDVENT);
 
 
         int heartX = Random.IntRange(room.left + 1, room.right - 1);
@@ -70,7 +70,7 @@ public class RotGardenPainter extends Painter {
     }
 
     private static boolean validPlantPos(Level level, int pos) {
-        if (level.map[pos] != Terrain.GRASS) {
+        if (level.map[pos] != Terrain.LIGHTEDVENT) {
             return false;
         }
 
@@ -88,8 +88,8 @@ public class RotGardenPainter extends Painter {
         level.mobs.add(plant);
 
         for (int i : PathFinder.NEIGHBOURS8) {
-            if (level.map[pos + i] == Terrain.GRASS) {
-                set(level, pos + i, Terrain.HIGH_GRASS);
+            if (level.map[pos + i] == Terrain.LIGHTEDVENT) {
+                set(level, pos + i, Terrain.OFFVENT);
             }
         }
     }

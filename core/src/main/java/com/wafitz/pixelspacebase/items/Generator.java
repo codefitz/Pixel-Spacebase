@@ -23,6 +23,19 @@ package com.wafitz.pixelspacebase.items;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfExperience;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfFrost;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfInvisibility;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLevitation;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLiquidFlame;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMight;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMindVision;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfParalyticGas;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfPurity;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfStrength;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfToxicGas;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
@@ -47,44 +60,31 @@ import com.wafitz.pixelspacebase.items.bags.Bag;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.items.food.Pasty;
-import com.wafitz.pixelspacebase.items.potions.Potion;
-import com.wafitz.pixelspacebase.items.potions.PotionOfExperience;
-import com.wafitz.pixelspacebase.items.potions.PotionOfFrost;
-import com.wafitz.pixelspacebase.items.potions.PotionOfHealing;
-import com.wafitz.pixelspacebase.items.potions.PotionOfInvisibility;
-import com.wafitz.pixelspacebase.items.potions.PotionOfLevitation;
-import com.wafitz.pixelspacebase.items.potions.PotionOfLiquidFlame;
-import com.wafitz.pixelspacebase.items.potions.PotionOfMight;
-import com.wafitz.pixelspacebase.items.potions.PotionOfMindVision;
-import com.wafitz.pixelspacebase.items.potions.PotionOfParalyticGas;
-import com.wafitz.pixelspacebase.items.potions.PotionOfPurity;
-import com.wafitz.pixelspacebase.items.potions.PotionOfStrength;
-import com.wafitz.pixelspacebase.items.potions.PotionOfToxicGas;
-import com.wafitz.pixelspacebase.items.rings.AccuracyModule;
-import com.wafitz.pixelspacebase.items.rings.ElementsModule;
-import com.wafitz.pixelspacebase.items.rings.EvasionModule;
-import com.wafitz.pixelspacebase.items.rings.ForceModule;
-import com.wafitz.pixelspacebase.items.rings.FurorModule;
-import com.wafitz.pixelspacebase.items.rings.Module;
-import com.wafitz.pixelspacebase.items.rings.PowerModule;
-import com.wafitz.pixelspacebase.items.rings.ScienceModule;
-import com.wafitz.pixelspacebase.items.rings.SpeedModule;
-import com.wafitz.pixelspacebase.items.rings.SteelModule;
-import com.wafitz.pixelspacebase.items.rings.TargetingModule;
-import com.wafitz.pixelspacebase.items.rings.TechModule;
-import com.wafitz.pixelspacebase.items.scrolls.Scroll;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfIdentify;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfLullaby;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicMapping;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMagicalInfusion;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfMirrorImage;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfPsionicBlast;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfRage;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfRecharging;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfRemoveCurse;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfTeleportation;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfTerror;
-import com.wafitz.pixelspacebase.items.scrolls.ScrollOfUpgrade;
+import com.wafitz.pixelspacebase.items.modules.AccuracyModule;
+import com.wafitz.pixelspacebase.items.modules.ElementsModule;
+import com.wafitz.pixelspacebase.items.modules.EvasionModule;
+import com.wafitz.pixelspacebase.items.modules.ForceModule;
+import com.wafitz.pixelspacebase.items.modules.FurorModule;
+import com.wafitz.pixelspacebase.items.modules.Module;
+import com.wafitz.pixelspacebase.items.modules.PowerModule;
+import com.wafitz.pixelspacebase.items.modules.ScienceModule;
+import com.wafitz.pixelspacebase.items.modules.SpeedModule;
+import com.wafitz.pixelspacebase.items.modules.SteelModule;
+import com.wafitz.pixelspacebase.items.modules.TargetingModule;
+import com.wafitz.pixelspacebase.items.modules.TechModule;
+import com.wafitz.pixelspacebase.items.scripts.FixScript;
+import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfIdentify;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfLullaby;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicalInfusion;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfMirrorImage;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfPsionicBlast;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfRage;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfRecharging;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfTerror;
+import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
 import com.wafitz.pixelspacebase.items.wands.Wand;
 import com.wafitz.pixelspacebase.items.wands.WandOfBlastWave;
 import com.wafitz.pixelspacebase.items.wands.WandOfCorruption;
@@ -100,6 +100,7 @@ import com.wafitz.pixelspacebase.items.wands.WandOfVenom;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.AssassinsBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.BattleAxe;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dagger;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dirk;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
@@ -111,7 +112,6 @@ import com.wafitz.pixelspacebase.items.weapon.melee.HandAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.Knuckles;
 import com.wafitz.pixelspacebase.items.weapon.melee.Longsword;
 import com.wafitz.pixelspacebase.items.weapon.melee.Mace;
-import com.wafitz.pixelspacebase.items.weapon.melee.MagesStaff;
 import com.wafitz.pixelspacebase.items.weapon.melee.NewShortsword;
 import com.wafitz.pixelspacebase.items.weapon.melee.Quarterstaff;
 import com.wafitz.pixelspacebase.items.weapon.melee.RoundShield;
@@ -161,14 +161,14 @@ public class Generator {
         WEP_T4(0, Weapon.class),
         WEP_T5(0, Weapon.class),
         ARMOR(60, Armor.class),
-        POTION(500, Potion.class),
-        SCROLL(400, Scroll.class),
+        EXPERIMENTALTECH(500, ExperimentalTech.class),
+        SCRIPT(400, Script.class),
         WAND(40, Wand.class),
-        RING(15, Module.class),
+        MODULE(15, Module.class),
         ARTIFACT(15, Artifact.class),
         SEED(50, Plant.Seed.class),
         FOOD(0, Food.class),
-        GOLD(500, Parts.class);
+        PARTS(500, Parts.class);
 
         public Class<?>[] classes;
         public float[] probs;
@@ -206,39 +206,39 @@ public class Generator {
 
     static {
 
-        Category.GOLD.classes = new Class<?>[]{
+        Category.PARTS.classes = new Class<?>[]{
                 Parts.class};
-        Category.GOLD.probs = new float[]{1};
+        Category.PARTS.probs = new float[]{1};
 
-        Category.SCROLL.classes = new Class<?>[]{
-                ScrollOfIdentify.class,
-                ScrollOfTeleportation.class,
-                ScrollOfRemoveCurse.class,
-                ScrollOfUpgrade.class,
-                ScrollOfRecharging.class,
-                ScrollOfMagicMapping.class,
-                ScrollOfRage.class,
-                ScrollOfTerror.class,
-                ScrollOfLullaby.class,
-                ScrollOfMagicalInfusion.class,
-                ScrollOfPsionicBlast.class,
-                ScrollOfMirrorImage.class};
-        Category.SCROLL.probs = new float[]{30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 4, 10};
+        Category.SCRIPT.classes = new Class<?>[]{
+                ScriptOfIdentify.class,
+                ScriptOfTeleportation.class,
+                FixScript.class,
+                ScriptOfUpgrade.class,
+                ScriptOfRecharging.class,
+                ScriptOfMagicMapping.class,
+                ScriptOfRage.class,
+                ScriptOfTerror.class,
+                ScriptOfLullaby.class,
+                ScriptOfMagicalInfusion.class,
+                ScriptOfPsionicBlast.class,
+                ScriptOfMirrorImage.class};
+        Category.SCRIPT.probs = new float[]{30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 4, 10};
 
-        Category.POTION.classes = new Class<?>[]{
-                PotionOfHealing.class,
-                PotionOfExperience.class,
-                PotionOfToxicGas.class,
-                PotionOfParalyticGas.class,
-                PotionOfLiquidFlame.class,
-                PotionOfLevitation.class,
-                PotionOfStrength.class,
-                PotionOfMindVision.class,
-                PotionOfPurity.class,
-                PotionOfInvisibility.class,
-                PotionOfMight.class,
-                PotionOfFrost.class};
-        Category.POTION.probs = new float[]{45, 4, 15, 10, 15, 10, 0, 20, 12, 10, 0, 10};
+        Category.EXPERIMENTALTECH.classes = new Class<?>[]{
+                ExperimentalTechOfHealing.class,
+                ExperimentalTechOfExperience.class,
+                ExperimentalTechOfToxicGas.class,
+                ExperimentalTechOfParalyticGas.class,
+                ExperimentalTechOfLiquidFlame.class,
+                ExperimentalTechOfLevitation.class,
+                ExperimentalTechOfStrength.class,
+                ExperimentalTechOfMindVision.class,
+                ExperimentalTechOfPurity.class,
+                ExperimentalTechOfInvisibility.class,
+                ExperimentalTechOfMight.class,
+                ExperimentalTechOfFrost.class};
+        Category.EXPERIMENTALTECH.probs = new float[]{45, 4, 15, 10, 15, 10, 0, 20, 12, 10, 0, 10};
 
         //TODO: add last ones when implemented
         Category.WAND.classes = new Class<?>[]{
@@ -265,7 +265,7 @@ public class Generator {
                 WornShortsword.class,
                 Knuckles.class,
                 Dagger.class,
-                MagesStaff.class,
+                DM3000Staff.class,
                 Boomerang.class,
                 Dart.class
         };
@@ -328,7 +328,7 @@ public class Generator {
                 MysteryMeat.class};
         Category.FOOD.probs = new float[]{4, 1, 0};
 
-        Category.RING.classes = new Class<?>[]{
+        Category.MODULE.classes = new Class<?>[]{
                 AccuracyModule.class,
                 EvasionModule.class,
                 ElementsModule.class,
@@ -340,7 +340,7 @@ public class Generator {
                 TargetingModule.class,
                 SteelModule.class,
                 TechModule.class};
-        Category.RING.probs = new float[]{1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1};
+        Category.MODULE.probs = new float[]{1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1};
 
         Category.ARTIFACT.classes = new Class<?>[]{
                 CapeOfThorns.class,
@@ -398,7 +398,7 @@ public class Generator {
                 case ARTIFACT:
                     Item item = randomArtifact();
                     //if we're out of artifacts, return a ring instead.
-                    return item != null ? item : random(Category.RING);
+                    return item != null ? item : random(Category.MODULE);
                 default:
                     return ((Item) cat.classes[Random.chances(cat.probs)].newInstance()).random();
             }

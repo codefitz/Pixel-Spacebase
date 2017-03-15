@@ -120,10 +120,10 @@ public class SurfaceScene extends PixelScene {
             window.add(cloud);
         }
 
-        int nPatches = (int) (sky.width() / GrassPatch.WIDTH + 1);
+        int nPatches = (int) (sky.width() / LightedPatch.WIDTH + 1);
 
         for (int i = 0; i < nPatches * 4; i++) {
-            GrassPatch patch = new GrassPatch((i - 0.75f) * GrassPatch.WIDTH / 4, SKY_HEIGHT + 1, dayTime);
+            LightedPatch patch = new LightedPatch((i - 0.75f) * LightedPatch.WIDTH / 4, SKY_HEIGHT + 1, dayTime);
             patch.brightness(dayTime ? 0.7f : 0.4f);
             window.add(patch);
         }
@@ -151,7 +151,7 @@ public class SurfaceScene extends PixelScene {
         });
 
         for (int i = 0; i < nPatches; i++) {
-            GrassPatch patch = new GrassPatch((i - 0.5f) * GrassPatch.WIDTH, SKY_HEIGHT, dayTime);
+            LightedPatch patch = new LightedPatch((i - 0.5f) * LightedPatch.WIDTH, SKY_HEIGHT, dayTime);
             patch.brightness(dayTime ? 1.0f : 0.8f);
             window.add(patch);
         }
@@ -335,7 +335,7 @@ public class SurfaceScene extends PixelScene {
         }
     }
 
-    private static class GrassPatch extends Image {
+    private static class LightedPatch extends Image {
 
         public static final int WIDTH = 16;
         public static final int HEIGHT = 14;
@@ -348,7 +348,7 @@ public class SurfaceScene extends PixelScene {
 
         private boolean forward;
 
-        GrassPatch(float tx, float ty, boolean forward) {
+        LightedPatch(float tx, float ty, boolean forward) {
 
             super(Assets.SURFACE);
 
