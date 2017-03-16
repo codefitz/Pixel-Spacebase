@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Bleeding;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
-import com.wafitz.pixelspacebase.actors.buffs.Roots;
+import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.effects.Wound;
 
 public class GrippingVent extends Vent {
@@ -45,7 +45,7 @@ public class GrippingVent extends Vent {
             int damage = Math.max(0, (Dungeon.depth) - (c.drRoll() / 2));
             Buff.affect(c, Bleeding.class).set(damage);
             Buff.prolong(c, Cripple.class, 15f);
-            Buff.prolong(c, Roots.class, 5f);
+            Buff.prolong(c, LockedDown.class, 5f);
             Wound.hit(c);
         } else {
             Wound.hit(pos);

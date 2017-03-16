@@ -23,12 +23,12 @@ package com.wafitz.pixelspacebase.actors.hero;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMindVision;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.MindVisionTech;
 import com.wafitz.pixelspacebase.items.artifacts.CloakOfShadows;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
-import com.wafitz.pixelspacebase.items.wands.WandOfMagicMissile;
+import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
+import com.wafitz.pixelspacebase.items.scripts.MappingScript;
+import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dagger;
 import com.wafitz.pixelspacebase.items.weapon.melee.Knuckles;
@@ -121,17 +121,17 @@ public enum HeroClass {
             Dungeon.quickslot.setSlot(1, darts);
         }*/
 
-        new ExperimentalTechOfHealing().setKnown();
+        new HealingTech().setKnown();
     }
 
     private static void initDM3000(Hero hero) {
         DM3000Staff staff;
 
         if (Badges.isUnlocked(Badges.Badge.TUTORIAL_DM3000)) {
-            staff = new DM3000Staff(new WandOfMagicMissile());
+            staff = new DM3000Staff(new MissileBlaster());
         } else {
             staff = new DM3000Staff();
-            new WandOfMagicMissile().identify().collect();
+            new MissileBlaster().identify().collect();
         }
 
         (hero.belongings.weapon = staff).identify();
@@ -139,7 +139,7 @@ public enum HeroClass {
 
         Dungeon.quickslot.setSlot(0, staff);
 
-        new ScriptOfUpgrade().setKnown();
+        new UpgradeScript().setKnown();
     }
 
     private static void initShapeshifter(Hero hero) {
@@ -155,7 +155,7 @@ public enum HeroClass {
         Dungeon.quickslot.setSlot(0, cloak);
         Dungeon.quickslot.setSlot(1, darts);
 
-        new ScriptOfMagicMapping().setKnown();
+        new MappingScript().setKnown();
     }
 
     private static void initCaptain(Hero hero) {
@@ -166,7 +166,7 @@ public enum HeroClass {
 
         Dungeon.quickslot.setSlot(0, boomerang);
 
-        new ExperimentalTechOfMindVision().setKnown();
+        new MindVisionTech().setKnown();
     }
 
     public String title() {

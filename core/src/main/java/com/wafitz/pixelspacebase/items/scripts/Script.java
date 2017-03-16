@@ -45,18 +45,18 @@ public abstract class Script extends Item {
     protected int initials;
 
     private static final Class<?>[] scripts = {
-            ScriptOfIdentify.class,
-            ScriptOfMagicMapping.class,
-            ScriptOfRecharging.class,
+            IdentifyScript.class,
+            MappingScript.class,
+            RechargingScript.class,
             FixScript.class,
-            ScriptOfTeleportation.class,
-            ScriptOfUpgrade.class,
-            ScriptOfRage.class,
-            ScriptOfTerror.class,
-            ScriptOfLullaby.class,
-            ScriptOfMagicalInfusion.class,
-            ScriptOfPsionicBlast.class,
-            ScriptOfMirrorImage.class
+            TeleportationScript.class,
+            UpgradeScript.class,
+            RageScript.class,
+            TerrorScript.class,
+            LullabyScript.class,
+            MagicalInfusionScript.class,
+            PsionicBlastScript.class,
+            MirrorImageScript.class
     };
 
     private static final HashMap<String, Integer> runes = new HashMap<String, Integer>() {

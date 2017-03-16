@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
-import com.wafitz.pixelspacebase.actors.buffs.Roots;
+import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -44,7 +44,7 @@ class DM3000Armor extends ClassArmor {
         for (Mob mob : Dungeon.level.mobs) {
             if (Level.fieldOfView[mob.pos]) {
                 Buff.affect(mob, Burning.class).reignite(mob);
-                Buff.prolong(mob, Roots.class, 3);
+                Buff.prolong(mob, LockedDown.class, 3);
             }
         }
 

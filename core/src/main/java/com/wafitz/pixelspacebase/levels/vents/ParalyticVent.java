@@ -35,7 +35,7 @@ public class ParalyticVent extends Vent {
     @Override
     public void activate() {
 
-        GameScene.add(Blob.seed(pos, 80 + 5 * Dungeon.depth, ParalyticGas.class));
+        GameScene.add(Blob.gadget(pos, 80 + 5 * Dungeon.depth, ParalyticGas.class));
 
     }
 }

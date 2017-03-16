@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -49,7 +49,7 @@ public class TeleportationVent extends Vent {
 
         Char ch = Actor.findChar(pos);
         if (ch instanceof Hero) {
-            ScriptOfTeleportation.teleportHero((Hero) ch);
+            TeleportationScript.teleportHero((Hero) ch);
         } else if (ch != null) {
             int count = 10;
             int pos;
@@ -62,7 +62,7 @@ public class TeleportationVent extends Vent {
 
             if (pos == -1 || Dungeon.bossLevel()) {
 
-                GLog.w(Messages.get(ScriptOfTeleportation.class, "no_tele"));
+                GLog.w(Messages.get(TeleportationScript.class, "no_tele"));
 
             } else {
 

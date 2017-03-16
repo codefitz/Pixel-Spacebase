@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.items.armor.glyphs;
 
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Charm;
+import com.wafitz.pixelspacebase.actors.buffs.Hypnotise;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.armor.Armor.Glyph;
@@ -43,7 +43,7 @@ public class Affection extends Glyph {
 
             int duration = Random.IntRange(2, 5);
 
-            Buff.affect(attacker, Charm.class, Charm.durationFactor(attacker) * duration).object = defender.id();
+            Buff.affect(attacker, Hypnotise.class, Hypnotise.durationFactor(attacker) * duration).object = defender.id();
             attacker.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
 
         }

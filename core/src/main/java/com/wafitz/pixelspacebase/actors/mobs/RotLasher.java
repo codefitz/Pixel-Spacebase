@@ -42,7 +42,7 @@ public class RotLasher extends Mob {
 
         EXP = 1;
 
-        loot = Generator.Category.SEED;
+        loot = Generator.Category.GADGET;
         lootChance = 1f;
 
         state = WANDERING = new Waiting();

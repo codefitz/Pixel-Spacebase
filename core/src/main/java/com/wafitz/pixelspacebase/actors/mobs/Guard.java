@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.effects.Chains;
 import com.wafitz.pixelspacebase.effects.Pushing;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.Armor;
@@ -157,7 +157,7 @@ class Guard extends Mob {
         } else {
             if (Random.Int(7 + Dungeon.limitedDrops.guardHP.count) < 7) {
                 Dungeon.limitedDrops.guardHP.drop();
-                return new ExperimentalTechOfHealing();
+                return new HealingTech();
             }
         }
 

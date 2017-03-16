@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.PurpleParticle;
 import com.wafitz.pixelspacebase.items.Dewdrop;
-import com.wafitz.pixelspacebase.items.wands.WandOfDisintegration;
+import com.wafitz.pixelspacebase.items.blasters.Disintergrator;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -225,7 +225,7 @@ public class Eye extends Mob {
     private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 
     static {
-        RESISTANCES.add(WandOfDisintegration.class);
+        RESISTANCES.add(Disintergrator.class);
         RESISTANCES.add(Grim.class);
         RESISTANCES.add(Vampiric.class);
     }

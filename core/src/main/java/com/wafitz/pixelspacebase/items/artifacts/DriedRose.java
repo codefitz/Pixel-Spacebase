@@ -37,7 +37,7 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ShaftParticle;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfPsionicBlast;
+import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Languages;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -431,7 +431,7 @@ public class DriedRose extends Artifact {
             IMMUNITIES.add(ToxicGas.class);
             IMMUNITIES.add(VenomGas.class);
             IMMUNITIES.add(Burning.class);
-            IMMUNITIES.add(ScriptOfPsionicBlast.class);
+            IMMUNITIES.add(PsionicBlastScript.class);
         }
 
         @Override
@@ -451,9 +451,9 @@ public class DriedRose extends Artifact {
         //1st index - depth type, 2nd index - specific line.
         static final String[][] VOICE_AMBIENT = {
                 {
-                        "These sewers were once safe, some even lived here in the winter...",
-                        "I wonder what happened to the guard patrols, did they give up?...",
-                        "I had family on the surface, I hope they are safe..."
+                        "I dreamed of piloting my own ship and boldly going where no man had gone before...",
+                        "Where is security?!",
+                        "I have family back on earth, I hope they are safe..."
                 }, {
                 "I've heard stories about this place, nothing good...",
                 "This place was always more of a dungeon than a prison...",
@@ -499,7 +499,7 @@ public class DriedRose extends Artifact {
         }
         }, {
                 {
-                        "The creatures here are twisted, just like the sewers... ",
+                        "The aliens here are aggressive, just like in Operations... ",
                         "more gnolls, I hate gnolls...",
                         "Even the bats are bloodthirsty here..."
                 }, {
@@ -531,7 +531,7 @@ public class DriedRose extends Artifact {
                 {
                         "I don't like this place... we should leave as soon as we can..."
                 }, {
-                "Hello source viewer, I'm writing this here as this line should never trigger. Have a nice day!"
+                "Hello source viewer, I'm writing this here as this line should never triggers. Have a nice day!"
         }
         }
         };

@@ -172,7 +172,7 @@ public class Armor extends EquipableItem {
     public void affixSeal(BrokenSeal seal) {
         this.seal = seal;
         if (seal.level() > 0) {
-            //doesn't trigger upgrading logic such as affecting malfunctions/glyphs
+            //doesn't triggers upgrading logic such as affecting malfunctions/glyphs
             level(level() + 1);
             Badges.validateItemLevelAquired(this);
         }
@@ -284,7 +284,7 @@ public class Armor extends EquipableItem {
         String info = desc();
 
         if (levelKnown) {
-            info += "\n\n" + Messages.get(Armor.class, "curr_absorb", DRMin(), DRMax(), STRReq());
+            info += "\n\n" + Messages.get(Armor.class, "curr_absorb", name(), DRMin(), DRMax(), STRReq());
 
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(Armor.class, "too_heavy");

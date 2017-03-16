@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.mobs.WaterThing;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfInvisibility;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.InvisibilityTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -73,7 +73,7 @@ public class PoolPainter extends Painter {
                 Random.Int(3) == 0 ? Heap.Type.CHEST : Heap.Type.HEAP;
         set(level, pos, Terrain.PEDESTAL);
 
-        level.addItemToSpawn(new ExperimentalTechOfInvisibility());
+        level.addItemToSpawn(new InvisibilityTech());
 
         for (int i = 0; i < NWATERTHINGS; i++) {
             WaterThing waterThing = new WaterThing();

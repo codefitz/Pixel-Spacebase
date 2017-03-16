@@ -23,19 +23,19 @@ package com.wafitz.pixelspacebase.items;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfExperience;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfFrost;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfInvisibility;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLevitation;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLiquidFlame;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMight;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMindVision;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfParalyticGas;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfPurity;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfStrength;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfToxicGas;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.FrostTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.InvisibilityTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.LevitationTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.LiquidFlameTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.MightTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.MindVisionTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ParalyticGasTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PurityTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ToxicGasTech;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
@@ -57,6 +57,18 @@ import com.wafitz.pixelspacebase.items.artifacts.TalismanOfForesight;
 import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
 import com.wafitz.pixelspacebase.items.artifacts.UnstableSpellbook;
 import com.wafitz.pixelspacebase.items.bags.Bag;
+import com.wafitz.pixelspacebase.items.blasters.Blaster;
+import com.wafitz.pixelspacebase.items.blasters.Disintergrator;
+import com.wafitz.pixelspacebase.items.blasters.EMP;
+import com.wafitz.pixelspacebase.items.blasters.FireBlaster;
+import com.wafitz.pixelspacebase.items.blasters.FreezeBlaster;
+import com.wafitz.pixelspacebase.items.blasters.LightBlaster;
+import com.wafitz.pixelspacebase.items.blasters.LightningBlaster;
+import com.wafitz.pixelspacebase.items.blasters.MindBlaster;
+import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
+import com.wafitz.pixelspacebase.items.blasters.TransfusionBlaster;
+import com.wafitz.pixelspacebase.items.blasters.VenomBlaster;
+import com.wafitz.pixelspacebase.items.blasters.WaveBlaster;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.items.food.Pasty;
@@ -73,30 +85,18 @@ import com.wafitz.pixelspacebase.items.modules.SteelModule;
 import com.wafitz.pixelspacebase.items.modules.TargetingModule;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
 import com.wafitz.pixelspacebase.items.scripts.FixScript;
+import com.wafitz.pixelspacebase.items.scripts.IdentifyScript;
+import com.wafitz.pixelspacebase.items.scripts.LullabyScript;
+import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
+import com.wafitz.pixelspacebase.items.scripts.MappingScript;
+import com.wafitz.pixelspacebase.items.scripts.MirrorImageScript;
+import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
+import com.wafitz.pixelspacebase.items.scripts.RageScript;
+import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfIdentify;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfLullaby;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicalInfusion;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMirrorImage;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfPsionicBlast;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfRage;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfRecharging;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfTerror;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
-import com.wafitz.pixelspacebase.items.wands.Wand;
-import com.wafitz.pixelspacebase.items.wands.WandOfBlastWave;
-import com.wafitz.pixelspacebase.items.wands.WandOfCorruption;
-import com.wafitz.pixelspacebase.items.wands.WandOfDisintegration;
-import com.wafitz.pixelspacebase.items.wands.WandOfFireblast;
-import com.wafitz.pixelspacebase.items.wands.WandOfFrost;
-import com.wafitz.pixelspacebase.items.wands.WandOfLightning;
-import com.wafitz.pixelspacebase.items.wands.WandOfMagicMissile;
-import com.wafitz.pixelspacebase.items.wands.WandOfPrismaticLight;
-import com.wafitz.pixelspacebase.items.wands.WandOfRegrowth;
-import com.wafitz.pixelspacebase.items.wands.WandOfTransfusion;
-import com.wafitz.pixelspacebase.items.wands.WandOfVenom;
+import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
+import com.wafitz.pixelspacebase.items.scripts.TerrorScript;
+import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.AssassinsBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.BattleAxe;
@@ -130,19 +130,19 @@ import com.wafitz.pixelspacebase.items.weapon.missiles.IncendiaryDart;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Javelin;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Shuriken;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Tamahawk;
-import com.wafitz.pixelspacebase.plants.BlandfruitBush;
-import com.wafitz.pixelspacebase.plants.Blindweed;
-import com.wafitz.pixelspacebase.plants.Dreamfoil;
-import com.wafitz.pixelspacebase.plants.Earthroot;
-import com.wafitz.pixelspacebase.plants.Fadeleaf;
-import com.wafitz.pixelspacebase.plants.Firebloom;
-import com.wafitz.pixelspacebase.plants.Icecap;
-import com.wafitz.pixelspacebase.plants.Plant;
-import com.wafitz.pixelspacebase.plants.Rotberry;
-import com.wafitz.pixelspacebase.plants.Sorrowmoss;
-import com.wafitz.pixelspacebase.plants.Starflower;
-import com.wafitz.pixelspacebase.plants.Stormvine;
-import com.wafitz.pixelspacebase.plants.Sungrass;
+import com.wafitz.pixelspacebase.triggers.BlandfruitBush;
+import com.wafitz.pixelspacebase.triggers.Blindweed;
+import com.wafitz.pixelspacebase.triggers.Dreamfoil;
+import com.wafitz.pixelspacebase.triggers.Earthroot;
+import com.wafitz.pixelspacebase.triggers.Fadeleaf;
+import com.wafitz.pixelspacebase.triggers.Firebloom;
+import com.wafitz.pixelspacebase.triggers.Icecap;
+import com.wafitz.pixelspacebase.triggers.Rotberry;
+import com.wafitz.pixelspacebase.triggers.Sorrowmoss;
+import com.wafitz.pixelspacebase.triggers.Starflower;
+import com.wafitz.pixelspacebase.triggers.Stormvine;
+import com.wafitz.pixelspacebase.triggers.Sungrass;
+import com.wafitz.pixelspacebase.triggers.Trigger;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
@@ -163,10 +163,10 @@ public class Generator {
         ARMOR(60, Armor.class),
         EXPERIMENTALTECH(500, ExperimentalTech.class),
         SCRIPT(400, Script.class),
-        WAND(40, Wand.class),
+        BLASTER(40, Blaster.class),
         MODULE(15, Module.class),
         ARTIFACT(15, Artifact.class),
-        SEED(50, Plant.Seed.class),
+        GADGET(50, Trigger.Gadget.class),
         FOOD(0, Food.class),
         PARTS(500, Parts.class);
 
@@ -211,51 +211,51 @@ public class Generator {
         Category.PARTS.probs = new float[]{1};
 
         Category.SCRIPT.classes = new Class<?>[]{
-                ScriptOfIdentify.class,
-                ScriptOfTeleportation.class,
+                IdentifyScript.class,
+                TeleportationScript.class,
                 FixScript.class,
-                ScriptOfUpgrade.class,
-                ScriptOfRecharging.class,
-                ScriptOfMagicMapping.class,
-                ScriptOfRage.class,
-                ScriptOfTerror.class,
-                ScriptOfLullaby.class,
-                ScriptOfMagicalInfusion.class,
-                ScriptOfPsionicBlast.class,
-                ScriptOfMirrorImage.class};
+                UpgradeScript.class,
+                RechargingScript.class,
+                MappingScript.class,
+                RageScript.class,
+                TerrorScript.class,
+                LullabyScript.class,
+                MagicalInfusionScript.class,
+                PsionicBlastScript.class,
+                MirrorImageScript.class};
         Category.SCRIPT.probs = new float[]{30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 4, 10};
 
         Category.EXPERIMENTALTECH.classes = new Class<?>[]{
-                ExperimentalTechOfHealing.class,
-                ExperimentalTechOfExperience.class,
-                ExperimentalTechOfToxicGas.class,
-                ExperimentalTechOfParalyticGas.class,
-                ExperimentalTechOfLiquidFlame.class,
-                ExperimentalTechOfLevitation.class,
-                ExperimentalTechOfStrength.class,
-                ExperimentalTechOfMindVision.class,
-                ExperimentalTechOfPurity.class,
-                ExperimentalTechOfInvisibility.class,
-                ExperimentalTechOfMight.class,
-                ExperimentalTechOfFrost.class};
+                HealingTech.class,
+                ExperienceTech.class,
+                ToxicGasTech.class,
+                ParalyticGasTech.class,
+                LiquidFlameTech.class,
+                LevitationTech.class,
+                StrengthTech.class,
+                MindVisionTech.class,
+                PurityTech.class,
+                InvisibilityTech.class,
+                MightTech.class,
+                FrostTech.class};
         Category.EXPERIMENTALTECH.probs = new float[]{45, 4, 15, 10, 15, 10, 0, 20, 12, 10, 0, 10};
 
         //TODO: add last ones when implemented
-        Category.WAND.classes = new Class<?>[]{
-                WandOfMagicMissile.class,
-                WandOfLightning.class,
-                WandOfDisintegration.class,
-                WandOfFireblast.class,
-                WandOfVenom.class,
-                WandOfBlastWave.class,
+        Category.BLASTER.classes = new Class<?>[]{
+                MissileBlaster.class,
+                LightningBlaster.class,
+                Disintergrator.class,
+                FireBlaster.class,
+                VenomBlaster.class,
+                WaveBlaster.class,
                 //WandOfLivingEarth.class,
-                WandOfFrost.class,
-                WandOfPrismaticLight.class,
+                FreezeBlaster.class,
+                LightBlaster.class,
                 //WandOfWarding.class,
-                WandOfTransfusion.class,
-                WandOfCorruption.class,
-                WandOfRegrowth.class};
-        Category.WAND.probs = new float[]{5, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, 3, 3};
+                TransfusionBlaster.class,
+                MindBlaster.class,
+                EMP.class};
+        Category.BLASTER.probs = new float[]{5, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, 3, 3};
 
         //see generator.randomWeapon
         Category.WEAPON.classes = new Class<?>[]{};
@@ -359,20 +359,20 @@ public class Generator {
         };
         Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
 
-        Category.SEED.classes = new Class<?>[]{
-                Firebloom.Seed.class,
-                Icecap.Seed.class,
-                Sorrowmoss.Seed.class,
-                Blindweed.Seed.class,
-                Sungrass.Seed.class,
-                Earthroot.Seed.class,
-                Fadeleaf.Seed.class,
-                Rotberry.Seed.class,
-                BlandfruitBush.Seed.class,
-                Dreamfoil.Seed.class,
-                Stormvine.Seed.class,
-                Starflower.Seed.class};
-        Category.SEED.probs = new float[]{12, 12, 12, 12, 12, 12, 12, 0, 4, 12, 12, 1};
+        Category.GADGET.classes = new Class<?>[]{
+                Firebloom.Gadget.class,
+                Icecap.Gadget.class,
+                Sorrowmoss.Gadget.class,
+                Blindweed.Gadget.class,
+                Sungrass.Gadget.class,
+                Earthroot.Gadget.class,
+                Fadeleaf.Gadget.class,
+                Rotberry.Gadget.class,
+                BlandfruitBush.Gadget.class,
+                Dreamfoil.Gadget.class,
+                Stormvine.Gadget.class,
+                Starflower.Gadget.class};
+        Category.GADGET.probs = new float[]{12, 12, 12, 12, 12, 12, 12, 0, 4, 12, 12, 1};
     }
 
     public static void reset() {

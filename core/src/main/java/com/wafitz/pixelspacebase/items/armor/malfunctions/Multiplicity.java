@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.MirrorImage;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
@@ -83,7 +83,7 @@ public class Multiplicity extends Armor.Glyph {
 
                 if (m != null) {
                     GameScene.add(m);
-                    ScriptOfTeleportation.appear(m, Random.element(spawnPoints));
+                    TeleportationScript.appear(m, Random.element(spawnPoints));
                 }
 
             }

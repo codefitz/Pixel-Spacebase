@@ -30,8 +30,8 @@ import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.plants.Plant;
 import com.wafitz.pixelspacebase.scenes.GameScene;
+import com.wafitz.pixelspacebase.triggers.Trigger;
 
 public class Fire extends Blob {
 
@@ -97,9 +97,9 @@ public class Fire extends Blob {
             heap.burn();
         }
 
-        Plant plant = Dungeon.level.plants.get(pos);
-        if (plant != null) {
-            plant.wither();
+        Trigger trigger = Dungeon.level.triggers.get(pos);
+        if (trigger != null) {
+            trigger.wither();
         }
     }
 

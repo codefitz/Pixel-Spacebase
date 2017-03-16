@@ -61,7 +61,7 @@ public class Messages {
             "com.wafitz.pixelspacebase.messages.actors.actors",
             "com.wafitz.pixelspacebase.messages.items.items",
             "com.wafitz.pixelspacebase.messages.levels.levels",
-            "com.wafitz.pixelspacebase.messages.plants.plants",
+            "com.wafitz.pixelspacebase.messages.triggers.triggers",
             "com.wafitz.pixelspacebase.messages.scenes.scenes",
             "com.wafitz.pixelspacebase.messages.ui.ui",
             "com.wafitz.pixelspacebase.messages.windows.windows",

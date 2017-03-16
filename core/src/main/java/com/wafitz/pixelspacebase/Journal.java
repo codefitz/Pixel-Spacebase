@@ -33,11 +33,11 @@ public class Journal {
         WELL_OF_AWARENESS,
         WELL_OF_TRANSMUTATION,
         ALCHEMY,
-        GARDEN,
+        MEDICALBAY,
         OLDWARBOT,
 
         GHOST,
-        WANDMAKER,
+        GUNSMITH,
         TROLL,
         IMP;
 

@@ -63,7 +63,7 @@ public class CraftingTerminal {
                                     if (index == 0) {
                                         curItem.cast(CraftingTerminal.hero, CraftingTerminal.pos);
                                     } else
-                                        GameScene.selectItem(itemSelector, WndBag.Mode.SEED, Messages.get(CraftingTerminal.class, "select_seed"));
+                                        GameScene.selectItem(itemSelector, WndBag.Mode.GADGET, Messages.get(CraftingTerminal.class, "select_gadget"));
                                 }
                             }
                     );
@@ -72,7 +72,7 @@ public class CraftingTerminal {
             }
 
         if (!foundFruit)
-            GameScene.selectItem(itemSelector, WndBag.Mode.SEED, Messages.get(CraftingTerminal.class, "select_seed"));
+            GameScene.selectItem(itemSelector, WndBag.Mode.GADGET, Messages.get(CraftingTerminal.class, "select_gadget"));
     }
 
     private static final WndBag.Listener itemSelector = new WndBag.Listener() {

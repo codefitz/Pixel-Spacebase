@@ -22,28 +22,28 @@ package com.wafitz.pixelspacebase.items.food;
 
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.EarthImbue;
-import com.wafitz.pixelspacebase.actors.buffs.FireImbue;
+import com.wafitz.pixelspacebase.actors.buffs.FlameOn;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
-import com.wafitz.pixelspacebase.actors.buffs.ToxicImbue;
+import com.wafitz.pixelspacebase.actors.buffs.Lockdown;
+import com.wafitz.pixelspacebase.actors.buffs.Toxic;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfExperience;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfFrost;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfInvisibility;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLevitation;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLiquidFlame;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMindVision;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfParalyticGas;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfPurity;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfStrength;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfToxicGas;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.FrostTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.InvisibilityTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.LevitationTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.LiquidFlameTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.MindVisionTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ParalyticGasTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PurityTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ToxicGasTech;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.plants.Plant.Seed;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
+import com.wafitz.pixelspacebase.triggers.Trigger.Gadget;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.utils.Bundle;
 
@@ -91,18 +91,18 @@ public class Blandfruit extends Food {
 
         if (action.equals(AC_EAT) && experimentalTechAttrib != null) {
 
-            if (experimentalTechAttrib instanceof ExperimentalTechOfFrost) {
+            if (experimentalTechAttrib instanceof FrostTech) {
                 GLog.i(Messages.get(this, "ice_msg"));
                 FrozenCarpaccio.effect(hero);
-            } else if (experimentalTechAttrib instanceof ExperimentalTechOfLiquidFlame) {
+            } else if (experimentalTechAttrib instanceof LiquidFlameTech) {
                 GLog.i(Messages.get(this, "fire_msg"));
-                Buff.affect(hero, FireImbue.class).set(FireImbue.DURATION);
-            } else if (experimentalTechAttrib instanceof ExperimentalTechOfToxicGas) {
+                Buff.affect(hero, FlameOn.class).set(FlameOn.DURATION);
+            } else if (experimentalTechAttrib instanceof ToxicGasTech) {
                 GLog.i(Messages.get(this, "toxic_msg"));
-                Buff.affect(hero, ToxicImbue.class).set(ToxicImbue.DURATION);
-            } else if (experimentalTechAttrib instanceof ExperimentalTechOfParalyticGas) {
+                Buff.affect(hero, Toxic.class).set(Toxic.DURATION);
+            } else if (experimentalTechAttrib instanceof ParalyticGasTech) {
                 GLog.i(Messages.get(this, "para_msg"));
-                Buff.affect(hero, EarthImbue.class, EarthImbue.DURATION);
+                Buff.affect(hero, Lockdown.class, Lockdown.DURATION);
             } else {
                 experimentalTechAttrib.apply(hero);
             }
@@ -121,10 +121,10 @@ public class Blandfruit extends Food {
         return 20 * quantity;
     }
 
-    public Item cook(Seed seed) {
+    public Item cook(Gadget gadget) {
 
         try {
-            return imbueExperimentalTech((ExperimentalTech) seed.alchemyClass.newInstance());
+            return imbueExperimentalTech((ExperimentalTech) gadget.alchemyClass.newInstance());
         } catch (Exception e) {
             PixelSpacebase.reportException(e);
             return null;
@@ -139,37 +139,37 @@ public class Blandfruit extends Food {
 
         experimentalTechAttrib.image = ItemSpriteSheet.BLANDFRUIT;
 
-        if (experimentalTechAttrib instanceof ExperimentalTechOfHealing) {
+        if (experimentalTechAttrib instanceof HealingTech) {
             name = Messages.get(this, "sunfruit");
             experimentalTechGlow = new ItemSprite.Glowing(0x2EE62E);
-        } else if (experimentalTechAttrib instanceof ExperimentalTechOfStrength) {
+        } else if (experimentalTechAttrib instanceof StrengthTech) {
             name = Messages.get(this, "rotfruit");
             experimentalTechGlow = new ItemSprite.Glowing(0xCC0022);
-        } else if (experimentalTechAttrib instanceof ExperimentalTechOfParalyticGas) {
+        } else if (experimentalTechAttrib instanceof ParalyticGasTech) {
             name = Messages.get(this, "earthfruit");
             experimentalTechGlow = new ItemSprite.Glowing(0x67583D);
-        } else if (experimentalTechAttrib instanceof ExperimentalTechOfInvisibility) {
+        } else if (experimentalTechAttrib instanceof InvisibilityTech) {
             name = Messages.get(this, "blindfruit");
             experimentalTechGlow = new ItemSprite.Glowing(0xE5D273);
-        } else if (experimentalTechAttrib instanceof ExperimentalTechOfLiquidFlame) {
+        } else if (experimentalTechAttrib instanceof LiquidFlameTech) {
             name = Messages.get(this, "firefruit");
             experimentalTechGlow = new ItemSprite.Glowing(0xFF7F00);
-        } else if (experimentalTechAttrib instanceof ExperimentalTechOfFrost) {
+        } else if (experimentalTechAttrib instanceof FrostTech) {
             name = Messages.get(this, "icefruit");
             experimentalTechGlow = new ItemSprite.Glowing(0x66B3FF);
-        } else if (experimentalTechAttrib instanceof ExperimentalTechOfMindVision) {
+        } else if (experimentalTechAttrib instanceof MindVisionTech) {
             name = Messages.get(this, "fadefruit");
             experimentalTechGlow = new ItemSprite.Glowing(0xB8E6CF);
-        } else if (experimentalTechAttrib instanceof ExperimentalTechOfToxicGas) {
+        } else if (experimentalTechAttrib instanceof ToxicGasTech) {
             name = Messages.get(this, "sorrowfruit");
             experimentalTechGlow = new ItemSprite.Glowing(0xA15CE5);
-        } else if (experimentalTechAttrib instanceof ExperimentalTechOfLevitation) {
+        } else if (experimentalTechAttrib instanceof LevitationTech) {
             name = Messages.get(this, "stormfruit");
             experimentalTechGlow = new ItemSprite.Glowing(0x1C3A57);
-        } else if (experimentalTechAttrib instanceof ExperimentalTechOfPurity) {
+        } else if (experimentalTechAttrib instanceof PurityTech) {
             name = Messages.get(this, "dreamfruit");
             experimentalTechGlow = new ItemSprite.Glowing(0x8E2975);
-        } else if (experimentalTechAttrib instanceof ExperimentalTechOfExperience) {
+        } else if (experimentalTechAttrib instanceof ExperienceTech) {
             name = Messages.get(this, "starfruit");
             experimentalTechGlow = new ItemSprite.Glowing(0xA79400);
         }
@@ -181,12 +181,12 @@ public class Blandfruit extends Food {
 
     @Override
     public void cast(final Hero user, int dst) {
-        if (experimentalTechAttrib instanceof ExperimentalTechOfLiquidFlame ||
-                experimentalTechAttrib instanceof ExperimentalTechOfToxicGas ||
-                experimentalTechAttrib instanceof ExperimentalTechOfParalyticGas ||
-                experimentalTechAttrib instanceof ExperimentalTechOfFrost ||
-                experimentalTechAttrib instanceof ExperimentalTechOfLevitation ||
-                experimentalTechAttrib instanceof ExperimentalTechOfPurity) {
+        if (experimentalTechAttrib instanceof LiquidFlameTech ||
+                experimentalTechAttrib instanceof ToxicGasTech ||
+                experimentalTechAttrib instanceof ParalyticGasTech ||
+                experimentalTechAttrib instanceof FrostTech ||
+                experimentalTechAttrib instanceof LevitationTech ||
+                experimentalTechAttrib instanceof PurityTech) {
             experimentalTechAttrib.cast(user, dst);
             detach(user.belongings.backpack);
         } else {

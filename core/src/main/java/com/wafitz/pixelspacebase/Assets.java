@@ -87,7 +87,7 @@ public class Assets {
     public static final String YOG = "yog.png";
     public static final String LARVA = "larva.png";
     public static final String GHOST = "hologram.png";
-    public static final String MAKER = "wandmaker.png";
+    public static final String GUNSMITH = "wandmaker.png";
     public static final String TROLL = "blacksmith.png";
     public static final String IMP = "demon.png";
     public static final String RATKING = "ratking.png";
@@ -100,13 +100,13 @@ public class Assets {
     public static final String ITEMS = "items.png";
     public static final String TERRAIN_FEATURES = "terrain_features.png";
 
-    public static final String TILES_SEWERS = "tiles0.png";
+    public static final String TILES_OPERATIONS = "tiles0.png";
     public static final String TILES_PRISON = "tiles1.png";
     public static final String TILES_CAVES = "tiles2.png";
     public static final String TILES_CITY = "tiles3.png";
     public static final String TILES_HALLS = "tiles4.png";
 
-    public static final String WATER_SEWERS = "water0.png";
+    public static final String WATER_OPERATIONS = "water0.png";
     public static final String WATER_PRISON = "water1.png";
     public static final String WATER_CAVES = "water2.png";
     public static final String WATER_CITY = "water3.png";

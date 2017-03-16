@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.items.armor.glyphs;
 
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.wands.WandOfBlastWave;
+import com.wafitz.pixelspacebase.items.blasters.WaveBlaster;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.watabou.utils.Random;
@@ -39,7 +39,7 @@ public class Repulsion extends Armor.Glyph {
         if (Random.Int(level + 5) >= 4) {
             int oppositeHero = attacker.pos + (attacker.pos - defender.pos);
             Ballistica trajectory = new Ballistica(attacker.pos, oppositeHero, Ballistica.MAGIC_BOLT);
-            WandOfBlastWave.throwChar(attacker, trajectory, 2);
+            WaveBlaster.throwChar(attacker, trajectory, 2);
         }
 
         return damage;

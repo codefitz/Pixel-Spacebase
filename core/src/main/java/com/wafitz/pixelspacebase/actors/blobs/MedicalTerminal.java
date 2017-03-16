@@ -31,7 +31,7 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ShaftParticle;
 import com.wafitz.pixelspacebase.items.AirTank;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -44,7 +44,7 @@ public class MedicalTerminal extends WellWater {
 
         Sample.INSTANCE.play(Assets.SND_DRINK);
 
-        ExperimentalTechOfHealing.heal(hero);
+        HealingTech.heal(hero);
         hero.belongings.fixEquipped();
         hero.buff(Hunger.class).satisfy(Hunger.STARVING);
 

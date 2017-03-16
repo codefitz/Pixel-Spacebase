@@ -27,15 +27,15 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.ShapeshifterWarn;
 import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
+import com.wafitz.pixelspacebase.actors.buffs.Acid;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
-import com.wafitz.pixelspacebase.actors.buffs.Ooze;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfPsionicBlast;
+import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -129,7 +129,7 @@ public class FeralShapeshifter extends Mob {
     @Override
     public int attackProc(Char enemy, int damage) {
         if (Random.Int(3) == 0) {
-            Buff.affect(enemy, Ooze.class);
+            Buff.affect(enemy, Acid.class);
             enemy.sprite.burst(0x000000, 5);
         }
 
@@ -147,7 +147,7 @@ public class FeralShapeshifter extends Mob {
             PathFinder.buildDistanceMap(pos, BArray.not(Level.solid, null), 2);
             for (int i = 0; i < PathFinder.distance.length; i++) {
                 if (PathFinder.distance[i] < Integer.MAX_VALUE)
-                    GameScene.add(Blob.seed(i, 2, ShapeshifterWarn.class));
+                    GameScene.add(Blob.gadget(i, 2, ShapeshifterWarn.class));
             }
             pumpedUp++;
 
@@ -180,7 +180,7 @@ public class FeralShapeshifter extends Mob {
             for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
                 int j = pos + PathFinder.NEIGHBOURS9[i];
                 if (!Level.solid[j]) {
-                    GameScene.add(Blob.seed(j, 2, ShapeshifterWarn.class));
+                    GameScene.add(Blob.gadget(j, 2, ShapeshifterWarn.class));
                 }
             }
 
@@ -277,7 +277,7 @@ public class FeralShapeshifter extends Mob {
     static {
         RESISTANCES.add(ToxicGas.class);
         RESISTANCES.add(Grim.class);
-        RESISTANCES.add(ScriptOfPsionicBlast.class);
+        RESISTANCES.add(PsionicBlastScript.class);
     }
 
     @Override

@@ -22,8 +22,8 @@ package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.buffs.Acid;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Ooze;
 import com.wafitz.pixelspacebase.effects.Splash;
 
 public class OozeVent extends Vent {
@@ -38,7 +38,7 @@ public class OozeVent extends Vent {
         Char ch = Actor.findChar(pos);
 
         if (ch != null) {
-            Buff.affect(ch, Ooze.class);
+            Buff.affect(ch, Acid.class);
             Splash.at(pos, 0x000000, 5);
         }
     }

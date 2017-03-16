@@ -26,12 +26,12 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.Fire;
 import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
-import com.wafitz.pixelspacebase.actors.buffs.Amok;
+import com.wafitz.pixelspacebase.actors.buffs.Acid;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
-import com.wafitz.pixelspacebase.actors.buffs.Charm;
+import com.wafitz.pixelspacebase.actors.buffs.Hypnotise;
 import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
-import com.wafitz.pixelspacebase.actors.buffs.Ooze;
+import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.actors.buffs.Sleep;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
@@ -39,7 +39,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.effects.Pushing;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfPsionicBlast;
+import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -188,12 +188,12 @@ public class Yog extends Mob {
 
         IMMUNITIES.add(Grim.class);
         IMMUNITIES.add(Terror.class);
-        IMMUNITIES.add(Amok.class);
-        IMMUNITIES.add(Charm.class);
+        IMMUNITIES.add(Paranoid.class);
+        IMMUNITIES.add(Hypnotise.class);
         IMMUNITIES.add(Sleep.class);
         IMMUNITIES.add(Burning.class);
         IMMUNITIES.add(ToxicGas.class);
-        IMMUNITIES.add(ScriptOfPsionicBlast.class);
+        IMMUNITIES.add(PsionicBlastScript.class);
         IMMUNITIES.add(Vertigo.class);
     }
 
@@ -244,7 +244,7 @@ public class Yog extends Mob {
         @Override
         public int attackProc(Char enemy, int damage) {
             if (Random.Int(3) == 0) {
-                Buff.affect(enemy, Ooze.class);
+                Buff.affect(enemy, Acid.class);
                 enemy.sprite.burst(0xFF000000, 5);
             }
 
@@ -274,7 +274,7 @@ public class Yog extends Mob {
         static {
             RESISTANCES.add(ToxicGas.class);
             RESISTANCES.add(Grim.class);
-            RESISTANCES.add(ScriptOfPsionicBlast.class);
+            RESISTANCES.add(PsionicBlastScript.class);
         }
 
         @Override
@@ -285,7 +285,7 @@ public class Yog extends Mob {
         private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 
         static {
-            IMMUNITIES.add(Amok.class);
+            IMMUNITIES.add(Paranoid.class);
             IMMUNITIES.add(Sleep.class);
             IMMUNITIES.add(Terror.class);
             IMMUNITIES.add(Poison.class);
@@ -368,7 +368,7 @@ public class Yog extends Mob {
         public boolean act() {
 
             for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
-                GameScene.add(Blob.seed(pos + PathFinder.NEIGHBOURS9[i], 2, Fire.class));
+                GameScene.add(Blob.gadget(pos + PathFinder.NEIGHBOURS9[i], 2, Fire.class));
             }
 
             return super.act();
@@ -397,11 +397,11 @@ public class Yog extends Mob {
         private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 
         static {
-            IMMUNITIES.add(Amok.class);
+            IMMUNITIES.add(Paranoid.class);
             IMMUNITIES.add(Sleep.class);
             IMMUNITIES.add(Terror.class);
             IMMUNITIES.add(Burning.class);
-            IMMUNITIES.add(ScriptOfPsionicBlast.class);
+            IMMUNITIES.add(PsionicBlastScript.class);
             IMMUNITIES.add(Vertigo.class);
         }
 

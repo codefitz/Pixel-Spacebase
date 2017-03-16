@@ -26,10 +26,10 @@ import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.KindofMisc;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.bags.Bag;
+import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
 import com.wafitz.pixelspacebase.items.keys.Key;
 import com.wafitz.pixelspacebase.items.scripts.FixScript;
-import com.wafitz.pixelspacebase.items.wands.Wand;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -102,10 +102,10 @@ public class Belongings implements Iterable<Item> {
             }
         }
 
-        if (bundle.get(WEAPON) instanceof Wand) {
-            //handles the case of an equipped wand from pre-0.3.0
-            Wand item = (Wand) bundle.get(WEAPON);
-            //try to add the wand to inventory
+        if (bundle.get(WEAPON) instanceof Blaster) {
+            //handles the case of an equipped blaster from pre-0.3.0
+            Blaster item = (Blaster) bundle.get(WEAPON);
+            //try to add the blaster to inventory
             if (!item.collect(backpack)) {
                 //if it's too full, shove it in anyway
                 backpack.items.add(item);
@@ -224,7 +224,7 @@ public class Belongings implements Iterable<Item> {
 
         int count = 0;
 
-        for (Wand.Charger charger : owner.buffs(Wand.Charger.class)) {
+        for (Blaster.Charger charger : owner.buffs(Blaster.Charger.class)) {
             charger.gainCharge(charge);
         }
 

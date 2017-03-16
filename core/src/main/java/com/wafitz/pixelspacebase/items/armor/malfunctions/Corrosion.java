@@ -22,8 +22,8 @@ package com.wafitz.pixelspacebase.items.armor.malfunctions;
 
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.buffs.Acid;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Ooze;
 import com.wafitz.pixelspacebase.effects.Splash;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
@@ -42,7 +42,7 @@ public class Corrosion extends Armor.Glyph {
             for (int i : PathFinder.NEIGHBOURS9) {
                 Splash.at(pos + i, 0x000000, 5);
                 if (Actor.findChar(pos + i) != null)
-                    Buff.affect(Actor.findChar(pos + i), Ooze.class);
+                    Buff.affect(Actor.findChar(pos + i), Acid.class);
             }
         }
 

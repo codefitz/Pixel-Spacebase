@@ -22,12 +22,12 @@ package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Challenges;
 import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.actors.blobs.Foliage;
+import com.wafitz.pixelspacebase.actors.blobs.Medical;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.plants.BlandfruitBush;
-import com.wafitz.pixelspacebase.plants.Sungrass;
+import com.wafitz.pixelspacebase.triggers.BlandfruitBush;
+import com.wafitz.pixelspacebase.triggers.Sungrass;
 import com.watabou.utils.Random;
 
 public class MedicalPainter extends Painter {
@@ -42,34 +42,34 @@ public class MedicalPainter extends Painter {
 
         if (Dungeon.isChallenged(Challenges.NO_FOOD)) {
             if (Random.Int(2) == 0) {
-                level.plant(new Sungrass.Seed(), level.pointToCell(room.random()));
+                level.trigger(new Sungrass.Gadget(), level.pointToCell(room.random()));
             }
         } else {
             int bushes = Random.Int(3);
             if (bushes == 0) {
-                level.plant(new Sungrass.Seed(), level.pointToCell(room.random()));
+                level.trigger(new Sungrass.Gadget(), level.pointToCell(room.random()));
             } else if (bushes == 1) {
-                level.plant(new BlandfruitBush.Seed(), level.pointToCell(room.random()));
+                level.trigger(new BlandfruitBush.Gadget(), level.pointToCell(room.random()));
             } else if (Random.Int(5) == 0) {
-                int plant1, plant2;
-                plant1 = level.pointToCell(room.random());
-                level.plant(new Sungrass.Seed(), plant1);
+                int trigger1, trigger2;
+                trigger1 = level.pointToCell(room.random());
+                level.trigger(new Sungrass.Gadget(), trigger1);
                 do {
-                    plant2 = level.pointToCell(room.random());
-                } while (plant2 == plant1);
-                level.plant(new BlandfruitBush.Seed(), plant2);
+                    trigger2 = level.pointToCell(room.random());
+                } while (trigger2 == trigger1);
+                level.trigger(new BlandfruitBush.Gadget(), trigger2);
             }
         }
 
-        Foliage light = (Foliage) level.blobs.get(Foliage.class);
+        Medical light = (Medical) level.blobs.get(Medical.class);
         if (light == null) {
-            light = new Foliage();
+            light = new Medical();
         }
         for (int i = room.top + 1; i < room.bottom; i++) {
             for (int j = room.left + 1; j < room.right; j++) {
-                light.seed(level, j + level.width() * i, 1);
+                light.gadget(level, j + level.width() * i, 1);
             }
         }
-        level.blobs.put(Foliage.class, light);
+        level.blobs.put(Medical.class, light);
     }
 }

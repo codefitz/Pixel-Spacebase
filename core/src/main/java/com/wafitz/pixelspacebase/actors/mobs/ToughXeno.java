@@ -23,8 +23,8 @@ package com.wafitz.pixelspacebase.actors.mobs;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.StenchGas;
+import com.wafitz.pixelspacebase.actors.buffs.Acid;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Ooze;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ToughXenoSprite;
@@ -61,7 +61,7 @@ public class ToughXeno extends Xenomorph {
     @Override
     public int attackProc(Char enemy, int damage) {
         if (Random.Int(3) == 0) {
-            Buff.affect(enemy, Ooze.class);
+            Buff.affect(enemy, Acid.class);
         }
 
         return damage;
@@ -70,7 +70,7 @@ public class ToughXeno extends Xenomorph {
     @Override
     public int defenseProc(Char enemy, int damage) {
 
-        GameScene.add(Blob.seed(pos, 20, StenchGas.class));
+        GameScene.add(Blob.gadget(pos, 20, StenchGas.class));
 
         return super.defenseProc(enemy, damage);
     }

@@ -23,10 +23,10 @@ package com.wafitz.pixelspacebase.items.food;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
+import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
-import com.wafitz.pixelspacebase.actors.buffs.Roots;
-import com.wafitz.pixelspacebase.actors.buffs.Slow;
+import com.wafitz.pixelspacebase.actors.buffs.TimeSink;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -63,7 +63,7 @@ public class MysteryMeat extends Food {
                 break;
             case 1:
                 GLog.w(Messages.get(MysteryMeat.class, "legs"));
-                Buff.prolong(hero, Roots.class, Paralysis.duration(hero));
+                Buff.prolong(hero, LockedDown.class, Paralysis.duration(hero));
                 break;
             case 2:
                 GLog.w(Messages.get(MysteryMeat.class, "not_well"));
@@ -71,7 +71,7 @@ public class MysteryMeat extends Food {
                 break;
             case 3:
                 GLog.w(Messages.get(MysteryMeat.class, "stuffed"));
-                Buff.prolong(hero, Slow.class, Slow.duration(hero));
+                Buff.prolong(hero, TimeSink.class, TimeSink.duration(hero));
                 break;
         }
     }

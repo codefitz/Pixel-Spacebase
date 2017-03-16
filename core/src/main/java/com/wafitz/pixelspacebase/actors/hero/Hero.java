@@ -28,18 +28,18 @@ import com.wafitz.pixelspacebase.GamesInProgress;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Barkskin;
 import com.wafitz.pixelspacebase.actors.buffs.Berserk;
-import com.wafitz.pixelspacebase.actors.buffs.Bless;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.Combo;
-import com.wafitz.pixelspacebase.actors.buffs.Drowsy;
 import com.wafitz.pixelspacebase.actors.buffs.Fury;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
-import com.wafitz.pixelspacebase.actors.buffs.Invisibility;
+import com.wafitz.pixelspacebase.actors.buffs.Knockout;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.actors.buffs.Regeneration;
-import com.wafitz.pixelspacebase.actors.buffs.SnipersMark;
+import com.wafitz.pixelspacebase.actors.buffs.Shielding;
+import com.wafitz.pixelspacebase.actors.buffs.Targeted;
+import com.wafitz.pixelspacebase.actors.buffs.Upgrade;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.NPC;
@@ -51,8 +51,8 @@ import com.wafitz.pixelspacebase.items.Amulet;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.Dewdrop;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMight;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfStrength;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.MightTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
@@ -78,10 +78,10 @@ import com.wafitz.pixelspacebase.items.modules.FurorModule;
 import com.wafitz.pixelspacebase.items.modules.PowerModule;
 import com.wafitz.pixelspacebase.items.modules.SpeedModule;
 import com.wafitz.pixelspacebase.items.modules.SteelModule;
+import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
+import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicalInfusion;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
+import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
@@ -91,13 +91,13 @@ import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.CraftingTerminal;
 import com.wafitz.pixelspacebase.levels.features.Sign;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.plants.Earthroot;
-import com.wafitz.pixelspacebase.plants.Sungrass;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.wafitz.pixelspacebase.scenes.SurfaceScene;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.sprites.HeroSprite;
+import com.wafitz.pixelspacebase.triggers.Earthroot;
+import com.wafitz.pixelspacebase.triggers.Sungrass;
 import com.wafitz.pixelspacebase.ui.AttackIndicator;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
 import com.wafitz.pixelspacebase.ui.QuickSlotButton;
@@ -119,7 +119,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-import static com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing.heal;
+import static com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech.heal;
 
 public class Hero extends Char {
 
@@ -258,7 +258,7 @@ public class Hero extends Char {
 
         rangedWeapon = wep;
         boolean result = attack(enemy);
-        Invisibility.dispel();
+        Camoflage.dispel();
         rangedWeapon = null;
 
         return result;
@@ -308,7 +308,7 @@ public class Hero extends Char {
     @Override
     public int drRoll() {
         int dr = 0;
-        Barkskin bark = buff(Barkskin.class);
+        Shielding bark = buff(Shielding.class);
 
         if (belongings.armor != null) {
             dr += Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax());
@@ -655,8 +655,8 @@ public class Hero extends Char {
                     } else {
 
                         boolean important =
-                                ((item instanceof ScriptOfUpgrade || item instanceof ScriptOfMagicalInfusion) && ((Script) item).isKnown()) ||
-                                        ((item instanceof ExperimentalTechOfStrength || item instanceof ExperimentalTechOfMight) && ((ExperimentalTech) item).isKnown());
+                                ((item instanceof UpgradeScript || item instanceof MagicalInfusionScript) && ((Script) item).isKnown()) ||
+                                        ((item instanceof StrengthTech || item instanceof MightTech) && ((ExperimentalTech) item).isKnown());
                         if (important) {
                             GLog.p(Messages.get(this, "you_now_have", item.name()));
                         } else {
@@ -857,7 +857,7 @@ public class Hero extends Char {
 
         if (enemy.isAlive() && canAttack(enemy) && !isCharmedBy(enemy)) {
 
-            Invisibility.dispel();
+            Camoflage.dispel();
             spend(attackDelay());
             sprite.attack(enemy.pos);
 
@@ -898,7 +898,7 @@ public class Hero extends Char {
         switch (subClass) {
             case SNIPER:
                 if (rangedWeapon != null) {
-                    Buff.prolong(this, SnipersMark.class, attackDelay() * 1.1f).object = enemy.id();
+                    Buff.prolong(this, Targeted.class, attackDelay() * 1.1f).object = enemy.id();
                 }
                 break;
             default:
@@ -938,8 +938,8 @@ public class Hero extends Char {
             resting = false;
         }
 
-        if (this.buff(Drowsy.class) != null) {
-            Buff.detach(this, Drowsy.class);
+        if (this.buff(Knockout.class) != null) {
+            Buff.detach(this, Knockout.class);
             GLog.w(Messages.get(this, "pain_resist"));
         }
 
@@ -1193,7 +1193,7 @@ public class Hero extends Char {
                 defenseSkill++;
 
             } else {
-                Buff.prolong(this, Bless.class, 30f);
+                Buff.prolong(this, Upgrade.class, 30f);
                 this.exp = 0;
 
                 GLog.p(Messages.get(this, "level_cap"));
@@ -1550,7 +1550,7 @@ public class Hero extends Char {
 
                         Dungeon.level.discover(p);
 
-                        ScriptOfMagicMapping.discover(p);
+                        MappingScript.discover(p);
 
                         smthFound = true;
                         //informer.onSelect(null);

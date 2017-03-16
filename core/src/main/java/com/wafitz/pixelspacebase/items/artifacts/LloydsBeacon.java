@@ -25,13 +25,13 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Invisibility;
+import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.CellSelector;
@@ -156,7 +156,7 @@ public class LloydsBeacon extends Artifact {
         } else if (action == AC_RETURN) {
 
             if (returnDepth == Dungeon.depth) {
-                ScriptOfTeleportation.appear(hero, returnPos);
+                TeleportationScript.appear(hero, returnPos);
                 Dungeon.level.press(returnPos, hero);
                 Dungeon.observe();
                 GameScene.updateFog();
@@ -185,19 +185,19 @@ public class LloydsBeacon extends Artifact {
 
             if (target == null) return;
 
-            Invisibility.dispel();
+            Camoflage.dispel();
             charge -= Dungeon.depth > 20 ? 2 : 1;
             updateQuickslot();
 
             if (Actor.findChar(target) == curUser) {
-                ScriptOfTeleportation.teleportHero(curUser);
+                TeleportationScript.teleportHero(curUser);
                 curUser.spendAndNext(1f);
             } else {
                 final Ballistica bolt = new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT);
                 final Char ch = Actor.findChar(bolt.collisionPos);
 
                 if (ch == curUser) {
-                    ScriptOfTeleportation.teleportHero(curUser);
+                    TeleportationScript.teleportHero(curUser);
                     curUser.spendAndNext(1f);
                 } else {
                     Sample.INSTANCE.play(Assets.SND_ZAP);
@@ -221,7 +221,7 @@ public class LloydsBeacon extends Artifact {
 
                                 if (pos == -1 || Dungeon.bossLevel()) {
 
-                                    GLog.w(Messages.get(ScriptOfTeleportation.class, "no_tele"));
+                                    GLog.w(Messages.get(TeleportationScript.class, "no_tele"));
 
                                 } else if (ch.properties().contains(Char.Property.IMMOVABLE)) {
 

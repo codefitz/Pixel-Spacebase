@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Roots;
+import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.effects.BlobEmitter;
 import com.wafitz.pixelspacebase.effects.particles.LeafParticle;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -47,7 +47,7 @@ public class Regrowth extends Blob {
                         int c1 = c;
                         if (c == Terrain.EMPTY || c == Terrain.EMBERS || c == Terrain.EMPTY_DECO) {
                             c1 = cur[cell] > 9 ? Terrain.OFFVENT : Terrain.LIGHTEDVENT;
-                        } else if (c == Terrain.LIGHTEDVENT && cur[cell] > 9 && Dungeon.level.plants.get(cell) == null) {
+                        } else if (c == Terrain.LIGHTEDVENT && cur[cell] > 9 && Dungeon.level.triggers.get(cell) == null) {
                             c1 = Terrain.OFFVENT;
                         }
 
@@ -58,7 +58,7 @@ public class Regrowth extends Blob {
 
                         Char ch = Actor.findChar(cell);
                         if (ch != null && off[cell] > 1) {
-                            Buff.prolong(ch, Roots.class, TICK);
+                            Buff.prolong(ch, LockedDown.class, TICK);
                         }
                     }
                 }

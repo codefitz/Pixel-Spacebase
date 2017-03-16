@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.SpellSprite;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfRecharging;
+import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -85,7 +85,7 @@ public class Food extends Item {
                 case DM3000:
                     //1 charge
                     Buff.affect(hero, Recharging.class, 4f);
-                    ScriptOfRecharging.charge(hero);
+                    RechargingScript.charge(hero);
                     break;
                 case SHAPESHIFTER:
                 case CAPTAIN:

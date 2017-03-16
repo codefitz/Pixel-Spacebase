@@ -37,25 +37,25 @@ import com.wafitz.pixelspacebase.effects.Splash;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfExperience;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMight;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfStrength;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.MightTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
 import com.wafitz.pixelspacebase.items.artifacts.AlchemistsToolkit;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
+import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.food.Blandfruit;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.FrozenCarpaccio;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
+import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicalInfusion;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
-import com.wafitz.pixelspacebase.items.wands.Wand;
+import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.plants.Plant.Seed;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
+import com.wafitz.pixelspacebase.triggers.Trigger.Gadget;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -67,7 +67,7 @@ import java.util.LinkedList;
 
 public class Heap implements Bundlable {
 
-    private static final int SEEDS_TO_EXPERIMENTALTECH = 3;
+    private static final int GADGETS_TO_EXPERIMENTALTECH = 3;
 
     public enum Type {
         HEAP,
@@ -230,7 +230,7 @@ public class Heap implements Bundlable {
 
         for (Item item : items.toArray(new Item[0])) {
             if (item instanceof Script
-                    && !(item instanceof ScriptOfUpgrade || item instanceof ScriptOfMagicalInfusion)) {
+                    && !(item instanceof UpgradeScript || item instanceof MagicalInfusionScript)) {
                 items.remove(item);
                 burnt = true;
             } else if (item instanceof Dewdrop) {
@@ -327,7 +327,7 @@ public class Heap implements Bundlable {
                 replace(item, FrozenCarpaccio.cook((MysteryMeat) item));
                 frozen = true;
             } else if (item instanceof ExperimentalTech
-                    && !(item instanceof ExperimentalTechOfStrength || item instanceof ExperimentalTechOfMight)) {
+                    && !(item instanceof StrengthTech || item instanceof MightTech)) {
                 items.remove(item);
                 ((ExperimentalTech) item).shatter(pos);
                 frozen = true;
@@ -355,13 +355,13 @@ public class Heap implements Bundlable {
         int count = 0;
 
 
-        if (items.size() == 2 && items.get(0) instanceof Seed && items.get(1) instanceof Blandfruit) {
+        if (items.size() == 2 && items.get(0) instanceof Gadget && items.get(1) instanceof Blandfruit) {
 
             Sample.INSTANCE.play(Assets.SND_PUFF);
             CellEmitter.center(pos).burst(Speck.factory(Speck.EVOKE), 3);
 
             Blandfruit result = new Blandfruit();
-            result.cook((Seed) items.get(0));
+            result.cook((Gadget) items.get(0));
 
             destroy();
 
@@ -371,7 +371,7 @@ public class Heap implements Bundlable {
 
         int index = 0;
         for (Item item : items) {
-            if (item instanceof Seed) {
+            if (item instanceof Gadget) {
                 count += item.quantity;
                 chances[index++] = item.quantity;
             } else {
@@ -380,11 +380,11 @@ public class Heap implements Bundlable {
             }
         }
 
-        //alchemists toolkit gives a chance to cook a potion in two or even one seeds
+        //alchemists toolkit gives a chance to cook a potion in two or even one gadgets
         AlchemistsToolkit.alchemy alchemy = Dungeon.hero.buff(AlchemistsToolkit.alchemy.class);
         int bonus = alchemy != null ? alchemy.itemLevel() : -1;
 
-        if (bonus != -1 ? alchemy.tryCook(count) : count >= SEEDS_TO_EXPERIMENTALTECH) {
+        if (bonus != -1 ? alchemy.tryCook(count) : count >= GADGETS_TO_EXPERIMENTALTECH) {
 
             CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
             Sample.INSTANCE.play(Assets.SND_PUFF);
@@ -404,7 +404,7 @@ public class Heap implements Bundlable {
 
             } else {
 
-                Seed proto = (Seed) items.get(Random.chances(chances));
+                Gadget proto = (Gadget) items.get(Random.chances(chances));
                 Class<? extends Item> itemClass = proto.alchemyClass;
 
                 destroy();
@@ -427,12 +427,12 @@ public class Heap implements Bundlable {
             //not a buff per-se, meant to cancel out higher experimentaltech accuracy when ppl are farming for ExperimentalTech of exp.
             if (bonus > 0)
                 if (Random.Int(1000 / bonus) == 0)
-                    return new ExperimentalTechOfExperience();
+                    return new ExperienceTech();
 
-            while (experimentaltech instanceof ExperimentalTechOfHealing && Random.Int(10) < Dungeon.limitedDrops.cookingHP.count)
+            while (experimentaltech instanceof HealingTech && Random.Int(10) < Dungeon.limitedDrops.cookingHP.count)
                 experimentaltech = Generator.random(Generator.Category.EXPERIMENTALTECH);
 
-            if (experimentaltech instanceof ExperimentalTechOfHealing)
+            if (experimentaltech instanceof HealingTech)
                 Dungeon.limitedDrops.cookingHP.count++;
 
             return experimentaltech;
@@ -495,8 +495,8 @@ public class Heap implements Bundlable {
             case CRYSTAL_CHEST:
                 if (peek() instanceof Artifact)
                     return Messages.get(this, "crystal_chest_desc", Messages.get(this, "artifact"));
-                else if (peek() instanceof Wand)
-                    return Messages.get(this, "crystal_chest_desc", Messages.get(this, "wand"));
+                else if (peek() instanceof Blaster)
+                    return Messages.get(this, "crystal_chest_desc", Messages.get(this, "blaster"));
                 else
                     return Messages.get(this, "crystal_chest_desc", Messages.get(this, "module"));
             case TOMB:

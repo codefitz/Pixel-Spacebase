@@ -57,7 +57,7 @@ public class IncendiaryDart extends MissileWeapon {
         this(1);
     }
 
-    public IncendiaryDart(int number) {
+    private IncendiaryDart(int number) {
         super();
         quantity = number;
     }
@@ -66,7 +66,7 @@ public class IncendiaryDart extends MissileWeapon {
     protected void onThrow(int cell) {
         Char enemy = Actor.findChar(cell);
         if ((enemy == null || enemy == curUser) && Level.flamable[cell])
-            GameScene.add(Blob.seed(cell, 4, Fire.class));
+            GameScene.add(Blob.gadget(cell, 4, Fire.class));
         else
             super.onThrow(cell);
     }

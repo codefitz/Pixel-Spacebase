@@ -28,11 +28,18 @@ import android.util.Log;
 import android.view.View;
 
 import com.wafitz.pixelspacebase.actors.mobs.ToughXeno;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicalInfusion;
+import com.wafitz.pixelspacebase.items.blasters.FireBlaster;
+import com.wafitz.pixelspacebase.items.blasters.FreezeBlaster;
+import com.wafitz.pixelspacebase.items.blasters.MindBlaster;
+import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
+import com.wafitz.pixelspacebase.items.blasters.VenomBlaster;
+import com.wafitz.pixelspacebase.items.blasters.WaveBlaster;
+import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
 import com.wafitz.pixelspacebase.messages.Languages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.scenes.WelcomeScene;
+import com.wafitz.pixelspacebase.triggers.Rotberry;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
@@ -56,7 +63,7 @@ public class PixelSpacebase extends Game {
                 "com.wafitz.pixelspacebase.items.weapon.enchantments.Swing");
 
         com.watabou.utils.Bundle.addAlias(
-                ScriptOfMagicalInfusion.class,
+                MagicalInfusionScript.class,
                 "com.wafitz.pixelspacebase.items.scripts.WeaponUpgradeScript");
 
         // 0.2.4d
@@ -64,34 +71,34 @@ public class PixelSpacebase extends Game {
                 com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon.class,
                 "com.wafitz.pixelspacebase.items.LloydsBeacon");
 
-        // 0.3.0, lots of wands
+        // 0.3.0, lots of blasters
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.wands.WandOfVenom.class,
-                "com.wafitz.pixelspacebase.items.wands.WandOfPoison");
+                VenomBlaster.class,
+                "com.wafitz.pixelspacebase.items.blasters.VenomBlaster");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.wands.WandOfFrost.class,
-                "com.wafitz.pixelspacebase.items.wands.WandOfSlowness");
+                FreezeBlaster.class,
+                "com.wafitz.pixelspacebase.items.blasters.FreezeBlaster");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.wands.WandOfFireblast.class,
-                "com.wafitz.pixelspacebase.items.wands.WandOfFirebolt");
+                FireBlaster.class,
+                "com.wafitz.pixelspacebase.items.blasters.FireBlaster");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.wands.WandOfCorruption.class,
-                "com.wafitz.pixelspacebase.items.wands.WandOfAmok");
+                MindBlaster.class,
+                "com.wafitz.pixelspacebase.items.blasters.MindBlaster");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.wands.WandOfBlastWave.class,
-                "com.wafitz.pixelspacebase.items.wands.WandOfTelekinesis");
+                WaveBlaster.class,
+                "com.wafitz.pixelspacebase.items.blasters.WaveBlaster");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.wands.WandOfMagicMissile.class,
-                "com.wafitz.pixelspacebase.items.wands.WandOfFlock");
+                MissileBlaster.class,
+                "com.wafitz.pixelspacebase.items.blasters.FlockBlaster");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.wands.WandOfMagicMissile.class,
-                "com.wafitz.pixelspacebase.items.wands.WandOfAvalanche");
+                MissileBlaster.class,
+                "com.wafitz.pixelspacebase.items.blasters.TremorBlaster");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.wands.WandOfMagicMissile.class,
-                "com.wafitz.pixelspacebase.items.wands.WandOfBlink");
+                MissileBlaster.class,
+                "com.wafitz.pixelspacebase.items.blasters.SpaceFolder");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.wands.WandOfMagicMissile.class,
-                "com.wafitz.pixelspacebase.items.wands.WandOfTeleportation");
+                MissileBlaster.class,
+                "com.wafitz.pixelspacebase.items.blasters.Teleporter");
 
         //0.3.3
         com.watabou.utils.Bundle.addAlias(
@@ -104,11 +111,11 @@ public class PixelSpacebase extends Game {
                 com.wafitz.pixelspacebase.actors.mobs.GreatCrab.class,
                 "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$GreatCrab");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.plants.Rotberry.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Wandmaker$Rotberry");
+                com.wafitz.pixelspacebase.triggers.Rotberry.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$Rotberry");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.plants.Rotberry.Seed.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Wandmaker$Rotberry$Seed");
+                Rotberry.Gadget.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$Rotberry$Gadget");
 
         //0.4.0
         //equipment
@@ -145,7 +152,7 @@ public class PixelSpacebase extends Game {
                 "com.wafitz.pixelspacebase.items.weapon.enchantments.Shock");
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.items.weapon.enchantments.Chilling.class,
-                "com.wafitz.pixelspacebase.items.weapon.enchantments.Slow");
+                "com.wafitz.pixelspacebase.items.weapon.enchantments.TimeSink");
 
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.items.armor.glyphs.Repulsion.class,

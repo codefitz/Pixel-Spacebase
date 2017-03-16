@@ -70,7 +70,7 @@ class Degradation extends Group {
             +1, +2
     };
 
-    private static int[] WAND = {
+    private static int[] BLASTER = {
             +2, -2,
             +1, -1,
             0, 0,
@@ -92,8 +92,8 @@ class Degradation extends Group {
         return new Degradation(p, MODULE);
     }
 
-    public static Degradation wand(PointF p) {
-        return new Degradation(p, WAND);
+    public static Degradation blaster(PointF p) {
+        return new Degradation(p, BLASTER);
     }
 
     private Degradation(PointF p, int[] matrix) {

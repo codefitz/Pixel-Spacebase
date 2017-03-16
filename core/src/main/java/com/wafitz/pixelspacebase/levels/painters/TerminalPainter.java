@@ -64,7 +64,7 @@ public class TerminalPainter extends Painter {
                 return;
             }
         }
-        water.seed(level, c.x + level.width() * c.y, 1);
+        water.gadget(level, c.x + level.width() * c.y, 1);
         level.blobs.put(waterClass, water);
 
         room.entrance().set(Room.Door.Type.REGULAR);

@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Combo;
-import com.wafitz.pixelspacebase.actors.buffs.SnipersMark;
+import com.wafitz.pixelspacebase.actors.buffs.Targeted;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.bags.Bag;
@@ -491,7 +491,7 @@ public class Item implements Bundlable {
         if (this instanceof MissileWeapon) {
             delay *= ((MissileWeapon) this).speedFactor(user);
             if (enemy != null) {
-                SnipersMark mark = user.buff(SnipersMark.class);
+                Targeted mark = user.buff(Targeted.class);
                 if (mark != null) {
                     if (mark.object == enemy.id()) {
                         delay *= 0.5f;

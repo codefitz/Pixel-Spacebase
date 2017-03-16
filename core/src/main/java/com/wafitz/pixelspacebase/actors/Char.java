@@ -22,19 +22,19 @@ package com.wafitz.pixelspacebase.actors;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.actors.buffs.Bless;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Charm;
 import com.wafitz.pixelspacebase.actors.buffs.Chill;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
-import com.wafitz.pixelspacebase.actors.buffs.EarthImbue;
-import com.wafitz.pixelspacebase.actors.buffs.FireImbue;
+import com.wafitz.pixelspacebase.actors.buffs.FlameOn;
 import com.wafitz.pixelspacebase.actors.buffs.Frost;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
-import com.wafitz.pixelspacebase.actors.buffs.MagicalSleep;
+import com.wafitz.pixelspacebase.actors.buffs.Hypnotise;
+import com.wafitz.pixelspacebase.actors.buffs.Lockdown;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
-import com.wafitz.pixelspacebase.actors.buffs.Slow;
 import com.wafitz.pixelspacebase.actors.buffs.Speed;
+import com.wafitz.pixelspacebase.actors.buffs.TimeSink;
+import com.wafitz.pixelspacebase.actors.buffs.Tired;
+import com.wafitz.pixelspacebase.actors.buffs.Upgrade;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
@@ -157,10 +157,10 @@ public abstract class Char extends Actor {
 
             enemy.damage(effectiveDamage, this);
 
-            if (buff(FireImbue.class) != null)
-                buff(FireImbue.class).proc(enemy);
-            if (buff(EarthImbue.class) != null)
-                buff(EarthImbue.class).proc(enemy);
+            if (buff(FlameOn.class) != null)
+                buff(FlameOn.class).proc(enemy);
+            if (buff(Lockdown.class) != null)
+                buff(Lockdown.class).proc(enemy);
 
             enemy.sprite.bloodBurstA(sprite.center(), effectiveDamage);
             enemy.sprite.flash();
@@ -195,8 +195,8 @@ public abstract class Char extends Actor {
     public static boolean hit(Char attacker, Char defender, boolean magic) {
         float acuRoll = Random.Float(attacker.attackSkill(defender));
         float defRoll = Random.Float(defender.defenseSkill(attacker));
-        if (attacker.buff(Bless.class) != null) acuRoll *= 1.20f;
-        if (defender.buff(Bless.class) != null) defRoll *= 1.20f;
+        if (attacker.buff(Upgrade.class) != null) acuRoll *= 1.20f;
+        if (defender.buff(Upgrade.class) != null) defRoll *= 1.20f;
         return (magic ? acuRoll * 2 : acuRoll) >= defRoll;
     }
 
@@ -208,7 +208,7 @@ public abstract class Char extends Actor {
         return 0;
     }
 
-    public String defenseVerb() {
+    protected String defenseVerb() {
         return Messages.get(this, "def_verb");
     }
 
@@ -240,8 +240,8 @@ public abstract class Char extends Actor {
         if (this.buff(Frost.class) != null) {
             Buff.detach(this, Frost.class);
         }
-        if (this.buff(MagicalSleep.class) != null) {
-            Buff.detach(this, MagicalSleep.class);
+        if (this.buff(Tired.class) != null) {
+            Buff.detach(this, Tired.class);
         }
 
         Class<?> srcClass = src.getClass();
@@ -302,7 +302,7 @@ public abstract class Char extends Actor {
     protected void spend(float time) {
 
         float timeScale = 1f;
-        if (buff(Slow.class) != null) {
+        if (buff(TimeSink.class) != null) {
             timeScale *= 0.5f;
             //slowed and chilled do not stack
         } else if (buff(Chill.class) != null) {
@@ -343,7 +343,7 @@ public abstract class Char extends Actor {
     public boolean isCharmedBy(Char ch) {
         int chID = ch.id();
         for (Buff b : buffs) {
-            if (b instanceof Charm && ((Charm) b).object == chID) {
+            if (b instanceof Hypnotise && ((Hypnotise) b).object == chID) {
                 return true;
             }
         }

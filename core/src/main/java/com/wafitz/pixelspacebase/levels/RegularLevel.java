@@ -155,7 +155,7 @@ public abstract class RegularLevel extends Level {
             specials.remove(Room.Type.CRYPT);
         }
         if (Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
-            //sorry warden, no lucky sungrass or blandfruit seeds for you!
+            //sorry warden, no lucky sungrass or blandfruit gadgets for you!
             specials.remove(Room.Type.GARDEN);
         }
         if (!assignRoomType())

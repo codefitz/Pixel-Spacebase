@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.DungeonTilemap;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Wandmaker;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith;
 import com.wafitz.pixelspacebase.effects.Halo;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
 import com.wafitz.pixelspacebase.levels.Room.Type;
@@ -97,7 +97,7 @@ public class PrisonLevel extends RegularLevel {
             }
         }
 
-        return Wandmaker.Quest.spawn(this, roomEntrance, rooms);
+        return Gunsmith.Quest.spawn(this, roomEntrance, rooms);
     }
 
     @Override

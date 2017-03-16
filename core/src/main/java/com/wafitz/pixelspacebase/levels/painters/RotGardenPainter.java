@@ -56,7 +56,7 @@ public class RotGardenPainter extends Painter {
             heartY = room.top + 1;
         }
 
-        placePlant(level, heartX + heartY * level.width(), new RotHeart());
+        placeTrigger(level, heartX + heartY * level.width(), new RotHeart());
 
         int lashers = ((room.right - room.left - 1) * (room.bottom - room.top - 1)) / 8;
 
@@ -64,12 +64,12 @@ public class RotGardenPainter extends Painter {
             int pos;
             do {
                 pos = level.pointToCell(room.random());
-            } while (!validPlantPos(level, pos));
-            placePlant(level, pos, new RotLasher());
+            } while (!validTriggerPos(level, pos));
+            placeTrigger(level, pos, new RotLasher());
         }
     }
 
-    private static boolean validPlantPos(Level level, int pos) {
+    private static boolean validTriggerPos(Level level, int pos) {
         if (level.map[pos] != Terrain.LIGHTEDVENT) {
             return false;
         }
@@ -83,9 +83,9 @@ public class RotGardenPainter extends Painter {
         return true;
     }
 
-    private static void placePlant(Level level, int pos, Mob plant) {
-        plant.pos = pos;
-        level.mobs.add(plant);
+    private static void placeTrigger(Level level, int pos, Mob trigger) {
+        trigger.pos = pos;
+        level.mobs.add(trigger);
 
         for (int i : PathFinder.NEIGHBOURS8) {
             if (level.map[pos + i] == Terrain.LIGHTEDVENT) {

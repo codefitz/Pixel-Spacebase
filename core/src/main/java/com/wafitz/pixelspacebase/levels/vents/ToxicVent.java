@@ -35,7 +35,7 @@ public class ToxicVent extends Vent {
     @Override
     public void activate() {
 
-        GameScene.add(Blob.seed(pos, 300 + 20 * Dungeon.depth, ToxicGas.class));
+        GameScene.add(Blob.gadget(pos, 300 + 20 * Dungeon.depth, ToxicGas.class));
 
     }
 }

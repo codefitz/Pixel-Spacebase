@@ -36,7 +36,7 @@ public class FireVent extends Vent {
     @Override
     public void activate() {
 
-        GameScene.add(Blob.seed(pos, 2, Fire.class));
+        GameScene.add(Blob.gadget(pos, 2, Fire.class));
         CellEmitter.get(pos).burst(FlameParticle.FACTORY, 5);
 
     }

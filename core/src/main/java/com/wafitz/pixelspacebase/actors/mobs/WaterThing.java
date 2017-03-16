@@ -28,8 +28,8 @@ import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
 import com.wafitz.pixelspacebase.actors.blobs.VenomGas;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Frost;
+import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
-import com.wafitz.pixelspacebase.actors.buffs.Roots;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.sprites.WaterThingSprite;
@@ -149,7 +149,7 @@ public class WaterThing extends Mob {
         IMMUNITIES.add(Paralysis.class);
         IMMUNITIES.add(ToxicGas.class);
         IMMUNITIES.add(VenomGas.class);
-        IMMUNITIES.add(Roots.class);
+        IMMUNITIES.add(LockedDown.class);
         IMMUNITIES.add(Frost.class);
     }
 

@@ -21,10 +21,10 @@
 package com.wafitz.pixelspacebase;
 
 import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
+import com.wafitz.pixelspacebase.actors.buffs.Acid;
 import com.wafitz.pixelspacebase.actors.buffs.Bleeding;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
-import com.wafitz.pixelspacebase.actors.buffs.Ooze;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -321,7 +321,7 @@ public enum Rankings {
                 else if (info.equals("succumbed to poison")) cause = Poison.class;
                 else if (info.equals("suffocated")) cause = ToxicGas.class;
                 else if (info.equals("bled to death")) cause = Bleeding.class;
-                else if (info.equals("melted away")) cause = Ooze.class;
+                else if (info.equals("melted away")) cause = Acid.class;
                 else if (info.equals("died on impact")) cause = Chasm.class;
                     //can't get the all, just keep what remains as-is
                 else this.info = info;

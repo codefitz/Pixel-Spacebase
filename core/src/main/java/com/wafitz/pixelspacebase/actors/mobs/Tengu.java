@@ -33,8 +33,8 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.TomeOfMastery;
 import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfPsionicBlast;
+import com.wafitz.pixelspacebase.items.scripts.MappingScript;
+import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.PrisonBossLevel;
@@ -174,7 +174,7 @@ public class Tengu extends Mob {
             if (Dungeon.level.map[ventPos] == Terrain.INACTIVE_VENT) {
                 Dungeon.level.setVent(new SpearVent().reveal(), ventPos);
                 Level.set(ventPos, Terrain.VENT);
-                ScriptOfMagicMapping.discover(ventPos);
+                MappingScript.discover(ventPos);
             }
         }
 
@@ -231,7 +231,7 @@ public class Tengu extends Mob {
         RESISTANCES.add(ToxicGas.class);
         RESISTANCES.add(Poison.class);
         RESISTANCES.add(Grim.class);
-        RESISTANCES.add(ScriptOfPsionicBlast.class);
+        RESISTANCES.add(PsionicBlastScript.class);
     }
 
     @Override

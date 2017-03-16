@@ -26,22 +26,22 @@ import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.effects.BlobEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMight;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfStrength;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.MightTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Generator.Category;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
+import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.modules.Module;
+import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicalInfusion;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
-import com.wafitz.pixelspacebase.items.wands.Wand;
+import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.plants.Plant;
+import com.wafitz.pixelspacebase.triggers.Trigger;
 import com.watabou.utils.Random;
 
 public class DiffusionalTerminal extends WellWater {
@@ -59,10 +59,10 @@ public class DiffusionalTerminal extends WellWater {
             item = changeExperimentalTech((ExperimentalTech) item);
         } else if (item instanceof Module) {
             item = changeModule((Module) item);
-        } else if (item instanceof Wand) {
-            item = changeWand((Wand) item);
-        } else if (item instanceof Plant.Seed) {
-            item = changeSeed((Plant.Seed) item);
+        } else if (item instanceof Blaster) {
+            item = changeBlaster((Blaster) item);
+        } else if (item instanceof Trigger.Gadget) {
+            item = changeGadget((Trigger.Gadget) item);
         } else if (item instanceof Artifact) {
             item = changeArtifact((Artifact) item);
         } else {
@@ -84,17 +84,17 @@ public class DiffusionalTerminal extends WellWater {
     }
 
     private DM3000Staff changeStaff(DM3000Staff staff) {
-        Class<? extends Wand> wandClass = staff.wandClass();
+        Class<? extends Blaster> blasterClass = staff.blasterClass();
 
-        if (wandClass == null) {
+        if (blasterClass == null) {
             return null;
         } else {
-            Wand n;
+            Blaster n;
             do {
-                n = (Wand) Generator.random(Category.WAND);
-            } while (n.getClass() == wandClass);
+                n = (Blaster) Generator.random(Category.BLASTER);
+            } while (n.getClass() == blasterClass);
             n.level(0);
-            staff.imbueWand(n, null);
+            staff.imbueBlaster(n, null);
         }
 
         return staff;
@@ -166,11 +166,11 @@ public class DiffusionalTerminal extends WellWater {
         return n;
     }
 
-    private Wand changeWand(Wand w) {
+    private Blaster changeBlaster(Blaster w) {
 
-        Wand n;
+        Blaster n;
         do {
-            n = (Wand) Generator.random(Category.WAND);
+            n = (Blaster) Generator.random(Category.BLASTER);
         } while (n.getClass() == w.getClass());
 
         n.level(0);
@@ -183,25 +183,25 @@ public class DiffusionalTerminal extends WellWater {
         return n;
     }
 
-    private Plant.Seed changeSeed(Plant.Seed s) {
+    private Trigger.Gadget changeGadget(Trigger.Gadget s) {
 
-        Plant.Seed n;
+        Trigger.Gadget n;
 
         do {
-            n = (Plant.Seed) Generator.random(Category.SEED);
+            n = (Trigger.Gadget) Generator.random(Category.GADGET);
         } while (n.getClass() == s.getClass());
 
         return n;
     }
 
     private Script changeScript(Script s) {
-        if (s instanceof ScriptOfUpgrade) {
+        if (s instanceof UpgradeScript) {
 
-            return new ScriptOfMagicalInfusion();
+            return new MagicalInfusionScript();
 
-        } else if (s instanceof ScriptOfMagicalInfusion) {
+        } else if (s instanceof MagicalInfusionScript) {
 
-            return new ScriptOfUpgrade();
+            return new UpgradeScript();
 
         } else {
 
@@ -214,13 +214,13 @@ public class DiffusionalTerminal extends WellWater {
     }
 
     private ExperimentalTech changeExperimentalTech(ExperimentalTech p) {
-        if (p instanceof ExperimentalTechOfStrength) {
+        if (p instanceof StrengthTech) {
 
-            return new ExperimentalTechOfMight();
+            return new MightTech();
 
-        } else if (p instanceof ExperimentalTechOfMight) {
+        } else if (p instanceof MightTech) {
 
-            return new ExperimentalTechOfStrength();
+            return new StrengthTech();
 
         } else {
 

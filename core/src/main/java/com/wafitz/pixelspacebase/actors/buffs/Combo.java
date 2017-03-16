@@ -268,10 +268,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
                     break;
             }
 
-            if (target.buff(FireImbue.class) != null)
-                target.buff(FireImbue.class).proc(enemy);
-            if (target.buff(EarthImbue.class) != null)
-                target.buff(EarthImbue.class).proc(enemy);
+            if (target.buff(FlameOn.class) != null)
+                target.buff(FlameOn.class).proc(enemy);
+            if (target.buff(Lockdown.class) != null)
+                target.buff(Lockdown.class).proc(enemy);
 
             Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
             enemy.sprite.bloodBurstA(target.sprite.center(), dmg);

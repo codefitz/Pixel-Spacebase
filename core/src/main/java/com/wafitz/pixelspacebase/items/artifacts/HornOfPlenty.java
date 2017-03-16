@@ -33,7 +33,7 @@ import com.wafitz.pixelspacebase.effects.SpellSprite;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.food.Blandfruit;
 import com.wafitz.pixelspacebase.items.food.Food;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfRecharging;
+import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -102,7 +102,7 @@ public class HornOfPlenty extends Artifact {
                     case DM3000:
                         //1 charge
                         Buff.affect(hero, Recharging.class, 4f);
-                        ScriptOfRecharging.charge(hero);
+                        RechargingScript.charge(hero);
                         break;
                     case SHAPESHIFTER:
                     case CAPTAIN:

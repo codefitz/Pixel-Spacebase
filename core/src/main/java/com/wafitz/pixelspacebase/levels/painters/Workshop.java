@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.items.Bomb;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.DroneController;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -42,16 +42,16 @@ import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
+import com.wafitz.pixelspacebase.items.bags.BlasterHolster;
 import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
+import com.wafitz.pixelspacebase.items.bags.GadgetBag;
 import com.wafitz.pixelspacebase.items.bags.ScriptHolder;
-import com.wafitz.pixelspacebase.items.bags.SeedPouch;
-import com.wafitz.pixelspacebase.items.bags.WandHolster;
+import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.food.OverpricedRation;
 import com.wafitz.pixelspacebase.items.scripts.FixScript;
+import com.wafitz.pixelspacebase.items.scripts.IdentifyScript;
+import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfIdentify;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
-import com.wafitz.pixelspacebase.items.wands.Wand;
 import com.wafitz.pixelspacebase.items.weapon.melee.BattleAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.Greatsword;
 import com.wafitz.pixelspacebase.items.weapon.melee.HandAxe;
@@ -69,7 +69,7 @@ import com.wafitz.pixelspacebase.levels.LastWorkshopLevel;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.plants.Plant;
+import com.wafitz.pixelspacebase.triggers.Trigger;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -168,13 +168,13 @@ public class Workshop extends Painter {
         ChooseBag(Dungeon.hero.belongings);
 
 
-        itemsToSpawn.add(new ExperimentalTechOfHealing());
+        itemsToSpawn.add(new HealingTech());
         for (int i = 0; i < 3; i++)
             itemsToSpawn.add(Generator.random(Generator.Category.EXPERIMENTALTECH));
 
-        itemsToSpawn.add(new ScriptOfIdentify());
+        itemsToSpawn.add(new IdentifyScript());
         itemsToSpawn.add(new FixScript());
-        itemsToSpawn.add(new ScriptOfMagicMapping());
+        itemsToSpawn.add(new MappingScript());
         itemsToSpawn.add(Generator.random(Generator.Category.SCRIPT));
 
         for (int i = 0; i < 2; i++)
@@ -238,7 +238,7 @@ public class Workshop extends Painter {
         Item rare;
         switch (Random.Int(10)) {
             case 0:
-                rare = Generator.random(Generator.Category.WAND);
+                rare = Generator.random(Generator.Category.BLASTER);
                 rare.level(0);
                 break;
             case 1:
@@ -263,37 +263,37 @@ public class Workshop extends Painter {
 
     private static void ChooseBag(Belongings pack) {
 
-        int seeds = 0, scripts = 0, experimentaltech = 0, wands = 0;
+        int gadgets = 0, scripts = 0, experimentaltech = 0, blasters = 0;
 
         //count up items in the main bag, for bags which haven't yet been dropped.
         for (Item item : pack.backpack.items) {
-            if (!Dungeon.limitedDrops.seedBag.dropped() && item instanceof Plant.Seed)
-                seeds++;
+            if (!Dungeon.limitedDrops.gadgetBag.dropped() && item instanceof Trigger.Gadget)
+                gadgets++;
             else if (!Dungeon.limitedDrops.scriptBag.dropped() && item instanceof Script)
                 scripts++;
             else if (!Dungeon.limitedDrops.experimentalTechBag.dropped() && item instanceof ExperimentalTech)
                 experimentaltech++;
-            else if (!Dungeon.limitedDrops.wandBag.dropped() && item instanceof Wand)
-                wands++;
+            else if (!Dungeon.limitedDrops.blasterHolster.dropped() && item instanceof Blaster)
+                blasters++;
         }
 
         //then pick whichever valid bag has the most items available to put into it.
         //note that the order here gives a perference if counts are otherwise equal
-        if (seeds >= scripts && seeds >= experimentaltech && seeds >= wands && !Dungeon.limitedDrops.seedBag.dropped()) {
-            Dungeon.limitedDrops.seedBag.drop();
-            itemsToSpawn.add(new SeedPouch());
+        if (gadgets >= scripts && gadgets >= experimentaltech && gadgets >= blasters && !Dungeon.limitedDrops.gadgetBag.dropped()) {
+            Dungeon.limitedDrops.gadgetBag.drop();
+            itemsToSpawn.add(new GadgetBag());
 
-        } else if (scripts >= experimentaltech && scripts >= wands && !Dungeon.limitedDrops.scriptBag.dropped()) {
+        } else if (scripts >= experimentaltech && scripts >= blasters && !Dungeon.limitedDrops.scriptBag.dropped()) {
             Dungeon.limitedDrops.scriptBag.drop();
             itemsToSpawn.add(new ScriptHolder());
 
-        } else if (experimentaltech >= wands && !Dungeon.limitedDrops.experimentalTechBag.dropped()) {
+        } else if (experimentaltech >= blasters && !Dungeon.limitedDrops.experimentalTechBag.dropped()) {
             Dungeon.limitedDrops.experimentalTechBag.drop();
             itemsToSpawn.add(new ExperimentalTechBandolier());
 
-        } else if (!Dungeon.limitedDrops.wandBag.dropped()) {
-            Dungeon.limitedDrops.wandBag.drop();
-            itemsToSpawn.add(new WandHolster());
+        } else if (!Dungeon.limitedDrops.blasterHolster.dropped()) {
+            Dungeon.limitedDrops.blasterHolster.drop();
+            itemsToSpawn.add(new BlasterHolster());
         }
     }
 

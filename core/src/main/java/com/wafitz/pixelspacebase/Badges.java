@@ -29,10 +29,10 @@ import com.wafitz.pixelspacebase.actors.mobs.Shielded;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
+import com.wafitz.pixelspacebase.items.bags.BlasterHolster;
 import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
+import com.wafitz.pixelspacebase.items.bags.GadgetBag;
 import com.wafitz.pixelspacebase.items.bags.ScriptHolder;
-import com.wafitz.pixelspacebase.items.bags.SeedPouch;
-import com.wafitz.pixelspacebase.items.bags.WandHolster;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -69,12 +69,12 @@ public class Badges {
         ALL_EXPERIMENTAL_TECH_IDENTIFIED(16),
         ALL_SCRIPTS_IDENTIFIED(17),
         ALL_MODULES_IDENTIFIED(18),
-        ALL_WANDS_IDENTIFIED(19),
+        ALL_BLASTERS_IDENTIFIED(19),
         ALL_ITEMS_IDENTIFIED(35, true),
-        BAG_BOUGHT_SEED_POUCH,
+        BAG_BOUGHT_GADGET_BAG,
         BAG_BOUGHT_SCRIPT_HOLDER,
         BAG_BOUGHT_EXPERIMENTAL_TECH_BANDOLIER,
-        BAG_BOUGHT_WAND_HOLSTER,
+        BAG_BOUGHT_BLASTER_HOLSTER,
         ALL_BAGS_BOUGHT(23),
         DEATH_FROM_FIRE(24),
         DEATH_FROM_POISON(25),
@@ -406,10 +406,10 @@ public class Badges {
 
         // This method should be called:
         // 1) When an item is obtained (Item.collect)
-        // 2) When an item is upgraded (ScriptOfUpgrade, WeaponUpgradeScript, ShortSword, WandOfMagicMissile)
+        // 2) When an item is upgraded (UpgradeScript, WeaponUpgradeScript, ShortSword, MissileBlaster)
         // 3) When an item is identified
 
-        // Note that artifacts should never trigger this badge as they are alternatively upgraded
+        // Note that artifacts should never triggers this badge as they are alternatively upgraded
         if (!item.levelKnown || item instanceof Artifact) {
             return;
         }
@@ -471,14 +471,14 @@ public class Badges {
         }
     }
 
-    //TODO: no longer in use, deal with new wand related badges in the badge rework.
+    //TODO: no longer in use, deal with new blaster related badges in the badge rework.
 
     /**
      * public static void validateAllWandsIdentified() {
      * if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
-     * !local.contains( Badge.ALL_WANDS_IDENTIFIED ) && Wand.allKnown()) {
+     * !local.contains( Badge.ALL_BLASTERS_IDENTIFIED ) && Blaster.allKnown()) {
      * <p>
-     * Badge badge = Badge.ALL_WANDS_IDENTIFIED;
+     * Badge badge = Badge.ALL_BLASTERS_IDENTIFIED;
      * local.add( badge );
      * displayBadge( badge );
      * <p>
@@ -490,14 +490,14 @@ public class Badges {
     public static void validateAllBagsBought(Item bag) {
 
         Badge badge = null;
-        if (bag instanceof SeedPouch) {
-            badge = Badge.BAG_BOUGHT_SEED_POUCH;
+        if (bag instanceof GadgetBag) {
+            badge = Badge.BAG_BOUGHT_GADGET_BAG;
         } else if (bag instanceof ScriptHolder) {
             badge = Badge.BAG_BOUGHT_SCRIPT_HOLDER;
         } else if (bag instanceof ExperimentalTechBandolier) {
             badge = Badge.BAG_BOUGHT_EXPERIMENTAL_TECH_BANDOLIER;
-        } else if (bag instanceof WandHolster) {
-            badge = Badge.BAG_BOUGHT_WAND_HOLSTER;
+        } else if (bag instanceof BlasterHolster) {
+            badge = Badge.BAG_BOUGHT_BLASTER_HOLSTER;
         }
 
         if (badge != null) {
@@ -505,10 +505,10 @@ public class Badges {
             local.add(badge);
 
             if (!local.contains(Badge.ALL_BAGS_BOUGHT) &&
-                    local.contains(Badge.BAG_BOUGHT_SEED_POUCH) &&
+                    local.contains(Badge.BAG_BOUGHT_GADGET_BAG) &&
                     local.contains(Badge.BAG_BOUGHT_SCRIPT_HOLDER) &&
                     local.contains(Badge.BAG_BOUGHT_EXPERIMENTAL_TECH_BANDOLIER) &&
-                    local.contains(Badge.BAG_BOUGHT_WAND_HOLSTER)) {
+                    local.contains(Badge.BAG_BOUGHT_BLASTER_HOLSTER)) {
 
                 badge = Badge.ALL_BAGS_BOUGHT;
                 local.add(badge);
@@ -522,7 +522,7 @@ public class Badges {
                 global.contains(Badge.ALL_EXPERIMENTAL_TECH_IDENTIFIED) &&
                 global.contains(Badge.ALL_SCRIPTS_IDENTIFIED) &&
                 global.contains(Badge.ALL_MODULES_IDENTIFIED)) {
-            //global.contains( Badge.ALL_WANDS_IDENTIFIED )) {
+            //global.contains( Badge.ALL_BLASTERS_IDENTIFIED )) {
 
             Badge badge = Badge.ALL_ITEMS_IDENTIFIED;
             displayBadge(badge);
@@ -953,7 +953,7 @@ public class Badges {
         leaveBest(filtered, Badge.ALL_EXPERIMENTAL_TECH_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
         leaveBest(filtered, Badge.ALL_SCRIPTS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
         leaveBest(filtered, Badge.ALL_MODULES_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
-        leaveBest(filtered, Badge.ALL_WANDS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
+        leaveBest(filtered, Badge.ALL_BLASTERS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
         leaveBest(filtered, Badge.VICTORY, Badge.VICTORY_ALL_CLASSES);
         leaveBest(filtered, Badge.VICTORY, Badge.HAPPY_END);
         leaveBest(filtered, Badge.VICTORY, Badge.CHAMPION);

@@ -33,21 +33,21 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.bags.Bag;
+import com.wafitz.pixelspacebase.items.bags.BlasterHolster;
 import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
+import com.wafitz.pixelspacebase.items.bags.GadgetBag;
 import com.wafitz.pixelspacebase.items.bags.ScriptHolder;
-import com.wafitz.pixelspacebase.items.bags.SeedPouch;
-import com.wafitz.pixelspacebase.items.bags.WandHolster;
+import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.wands.Wand;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Boomerang;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.plants.Plant.Seed;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
+import com.wafitz.pixelspacebase.triggers.Trigger.Gadget;
 import com.wafitz.pixelspacebase.ui.Icons;
 import com.wafitz.pixelspacebase.ui.ItemSlot;
 import com.wafitz.pixelspacebase.ui.QuickSlotButton;
@@ -69,8 +69,8 @@ public class WndBag extends WndTabbed {
         WEAPON,
         ARMOR,
         ENCHANTABLE,
-        WAND,
-        SEED,
+        BLASTER,
+        GADGET,
         FOOD,
         EXPERIMENTALTECH,
         SCRIPT,
@@ -129,10 +129,10 @@ public class WndBag extends WndTabbed {
         Belongings stuff = Dungeon.hero.belongings;
         Bag[] bags = {
                 stuff.backpack,
-                stuff.getItem(SeedPouch.class),
+                stuff.getItem(GadgetBag.class),
                 stuff.getItem(ScriptHolder.class),
                 stuff.getItem(ExperimentalTechBandolier.class),
-                stuff.getItem(WandHolster.class)};
+                stuff.getItem(BlasterHolster.class)};
 
         for (Bag b : bags) {
             if (b != null) {
@@ -278,12 +278,12 @@ public class WndBag extends WndTabbed {
         }
 
         private Image icon() {
-            if (bag instanceof SeedPouch) {
-                return Icons.get(Icons.SEED_POUCH);
+            if (bag instanceof GadgetBag) {
+                return Icons.get(Icons.GADGET_BAG);
             } else if (bag instanceof ScriptHolder) {
                 return Icons.get(Icons.SCRIPT_HOLDER);
-            } else if (bag instanceof WandHolster) {
-                return Icons.get(Icons.WAND_HOLSTER);
+            } else if (bag instanceof BlasterHolster) {
+                return Icons.get(Icons.BLASTER_HOLSTER);
             } else if (bag instanceof ExperimentalTechBandolier) {
                 return Icons.get(Icons.EXPERIMENTALTECH_BANDOLIER);
             } else {
@@ -370,13 +370,13 @@ public class WndBag extends WndTabbed {
                             mode == Mode.FOR_SALE && (item.price() > 0) && (!item.isEquipped(Dungeon.hero) || !item.malfunctioning) ||
                                     mode == Mode.UPGRADEABLE && item.isUpgradable() ||
                                     mode == Mode.UNIDENTIFED && !item.isIdentified() ||
-                                    mode == Mode.UNIDED_OR_MALFUNCTIONING && ((item instanceof EquipableItem || item instanceof Wand) && (!item.isIdentified() || item.malfunctioning)) ||
+                                    mode == Mode.UNIDED_OR_MALFUNCTIONING && ((item instanceof EquipableItem || item instanceof Blaster) && (!item.isIdentified() || item.malfunctioning)) ||
                                     mode == Mode.QUICKSLOT && (item.defaultAction != null) ||
                                     mode == Mode.WEAPON && (item instanceof MeleeWeapon || item instanceof Boomerang) ||
                                     mode == Mode.ARMOR && (item instanceof Armor) ||
                                     mode == Mode.ENCHANTABLE && (item instanceof MeleeWeapon || item instanceof Boomerang || item instanceof Armor) ||
-                                    mode == Mode.WAND && (item instanceof Wand) ||
-                                    mode == Mode.SEED && (item instanceof Seed) ||
+                                    mode == Mode.BLASTER && (item instanceof Blaster) ||
+                                    mode == Mode.GADGET && (item instanceof Gadget) ||
                                     mode == Mode.FOOD && (item instanceof Food) ||
                                     mode == Mode.EXPERIMENTALTECH && (item instanceof ExperimentalTech) ||
                                     mode == Mode.SCRIPT && (item instanceof Script) ||

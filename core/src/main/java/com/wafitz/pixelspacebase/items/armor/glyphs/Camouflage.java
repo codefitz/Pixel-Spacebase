@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.items.armor.glyphs;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Invisibility;
+import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
@@ -44,7 +44,7 @@ public class Camouflage extends Armor.Glyph {
         return GREEN;
     }
 
-    public static class Camo extends Invisibility {
+    public static class Camo extends Camoflage {
         private int pos;
         private int left;
 

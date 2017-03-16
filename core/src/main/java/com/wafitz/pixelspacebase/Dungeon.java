@@ -22,16 +22,16 @@ package com.wafitz.pixelspacebase;
 
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Amok;
 import com.wafitz.pixelspacebase.actors.buffs.Awareness;
+import com.wafitz.pixelspacebase.actors.buffs.IntruderAlert;
 import com.wafitz.pixelspacebase.actors.buffs.Light;
-import com.wafitz.pixelspacebase.actors.buffs.MindVision;
+import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Blacksmith;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Imp;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Wandmaker;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Generator;
@@ -93,17 +93,17 @@ public class Dungeon {
         scorpioHP,
         cookingHP,
         //blandfruit, which can technically be an unlimited health potion source
-        blandfruitSeed,
+        blandfruitGadget,
 
         //doesn't use Generator, so we have to enforce one armband drop here
         armband,
 
         //containers
         airTank,
-        seedBag,
+        gadgetBag,
         scriptBag,
         experimentalTechBag,
-        wandBag,
+        blasterHolster,
 
         guardHP;
 
@@ -179,7 +179,7 @@ public class Dungeon {
         chapters = new HashSet<>();
 
         Hologram.Quest.reset();
-        Wandmaker.Quest.reset();
+        Gunsmith.Quest.reset();
         Blacksmith.Quest.reset();
         Imp.Quest.reset();
 
@@ -467,7 +467,7 @@ public class Dungeon {
 
             Bundle quests = new Bundle();
             Hologram.Quest.storeInBundle(quests);
-            Wandmaker.Quest.storeInBundle(quests);
+            Gunsmith.Quest.storeInBundle(quests);
             Blacksmith.Quest.storeInBundle(quests);
             Imp.Quest.storeInBundle(quests);
             bundle.put(QUESTS, quests);
@@ -578,12 +578,12 @@ public class Dungeon {
             Bundle quests = bundle.getBundle(QUESTS);
             if (!quests.isNull()) {
                 Hologram.Quest.restoreFromBundle(quests);
-                Wandmaker.Quest.restoreFromBundle(quests);
+                Gunsmith.Quest.restoreFromBundle(quests);
                 Blacksmith.Quest.restoreFromBundle(quests);
                 Imp.Quest.restoreFromBundle(quests);
             } else {
                 Hologram.Quest.reset();
-                Wandmaker.Quest.reset();
+                Gunsmith.Quest.reset();
                 Blacksmith.Quest.reset();
                 Imp.Quest.reset();
             }
@@ -708,7 +708,7 @@ public class Dungeon {
             BArray.or(level.visited, visible, pos, len, level.visited);
         }
 
-        if (hero.buff(MindVision.class) != null || hero.buff(Awareness.class) != null)
+        if (hero.buff(IntruderAlert.class) != null || hero.buff(Awareness.class) != null)
             GameScene.updateFog();
         else
             GameScene.updateFog(ax, ay, len, by - ay);
@@ -729,7 +729,7 @@ public class Dungeon {
     public static PathFinder.Path findPath(Char ch, int from, int to, boolean pass[], boolean[] visible) {
 
         setupPassable();
-        if (ch.flying || ch.buff(Amok.class) != null) {
+        if (ch.flying || ch.buff(Paranoid.class) != null) {
             BArray.or(pass, Level.avoid, passable);
         } else {
             System.arraycopy(pass, 0, passable, 0, Dungeon.level.length());
@@ -752,7 +752,7 @@ public class Dungeon {
         }
 
         setupPassable();
-        if (ch.flying || ch.buff(Amok.class) != null) {
+        if (ch.flying || ch.buff(Paranoid.class) != null) {
             BArray.or(pass, Level.avoid, passable);
         } else {
             System.arraycopy(pass, 0, passable, 0, Dungeon.level.length());

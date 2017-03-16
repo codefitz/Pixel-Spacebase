@@ -142,7 +142,7 @@ public class ItemSprite extends MovieClip {
             return;
         } else if (heap.size() == 1) {
             // normally this would happen for any heap, however this is not applied to heaps greater than 1 in size
-            // in order to preserve an amusing visual bug/feature that used to trigger for heaps with size > 1
+            // in order to preserve an amusing visual bug/feature that used to triggers for heaps with size > 1
             // where as long as the player continually taps, the heap sails up into the air.
             place(heap.pos);
         }

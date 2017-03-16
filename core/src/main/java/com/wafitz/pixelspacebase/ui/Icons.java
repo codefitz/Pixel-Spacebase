@@ -46,10 +46,10 @@ public enum Icons {
     SLEEP,
     ALERT,
     BACKPACK,
-    SEED_POUCH,
+    GADGET_BAG,
     SCRIPT_HOLDER,
     EXPERIMENTALTECH_BANDOLIER,
-    WAND_HOLSTER,
+    BLASTER_HOLSTER,
     CHECKED,
     UNCHECKED,
     EXIT,
@@ -129,10 +129,10 @@ public enum Icons {
             case SCRIPT_HOLDER:
                 icon.frame(icon.texture.uvRect(68, 0, 78, 10));
                 break;
-            case SEED_POUCH:
+            case GADGET_BAG:
                 icon.frame(icon.texture.uvRect(78, 0, 88, 10));
                 break;
-            case WAND_HOLSTER:
+            case BLASTER_HOLSTER:
                 icon.frame(icon.texture.uvRect(88, 0, 98, 10));
                 break;
             case EXPERIMENTALTECH_BANDOLIER:

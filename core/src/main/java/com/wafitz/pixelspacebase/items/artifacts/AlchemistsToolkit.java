@@ -55,7 +55,7 @@ public class AlchemistsToolkit extends Artifact {
     private int numWrongPlace = 0;
     private int numRight = 0;
 
-    private int seedsToExperimentalTech = 0;
+    private int gadgetsToExperimentalTech = 0;
 
     private String inventoryTitle = "Select experimental tech";
     protected WndBag.Mode mode = WndBag.Mode.EXPERIMENTALTECH;
@@ -123,7 +123,7 @@ public class AlchemistsToolkit extends Artifact {
         } else if (score > level()) {
 
             level(score);
-            seedsToExperimentalTech = 0;
+            gadgetsToExperimentalTech = 0;
             bstGuess = curGuess;
             this.numRight = numRight;
             this.numWrongPlace = numWrongPlace;
@@ -184,7 +184,7 @@ public class AlchemistsToolkit extends Artifact {
                     + bstGuess.get(2) + ", in that order.\n\n";
             result += "Of the ExperimentalTech in that mix, " + brewDesc(numWrongPlace, numRight) + ".";
 
-            //would only trigger if an upgraded toolkit was gained through transmutation or bones.
+            //would only triggers if an upgraded toolkit was gained through transmutation or bones.
         } else {
             result += "The toolkit seems to have a catalyst mixture already in it, but it isn't ideal. Unfortunately " +
                     "you have no idea what's in the mixture.";
@@ -199,7 +199,7 @@ public class AlchemistsToolkit extends Artifact {
     private static final String NUMWRONGPLACE = "numwrongplace";
     private static final String NUMRIGHT = "numright";
 
-    private static final String SEEDSTOEXPERIMENTALTECH = "seedstoexperimentaltech";
+    private static final String GADGETSTOEXPERIMENTALTECH = "gadgetstoexperimentaltech";
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -207,7 +207,7 @@ public class AlchemistsToolkit extends Artifact {
         bundle.put(NUMWRONGPLACE, numWrongPlace);
         bundle.put(NUMRIGHT, numRight);
 
-        bundle.put(SEEDSTOEXPERIMENTALTECH, seedsToExperimentalTech);
+        bundle.put(GADGETSTOEXPERIMENTALTECH, gadgetsToExperimentalTech);
 
         bundle.put(COMBINATION, combination.toArray(new String[combination.size()]));
         bundle.put(CURGUESS, curGuess.toArray(new String[curGuess.size()]));
@@ -220,7 +220,7 @@ public class AlchemistsToolkit extends Artifact {
         numWrongPlace = bundle.getInt(NUMWRONGPLACE);
         numRight = bundle.getInt(NUMRIGHT);
 
-        seedsToExperimentalTech = bundle.getInt(SEEDSTOEXPERIMENTALTECH);
+        gadgetsToExperimentalTech = bundle.getInt(GADGETSTOEXPERIMENTALTECH);
 
         combination.clear();
         Collections.addAll(combination, bundle.getStringArray(COMBINATION));
@@ -234,19 +234,19 @@ public class AlchemistsToolkit extends Artifact {
         public boolean tryCook(int count) {
 
             //this logic is handled inside the class with a variable so that it may be stored.
-            //to prevent manipulation where a player could keep throwing in 1-2 seeds until they get lucky.
-            if (seedsToExperimentalTech == 0) {
+            //to prevent manipulation where a player could keep throwing in 1-2 gadgets until they get lucky.
+            if (gadgetsToExperimentalTech == 0) {
                 if (Random.Int(20) < 10 + level()) {
                     if (Random.Int(20) < level()) {
-                        seedsToExperimentalTech = 1;
+                        gadgetsToExperimentalTech = 1;
                     } else
-                        seedsToExperimentalTech = 2;
+                        gadgetsToExperimentalTech = 2;
                 } else
-                    seedsToExperimentalTech = 3;
+                    gadgetsToExperimentalTech = 3;
             }
 
-            if (count >= seedsToExperimentalTech) {
-                seedsToExperimentalTech = 0;
+            if (count >= gadgetsToExperimentalTech) {
+                gadgetsToExperimentalTech = 0;
                 return true;
             } else
                 return false;

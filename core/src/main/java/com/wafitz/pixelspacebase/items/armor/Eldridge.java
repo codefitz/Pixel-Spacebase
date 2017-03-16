@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.CellSelector;
@@ -72,7 +72,7 @@ class Eldridge extends ClassArmor {
                     }
                 }
 
-                ScriptOfTeleportation.appear(curUser, target);
+                TeleportationScript.appear(curUser, target);
                 CellEmitter.get(target).burst(Speck.factory(Speck.WOOL), 10);
                 Sample.INSTANCE.play(Assets.SND_PUFF);
                 Dungeon.level.press(target, curUser);

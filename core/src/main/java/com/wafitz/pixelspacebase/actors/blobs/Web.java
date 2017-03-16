@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Roots;
+import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.effects.BlobEmitter;
 import com.wafitz.pixelspacebase.effects.particles.WebParticle;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -47,7 +47,7 @@ public class Web extends Blob {
 
                     Char ch = Actor.findChar(cell);
                     if (ch != null) {
-                        Buff.prolong(ch, Roots.class, TICK);
+                        Buff.prolong(ch, LockedDown.class, TICK);
                     }
                 }
             }

@@ -25,12 +25,12 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Charm;
+import com.wafitz.pixelspacebase.actors.buffs.Hypnotise;
 import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Sleep;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfLullaby;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.LullabyScript;
+import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -58,7 +58,7 @@ class Succubus extends Mob {
         EXP = 12;
         maxLvl = 25;
 
-        loot = new ScriptOfLullaby();
+        loot = new LullabyScript();
         lootChance = 0.05f;
 
         properties.add(Property.DEMONIC);
@@ -73,7 +73,7 @@ class Succubus extends Mob {
     public int attackProc(Char enemy, int damage) {
 
         if (Random.Int(3) == 0) {
-            Buff.affect(enemy, Charm.class, Charm.durationFactor(enemy) * Random.IntRange(3, 7)).object = id();
+            Buff.affect(enemy, Hypnotise.class, Hypnotise.durationFactor(enemy) * Random.IntRange(3, 7)).object = id();
             enemy.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
             Sample.INSTANCE.play(Assets.SND_CHARMS);
         }
@@ -122,7 +122,7 @@ class Succubus extends Mob {
             }
         }
 
-        ScriptOfTeleportation.appear(this, cell);
+        TeleportationScript.appear(this, cell);
 
         delay = BLINK_DELAY;
     }

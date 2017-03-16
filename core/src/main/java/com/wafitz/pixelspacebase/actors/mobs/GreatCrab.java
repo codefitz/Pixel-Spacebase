@@ -23,8 +23,8 @@ package com.wafitz.pixelspacebase.actors.mobs;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
+import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
-import com.wafitz.pixelspacebase.items.wands.Wand;
 import com.wafitz.pixelspacebase.levels.vents.LightningVent;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
@@ -67,7 +67,7 @@ public class GreatCrab extends Crab {
         //crab blocks all attacks originating from the hero or enemy characters or vents if it is alerted.
         //All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
         if ((enemySeen && state != SLEEPING && paralysed == 0)
-                && (src instanceof Wand || src instanceof LightningVent.Electricity || src instanceof Char)) {
+                && (src instanceof Blaster || src instanceof LightningVent.Electricity || src instanceof Char)) {
             GLog.n(Messages.get(this, "noticed"));
             sprite.showStatus(CharSprite.NEUTRAL, Messages.get(this, "blocked"));
         } else {

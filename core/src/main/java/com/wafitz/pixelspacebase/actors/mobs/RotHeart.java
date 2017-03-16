@@ -26,9 +26,9 @@ import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
-import com.wafitz.pixelspacebase.plants.Rotberry;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.RotHeartSprite;
+import com.wafitz.pixelspacebase.triggers.Rotberry;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
@@ -62,7 +62,7 @@ public class RotHeart extends Mob {
 
     @Override
     public int defenseProc(Char enemy, int damage) {
-        GameScene.add(Blob.seed(pos, 20, ToxicGas.class));
+        GameScene.add(Blob.gadget(pos, 20, ToxicGas.class));
 
         return super.defenseProc(enemy, damage);
     }
@@ -90,7 +90,7 @@ public class RotHeart extends Mob {
     @Override
     public void die(Object cause) {
         super.die(cause);
-        Dungeon.level.drop(new Rotberry.Seed(), pos).sprite.drop();
+        Dungeon.level.drop(new Rotberry.Gadget(), pos).sprite.drop();
     }
 
     @Override

@@ -32,9 +32,9 @@ import com.wafitz.pixelspacebase.actors.blobs.WellWater;
 import com.wafitz.pixelspacebase.actors.buffs.Awareness;
 import com.wafitz.pixelspacebase.actors.buffs.Blindness;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.Camoflaged;
+import com.wafitz.pixelspacebase.actors.buffs.IntruderAlert;
 import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
-import com.wafitz.pixelspacebase.actors.buffs.MindVision;
-import com.wafitz.pixelspacebase.actors.buffs.Shadows;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
@@ -42,9 +42,9 @@ import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.particles.FlowParticle;
 import com.wafitz.pixelspacebase.effects.particles.WindParticle;
 import com.wafitz.pixelspacebase.items.Dewdrop;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfMight;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfStrength;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.MightTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -54,14 +54,14 @@ import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.artifacts.AlchemistsToolkit;
 import com.wafitz.pixelspacebase.items.artifacts.DriedRose;
 import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
+import com.wafitz.pixelspacebase.items.bags.GadgetBag;
 import com.wafitz.pixelspacebase.items.bags.ScriptHolder;
-import com.wafitz.pixelspacebase.items.bags.SeedPouch;
 import com.wafitz.pixelspacebase.items.food.Blandfruit;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
+import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicalInfusion;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
+import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.Door;
 import com.wafitz.pixelspacebase.levels.features.OffVent;
@@ -69,10 +69,10 @@ import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
 import com.wafitz.pixelspacebase.mechanics.ShadowCaster;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.plants.BlandfruitBush;
-import com.wafitz.pixelspacebase.plants.Plant;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
+import com.wafitz.pixelspacebase.triggers.BlandfruitBush;
+import com.wafitz.pixelspacebase.triggers.Trigger;
 import com.wafitz.pixelspacebase.ui.CustomTileVisual;
 import com.wafitz.pixelspacebase.utils.BArray;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -140,7 +140,7 @@ public abstract class Level implements Bundlable {
     public HashSet<Mob> mobs;
     public SparseArray<Heap> heaps;
     public HashMap<Class<? extends Blob>, Blob> blobs;
-    public SparseArray<Plant> plants;
+    public SparseArray<Trigger> triggers;
     public SparseArray<Vent> vents;
     public HashSet<CustomTileVisual> customTiles;
 
@@ -163,7 +163,7 @@ public abstract class Level implements Bundlable {
     private static final String EXIT = "exit";
     private static final String LOCKED = "locked";
     private static final String HEAPS = "heaps";
-    private static final String PLANTS = "plants";
+    private static final String TRIGGERS = "triggers";
     private static final String VENTS = "vents";
     private static final String CUSTOM_TILES = "customTiles";
     private static final String MOBS = "mobs";
@@ -198,16 +198,16 @@ public abstract class Level implements Bundlable {
 
             if (Dungeon.posNeeded()) {
                 if (Random.Float() > Math.pow(0.925, bonus))
-                    addItemToSpawn(new ExperimentalTechOfMight());
+                    addItemToSpawn(new MightTech());
                 else
-                    addItemToSpawn(new ExperimentalTechOfStrength());
+                    addItemToSpawn(new StrengthTech());
                 Dungeon.limitedDrops.strengthTech.count++;
             }
             if (Dungeon.souNeeded()) {
                 if (Random.Float() > Math.pow(0.925, bonus))
-                    addItemToSpawn(new ScriptOfMagicalInfusion());
+                    addItemToSpawn(new MagicalInfusionScript());
                 else
-                    addItemToSpawn(new ScriptOfUpgrade());
+                    addItemToSpawn(new UpgradeScript());
                 Dungeon.limitedDrops.upgradeScripts.count++;
             }
             if (Dungeon.asNeeded()) {
@@ -264,7 +264,7 @@ public abstract class Level implements Bundlable {
             mobs = new HashSet<>();
             heaps = new SparseArray<>();
             blobs = new HashMap<>();
-            plants = new SparseArray<>();
+            triggers = new SparseArray<>();
             vents = new SparseArray<>();
             customTiles = new HashSet<>();
 
@@ -316,7 +316,7 @@ public abstract class Level implements Bundlable {
         mobs = new HashSet<>();
         heaps = new SparseArray<>();
         blobs = new HashMap<>();
-        plants = new SparseArray<>();
+        triggers = new SparseArray<>();
         vents = new SparseArray<>();
         customTiles = new HashSet<>();
 
@@ -349,10 +349,10 @@ public abstract class Level implements Bundlable {
                 heaps.put(heap.pos, heap);
         }
 
-        collection = bundle.getCollection(PLANTS);
+        collection = bundle.getCollection(TRIGGERS);
         for (Bundlable p : collection) {
-            Plant plant = (Plant) p;
-            plants.put(plant.pos, plant);
+            Trigger trigger = (Trigger) p;
+            triggers.put(trigger.pos, trigger);
         }
 
         collection = bundle.getCollection(VENTS);
@@ -401,7 +401,7 @@ public abstract class Level implements Bundlable {
         bundle.put(EXIT, exit);
         bundle.put(LOCKED, locked);
         bundle.put(HEAPS, heaps.values());
-        bundle.put(PLANTS, plants.values());
+        bundle.put(TRIGGERS, triggers.values());
         bundle.put(VENTS, vents.values());
         bundle.put(CUSTOM_TILES, customTiles);
         bundle.put(MOBS, mobs);
@@ -667,11 +667,11 @@ public abstract class Level implements Bundlable {
     public Heap drop(Item item, int cell) {
 
         //This messy if statement deals will items which should not drop in challenges primarily.
-        if ((Dungeon.isChallenged(Challenges.NO_FOOD) && (item instanceof Food || item instanceof BlandfruitBush.Seed)) ||
+        if ((Dungeon.isChallenged(Challenges.NO_FOOD) && (item instanceof Food || item instanceof BlandfruitBush.Gadget)) ||
                 (Dungeon.isChallenged(Challenges.NO_ARMOR) && item instanceof Armor) ||
-                (Dungeon.isChallenged(Challenges.NO_HEALING) && item instanceof ExperimentalTechOfHealing) ||
-                (Dungeon.isChallenged(Challenges.NO_HERBALISM) && (item instanceof Plant.Seed || item instanceof Dewdrop || item instanceof SeedPouch)) ||
-                (Dungeon.isChallenged(Challenges.NO_SCRIPTS) && ((item instanceof Script && !(item instanceof ScriptOfUpgrade || item instanceof ScriptOfMagicalInfusion)) || item instanceof ScriptHolder)) ||
+                (Dungeon.isChallenged(Challenges.NO_HEALING) && item instanceof HealingTech) ||
+                (Dungeon.isChallenged(Challenges.NO_HERBALISM) && (item instanceof Trigger.Gadget || item instanceof Dewdrop || item instanceof GadgetBag)) ||
+                (Dungeon.isChallenged(Challenges.NO_SCRIPTS) && ((item instanceof Script && !(item instanceof UpgradeScript || item instanceof MagicalInfusionScript)) || item instanceof ScriptHolder)) ||
                 item == null) {
 
             //create a dummy heap, give it a dummy sprite, don't add it to the game, and return it.
@@ -684,8 +684,8 @@ public abstract class Level implements Bundlable {
         }
 
         if ((map[cell] == Terrain.ALCHEMY) && (
-                !(item instanceof Plant.Seed || item instanceof Blandfruit) ||
-                        item instanceof BlandfruitBush.Seed ||
+                !(item instanceof Trigger.Gadget || item instanceof Blandfruit) ||
+                        item instanceof BlandfruitBush.Gadget ||
                         (item instanceof Blandfruit && (((Blandfruit) item).experimentalTechAttrib != null || heaps.get(cell) != null)) ||
                         Dungeon.hero.buff(AlchemistsToolkit.alchemy.class) != null && Dungeon.hero.buff(AlchemistsToolkit.alchemy.class).isMalfunctioning())) {
             int n;
@@ -727,11 +727,11 @@ public abstract class Level implements Bundlable {
         return heap;
     }
 
-    public Plant plant(Plant.Seed seed, int pos) {
+    public Trigger trigger(Trigger.Gadget gadget, int pos) {
 
-        Plant plant = plants.get(pos);
-        if (plant != null) {
-            plant.wither();
+        Trigger trigger = triggers.get(pos);
+        if (trigger != null) {
+            trigger.wither();
         }
 
         if (map[pos] == Terrain.OFFVENT ||
@@ -742,16 +742,16 @@ public abstract class Level implements Bundlable {
             flamable[pos] = true;
         }
 
-        plant = seed.couch(pos);
-        plants.put(pos, plant);
+        trigger = gadget.couch(pos);
+        triggers.put(pos, trigger);
 
-        GameScene.plantSeed(pos);
+        GameScene.triggerGadget(pos);
 
-        return plant;
+        return trigger;
     }
 
     public void uproot(int pos) {
-        plants.remove(pos);
+        triggers.remove(pos);
         GameScene.updateMap(pos);
     }
 
@@ -845,9 +845,9 @@ public abstract class Level implements Bundlable {
             }
         }
 
-        Plant plant = plants.get(cell);
-        if (plant != null) {
-            plant.trigger();
+        Trigger trigger = triggers.get(cell);
+        if (trigger != null) {
+            trigger.trigger();
         }
     }
 
@@ -876,9 +876,9 @@ public abstract class Level implements Bundlable {
             vent.trigger();
         }
 
-        Plant plant = plants.get(cell);
-        if (plant != null) {
-            plant.trigger();
+        Trigger trigger = triggers.get(cell);
+        if (trigger != null) {
+            trigger.trigger();
         }
     }
 
@@ -887,7 +887,7 @@ public abstract class Level implements Bundlable {
         int cx = c.pos % width();
         int cy = c.pos / width();
 
-        boolean sighted = c.buff(Blindness.class) == null && c.buff(Shadows.class) == null
+        boolean sighted = c.buff(Blindness.class) == null && c.buff(Camoflaged.class) == null
                 && c.buff(TimekeepersHourglass.timeStasis.class) == null && c.isAlive();
         if (sighted) {
             ShadowCaster.castShadow(cx, cy, fieldOfView, c.viewDistance);
@@ -898,8 +898,8 @@ public abstract class Level implements Bundlable {
         int sense = 1;
         //Currently only the hero can get mind vision
         if (c.isAlive() && c == Dungeon.hero) {
-            for (Buff b : c.buffs(MindVision.class)) {
-                sense = Math.max(((MindVision) b).distance, sense);
+            for (Buff b : c.buffs(IntruderAlert.class)) {
+                sense = Math.max(((IntruderAlert) b).distance, sense);
             }
         }
 
@@ -920,7 +920,7 @@ public abstract class Level implements Bundlable {
         //Currently only the hero can get mind vision or awareness
         if (c.isAlive() && c == Dungeon.hero) {
             Dungeon.hero.mindVisionEnemies.clear();
-            if (c.buff(MindVision.class) != null) {
+            if (c.buff(IntruderAlert.class) != null) {
                 for (Mob mob : mobs) {
                     int p = mob.pos;
 

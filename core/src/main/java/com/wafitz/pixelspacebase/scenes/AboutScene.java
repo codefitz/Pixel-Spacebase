@@ -37,7 +37,13 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.TouchArea;
 
-public class AboutScene extends PixelScene {
+class AboutScene extends PixelScene {
+
+    private static final String TTL_PS = "Pixel Spacebase";
+
+    private static final String TXT_PS = "Design, Code, & Graphics: Wafitz";
+
+    private static final String LNK_PS = "github.com/codefitz/Pixel-Spacebase";
 
     private static final String TTL_SHPX = "Shattered Pixel Dungeon";
 
@@ -48,9 +54,9 @@ public class AboutScene extends PixelScene {
 
     private static final String TTL_WATA = "Pixel Dungeon";
 
-    private static final String TXT_WATA =
-            "Code & Graphics: Watabou\n" +
-                    "Music: Cube_Code";
+    private static final String TXT_WATA = "Code & Graphics: Watabou";
+
+    private static final String TXT_MUSI = "Music: Cube_Code";
 
     private static final String LNK_WATA = "pixeldungeon.watabou.ru";
 
@@ -124,15 +130,22 @@ public class AboutScene extends PixelScene {
         wataText.maxWidth((int) Math.min(colWidth, 120));
         add(wataText);
 
+        RenderedTextMultiline wataMusi = renderMultiline(TXT_MUSI, 8);
+        wataMusi.maxWidth((int) Math.min(colWidth, 120));
+        add(wataMusi);
+
         wataText.setPos(wataOffset + (colWidth - wataText.width()) / 2, wataTitle.y + wataTitle.height() + 12);
         align(wataText);
+
+        wataMusi.setPos(wataOffset + (colWidth - wataMusi.width()) / 2, wataTitle.y + wataTitle.height() + 24);
+        align(wataMusi);
 
         RenderedTextMultiline wataLink = renderMultiline(LNK_WATA, 8);
         wataLink.maxWidth((int) Math.min(colWidth, 120));
         wataLink.hardlight(Window.TITLE_COLOR);
         add(wataLink);
 
-        wataLink.setPos(wataOffset + (colWidth - wataLink.width()) / 2, wataText.bottom() + 6);
+        wataLink.setPos(wataOffset + (colWidth - wataLink.width()) / 2, wataTitle.y + wataTitle.height() + 36);
         align(wataLink);
 
         TouchArea hotArea = new TouchArea(wataLink.left(), wataLink.top(), wataLink.width(), wataLink.height()) {

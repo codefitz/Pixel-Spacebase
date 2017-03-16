@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.items.armor.malfunctions;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
@@ -35,7 +35,7 @@ public class Displacement extends Armor.Glyph {
     public int proc(Armor armor, Char attacker, Char defender, int damage) {
 
         if (defender == Dungeon.hero && Random.Int(20) == 0) {
-            ScriptOfTeleportation.teleportHero(Dungeon.hero);
+            TeleportationScript.teleportHero(Dungeon.hero);
             return 0;
         }
 

@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.armor;
 
-import com.wafitz.pixelspacebase.actors.buffs.Invisibility;
+import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.BrokenSeal;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -127,7 +127,7 @@ abstract public class ClassArmor extends Armor {
                 GLog.w(Messages.get(this, "not_equipped"));
             } else {
                 curUser = hero;
-                Invisibility.dispel();
+                Camoflage.dispel();
                 doSpecial();
             }
 

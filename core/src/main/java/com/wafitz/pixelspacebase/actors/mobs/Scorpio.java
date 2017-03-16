@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric;
@@ -48,7 +48,7 @@ class Scorpio extends Mob {
         EXP = 14;
         maxLvl = 25;
 
-        loot = new ExperimentalTechOfHealing();
+        loot = new HealingTech();
         lootChance = 0.2f;
 
         properties.add(Property.DEMONIC);

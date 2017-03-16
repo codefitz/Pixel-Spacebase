@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.actors.mobs;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Amok;
+import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.sprites.DroneSprite;
@@ -150,7 +150,7 @@ public class Drone extends Mob {
 
     static {
         IMMUNITIES.add(Poison.class);
-        IMMUNITIES.add(Amok.class);
+        IMMUNITIES.add(Paranoid.class);
     }
 
     @Override

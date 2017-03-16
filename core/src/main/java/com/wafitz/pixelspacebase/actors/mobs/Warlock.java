@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Weakness;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
@@ -131,7 +131,7 @@ public class Warlock extends Mob implements Callback {
     public Item createLoot() {
         Item loot = super.createLoot();
 
-        if (loot instanceof ExperimentalTechOfHealing) {
+        if (loot instanceof HealingTech) {
 
             //count/10 chance of not dropping potion
             if (Random.Int(10) - Dungeon.limitedDrops.warlockHP.count < 0) {

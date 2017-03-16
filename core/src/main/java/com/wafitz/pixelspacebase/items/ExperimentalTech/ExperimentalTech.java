@@ -56,18 +56,18 @@ public class ExperimentalTech extends Item {
     protected Integer initials;
 
     private static final Class<?>[] experimentaltech = {
-            ExperimentalTechOfHealing.class,
-            ExperimentalTechOfExperience.class,
-            ExperimentalTechOfToxicGas.class,
-            ExperimentalTechOfLiquidFlame.class,
-            ExperimentalTechOfStrength.class,
-            ExperimentalTechOfParalyticGas.class,
-            ExperimentalTechOfLevitation.class,
-            ExperimentalTechOfMindVision.class,
-            ExperimentalTechOfPurity.class,
-            ExperimentalTechOfInvisibility.class,
-            ExperimentalTechOfMight.class,
-            ExperimentalTechOfFrost.class
+            HealingTech.class,
+            ExperienceTech.class,
+            ToxicGasTech.class,
+            LiquidFlameTech.class,
+            StrengthTech.class,
+            ParalyticGasTech.class,
+            LevitationTech.class,
+            MindVisionTech.class,
+            PurityTech.class,
+            InvisibilityTech.class,
+            MightTech.class,
+            FrostTech.class
     };
 
     private static final HashMap<String, Integer> colors = new HashMap<String, Integer>() {
@@ -143,9 +143,9 @@ public class ExperimentalTech extends Item {
         if (action.equals(AC_DRINK)) {
 
             if (isKnown() && (
-                    this instanceof ExperimentalTechOfLiquidFlame ||
-                            this instanceof ExperimentalTechOfToxicGas ||
-                            this instanceof ExperimentalTechOfParalyticGas)) {
+                    this instanceof LiquidFlameTech ||
+                            this instanceof ToxicGasTech ||
+                            this instanceof ParalyticGasTech)) {
 
                 GameScene.show(
                         new WndOptions(Messages.get(ExperimentalTech.class, "harmful"),
@@ -171,12 +171,12 @@ public class ExperimentalTech extends Item {
     public void doThrow(final Hero hero) {
 
         if (isKnown() && (
-                this instanceof ExperimentalTechOfExperience ||
-                        this instanceof ExperimentalTechOfHealing ||
-                        this instanceof ExperimentalTechOfMindVision ||
-                        this instanceof ExperimentalTechOfStrength ||
-                        this instanceof ExperimentalTechOfInvisibility ||
-                        this instanceof ExperimentalTechOfMight)) {
+                this instanceof ExperienceTech ||
+                        this instanceof HealingTech ||
+                        this instanceof MindVisionTech ||
+                        this instanceof StrengthTech ||
+                        this instanceof InvisibilityTech ||
+                        this instanceof MightTech)) {
 
             GameScene.show(
                     new WndOptions(Messages.get(ExperimentalTech.class, "beneficial"),

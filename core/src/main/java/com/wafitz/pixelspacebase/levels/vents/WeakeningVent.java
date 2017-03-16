@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Slow;
+import com.wafitz.pixelspacebase.actors.buffs.TimeSink;
 import com.wafitz.pixelspacebase.actors.buffs.Weakness;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
@@ -46,7 +46,7 @@ public class WeakeningVent extends Vent {
         if (ch == Dungeon.hero) {
             Buff.prolong(ch, Weakness.class, Weakness.duration(ch) * 2f);
         } else if (ch != null) {
-            Buff.prolong(ch, Slow.class, Slow.duration(ch));
+            Buff.prolong(ch, TimeSink.class, TimeSink.duration(ch));
         }
     }
 }

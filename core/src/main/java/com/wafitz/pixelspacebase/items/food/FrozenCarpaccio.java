@@ -20,15 +20,15 @@
  */
 package com.wafitz.pixelspacebase.items.food;
 
-import com.wafitz.pixelspacebase.actors.buffs.Barkskin;
 import com.wafitz.pixelspacebase.actors.buffs.Bleeding;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
-import com.wafitz.pixelspacebase.actors.buffs.Drowsy;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
-import com.wafitz.pixelspacebase.actors.buffs.Invisibility;
+import com.wafitz.pixelspacebase.actors.buffs.Knockout;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
-import com.wafitz.pixelspacebase.actors.buffs.Slow;
+import com.wafitz.pixelspacebase.actors.buffs.Shielding;
+import com.wafitz.pixelspacebase.actors.buffs.TimeSink;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.buffs.Weakness;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -64,11 +64,11 @@ public class FrozenCarpaccio extends Food {
         switch (Random.Int(5)) {
             case 0:
                 GLog.i(Messages.get(FrozenCarpaccio.class, "invis"));
-                Buff.affect(hero, Invisibility.class, Invisibility.DURATION);
+                Buff.affect(hero, Camoflage.class, Camoflage.DURATION);
                 break;
             case 1:
                 GLog.i(Messages.get(FrozenCarpaccio.class, "hard"));
-                Buff.affect(hero, Barkskin.class).level(hero.HT / 4);
+                Buff.affect(hero, Shielding.class).level(hero.HT / 4);
                 break;
             case 2:
                 GLog.i(Messages.get(FrozenCarpaccio.class, "refresh"));
@@ -76,8 +76,8 @@ public class FrozenCarpaccio extends Food {
                 Buff.detach(hero, Cripple.class);
                 Buff.detach(hero, Weakness.class);
                 Buff.detach(hero, Bleeding.class);
-                Buff.detach(hero, Drowsy.class);
-                Buff.detach(hero, Slow.class);
+                Buff.detach(hero, Knockout.class);
+                Buff.detach(hero, TimeSink.class);
                 Buff.detach(hero, Vertigo.class);
                 break;
             case 3:

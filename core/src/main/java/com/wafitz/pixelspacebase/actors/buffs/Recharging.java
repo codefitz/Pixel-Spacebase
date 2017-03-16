@@ -39,7 +39,7 @@ public class Recharging extends FlavourBuff {
     //firstly, if this buff has half a turn left, should give out half the benefit.
     //secondly, recall that buffs execute in random order, so this can cause a problem where we can't simply check
     //if this buff is still attached, must instead directly check its remaining time, and act accordingly.
-    //otherwise this causes inconsistent behaviour where this may detach before, or after, a wand charger acts.
+    //otherwise this causes inconsistent behaviour where this may detach before, or after, a blaster charger acts.
     public float remainder() {
         return Math.min(1f, this.cooldown());
     }

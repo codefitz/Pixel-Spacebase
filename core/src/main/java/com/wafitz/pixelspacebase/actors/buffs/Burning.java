@@ -34,9 +34,9 @@ import com.wafitz.pixelspacebase.items.armor.glyphs.Brimstone;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.items.modules.ElementsModule.Resistance;
+import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicalInfusion;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
+import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -93,7 +93,7 @@ public class Burning extends Buff implements Hero.Doom {
                     hero.damage(damage, this);
                     Item item = hero.belongings.randomUnequipped();
                     if (item instanceof Script
-                            && !(item instanceof ScriptOfUpgrade || item instanceof ScriptOfMagicalInfusion)) {
+                            && !(item instanceof UpgradeScript || item instanceof MagicalInfusionScript)) {
 
                         item = item.detach(hero.belongings.backpack);
                         GLog.w(Messages.get(this, "burnsup", Messages.capitalize(item.toString())));
@@ -124,7 +124,7 @@ public class Burning extends Buff implements Hero.Doom {
                 Item item = ((Thief) target).item;
 
                 if (item instanceof Script &&
-                        !(item instanceof ScriptOfUpgrade || item instanceof ScriptOfMagicalInfusion)) {
+                        !(item instanceof UpgradeScript || item instanceof MagicalInfusionScript)) {
                     target.sprite.emitter().burst(ElmoParticle.FACTORY, 6);
                     ((Thief) target).item = null;
                 }
@@ -141,7 +141,7 @@ public class Burning extends Buff implements Hero.Doom {
         }
 
         if (Level.flamable[target.pos] && Blob.volumeAt(target.pos, Fire.class) == 0) {
-            GameScene.add(Blob.seed(target.pos, 4, Fire.class));
+            GameScene.add(Blob.gadget(target.pos, 4, Fire.class));
         }
 
         spend(TICK);

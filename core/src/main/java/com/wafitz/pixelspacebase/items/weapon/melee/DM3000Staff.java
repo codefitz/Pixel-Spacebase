@@ -29,11 +29,11 @@ import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.bags.Bag;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfRecharging;
-import com.wafitz.pixelspacebase.items.wands.Wand;
-import com.wafitz.pixelspacebase.items.wands.WandOfCorruption;
-import com.wafitz.pixelspacebase.items.wands.WandOfDisintegration;
-import com.wafitz.pixelspacebase.items.wands.WandOfRegrowth;
+import com.wafitz.pixelspacebase.items.blasters.Blaster;
+import com.wafitz.pixelspacebase.items.blasters.Disintergrator;
+import com.wafitz.pixelspacebase.items.blasters.EMP;
+import com.wafitz.pixelspacebase.items.blasters.MindBlaster;
+import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -51,7 +51,7 @@ import java.util.ArrayList;
 
 public class DM3000Staff extends MeleeWeapon {
 
-    private Wand wand;
+    private Blaster blaster;
 
     private static final String AC_IMBUE = "IMBUE";
     private static final String AC_ZAP = "ZAP";
@@ -71,7 +71,7 @@ public class DM3000Staff extends MeleeWeapon {
     }
 
     public DM3000Staff() {
-        wand = null;
+        blaster = null;
     }
 
     @Override
@@ -80,21 +80,21 @@ public class DM3000Staff extends MeleeWeapon {
                 lvl * (tier + 1);   //scaling unaffected
     }
 
-    public DM3000Staff(Wand wand) {
+    public DM3000Staff(Blaster blaster) {
         this();
-        wand.identify();
-        wand.malfunctioning = false;
-        this.wand = wand;
-        wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
-        wand.curCharges = wand.maxCharges;
-        name = Messages.get(wand, "staff_name");
+        blaster.identify();
+        blaster.malfunctioning = false;
+        this.blaster = blaster;
+        blaster.maxCharges = Math.min(blaster.maxCharges + 1, 10);
+        blaster.curCharges = blaster.maxCharges;
+        name = Messages.get(blaster, "staff_name");
     }
 
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
         actions.add(AC_IMBUE);
-        if (wand != null && wand.curCharges > 0) {
+        if (blaster != null && blaster.curCharges > 0) {
             actions.add(AC_ZAP);
         }
         return actions;
@@ -102,7 +102,7 @@ public class DM3000Staff extends MeleeWeapon {
 
     @Override
     public void activate(Char ch) {
-        if (wand != null) wand.charge(ch, STAFF_SCALE_FACTOR);
+        if (blaster != null) blaster.charge(ch, STAFF_SCALE_FACTOR);
     }
 
     @Override
@@ -113,25 +113,25 @@ public class DM3000Staff extends MeleeWeapon {
         if (action.equals(AC_IMBUE)) {
 
             curUser = hero;
-            GameScene.selectItem(itemSelector, WndBag.Mode.WAND, Messages.get(this, "prompt"));
+            GameScene.selectItem(itemSelector, WndBag.Mode.BLASTER, Messages.get(this, "prompt"));
 
         } else if (action.equals(AC_ZAP)) {
 
-            if (wand == null) {
+            if (blaster == null) {
                 GameScene.show(new WndItem(null, this, true));
                 return;
             }
 
-            wand.execute(hero, AC_ZAP);
+            blaster.execute(hero, AC_ZAP);
         }
     }
 
     @Override
     public int proc(Char attacker, Char defender, int damage) {
-        if (wand != null && Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE) {
-            if (wand.curCharges < wand.maxCharges) wand.partialCharge += 0.33f;
-            ScriptOfRecharging.charge((Hero) attacker);
-            wand.onHit(this, attacker, defender, damage);
+        if (blaster != null && Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE) {
+            if (blaster.curCharges < blaster.maxCharges) blaster.partialCharge += 0.33f;
+            RechargingScript.charge((Hero) attacker);
+            blaster.onHit(this, attacker, defender, damage);
         }
         return super.proc(attacker, defender, damage);
     }
@@ -139,7 +139,7 @@ public class DM3000Staff extends MeleeWeapon {
     @Override
     public int reachFactor(Hero hero) {
         int reach = super.reachFactor(hero);
-        if (wand instanceof WandOfDisintegration && hero.subClass == HeroSubClass.BATTLEMAGE) {
+        if (blaster instanceof Disintergrator && hero.subClass == HeroSubClass.BATTLEMAGE) {
             reach++;
         }
         return reach;
@@ -148,8 +148,8 @@ public class DM3000Staff extends MeleeWeapon {
     @Override
     public boolean collect(Bag container) {
         if (super.collect(container)) {
-            if (container.owner != null && wand != null) {
-                wand.charge(container.owner, STAFF_SCALE_FACTOR);
+            if (container.owner != null && blaster != null) {
+                blaster.charge(container.owner, STAFF_SCALE_FACTOR);
             }
             return true;
         } else {
@@ -159,19 +159,19 @@ public class DM3000Staff extends MeleeWeapon {
 
     @Override
     public void onDetach() {
-        if (wand != null) wand.stopCharging();
+        if (blaster != null) blaster.stopCharging();
     }
 
-    public Item imbueWand(Wand wand, Char owner) {
+    public Item imbueBlaster(Blaster blaster, Char owner) {
 
-        wand.malfunctioning = false;
-        this.wand = null;
+        blaster.malfunctioning = false;
+        this.blaster = null;
 
         //syncs the level of the two items.
-        int targetLevel = Math.max(this.level(), wand.level());
+        int targetLevel = Math.max(this.level(), blaster.level());
 
-        //if the staff's level is being overridden by the wand, preserve 1 upgrade
-        if (wand.level() >= this.level() && this.level() > 0) targetLevel++;
+        //if the staff's level is being overridden by the blaster, preserve 1 upgrade
+        if (blaster.level() >= this.level() && this.level() > 0) targetLevel++;
 
         int staffLevelDiff = targetLevel - this.level();
         if (staffLevelDiff > 0)
@@ -179,19 +179,19 @@ public class DM3000Staff extends MeleeWeapon {
         else if (staffLevelDiff < 0)
             this.degrade(Math.abs(staffLevelDiff));
 
-        int wandLevelDiff = targetLevel - wand.level();
-        if (wandLevelDiff > 0)
-            wand.upgrade(wandLevelDiff);
-        else if (wandLevelDiff < 0)
-            wand.degrade(Math.abs(wandLevelDiff));
+        int blasterLevelDiff = targetLevel - blaster.level();
+        if (blasterLevelDiff > 0)
+            blaster.upgrade(blasterLevelDiff);
+        else if (blasterLevelDiff < 0)
+            blaster.degrade(Math.abs(blasterLevelDiff));
 
-        this.wand = wand;
-        wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
-        wand.curCharges = wand.maxCharges;
-        wand.identify();
-        if (owner != null) wand.charge(owner);
+        this.blaster = blaster;
+        blaster.maxCharges = Math.min(blaster.maxCharges + 1, 10);
+        blaster.curCharges = blaster.maxCharges;
+        blaster.identify();
+        if (owner != null) blaster.charge(owner);
 
-        name = Messages.get(wand, "staff_name");
+        name = Messages.get(blaster, "staff_name");
 
         //This is necessary to reset any particles.
         //FIXME this is gross, should implement a better way to fully reset quickslot visuals
@@ -206,20 +206,20 @@ public class DM3000Staff extends MeleeWeapon {
         return this;
     }
 
-    public Class<? extends Wand> wandClass() {
-        return wand != null ? wand.getClass() : null;
+    public Class<? extends Blaster> blasterClass() {
+        return blaster != null ? blaster.getClass() : null;
     }
 
     @Override
     public Item upgrade(boolean enchant) {
         super.upgrade(enchant);
 
-        if (wand != null) {
-            int curCharges = wand.curCharges;
-            wand.upgrade();
-            //gives the wand one additional charge
-            wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
-            wand.curCharges = Math.min(wand.curCharges + 1, 10);
+        if (blaster != null) {
+            int curCharges = blaster.curCharges;
+            blaster.upgrade();
+            //gives the blaster one additional charge
+            blaster.maxCharges = Math.min(blaster.maxCharges + 1, 10);
+            blaster.curCharges = Math.min(blaster.curCharges + 1, 10);
             updateQuickslot();
         }
 
@@ -230,12 +230,12 @@ public class DM3000Staff extends MeleeWeapon {
     public Item degrade() {
         super.degrade();
 
-        if (wand != null) {
-            int curCharges = wand.curCharges;
-            wand.degrade();
-            //gives the wand one additional charge
-            wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
-            wand.curCharges = curCharges - 1;
+        if (blaster != null) {
+            int curCharges = blaster.curCharges;
+            blaster.degrade();
+            //gives the blaster one additional charge
+            blaster.maxCharges = Math.min(blaster.maxCharges + 1, 10);
+            blaster.curCharges = curCharges - 1;
             updateQuickslot();
         }
 
@@ -244,18 +244,18 @@ public class DM3000Staff extends MeleeWeapon {
 
     @Override
     public String status() {
-        if (wand == null) return super.status();
-        else return wand.status();
+        if (blaster == null) return super.status();
+        else return blaster.status();
     }
 
     @Override
     public String info() {
         String info = super.info();
 
-        if (wand == null) {
-            info += "\n\n" + Messages.get(this, "no_wand");
+        if (blaster == null) {
+            info += "\n\n" + Messages.get(this, "no_blaster");
         } else {
-            info += "\n\n" + Messages.get(this, "has_wand", Messages.get(wand, "name")) + " " + wand.statsDesc();
+            info += "\n\n" + Messages.get(this, "has_blaster", Messages.get(blaster, "name")) + " " + blaster.statsDesc();
         }
 
         return info;
@@ -263,7 +263,7 @@ public class DM3000Staff extends MeleeWeapon {
 
     @Override
     public Emitter emitter() {
-        if (wand == null) return null;
+        if (blaster == null) return null;
         Emitter emitter = new Emitter();
         emitter.pos(12.5f, 3);
         emitter.fillTarget = false;
@@ -271,21 +271,21 @@ public class DM3000Staff extends MeleeWeapon {
         return emitter;
     }
 
-    private static final String WAND = "wand";
+    private static final String BLASTER = "blaster";
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
-        bundle.put(WAND, wand);
+        bundle.put(BLASTER, blaster);
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        wand = (Wand) bundle.get(WAND);
-        if (wand != null) {
-            wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
-            name = Messages.get(wand, "staff_name");
+        blaster = (Blaster) bundle.get(BLASTER);
+        if (blaster != null) {
+            blaster.maxCharges = Math.min(blaster.maxCharges + 1, 10);
+            name = Messages.get(blaster, "staff_name");
         }
     }
 
@@ -307,8 +307,8 @@ public class DM3000Staff extends MeleeWeapon {
                     return;
                 }
 
-                if (wand == null) {
-                    applyWand((Wand) item);
+                if (blaster == null) {
+                    applyBlaster((Blaster) item);
                 } else {
                     final int newLevel =
                             item.level() >= level() ?
@@ -324,7 +324,7 @@ public class DM3000Staff extends MeleeWeapon {
                                 @Override
                                 protected void onSelect(int index) {
                                     if (index == 0) {
-                                        applyWand((Wand) item);
+                                        applyBlaster((Blaster) item);
                                     }
                                 }
                             }
@@ -333,18 +333,18 @@ public class DM3000Staff extends MeleeWeapon {
             }
         }
 
-        private void applyWand(Wand wand) {
+        private void applyBlaster(Blaster blaster) {
             Sample.INSTANCE.play(Assets.SND_BURNING);
             curUser.sprite.emitter().burst(ElmoParticle.FACTORY, 12);
             evoke(curUser);
 
-            Dungeon.quickslot.clearItem(wand);
+            Dungeon.quickslot.clearItem(blaster);
 
-            wand.detach(curUser.belongings.backpack);
+            blaster.detach(curUser.belongings.backpack);
             Badges.validateTutorial();
 
-            GLog.p(Messages.get(DM3000Staff.class, "imbue", wand.name()));
-            imbueWand(wand, curUser);
+            GLog.p(Messages.get(DM3000Staff.class, "imbue", blaster.name()));
+            imbueBlaster(blaster, curUser);
 
             updateQuickslot();
         }
@@ -365,13 +365,13 @@ public class DM3000Staff extends MeleeWeapon {
         @Override
         //some particles need light mode, others don't
         public boolean lightMode() {
-            return !((wand instanceof WandOfDisintegration)
-                    || (wand instanceof WandOfCorruption)
-                    || (wand instanceof WandOfRegrowth));
+            return !((blaster instanceof Disintergrator)
+                    || (blaster instanceof MindBlaster)
+                    || (blaster instanceof EMP));
         }
     };
 
-    //determines particle effects to use based on wand the staff owns.
+    //determines particle effects to use based on blaster the staff owns.
     public class StaffParticle extends PixelParticle {
 
         private float minSize;
@@ -390,8 +390,8 @@ public class DM3000Staff extends MeleeWeapon {
             this.x = x;
             this.y = y;
 
-            if (wand != null)
-                wand.staffFx(this);
+            if (blaster != null)
+                blaster.staffFx(this);
 
         }
 

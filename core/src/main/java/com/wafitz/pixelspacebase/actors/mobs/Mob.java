@@ -27,10 +27,10 @@ import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Amok;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Corruption;
+import com.wafitz.pixelspacebase.actors.buffs.Domination;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
+import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.buffs.Sleep;
 import com.wafitz.pixelspacebase.actors.buffs.SoulMark;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
@@ -195,10 +195,10 @@ public abstract class Mob extends Char {
         if (enemy == null || !enemy.isAlive() || state == WANDERING)
             newEnemy = true;
             //We are corrupted, and current enemy is either the hero or another corrupted character.
-        else if (buff(Corruption.class) != null && (enemy == Dungeon.hero || enemy.buff(Corruption.class) != null))
+        else if (buff(Domination.class) != null && (enemy == Dungeon.hero || enemy.buff(Domination.class) != null))
             newEnemy = true;
             //We are amoked and current enemy is the hero
-        else if (buff(Amok.class) != null && enemy == Dungeon.hero)
+        else if (buff(Paranoid.class) != null && enemy == Dungeon.hero)
             newEnemy = true;
 
         if (newEnemy) {
@@ -206,11 +206,11 @@ public abstract class Mob extends Char {
             HashSet<Char> enemies = new HashSet<>();
 
             //if the mob is corrupted...
-            if (buff(Corruption.class) != null) {
+            if (buff(Domination.class) != null) {
 
                 //look for enemy mobs to attack, which are also not corrupted
                 for (Mob mob : Dungeon.level.mobs)
-                    if (mob != this && Level.fieldOfView[mob.pos] && mob.hostile && mob.buff(Corruption.class) == null)
+                    if (mob != this && Level.fieldOfView[mob.pos] && mob.hostile && mob.buff(Domination.class) == null)
                         enemies.add(mob);
                 if (enemies.size() > 0) return Random.element(enemies);
 
@@ -218,7 +218,7 @@ public abstract class Mob extends Char {
                 return null;
 
                 //if the mob is amoked...
-            } else if (buff(Amok.class) != null) {
+            } else if (buff(Paranoid.class) != null) {
 
                 //try to find an enemy mob to attack first.
                 for (Mob mob : Dungeon.level.mobs)
@@ -268,7 +268,7 @@ public abstract class Mob extends Char {
     @Override
     public void add(Buff buff) {
         super.add(buff);
-        if (buff instanceof Amok) {
+        if (buff instanceof Paranoid) {
             if (sprite != null) {
                 sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "rage"));
             }
@@ -466,7 +466,7 @@ public abstract class Mob extends Char {
         }
 
         //become aggro'd by a corrupted enemy
-        if (enemy.buff(Corruption.class) != null) {
+        if (enemy.buff(Domination.class) != null) {
             aggro(enemy);
             target = enemy.pos;
             if (state == SLEEPING || state == WANDERING)

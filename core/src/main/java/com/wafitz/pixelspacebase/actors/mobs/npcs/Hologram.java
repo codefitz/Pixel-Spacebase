@@ -26,8 +26,8 @@ import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
-import com.wafitz.pixelspacebase.actors.buffs.Roots;
 import com.wafitz.pixelspacebase.actors.mobs.GnollTrickster;
 import com.wafitz.pixelspacebase.actors.mobs.GreatCrab;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
@@ -189,7 +189,7 @@ public class Hologram extends NPC {
 
     static {
         IMMUNITIES.add(Paralysis.class);
-        IMMUNITIES.add(Roots.class);
+        IMMUNITIES.add(LockedDown.class);
     }
 
     @Override

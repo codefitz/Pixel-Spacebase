@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Amok;
+import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.buffs.Sleep;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Imp;
@@ -82,7 +82,7 @@ public class Golem extends Mob {
     private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 
     static {
-        IMMUNITIES.add(Amok.class);
+        IMMUNITIES.add(Paranoid.class);
         IMMUNITIES.add(Terror.class);
         IMMUNITIES.add(Sleep.class);
     }

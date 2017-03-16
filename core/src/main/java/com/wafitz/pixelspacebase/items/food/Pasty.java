@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Hunger;
 import com.wafitz.pixelspacebase.actors.buffs.Recharging;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfRecharging;
+import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
@@ -109,7 +109,7 @@ public class Pasty extends Food {
                     break;
                 case XMAS:
                     Buff.affect(hero, Recharging.class, 2f); //half of a charge
-                    ScriptOfRecharging.charge(hero);
+                    RechargingScript.charge(hero);
                     break;
             }
         }

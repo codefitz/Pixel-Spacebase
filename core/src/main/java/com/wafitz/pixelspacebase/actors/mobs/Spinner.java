@@ -24,8 +24,8 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.Web;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
-import com.wafitz.pixelspacebase.actors.buffs.Roots;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -34,7 +34,7 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-public class Spinner extends Mob {
+class Spinner extends Mob {
 
     {
         spriteClass = SpinnerSprite.class;
@@ -90,7 +90,7 @@ public class Spinner extends Mob {
     @Override
     public void move(int step) {
         if (state == FLEEING) {
-            GameScene.add(Blob.seed(pos, Random.Int(5, 7), Web.class));
+            GameScene.add(Blob.gadget(pos, Random.Int(5, 7), Web.class));
         }
         super.move(step);
     }
@@ -109,7 +109,7 @@ public class Spinner extends Mob {
     private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 
     static {
-        IMMUNITIES.add(Roots.class);
+        IMMUNITIES.add(LockedDown.class);
     }
 
     @Override

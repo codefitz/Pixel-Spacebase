@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.quest.DarkParts;
 import com.wafitz.pixelspacebase.items.quest.Pickaxe;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfUpgrade;
+import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Room.Type;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -185,7 +185,7 @@ public class Blacksmith extends NPC {
         }
 
         Sample.INSTANCE.play(Assets.SND_EVOKE);
-        ScriptOfUpgrade.upgrade(Dungeon.hero);
+        UpgradeScript.upgrade(Dungeon.hero);
         Item.evoke(Dungeon.hero);
 
         if (first.isEquipped(Dungeon.hero)) {

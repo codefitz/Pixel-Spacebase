@@ -194,7 +194,7 @@ public class Blob extends Actor {
         }
     }
 
-    public void seed(Level level, int cell, int amount) {
+    public void gadget(Level level, int cell, int amount) {
         if (cur == null) cur = new int[level.length()];
         if (off == null) off = new int[cur.length];
 
@@ -222,7 +222,7 @@ public class Blob extends Actor {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Blob> T seed(int cell, int amount, Class<T> type) {
+    public static <T extends Blob> T gadget(int cell, int amount, Class<T> type) {
         try {
 
             T gas = (T) Dungeon.level.blobs.get(type);
@@ -231,7 +231,7 @@ public class Blob extends Actor {
                 Dungeon.level.blobs.put(type, gas);
             }
 
-            gas.seed(Dungeon.level, cell, amount);
+            gas.gadget(Dungeon.level, cell, amount);
 
             return gas;
 

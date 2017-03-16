@@ -30,11 +30,11 @@ import com.wafitz.pixelspacebase.items.BrokenSeal;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.armor.Uniform;
+import com.wafitz.pixelspacebase.items.bags.BlasterHolster;
 import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
-import com.wafitz.pixelspacebase.items.bags.SeedPouch;
-import com.wafitz.pixelspacebase.items.bags.WandHolster;
+import com.wafitz.pixelspacebase.items.bags.GadgetBag;
 import com.wafitz.pixelspacebase.items.food.Food;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
+import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.levels.vents.AlarmVent;
 import com.wafitz.pixelspacebase.levels.vents.ChillingVent;
 import com.wafitz.pixelspacebase.levels.vents.FlockVent;
@@ -62,12 +62,12 @@ public class OperationsLevel extends RegularLevel {
 
     @Override
     public String tilesTex() {
-        return Assets.TILES_SEWERS;
+        return Assets.TILES_OPERATIONS;
     }
 
     @Override
     public String waterTex() {
-        return Assets.WATER_SEWERS;
+        return Assets.WATER_OPERATIONS;
     }
 
     protected boolean[] water() {
@@ -152,9 +152,9 @@ public class OperationsLevel extends RegularLevel {
                     drop(new Uniform().identify(), pos);
                     drop(new Food().identify(), pos);
                     // Testing
-                drop(new ScriptOfMagicMapping().identify(), pos);
-                    drop(new SeedPouch().identify(), pos);
-                    drop(new WandHolster().identify(), pos);
+                drop(new MappingScript().identify(), pos);
+                drop(new GadgetBag().identify(), pos);
+                drop(new BlasterHolster().identify(), pos);
                 drop(new ExperimentalTechBandolier().identify(), pos);
                     drop(new BrokenSeal().identify(), pos);
                 }

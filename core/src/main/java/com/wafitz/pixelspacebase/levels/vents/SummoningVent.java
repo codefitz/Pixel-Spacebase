@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.utils.PathFinder;
@@ -86,7 +86,7 @@ public class SummoningVent extends Vent {
 
         //important to process the visuals and pressing of cells last, so spawned mobs have a chance to occupy cells first
         for (Mob mob : mobs) {
-            ScriptOfTeleportation.appear(mob, mob.pos);
+            TeleportationScript.appear(mob, mob.pos);
         }
 
     }

@@ -23,8 +23,8 @@ package com.wafitz.pixelspacebase.levels.features;
 import com.wafitz.pixelspacebase.Challenges;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Barkskin;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.Shielding;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
@@ -36,8 +36,8 @@ import com.wafitz.pixelspacebase.items.armor.glyphs.Camouflage;
 import com.wafitz.pixelspacebase.items.artifacts.SandalsOfNature;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.plants.BlandfruitBush;
 import com.wafitz.pixelspacebase.scenes.GameScene;
+import com.wafitz.pixelspacebase.triggers.BlandfruitBush;
 import com.watabou.utils.Random;
 
 public class OffVent {
@@ -63,17 +63,17 @@ public class OffVent {
             }
 
             if (naturalismLevel >= 0) {
-                // Seed, scales from 1/16 to 1/4
+                // Gadget, scales from 1/16 to 1/4
                 if (Random.Int(16 - naturalismLevel * 3) == 0) {
-                    Item seed = Generator.random(Generator.Category.SEED);
+                    Item gadget = Generator.random(Generator.Category.GADGET);
 
-                    if (seed instanceof BlandfruitBush.Seed) {
-                        if (Random.Int(15) - Dungeon.limitedDrops.blandfruitSeed.count >= 0) {
-                            level.drop(seed, pos).sprite.drop();
-                            Dungeon.limitedDrops.blandfruitSeed.count++;
+                    if (gadget instanceof BlandfruitBush.Gadget) {
+                        if (Random.Int(15) - Dungeon.limitedDrops.blandfruitGadget.count >= 0) {
+                            level.drop(gadget, pos).sprite.drop();
+                            Dungeon.limitedDrops.blandfruitGadget.count++;
                         }
                     } else
-                        level.drop(seed, pos).sprite.drop();
+                        level.drop(gadget, pos).sprite.drop();
                 }
 
                 // Dew, scales from 1/6 to 1/3
@@ -89,9 +89,9 @@ public class OffVent {
         if (ch instanceof Hero) {
             Hero hero = (Hero) ch;
 
-            // Barkskin
+            // Shielding
             if (hero.subClass == HeroSubClass.WARDEN) {
-                Buff.affect(ch, Barkskin.class).level(ch.HT / 3);
+                Buff.affect(ch, Shielding.class).level(ch.HT / 3);
                 leaves += 4;
             }
 

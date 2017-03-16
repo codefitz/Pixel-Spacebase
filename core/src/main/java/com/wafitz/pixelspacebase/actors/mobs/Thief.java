@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Corruption;
+import com.wafitz.pixelspacebase.actors.buffs.Domination;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
@@ -178,7 +178,7 @@ public class Thief extends Mob {
     private class Fleeing extends Mob.Fleeing {
         @Override
         protected void nowhereToRun() {
-            if (buff(Terror.class) == null && buff(Corruption.class) == null) {
+            if (buff(Terror.class) == null && buff(Domination.class) == null) {
                 if (enemySeen) {
                     sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Mob.class, "rage"));
                     state = HUNTING;

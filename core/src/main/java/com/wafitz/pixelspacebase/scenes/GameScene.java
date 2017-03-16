@@ -43,20 +43,20 @@ import com.wafitz.pixelspacebase.items.DroneController;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.bags.BlasterHolster;
 import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
+import com.wafitz.pixelspacebase.items.bags.GadgetBag;
 import com.wafitz.pixelspacebase.items.bags.ScriptHolder;
-import com.wafitz.pixelspacebase.items.bags.SeedPouch;
-import com.wafitz.pixelspacebase.items.bags.WandHolster;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
+import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.plants.Plant;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.sprites.DiscardedItemSprite;
 import com.wafitz.pixelspacebase.sprites.HeroSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
+import com.wafitz.pixelspacebase.triggers.Trigger;
 import com.wafitz.pixelspacebase.ui.ActionIndicator;
 import com.wafitz.pixelspacebase.ui.AttackIndicator;
 import com.wafitz.pixelspacebase.ui.Banner;
@@ -80,7 +80,7 @@ import com.wafitz.pixelspacebase.windows.WndHero;
 import com.wafitz.pixelspacebase.windows.WndInfoCell;
 import com.wafitz.pixelspacebase.windows.WndInfoItem;
 import com.wafitz.pixelspacebase.windows.WndInfoMob;
-import com.wafitz.pixelspacebase.windows.WndInfoPlant;
+import com.wafitz.pixelspacebase.windows.WndInfoTrigger;
 import com.wafitz.pixelspacebase.windows.WndInfoVent;
 import com.wafitz.pixelspacebase.windows.WndMessage;
 import com.wafitz.pixelspacebase.windows.WndOptions;
@@ -125,7 +125,7 @@ public class GameScene extends PixelScene {
     private Group customTiles;
     private Group levelVisuals;
     private Group ripples;
-    private Group plants;
+    private Group triggers;
     private Group vents;
     private Group heaps;
     private Group mobs;
@@ -193,7 +193,7 @@ public class GameScene extends PixelScene {
             addCustomTile(visual.create());
         }
 
-        terrainFeatures = new TerrainFeaturesTilemap(Dungeon.level.plants, Dungeon.level.vents);
+        terrainFeatures = new TerrainFeaturesTilemap(Dungeon.level.triggers, Dungeon.level.vents);
         terrain.add(terrainFeatures);
 
         levelVisuals = Dungeon.level.addVisuals();
@@ -292,11 +292,11 @@ public class GameScene extends PixelScene {
 
         switch (InterlevelScene.mode) {
             case RESURRECT:
-                ScriptOfTeleportation.appear(Dungeon.hero, Dungeon.level.entrance);
+                TeleportationScript.appear(Dungeon.hero, Dungeon.level.entrance);
                 new Flare(8, 32).color(0xFFFF66, true).show(hero, 2f);
                 break;
             case RETURN:
-                ScriptOfTeleportation.appear(Dungeon.hero, Dungeon.hero.pos);
+                TeleportationScript.appear(Dungeon.hero, Dungeon.hero.pos);
                 break;
             case FALL:
                 Chasm.heroLand();
@@ -304,7 +304,7 @@ public class GameScene extends PixelScene {
             case DESCEND:
                 switch (Dungeon.depth) {
                     case 1:
-                        WndStory.showChapter(WndStory.ID_SEWERS);
+                        WndStory.showChapter(WndStory.ID_OPERATIONS);
                         break;
                     case 6:
                         WndStory.showChapter(WndStory.ID_PRISON);
@@ -332,8 +332,8 @@ public class GameScene extends PixelScene {
                 int pos = Dungeon.level.randomRespawnCell();
                 if (item instanceof ExperimentalTech) {
                     ((ExperimentalTech) item).shatter(pos);
-                } else if (item instanceof Plant.Seed) {
-                    Dungeon.level.plant((Plant.Seed) item, pos);
+                } else if (item instanceof Trigger.Gadget) {
+                    Dungeon.level.trigger((Trigger.Gadget) item, pos);
                 } else if (item instanceof DroneController) {
                     Dungeon.level.drop(((DroneController) item).shatter(null, pos), pos);
                 } else {
@@ -532,7 +532,7 @@ public class GameScene extends PixelScene {
         heaps.add(heap.sprite);
     }
 
-    private void addPlantSprite(Plant plant) {
+    private void addTriggerSprite(Trigger trigger) {
 
     }
 
@@ -583,9 +583,9 @@ public class GameScene extends PixelScene {
 
     // -------------------------------------------------------
 
-    public static void add(Plant plant) {
+    public static void add(Trigger trigger) {
         if (scene != null) {
-            scene.addPlantSprite(plant);
+            scene.addTriggerSprite(trigger);
         }
     }
 
@@ -693,9 +693,9 @@ public class GameScene extends PixelScene {
         }
     }
 
-    public static void plantSeed(int cell) {
+    public static void triggerGadget(int cell) {
         if (scene != null) {
-            scene.terrainFeatures.growPlant(cell);
+            scene.terrainFeatures.growTrigger(cell);
         }
     }
 
@@ -775,14 +775,14 @@ public class GameScene extends PixelScene {
         cancelCellSelector();
 
         WndBag wnd =
-                mode == Mode.SEED ?
-                        WndBag.getBag(SeedPouch.class, listener, mode, title) :
+                mode == Mode.GADGET ?
+                        WndBag.getBag(GadgetBag.class, listener, mode, title) :
                         mode == Mode.SCRIPT ?
                                 WndBag.getBag(ScriptHolder.class, listener, mode, title) :
                                 mode == Mode.EXPERIMENTALTECH ?
                                         WndBag.getBag(ExperimentalTechBandolier.class, listener, mode, title) :
-                                        mode == Mode.WAND ?
-                                                WndBag.getBag(WandHolster.class, listener, mode, title) :
+                                        mode == Mode.BLASTER ?
+                                                WndBag.getBag(BlasterHolster.class, listener, mode, title) :
                                                 WndBag.lastBag(listener, mode, title);
 
         scene.addToFront(wnd);
@@ -842,10 +842,10 @@ public class GameScene extends PixelScene {
             names.add(Messages.titleCase(heap.toString()));
         }
 
-        Plant plant = Dungeon.level.plants.get(cell);
-        if (plant != null) {
-            objects.add(plant);
-            names.add(Messages.titleCase(plant.plantName));
+        Trigger trigger = Dungeon.level.triggers.get(cell);
+        if (trigger != null) {
+            objects.add(trigger);
+            names.add(Messages.titleCase(trigger.triggerName));
         }
 
         Vent vent = Dungeon.level.vents.get(cell);
@@ -882,8 +882,8 @@ public class GameScene extends PixelScene {
             } else {
                 GameScene.show(new WndInfoItem(heap));
             }
-        } else if (o instanceof Plant) {
-            GameScene.show(new WndInfoPlant((Plant) o));
+        } else if (o instanceof Trigger) {
+            GameScene.show(new WndInfoTrigger((Trigger) o));
         } else if (o instanceof Vent) {
             GameScene.show(new WndInfoVent((Vent) o));
         } else {

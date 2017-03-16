@@ -23,16 +23,16 @@ package com.wafitz.pixelspacebase.items.artifacts;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Roots;
+import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.EarthParticle;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.plants.Earthroot;
-import com.wafitz.pixelspacebase.plants.Plant;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
+import com.wafitz.pixelspacebase.triggers.Earthroot;
+import com.wafitz.pixelspacebase.triggers.Trigger;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.wafitz.pixelspacebase.windows.WndBag;
 import com.watabou.noosa.Camera;
@@ -57,9 +57,9 @@ public class SandalsOfNature extends Artifact {
     private static final String AC_FEED = "FEED";
     private static final String AC_ROOT = "ROOT";
 
-    protected WndBag.Mode mode = WndBag.Mode.SEED;
+    protected WndBag.Mode mode = WndBag.Mode.GADGET;
 
-    public ArrayList<Class> seeds = new ArrayList<>();
+    public ArrayList<Class> gadgets = new ArrayList<>();
 
     @Override
     public ArrayList<String> actions(Hero hero) {
@@ -84,7 +84,7 @@ public class SandalsOfNature extends Artifact {
             if (!isEquipped(hero)) GLog.i(Messages.get(Artifact.class, "need_to_equip"));
             else if (charge == 0) GLog.i(Messages.get(this, "no_charge"));
             else {
-                Buff.prolong(hero, Roots.class, 5);
+                Buff.prolong(hero, LockedDown.class, 5);
                 Buff.affect(hero, Earthroot.Armor.class).level(charge);
                 CellEmitter.bottom(hero.pos).start(EarthParticle.FACTORY, 0.05f, 8);
                 Camera.main.shake(1, 0.4f);
@@ -115,8 +115,8 @@ public class SandalsOfNature extends Artifact {
                 desc += "\n\n" + Messages.get(this, "desc_ability");
         }
 
-        if (!seeds.isEmpty()) {
-            desc += "\n\n" + Messages.get(this, "desc_seeds", seeds.size());
+        if (!gadgets.isEmpty()) {
+            desc += "\n\n" + Messages.get(this, "desc_gadgets", gadgets.size());
         }
 
         return desc;
@@ -133,20 +133,20 @@ public class SandalsOfNature extends Artifact {
     }
 
 
-    private static final String SEEDS = "seeds";
+    private static final String GADGETS = "gadgets";
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
-        bundle.put(SEEDS, seeds.toArray(new Class[seeds.size()]));
+        bundle.put(GADGETS, gadgets.toArray(new Class[gadgets.size()]));
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
         if (level() > 0) name = Messages.get(this, "name_" + level());
-        if (bundle.contains(SEEDS))
-            Collections.addAll(seeds, bundle.getClassArray(SEEDS));
+        if (bundle.contains(GADGETS))
+            Collections.addAll(gadgets, bundle.getClassArray(GADGETS));
         if (level() == 1) image = ItemSpriteSheet.ARTIFACT_SHOES;
         else if (level() == 2) image = ItemSpriteSheet.ARTIFACT_BOOTS;
         else if (level() >= 3) image = ItemSpriteSheet.ARTIFACT_GREAVES;
@@ -165,26 +165,26 @@ public class SandalsOfNature extends Artifact {
     protected WndBag.Listener itemSelector = new WndBag.Listener() {
         @Override
         public void onSelect(Item item) {
-            if (item != null && item instanceof Plant.Seed) {
-                if (seeds.contains(item.getClass())) {
+            if (item != null && item instanceof Trigger.Gadget) {
+                if (gadgets.contains(item.getClass())) {
                     GLog.w(Messages.get(SandalsOfNature.class, "already_fed"));
                 } else {
-                    seeds.add(item.getClass());
+                    gadgets.add(item.getClass());
 
                     Hero hero = Dungeon.hero;
                     hero.sprite.operate(hero.pos);
                     Sample.INSTANCE.play(Assets.SND_PLANT);
                     hero.busy();
                     hero.spend(2f);
-                    if (seeds.size() >= 3 + (level() * 3)) {
-                        seeds.clear();
+                    if (gadgets.size() >= 3 + (level() * 3)) {
+                        gadgets.clear();
                         upgrade();
                         if (level() >= 1 && level() <= 3) {
                             GLog.p(Messages.get(SandalsOfNature.class, "levelup"));
                         }
 
                     } else {
-                        GLog.i(Messages.get(SandalsOfNature.class, "absorb_seed"));
+                        GLog.i(Messages.get(SandalsOfNature.class, "absorb_gadget"));
                     }
                     item.detach(hero.belongings.backpack);
                 }

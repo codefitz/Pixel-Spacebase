@@ -25,10 +25,10 @@ import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
-import com.wafitz.pixelspacebase.actors.buffs.Corruption;
+import com.wafitz.pixelspacebase.actors.buffs.Domination;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.effects.Pushing;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfHealing;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -53,7 +53,7 @@ class Swarm extends Mob {
 
         flying = true;
 
-        loot = new ExperimentalTechOfHealing();
+        loot = new HealingTech();
         lootChance = 0.1667f; //by default, see die()
     }
 
@@ -131,8 +131,8 @@ class Swarm extends Mob {
         if (buff(Poison.class) != null) {
             Buff.affect(clone, Poison.class).set(2);
         }
-        if (buff(Corruption.class) != null) {
-            Buff.affect(clone, Corruption.class);
+        if (buff(Domination.class) != null) {
+            Buff.affect(clone, Domination.class);
         }
         return clone;
     }

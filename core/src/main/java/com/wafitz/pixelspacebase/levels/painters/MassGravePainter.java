@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.actors.mobs.Skeleton;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTechOfLiquidFlame;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.LiquidFlameTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -43,7 +43,7 @@ public class MassGravePainter extends Painter {
 
         Room.Door entrance = room.entrance();
         entrance.set(Room.Door.Type.BARRICADE);
-        level.addItemToSpawn(new ExperimentalTechOfLiquidFlame());
+        level.addItemToSpawn(new LiquidFlameTech());
 
         fill(level, room, Terrain.WALL);
         fill(level, room, 1, Terrain.EMPTY_SP);

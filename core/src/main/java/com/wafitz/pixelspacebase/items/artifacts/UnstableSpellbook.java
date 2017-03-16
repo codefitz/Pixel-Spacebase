@@ -29,9 +29,9 @@ import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.scripts.FixScript;
+import com.wafitz.pixelspacebase.items.scripts.IdentifyScript;
+import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfIdentify;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfMagicMapping;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -109,9 +109,9 @@ public class UnstableSpellbook extends Artifact {
                     script = (Script) Generator.random(Generator.Category.SCRIPT);
                 } while (script == null ||
                         //gotta reduce the rate on these scripts or that'll be all the item does.
-                        ((script instanceof ScriptOfIdentify ||
+                        ((script instanceof IdentifyScript ||
                                 script instanceof FixScript ||
-                                script instanceof ScriptOfMagicMapping) && Random.Int(2) == 0));
+                                script instanceof MappingScript) && Random.Int(2) == 0));
 
                 script.ownedByBook = true;
                 script.execute(hero, AC_READ);

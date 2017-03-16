@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.items.weapon.malfunctions;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Invisibility;
+import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
@@ -46,7 +46,7 @@ public class Annoying extends Weapon.Enchantment {
             }
             attacker.sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.3f, 3);
             Sample.INSTANCE.play(Assets.SND_MIMIC);
-            Invisibility.dispel();
+            Camoflage.dispel();
             GLog.n(Messages.get(this, "msg_" + (Random.Int(5) + 1)));
         }
 

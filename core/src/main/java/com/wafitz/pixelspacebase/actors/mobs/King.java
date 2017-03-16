@@ -34,10 +34,10 @@ import com.wafitz.pixelspacebase.effects.Flare;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.ArmorKit;
 import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
+import com.wafitz.pixelspacebase.items.blasters.Disintergrator;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfPsionicBlast;
-import com.wafitz.pixelspacebase.items.scripts.ScriptOfTeleportation;
-import com.wafitz.pixelspacebase.items.wands.WandOfDisintegration;
+import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
+import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
 import com.wafitz.pixelspacebase.levels.CityBossLevel;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -206,7 +206,7 @@ public class King extends Mob {
                         undead.pos = j;
                         GameScene.add(undead);
 
-                        ScriptOfTeleportation.appear(undead, j);
+                        TeleportationScript.appear(undead, j);
                         new Flare(3, 32).color(0x000000, false).show(undead.sprite, 2f);
 
                         PathFinder.distance[j] = Integer.MAX_VALUE;
@@ -233,8 +233,8 @@ public class King extends Mob {
     static {
         RESISTANCES.add(ToxicGas.class);
         RESISTANCES.add(Grim.class);
-        RESISTANCES.add(ScriptOfPsionicBlast.class);
-        RESISTANCES.add(WandOfDisintegration.class);
+        RESISTANCES.add(PsionicBlastScript.class);
+        RESISTANCES.add(Disintergrator.class);
     }
 
     @Override

@@ -91,6 +91,7 @@ public class Toolbar extends Component {
 
             }
 
+            // wafitz.v5: TODO: Add this functionality to normal cell selection (do away with long press of magnifying glass
             @Override
             protected boolean onLongClick() {
                 GameScene.selectCell(informer);

@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.effects.Lightning;
 import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.wands.Wand;
+import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.Camera;
@@ -71,9 +71,9 @@ public class LightningVent extends Vent {
         if (heap != null) {
             //TODO: this should probably charge staffs too
             Item item = heap.items.peek();
-            if (item instanceof Wand) {
-                Wand wand = (Wand) item;
-                ((Wand) item).curCharges += (int) Math.ceil((wand.maxCharges - wand.curCharges) / 2f);
+            if (item instanceof Blaster) {
+                Blaster blaster = (Blaster) item;
+                ((Blaster) item).curCharges += (int) Math.ceil((blaster.maxCharges - blaster.curCharges) / 2f);
             }
         }
 

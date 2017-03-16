@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.scripts;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.actors.buffs.Invisibility;
+import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -80,7 +80,7 @@ abstract class InventoryScript extends Script {
                 ((InventoryScript) curItem).readAnimation();
 
                 Sample.INSTANCE.play(Assets.SND_READ);
-                Invisibility.dispel();
+                Camoflage.dispel();
 
                 // wafitz.v1 - Lost count how many times I lost this script accidentally - no more!
                 //} else if (identifiedByUse && !((Script) curItem).ownedByBook) {
