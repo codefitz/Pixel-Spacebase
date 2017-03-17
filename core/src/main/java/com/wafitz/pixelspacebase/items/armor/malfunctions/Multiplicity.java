@@ -39,7 +39,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class Multiplicity extends Armor.Glyph {
+public class Multiplicity extends Armor.Enhancement {
 
     private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 

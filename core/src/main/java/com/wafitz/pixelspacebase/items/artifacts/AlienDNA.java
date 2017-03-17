@@ -36,7 +36,7 @@ import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
-public class ChaliceOfBlood extends Artifact {
+public class AlienDNA extends Artifact {
 
     {
         image = ItemSpriteSheet.ARTIFACT_CHALICE1;

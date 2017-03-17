@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.DriedRose;
+import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
 import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
 import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.watabou.noosa.Game;
@@ -76,7 +76,7 @@ public class WarpingVent extends Vent {
                 if (buff != null) buff.detach();
 
                 for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-                    if (mob instanceof DriedRose.GhostHero) mob.destroy();
+                    if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
                 InterlevelScene.mode = InterlevelScene.Mode.RETURN;
                 InterlevelScene.returnDepth = depth;

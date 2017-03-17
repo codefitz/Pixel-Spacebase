@@ -76,7 +76,7 @@ public class DungeonTilemap extends Tilemap {
         defaultVisuals.put(Terrain.STATUE, 21);
         defaultVisuals.put(Terrain.STATUE_SP, 22);
         defaultVisuals.put(Terrain.BOOKSHELF, 23);
-        defaultVisuals.put(Terrain.ALCHEMY, 24);
+        defaultVisuals.put(Terrain.CRAFTING, 24);
 
         defaultVisuals.put(Terrain.WATER, 63);
     }
@@ -109,7 +109,7 @@ public class DungeonTilemap extends Tilemap {
             Terrain.ENTRANCE, Terrain.EXIT, Terrain.EMBERS,
             Terrain.BARRICADE, Terrain.OFFVENT, Terrain.HIDDEN_VENT,
             Terrain.VENT, Terrain.INACTIVE_VENT, Terrain.EMPTY_DECO,
-            Terrain.SIGN, Terrain.WELL, Terrain.STATUE, Terrain.ALCHEMY
+            Terrain.SIGN, Terrain.WELL, Terrain.STATUE, Terrain.CRAFTING
     );
 
     //tiles that can stitch with chasms (from above), and which visual represents the stitching

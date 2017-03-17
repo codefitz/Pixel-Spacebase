@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class Corrosion extends Armor.Glyph {
+public class Corrosion extends Armor.Enhancement {
 
     private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 

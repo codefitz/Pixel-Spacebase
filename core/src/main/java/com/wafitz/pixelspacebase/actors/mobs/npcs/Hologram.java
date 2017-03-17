@@ -177,7 +177,7 @@ public class Hologram extends NPC {
                 GameScene.add(questBoss);
                 GameScene.show(new WndQuest(this, txt_quest));
                 Quest.given = true;
-                Journal.add(Journal.Feature.GHOST);
+                Journal.add(Journal.Feature.HOLOGRAM);
             }
 
         }
@@ -352,7 +352,7 @@ public class Hologram extends NPC {
             weapon = null;
             armor = null;
 
-            Journal.remove(Journal.Feature.GHOST);
+            Journal.remove(Journal.Feature.HOLOGRAM);
         }
 
         public static boolean completed() {

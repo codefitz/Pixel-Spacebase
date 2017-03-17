@@ -77,8 +77,8 @@ public class HeroAction {
         }
     }
 
-    public static class Cook extends HeroAction {
-        public Cook(int pot) {
+    public static class Make extends HeroAction {
+        public Make(int pot) {
             this.dst = pot;
         }
     }

@@ -30,11 +30,11 @@ import com.wafitz.pixelspacebase.actors.mobs.Thief;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Brimstone;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Brimstone;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.items.modules.ElementsModule.Resistance;
-import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
+import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -84,7 +84,7 @@ public class Burning extends Buff implements Hero.Doom {
 
                 Hero hero = (Hero) target;
 
-                if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Brimstone.class)) {
+                if (hero.belongings.armor != null && hero.belongings.armor.hasEnhancement(Brimstone.class)) {
 
                     Buff.affect(target, Brimstone.BrimstoneShield.class);
 
@@ -93,7 +93,7 @@ public class Burning extends Buff implements Hero.Doom {
                     hero.damage(damage, this);
                     Item item = hero.belongings.randomUnequipped();
                     if (item instanceof Script
-                            && !(item instanceof UpgradeScript || item instanceof MagicalInfusionScript)) {
+                            && !(item instanceof UpgradeScript || item instanceof EnhancementScript)) {
 
                         item = item.detach(hero.belongings.backpack);
                         GLog.w(Messages.get(this, "burnsup", Messages.capitalize(item.toString())));
@@ -124,7 +124,7 @@ public class Burning extends Buff implements Hero.Doom {
                 Item item = ((Thief) target).item;
 
                 if (item instanceof Script &&
-                        !(item instanceof UpgradeScript || item instanceof MagicalInfusionScript)) {
+                        !(item instanceof UpgradeScript || item instanceof EnhancementScript)) {
                     target.sprite.emitter().burst(ElmoParticle.FACTORY, 6);
                     ((Thief) target).item = null;
                 }

@@ -69,7 +69,7 @@ public class Dreamfoil extends Trigger {
             image = ItemSpriteSheet.DREAMFOIL_GADGET;
 
             triggerClass = Dreamfoil.class;
-            alchemyClass = PurityTech.class;
+            craftingClass = PurityTech.class;
         }
     }
 }

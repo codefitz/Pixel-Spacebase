@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Displacement extends Armor.Glyph {
+public class Displacement extends Armor.Enhancement {
 
     private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 

@@ -86,7 +86,7 @@ public class MalfunctioningVent extends Vent {
 
         Armor armor = hero.belongings.armor;
         if (armor != null && !armor.malfunctioning) {
-            if (armor.glyph == null)
+            if (armor.enhancement == null)
                 priorityMalfunction.add(armor);
             else
                 canMalfunction.add(armor);
@@ -134,8 +134,8 @@ public class MalfunctioningVent extends Vent {
         }
         if (item instanceof Armor) {
             Armor a = (Armor) item;
-            if (a.glyph == null) {
-                a.glyph = Armor.Glyph.randomMalfunction();
+            if (a.enhancement == null) {
+                a.enhancement = Armor.Enhancement.randomMalfunction();
             }
         }
     }

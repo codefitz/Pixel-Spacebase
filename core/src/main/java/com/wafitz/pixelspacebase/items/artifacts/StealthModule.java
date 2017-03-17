@@ -37,7 +37,7 @@ import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
-public class CloakOfShadows extends Artifact {
+public class StealthModule extends Artifact {
 
     {
         image = ItemSpriteSheet.ARTIFACT_CLOAK;
@@ -125,12 +125,12 @@ public class CloakOfShadows extends Artifact {
 
     @Override
     protected ArtifactBuff passiveBuff() {
-        return new cloakRecharge();
+        return new stealthRecharge();
     }
 
     @Override
     protected ArtifactBuff activeBuff() {
-        return new cloakStealth();
+        return new stealthModule();
     }
 
     @Override
@@ -167,7 +167,7 @@ public class CloakOfShadows extends Artifact {
         return 0;
     }
 
-    public class cloakRecharge extends ArtifactBuff {
+    public class stealthRecharge extends ArtifactBuff {
         @Override
         public boolean act() {
             if (charge < chargeCap) {
@@ -198,7 +198,7 @@ public class CloakOfShadows extends Artifact {
 
     }
 
-    public class cloakStealth extends ArtifactBuff {
+    public class stealthModule extends ArtifactBuff {
         int turnsToCost = 0;
 
         @Override

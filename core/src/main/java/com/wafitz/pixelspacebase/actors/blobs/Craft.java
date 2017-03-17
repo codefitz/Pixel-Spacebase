@@ -52,7 +52,7 @@ public class Craft extends Blob {
         area.union(pos % Dungeon.level.width(), pos / Dungeon.level.width());
 
         if (Dungeon.visible[pos]) {
-            Journal.add(Journal.Feature.ALCHEMY);
+            Journal.add(Journal.Feature.CRAFTING);
         }
     }
 

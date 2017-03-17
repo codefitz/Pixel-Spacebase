@@ -28,7 +28,7 @@ public class Statistics {
     public static int deepestFloor;
     public static int enemiesSlain;
     public static int foodEaten;
-    public static int experimentalTechCooked;
+    public static int experimentalTechMade;
     public static int waterThings;
     public static int nightHunt;
     public static int clonesSpent;
@@ -46,7 +46,7 @@ public class Statistics {
         deepestFloor = 0;
         enemiesSlain = 0;
         foodEaten = 0;
-        experimentalTechCooked = 0;
+        experimentalTechMade = 0;
         waterThings = 0;
         nightHunt = 0;
         clonesSpent = 0;
@@ -63,7 +63,7 @@ public class Statistics {
     private static final String DEEPEST = "maxDepth";
     private static final String SLAIN = "enemiesSlain";
     private static final String FOOD = "foodEaten";
-    private static final String ALCHEMY = "experimentalTechCooked";
+    private static final String CRAFTING = "experimentalTechMade";
     private static final String WATERTHINGS = "priranhas";
     private static final String NIGHT = "nightHunt";
     private static final String CLONES = "clonesSpent";
@@ -75,7 +75,7 @@ public class Statistics {
         bundle.put(DEEPEST, deepestFloor);
         bundle.put(SLAIN, enemiesSlain);
         bundle.put(FOOD, foodEaten);
-        bundle.put(ALCHEMY, experimentalTechCooked);
+        bundle.put(CRAFTING, experimentalTechMade);
         bundle.put(WATERTHINGS, waterThings);
         bundle.put(NIGHT, nightHunt);
         bundle.put(CLONES, clonesSpent);
@@ -88,7 +88,7 @@ public class Statistics {
         deepestFloor = bundle.getInt(DEEPEST);
         enemiesSlain = bundle.getInt(SLAIN);
         foodEaten = bundle.getInt(FOOD);
-        experimentalTechCooked = bundle.getInt(ALCHEMY);
+        experimentalTechMade = bundle.getInt(CRAFTING);
         waterThings = bundle.getInt(WATERTHINGS);
         nightHunt = bundle.getInt(NIGHT);
         clonesSpent = bundle.getInt(CLONES);

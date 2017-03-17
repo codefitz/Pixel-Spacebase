@@ -58,7 +58,7 @@ public class Sungrass extends Trigger {
             image = ItemSpriteSheet.SUNGRASS_GADGET;
 
             triggerClass = Sungrass.class;
-            alchemyClass = HealingTech.class;
+            craftingClass = HealingTech.class;
 
             bones = true;
         }

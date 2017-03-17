@@ -18,39 +18,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.weapon.enchantments;
+package com.wafitz.pixelspacebase.items.armor.enhancements;
 
-import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.items.weapon.Weapon;
+import com.wafitz.pixelspacebase.items.armor.Armor;
+import com.wafitz.pixelspacebase.items.blasters.WaveBlaster;
+import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Unstable extends Weapon.Enchantment {
+public class Repulsion extends Armor.Enhancement {
 
     private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing(0xFFFFFF);
 
-    private static Class<? extends Weapon.Enchantment>[] randomEnchants = new Class[]{
-            Blazing.class,
-            Chilling.class,
-            Dazzling.class,
-            Eldritch.class,
-            Grim.class,
-            Lucky.class,
-            Shocking.class,
-            Stunning.class,
-            Vampiric.class,
-            Vorpal.class
-    };
-
     @Override
-    public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
-        try {
-            return Random.oneOf(randomEnchants).newInstance().proc(weapon, attacker, defender, damage);
-        } catch (Exception e) {
-            PixelSpacebase.reportException(e);
-            return damage;
+    public int proc(Armor armor, Char attacker, Char defender, int damage) {
+
+        int level = Math.max(0, armor.level());
+
+        if (Random.Int(level + 5) >= 4) {
+            int oppositeHero = attacker.pos + (attacker.pos - defender.pos);
+            Ballistica trajectory = new Ballistica(attacker.pos, oppositeHero, Ballistica.MAGIC_BOLT);
+            WaveBlaster.throwChar(attacker, trajectory, 2);
         }
+
+        return damage;
     }
 
     @Override

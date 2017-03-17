@@ -49,9 +49,9 @@ public class FixScript extends InventoryScript {
         Weakness.detach(curUser, Weakness.class);
 
         if (procced) {
-            GLog.p(Messages.get(this, "cleansed"));
+            GLog.p(Messages.get(this, "fixed"));
         } else {
-            GLog.i(Messages.get(this, "not_cleansed"));
+            GLog.i(Messages.get(this, "not_fixed"));
         }
     }
 
@@ -73,7 +73,7 @@ public class FixScript extends InventoryScript {
             }
             if (item instanceof Armor) {
                 Armor a = (Armor) item;
-                if (a.hasMalfunctionGlyph()) {
+                if (a.hasMalfunctionEnhancement()) {
                     a.inscribe(null);
                     a.malfunctioning = false;
                     procced = true;

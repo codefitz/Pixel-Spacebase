@@ -48,7 +48,7 @@ import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.items.Bomb;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.DriedRose;
+import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
 import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
 import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
 import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
@@ -330,7 +330,7 @@ class MalfunctioningBlaster {
                     if (buff != null) buff.detach();
 
                     for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-                        if (mob instanceof DriedRose.GhostHero) mob.destroy();
+                        if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
                     InterlevelScene.mode = InterlevelScene.Mode.RETURN;
                     InterlevelScene.returnDepth = depth;

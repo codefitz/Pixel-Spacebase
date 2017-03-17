@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.ui.BuffIndicator;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.utils.Random;
 
-public class CapeOfThorns extends Artifact {
+public class StrongForcefield extends Artifact {
 
     {
         image = ItemSpriteSheet.ARTIFACT_CAPE;
@@ -44,7 +44,7 @@ public class CapeOfThorns extends Artifact {
 
     @Override
     protected ArtifactBuff passiveBuff() {
-        return new Thorns();
+        return new Shield();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class CapeOfThorns extends Artifact {
         return desc;
     }
 
-    public class Thorns extends ArtifactBuff {
+    public class Shield extends ArtifactBuff {
 
         @Override
         public boolean act() {

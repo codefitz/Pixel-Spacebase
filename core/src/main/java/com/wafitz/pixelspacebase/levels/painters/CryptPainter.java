@@ -76,10 +76,10 @@ public class CryptPainter extends Painter {
         //if it isn't already malfunctioning, give it a free upgrade
         if (!prize.malfunctioning) {
             prize.upgrade();
-            //malfunction the armor, unless it has a glyph
-            if (!prize.hasGoodGlyph()) {
+            //malfunction the armor, unless it has a enhancement
+            if (!prize.hasGoodEnhancement()) {
                 prize.malfunctioning = prize.malfunctioningKnown = true;
-                prize.inscribe(Armor.Glyph.randomMalfunction());
+                prize.inscribe(Armor.Enhancement.randomMalfunction());
             }
         }
 

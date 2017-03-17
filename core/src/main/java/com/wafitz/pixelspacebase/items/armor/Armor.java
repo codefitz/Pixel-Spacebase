@@ -28,28 +28,28 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.BrokenSeal;
 import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Affection;
-import com.wafitz.pixelspacebase.items.armor.glyphs.AntiMagic;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Brimstone;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Camouflage;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Entanglement;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Flow;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Obfuscation;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Potential;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Repulsion;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Stone;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Swiftness;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Thorns;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Viscosity;
+import com.wafitz.pixelspacebase.items.WeakForcefield;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Brimstone;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Camouflage;
+import com.wafitz.pixelspacebase.items.armor.enhancements.EMP;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Flow;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Forcefield;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Horror;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Hypnosis;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Lockdown;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Obfuscation;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Potential;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Repulsion;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Speed;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Viscosity;
 import com.wafitz.pixelspacebase.items.armor.malfunctions.AntiEntropy;
 import com.wafitz.pixelspacebase.items.armor.malfunctions.Corrosion;
 import com.wafitz.pixelspacebase.items.armor.malfunctions.Displacement;
+import com.wafitz.pixelspacebase.items.armor.malfunctions.Gas;
 import com.wafitz.pixelspacebase.items.armor.malfunctions.Metabolism;
 import com.wafitz.pixelspacebase.items.armor.malfunctions.Multiplicity;
-import com.wafitz.pixelspacebase.items.armor.malfunctions.Stench;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.HeroSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
@@ -65,29 +65,29 @@ public class Armor extends EquipableItem {
 
     private static final int HITS_TO_KNOW = 10;
 
-    static final String AC_DETACH = "DETACH";
+    static final String AC_DISARM = "DISARM";
 
     public int tier;
 
     private int hitsToKnow = HITS_TO_KNOW;
 
-    public Glyph glyph;
-    private BrokenSeal seal;
+    public Enhancement enhancement;
+    private WeakForcefield forcefield;
 
     public Armor(int tier) {
         this.tier = tier;
     }
 
     private static final String UNFAMILIRIARITY = "unfamiliarity";
-    private static final String GLYPH = "glyph";
-    private static final String SEAL = "seal";
+    private static final String ENHANCEMENT = "enhancement";
+    private static final String FORCEFIELD = "forcefield";
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
         bundle.put(UNFAMILIRIARITY, hitsToKnow);
-        bundle.put(GLYPH, glyph);
-        bundle.put(SEAL, seal);
+        bundle.put(ENHANCEMENT, enhancement);
+        bundle.put(FORCEFIELD, forcefield);
     }
 
     @Override
@@ -96,21 +96,21 @@ public class Armor extends EquipableItem {
         if ((hitsToKnow = bundle.getInt(UNFAMILIRIARITY)) == 0) {
             hitsToKnow = HITS_TO_KNOW;
         }
-        inscribe((Glyph) bundle.get(GLYPH));
-        seal = (BrokenSeal) bundle.get(SEAL);
+        inscribe((Enhancement) bundle.get(ENHANCEMENT));
+        forcefield = (WeakForcefield) bundle.get(FORCEFIELD);
     }
 
     @Override
     public void reset() {
         super.reset();
-        //armor can be kept in bones between runs, the seal cannot.
-        seal = null;
+        //armor can be kept in bones between runs, the forcefield cannot.
+        forcefield = null;
     }
 
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        if (seal != null) actions.add(AC_DETACH);
+        if (forcefield != null) actions.add(AC_DISARM);
         return actions;
     }
 
@@ -119,19 +119,19 @@ public class Armor extends EquipableItem {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_DETACH) && seal != null) {
-            BrokenSeal.CommanderShield sealBuff = hero.buff(BrokenSeal.CommanderShield.class);
-            if (sealBuff != null) sealBuff.setArmor(null);
+        if (action.equals(AC_DISARM) && forcefield != null) {
+            WeakForcefield.CommanderShield forcefieldBuff = hero.buff(WeakForcefield.CommanderShield.class);
+            if (forcefieldBuff != null) forcefieldBuff.setArmor(null);
 
-            if (seal.level() > 0) {
+            if (forcefield.level() > 0) {
                 degrade();
             }
-            GLog.i(Messages.get(Armor.class, "detach_seal"));
+            GLog.i(Messages.get(Armor.class, "disarm_forcefield", name()));
             hero.sprite.operate(hero.pos);
-            if (!seal.collect()) {
-                Dungeon.level.drop(seal, hero.pos);
+            if (!forcefield.collect()) {
+                Dungeon.level.drop(forcefield, hero.pos);
             }
-            seal = null;
+            forcefield = null;
         }
     }
 
@@ -147,7 +147,7 @@ public class Armor extends EquipableItem {
             malfunctioningKnown = true;
             if (malfunctioning) {
                 equipMalfunctioning(hero);
-                GLog.n(Messages.get(Armor.class, "equip_malfunctioning"));
+                GLog.n(Messages.get(Armor.class, "equip_malfunctioning", name()));
             }
 
             ((HeroSprite) hero.sprite).updateArmor();
@@ -166,23 +166,24 @@ public class Armor extends EquipableItem {
 
     @Override
     public void activate(Char ch) {
-        if (seal != null) Buff.affect(ch, BrokenSeal.CommanderShield.class).setArmor(this);
+        if (forcefield != null)
+            Buff.affect(ch, WeakForcefield.CommanderShield.class).setArmor(this);
     }
 
-    public void affixSeal(BrokenSeal seal) {
-        this.seal = seal;
-        if (seal.level() > 0) {
-            //doesn't triggers upgrading logic such as affecting malfunctions/glyphs
+    public void applyForcefield(WeakForcefield forcefield) {
+        this.forcefield = forcefield;
+        if (forcefield.level() > 0) {
+            //doesn't triggers upgrading logic such as affecting malfunctions/enhancements
             level(level() + 1);
             Badges.validateItemLevelAquired(this);
         }
         if (isEquipped(Dungeon.hero)) {
-            Buff.affect(Dungeon.hero, BrokenSeal.CommanderShield.class).setArmor(this);
+            Buff.affect(Dungeon.hero, WeakForcefield.CommanderShield.class).setArmor(this);
         }
     }
 
-    BrokenSeal checkSeal() {
-        return seal;
+    WeakForcefield checkForcefield() {
+        return forcefield;
     }
 
     @Override
@@ -197,8 +198,8 @@ public class Armor extends EquipableItem {
             hero.belongings.armor = null;
             ((HeroSprite) hero.sprite).updateArmor();
 
-            BrokenSeal.CommanderShield sealBuff = hero.buff(BrokenSeal.CommanderShield.class);
-            if (sealBuff != null) sealBuff.setArmor(null);
+            WeakForcefield.CommanderShield forcefieldBuff = hero.buff(WeakForcefield.CommanderShield.class);
+            if (forcefieldBuff != null) forcefieldBuff.setArmor(null);
 
             return true;
 
@@ -220,7 +221,7 @@ public class Armor extends EquipableItem {
 
     public int DRMax(int lvl) {
         int effectiveTier = tier;
-        if (glyph != null) effectiveTier += glyph.tierDRAdjust();
+        if (enhancement != null) effectiveTier += enhancement.tierDRAdjust();
         effectiveTier = Math.max(0, effectiveTier);
 
         return Math.max(DRMin(lvl), effectiveTier * (2 + lvl));
@@ -231,7 +232,7 @@ public class Armor extends EquipableItem {
     }
 
     private int DRMin(int lvl) {
-        if (glyph != null && glyph instanceof Stone)
+        if (enhancement != null && enhancement instanceof Forcefield)
             return 2 + 2 * lvl;
         else
             return lvl;
@@ -244,28 +245,28 @@ public class Armor extends EquipableItem {
 
     public Item upgrade(boolean inscribe) {
 
-        if (inscribe && (glyph == null || glyph.malfunction())) {
-            inscribe(Glyph.random());
+        if (inscribe && (enhancement == null || enhancement.malfunction())) {
+            inscribe(Enhancement.random());
         } else if (!inscribe && Random.Float() > Math.pow(0.9, level())) {
             inscribe(null);
         }
 
-        if (seal != null && seal.level() == 0)
-            seal.upgrade();
+        if (forcefield != null && forcefield.level() == 0)
+            forcefield.upgrade();
 
         return super.upgrade();
     }
 
     public int proc(Char attacker, Char defender, int damage) {
 
-        if (glyph != null) {
-            damage = glyph.proc(this, attacker, defender, damage);
+        if (enhancement != null) {
+            damage = enhancement.proc(this, attacker, defender, damage);
         }
 
         if (!levelKnown) {
             if (--hitsToKnow <= 0) {
                 levelKnown = true;
-                GLog.w(Messages.get(Armor.class, "identify"));
+                GLog.w(Messages.get(Armor.class, "identify", name()));
                 Badges.validateItemLevelAquired(this);
             }
         }
@@ -276,7 +277,7 @@ public class Armor extends EquipableItem {
 
     @Override
     public String name() {
-        return glyph != null && (malfunctioningKnown || !glyph.malfunction()) ? glyph.name(super.name()) : super.name();
+        return enhancement != null && (malfunctioningKnown || !enhancement.malfunction()) ? enhancement.name(super.name()) : super.name();
     }
 
     @Override
@@ -287,29 +288,29 @@ public class Armor extends EquipableItem {
             info += "\n\n" + Messages.get(Armor.class, "curr_absorb", name(), DRMin(), DRMax(), STRReq());
 
             if (STRReq() > Dungeon.hero.STR()) {
-                info += " " + Messages.get(Armor.class, "too_heavy");
+                info += " " + Messages.get(Armor.class, "too_heavy", name());
             } else if (Dungeon.hero.heroClass == HeroClass.SHAPESHIFTER && Dungeon.hero.STR() > STRReq()) {
-                info += " " + Messages.get(Armor.class, "excess_str");
+                info += " " + Messages.get(Armor.class, "excess_str", name());
             }
         } else {
-            info += "\n\n" + Messages.get(Armor.class, "avg_absorb", DRMin(0), DRMax(0), STRReq(0));
+            info += "\n\n" + Messages.get(Armor.class, "avg_absorb", name(), DRMin(0), DRMax(0), STRReq(0));
 
             if (STRReq(0) > Dungeon.hero.STR()) {
-                info += " " + Messages.get(Armor.class, "probably_too_heavy");
+                info += " " + Messages.get(Armor.class, "probably_too_heavy", name());
             }
         }
 
-        if (glyph != null && (malfunctioningKnown || !glyph.malfunction())) {
-            info += "\n\n" + Messages.get(Armor.class, "inscribed", glyph.name());
-            info += " " + glyph.desc();
+        if (enhancement != null && (malfunctioningKnown || !enhancement.malfunction())) {
+            info += "\n\n" + Messages.get(Armor.class, "enhanced", enhancement.name());
+            info += " " + enhancement.desc();
         }
 
         if (malfunctioning && isEquipped(Dungeon.hero)) {
-            info += "\n\n" + Messages.get(Armor.class, "malfunctioning_worn");
+            info += "\n\n" + Messages.get(Armor.class, "malfunctioning_worn", name());
         } else if (malfunctioningKnown && malfunctioning) {
-            info += "\n\n" + Messages.get(Armor.class, "malfunctioning");
-        } else if (seal != null) {
-            info += "\n\n" + Messages.get(Armor.class, "seal_attached");
+            info += "\n\n" + Messages.get(Armor.class, "malfunctioning", name());
+        } else if (forcefield != null) {
+            info += "\n\n" + Messages.get(Armor.class, "forcefield_applied", name());
         }
 
         return info;
@@ -317,7 +318,7 @@ public class Armor extends EquipableItem {
 
     @Override
     public Emitter emitter() {
-        if (seal == null) return super.emitter();
+        if (forcefield == null) return super.emitter();
         Emitter emitter = new Emitter();
         emitter.pos(10f, 6f);
         emitter.fillTarget = false;
@@ -330,7 +331,7 @@ public class Armor extends EquipableItem {
         float roll = Random.Float();
         if (roll < 0.3f) {
             //30% chance to be level 0 and malfunctioning
-            inscribe(Glyph.randomMalfunction());
+            inscribe(Enhancement.randomMalfunction());
             malfunctioning = true;
             return this;
         } else if (roll < 0.75f) {
@@ -357,7 +358,7 @@ public class Armor extends EquipableItem {
     public int STRReq(int lvl) {
         lvl = Math.max(0, lvl);
         float effectiveTier = tier;
-        if (glyph != null) effectiveTier += glyph.tierSTRAdjust();
+        if (enhancement != null) effectiveTier += enhancement.tierSTRAdjust();
         effectiveTier = Math.max(0, effectiveTier);
 
         //strength req decreases at +1,+3,+6,+10,etc.
@@ -366,13 +367,13 @@ public class Armor extends EquipableItem {
 
     @Override
     public int price() {
-        if (seal != null) return 0;
+        if (forcefield != null) return 0;
 
         int price = 20 * tier;
-        if (hasGoodGlyph()) {
+        if (hasGoodEnhancement()) {
             price *= 1.5;
         }
-        if (malfunctioningKnown && (malfunctioning || hasMalfunctionGlyph())) {
+        if (malfunctioningKnown && (malfunctioning || hasMalfunctionEnhancement())) {
             price /= 2;
         }
         if (levelKnown && level() > 0) {
@@ -384,60 +385,60 @@ public class Armor extends EquipableItem {
         return price;
     }
 
-    public Armor inscribe(Glyph glyph) {
-        this.glyph = glyph;
+    public Armor inscribe(Enhancement enhancement) {
+        this.enhancement = enhancement;
 
         return this;
     }
 
     public Armor inscribe() {
 
-        Class<? extends Glyph> oldGlyphClass = glyph != null ? glyph.getClass() : null;
-        Glyph gl = Glyph.random();
-        while (gl.getClass() == oldGlyphClass) {
-            gl = Armor.Glyph.random();
+        Class<? extends Enhancement> oldEnhancementClass = enhancement != null ? enhancement.getClass() : null;
+        Enhancement gl = Enhancement.random();
+        while (gl.getClass() == oldEnhancementClass) {
+            gl = Enhancement.random();
         }
 
         return inscribe(gl);
     }
 
-    public boolean hasGlyph(Class<? extends Glyph> type) {
-        return glyph != null && glyph.getClass() == type;
+    public boolean hasEnhancement(Class<? extends Enhancement> type) {
+        return enhancement != null && enhancement.getClass() == type;
     }
 
-    public boolean hasGoodGlyph() {
-        return glyph != null && !glyph.malfunction();
+    public boolean hasGoodEnhancement() {
+        return enhancement != null && !enhancement.malfunction();
     }
 
-    public boolean hasMalfunctionGlyph() {
-        return glyph != null && glyph.malfunction();
+    public boolean hasMalfunctionEnhancement() {
+        return enhancement != null && enhancement.malfunction();
     }
 
     @Override
     public ItemSprite.Glowing glowing() {
-        return glyph != null && (malfunctioningKnown || !glyph.malfunction()) ? glyph.glowing() : null;
+        return enhancement != null && (malfunctioningKnown || !enhancement.malfunction()) ? enhancement.glowing() : null;
     }
 
-    public static abstract class Glyph implements Bundlable {
+    public static abstract class Enhancement implements Bundlable {
 
-        private static final Class<?>[] glyphs = new Class<?>[]{
-                Obfuscation.class, Swiftness.class, Stone.class, Potential.class,
-                Brimstone.class, Viscosity.class, Entanglement.class, Repulsion.class, Camouflage.class, Flow.class,
-                Affection.class, AntiMagic.class, Thorns.class};
+        private static final Class<?>[] enhancements = new Class<?>[]{
+                Obfuscation.class, Speed.class, Forcefield.class, Potential.class,
+                Brimstone.class, Viscosity.class, Lockdown.class, Repulsion.class, Camouflage.class, Flow.class,
+                Hypnosis.class, EMP.class, Horror.class};
         private static final float[] chances = new float[]{
                 10, 10, 10, 10,
                 5, 5, 5, 5, 5, 5,
                 2, 2, 2};
 
         private static final Class<?>[] bugs = new Class<?>[]{
-                AntiEntropy.class, Corrosion.class, Displacement.class, Metabolism.class, Multiplicity.class, Stench.class
+                AntiEntropy.class, Corrosion.class, Displacement.class, Metabolism.class, Multiplicity.class, Gas.class
         };
 
         public abstract int proc(Armor armor, Char attacker, Char defender, int damage);
 
         public String name() {
             if (!malfunction())
-                return name(Messages.get(this, "glyph"));
+                return name(Messages.get(this, "enhancement"));
             else
                 return name(Messages.get(Item.class, "malfunction"));
         }
@@ -478,7 +479,7 @@ public class Armor extends EquipableItem {
                 Dungeon.fail(getClass());
                 GLog.n(Messages.get(this, "killed", name()));
 
-                Badges.validateDeathFromGlyph();
+                Badges.validateDeathFromEnhancement();
                 return true;
 
             } else {
@@ -487,9 +488,9 @@ public class Armor extends EquipableItem {
         }
 
         @SuppressWarnings("unchecked")
-        public static Glyph random() {
+        public static Enhancement random() {
             try {
-                return ((Class<Glyph>) glyphs[Random.chances(chances)]).newInstance();
+                return ((Class<Enhancement>) enhancements[Random.chances(chances)]).newInstance();
             } catch (Exception e) {
                 PixelSpacebase.reportException(e);
                 return null;
@@ -497,9 +498,9 @@ public class Armor extends EquipableItem {
         }
 
         @SuppressWarnings("unchecked")
-        public static Glyph randomMalfunction() {
+        public static Enhancement randomMalfunction() {
             try {
-                return ((Class<Glyph>) Random.oneOf(bugs)).newInstance();
+                return ((Class<Enhancement>) Random.oneOf(bugs)).newInstance();
             } catch (Exception e) {
                 PixelSpacebase.reportException(e);
                 return null;

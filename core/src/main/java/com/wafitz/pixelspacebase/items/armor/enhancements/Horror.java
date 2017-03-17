@@ -18,33 +18,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.armor.glyphs;
+package com.wafitz.pixelspacebase.items.armor.enhancements;
 
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.buffs.Bleeding;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Hypnotise;
-import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.armor.Armor.Glyph;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
-import com.wafitz.pixelspacebase.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
-public class Affection extends Glyph {
+public class Horror extends Armor.Enhancement {
 
-    private static ItemSprite.Glowing PINK = new ItemSprite.Glowing(0xFF4488);
+    private static ItemSprite.Glowing RED = new ItemSprite.Glowing(0x660022);
 
     @Override
     public int proc(Armor armor, Char attacker, Char defender, int damage) {
 
         int level = Math.max(0, armor.level());
 
-        if (Random.Int(level / 2 + 10) >= 9) {
+        if (Random.Int(level / 2 + 5) >= 4) {
 
-            int duration = Random.IntRange(2, 5);
-
-            Buff.affect(attacker, Hypnotise.class, Hypnotise.durationFactor(attacker) * duration).object = defender.id();
-            attacker.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
+            Buff.affect(attacker, Bleeding.class).set(Math.max(level / 2, damage));
 
         }
 
@@ -52,7 +46,7 @@ public class Affection extends Glyph {
     }
 
     @Override
-    public Glowing glowing() {
-        return PINK;
+    public ItemSprite.Glowing glowing() {
+        return RED;
     }
 }

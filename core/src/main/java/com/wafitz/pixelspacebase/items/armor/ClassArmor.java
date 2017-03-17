@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.items.armor;
 
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.items.BrokenSeal;
+import com.wafitz.pixelspacebase.items.WeakForcefield;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -54,9 +54,9 @@ abstract public class ClassArmor extends Armor {
         switch (owner.heroClass) {
             case COMMANDER:
                 classArmor = new SpaceWizard();
-                BrokenSeal seal = armor.checkSeal();
-                if (seal != null) {
-                    classArmor.affixSeal(seal);
+                WeakForcefield forcefield = armor.checkForcefield();
+                if (forcefield != null) {
+                    classArmor.applyForcefield(forcefield);
                 }
                 break;
             case SHAPESHIFTER:
@@ -72,7 +72,7 @@ abstract public class ClassArmor extends Armor {
 
         classArmor.level(armor.level());
         classArmor.armorTier = armor.tier;
-        classArmor.inscribe(armor.glyph);
+        classArmor.inscribe(armor.enhancement);
 
         return classArmor;
     }
@@ -107,7 +107,7 @@ abstract public class ClassArmor extends Armor {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        actions.remove(AC_DETACH);
+        actions.remove(AC_DISARM);
         if (hero.HP >= 3 && isEquipped(hero)) {
             actions.add(AC_SPECIAL);
         }
@@ -124,7 +124,7 @@ abstract public class ClassArmor extends Armor {
             if (hero.HP < 3) {
                 GLog.w(Messages.get(this, "low_hp"));
             } else if (!isEquipped(hero)) {
-                GLog.w(Messages.get(this, "not_equipped"));
+                GLog.w(Messages.get(this, "not_equipped", name()));
             } else {
                 curUser = hero;
                 Camoflage.dispel();
@@ -140,7 +140,7 @@ abstract public class ClassArmor extends Armor {
     public int STRReq(int lvl) {
         lvl = Math.max(0, lvl);
         float effectiveTier = armorTier;
-        if (glyph != null) effectiveTier += glyph.tierSTRAdjust();
+        if (enhancement != null) effectiveTier += enhancement.tierSTRAdjust();
         effectiveTier = Math.max(0, effectiveTier);
 
         //strength req decreases at +1,+3,+6,+10,etc.
@@ -150,7 +150,7 @@ abstract public class ClassArmor extends Armor {
     @Override
     public int DRMax(int lvl) {
         int effectiveTier = armorTier;
-        if (glyph != null) effectiveTier += glyph.tierDRAdjust();
+        if (enhancement != null) effectiveTier += enhancement.tierDRAdjust();
         effectiveTier = Math.max(0, effectiveTier);
 
         return effectiveTier * (2 + lvl);

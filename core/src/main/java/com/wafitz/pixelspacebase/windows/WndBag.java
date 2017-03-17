@@ -391,7 +391,7 @@ public class WndBag extends WndTabbed {
                         }
                         if (item instanceof Armor) {
                             Armor a = (Armor) item;
-                            enable(a.hasMalfunctionGlyph());
+                            enable(a.hasMalfunctionEnhancement());
                         }
                     }
                 }

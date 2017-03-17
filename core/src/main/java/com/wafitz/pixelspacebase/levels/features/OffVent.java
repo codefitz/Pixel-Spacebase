@@ -32,7 +32,7 @@ import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.Dewdrop;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Camouflage;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Camouflage;
 import com.wafitz.pixelspacebase.items.artifacts.SandalsOfNature;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -96,7 +96,7 @@ public class OffVent {
             }
 
             //Camouflage
-            if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Camouflage.class)) {
+            if (hero.belongings.armor != null && hero.belongings.armor.hasEnhancement(Camouflage.class)) {
                 Buff.affect(hero, Camouflage.Camo.class).set(3 + hero.belongings.armor.level());
                 leaves += 4;
             }

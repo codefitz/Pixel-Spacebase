@@ -40,7 +40,7 @@ public class Rotberry extends Trigger {
             image = ItemSpriteSheet.ROTBERRY_GADGET;
 
             triggerClass = Rotberry.class;
-            alchemyClass = StrengthTech.class;
+            craftingClass = StrengthTech.class;
         }
     }
 }

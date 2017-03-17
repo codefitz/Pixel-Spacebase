@@ -34,7 +34,7 @@ public class HologramSprite extends MobSprite {
     public HologramSprite() {
         super();
 
-        texture(Assets.GHOST);
+        texture(Assets.HOLOGRAM);
 
         TextureFilm frames = new TextureFilm(texture, 14, 15);
 

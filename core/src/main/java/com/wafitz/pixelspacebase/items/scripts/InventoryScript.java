@@ -26,7 +26,6 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.windows.WndBag;
-import com.wafitz.pixelspacebase.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 
 abstract class InventoryScript extends Script {
@@ -47,7 +46,8 @@ abstract class InventoryScript extends Script {
         GameScene.selectItem(itemSelector, mode, inventoryTitle);
     }
 
-    private void confirmCancelation() {
+    // wafitz.v5: Probably I will put this back in but with a non-optional "Script identifies itself"
+    /*private void confirmCancelation() {
         GameScene.show(new WndOptions(name(), Messages.get(this, "warning"),
                 Messages.get(this, "yes"), Messages.get(this, "no")) {
             @Override
@@ -66,7 +66,7 @@ abstract class InventoryScript extends Script {
             public void onBackPressed() {
             }
         });
-    }
+    }*/
 
     protected abstract void onItemSelected(Item item);
 

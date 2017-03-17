@@ -166,7 +166,7 @@ public class LloydsBeacon extends Artifact {
                 if (buff != null) buff.detach();
 
                 for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-                    if (mob instanceof DriedRose.GhostHero) mob.destroy();
+                    if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
                 InterlevelScene.mode = InterlevelScene.Mode.RETURN;
                 InterlevelScene.returnDepth = returnDepth;

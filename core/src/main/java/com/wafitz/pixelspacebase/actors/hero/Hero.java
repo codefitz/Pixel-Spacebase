@@ -58,16 +58,16 @@ import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.armor.glyphs.AntiMagic;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Flow;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Obfuscation;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Stone;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Swiftness;
-import com.wafitz.pixelspacebase.items.armor.glyphs.Viscosity;
-import com.wafitz.pixelspacebase.items.artifacts.CapeOfThorns;
-import com.wafitz.pixelspacebase.items.artifacts.DriedRose;
-import com.wafitz.pixelspacebase.items.artifacts.EtherealChains;
+import com.wafitz.pixelspacebase.items.armor.enhancements.EMP;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Flow;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Forcefield;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Obfuscation;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Speed;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Viscosity;
+import com.wafitz.pixelspacebase.items.artifacts.GravityGun;
+import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
 import com.wafitz.pixelspacebase.items.artifacts.HornOfPlenty;
+import com.wafitz.pixelspacebase.items.artifacts.StrongForcefield;
 import com.wafitz.pixelspacebase.items.artifacts.TalismanOfForesight;
 import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
 import com.wafitz.pixelspacebase.items.keys.Key;
@@ -78,7 +78,7 @@ import com.wafitz.pixelspacebase.items.modules.FurorModule;
 import com.wafitz.pixelspacebase.items.modules.PowerModule;
 import com.wafitz.pixelspacebase.items.modules.SpeedModule;
 import com.wafitz.pixelspacebase.items.modules.SteelModule;
-import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
+import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
@@ -298,7 +298,7 @@ public class Hero extends Char {
             bonus = 0;
             if (heroClass == HeroClass.SHAPESHIFTER) bonus += -aEnc;
 
-            if (belongings.armor != null && belongings.armor.hasGlyph(Swiftness.class))
+            if (belongings.armor != null && belongings.armor.hasEnhancement(Speed.class))
                 bonus += 5 + belongings.armor.level() * 1.5f;
 
             return Math.round((defenseSkill + bonus) * evasion);
@@ -361,9 +361,9 @@ public class Hero extends Char {
 
         if (armor != null) {
 
-            if (armor.hasGlyph(Swiftness.class)) {
+            if (armor.hasEnhancement(Speed.class)) {
                 speed *= (1.1f + 0.01f * belongings.armor.level());
-            } else if (armor.hasGlyph(Flow.class) && Level.water[pos]) {
+            } else if (armor.hasEnhancement(Flow.class) && Level.water[pos]) {
                 speed *= (1.5f + 0.05f * belongings.armor.level());
             }
         }
@@ -517,9 +517,9 @@ public class Hero extends Char {
 
                 return actAttack((HeroAction.Attack) curAction);
 
-            } else if (curAction instanceof HeroAction.Cook) {
+            } else if (curAction instanceof HeroAction.Make) {
 
-                return actCook((HeroAction.Cook) curAction);
+                return actMake((HeroAction.Make) curAction);
 
             }
         }
@@ -619,7 +619,7 @@ public class Hero extends Char {
         }
     }
 
-    private boolean actCook(HeroAction.Cook action) {
+    private boolean actMake(HeroAction.Make action) {
         int dst = action.dst;
         if (Dungeon.visible[dst]) {
 
@@ -649,13 +649,13 @@ public class Hero extends Char {
 
                     if (item instanceof Dewdrop
                             || item instanceof TimekeepersHourglass.sandBag
-                            || item instanceof DriedRose.Petal
+                            || item instanceof HoloPad.HoloBattery
                             || item instanceof Key) {
                         //Do Nothing
                     } else {
 
                         boolean important =
-                                ((item instanceof UpgradeScript || item instanceof MagicalInfusionScript) && ((Script) item).isKnown()) ||
+                                ((item instanceof UpgradeScript || item instanceof EnhancementScript) && ((Script) item).isKnown()) ||
                                         ((item instanceof StrengthTech || item instanceof MightTech) && ((ExperimentalTech) item).isKnown());
                         if (important) {
                             GLog.p(Messages.get(this, "you_now_have", item.name()));
@@ -788,7 +788,7 @@ public class Hero extends Char {
             if (buff != null) buff.detach();
 
             for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-                if (mob instanceof DriedRose.GhostHero) mob.destroy();
+                if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
             InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
             Game.switchScene(InterlevelScene.class);
@@ -833,7 +833,7 @@ public class Hero extends Char {
                 if (buff != null) buff.detach();
 
                 for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-                    if (mob instanceof DriedRose.GhostHero) mob.destroy();
+                    if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
                 InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
                 Game.switchScene(InterlevelScene.class);
@@ -943,9 +943,9 @@ public class Hero extends Char {
             GLog.w(Messages.get(this, "pain_resist"));
         }
 
-        CapeOfThorns.Thorns thorns = buff(CapeOfThorns.Thorns.class);
-        if (thorns != null) {
-            dmg = thorns.proc(dmg, (src instanceof Char ? (Char) src : null), this);
+        StrongForcefield.Shield shield = buff(StrongForcefield.Shield.class);
+        if (shield != null) {
+            dmg = shield.proc(dmg, (src instanceof Char ? (Char) src : null), this);
         }
 
         int tenacity = SteelModule.getBonus(this, SteelModule.Tenacity.class);
@@ -953,7 +953,7 @@ public class Hero extends Char {
             dmg = (int) Math.ceil((float) dmg * Math.pow(0.85, tenacity * ((float) (HT - HP) / HT)));
 
         //TODO improve this when I have proper damage source logic
-        if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)
+        if (belongings.armor != null && belongings.armor.hasEnhancement(EMP.class)
                 && ElementsModule.FULL.contains(src.getClass())) {
             dmg -= Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax()) / 2;
         }
@@ -1083,7 +1083,7 @@ public class Hero extends Char {
         if (step != -1) {
 
             int moveTime = 1;
-            if (belongings.armor != null && belongings.armor.hasGlyph(Stone.class) &&
+            if (belongings.armor != null && belongings.armor.hasEnhancement(Forcefield.class) &&
                     (Dungeon.level.map[pos] == Terrain.DOOR
                             || Dungeon.level.map[pos] == Terrain.OPEN_DOOR
                             || Dungeon.level.map[step] == Terrain.DOOR
@@ -1114,9 +1114,9 @@ public class Hero extends Char {
         Char ch;
         Heap heap;
 
-        if (Dungeon.level.map[cell] == Terrain.ALCHEMY && cell != pos) {
+        if (Dungeon.level.map[cell] == Terrain.CRAFTING && cell != pos) {
 
-            curAction = new HeroAction.Cook(cell);
+            curAction = new HeroAction.Make(cell);
 
         } else if (Level.fieldOfView[cell] && (ch = Actor.findChar(cell)) instanceof Mob) {
 
@@ -1169,7 +1169,7 @@ public class Hero extends Char {
         this.exp += exp;
         float percent = exp / (float) maxExp();
 
-        EtherealChains.chainsRecharge chains = buff(EtherealChains.chainsRecharge.class);
+        GravityGun.gravityRecharge chains = buff(GravityGun.gravityRecharge.class);
         if (chains != null) chains.gainExp(percent);
 
         HornOfPlenty.hornRecharge horn = buff(HornOfPlenty.hornRecharge.class);
@@ -1266,7 +1266,7 @@ public class Hero extends Char {
 
         stealth += EvasionModule.getBonus(this, EvasionModule.Evasion.class);
 
-        if (belongings.armor != null && belongings.armor.hasGlyph(Obfuscation.class)) {
+        if (belongings.armor != null && belongings.armor.hasEnhancement(Obfuscation.class)) {
             stealth += belongings.armor.level();
         }
         return stealth;

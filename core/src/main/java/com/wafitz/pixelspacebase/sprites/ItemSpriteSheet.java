@@ -41,7 +41,7 @@ public class ItemSpriteSheet {
     private static final int UNCOLLECTIBLE = xy(9, 1);   //8 slots
     public static final int PARTS = UNCOLLECTIBLE;
     public static final int DEWDROP = UNCOLLECTIBLE + 1;
-    public static final int PETAL = UNCOLLECTIBLE + 2;
+    public static final int HOLOBATTERY = UNCOLLECTIBLE + 2;
     public static final int SANDBAG = UNCOLLECTIBLE + 3;
     public static final int DBL_BOMB = UNCOLLECTIBLE + 4;
 
@@ -58,7 +58,7 @@ public class ItemSpriteSheet {
     public static final int CLONE = SINGLE_USE;
     public static final int STYLUS = SINGLE_USE + 1;
     public static final int WEIGHT = SINGLE_USE + 2;
-    public static final int SEAL = SINGLE_USE + 3;
+    public static final int FORCEFIELD = SINGLE_USE + 3;
     public static final int TORCH = SINGLE_USE + 4;
     public static final int BEACON = SINGLE_USE + 5;
     public static final int BOMB = SINGLE_USE + 6;
@@ -170,7 +170,7 @@ public class ItemSpriteSheet {
     public static final int ARTIFACT_TALISMAN = ARTIFACTS + 3;
     public static final int ARTIFACT_HOURGLASS = ARTIFACTS + 4;
     public static final int ARTIFACT_TOOLKIT = ARTIFACTS + 5;
-    public static final int ARTIFACT_SPELLBOOK = ARTIFACTS + 6;
+    public static final int ARTIFACT_COMPILER = ARTIFACTS + 6;
     public static final int ARTIFACT_BEACON = ARTIFACTS + 7;
     public static final int ARTIFACT_CHAINS = ARTIFACTS + 8;
     public static final int ARTIFACT_HORN1 = ARTIFACTS + 9;
@@ -184,9 +184,9 @@ public class ItemSpriteSheet {
     public static final int ARTIFACT_SHOES = ARTIFACTS + 17;
     public static final int ARTIFACT_BOOTS = ARTIFACTS + 18;
     public static final int ARTIFACT_GREAVES = ARTIFACTS + 19;
-    public static final int ARTIFACT_ROSE1 = ARTIFACTS + 20;
-    public static final int ARTIFACT_ROSE2 = ARTIFACTS + 21;
-    public static final int ARTIFACT_ROSE3 = ARTIFACTS + 22;
+    public static final int ARTIFACT_HOLOPAD1 = ARTIFACTS + 20;
+    public static final int ARTIFACT_HOLOPAD2 = ARTIFACTS + 21;
+    public static final int ARTIFACT_HOLOPAD3 = ARTIFACTS + 22;
 
     //32 free slots
 

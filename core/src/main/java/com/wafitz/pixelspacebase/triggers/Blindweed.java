@@ -63,7 +63,7 @@ public class Blindweed extends Trigger {
             image = ItemSpriteSheet.BLINDWEED_GADGET;
 
             triggerClass = Blindweed.class;
-            alchemyClass = InvisibilityTech.class;
+            craftingClass = InvisibilityTech.class;
         }
     }
 }

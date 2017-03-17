@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.actors.buffs;
 
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.items.artifacts.CloakOfShadows;
+import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
 import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
@@ -79,7 +79,7 @@ public class Camoflage extends FlavourBuff {
         if (buff != null) {
             buff.detach();
         }
-        CloakOfShadows.cloakStealth cloakBuff = Dungeon.hero.buff(CloakOfShadows.cloakStealth.class);
+        StealthModule.stealthModule cloakBuff = Dungeon.hero.buff(StealthModule.stealthModule.class);
         if (cloakBuff != null) {
             cloakBuff.dispel();
         }

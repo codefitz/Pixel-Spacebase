@@ -34,7 +34,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
-public class RageScript extends Script {
+public class EchoLocationScript extends Script {
 
     {
         initials = 6;
@@ -60,7 +60,7 @@ public class RageScript extends Script {
             }
         }
 
-        GLog.w(Messages.get(this, "roar"));
+        GLog.w(Messages.get(this, "echo"));
         setKnown();
 
         curUser.sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.3f, 3);

@@ -51,15 +51,15 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Stylus;
 import com.wafitz.pixelspacebase.items.Torch;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.artifacts.AlchemistsToolkit;
-import com.wafitz.pixelspacebase.items.artifacts.DriedRose;
+import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
+import com.wafitz.pixelspacebase.items.artifacts.MakersToolkit;
 import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
 import com.wafitz.pixelspacebase.items.bags.GadgetBag;
 import com.wafitz.pixelspacebase.items.bags.ScriptHolder;
 import com.wafitz.pixelspacebase.items.food.Blandfruit;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
-import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
+import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
@@ -205,7 +205,7 @@ public abstract class Level implements Bundlable {
             }
             if (Dungeon.souNeeded()) {
                 if (Random.Float() > Math.pow(0.925, bonus))
-                    addItemToSpawn(new MagicalInfusionScript());
+                    addItemToSpawn(new EnhancementScript());
                 else
                     addItemToSpawn(new UpgradeScript());
                 Dungeon.limitedDrops.upgradeScripts.count++;
@@ -217,16 +217,16 @@ public abstract class Level implements Bundlable {
                 Dungeon.limitedDrops.arcaneStyli.count++;
             }
 
-            DriedRose rose = Dungeon.hero.belongings.getItem(DriedRose.class);
-            if (rose != null && !rose.malfunctioning) {
-                //this way if a rose is dropped later in the game, player still has a chance to max it out.
-                int petalsNeeded = (int) Math.ceil((float) ((Dungeon.depth / 2) - rose.droppedPetals) / 3);
+            HoloPad holopad = Dungeon.hero.belongings.getItem(HoloPad.class);
+            if (holopad != null && !holopad.malfunctioning) {
+                //this way if a holopad is dropped later in the game, player still has a chance to max it out.
+                int holoBatteriesNeeded = (int) Math.ceil((float) ((Dungeon.depth / 2) - holopad.droppedHoloBatteries) / 3);
 
-                for (int i = 1; i <= petalsNeeded; i++) {
-                    //the player may miss a single petal and still max their rose.
-                    if (rose.droppedPetals < 11) {
-                        addItemToSpawn(new DriedRose.Petal());
-                        rose.droppedPetals++;
+                for (int i = 1; i <= holoBatteriesNeeded; i++) {
+                    //the player may miss a single petal and still max their holopad.
+                    if (holopad.droppedHoloBatteries < 11) {
+                        addItemToSpawn(new HoloPad.HoloBattery());
+                        holopad.droppedHoloBatteries++;
                     }
                 }
             }
@@ -671,7 +671,7 @@ public abstract class Level implements Bundlable {
                 (Dungeon.isChallenged(Challenges.NO_ARMOR) && item instanceof Armor) ||
                 (Dungeon.isChallenged(Challenges.NO_HEALING) && item instanceof HealingTech) ||
                 (Dungeon.isChallenged(Challenges.NO_HERBALISM) && (item instanceof Trigger.Gadget || item instanceof Dewdrop || item instanceof GadgetBag)) ||
-                (Dungeon.isChallenged(Challenges.NO_SCRIPTS) && ((item instanceof Script && !(item instanceof UpgradeScript || item instanceof MagicalInfusionScript)) || item instanceof ScriptHolder)) ||
+                (Dungeon.isChallenged(Challenges.NO_SCRIPTS) && ((item instanceof Script && !(item instanceof UpgradeScript || item instanceof EnhancementScript)) || item instanceof ScriptHolder)) ||
                 item == null) {
 
             //create a dummy heap, give it a dummy sprite, don't add it to the game, and return it.
@@ -683,11 +683,11 @@ public abstract class Level implements Bundlable {
 
         }
 
-        if ((map[cell] == Terrain.ALCHEMY) && (
+        if ((map[cell] == Terrain.CRAFTING) && (
                 !(item instanceof Trigger.Gadget || item instanceof Blandfruit) ||
                         item instanceof BlandfruitBush.Gadget ||
                         (item instanceof Blandfruit && (((Blandfruit) item).experimentalTechAttrib != null || heaps.get(cell) != null)) ||
-                        Dungeon.hero.buff(AlchemistsToolkit.alchemy.class) != null && Dungeon.hero.buff(AlchemistsToolkit.alchemy.class).isMalfunctioning())) {
+                        Dungeon.hero.buff(MakersToolkit.crafting.class) != null && Dungeon.hero.buff(MakersToolkit.crafting.class).isMalfunctioning())) {
             int n;
             do {
                 n = cell + PathFinder.NEIGHBOURS8[Random.Int(8)];
@@ -813,7 +813,7 @@ public abstract class Level implements Bundlable {
                 WellWater.affectCell(cell);
                 break;
 
-            case Terrain.ALCHEMY:
+            case Terrain.CRAFTING:
                 if (ch == null) {
                     Craft.transmute(cell);
                 }
@@ -1042,8 +1042,8 @@ public abstract class Level implements Bundlable {
                 return Messages.get(Level.class, "inactive_vent_name");
             case Terrain.BOOKSHELF:
                 return Messages.get(Level.class, "bookshelf_name");
-            case Terrain.ALCHEMY:
-                return Messages.get(Level.class, "alchemy_name");
+            case Terrain.CRAFTING:
+                return Messages.get(Level.class, "crafting_name");
             default:
                 return Messages.get(Level.class, "default_name");
         }
@@ -1078,8 +1078,8 @@ public abstract class Level implements Bundlable {
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
                 return Messages.get(Level.class, "statue_desc");
-            case Terrain.ALCHEMY:
-                return Messages.get(Level.class, "alchemy_desc");
+            case Terrain.CRAFTING:
+                return Messages.get(Level.class, "crafting_desc");
             case Terrain.EMPTY_WELL:
                 return Messages.get(Level.class, "empty_well_desc");
             default:

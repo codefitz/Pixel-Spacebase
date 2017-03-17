@@ -18,39 +18,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.armor.malfunctions;
+package com.wafitz.pixelspacebase.items.weapon.enchantments;
 
+import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.blobs.Blob;
-import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
-import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.scenes.GameScene;
+import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Stench extends Armor.Glyph {
+public class Buggy extends Weapon.Enchantment {
 
-    private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
+    private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing(0xFFFFFF);
+
+    private static Class<? extends Weapon.Enchantment>[] randomEnchants = new Class[]{
+            Blazing.class,
+            Chilling.class,
+            Dazzling.class,
+            Eldritch.class,
+            Grim.class,
+            Lucky.class,
+            Shocking.class,
+            Stunning.class,
+            Vampiric.class,
+            Vorpal.class
+    };
 
     @Override
-    public int proc(Armor armor, Char attacker, Char defender, int damage) {
-
-        if (Random.Int(8) == 0) {
-
-            GameScene.add(Blob.gadget(defender.pos, 250, ToxicGas.class));
-
+    public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
+        try {
+            return Random.oneOf(randomEnchants).newInstance().proc(weapon, attacker, defender, damage);
+        } catch (Exception e) {
+            PixelSpacebase.reportException(e);
+            return damage;
         }
-
-        return damage;
     }
 
     @Override
     public ItemSprite.Glowing glowing() {
-        return BLACK;
-    }
-
-    @Override
-    public boolean malfunction() {
-        return true;
+        return WHITE;
     }
 }

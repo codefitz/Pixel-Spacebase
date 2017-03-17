@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.items.artifacts.DriedRose;
+import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
 import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
 import com.wafitz.pixelspacebase.levels.Room;
@@ -74,7 +74,7 @@ public class Chasm {
         if (buff != null) buff.detach();
 
         for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-            if (mob instanceof DriedRose.GhostHero) mob.destroy();
+            if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
         if (Dungeon.hero.isAlive()) {
             Dungeon.hero.interrupt();

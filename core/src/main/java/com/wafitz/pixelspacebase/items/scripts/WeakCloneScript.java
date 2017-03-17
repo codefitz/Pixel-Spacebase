@@ -32,7 +32,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class MirrorImageScript extends Script {
+public class WeakCloneScript extends Script {
 
     {
         initials = 4;

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.armor.glyphs;
+package com.wafitz.pixelspacebase.items.armor.enhancements;
 
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.watabou.utils.Bundle;
 
-public class Brimstone extends Armor.Glyph {
+public class Brimstone extends Armor.Enhancement {
 
     private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing(0xFF4400);
 
@@ -58,7 +58,7 @@ public class Brimstone extends Armor.Glyph {
 
             lastShield = hero.SHLD;
 
-            if (hero.belongings.armor == null || !hero.belongings.armor.hasGlyph(Brimstone.class)) {
+            if (hero.belongings.armor == null || !hero.belongings.armor.hasEnhancement(Brimstone.class)) {
                 hero.SHLD -= shieldAdded;
                 detach();
                 return true;

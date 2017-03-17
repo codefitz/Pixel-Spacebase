@@ -18,13 +18,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.armor.glyphs;
+package com.wafitz.pixelspacebase.items.armor.enhancements;
 
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 
-public class AntiMagic extends Armor.Glyph {
+public class EMP extends Armor.Enhancement {
 
     private static ItemSprite.Glowing TEAL = new ItemSprite.Glowing(0x88EEFF);
 

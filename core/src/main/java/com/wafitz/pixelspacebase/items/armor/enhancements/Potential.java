@@ -18,36 +18,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.armor.glyphs;
+package com.wafitz.pixelspacebase.items.armor.enhancements;
 
+import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
-import com.wafitz.pixelspacebase.effects.CellEmitter;
-import com.wafitz.pixelspacebase.effects.particles.EarthParticle;
+import com.wafitz.pixelspacebase.effects.Lightning;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.armor.Armor.Glyph;
+import com.wafitz.pixelspacebase.items.armor.Armor.Enhancement;
+import com.wafitz.pixelspacebase.levels.vents.LightningVent;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSprite.Glowing;
-import com.wafitz.pixelspacebase.triggers.Earthroot;
 import com.watabou.noosa.Camera;
 import com.watabou.utils.Random;
 
-public class Entanglement extends Glyph {
+public class Potential extends Enhancement {
 
-    private static ItemSprite.Glowing BROWN = new ItemSprite.Glowing(0x663300);
+    private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing(0xFFFFFF, 0.6f);
 
     @Override
     public int proc(Armor armor, Char attacker, Char defender, int damage) {
 
         int level = Math.max(0, armor.level());
 
-        if (Random.Int(3) == 0) {
+        if (Random.Int(level + 20) >= 18) {
 
-            Buff.prolong(defender, LockedDown.class, 5);
-            Buff.affect(defender, Earthroot.Armor.class).level(5 + level);
-            CellEmitter.bottom(defender.pos).start(EarthParticle.FACTORY, 0.05f, 8);
-            Camera.main.shake(1, 0.4f);
+            int shockDmg = Random.NormalIntRange(defender.HT / 20, defender.HT / 10);
+
+            shockDmg *= Math.pow(0.9, level);
+
+            defender.damage(shockDmg, LightningVent.LIGHTNING);
+
+            checkOwner(defender);
+            if (defender == Dungeon.hero) {
+                Dungeon.hero.belongings.charge(1f);
+                Camera.main.shake(2, 0.3f);
+            }
+
+            attacker.sprite.parent.add(new Lightning(attacker.pos, defender.pos, null));
 
         }
 
@@ -56,7 +63,6 @@ public class Entanglement extends Glyph {
 
     @Override
     public Glowing glowing() {
-        return BROWN;
+        return WHITE;
     }
-
 }

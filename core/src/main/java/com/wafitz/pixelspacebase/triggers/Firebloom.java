@@ -50,7 +50,7 @@ public class Firebloom extends Trigger {
             image = ItemSpriteSheet.FIREBLOOM_GADGET;
 
             triggerClass = Firebloom.class;
-            alchemyClass = LiquidFlameTech.class;
+            craftingClass = LiquidFlameTech.class;
         }
     }
 }

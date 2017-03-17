@@ -18,14 +18,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.armor.glyphs;
+package com.wafitz.pixelspacebase.items.armor.enhancements;
 
 import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.armor.Armor.Glyph;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
@@ -35,7 +34,7 @@ import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Viscosity extends Glyph {
+public class Viscosity extends Armor.Enhancement {
 
     private static ItemSprite.Glowing PURPLE = new ItemSprite.Glowing(0x8844CC);
 
@@ -125,7 +124,7 @@ public class Viscosity extends Glyph {
                     Dungeon.fail(getClass());
                     GLog.n(Messages.get(this, "ondeath"));
 
-                    Badges.validateDeathFromGlyph();
+                    Badges.validateDeathFromEnhancement();
                 }
                 spend(TICK);
 

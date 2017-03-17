@@ -80,7 +80,7 @@ public class Badges {
         DEATH_FROM_POISON(25),
         DEATH_FROM_GAS(26),
         DEATH_FROM_HUNGER(27),
-        DEATH_FROM_GLYPH(57),
+        DEATH_FROM_ENHANCEMENT(57),
         DEATH_FROM_FALLING(59),
         YASD(34, true),
         BOSS_SLAIN_1_COMMANDER,
@@ -134,10 +134,10 @@ public class Badges {
         VICTORY(22),
         VICTORY_ALL_CLASSES(36, true),
         MASTERY_COMBO(56),
-        EXPERIMENTAL_TECH_COOKED_1(52),
-        EXPERIMENTAL_TECH_COOKED_2(53),
-        EXPERIMENTAL_TECH_COOKED_3(54),
-        EXPERIMENTAL_TECH_COOKED_4(55),
+        EXPERIMENTAL_TECH_MADE_1(52),
+        EXPERIMENTAL_TECH_MADE_2(53),
+        EXPERIMENTAL_TECH_MADE_3(54),
+        EXPERIMENTAL_TECH_MADE_4(55),
         NO_MONSTERS_SLAIN(28),
         GRIM_WEAPON(29),
         WATERTHINGS(30),
@@ -368,23 +368,23 @@ public class Badges {
         displayBadge(badge);
     }
 
-    public static void validateExperimentalTechCooked() {
+    public static void validateExperimentalTechMade() {
         Badge badge = null;
 
-        if (!local.contains(Badge.EXPERIMENTAL_TECH_COOKED_1) && Statistics.experimentalTechCooked >= 3) {
-            badge = Badge.EXPERIMENTAL_TECH_COOKED_1;
+        if (!local.contains(Badge.EXPERIMENTAL_TECH_MADE_1) && Statistics.experimentalTechMade >= 3) {
+            badge = Badge.EXPERIMENTAL_TECH_MADE_1;
             local.add(badge);
         }
-        if (!local.contains(Badge.EXPERIMENTAL_TECH_COOKED_2) && Statistics.experimentalTechCooked >= 6) {
-            badge = Badge.EXPERIMENTAL_TECH_COOKED_2;
+        if (!local.contains(Badge.EXPERIMENTAL_TECH_MADE_2) && Statistics.experimentalTechMade >= 6) {
+            badge = Badge.EXPERIMENTAL_TECH_MADE_2;
             local.add(badge);
         }
-        if (!local.contains(Badge.EXPERIMENTAL_TECH_COOKED_3) && Statistics.experimentalTechCooked >= 9) {
-            badge = Badge.EXPERIMENTAL_TECH_COOKED_3;
+        if (!local.contains(Badge.EXPERIMENTAL_TECH_MADE_3) && Statistics.experimentalTechMade >= 9) {
+            badge = Badge.EXPERIMENTAL_TECH_MADE_3;
             local.add(badge);
         }
-        if (!local.contains(Badge.EXPERIMENTAL_TECH_COOKED_4) && Statistics.experimentalTechCooked >= 12) {
-            badge = Badge.EXPERIMENTAL_TECH_COOKED_4;
+        if (!local.contains(Badge.EXPERIMENTAL_TECH_MADE_4) && Statistics.experimentalTechMade >= 12) {
+            badge = Badge.EXPERIMENTAL_TECH_MADE_4;
             local.add(badge);
         }
 
@@ -561,8 +561,8 @@ public class Badges {
         validateYASD();
     }
 
-    public static void validateDeathFromGlyph() {
-        Badge badge = Badge.DEATH_FROM_GLYPH;
+    public static void validateDeathFromEnhancement() {
+        Badge badge = Badge.DEATH_FROM_ENHANCEMENT;
         local.add(badge);
         displayBadge(badge);
     }
@@ -944,7 +944,7 @@ public class Badges {
         leaveBest(filtered, Badge.STRENGTH_ATTAINED_1, Badge.STRENGTH_ATTAINED_2, Badge.STRENGTH_ATTAINED_3, Badge.STRENGTH_ATTAINED_4);
         leaveBest(filtered, Badge.FOOD_EATEN_1, Badge.FOOD_EATEN_2, Badge.FOOD_EATEN_3, Badge.FOOD_EATEN_4);
         leaveBest(filtered, Badge.ITEM_LEVEL_1, Badge.ITEM_LEVEL_2, Badge.ITEM_LEVEL_3, Badge.ITEM_LEVEL_4);
-        leaveBest(filtered, Badge.EXPERIMENTAL_TECH_COOKED_1, Badge.EXPERIMENTAL_TECH_COOKED_2, Badge.EXPERIMENTAL_TECH_COOKED_3, Badge.EXPERIMENTAL_TECH_COOKED_4);
+        leaveBest(filtered, Badge.EXPERIMENTAL_TECH_MADE_1, Badge.EXPERIMENTAL_TECH_MADE_2, Badge.EXPERIMENTAL_TECH_MADE_3, Badge.EXPERIMENTAL_TECH_MADE_4);
         leaveBest(filtered, Badge.BOSS_SLAIN_1_ALL_CLASSES, Badge.BOSS_SLAIN_3_ALL_SUBCLASSES);
         leaveBest(filtered, Badge.DEATH_FROM_FIRE, Badge.YASD);
         leaveBest(filtered, Badge.DEATH_FROM_GAS, Badge.YASD);

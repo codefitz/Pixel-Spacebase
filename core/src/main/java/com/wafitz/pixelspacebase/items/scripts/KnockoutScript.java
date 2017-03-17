@@ -32,7 +32,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
-public class LullabyScript extends Script {
+public class KnockoutScript extends Script {
 
     {
         initials = 1;

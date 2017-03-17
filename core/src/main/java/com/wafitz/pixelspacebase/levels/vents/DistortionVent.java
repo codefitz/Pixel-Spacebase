@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.DriedRose;
+import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
 import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
 import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.watabou.noosa.Game;
@@ -48,7 +48,7 @@ public class DistortionVent extends Vent {
         }
 
         for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-            if (mob instanceof DriedRose.GhostHero) mob.destroy();
+            if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
         InterlevelScene.mode = InterlevelScene.Mode.RESET;
         Game.switchScene(InterlevelScene.class);

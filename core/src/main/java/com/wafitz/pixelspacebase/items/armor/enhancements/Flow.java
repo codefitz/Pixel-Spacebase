@@ -18,35 +18,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.armor.glyphs;
+package com.wafitz.pixelspacebase.items.armor.enhancements;
 
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Bleeding;
-import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
-import com.watabou.utils.Random;
 
-public class Thorns extends Armor.Glyph {
+public class Flow extends Armor.Enhancement {
 
-    private static ItemSprite.Glowing RED = new ItemSprite.Glowing(0x660022);
+    private static ItemSprite.Glowing BLUE = new ItemSprite.Glowing(0x0000FF);
 
     @Override
     public int proc(Armor armor, Char attacker, Char defender, int damage) {
-
-        int level = Math.max(0, armor.level());
-
-        if (Random.Int(level / 2 + 5) >= 4) {
-
-            Buff.affect(attacker, Bleeding.class).set(Math.max(level / 2, damage));
-
-        }
-
+        //no proc effect, see hero.speed for effect.
         return damage;
     }
 
     @Override
     public ItemSprite.Glowing glowing() {
-        return RED;
+        return BLUE;
     }
+
 }

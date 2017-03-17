@@ -91,7 +91,7 @@ public class Dungeon {
         batHP,
         warlockHP,
         scorpioHP,
-        cookingHP,
+        makingHP,
         //blandfruit, which can technically be an unlimited health potion source
         blandfruitGadget,
 

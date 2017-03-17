@@ -54,7 +54,7 @@ public class Sorrowmoss extends Trigger {
             image = ItemSpriteSheet.SORROWMOSS_GADGET;
 
             triggerClass = Sorrowmoss.class;
-            alchemyClass = ToxicGasTech.class;
+            craftingClass = ToxicGasTech.class;
         }
     }
 }

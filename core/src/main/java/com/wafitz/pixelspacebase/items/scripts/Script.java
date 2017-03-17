@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Blindness;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.ItemStatusHandler;
-import com.wafitz.pixelspacebase.items.artifacts.UnstableSpellbook;
+import com.wafitz.pixelspacebase.items.artifacts.BuggyCompiler;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.HeroSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -38,7 +38,7 @@ import java.util.HashSet;
 
 public abstract class Script extends Item {
 
-    private static final String AC_READ = "READ";
+    private static final String AC_RUN = "RUN";
 
     static final float TIME_TO_READ = 1f;
 
@@ -51,12 +51,12 @@ public abstract class Script extends Item {
             FixScript.class,
             TeleportationScript.class,
             UpgradeScript.class,
-            RageScript.class,
+            EchoLocationScript.class,
             TerrorScript.class,
-            LullabyScript.class,
-            MagicalInfusionScript.class,
+            KnockoutScript.class,
+            EnhancementScript.class,
             PsionicBlastScript.class,
-            MirrorImageScript.class
+            WeakCloneScript.class
     };
 
     private static final HashMap<String, Integer> runes = new HashMap<String, Integer>() {
@@ -84,7 +84,7 @@ public abstract class Script extends Item {
 
     {
         stackable = true;
-        defaultAction = AC_READ;
+        defaultAction = AC_RUN;
     }
 
     @SuppressWarnings("unchecked")
@@ -120,7 +120,7 @@ public abstract class Script extends Item {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        actions.add(AC_READ);
+        actions.add(AC_RUN);
         return actions;
     }
 
@@ -129,12 +129,12 @@ public abstract class Script extends Item {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_READ)) {
+        if (action.equals(AC_RUN)) {
 
             if (hero.buff(Blindness.class) != null) {
                 GLog.w(Messages.get(this, "blinded"));
-            } else if (hero.buff(UnstableSpellbook.bookRecharge.class) != null
-                    && hero.buff(UnstableSpellbook.bookRecharge.class).isMalfunctioning()
+            } else if (hero.buff(BuggyCompiler.bookRecharge.class) != null
+                    && hero.buff(BuggyCompiler.bookRecharge.class).isMalfunctioning()
                     && !(this instanceof FixScript)) {
                 GLog.n(Messages.get(this, "malfunctioning"));
             } else {

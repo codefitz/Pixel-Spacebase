@@ -37,7 +37,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class AlchemistsToolkit extends Artifact {
+public class MakersToolkit extends Artifact {
 
     {
         image = ItemSpriteSheet.ARTIFACT_TOOLKIT;
@@ -45,7 +45,7 @@ public class AlchemistsToolkit extends Artifact {
         levelCap = 10;
     }
 
-    private static final String AC_BREW = "BREW";
+    private static final String AC_MAKE = "MAKE";
 
     //arrays used in containing potion collections for mix logic.
     private final ArrayList<String> combination = new ArrayList<>();
@@ -60,7 +60,7 @@ public class AlchemistsToolkit extends Artifact {
     private String inventoryTitle = "Select experimental tech";
     protected WndBag.Mode mode = WndBag.Mode.EXPERIMENTALTECH;
 
-    public AlchemistsToolkit() {
+    public MakersToolkit() {
         super();
 
         Generator.Category cat = Generator.Category.EXPERIMENTALTECH;
@@ -79,7 +79,7 @@ public class AlchemistsToolkit extends Artifact {
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
         if (isEquipped(hero) && level() < levelCap && !malfunctioning)
-            actions.add(AC_BREW);
+            actions.add(AC_MAKE);
         return actions;
     }
 
@@ -88,7 +88,7 @@ public class AlchemistsToolkit extends Artifact {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_BREW)) {
+        if (action.equals(AC_MAKE)) {
             GameScene.selectItem(itemSelector, mode, inventoryTitle);
         }
     }
@@ -160,17 +160,17 @@ public class AlchemistsToolkit extends Artifact {
 
     @Override
     protected ArtifactBuff passiveBuff() {
-        return new alchemy();
+        return new crafting();
     }
 
     @Override
     public String desc() {
         String result = "This toolkit contains a number of regents and herbs used to improve the process of " +
-                "cooking ExperimentalTech.\n\n";
+                "making Experimental Tech.\n\n";
 
         if (isEquipped(Dungeon.hero))
             if (malfunctioning)
-                result += "The malfunctioning toolkit has bound itself to your side, and refuses to let you use alchemy.\n\n";
+                result += "The malfunctioning toolkit has bound itself to your side, and refuses to let you use crafting.\n\n";
             else
                 result += "The toolkit rests on your hip, the various tools inside make a light jingling sound as you move.\n\n";
 
@@ -229,9 +229,9 @@ public class AlchemistsToolkit extends Artifact {
     }
 
 
-    public class alchemy extends ArtifactBuff {
+    public class crafting extends ArtifactBuff {
 
-        public boolean tryCook(int count) {
+        public boolean tryMake(int count) {
 
             //this logic is handled inside the class with a variable so that it may be stored.
             //to prevent manipulation where a player could keep throwing in 1-2 gadgets until they get lucky.

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.armor.glyphs;
+package com.wafitz.pixelspacebase.items.armor.enhancements;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.actors.Char;
@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
-public class Camouflage extends Armor.Glyph {
+public class Camouflage extends Armor.Enhancement {
 
     private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing(0x448822);
 

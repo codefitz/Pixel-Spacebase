@@ -52,7 +52,7 @@ public class Terrain {
     public static final int STATUE = 25;
     public static final int STATUE_SP = 26;
     public static final int BOOKSHELF = 27;
-    public static final int ALCHEMY = 28;
+    public static final int CRAFTING = 28;
 
     // wafitz.v4 Changed to default, doesn't affect game tiles though...
     public static final int WATER = 63;
@@ -100,7 +100,7 @@ public class Terrain {
         flags[STATUE] = SOLID;
         flags[STATUE_SP] = flags[STATUE];
         flags[BOOKSHELF] = flags[BARRICADE];
-        flags[ALCHEMY] = PASSABLE;
+        flags[CRAFTING] = PASSABLE;
 
     }
 

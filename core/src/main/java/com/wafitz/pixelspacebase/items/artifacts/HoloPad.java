@@ -54,10 +54,10 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class DriedRose extends Artifact {
+public class HoloPad extends Artifact {
 
     {
-        image = ItemSpriteSheet.ARTIFACT_ROSE1;
+        image = ItemSpriteSheet.ARTIFACT_HOLOPAD1;
 
         levelCap = 10;
 
@@ -71,11 +71,11 @@ public class DriedRose extends Artifact {
     private static boolean firstSummon = false;
     protected static boolean spawned = false;
 
-    public int droppedPetals = 0;
+    public int droppedHoloBatteries = 0;
 
     private static final String AC_SUMMON = "SUMMON";
 
-    public DriedRose() {
+    public HoloPad() {
         super();
         talkedTo = firstSummon = spawned = false;
     }
@@ -109,23 +109,23 @@ public class DriedRose extends Artifact {
                 }
 
                 if (spawnPoints.size() > 0) {
-                    GhostHero ghost = new GhostHero(level());
-                    ghost.pos = Random.element(spawnPoints);
+                    HologramHero hologram = new HologramHero(level());
+                    hologram.pos = Random.element(spawnPoints);
 
-                    GameScene.add(ghost, 1f);
-                    CellEmitter.get(ghost.pos).start(ShaftParticle.FACTORY, 0.3f, 4);
-                    CellEmitter.get(ghost.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+                    GameScene.add(hologram, 1f);
+                    CellEmitter.get(hologram.pos).start(ShaftParticle.FACTORY, 0.3f, 4);
+                    CellEmitter.get(hologram.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
 
                     hero.spend(1f);
                     hero.busy();
                     hero.sprite.operate(hero.pos);
 
                     if (!firstSummon) {
-                        ghost.yell(Messages.get(GhostHero.class, "hello", Dungeon.hero.givenName()));
+                        hologram.yell(Messages.get(HologramHero.class, "hello", Dungeon.hero.givenName()));
                         Sample.INSTANCE.play(Assets.SND_GHOST);
                         firstSummon = true;
                     } else
-                        ghost.saySpawned();
+                        hologram.saySpawned();
 
                     spawned = true;
                     charge = 0;
@@ -157,18 +157,18 @@ public class DriedRose extends Artifact {
 
     @Override
     protected ArtifactBuff passiveBuff() {
-        return new roseRecharge();
+        return new holopadRecharge();
     }
 
     @Override
     public Item upgrade() {
         if (level() >= 9)
-            image = ItemSpriteSheet.ARTIFACT_ROSE3;
+            image = ItemSpriteSheet.ARTIFACT_HOLOPAD3;
         else if (level() >= 4)
-            image = ItemSpriteSheet.ARTIFACT_ROSE2;
+            image = ItemSpriteSheet.ARTIFACT_HOLOPAD2;
 
         //For upgrade transferring via well of transmutation
-        droppedPetals = Math.max(level(), droppedPetals);
+        droppedHoloBatteries = Math.max(level(), droppedHoloBatteries);
 
         return super.upgrade();
     }
@@ -176,7 +176,7 @@ public class DriedRose extends Artifact {
     private static final String TALKEDTO = "talkedto";
     private static final String FIRSTSUMMON = "firstsummon";
     private static final String SPAWNED = "spawned";
-    private static final String PETALS = "petals";
+    private static final String HOLOBATTERIES = "holobatteries";
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -185,7 +185,7 @@ public class DriedRose extends Artifact {
         bundle.put(TALKEDTO, talkedTo);
         bundle.put(FIRSTSUMMON, firstSummon);
         bundle.put(SPAWNED, spawned);
-        bundle.put(PETALS, droppedPetals);
+        bundle.put(HOLOBATTERIES, droppedHoloBatteries);
     }
 
     @Override
@@ -195,10 +195,10 @@ public class DriedRose extends Artifact {
         talkedTo = bundle.getBoolean(TALKEDTO);
         firstSummon = bundle.getBoolean(FIRSTSUMMON);
         spawned = bundle.getBoolean(SPAWNED);
-        droppedPetals = bundle.getInt(PETALS);
+        droppedHoloBatteries = bundle.getInt(HOLOBATTERIES);
     }
 
-    private class roseRecharge extends ArtifactBuff {
+    private class holopadRecharge extends ArtifactBuff {
 
         @Override
         public boolean act() {
@@ -211,7 +211,7 @@ public class DriedRose extends Artifact {
                     partialCharge--;
                     if (charge == chargeCap) {
                         partialCharge = 0f;
-                        GLog.p(Messages.get(DriedRose.class, "charged"));
+                        GLog.p(Messages.get(HoloPad.class, "charged"));
                     }
                 }
             } else if (malfunctioning && Random.Int(100) == 0) {
@@ -240,29 +240,29 @@ public class DriedRose extends Artifact {
         }
     }
 
-    public static class Petal extends Item {
+    public static class HoloBattery extends Item {
 
         {
             stackable = true;
-            image = ItemSpriteSheet.PETAL;
+            image = ItemSpriteSheet.HOLOBATTERY;
         }
 
         @Override
         public boolean doPickUp(Hero hero) {
-            DriedRose rose = hero.belongings.getItem(DriedRose.class);
+            HoloPad holopad = hero.belongings.getItem(HoloPad.class);
 
-            if (rose == null) {
-                GLog.w(Messages.get(this, "no_rose"));
+            if (holopad == null) {
+                GLog.w(Messages.get(this, "no_holopad"));
                 return false;
             }
-            if (rose.level() >= rose.levelCap) {
+            if (holopad.level() >= holopad.levelCap) {
                 GLog.i(Messages.get(this, "no_room"));
                 hero.spendAndNext(TIME_TO_PICK_UP);
                 return true;
             } else {
 
-                rose.upgrade();
-                if (rose.level() == rose.levelCap) {
+                holopad.upgrade();
+                if (holopad.level() == holopad.levelCap) {
                     GLog.p(Messages.get(this, "maxlevel"));
                 } else
                     GLog.i(Messages.get(this, "levelup"));
@@ -276,7 +276,7 @@ public class DriedRose extends Artifact {
 
     }
 
-    public static class GhostHero extends NPC {
+    public static class HologramHero extends NPC {
 
         {
             spriteClass = HologramSprite.class;
@@ -289,16 +289,16 @@ public class DriedRose extends Artifact {
             ally = true;
         }
 
-        GhostHero() {
+        HologramHero() {
             super();
 
             //double heroes defence skill
             defenseSkill = (Dungeon.hero.lvl + 4) * 2;
         }
 
-        GhostHero(int roseLevel) {
+        HologramHero(int holopadLevel) {
             this();
-            HP = HT = 10 + roseLevel * 4;
+            HP = HT = 10 + holopadLevel * 4;
         }
 
         void saySpawned() {
@@ -394,8 +394,8 @@ public class DriedRose extends Artifact {
 
         @Override
         public boolean interact() {
-            if (!DriedRose.talkedTo) {
-                DriedRose.talkedTo = true;
+            if (!HoloPad.talkedTo) {
+                HoloPad.talkedTo = true;
                 GameScene.show(new WndQuest(this, Messages.get(this, "introduce")));
                 return false;
             } else {
@@ -421,7 +421,7 @@ public class DriedRose extends Artifact {
 
         @Override
         public void destroy() {
-            DriedRose.spawned = false;
+            HoloPad.spawned = false;
             super.destroy();
         }
 

@@ -191,7 +191,7 @@ public class Blacksmith extends NPC {
         if (first.isEquipped(Dungeon.hero)) {
             ((EquipableItem) first).doUnequip(Dungeon.hero, true);
         }
-        first.level(first.level() + 1); //prevents on-upgrade effects like enchant/glyph removal
+        first.level(first.level() + 1); //prevents on-upgrade effects like enchant/enhancement removal
         Dungeon.hero.spendAndNext(2f);
         Badges.validateItemLevelAquired(first);
 

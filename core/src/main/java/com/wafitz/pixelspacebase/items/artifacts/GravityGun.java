@@ -42,9 +42,9 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class EtherealChains extends Artifact {
+public class GravityGun extends Artifact {
 
-    private static final String AC_CAST = "CAST";
+    private static final String AC_SHOOT = "SHOOT";
 
     {
         image = ItemSpriteSheet.ARTIFACT_CHAINS;
@@ -54,7 +54,7 @@ public class EtherealChains extends Artifact {
 
         charge = 5;
 
-        defaultAction = AC_CAST;
+        defaultAction = AC_SHOOT;
         usesTargeting = true;
     }
 
@@ -62,7 +62,7 @@ public class EtherealChains extends Artifact {
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
         if (isEquipped(hero) && charge > 0 && !malfunctioning)
-            actions.add(AC_CAST);
+            actions.add(AC_SHOOT);
         return actions;
     }
 
@@ -71,7 +71,7 @@ public class EtherealChains extends Artifact {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_CAST)) {
+        if (action.equals(AC_SHOOT)) {
 
             curUser = hero;
 
@@ -116,16 +116,16 @@ public class EtherealChains extends Artifact {
                         }
                     }
                     if (newPos == -1) {
-                        GLog.w(Messages.get(EtherealChains.class, "does_nothing"));
+                        GLog.w(Messages.get(GravityGun.class, "does_nothing"));
                     } else {
                         final int newMobPos = newPos;
                         final Char affected = Actor.findChar(chain.collisionPos);
                         int chargeUse = Dungeon.level.distance(affected.pos, newMobPos);
                         if (chargeUse > charge) {
-                            GLog.w(Messages.get(EtherealChains.class, "no_charge"));
+                            GLog.w(Messages.get(GravityGun.class, "no_charge"));
                             return;
                         } else if (affected.properties().contains(Char.Property.IMMOVABLE)) {
-                            GLog.w(Messages.get(EtherealChains.class, "cant_pull"));
+                            GLog.w(Messages.get(GravityGun.class, "cant_pull"));
                             return;
                         } else {
                             charge -= chargeUse;
@@ -157,12 +157,12 @@ public class EtherealChains extends Artifact {
                         if (!Level.solid[i] && Actor.findChar(i) == null) newPos = i;
                     }
                     if (newPos == -1) {
-                        GLog.w(Messages.get(EtherealChains.class, "does_nothing"));
+                        GLog.w(Messages.get(GravityGun.class, "does_nothing"));
                     } else {
                         final int newHeroPos = newPos;
                         int chargeUse = Dungeon.level.distance(curUser.pos, newHeroPos);
                         if (chargeUse > charge) {
-                            GLog.w(Messages.get(EtherealChains.class, "no_charge"));
+                            GLog.w(Messages.get(GravityGun.class, "no_charge"));
                             return;
                         } else {
                             charge -= chargeUse;
@@ -185,7 +185,7 @@ public class EtherealChains extends Artifact {
                     }
 
                 } else {
-                    GLog.i(Messages.get(EtherealChains.class, "nothing_to_grab"));
+                    GLog.i(Messages.get(GravityGun.class, "nothing_to_grab"));
                 }
 
             }
@@ -194,13 +194,13 @@ public class EtherealChains extends Artifact {
 
         @Override
         public String prompt() {
-            return Messages.get(EtherealChains.class, "prompt");
+            return Messages.get(GravityGun.class, "prompt");
         }
     };
 
     @Override
     protected ArtifactBuff passiveBuff() {
-        return new chainsRecharge();
+        return new gravityRecharge();
     }
 
     @Override
@@ -217,7 +217,7 @@ public class EtherealChains extends Artifact {
         return desc;
     }
 
-    public class chainsRecharge extends ArtifactBuff {
+    public class gravityRecharge extends ArtifactBuff {
 
         @Override
         public boolean act() {

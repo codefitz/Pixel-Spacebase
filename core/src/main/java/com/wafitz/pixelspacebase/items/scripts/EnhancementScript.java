@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.wafitz.pixelspacebase.windows.WndBag;
 
-public class MagicalInfusionScript extends InventoryScript {
+public class EnhancementScript extends InventoryScript {
 
     {
         initials = 2;
@@ -47,7 +47,7 @@ public class MagicalInfusionScript extends InventoryScript {
         else
             ((Armor) item).upgrade(true);
 
-        GLog.p(Messages.get(this, "infuse", item.name()));
+        GLog.p(Messages.get(this, "enhance", item.name()));
 
         Badges.validateItemLevelAquired(item);
 

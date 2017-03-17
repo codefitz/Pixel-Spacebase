@@ -127,7 +127,7 @@ public abstract class Trigger implements Bundlable {
 
         protected Class<? extends Trigger> triggerClass;
 
-        public Class<? extends Item> alchemyClass;
+        public Class<? extends Item> craftingClass;
 
         @Override
         public ArrayList<String> actions(Hero hero) {
@@ -138,7 +138,7 @@ public abstract class Trigger implements Bundlable {
 
         @Override
         protected void onThrow(int cell) {
-            if (Dungeon.level.map[cell] == Terrain.ALCHEMY || Level.pit[cell] || Dungeon.level.vents.get(cell) != null) {
+            if (Dungeon.level.map[cell] == Terrain.CRAFTING || Level.pit[cell] || Dungeon.level.vents.get(cell) != null) {
                 super.onThrow(cell);
             } else {
                 Dungeon.level.trigger(this, cell);

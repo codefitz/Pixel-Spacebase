@@ -36,7 +36,7 @@ import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
-public class BrokenSeal extends Item {
+public class WeakForcefield extends Item {
 
     private static final String AC_AFFIX = "AFFIX";
 
@@ -44,7 +44,7 @@ public class BrokenSeal extends Item {
     private static final String AC_INFO = "INFO_WINDOW";
 
     {
-        image = ItemSpriteSheet.SEAL;
+        image = ItemSpriteSheet.FORCEFIELD;
 
         malfunctioningKnown = levelKnown = true;
         unique = true;
@@ -74,7 +74,7 @@ public class BrokenSeal extends Item {
     }
 
     @Override
-    //script of upgrade can be used directly once, same as upgrading armor the seal is affixed to then removing it.
+    //script of upgrade can be used directly once, same as upgrading armor the forcefield is applied to then removing it.
     public boolean isUpgradable() {
         return level() == 0;
     }
@@ -85,14 +85,14 @@ public class BrokenSeal extends Item {
             if (item != null && item instanceof Armor) {
                 Armor armor = (Armor) item;
                 if (!armor.levelKnown) {
-                    GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
+                    GLog.w(Messages.get(WeakForcefield.class, "unknown_armor"));
                 } else if (armor.malfunctioning || armor.level() < 0) {
-                    GLog.w(Messages.get(BrokenSeal.class, "degraded_armor"));
+                    GLog.w(Messages.get(WeakForcefield.class, "degraded_armor"));
                 } else {
-                    GLog.p(Messages.get(BrokenSeal.class, "affix"));
+                    GLog.p(Messages.get(WeakForcefield.class, "affix"));
                     Dungeon.hero.sprite.operate(Dungeon.hero.pos);
                     Sample.INSTANCE.play(Assets.SND_UNLOCK);
-                    armor.affixSeal((BrokenSeal) curItem);
+                    armor.applyForcefield((WeakForcefield) curItem);
                     curItem.detach(Dungeon.hero.belongings.backpack);
                     Badges.validateTutorial();
                 }

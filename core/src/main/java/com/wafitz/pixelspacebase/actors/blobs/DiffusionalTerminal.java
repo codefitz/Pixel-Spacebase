@@ -34,7 +34,7 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.modules.Module;
-import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
+import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
@@ -197,9 +197,9 @@ public class DiffusionalTerminal extends WellWater {
     private Script changeScript(Script s) {
         if (s instanceof UpgradeScript) {
 
-            return new MagicalInfusionScript();
+            return new EnhancementScript();
 
-        } else if (s instanceof MagicalInfusionScript) {
+        } else if (s instanceof EnhancementScript) {
 
             return new UpgradeScript();
 

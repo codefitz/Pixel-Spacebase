@@ -34,8 +34,8 @@ import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
-import com.wafitz.pixelspacebase.items.artifacts.CapeOfThorns;
 import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
+import com.wafitz.pixelspacebase.items.artifacts.StrongForcefield;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
 import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
@@ -62,7 +62,7 @@ public class DM300 extends Mob {
         EXP = 30;
         defenseSkill = 18;
 
-        loot = new CapeOfThorns().identify();
+        loot = new StrongForcefield().identify();
         lootChance = 0.333f;
 
         properties.add(Property.BOSS);

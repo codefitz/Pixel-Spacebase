@@ -143,7 +143,7 @@ public class WaveBlaster extends DamageBlaster {
     }
 
     @Override
-    //behaves just like glyph of Repulsion
+    //behaves just like enhancement of Repulsion
     public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
         int level = Math.max(0, staff.level());
 

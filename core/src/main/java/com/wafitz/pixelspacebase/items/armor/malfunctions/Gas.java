@@ -18,30 +18,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.armor.glyphs;
+package com.wafitz.pixelspacebase.items.armor.malfunctions;
 
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.blobs.Blob;
+import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
 import com.wafitz.pixelspacebase.items.armor.Armor;
+import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
+import com.watabou.utils.Random;
 
-public class Obfuscation extends Armor.Glyph {
+public class Gas extends Armor.Enhancement {
 
-    private static ItemSprite.Glowing GREY = new ItemSprite.Glowing(0x888888);
+    private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 
     @Override
     public int proc(Armor armor, Char attacker, Char defender, int damage) {
-        //no proc effect, see hero.stealth for effect.
+
+        if (Random.Int(8) == 0) {
+
+            GameScene.add(Blob.gadget(defender.pos, 250, ToxicGas.class));
+
+        }
+
         return damage;
     }
 
     @Override
-    public int tierDRAdjust() {
-        return -1;
+    public ItemSprite.Glowing glowing() {
+        return BLACK;
     }
 
     @Override
-    public ItemSprite.Glowing glowing() {
-        return GREY;
+    public boolean malfunction() {
+        return true;
     }
-
 }

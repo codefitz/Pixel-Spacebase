@@ -47,7 +47,7 @@ public class Stormvine extends Trigger {
             image = ItemSpriteSheet.STORMVINE_GADGET;
 
             triggerClass = Stormvine.class;
-            alchemyClass = LevitationTech.class;
+            craftingClass = LevitationTech.class;
         }
     }
 }

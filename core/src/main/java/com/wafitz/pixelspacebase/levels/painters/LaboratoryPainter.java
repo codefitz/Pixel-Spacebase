@@ -51,7 +51,7 @@ public class LaboratoryPainter extends Painter {
         } else if (entrance.y == room.bottom) {
             pot = new Point(Random.Int(2) == 0 ? room.left + 1 : room.right - 1, room.top + 1);
         }
-        set(level, pot, Terrain.ALCHEMY);
+        set(level, pot, Terrain.CRAFTING);
 
         Craft craft = new Craft();
         craft.gadget(level, pot.x + level.width() * pot.y, 1);

@@ -42,14 +42,14 @@ import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.MightTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
-import com.wafitz.pixelspacebase.items.artifacts.AlchemistsToolkit;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
+import com.wafitz.pixelspacebase.items.artifacts.MakersToolkit;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.food.Blandfruit;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.FrozenCarpaccio;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
-import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
+import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -230,14 +230,14 @@ public class Heap implements Bundlable {
 
         for (Item item : items.toArray(new Item[0])) {
             if (item instanceof Script
-                    && !(item instanceof UpgradeScript || item instanceof MagicalInfusionScript)) {
+                    && !(item instanceof UpgradeScript || item instanceof EnhancementScript)) {
                 items.remove(item);
                 burnt = true;
             } else if (item instanceof Dewdrop) {
                 items.remove(item);
                 evaporated = true;
             } else if (item instanceof MysteryMeat) {
-                replace(item, ChargrilledMeat.cook((MysteryMeat) item));
+                replace(item, ChargrilledMeat.make((MysteryMeat) item));
                 burnt = true;
             } else if (item instanceof Bomb) {
                 items.remove(item);
@@ -324,7 +324,7 @@ public class Heap implements Bundlable {
         boolean frozen = false;
         for (Item item : items.toArray(new Item[0])) {
             if (item instanceof MysteryMeat) {
-                replace(item, FrozenCarpaccio.cook((MysteryMeat) item));
+                replace(item, FrozenCarpaccio.make((MysteryMeat) item));
                 frozen = true;
             } else if (item instanceof ExperimentalTech
                     && !(item instanceof StrengthTech || item instanceof MightTech)) {
@@ -361,7 +361,7 @@ public class Heap implements Bundlable {
             CellEmitter.center(pos).burst(Speck.factory(Speck.EVOKE), 3);
 
             Blandfruit result = new Blandfruit();
-            result.cook((Gadget) items.get(0));
+            result.make((Gadget) items.get(0));
 
             destroy();
 
@@ -380,11 +380,11 @@ public class Heap implements Bundlable {
             }
         }
 
-        //alchemists toolkit gives a chance to cook a potion in two or even one gadgets
-        AlchemistsToolkit.alchemy alchemy = Dungeon.hero.buff(AlchemistsToolkit.alchemy.class);
-        int bonus = alchemy != null ? alchemy.itemLevel() : -1;
+        //makers toolkit gives a chance to make a potion in two or even one gadgets
+        MakersToolkit.crafting crafting = Dungeon.hero.buff(MakersToolkit.crafting.class);
+        int bonus = crafting != null ? crafting.itemLevel() : -1;
 
-        if (bonus != -1 ? alchemy.tryCook(count) : count >= GADGETS_TO_EXPERIMENTALTECH) {
+        if (bonus != -1 ? crafting.tryMake(count) : count >= GADGETS_TO_EXPERIMENTALTECH) {
 
             CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
             Sample.INSTANCE.play(Assets.SND_PUFF);
@@ -397,20 +397,20 @@ public class Heap implements Bundlable {
 
                 destroy();
 
-                Statistics.experimentalTechCooked++;
-                Badges.validateExperimentalTechCooked();
+                Statistics.experimentalTechMade++;
+                Badges.validateExperimentalTechMade();
 
                 experimentaltech = Generator.random(Generator.Category.EXPERIMENTALTECH);
 
             } else {
 
                 Gadget proto = (Gadget) items.get(Random.chances(chances));
-                Class<? extends Item> itemClass = proto.alchemyClass;
+                Class<? extends Item> itemClass = proto.craftingClass;
 
                 destroy();
 
-                Statistics.experimentalTechCooked++;
-                Badges.validateExperimentalTechCooked();
+                Statistics.experimentalTechMade++;
+                Badges.validateExperimentalTechMade();
 
                 if (itemClass == null) {
                     experimentaltech = Generator.random(Generator.Category.EXPERIMENTALTECH);
@@ -429,11 +429,11 @@ public class Heap implements Bundlable {
                 if (Random.Int(1000 / bonus) == 0)
                     return new ExperienceTech();
 
-            while (experimentaltech instanceof HealingTech && Random.Int(10) < Dungeon.limitedDrops.cookingHP.count)
+            while (experimentaltech instanceof HealingTech && Random.Int(10) < Dungeon.limitedDrops.makingHP.count)
                 experimentaltech = Generator.random(Generator.Category.EXPERIMENTALTECH);
 
             if (experimentaltech instanceof HealingTech)
-                Dungeon.limitedDrops.cookingHP.count++;
+                Dungeon.limitedDrops.makingHP.count++;
 
             return experimentaltech;
 

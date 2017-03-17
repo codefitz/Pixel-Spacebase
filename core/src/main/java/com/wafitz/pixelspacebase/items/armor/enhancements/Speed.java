@@ -18,35 +18,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.armor.glyphs;
+package com.wafitz.pixelspacebase.items.armor.enhancements;
 
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.blasters.WaveBlaster;
-import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
-import com.watabou.utils.Random;
 
-public class Repulsion extends Armor.Glyph {
+public class Speed extends Armor.Enhancement {
 
-    private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing(0xFFFFFF);
+    private static ItemSprite.Glowing YELLOW = new ItemSprite.Glowing(0xFFFF00);
 
     @Override
     public int proc(Armor armor, Char attacker, Char defender, int damage) {
-
-        int level = Math.max(0, armor.level());
-
-        if (Random.Int(level + 5) >= 4) {
-            int oppositeHero = attacker.pos + (attacker.pos - defender.pos);
-            Ballistica trajectory = new Ballistica(attacker.pos, oppositeHero, Ballistica.MAGIC_BOLT);
-            WaveBlaster.throwChar(attacker, trajectory, 2);
-        }
-
+        //no proc effect, see hero.defenseskill and hero.speed for effect.
         return damage;
     }
 
     @Override
-    public ItemSprite.Glowing glowing() {
-        return WHITE;
+    public int tierDRAdjust() {
+        return -2;
     }
+
+    @Override
+    public float tierSTRAdjust() {
+        return -1;
+    }
+
+    @Override
+    public ItemSprite.Glowing glowing() {
+        return YELLOW;
+    }
+
 }

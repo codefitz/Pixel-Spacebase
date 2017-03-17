@@ -18,35 +18,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.armor.glyphs;
+package com.wafitz.pixelspacebase.items.armor.enhancements;
 
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 
-public class Swiftness extends Armor.Glyph {
+public class Forcefield extends Armor.Enhancement {
 
-    private static ItemSprite.Glowing YELLOW = new ItemSprite.Glowing(0xFFFF00);
+    private static ItemSprite.Glowing GREY = new ItemSprite.Glowing(0x222222);
 
     @Override
     public int proc(Armor armor, Char attacker, Char defender, int damage) {
-        //no proc effect, see hero.defenseskill and hero.speed for effect.
+        //no proc effect, see armor.DrMin and the end of hero.getCloser
         return damage;
     }
 
     @Override
-    public int tierDRAdjust() {
-        return -2;
-    }
-
-    @Override
-    public float tierSTRAdjust() {
-        return -1;
-    }
-
-    @Override
     public ItemSprite.Glowing glowing() {
-        return YELLOW;
+        return GREY;
     }
 
 }

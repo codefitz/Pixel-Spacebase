@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.MindVisionTech;
-import com.wafitz.pixelspacebase.items.artifacts.CloakOfShadows;
+import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
@@ -110,13 +110,13 @@ public enum HeroClass {
         // wafitz.v1 - Breaks naked plot
         /*if (Badges.isUnlocked(Badges.Badge.TUTORIAL_COMMANDER)) {
             if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
-                hero.belongings.armor.affixSeal(new BrokenSeal());
+                hero.belongings.armor.applyForcefield(new WeakForcefield());
             Dungeon.quickslot.setSlot(0, darts);
         } else {
             if (!Dungeon.isChallenged(Challenges.NO_ARMOR)) {
-                BrokenSeal seal = new BrokenSeal();
-                seal.collect();
-                Dungeon.quickslot.setSlot(0, seal);
+                WeakForcefield forcefield = new WeakForcefield();
+                forcefield.collect();
+                Dungeon.quickslot.setSlot(0, forcefield);
             }
             Dungeon.quickslot.setSlot(1, darts);
         }*/
@@ -145,7 +145,7 @@ public enum HeroClass {
     private static void initShapeshifter(Hero hero) {
         (hero.belongings.weapon = new Dagger()).identify();
 
-        CloakOfShadows cloak = new CloakOfShadows();
+        StealthModule cloak = new StealthModule();
         (hero.belongings.misc1 = cloak).identify();
         hero.belongings.misc1.activate(hero);
 

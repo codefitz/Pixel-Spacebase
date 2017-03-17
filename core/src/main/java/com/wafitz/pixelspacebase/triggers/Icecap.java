@@ -54,7 +54,7 @@ public class Icecap extends Trigger {
             image = ItemSpriteSheet.ICECAP_GADGET;
 
             triggerClass = Icecap.class;
-            alchemyClass = FrostTech.class;
+            craftingClass = FrostTech.class;
         }
     }
 }

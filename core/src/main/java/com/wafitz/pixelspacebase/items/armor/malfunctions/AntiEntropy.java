@@ -29,12 +29,12 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
 import com.wafitz.pixelspacebase.effects.particles.SnowParticle;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.armor.Armor.Glyph;
+import com.wafitz.pixelspacebase.items.armor.Armor.Enhancement;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
-public class AntiEntropy extends Glyph {
+public class AntiEntropy extends Enhancement {
 
     private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 

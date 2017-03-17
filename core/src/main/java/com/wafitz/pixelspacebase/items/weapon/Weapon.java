@@ -30,6 +30,7 @@ import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.modules.FurorModule;
 import com.wafitz.pixelspacebase.items.modules.TargetingModule;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Blazing;
+import com.wafitz.pixelspacebase.items.weapon.enchantments.Buggy;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Chilling;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Dazzling;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Eldritch;
@@ -38,7 +39,6 @@ import com.wafitz.pixelspacebase.items.weapon.enchantments.Lucky;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Projecting;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Shocking;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Stunning;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Unstable;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Venomous;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Vorpal;
@@ -275,7 +275,7 @@ abstract public class Weapon extends KindOfWeapon {
 
         private static final Class<?>[] enchants = new Class<?>[]{
                 Blazing.class, Venomous.class, Vorpal.class, Shocking.class,
-                Chilling.class, Eldritch.class, Lucky.class, Projecting.class, Unstable.class, Dazzling.class,
+                Chilling.class, Eldritch.class, Lucky.class, Projecting.class, Buggy.class, Dazzling.class,
                 Grim.class, Stunning.class, Vampiric.class,};
         private static final float[] chances = new float[]{
                 10, 10, 10, 10,

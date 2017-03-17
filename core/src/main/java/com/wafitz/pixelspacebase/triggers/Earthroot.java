@@ -58,7 +58,7 @@ public class Earthroot extends Trigger {
             image = ItemSpriteSheet.EARTHROOT_GADGET;
 
             triggerClass = Earthroot.class;
-            alchemyClass = ParalyticGasTech.class;
+            craftingClass = ParalyticGasTech.class;
 
             bones = true;
         }

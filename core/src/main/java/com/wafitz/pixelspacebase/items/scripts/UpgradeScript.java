@@ -70,17 +70,17 @@ public class UpgradeScript extends InventoryScript {
         } else if (item instanceof Armor) {
             Armor a = (Armor) item;
             boolean wasMalfunctioning = a.malfunctioning;
-            boolean hadMalfunctioningGlyph = a.hasMalfunctionGlyph();
-            boolean hadGoodGlyph = a.hasGoodGlyph();
+            boolean hadMalfunctioningEnhancement = a.hasMalfunctionEnhancement();
+            boolean hadGoodEnhancement = a.hasGoodEnhancement();
 
             a.upgrade();
 
-            if (hadMalfunctioningGlyph && !a.hasMalfunctionGlyph()) {
+            if (hadMalfunctioningEnhancement && !a.hasMalfunctionEnhancement()) {
                 fix(Dungeon.hero);
             } else if (wasMalfunctioning && !a.malfunctioning) {
                 tweakMalfunction(Dungeon.hero);
             }
-            if (hadGoodGlyph && !a.hasGoodGlyph()) {
+            if (hadGoodEnhancement && !a.hasGoodEnhancement()) {
                 GLog.w(Messages.get(Armor.class, "incompatible"));
             }
 

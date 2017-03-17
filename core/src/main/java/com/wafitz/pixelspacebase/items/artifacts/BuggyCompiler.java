@@ -44,10 +44,10 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class UnstableSpellbook extends Artifact {
+public class BuggyCompiler extends Artifact {
 
     {
-        image = ItemSpriteSheet.ARTIFACT_SPELLBOOK;
+        image = ItemSpriteSheet.ARTIFACT_COMPILER;
 
         levelCap = 10;
 
@@ -55,17 +55,17 @@ public class UnstableSpellbook extends Artifact {
         partialCharge = 0;
         chargeCap = ((level() / 2) + 3);
 
-        defaultAction = AC_READ;
+        defaultAction = AC_RUN;
     }
 
-    private static final String AC_READ = "READ";
+    private static final String AC_RUN = "RUN";
     private static final String AC_ADD = "ADD";
 
     private final ArrayList<Class> scripts = new ArrayList<>();
 
     protected WndBag.Mode mode = WndBag.Mode.SCRIPT;
 
-    public UnstableSpellbook() {
+    public BuggyCompiler() {
         super();
 
         Class<?>[] scriptClasses = Generator.Category.SCRIPT.classes;
@@ -84,7 +84,7 @@ public class UnstableSpellbook extends Artifact {
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
         if (isEquipped(hero) && charge > 0 && !malfunctioning)
-            actions.add(AC_READ);
+            actions.add(AC_RUN);
         if (isEquipped(hero) && level() < levelCap && !malfunctioning)
             actions.add(AC_ADD);
         return actions;
@@ -95,7 +95,7 @@ public class UnstableSpellbook extends Artifact {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_READ)) {
+        if (action.equals(AC_RUN)) {
 
             if (hero.buff(Blindness.class) != null) GLog.w(Messages.get(this, "blinded"));
             else if (!isEquipped(hero)) GLog.i(Messages.get(Artifact.class, "need_to_equip"));
@@ -114,7 +114,7 @@ public class UnstableSpellbook extends Artifact {
                                 script instanceof MappingScript) && Random.Int(2) == 0));
 
                 script.ownedByBook = true;
-                script.execute(hero, AC_READ);
+                script.execute(hero, AC_RUN);
             }
 
         } else if (action.equals(AC_ADD)) {
@@ -219,13 +219,13 @@ public class UnstableSpellbook extends Artifact {
                         item.detach(hero.belongings.backpack);
 
                         upgrade();
-                        GLog.i(Messages.get(UnstableSpellbook.class, "infuse_script"));
+                        GLog.i(Messages.get(BuggyCompiler.class, "merge_script"));
                         return;
                     }
                 }
-                GLog.w(Messages.get(UnstableSpellbook.class, "buggy_script"));
+                GLog.w(Messages.get(BuggyCompiler.class, "buggy_script"));
             } else if (item instanceof Script && !item.isIdentified())
-                GLog.w(Messages.get(UnstableSpellbook.class, "unknown_script"));
+                GLog.w(Messages.get(BuggyCompiler.class, "unknown_script"));
         }
     };
 }

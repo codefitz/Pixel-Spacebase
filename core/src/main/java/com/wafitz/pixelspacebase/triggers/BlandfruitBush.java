@@ -40,7 +40,7 @@ public class BlandfruitBush extends Trigger {
             image = ItemSpriteSheet.BLANDFRUIT_GADGET;
 
             triggerClass = BlandfruitBush.class;
-            alchemyClass = null;
+            craftingClass = null;
         }
 
     }

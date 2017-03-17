@@ -142,7 +142,7 @@ public abstract class Char extends Actor {
             }
 
             // If the enemy is already dead, interrupt the attack.
-            // This matters as defence procs can sometimes inflict self-damage, such as armor glyphs.
+            // This matters as defence procs can sometimes inflict self-damage, such as armor enhancements.
             if (!enemy.isAlive()) {
                 return true;
             }

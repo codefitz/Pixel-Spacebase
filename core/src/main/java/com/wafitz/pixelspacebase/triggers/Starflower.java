@@ -52,7 +52,7 @@ public class Starflower extends Trigger {
             image = ItemSpriteSheet.STARFLOWER_GADGET;
 
             triggerClass = Starflower.class;
-            alchemyClass = ExperienceTech.class;
+            craftingClass = ExperienceTech.class;
         }
     }
 }

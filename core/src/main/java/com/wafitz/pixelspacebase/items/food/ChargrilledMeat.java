@@ -36,7 +36,7 @@ public class ChargrilledMeat extends Food {
         return 8 * quantity;
     }
 
-    public static Food cook(MysteryMeat ingredient) {
+    public static Food make(MysteryMeat ingredient) {
         ChargrilledMeat result = new ChargrilledMeat();
         result.quantity = ingredient.quantity();
         return result;

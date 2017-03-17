@@ -77,7 +77,7 @@ public class Fadeleaf extends Trigger {
             image = ItemSpriteSheet.FADELEAF_GADGET;
 
             triggerClass = Fadeleaf.class;
-            alchemyClass = MindVisionTech.class;
+            craftingClass = MindVisionTech.class;
         }
     }
 }

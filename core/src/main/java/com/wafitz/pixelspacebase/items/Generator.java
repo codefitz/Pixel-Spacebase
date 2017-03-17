@@ -42,20 +42,20 @@ import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Uniform;
-import com.wafitz.pixelspacebase.items.artifacts.AlchemistsToolkit;
+import com.wafitz.pixelspacebase.items.artifacts.AlienDNA;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
-import com.wafitz.pixelspacebase.items.artifacts.CapeOfThorns;
-import com.wafitz.pixelspacebase.items.artifacts.ChaliceOfBlood;
-import com.wafitz.pixelspacebase.items.artifacts.CloakOfShadows;
-import com.wafitz.pixelspacebase.items.artifacts.DriedRose;
-import com.wafitz.pixelspacebase.items.artifacts.EtherealChains;
+import com.wafitz.pixelspacebase.items.artifacts.BuggyCompiler;
+import com.wafitz.pixelspacebase.items.artifacts.GravityGun;
+import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
 import com.wafitz.pixelspacebase.items.artifacts.HornOfPlenty;
 import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
+import com.wafitz.pixelspacebase.items.artifacts.MakersToolkit;
 import com.wafitz.pixelspacebase.items.artifacts.MasterThievesArmband;
 import com.wafitz.pixelspacebase.items.artifacts.SandalsOfNature;
+import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
+import com.wafitz.pixelspacebase.items.artifacts.StrongForcefield;
 import com.wafitz.pixelspacebase.items.artifacts.TalismanOfForesight;
 import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
-import com.wafitz.pixelspacebase.items.artifacts.UnstableSpellbook;
 import com.wafitz.pixelspacebase.items.bags.Bag;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.blasters.Disintergrator;
@@ -84,19 +84,19 @@ import com.wafitz.pixelspacebase.items.modules.SpeedModule;
 import com.wafitz.pixelspacebase.items.modules.SteelModule;
 import com.wafitz.pixelspacebase.items.modules.TargetingModule;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
+import com.wafitz.pixelspacebase.items.scripts.EchoLocationScript;
+import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
 import com.wafitz.pixelspacebase.items.scripts.FixScript;
 import com.wafitz.pixelspacebase.items.scripts.IdentifyScript;
-import com.wafitz.pixelspacebase.items.scripts.LullabyScript;
-import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
+import com.wafitz.pixelspacebase.items.scripts.KnockoutScript;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
-import com.wafitz.pixelspacebase.items.scripts.MirrorImageScript;
 import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
-import com.wafitz.pixelspacebase.items.scripts.RageScript;
 import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.items.scripts.TerrorScript;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
+import com.wafitz.pixelspacebase.items.scripts.WeakCloneScript;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.AssassinsBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.BattleAxe;
@@ -217,12 +217,12 @@ public class Generator {
                 UpgradeScript.class,
                 RechargingScript.class,
                 MappingScript.class,
-                RageScript.class,
+                EchoLocationScript.class,
                 TerrorScript.class,
-                LullabyScript.class,
-                MagicalInfusionScript.class,
+                KnockoutScript.class,
+                EnhancementScript.class,
                 PsionicBlastScript.class,
-                MirrorImageScript.class};
+                WeakCloneScript.class};
         Category.SCRIPT.probs = new float[]{30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 4, 10};
 
         Category.EXPERIMENTALTECH.classes = new Class<?>[]{
@@ -343,19 +343,19 @@ public class Generator {
         Category.MODULE.probs = new float[]{1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1};
 
         Category.ARTIFACT.classes = new Class<?>[]{
-                CapeOfThorns.class,
-                ChaliceOfBlood.class,
-                CloakOfShadows.class,
+                StrongForcefield.class,
+                AlienDNA.class,
+                StealthModule.class,
                 HornOfPlenty.class,
                 MasterThievesArmband.class,
                 SandalsOfNature.class,
                 TalismanOfForesight.class,
                 TimekeepersHourglass.class,
-                UnstableSpellbook.class,
-                AlchemistsToolkit.class, //currently removed from drop tables, pending rework.
-                DriedRose.class, //starts with no chance of spawning, chance is set directly after beating ghost quest.
+                BuggyCompiler.class,
+                MakersToolkit.class, //currently removed from drop tables, pending rework.
+                HoloPad.class, //starts with no chance of spawning, chance is set directly after beating ghost quest.
                 LloydsBeacon.class,
-                EtherealChains.class
+                GravityGun.class
         };
         Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
 

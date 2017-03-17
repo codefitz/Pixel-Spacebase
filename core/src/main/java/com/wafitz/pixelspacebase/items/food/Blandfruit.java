@@ -113,7 +113,7 @@ public class Blandfruit extends Food {
     @Override
     public String desc() {
         if (experimentalTechAttrib == null) return super.desc();
-        else return Messages.get(this, "desc_cooked");
+        else return Messages.get(this, "desc_made");
     }
 
     @Override
@@ -121,10 +121,10 @@ public class Blandfruit extends Food {
         return 20 * quantity;
     }
 
-    public Item cook(Gadget gadget) {
+    public Item make(Gadget gadget) {
 
         try {
-            return imbueExperimentalTech((ExperimentalTech) gadget.alchemyClass.newInstance());
+            return imbueExperimentalTech((ExperimentalTech) gadget.craftingClass.newInstance());
         } catch (Exception e) {
             PixelSpacebase.reportException(e);
             return null;

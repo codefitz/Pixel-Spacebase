@@ -86,7 +86,7 @@ public class Assets {
     public static final String BURNING = "burning_fist.png";
     public static final String YOG = "yog.png";
     public static final String LARVA = "larva.png";
-    public static final String GHOST = "hologram.png";
+    public static final String HOLOGRAM = "hologram.png";
     public static final String GUNSMITH = "wandmaker.png";
     public static final String TROLL = "blacksmith.png";
     public static final String IMP = "demon.png";

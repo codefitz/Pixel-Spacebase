@@ -26,9 +26,9 @@ import com.wafitz.pixelspacebase.DungeonTilemap;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.effects.Ripple;
 import com.wafitz.pixelspacebase.items.AirTank;
-import com.wafitz.pixelspacebase.items.BrokenSeal;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
+import com.wafitz.pixelspacebase.items.WeakForcefield;
 import com.wafitz.pixelspacebase.items.armor.Uniform;
 import com.wafitz.pixelspacebase.items.bags.BlasterHolster;
 import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
@@ -156,7 +156,7 @@ public class OperationsLevel extends RegularLevel {
                 drop(new GadgetBag().identify(), pos);
                 drop(new BlasterHolster().identify(), pos);
                 drop(new ExperimentalTechBandolier().identify(), pos);
-                    drop(new BrokenSeal().identify(), pos);
+                drop(new WeakForcefield().identify(), pos);
                 }
         }
     }

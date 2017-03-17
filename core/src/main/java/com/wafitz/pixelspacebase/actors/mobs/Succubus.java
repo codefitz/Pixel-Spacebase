@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Hypnotise;
 import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Sleep;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.scripts.LullabyScript;
+import com.wafitz.pixelspacebase.items.scripts.KnockoutScript;
 import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -58,7 +58,7 @@ class Succubus extends Mob {
         EXP = 12;
         maxLvl = 25;
 
-        loot = new LullabyScript();
+        loot = new KnockoutScript();
         lootChance = 0.05f;
 
         properties.add(Property.DEMONIC);

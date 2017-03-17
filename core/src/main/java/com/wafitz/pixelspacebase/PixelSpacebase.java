@@ -28,13 +28,15 @@ import android.util.Log;
 import android.view.View;
 
 import com.wafitz.pixelspacebase.actors.mobs.ToughXeno;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Lockdown;
 import com.wafitz.pixelspacebase.items.blasters.FireBlaster;
 import com.wafitz.pixelspacebase.items.blasters.FreezeBlaster;
 import com.wafitz.pixelspacebase.items.blasters.MindBlaster;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
 import com.wafitz.pixelspacebase.items.blasters.VenomBlaster;
 import com.wafitz.pixelspacebase.items.blasters.WaveBlaster;
-import com.wafitz.pixelspacebase.items.scripts.MagicalInfusionScript;
+import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
+import com.wafitz.pixelspacebase.items.weapon.enchantments.Buggy;
 import com.wafitz.pixelspacebase.messages.Languages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
@@ -63,7 +65,7 @@ public class PixelSpacebase extends Game {
                 "com.wafitz.pixelspacebase.items.weapon.enchantments.Swing");
 
         com.watabou.utils.Bundle.addAlias(
-                MagicalInfusionScript.class,
+                EnhancementScript.class,
                 "com.wafitz.pixelspacebase.items.scripts.WeaponUpgradeScript");
 
         // 0.2.4d
@@ -122,7 +124,7 @@ public class PixelSpacebase extends Game {
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.items.weapon.melee.WornShortsword.class,
                 "com.wafitz.pixelspacebase.items.weapon.melee.ShortSword");
-        //enchants/glyphs
+        //enchants/enhancements
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.items.weapon.enchantments.Grim.class,
                 "com.wafitz.pixelspacebase.items.weapon.enchantments.Death");
@@ -133,7 +135,7 @@ public class PixelSpacebase extends Game {
                 com.wafitz.pixelspacebase.items.weapon.enchantments.Eldritch.class,
                 "com.wafitz.pixelspacebase.items.weapon.enchantments.Horror");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.weapon.enchantments.Unstable.class,
+                Buggy.class,
                 "com.wafitz.pixelspacebase.items.weapon.enchantments.Instability");
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric.class,
@@ -155,23 +157,23 @@ public class PixelSpacebase extends Game {
                 "com.wafitz.pixelspacebase.items.weapon.enchantments.TimeSink");
 
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.armor.glyphs.Repulsion.class,
-                "com.wafitz.pixelspacebase.items.armor.glyphs.Bounce");
+                com.wafitz.pixelspacebase.items.armor.enhancements.Repulsion.class,
+                "com.wafitz.pixelspacebase.items.armor.enhancements.Bounce");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.armor.glyphs.Repulsion.class,
-                "com.wafitz.pixelspacebase.items.armor.glyphs.Displacement");
+                com.wafitz.pixelspacebase.items.armor.enhancements.Repulsion.class,
+                "com.wafitz.pixelspacebase.items.armor.enhancements.Displacement");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.armor.glyphs.Potential.class,
-                "com.wafitz.pixelspacebase.items.armor.glyphs.AntiEntropy");
+                com.wafitz.pixelspacebase.items.armor.enhancements.Potential.class,
+                "com.wafitz.pixelspacebase.items.armor.enhancements.AntiEntropy");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.armor.glyphs.Entanglement.class,
-                "com.wafitz.pixelspacebase.items.armor.glyphs.Metabolism");
+                Lockdown.class,
+                "com.wafitz.pixelspacebase.items.armor.enhancements.Metabolism");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.armor.glyphs.Entanglement.class,
-                "com.wafitz.pixelspacebase.items.armor.glyphs.Multiplicity");
+                Lockdown.class,
+                "com.wafitz.pixelspacebase.items.armor.enhancements.Multiplicity");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.armor.glyphs.Repulsion.class,
-                "com.wafitz.pixelspacebase.items.armor.glyphs.Stench");
+                com.wafitz.pixelspacebase.items.armor.enhancements.Repulsion.class,
+                "com.wafitz.pixelspacebase.items.armor.enhancements.Gas");
 
         com.watabou.utils.Bundle.exceptionReporter =
                 new com.watabou.utils.Bundle.BundleExceptionCallback() {
