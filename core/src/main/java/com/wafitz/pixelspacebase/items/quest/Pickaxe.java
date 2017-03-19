@@ -116,7 +116,7 @@ public class Pickaxe extends Weapon {
                             Level.set(pos, Terrain.WALL);
                             GameScene.updateMap(pos);
 
-                            DarkParts parts = new DarkParts();
+                            DarkMetals parts = new DarkMetals();
                             if (parts.doPickUp(Dungeon.hero)) {
                                 GLog.i(Messages.get(Dungeon.hero, "you_now_have", parts.name()));
                             } else {

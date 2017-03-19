@@ -123,7 +123,7 @@ public class Clone extends Item {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 50 * quantity;
     }
 }

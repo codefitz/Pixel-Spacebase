@@ -51,7 +51,7 @@ public class Shuriken extends MissileWeapon {
         this(1);
     }
 
-    public Shuriken(int number) {
+    private Shuriken(int number) {
         super();
         quantity = number;
     }
@@ -63,7 +63,7 @@ public class Shuriken extends MissileWeapon {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 6 * quantity;
     }
 }

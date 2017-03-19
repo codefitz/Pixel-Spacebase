@@ -28,26 +28,26 @@ import com.wafitz.pixelspacebase.actors.mobs.npcs.MakerBot;
 import com.wafitz.pixelspacebase.items.Bomb;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.DroneController;
+import com.wafitz.pixelspacebase.items.EnhancementChip;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.MerchantsBeacon;
-import com.wafitz.pixelspacebase.items.Stylus;
+import com.wafitz.pixelspacebase.items.PortableRender;
 import com.wafitz.pixelspacebase.items.Torch;
 import com.wafitz.pixelspacebase.items.Weightstone;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
-import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
-import com.wafitz.pixelspacebase.items.bags.BlasterHolster;
-import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
-import com.wafitz.pixelspacebase.items.bags.GadgetBag;
-import com.wafitz.pixelspacebase.items.bags.ScriptHolder;
+import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
-import com.wafitz.pixelspacebase.items.food.OverpricedRation;
+import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
+import com.wafitz.pixelspacebase.items.containers.GadgetCase;
+import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
+import com.wafitz.pixelspacebase.items.containers.XPort;
+import com.wafitz.pixelspacebase.items.food.SynthesizedFood;
 import com.wafitz.pixelspacebase.items.scripts.FixScript;
 import com.wafitz.pixelspacebase.items.scripts.IdentifyScript;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
@@ -108,7 +108,7 @@ public class Workshop extends Painter {
                 } while (level.heaps.get(cell) != null);
             }
 
-            level.drop(item, cell).type = Heap.Type.FOR_SALE;
+            level.drop(item, cell).type = Heap.Type.TO_MAKE;
 
             pos++;
         }
@@ -162,10 +162,10 @@ public class Workshop extends Painter {
                 break;
         }
 
-        itemsToSpawn.add(new MerchantsBeacon());
+        itemsToSpawn.add(new PortableRender());
 
 
-        ChooseBag(Dungeon.hero.belongings);
+        ChooseContainer(Dungeon.hero.belongings);
 
 
         itemsToSpawn.add(new HealingTech());
@@ -183,8 +183,8 @@ public class Workshop extends Painter {
                     Generator.random(Generator.Category.SCRIPT));
 
 
-        itemsToSpawn.add(new OverpricedRation());
-        itemsToSpawn.add(new OverpricedRation());
+        itemsToSpawn.add(new SynthesizedFood());
+        itemsToSpawn.add(new SynthesizedFood());
 
         itemsToSpawn.add(new Bomb().random());
         switch (Random.Int(5)) {
@@ -209,29 +209,29 @@ public class Workshop extends Painter {
         }
 
 
-        TimekeepersHourglass hourglass = Dungeon.hero.belongings.getItem(TimekeepersHourglass.class);
+        TimeFolder hourglass = Dungeon.hero.belongings.getItem(TimeFolder.class);
         if (hourglass != null) {
-            int bags = 0;
-            //creates the given float percent of the remaining bags to be dropped.
+            int containers = 0;
+            //creates the given float percent of the remaining containers to be dropped.
             //this way players who get the hourglass late can still max it, usually.
             switch (Dungeon.depth) {
                 case 6:
-                    bags = (int) Math.ceil((5 - hourglass.sandBags) * 0.20f);
+                    containers = (int) Math.ceil((5 - hourglass.TimeBatteries) * 0.20f);
                     break;
                 case 11:
-                    bags = (int) Math.ceil((5 - hourglass.sandBags) * 0.25f);
+                    containers = (int) Math.ceil((5 - hourglass.TimeBatteries) * 0.25f);
                     break;
                 case 16:
-                    bags = (int) Math.ceil((5 - hourglass.sandBags) * 0.50f);
+                    containers = (int) Math.ceil((5 - hourglass.TimeBatteries) * 0.50f);
                     break;
                 case 21:
-                    bags = (int) Math.ceil((5 - hourglass.sandBags) * 0.80f);
+                    containers = (int) Math.ceil((5 - hourglass.TimeBatteries) * 0.80f);
                     break;
             }
 
-            for (int i = 1; i <= bags; i++) {
-                itemsToSpawn.add(new TimekeepersHourglass.sandBag());
-                hourglass.sandBags++;
+            for (int i = 1; i <= containers; i++) {
+                itemsToSpawn.add(new TimeFolder.TimeBattery());
+                hourglass.TimeBatteries++;
             }
         }
 
@@ -249,7 +249,7 @@ public class Workshop extends Painter {
                 rare = Generator.random(Generator.Category.ARTIFACT).identify();
                 break;
             default:
-                rare = new Stylus();
+                rare = new EnhancementChip();
         }
         rare.malfunctioning = rare.malfunctioningKnown = false;
         itemsToSpawn.add(rare);
@@ -261,17 +261,17 @@ public class Workshop extends Painter {
         Collections.shuffle(itemsToSpawn);
     }
 
-    private static void ChooseBag(Belongings pack) {
+    private static void ChooseContainer(Belongings pack) {
 
         int gadgets = 0, scripts = 0, experimentaltech = 0, blasters = 0;
 
-        //count up items in the main bag, for bags which haven't yet been dropped.
+        //count up items in the main bag, for containers which haven't yet been dropped.
         for (Item item : pack.backpack.items) {
-            if (!Dungeon.limitedDrops.gadgetBag.dropped() && item instanceof Trigger.Gadget)
+            if (!Dungeon.limitedDrops.gadgetCase.dropped() && item instanceof Trigger.Gadget)
                 gadgets++;
-            else if (!Dungeon.limitedDrops.scriptBag.dropped() && item instanceof Script)
+            else if (!Dungeon.limitedDrops.scriptContainer.dropped() && item instanceof Script)
                 scripts++;
-            else if (!Dungeon.limitedDrops.experimentalTechBag.dropped() && item instanceof ExperimentalTech)
+            else if (!Dungeon.limitedDrops.xPort.dropped() && item instanceof ExperimentalTech)
                 experimentaltech++;
             else if (!Dungeon.limitedDrops.blasterHolster.dropped() && item instanceof Blaster)
                 blasters++;
@@ -279,17 +279,17 @@ public class Workshop extends Painter {
 
         //then pick whichever valid bag has the most items available to put into it.
         //note that the order here gives a perference if counts are otherwise equal
-        if (gadgets >= scripts && gadgets >= experimentaltech && gadgets >= blasters && !Dungeon.limitedDrops.gadgetBag.dropped()) {
-            Dungeon.limitedDrops.gadgetBag.drop();
-            itemsToSpawn.add(new GadgetBag());
+        if (gadgets >= scripts && gadgets >= experimentaltech && gadgets >= blasters && !Dungeon.limitedDrops.gadgetCase.dropped()) {
+            Dungeon.limitedDrops.gadgetCase.drop();
+            itemsToSpawn.add(new GadgetCase());
 
-        } else if (scripts >= experimentaltech && scripts >= blasters && !Dungeon.limitedDrops.scriptBag.dropped()) {
-            Dungeon.limitedDrops.scriptBag.drop();
-            itemsToSpawn.add(new ScriptHolder());
+        } else if (scripts >= experimentaltech && scripts >= blasters && !Dungeon.limitedDrops.scriptContainer.dropped()) {
+            Dungeon.limitedDrops.scriptContainer.drop();
+            itemsToSpawn.add(new ScriptLibrary());
 
-        } else if (experimentaltech >= blasters && !Dungeon.limitedDrops.experimentalTechBag.dropped()) {
-            Dungeon.limitedDrops.experimentalTechBag.drop();
-            itemsToSpawn.add(new ExperimentalTechBandolier());
+        } else if (experimentaltech >= blasters && !Dungeon.limitedDrops.xPort.dropped()) {
+            Dungeon.limitedDrops.xPort.drop();
+            itemsToSpawn.add(new XPort());
 
         } else if (!Dungeon.limitedDrops.blasterHolster.dropped()) {
             Dungeon.limitedDrops.blasterHolster.drop();

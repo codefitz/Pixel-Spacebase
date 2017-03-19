@@ -47,7 +47,7 @@ public class MeleeWeapon extends Weapon {
     }
 
     public Item safeUpgrade() {
-        return upgrade(enchantment != null);
+        return upgrade(enhancement != null);
     }
 
     public int STRReq(int lvl) {
@@ -88,9 +88,9 @@ public class MeleeWeapon extends Weapon {
             case NONE:
         }
 
-        if (enchantment != null && (malfunctioningKnown || !enchantment.malfunction())) {
-            info += "\n\n" + Messages.get(Weapon.class, "enchanted", enchantment.name());
-            info += " " + Messages.get(enchantment, "desc");
+        if (enhancement != null && (malfunctioningKnown || !enhancement.malfunction())) {
+            info += "\n\n" + Messages.get(Weapon.class, "enhanced", enhancement.name());
+            info += " " + Messages.get(enhancement, "desc");
         }
 
         if (malfunctioning && isEquipped(Dungeon.hero)) {
@@ -103,12 +103,12 @@ public class MeleeWeapon extends Weapon {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         int price = 20 * tier;
-        if (hasGoodEnchant()) {
+        if (hasGoodEnhance()) {
             price *= 1.5;
         }
-        if (malfunctioningKnown && (malfunctioning || hasMalfunctionEnchant())) {
+        if (malfunctioningKnown && (malfunctioning || hasMalfunctionEnhance())) {
             price /= 2;
         }
         if (levelKnown && level() > 0) {

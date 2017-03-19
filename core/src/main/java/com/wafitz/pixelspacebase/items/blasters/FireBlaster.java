@@ -31,7 +31,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Blazing;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Blazing;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -122,7 +122,7 @@ public class FireBlaster extends DamageBlaster {
 
     @Override
     public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
-        //acts like blazing enchantment
+        //acts like blazing enhancement
         new Blazing().proc(staff, attacker, defender, damage);
     }
 

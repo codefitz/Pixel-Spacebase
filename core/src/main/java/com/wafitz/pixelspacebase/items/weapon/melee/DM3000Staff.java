@@ -28,17 +28,17 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.bags.Bag;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.blasters.Disintergrator;
 import com.wafitz.pixelspacebase.items.blasters.EMP;
 import com.wafitz.pixelspacebase.items.blasters.MindBlaster;
+import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
-import com.wafitz.pixelspacebase.windows.WndBag;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 import com.wafitz.pixelspacebase.windows.WndItem;
 import com.wafitz.pixelspacebase.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
@@ -113,7 +113,7 @@ public class DM3000Staff extends MeleeWeapon {
         if (action.equals(AC_IMBUE)) {
 
             curUser = hero;
-            GameScene.selectItem(itemSelector, WndBag.Mode.BLASTER, Messages.get(this, "prompt"));
+            GameScene.selectItem(itemSelector, WndContainer.Mode.BLASTER, Messages.get(this, "prompt"));
 
         } else if (action.equals(AC_ZAP)) {
 
@@ -146,7 +146,7 @@ public class DM3000Staff extends MeleeWeapon {
     }
 
     @Override
-    public boolean collect(Bag container) {
+    public boolean collect(Container container) {
         if (super.collect(container)) {
             if (container.owner != null && blaster != null) {
                 blaster.charge(container.owner, STAFF_SCALE_FACTOR);
@@ -211,8 +211,8 @@ public class DM3000Staff extends MeleeWeapon {
     }
 
     @Override
-    public Item upgrade(boolean enchant) {
-        super.upgrade(enchant);
+    public Item upgrade(boolean enhance) {
+        super.upgrade(enhance);
 
         if (blaster != null) {
             int curCharges = blaster.curCharges;
@@ -290,11 +290,11 @@ public class DM3000Staff extends MeleeWeapon {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 0;
     }
 
-    private final WndBag.Listener itemSelector = new WndBag.Listener() {
+    private final WndContainer.Listener itemSelector = new WndContainer.Listener() {
         @Override
         public void onSelect(final Item item) {
             if (item != null) {

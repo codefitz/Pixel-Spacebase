@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.RotHeartSprite;
-import com.wafitz.pixelspacebase.triggers.Rotberry;
+import com.wafitz.pixelspacebase.triggers.AlienTrap;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
@@ -90,7 +90,7 @@ public class RotHeart extends Mob {
     @Override
     public void die(Object cause) {
         super.die(cause);
-        Dungeon.level.drop(new Rotberry.Gadget(), pos).sprite.drop();
+        Dungeon.level.drop(new AlienTrap.Gadget(), pos).sprite.drop();
     }
 
     @Override

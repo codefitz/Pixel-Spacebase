@@ -163,10 +163,10 @@ public class Bones {
                             return artifact;
                         } catch (Exception e) {
                             PixelSpacebase.reportException(e);
-                            return new Parts(item.price());
+                            return new Parts(item.cost());
                         }
                     } else {
-                        return new Parts(item.price());
+                        return new Parts(item.cost());
                     }
                 }
 

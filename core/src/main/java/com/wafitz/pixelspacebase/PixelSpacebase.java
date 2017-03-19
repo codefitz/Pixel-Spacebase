@@ -36,12 +36,12 @@ import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
 import com.wafitz.pixelspacebase.items.blasters.VenomBlaster;
 import com.wafitz.pixelspacebase.items.blasters.WaveBlaster;
 import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Buggy;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Buggy;
 import com.wafitz.pixelspacebase.messages.Languages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.scenes.WelcomeScene;
-import com.wafitz.pixelspacebase.triggers.Rotberry;
+import com.wafitz.pixelspacebase.triggers.AlienTrap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
@@ -58,11 +58,11 @@ public class PixelSpacebase extends Game {
 
         // 0.2.4
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.weapon.enchantments.Shocking.class,
-                "com.wafitz.pixelspacebase.items.weapon.enchantments.Piercing");
+                com.wafitz.pixelspacebase.items.weapon.enhancements.Shocking.class,
+                "com.wafitz.pixelspacebase.items.weapon.enhancements.Piercing");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.weapon.enchantments.Shocking.class,
-                "com.wafitz.pixelspacebase.items.weapon.enchantments.Swing");
+                com.wafitz.pixelspacebase.items.weapon.enhancements.Shocking.class,
+                "com.wafitz.pixelspacebase.items.weapon.enhancements.Swing");
 
         com.watabou.utils.Bundle.addAlias(
                 EnhancementScript.class,
@@ -113,48 +113,48 @@ public class PixelSpacebase extends Game {
                 com.wafitz.pixelspacebase.actors.mobs.GreatCrab.class,
                 "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$GreatCrab");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.triggers.Rotberry.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$Rotberry");
+                AlienTrap.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$AlienTrap");
         com.watabou.utils.Bundle.addAlias(
-                Rotberry.Gadget.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$Rotberry$Gadget");
+                AlienTrap.Gadget.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$AlienTrap$Gadget");
 
         //0.4.0
         //equipment
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.items.weapon.melee.WornShortsword.class,
                 "com.wafitz.pixelspacebase.items.weapon.melee.ShortSword");
-        //enchants/enhancements
+        //enhancements
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.weapon.enchantments.Grim.class,
-                "com.wafitz.pixelspacebase.items.weapon.enchantments.Death");
+                com.wafitz.pixelspacebase.items.weapon.enhancements.Grim.class,
+                "com.wafitz.pixelspacebase.items.weapon.enhancements.Death");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.weapon.enchantments.Blazing.class,
-                "com.wafitz.pixelspacebase.items.weapon.enchantments.Fire");
+                com.wafitz.pixelspacebase.items.weapon.enhancements.Blazing.class,
+                "com.wafitz.pixelspacebase.items.weapon.enhancements.FireTrigger");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.weapon.enchantments.Eldritch.class,
-                "com.wafitz.pixelspacebase.items.weapon.enchantments.Horror");
+                com.wafitz.pixelspacebase.items.weapon.enhancements.Eldritch.class,
+                "com.wafitz.pixelspacebase.items.weapon.enhancements.Horror");
         com.watabou.utils.Bundle.addAlias(
                 Buggy.class,
-                "com.wafitz.pixelspacebase.items.weapon.enchantments.Instability");
+                "com.wafitz.pixelspacebase.items.weapon.enhancements.Instability");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric.class,
-                "com.wafitz.pixelspacebase.items.weapon.enchantments.Leech");
+                com.wafitz.pixelspacebase.items.weapon.enhancements.Vampiric.class,
+                "com.wafitz.pixelspacebase.items.weapon.enhancements.Leech");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.weapon.enchantments.Lucky.class,
-                "com.wafitz.pixelspacebase.items.weapon.enchantments.Luck");
+                com.wafitz.pixelspacebase.items.weapon.enhancements.Lucky.class,
+                "com.wafitz.pixelspacebase.items.weapon.enhancements.Luck");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.weapon.enchantments.Stunning.class,
-                "com.wafitz.pixelspacebase.items.weapon.enchantments.Paralysis");
+                com.wafitz.pixelspacebase.items.weapon.enhancements.Stunning.class,
+                "com.wafitz.pixelspacebase.items.weapon.enhancements.Paralysis");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.weapon.enchantments.Venomous.class,
-                "com.wafitz.pixelspacebase.items.weapon.enchantments.Poison");
+                com.wafitz.pixelspacebase.items.weapon.enhancements.Venomous.class,
+                "com.wafitz.pixelspacebase.items.weapon.enhancements.Poison");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.weapon.enchantments.Shocking.class,
-                "com.wafitz.pixelspacebase.items.weapon.enchantments.Shock");
+                com.wafitz.pixelspacebase.items.weapon.enhancements.Shocking.class,
+                "com.wafitz.pixelspacebase.items.weapon.enhancements.Shock");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.weapon.enchantments.Chilling.class,
-                "com.wafitz.pixelspacebase.items.weapon.enchantments.TimeSink");
+                com.wafitz.pixelspacebase.items.weapon.enhancements.Chilling.class,
+                "com.wafitz.pixelspacebase.items.weapon.enhancements.TimeSink");
 
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.items.armor.enhancements.Repulsion.class,

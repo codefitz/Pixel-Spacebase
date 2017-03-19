@@ -34,7 +34,7 @@ import com.wafitz.pixelspacebase.effects.particles.LeafParticle;
 import com.wafitz.pixelspacebase.items.Dewdrop;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.SandalsOfNature;
+import com.wafitz.pixelspacebase.items.artifacts.GnollTechShield;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -76,7 +76,7 @@ public abstract class Trigger implements Bundlable {
         if (Dungeon.hero.subClass == HeroSubClass.WARDEN) {
 
             int naturalismLevel = 0;
-            SandalsOfNature.Naturalism naturalism = Dungeon.hero.buff(SandalsOfNature.Naturalism.class);
+            GnollTechShield.Naturalism naturalism = Dungeon.hero.buff(GnollTechShield.Naturalism.class);
             if (naturalism != null) {
                 naturalismLevel = naturalism.itemLevel() + 1;
             }
@@ -84,10 +84,10 @@ public abstract class Trigger implements Bundlable {
             if (Random.Int(5 - (naturalismLevel / 2)) == 0) {
                 Item gadget = Generator.random(Generator.Category.GADGET);
 
-                if (gadget instanceof BlandfruitBush.Gadget) {
-                    if (Random.Int(15) - Dungeon.limitedDrops.blandfruitGadget.count >= 0) {
+                if (gadget instanceof AlienPlant.Gadget) {
+                    if (Random.Int(15) - Dungeon.limitedDrops.alienTechGadget.count >= 0) {
                         Dungeon.level.drop(gadget, pos).sprite.drop();
-                        Dungeon.limitedDrops.blandfruitGadget.count++;
+                        Dungeon.limitedDrops.alienTechGadget.count++;
                     }
                 } else
                     Dungeon.level.drop(gadget, pos).sprite.drop();
@@ -186,7 +186,7 @@ public abstract class Trigger implements Bundlable {
         }
 
         @Override
-        public int price() {
+        public int cost() {
             return 10 * quantity;
         }
 

@@ -29,12 +29,12 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.utils.BArray;
-import com.wafitz.pixelspacebase.windows.WndBag;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.watabou.utils.PathFinder;
 
-public class QuickSlotButton extends Button implements WndBag.Listener {
+public class QuickSlotButton extends Button implements WndContainer.Listener {
 
     private static QuickSlotButton[] instance = new QuickSlotButton[4];
     private int slotNum;
@@ -131,12 +131,12 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 
     @Override
     protected void onClick() {
-        GameScene.selectItem(this, WndBag.Mode.QUICKSLOT, Messages.get(this, "select_item"));
+        GameScene.selectItem(this, WndContainer.Mode.QUICKSLOT, Messages.get(this, "select_item"));
     }
 
     @Override
     protected boolean onLongClick() {
-        GameScene.selectItem(this, WndBag.Mode.QUICKSLOT, Messages.get(this, "select_item"));
+        GameScene.selectItem(this, WndContainer.Mode.QUICKSLOT, Messages.get(this, "select_item"));
         return true;
     }
 
@@ -199,7 +199,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
     }
 
     //FIXME: this is currently very expensive, should either optimize ballistica or this, or both
-    public static int autoAim(Char target, Item item) {
+    private static int autoAim(Char target, Item item) {
 
         //first try to directly target
         if (item.throwPos(Dungeon.hero, target.pos) == target.pos) {

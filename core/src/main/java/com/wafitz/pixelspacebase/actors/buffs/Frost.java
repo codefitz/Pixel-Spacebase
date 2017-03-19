@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Thief;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.MightTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.food.FrozenCarpaccio;
@@ -58,7 +58,7 @@ public class Frost extends FlavourBuff {
                 Hero hero = (Hero) target;
                 Item item = hero.belongings.randomUnequipped();
                 if (item instanceof ExperimentalTech
-                        && !(item instanceof StrengthTech || item instanceof MightTech)) {
+                        && !(item instanceof StrengthTech || item instanceof PowerTech)) {
 
                     item = item.detach(hero.belongings.backpack);
                     GLog.w(Messages.get(this, "freezes", item.toString()));
@@ -78,7 +78,7 @@ public class Frost extends FlavourBuff {
 
                 Item item = ((Thief) target).item;
 
-                if (item instanceof ExperimentalTech && !(item instanceof StrengthTech || item instanceof MightTech)) {
+                if (item instanceof ExperimentalTech && !(item instanceof StrengthTech || item instanceof PowerTech)) {
                     ((ExperimentalTech) ((Thief) target).item).shatter(target.pos);
                     ((Thief) target).item = null;
                 }

@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Combo;
 import com.wafitz.pixelspacebase.actors.buffs.Targeted;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.bags.Bag;
+import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Boomerang;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -157,7 +157,7 @@ public class Item implements Bundlable {
         }
     }
 
-    public boolean collect(Bag container) {
+    public boolean collect(Container container) {
 
         ArrayList<Item> items = container.items;
 
@@ -166,8 +166,8 @@ public class Item implements Bundlable {
         }
 
         for (Item item : items) {
-            if (item instanceof Bag && ((Bag) item).grab(this)) {
-                return collect((Bag) item);
+            if (item instanceof Container && ((Container) item).grab(this)) {
+                return collect((Container) item);
             }
         }
 
@@ -205,7 +205,7 @@ public class Item implements Bundlable {
         return collect(Dungeon.hero.belongings.backpack);
     }
 
-    public final Item detach(Bag container) {
+    public final Item detach(Container container) {
 
         if (quantity <= 0) {
 
@@ -242,7 +242,7 @@ public class Item implements Bundlable {
         }
     }
 
-    public final Item detachAll(Bag container) {
+    public final Item detachAll(Container container) {
         Dungeon.quickslot.clearItem(this);
         updateQuickslot();
 
@@ -251,8 +251,8 @@ public class Item implements Bundlable {
                 container.items.remove(this);
                 item.onDetach();
                 return this;
-            } else if (item instanceof Bag) {
-                Bag bag = (Bag) item;
+            } else if (item instanceof Container) {
+                Container bag = (Container) item;
                 if (bag.contains(this)) {
                     return detachAll(bag);
                 }
@@ -396,7 +396,7 @@ public class Item implements Bundlable {
         return this;
     }
 
-    public int price() {
+    public int cost() {
         return 0;
     }
 

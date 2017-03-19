@@ -26,8 +26,8 @@ import com.wafitz.pixelspacebase.actors.blobs.Medical;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.triggers.BlandfruitBush;
-import com.wafitz.pixelspacebase.triggers.Sungrass;
+import com.wafitz.pixelspacebase.triggers.AlienPlant;
+import com.wafitz.pixelspacebase.triggers.Healing;
 import com.watabou.utils.Random;
 
 public class MedicalPainter extends Painter {
@@ -42,22 +42,22 @@ public class MedicalPainter extends Painter {
 
         if (Dungeon.isChallenged(Challenges.NO_FOOD)) {
             if (Random.Int(2) == 0) {
-                level.trigger(new Sungrass.Gadget(), level.pointToCell(room.random()));
+                level.trigger(new Healing.Gadget(), level.pointToCell(room.random()));
             }
         } else {
             int bushes = Random.Int(3);
             if (bushes == 0) {
-                level.trigger(new Sungrass.Gadget(), level.pointToCell(room.random()));
+                level.trigger(new Healing.Gadget(), level.pointToCell(room.random()));
             } else if (bushes == 1) {
-                level.trigger(new BlandfruitBush.Gadget(), level.pointToCell(room.random()));
+                level.trigger(new AlienPlant.Gadget(), level.pointToCell(room.random()));
             } else if (Random.Int(5) == 0) {
                 int trigger1, trigger2;
                 trigger1 = level.pointToCell(room.random());
-                level.trigger(new Sungrass.Gadget(), trigger1);
+                level.trigger(new Healing.Gadget(), trigger1);
                 do {
                     trigger2 = level.pointToCell(room.random());
                 } while (trigger2 == trigger1);
-                level.trigger(new BlandfruitBush.Gadget(), trigger2);
+                level.trigger(new AlienPlant.Gadget(), trigger2);
             }
         }
 

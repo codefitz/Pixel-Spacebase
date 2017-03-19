@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.modules.TargetingModule;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Projecting;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Projecting;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.watabou.utils.Random;
@@ -56,7 +56,7 @@ abstract public class MissileWeapon extends Weapon {
 
     @Override
     public int throwPos(Hero user, int dst) {
-        if (hasEnchant(Projecting.class)
+        if (hasEnhance(Projecting.class)
                 && !Level.solid[dst] && Dungeon.level.distance(user.pos, dst) <= 4) {
             return dst;
         } else {
@@ -145,9 +145,9 @@ abstract public class MissileWeapon extends Weapon {
             info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
         }
 
-        if (enchantment != null && (malfunctioningKnown || !enchantment.malfunction())) {
-            info += "\n\n" + Messages.get(Weapon.class, "enchanted", enchantment.name());
-            info += " " + Messages.get(enchantment, "desc");
+        if (enhancement != null && (malfunctioningKnown || !enhancement.malfunction())) {
+            info += "\n\n" + Messages.get(Weapon.class, "enhanced", enhancement.name());
+            info += " " + Messages.get(enhancement, "desc");
         }
 
         if (malfunctioning && isEquipped(Dungeon.hero)) {

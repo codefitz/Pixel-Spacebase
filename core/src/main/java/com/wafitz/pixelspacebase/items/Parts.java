@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.items.artifacts.MasterThievesArmband;
+import com.wafitz.pixelspacebase.items.artifacts.McGyvrModule;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -64,7 +64,7 @@ public class Parts extends Item {
         Statistics.partsCollected += quantity;
         Badges.validatePartsCollected();
 
-        MasterThievesArmband.Thievery thievery = hero.buff(MasterThievesArmband.Thievery.class);
+        McGyvrModule.Thievery thievery = hero.buff(McGyvrModule.Thievery.class);
         if (thievery != null)
             thievery.collect(quantity);
 

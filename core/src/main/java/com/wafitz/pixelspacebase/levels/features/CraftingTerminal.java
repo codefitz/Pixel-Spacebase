@@ -22,12 +22,12 @@ package com.wafitz.pixelspacebase.levels.features;
 
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.AlienTech;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.food.Blandfruit;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.windows.WndBag;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 import com.wafitz.pixelspacebase.windows.WndOptions;
 
 import java.util.Iterator;
@@ -52,7 +52,7 @@ public class CraftingTerminal {
         if (heap == null)
             while (items.hasNext() && !foundFruit) {
                 curItem = items.next();
-                if (curItem instanceof Blandfruit && ((Blandfruit) curItem).experimentalTechAttrib == null) {
+                if (curItem instanceof AlienTech && ((AlienTech) curItem).experimentalTechAttrib == null) {
                     GameScene.show(
                             new WndOptions(Messages.get(CraftingTerminal.class, "pot"),
                                     Messages.get(CraftingTerminal.class, "options"),
@@ -63,7 +63,7 @@ public class CraftingTerminal {
                                     if (index == 0) {
                                         curItem.cast(CraftingTerminal.hero, CraftingTerminal.pos);
                                     } else
-                                        GameScene.selectItem(itemSelector, WndBag.Mode.GADGET, Messages.get(CraftingTerminal.class, "select_gadget"));
+                                        GameScene.selectItem(itemSelector, WndContainer.Mode.GADGET, Messages.get(CraftingTerminal.class, "select_gadget"));
                                 }
                             }
                     );
@@ -72,10 +72,10 @@ public class CraftingTerminal {
             }
 
         if (!foundFruit)
-            GameScene.selectItem(itemSelector, WndBag.Mode.GADGET, Messages.get(CraftingTerminal.class, "select_gadget"));
+            GameScene.selectItem(itemSelector, WndContainer.Mode.GADGET, Messages.get(CraftingTerminal.class, "select_gadget"));
     }
 
-    private static final WndBag.Listener itemSelector = new WndBag.Listener() {
+    private static final WndContainer.Listener itemSelector = new WndContainer.Listener() {
         @Override
         public void onSelect(Item item) {
             if (item != null) {

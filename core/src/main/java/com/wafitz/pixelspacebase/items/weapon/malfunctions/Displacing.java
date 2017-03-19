@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Displacing extends Weapon.Enchantment {
+public class Displacing extends Weapon.Enhancement {
 
     private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 

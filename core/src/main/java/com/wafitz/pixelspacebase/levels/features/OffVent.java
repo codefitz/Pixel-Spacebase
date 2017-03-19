@@ -33,11 +33,11 @@ import com.wafitz.pixelspacebase.items.Dewdrop;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Camouflage;
-import com.wafitz.pixelspacebase.items.artifacts.SandalsOfNature;
+import com.wafitz.pixelspacebase.items.artifacts.GnollTechShield;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.triggers.BlandfruitBush;
+import com.wafitz.pixelspacebase.triggers.AlienPlant;
 import com.watabou.utils.Random;
 
 public class OffVent {
@@ -51,7 +51,7 @@ public class OffVent {
             int naturalismLevel = 0;
 
             if (ch != null) {
-                SandalsOfNature.Naturalism naturalism = ch.buff(SandalsOfNature.Naturalism.class);
+                GnollTechShield.Naturalism naturalism = ch.buff(GnollTechShield.Naturalism.class);
                 if (naturalism != null) {
                     if (!naturalism.isMalfunctioning()) {
                         naturalismLevel = naturalism.itemLevel() + 1;
@@ -67,10 +67,10 @@ public class OffVent {
                 if (Random.Int(16 - naturalismLevel * 3) == 0) {
                     Item gadget = Generator.random(Generator.Category.GADGET);
 
-                    if (gadget instanceof BlandfruitBush.Gadget) {
-                        if (Random.Int(15) - Dungeon.limitedDrops.blandfruitGadget.count >= 0) {
+                    if (gadget instanceof AlienPlant.Gadget) {
+                        if (Random.Int(15) - Dungeon.limitedDrops.alienTechGadget.count >= 0) {
                             level.drop(gadget, pos).sprite.drop();
-                            Dungeon.limitedDrops.blandfruitGadget.count++;
+                            Dungeon.limitedDrops.alienTechGadget.count++;
                         }
                     } else
                         level.drop(gadget, pos).sprite.drop();

@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.VenomGas;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Venomous;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Venomous;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -66,7 +66,7 @@ public class VenomBlaster extends Blaster {
 
     @Override
     public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
-        //acts like venomous enchantment
+        //acts like venomous enhancement
         new Venomous().proc(staff, attacker, defender, damage);
     }
 

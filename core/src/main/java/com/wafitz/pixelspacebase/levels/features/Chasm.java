@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
+import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -70,7 +70,7 @@ public class Chasm {
 
         Sample.INSTANCE.play(Assets.SND_FALLING);
 
-        Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+        Buff buff = Dungeon.hero.buff(TimeFolder.timeFreeze.class);
         if (buff != null) buff.detach();
 
         for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))

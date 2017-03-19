@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
-import com.wafitz.pixelspacebase.windows.WndBag;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 import com.wafitz.pixelspacebase.windows.WndItem;
 import com.watabou.noosa.audio.Sample;
 
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 
 public class WeakForcefield extends Item {
 
-    private static final String AC_AFFIX = "AFFIX";
+    private static final String AC_APPLY = "APPLY";
 
     //only to be used from the quickslot, for tutorial purposes mostly.
     private static final String AC_INFO = "INFO_WINDOW";
@@ -56,7 +56,7 @@ public class WeakForcefield extends Item {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        actions.add(AC_AFFIX);
+        actions.add(AC_APPLY);
         return actions;
     }
 
@@ -65,9 +65,9 @@ public class WeakForcefield extends Item {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_AFFIX)) {
+        if (action.equals(AC_APPLY)) {
             curItem = this;
-            GameScene.selectItem(armorSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt"));
+            GameScene.selectItem(armorSelector, WndContainer.Mode.ARMOR, Messages.get(this, "prompt"));
         } else if (action.equals(AC_INFO)) {
             GameScene.show(new WndItem(null, this, true));
         }
@@ -79,17 +79,17 @@ public class WeakForcefield extends Item {
         return level() == 0;
     }
 
-    private static WndBag.Listener armorSelector = new WndBag.Listener() {
+    private static WndContainer.Listener armorSelector = new WndContainer.Listener() {
         @Override
         public void onSelect(Item item) {
             if (item != null && item instanceof Armor) {
                 Armor armor = (Armor) item;
                 if (!armor.levelKnown) {
-                    GLog.w(Messages.get(WeakForcefield.class, "unknown_armor"));
+                    GLog.w(Messages.get(WeakForcefield.class, "unknown_armor", armor.name()));
                 } else if (armor.malfunctioning || armor.level() < 0) {
-                    GLog.w(Messages.get(WeakForcefield.class, "degraded_armor"));
+                    GLog.w(Messages.get(WeakForcefield.class, "malfunctioning_armor", armor.name()));
                 } else {
-                    GLog.p(Messages.get(WeakForcefield.class, "affix"));
+                    GLog.p(Messages.get(WeakForcefield.class, "apply", armor.name()));
                     Dungeon.hero.sprite.operate(Dungeon.hero.pos);
                     Sample.INSTANCE.play(Assets.SND_UNLOCK);
                     armor.applyForcefield((WeakForcefield) curItem);

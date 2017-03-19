@@ -26,18 +26,18 @@ import com.wafitz.pixelspacebase.effects.Flare;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.bags.Bag;
+import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
-import com.wafitz.pixelspacebase.windows.WndBag;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 
 public class FixScript extends InventoryScript {
 
     {
         initials = 8;
-        mode = WndBag.Mode.UNIDED_OR_MALFUNCTIONING;
+        mode = WndContainer.Mode.UNIDED_OR_MALFUNCTIONING;
     }
 
     @Override
@@ -65,8 +65,8 @@ public class FixScript extends InventoryScript {
             }
             if (item instanceof Weapon) {
                 Weapon w = (Weapon) item;
-                if (w.hasMalfunctionEnchant()) {
-                    w.enchant(null);
+                if (w.hasMalfunctionEnhance()) {
+                    w.enhance(null);
                     w.malfunctioning = false;
                     procced = true;
                 }
@@ -74,7 +74,7 @@ public class FixScript extends InventoryScript {
             if (item instanceof Armor) {
                 Armor a = (Armor) item;
                 if (a.hasMalfunctionEnhancement()) {
-                    a.inscribe(null);
+                    a.enhance(null);
                     a.malfunctioning = false;
                     procced = true;
                 }
@@ -82,10 +82,10 @@ public class FixScript extends InventoryScript {
             if (item instanceof Module && item.level() <= 0) {
                 item.upgrade(1 - item.level());
             }
-            if (item instanceof Bag) {
-                for (Item bagItem : ((Bag) item).items) {
-                    if (bagItem != null && bagItem.malfunctioning) {
-                        bagItem.malfunctioning = false;
+            if (item instanceof Container) {
+                for (Item containerItem : ((Container) item).items) {
+                    if (containerItem != null && containerItem.malfunctioning) {
+                        containerItem.malfunctioning = false;
                         procced = true;
                     }
                 }
@@ -100,7 +100,7 @@ public class FixScript extends InventoryScript {
     }
 
     @Override
-    public int price() {
-        return isKnown() ? 30 * quantity : super.price();
+    public int cost() {
+        return isKnown() ? 30 * quantity : super.cost();
     }
 }

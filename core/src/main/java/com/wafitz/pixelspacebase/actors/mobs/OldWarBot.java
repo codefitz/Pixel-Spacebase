@@ -27,9 +27,9 @@ import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
-import com.wafitz.pixelspacebase.items.weapon.Weapon.Enchantment;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric;
+import com.wafitz.pixelspacebase.items.weapon.Weapon.Enhancement;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Vampiric;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.OldWarBotSprite;
@@ -57,7 +57,7 @@ public class OldWarBot extends Mob {
         } while (!(weapon instanceof MeleeWeapon) || weapon.malfunctioning);
 
         weapon.identify();
-        weapon.enchant(Enchantment.random());
+        weapon.enhance(Enhancement.random());
 
         HP = HT = 15 + Dungeon.depth * 5;
         defenseSkill = 4 + Dungeon.depth;

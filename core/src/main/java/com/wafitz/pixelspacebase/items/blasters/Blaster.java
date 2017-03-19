@@ -34,8 +34,8 @@ import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.bags.Bag;
-import com.wafitz.pixelspacebase.items.bags.BlasterHolster;
+import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
+import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -105,7 +105,7 @@ public abstract class Blaster extends Item {
     public abstract void onHit(DM3000Staff staff, Char attacker, Char defender, int damage);
 
     @Override
-    public boolean collect(Bag container) {
+    public boolean collect(Container container) {
         if (super.collect(container)) {
             if (container.owner != null) {
                 if (container instanceof BlasterHolster)
@@ -282,7 +282,7 @@ public abstract class Blaster extends Item {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         int price = 75;
         if (malfunctioning && malfunctioningKnown) {
             price /= 2;

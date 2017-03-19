@@ -38,7 +38,7 @@ import com.wafitz.pixelspacebase.items.Amulet;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.bags.Bag;
+import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
@@ -135,9 +135,10 @@ public enum Rankings {
         ArrayList<Item> allItems = (ArrayList<Item>) belongings.backpack.items.clone();
         //remove items that won't show up in the rankings screen
         for (Item item : belongings.backpack.items.toArray(new Item[0])) {
-            if (item instanceof Bag) {
-                for (Item bagItem : ((Bag) item).items.toArray(new Item[0])) {
-                    if (Dungeon.quickslot.contains(bagItem)) belongings.backpack.items.add(bagItem);
+            if (item instanceof Container) {
+                for (Item containerItem : ((Container) item).items.toArray(new Item[0])) {
+                    if (Dungeon.quickslot.contains(containerItem))
+                        belongings.backpack.items.add(containerItem);
                 }
                 belongings.backpack.items.remove(item);
             } else if (!Dungeon.quickslot.contains(item))

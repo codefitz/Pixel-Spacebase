@@ -29,10 +29,10 @@ import com.wafitz.pixelspacebase.actors.mobs.Shielded;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
-import com.wafitz.pixelspacebase.items.bags.BlasterHolster;
-import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
-import com.wafitz.pixelspacebase.items.bags.GadgetBag;
-import com.wafitz.pixelspacebase.items.bags.ScriptHolder;
+import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
+import com.wafitz.pixelspacebase.items.containers.GadgetCase;
+import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
+import com.wafitz.pixelspacebase.items.containers.XPort;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -71,11 +71,11 @@ public class Badges {
         ALL_MODULES_IDENTIFIED(18),
         ALL_BLASTERS_IDENTIFIED(19),
         ALL_ITEMS_IDENTIFIED(35, true),
-        BAG_BOUGHT_GADGET_BAG,
-        BAG_BOUGHT_SCRIPT_HOLDER,
-        BAG_BOUGHT_EXPERIMENTAL_TECH_BANDOLIER,
-        BAG_BOUGHT_BLASTER_HOLSTER,
-        ALL_BAGS_BOUGHT(23),
+        GADGET_CONTAINER_MADE,
+        SCRIPT_LIBRARY_MADE,
+        XPORT_MADE,
+        BLASTER_HOLSTER_MADE,
+        ALL_CONTAINERS_MADE(23),
         DEATH_FROM_FIRE(24),
         DEATH_FROM_POISON(25),
         DEATH_FROM_GAS(26),
@@ -487,30 +487,30 @@ public class Badges {
      * }
      */
 
-    public static void validateAllBagsBought(Item bag) {
+    public static void validateAllContainersMade(Item container) {
 
         Badge badge = null;
-        if (bag instanceof GadgetBag) {
-            badge = Badge.BAG_BOUGHT_GADGET_BAG;
-        } else if (bag instanceof ScriptHolder) {
-            badge = Badge.BAG_BOUGHT_SCRIPT_HOLDER;
-        } else if (bag instanceof ExperimentalTechBandolier) {
-            badge = Badge.BAG_BOUGHT_EXPERIMENTAL_TECH_BANDOLIER;
-        } else if (bag instanceof BlasterHolster) {
-            badge = Badge.BAG_BOUGHT_BLASTER_HOLSTER;
+        if (container instanceof GadgetCase) {
+            badge = Badge.GADGET_CONTAINER_MADE;
+        } else if (container instanceof ScriptLibrary) {
+            badge = Badge.SCRIPT_LIBRARY_MADE;
+        } else if (container instanceof XPort) {
+            badge = Badge.XPORT_MADE;
+        } else if (container instanceof BlasterHolster) {
+            badge = Badge.BLASTER_HOLSTER_MADE;
         }
 
         if (badge != null) {
 
             local.add(badge);
 
-            if (!local.contains(Badge.ALL_BAGS_BOUGHT) &&
-                    local.contains(Badge.BAG_BOUGHT_GADGET_BAG) &&
-                    local.contains(Badge.BAG_BOUGHT_SCRIPT_HOLDER) &&
-                    local.contains(Badge.BAG_BOUGHT_EXPERIMENTAL_TECH_BANDOLIER) &&
-                    local.contains(Badge.BAG_BOUGHT_BLASTER_HOLSTER)) {
+            if (!local.contains(Badge.ALL_CONTAINERS_MADE) &&
+                    local.contains(Badge.GADGET_CONTAINER_MADE) &&
+                    local.contains(Badge.SCRIPT_LIBRARY_MADE) &&
+                    local.contains(Badge.XPORT_MADE) &&
+                    local.contains(Badge.BLASTER_HOLSTER_MADE)) {
 
-                badge = Badge.ALL_BAGS_BOUGHT;
+                badge = Badge.ALL_CONTAINERS_MADE;
                 local.add(badge);
                 displayBadge(badge);
             }

@@ -98,7 +98,7 @@ public class Pasty extends Food {
     public void execute(Hero hero, String action) {
         super.execute(hero, action);
 
-        if (action.equals(AC_EAT)) {
+        if (action.equals(AC_USE)) {
             switch (holiday) {
                 case NONE:
                     break; //do nothing extra
@@ -129,7 +129,7 @@ public class Pasty extends Food {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 20 * quantity;
     }
 }

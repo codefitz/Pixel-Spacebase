@@ -211,7 +211,7 @@ public abstract class Script extends Item {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 30 * quantity;
     }
 }

@@ -49,7 +49,7 @@ import com.wafitz.pixelspacebase.items.Bomb;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
+import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
 import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
 import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
@@ -326,7 +326,7 @@ class MalfunctioningBlaster {
                     for (int i = 1; i < Dungeon.depth; i++) depths[i - 1] = i;
                     int depth = 1 + Random.chances(depths);
 
-                    Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+                    Buff buff = Dungeon.hero.buff(TimeFolder.timeFreeze.class);
                     if (buff != null) buff.detach();
 
                     for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))

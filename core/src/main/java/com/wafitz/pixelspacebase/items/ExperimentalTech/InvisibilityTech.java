@@ -43,8 +43,8 @@ public class InvisibilityTech extends ExperimentalTech {
     }
 
     @Override
-    public int price() {
-        return isKnown() ? 40 * quantity : super.price();
+    public int cost() {
+        return isKnown() ? 40 * quantity : super.cost();
     }
 
 }

@@ -93,16 +93,16 @@ public class Dungeon {
         scorpioHP,
         makingHP,
         //blandfruit, which can technically be an unlimited health potion source
-        blandfruitGadget,
+        alienTechGadget,
 
         //doesn't use Generator, so we have to enforce one armband drop here
         armband,
 
         //containers
         airTank,
-        gadgetBag,
-        scriptBag,
-        experimentalTechBag,
+        gadgetCase,
+        scriptContainer,
+        xPort,
         blasterHolster,
 
         guardHP;

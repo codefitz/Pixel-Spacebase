@@ -51,7 +51,7 @@ import com.wafitz.pixelspacebase.items.Amulet;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.Dewdrop;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.MightTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Heap.Type;
@@ -66,15 +66,15 @@ import com.wafitz.pixelspacebase.items.armor.enhancements.Speed;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Viscosity;
 import com.wafitz.pixelspacebase.items.artifacts.GravityGun;
 import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.HornOfPlenty;
 import com.wafitz.pixelspacebase.items.artifacts.StrongForcefield;
-import com.wafitz.pixelspacebase.items.artifacts.TalismanOfForesight;
-import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
+import com.wafitz.pixelspacebase.items.artifacts.SurveyorModule;
+import com.wafitz.pixelspacebase.items.artifacts.SurvivalModule;
+import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
 import com.wafitz.pixelspacebase.items.keys.Key;
+import com.wafitz.pixelspacebase.items.modules.AttackModule;
 import com.wafitz.pixelspacebase.items.modules.ElementsModule;
 import com.wafitz.pixelspacebase.items.modules.EvasionModule;
 import com.wafitz.pixelspacebase.items.modules.ForceModule;
-import com.wafitz.pixelspacebase.items.modules.FurorModule;
 import com.wafitz.pixelspacebase.items.modules.PowerModule;
 import com.wafitz.pixelspacebase.items.modules.SpeedModule;
 import com.wafitz.pixelspacebase.items.modules.SteelModule;
@@ -96,17 +96,17 @@ import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.wafitz.pixelspacebase.scenes.SurfaceScene;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.sprites.HeroSprite;
-import com.wafitz.pixelspacebase.triggers.Earthroot;
-import com.wafitz.pixelspacebase.triggers.Sungrass;
+import com.wafitz.pixelspacebase.triggers.Healing;
+import com.wafitz.pixelspacebase.triggers.WeakForcefield;
 import com.wafitz.pixelspacebase.ui.AttackIndicator;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
 import com.wafitz.pixelspacebase.ui.QuickSlotButton;
 import com.wafitz.pixelspacebase.ui.StatusPane;
 import com.wafitz.pixelspacebase.utils.BArray;
 import com.wafitz.pixelspacebase.utils.GLog;
+import com.wafitz.pixelspacebase.windows.WndBotMake;
 import com.wafitz.pixelspacebase.windows.WndMessage;
 import com.wafitz.pixelspacebase.windows.WndResurrect;
-import com.wafitz.pixelspacebase.windows.WndTradeItem;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -430,14 +430,14 @@ public class Hero extends Char {
             //Normally putting furor speed on unarmed attacks would be unnecessary
             //But there's going to be that one guy who gets a furor+force ring combo
             //This is for that one guy, you shall get your fists of fury!
-            int bonus = FurorModule.getBonus(this, FurorModule.Furor.class);
+            int bonus = AttackModule.getBonus(this, AttackModule.Furor.class);
             return (float) (0.2 + (1 - 0.2) * Math.pow(0.85, bonus));
         }
     }
 
     @Override
     public void spend(float time) {
-        TimekeepersHourglass.timeFreeze buff = buff(TimekeepersHourglass.timeFreeze.class);
+        TimeFolder.timeFreeze buff = buff(TimeFolder.timeFreeze.class);
         if (!(buff != null && buff.processTime(time)))
             super.spend(time);
     }
@@ -489,9 +489,9 @@ public class Hero extends Char {
 
                 return actInteract((HeroAction.Interact) curAction);
 
-            } else if (curAction instanceof HeroAction.Buy) {
+            } else if (curAction instanceof HeroAction.WorkshopMake) {
 
-                return actBuy((HeroAction.Buy) curAction);
+                return actMake((HeroAction.WorkshopMake) curAction);
 
             } else if (curAction instanceof HeroAction.PickUp) {
 
@@ -596,15 +596,15 @@ public class Hero extends Char {
         }
     }
 
-    private boolean actBuy(HeroAction.Buy action) {
+    private boolean actMake(HeroAction.WorkshopMake action) {
         int dst = action.dst;
         if (pos == dst || Dungeon.level.adjacent(pos, dst)) {
 
             ready();
 
             Heap heap = Dungeon.level.heaps.get(dst);
-            if (heap != null && heap.type == Type.FOR_SALE && heap.size() == 1) {
-                GameScene.show(new WndTradeItem(heap, true));
+            if (heap != null && heap.type == Type.TO_MAKE && heap.size() == 1) {
+                GameScene.show(new WndBotMake(heap, true));
             }
 
             return false;
@@ -648,7 +648,7 @@ public class Hero extends Char {
                     heap.pickUp();
 
                     if (item instanceof Dewdrop
-                            || item instanceof TimekeepersHourglass.sandBag
+                            || item instanceof TimeFolder.TimeBattery
                             || item instanceof HoloPad.HoloBattery
                             || item instanceof Key) {
                         //Do Nothing
@@ -656,7 +656,7 @@ public class Hero extends Char {
 
                         boolean important =
                                 ((item instanceof UpgradeScript || item instanceof EnhancementScript) && ((Script) item).isKnown()) ||
-                                        ((item instanceof StrengthTech || item instanceof MightTech) && ((ExperimentalTech) item).isKnown());
+                                        ((item instanceof StrengthTech || item instanceof PowerTech) && ((ExperimentalTech) item).isKnown());
                         if (important) {
                             GLog.p(Messages.get(this, "you_now_have", item.name()));
                         } else {
@@ -693,7 +693,7 @@ public class Hero extends Char {
         if (Dungeon.level.adjacent(pos, dst) || pos == dst) {
 
             Heap heap = Dungeon.level.heaps.get(dst);
-            if (heap != null && (heap.type != Type.HEAP && heap.type != Type.FOR_SALE)) {
+            if (heap != null && (heap.type != Type.HEAP && heap.type != Type.TO_MAKE)) {
 
                 if ((heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST)
                         && belongings.specialKeys[Dungeon.depth] < 1) {
@@ -784,7 +784,7 @@ public class Hero extends Char {
 
             curAction = null;
 
-            Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
+            Buff buff = buff(TimeFolder.timeFreeze.class);
             if (buff != null) buff.detach();
 
             for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
@@ -829,7 +829,7 @@ public class Hero extends Char {
                     hunger.reduceHunger(-Hunger.STARVING / 10);
                 }
 
-                Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
+                Buff buff = buff(TimeFolder.timeFreeze.class);
                 if (buff != null) buff.detach();
 
                 for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
@@ -911,12 +911,12 @@ public class Hero extends Char {
     @Override
     public int defenseProc(Char enemy, int damage) {
 
-        Earthroot.Armor armor = buff(Earthroot.Armor.class);
+        WeakForcefield.Armor armor = buff(WeakForcefield.Armor.class);
         if (armor != null) {
             damage = armor.absorb(damage);
         }
 
-        Sungrass.Health health = buff(Sungrass.Health.class);
+        Healing.Health health = buff(Healing.Health.class);
         if (health != null) {
             health.absorb(damage);
         }
@@ -930,7 +930,7 @@ public class Hero extends Char {
 
     @Override
     public void damage(int dmg, Object src) {
-        if (buff(TimekeepersHourglass.timeStasis.class) != null)
+        if (buff(TimeFolder.timeStasis.class) != null)
             return;
 
         if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage) && damageInterrupt) {
@@ -1133,9 +1133,9 @@ public class Hero extends Char {
                 case HEAP:
                     curAction = new HeroAction.PickUp(cell);
                     break;
-                case FOR_SALE:
-                    curAction = heap.size() == 1 && heap.peek().price() > 0 ?
-                            new HeroAction.Buy(cell) :
+                case TO_MAKE:
+                    curAction = heap.size() == 1 && heap.peek().cost() > 0 ?
+                            new HeroAction.WorkshopMake(cell) :
                             new HeroAction.PickUp(cell);
                     break;
                 default:
@@ -1172,7 +1172,7 @@ public class Hero extends Char {
         GravityGun.gravityRecharge chains = buff(GravityGun.gravityRecharge.class);
         if (chains != null) chains.gainExp(percent);
 
-        HornOfPlenty.hornRecharge horn = buff(HornOfPlenty.hornRecharge.class);
+        SurvivalModule.hornRecharge horn = buff(SurvivalModule.hornRecharge.class);
         if (horn != null) horn.gainCharge(percent);
 
         if (subClass == HeroSubClass.BERSERKER) {
@@ -1233,7 +1233,7 @@ public class Hero extends Char {
     @Override
     public void add(Buff buff) {
 
-        if (buff(TimekeepersHourglass.timeStasis.class) != null)
+        if (buff(TimeFolder.timeStasis.class) != null)
             return;
 
         super.add(buff);
@@ -1526,10 +1526,10 @@ public class Hero extends Char {
             by = Dungeon.level.height() - 1;
         }
 
-        TalismanOfForesight.Foresight foresight = buff(TalismanOfForesight.Foresight.class);
+        SurveyorModule.Survey survey = buff(SurveyorModule.Survey.class);
 
-        //malfunctioning talisman of foresight makes unintentionally finding things impossible.
-        if (foresight != null && foresight.isMalfunctioning()) {
+        //malfunctioning talisman of survey makes unintentionally finding things impossible.
+        if (survey != null && survey.isMalfunctioning()) {
             level = -1;
         }
 
@@ -1555,8 +1555,8 @@ public class Hero extends Char {
                         smthFound = true;
                         //informer.onSelect(null);
 
-                        if (foresight != null && !foresight.isMalfunctioning())
-                            foresight.charge();
+                        if (survey != null && !survey.isMalfunctioning())
+                            survey.charge();
                     }
                 }
             }
@@ -1566,7 +1566,7 @@ public class Hero extends Char {
         if (smthFound && intentional) {
             sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "search"));
             sprite.operate(pos);
-            if (foresight != null && foresight.isMalfunctioning()) {
+            if (survey != null && survey.isMalfunctioning()) {
                 GLog.n(Messages.get(this, "search_distracted"));
                 spendAndNext(TIME_TO_SEARCH * 3);
             } else {

@@ -25,13 +25,13 @@ import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.windows.WndBag;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 import com.watabou.noosa.audio.Sample;
 
 abstract class InventoryScript extends Script {
 
     private String inventoryTitle = Messages.get(this, "inv_title");
-    protected WndBag.Mode mode = WndBag.Mode.ALL;
+    protected WndContainer.Mode mode = WndContainer.Mode.ALL;
 
     @Override
     protected void doRead() {
@@ -71,7 +71,7 @@ abstract class InventoryScript extends Script {
     protected abstract void onItemSelected(Item item);
 
     private static boolean identifiedByUse = false;
-    protected static WndBag.Listener itemSelector = new WndBag.Listener() {
+    protected static WndContainer.Listener itemSelector = new WndContainer.Listener() {
         @Override
         public void onSelect(Item item) {
             if (item != null) {

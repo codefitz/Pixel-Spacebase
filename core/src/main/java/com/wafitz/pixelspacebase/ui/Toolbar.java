@@ -28,8 +28,8 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.scenes.CellSelector;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
-import com.wafitz.pixelspacebase.windows.WndBag;
 import com.wafitz.pixelspacebase.windows.WndCatalogs;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Image;
@@ -115,7 +115,7 @@ public class Toolbar extends Component {
 
             @Override
             protected void onClick() {
-                GameScene.show(new WndBag(Dungeon.hero.belongings.backpack, null, WndBag.Mode.ALL, null));
+                GameScene.show(new WndContainer(Dungeon.hero.belongings.backpack, null, WndContainer.Mode.ALL, null));
             }
 
             protected boolean onLongClick() {

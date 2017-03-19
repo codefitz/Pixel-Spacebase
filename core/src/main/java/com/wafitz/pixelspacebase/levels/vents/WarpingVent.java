@@ -31,7 +31,7 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
+import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
 import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -72,7 +72,7 @@ public class WarpingVent extends Vent {
 
             Char ch = Actor.findChar(pos);
             if (ch == Dungeon.hero) {
-                Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+                Buff buff = Dungeon.hero.buff(TimeFolder.timeFreeze.class);
                 if (buff != null) buff.detach();
 
                 for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))

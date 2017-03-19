@@ -42,7 +42,7 @@ public class ItemSpriteSheet {
     public static final int PARTS = UNCOLLECTIBLE;
     public static final int DEWDROP = UNCOLLECTIBLE + 1;
     public static final int HOLOBATTERY = UNCOLLECTIBLE + 2;
-    public static final int SANDBAG = UNCOLLECTIBLE + 3;
+    public static final int TIMEBATTERY = UNCOLLECTIBLE + 3;
     public static final int DBL_BOMB = UNCOLLECTIBLE + 4;
 
     private static final int CONTAINERS = xy(1, 2);   //16 slots
@@ -56,7 +56,7 @@ public class ItemSpriteSheet {
 
     private static final int SINGLE_USE = xy(1, 3);   //32 slots
     public static final int CLONE = SINGLE_USE;
-    public static final int STYLUS = SINGLE_USE + 1;
+    public static final int ENHANCEMENTCHIP = SINGLE_USE + 1;
     public static final int WEIGHT = SINGLE_USE + 2;
     public static final int FORCEFIELD = SINGLE_USE + 3;
     public static final int TORCH = SINGLE_USE + 4;
@@ -230,7 +230,7 @@ public class ItemSpriteSheet {
     public static final int DREAMFOIL_GADGET = GADGETS + 8;
     public static final int EARTHROOT_GADGET = GADGETS + 9;
     public static final int FADELEAF_GADGET = GADGETS + 10;
-    public static final int BLANDFRUIT_GADGET = GADGETS + 11;
+    public static final int ALIENTECH_GADGET = GADGETS + 11;
 
     //32 free slots
 
@@ -239,7 +239,7 @@ public class ItemSpriteSheet {
     public static final int STEAK = FOOD + 1;
     public static final int OVERPRICED = FOOD + 2;
     public static final int CARPACCIO = FOOD + 3;
-    public static final int BLANDFRUIT = FOOD + 4;
+    public static final int ALIENTECH = FOOD + 4;
     public static final int RATION = FOOD + 5;
     public static final int PASTY = FOOD + 6;
     public static final int PUMPKIN_PIE = FOOD + 7;
@@ -255,10 +255,10 @@ public class ItemSpriteSheet {
     public static final int TOKEN = QUEST + 6;
 
     private static final int BAGS = xy(1, 28);  //16 slots
-    public static final int VIAL = BAGS;
-    public static final int POUCH = BAGS + 1;
-    public static final int HOLDER = BAGS + 2;
-    public static final int BANDOLIER = BAGS + 3;
+    public static final int AIRTANK = BAGS;
+    public static final int CASE = BAGS + 1;
+    public static final int LIBRARY = BAGS + 2;
+    public static final int XPORT = BAGS + 3;
     public static final int HOLSTER = BAGS + 4;
 
     //64 free slots

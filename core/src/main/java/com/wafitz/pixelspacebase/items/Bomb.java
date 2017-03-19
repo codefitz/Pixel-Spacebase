@@ -53,7 +53,7 @@ public class Bomb extends Item {
         stackable = true;
     }
 
-    public Fuse fuse;
+    Fuse fuse;
 
     //FIXME using a static variable for this is kinda gross, should be a better way
     private static boolean lightingFuse = false;
@@ -187,7 +187,7 @@ public class Bomb extends Item {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 20 * quantity;
     }
 
@@ -215,7 +215,7 @@ public class Bomb extends Item {
     }
 
 
-    public static class Fuse extends Actor {
+    private static class Fuse extends Actor {
 
         {
             actPriority = 3; //as if it were a buff
@@ -223,7 +223,7 @@ public class Bomb extends Item {
 
         private Bomb bomb;
 
-        public Fuse ignite(Bomb bomb) {
+        Fuse ignite(Bomb bomb) {
             this.bomb = bomb;
             return this;
         }
@@ -257,7 +257,7 @@ public class Bomb extends Item {
     }
 
 
-    public static class DoubleBomb extends Bomb {
+    private static class DoubleBomb extends Bomb {
 
         {
             image = ItemSpriteSheet.DBL_BOMB;

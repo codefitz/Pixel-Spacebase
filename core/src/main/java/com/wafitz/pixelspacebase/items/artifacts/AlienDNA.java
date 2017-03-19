@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
-import com.wafitz.pixelspacebase.triggers.Earthroot;
+import com.wafitz.pixelspacebase.triggers.WeakForcefield;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.wafitz.pixelspacebase.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
@@ -86,7 +86,7 @@ public class AlienDNA extends Artifact {
     private void prick(Hero hero) {
         int damage = 3 * (level() * level());
 
-        Earthroot.Armor armor = hero.buff(Earthroot.Armor.class);
+        WeakForcefield.Armor armor = hero.buff(WeakForcefield.Armor.class);
         if (armor != null) {
             damage = armor.absorb(damage);
         }

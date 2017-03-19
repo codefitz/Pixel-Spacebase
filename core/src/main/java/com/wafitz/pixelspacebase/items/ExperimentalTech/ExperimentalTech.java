@@ -49,9 +49,9 @@ import java.util.HashSet;
 
 public class ExperimentalTech extends Item {
 
-    private static final String AC_DRINK = "DRINK";
+    private static final String AC_USE = "USE";
 
-    private static final float TIME_TO_DRINK = 1f;
+    private static final float TIME_TO_USE = 1f;
 
     protected Integer initials;
 
@@ -59,15 +59,15 @@ public class ExperimentalTech extends Item {
             HealingTech.class,
             ExperienceTech.class,
             ToxicGasTech.class,
-            LiquidFlameTech.class,
+            FireTech.class,
             StrengthTech.class,
-            ParalyticGasTech.class,
-            LevitationTech.class,
-            MindVisionTech.class,
-            PurityTech.class,
+            ParalyzingTech.class,
+            RocketTech.class,
+            SecurityTech.class,
+            PolymerMembrane.class,
             InvisibilityTech.class,
-            MightTech.class,
-            FrostTech.class
+            PowerTech.class,
+            FrostTech.class,
     };
 
     private static final HashMap<String, Integer> colors = new HashMap<String, Integer>() {
@@ -91,11 +91,11 @@ public class ExperimentalTech extends Item {
 
     private String color;
 
-    public boolean ownedByFruit = false;
+    boolean ownedByFruit = false;
 
     {
         stackable = true;
-        defaultAction = AC_DRINK;
+        defaultAction = AC_USE;
     }
 
     @SuppressWarnings("unchecked")
@@ -131,7 +131,7 @@ public class ExperimentalTech extends Item {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        actions.add(AC_DRINK);
+        actions.add(AC_USE);
         return actions;
     }
 
@@ -140,12 +140,12 @@ public class ExperimentalTech extends Item {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_DRINK)) {
+        if (action.equals(AC_USE)) {
 
             if (isKnown() && (
-                    this instanceof LiquidFlameTech ||
+                    this instanceof FireTech ||
                             this instanceof ToxicGasTech ||
-                            this instanceof ParalyticGasTech)) {
+                            this instanceof ParalyzingTech)) {
 
                 GameScene.show(
                         new WndOptions(Messages.get(ExperimentalTech.class, "harmful"),
@@ -173,10 +173,10 @@ public class ExperimentalTech extends Item {
         if (isKnown() && (
                 this instanceof ExperienceTech ||
                         this instanceof HealingTech ||
-                        this instanceof MindVisionTech ||
+                        this instanceof SecurityTech ||
                         this instanceof StrengthTech ||
                         this instanceof InvisibilityTech ||
-                        this instanceof MightTech)) {
+                        this instanceof PowerTech)) {
 
             GameScene.show(
                     new WndOptions(Messages.get(ExperimentalTech.class, "beneficial"),
@@ -200,7 +200,7 @@ public class ExperimentalTech extends Item {
 
         detach(hero.belongings.backpack);
 
-        hero.spend(TIME_TO_DRINK);
+        hero.spend(TIME_TO_USE);
         hero.busy();
         apply(hero);
 
@@ -313,7 +313,7 @@ public class ExperimentalTech extends Item {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 30 * quantity;
     }
 }

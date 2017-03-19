@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.quest.DarkParts;
+import com.wafitz.pixelspacebase.items.quest.DarkMetals;
 import com.wafitz.pixelspacebase.items.quest.Pickaxe;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.levels.Room;
@@ -109,7 +109,7 @@ public class Blacksmith extends NPC {
             } else {
 
                 Pickaxe pick = Dungeon.hero.belongings.getItem(Pickaxe.class);
-                DarkParts parts = Dungeon.hero.belongings.getItem(DarkParts.class);
+                DarkMetals parts = Dungeon.hero.belongings.getItem(DarkMetals.class);
                 if (pick == null) {
                     tell(Messages.get(this, "lost_pick"));
                 } else if (parts == null || parts.quantity() < 15) {
@@ -191,7 +191,7 @@ public class Blacksmith extends NPC {
         if (first.isEquipped(Dungeon.hero)) {
             ((EquipableItem) first).doUnequip(Dungeon.hero, true);
         }
-        first.level(first.level() + 1); //prevents on-upgrade effects like enchant/enhancement removal
+        first.level(first.level() + 1); //prevents on-upgrade effects like enhance/enhancement removal
         Dungeon.hero.spendAndNext(2f);
         Badges.validateItemLevelAquired(first);
 

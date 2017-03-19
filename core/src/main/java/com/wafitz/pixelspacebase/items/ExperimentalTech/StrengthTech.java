@@ -46,7 +46,7 @@ public class StrengthTech extends ExperimentalTech {
     }
 
     @Override
-    public int price() {
-        return isKnown() ? 50 * quantity : super.price();
+    public int cost() {
+        return isKnown() ? 50 * quantity : super.cost();
     }
 }

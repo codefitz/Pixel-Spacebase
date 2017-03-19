@@ -84,7 +84,7 @@ public class IncendiaryDart extends MissileWeapon {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 5 * quantity;
     }
 }

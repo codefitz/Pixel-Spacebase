@@ -53,7 +53,7 @@ public class Tamahawk extends MissileWeapon {
         this(1);
     }
 
-    public Tamahawk(int number) {
+    private Tamahawk(int number) {
         super();
         quantity = number;
     }
@@ -71,7 +71,7 @@ public class Tamahawk extends MissileWeapon {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 15 * quantity;
     }
 }

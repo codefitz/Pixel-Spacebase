@@ -21,20 +21,20 @@
 package com.wafitz.pixelspacebase.items.scripts;
 
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.effects.Enchanting;
+import com.wafitz.pixelspacebase.effects.Enhancing;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
-import com.wafitz.pixelspacebase.windows.WndBag;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 
 public class EnhancementScript extends InventoryScript {
 
     {
         initials = 2;
-        mode = WndBag.Mode.ENCHANTABLE;
+        mode = WndContainer.Mode.ENHANCEABLE;
 
         bones = true;
     }
@@ -52,11 +52,11 @@ public class EnhancementScript extends InventoryScript {
         Badges.validateItemLevelAquired(item);
 
         curUser.sprite.emitter().start(Speck.factory(Speck.UP), 0.2f, 3);
-        Enchanting.show(curUser, item);
+        Enhancing.show(curUser, item);
     }
 
     @Override
-    public int price() {
-        return isKnown() ? 100 * quantity : super.price();
+    public int cost() {
+        return isKnown() ? 100 * quantity : super.cost();
     }
 }

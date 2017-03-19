@@ -45,7 +45,7 @@ public class AirTank extends Item {
     private static final String TXT_STATUS = "%d/%d";
 
     {
-        image = ItemSpriteSheet.VIAL;
+        image = ItemSpriteSheet.AIRTANK;
 
         defaultAction = AC_DRINK;
 

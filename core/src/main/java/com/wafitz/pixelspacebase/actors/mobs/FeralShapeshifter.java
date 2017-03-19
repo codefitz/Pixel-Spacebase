@@ -36,7 +36,7 @@ import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
 import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;

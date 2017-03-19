@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.actors.buffs;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
-import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
+import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -84,7 +84,7 @@ public class Camoflage extends FlavourBuff {
             cloakBuff.dispel();
         }
         //this isn't a form of invisibilty, but it is meant to dispel at the same time as it.
-        TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+        TimeFolder.timeFreeze timeFreeze = Dungeon.hero.buff(TimeFolder.timeFreeze.class);
         if (timeFreeze != null) {
             timeFreeze.detach();
         }

@@ -31,7 +31,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Sleep;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.scripts.KnockoutScript;
 import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Vampiric;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.sprites.SuccubusSprite;

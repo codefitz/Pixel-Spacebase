@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.items.quest.Embers;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
-import com.wafitz.pixelspacebase.triggers.Rotberry;
+import com.wafitz.pixelspacebase.triggers.AlienTrap;
 import com.wafitz.pixelspacebase.ui.RedButton;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
 import com.wafitz.pixelspacebase.ui.Window;
@@ -55,7 +55,7 @@ public class Gunsmith extends Window {
             msg = Messages.get(this, "dust");
         } else if (item instanceof Embers) {
             msg = Messages.get(this, "ember");
-        } else if (item instanceof Rotberry.Gadget) {
+        } else if (item instanceof AlienTrap.Gadget) {
             msg = Messages.get(this, "berry");
         }
 

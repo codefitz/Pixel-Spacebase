@@ -63,7 +63,7 @@ public class Dart extends MissileWeapon {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return quantity * 2;
     }
 }

@@ -78,7 +78,7 @@ public class MalfunctioningVent extends Vent {
 
         KindOfWeapon weapon = hero.belongings.weapon;
         if (weapon instanceof Weapon && !weapon.malfunctioning && !(weapon instanceof Boomerang)) {
-            if (((Weapon) weapon).enchantment == null)
+            if (((Weapon) weapon).enhancement == null)
                 priorityMalfunction.add(weapon);
             else
                 canMalfunction.add(weapon);
@@ -128,8 +128,8 @@ public class MalfunctioningVent extends Vent {
 
         if (item instanceof Weapon) {
             Weapon w = (Weapon) item;
-            if (w.enchantment == null) {
-                w.enchantment = Weapon.Enchantment.randomMalfunction();
+            if (w.enhancement == null) {
+                w.enhancement = Weapon.Enhancement.randomMalfunction();
             }
         }
         if (item instanceof Armor) {

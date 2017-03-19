@@ -35,7 +35,7 @@ import com.wafitz.pixelspacebase.items.TomeOfMastery;
 import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.PrisonBossLevel;
 import com.wafitz.pixelspacebase.levels.Terrain;

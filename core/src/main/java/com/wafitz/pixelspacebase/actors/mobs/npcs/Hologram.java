@@ -330,8 +330,8 @@ public class Hologram extends NPC {
 
                 //10% to be enchanted
                 if (Random.Int(10) == 0) {
-                    weapon.enchant();
-                    armor.inscribe();
+                    weapon.enhance();
+                    armor.enhance();
                 }
 
                 weapon.identify();

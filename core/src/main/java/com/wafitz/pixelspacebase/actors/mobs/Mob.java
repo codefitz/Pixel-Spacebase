@@ -41,7 +41,7 @@ import com.wafitz.pixelspacebase.effects.Surprise;
 import com.wafitz.pixelspacebase.effects.Wound;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
+import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
 import com.wafitz.pixelspacebase.items.modules.AccuracyModule;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -402,7 +402,7 @@ public abstract class Mob extends Char {
     @Override
     public void updateSpriteState() {
         super.updateSpriteState();
-        if (Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class) != null)
+        if (Dungeon.hero.buff(TimeFolder.timeFreeze.class) != null)
             sprite.add(CharSprite.State.PARALYSED);
     }
 

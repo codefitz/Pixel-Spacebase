@@ -25,13 +25,13 @@ import com.wafitz.pixelspacebase.effects.Identification;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
-import com.wafitz.pixelspacebase.windows.WndBag;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 
 public class IdentifyScript extends InventoryScript {
 
     {
         initials = 0;
-        mode = WndBag.Mode.UNIDENTIFED;
+        mode = WndContainer.Mode.UNIDENTIFED;
 
         bones = true;
     }
@@ -48,7 +48,7 @@ public class IdentifyScript extends InventoryScript {
     }
 
     @Override
-    public int price() {
-        return isKnown() ? 30 * quantity : super.price();
+    public int cost() {
+        return isKnown() ? 30 * quantity : super.cost();
     }
 }

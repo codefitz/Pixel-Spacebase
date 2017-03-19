@@ -31,7 +31,7 @@ import com.watabou.noosa.ui.Component;
 
 public class Archs extends Component {
 
-    private static final float SPEED_SCRIPT = 20f;
+    private static final float SPEED_SCRIPT = 10f;
 
     private SkinnedBlock arcsBg;
     private SkinnedBlock arcsFg;

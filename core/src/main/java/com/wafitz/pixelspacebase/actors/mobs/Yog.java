@@ -40,7 +40,7 @@ import com.wafitz.pixelspacebase.effects.Pushing;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
 import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;

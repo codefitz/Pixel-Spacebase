@@ -36,7 +36,7 @@ import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.GunsmithSprite;
-import com.wafitz.pixelspacebase.triggers.Rotberry;
+import com.wafitz.pixelspacebase.triggers.AlienTrap;
 import com.wafitz.pixelspacebase.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -91,7 +91,7 @@ public class Gunsmith extends NPC {
                     item = Dungeon.hero.belongings.getItem(Embers.class);
                     break;
                 case 3:
-                    item = Dungeon.hero.belongings.getItem(Rotberry.Gadget.class);
+                    item = Dungeon.hero.belongings.getItem(AlienTrap.Gadget.class);
                     break;
             }
 

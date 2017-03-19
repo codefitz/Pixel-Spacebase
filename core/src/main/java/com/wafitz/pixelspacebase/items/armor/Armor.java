@@ -96,7 +96,7 @@ public class Armor extends EquipableItem {
         if ((hitsToKnow = bundle.getInt(UNFAMILIRIARITY)) == 0) {
             hitsToKnow = HITS_TO_KNOW;
         }
-        inscribe((Enhancement) bundle.get(ENHANCEMENT));
+        enhance((Enhancement) bundle.get(ENHANCEMENT));
         forcefield = (WeakForcefield) bundle.get(FORCEFIELD);
     }
 
@@ -246,9 +246,9 @@ public class Armor extends EquipableItem {
     public Item upgrade(boolean inscribe) {
 
         if (inscribe && (enhancement == null || enhancement.malfunction())) {
-            inscribe(Enhancement.random());
+            enhance(Enhancement.random());
         } else if (!inscribe && Random.Float() > Math.pow(0.9, level())) {
-            inscribe(null);
+            enhance(null);
         }
 
         if (forcefield != null && forcefield.level() == 0)
@@ -331,7 +331,7 @@ public class Armor extends EquipableItem {
         float roll = Random.Float();
         if (roll < 0.3f) {
             //30% chance to be level 0 and malfunctioning
-            inscribe(Enhancement.randomMalfunction());
+            enhance(Enhancement.randomMalfunction());
             malfunctioning = true;
             return this;
         } else if (roll < 0.75f) {
@@ -346,7 +346,7 @@ public class Armor extends EquipableItem {
 
         //if not malfunctioning, 16.67% chance to be inscribed (11.67% overall)
         if (Random.Int(6) == 0)
-            inscribe();
+            enhance();
 
         return this;
     }
@@ -366,7 +366,7 @@ public class Armor extends EquipableItem {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         if (forcefield != null) return 0;
 
         int price = 20 * tier;
@@ -385,13 +385,13 @@ public class Armor extends EquipableItem {
         return price;
     }
 
-    public Armor inscribe(Enhancement enhancement) {
+    public Armor enhance(Enhancement enhancement) {
         this.enhancement = enhancement;
 
         return this;
     }
 
-    public Armor inscribe() {
+    public Armor enhance() {
 
         Class<? extends Enhancement> oldEnhancementClass = enhancement != null ? enhancement.getClass() : null;
         Enhancement gl = Enhancement.random();
@@ -399,7 +399,7 @@ public class Armor extends EquipableItem {
             gl = Enhancement.random();
         }
 
-        return inscribe(gl);
+        return enhance(gl);
     }
 
     public boolean hasEnhancement(Class<? extends Enhancement> type) {

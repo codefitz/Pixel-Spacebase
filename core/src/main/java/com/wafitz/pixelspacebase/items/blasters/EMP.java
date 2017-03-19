@@ -36,9 +36,9 @@ import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
-import com.wafitz.pixelspacebase.triggers.BlandfruitBush;
-import com.wafitz.pixelspacebase.triggers.Starflower;
-import com.wafitz.pixelspacebase.triggers.Sungrass;
+import com.wafitz.pixelspacebase.triggers.AlienPlant;
+import com.wafitz.pixelspacebase.triggers.Boost;
+import com.wafitz.pixelspacebase.triggers.Healing;
 import com.wafitz.pixelspacebase.triggers.Trigger;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -128,10 +128,10 @@ public class EMP extends Blaster {
         while (cells.hasNext() && Random.Float() <= numTriggers) {
             Trigger.Gadget gadget = (Trigger.Gadget) Generator.random(Generator.Category.GADGET);
 
-            if (gadget instanceof BlandfruitBush.Gadget) {
-                if (Random.Int(15) - Dungeon.limitedDrops.blandfruitGadget.count >= 0) {
+            if (gadget instanceof AlienPlant.Gadget) {
+                if (Random.Int(15) - Dungeon.limitedDrops.alienTechGadget.count >= 0) {
                     floor.trigger(gadget, cells.next());
-                    Dungeon.limitedDrops.blandfruitGadget.count++;
+                    Dungeon.limitedDrops.alienTechGadget.count++;
                 }
             } else
                 floor.trigger(gadget, cells.next());
@@ -150,7 +150,7 @@ public class EMP extends Blaster {
         }
 
         while (cells.hasNext() && Random.Float() <= numStars) {
-            floor.trigger(new Starflower.Gadget(), cells.next());
+            floor.trigger(new Boost.Gadget(), cells.next());
             numStars--;
         }
 
@@ -166,7 +166,7 @@ public class EMP extends Blaster {
 
     @Override
     public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
-        //like pre-nerf vampiric enchantment, except with herbal healing buff
+        //like pre-nerf vampiric enhancement, except with herbal healing buff
 
         int level = Math.max(0, staff.level());
 
@@ -176,7 +176,7 @@ public class EMP extends Blaster {
         int maxValue = damage * (level + 2) / (level + 6);
         int effValue = Math.min(Random.IntRange(0, maxValue), attacker.HT - attacker.HP);
 
-        Buff.affect(attacker, Sungrass.Health.class).boost(effValue);
+        Buff.affect(attacker, Healing.Health.class).boost(effValue);
 
     }
 

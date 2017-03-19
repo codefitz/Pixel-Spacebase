@@ -26,9 +26,9 @@ import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Chill;
 import com.wafitz.pixelspacebase.actors.buffs.Frost;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.LiquidFlameTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.FireTech;
 import com.wafitz.pixelspacebase.items.blasters.FireBlaster;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Blazing;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Blazing;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.sprites.ElementalSprite;
 import com.watabou.utils.Random;
@@ -48,7 +48,7 @@ class Elemental extends Mob {
 
         flying = true;
 
-        loot = new LiquidFlameTech();
+        loot = new FireTech();
         lootChance = 0.1f;
 
         properties.add(Property.DEMONIC);

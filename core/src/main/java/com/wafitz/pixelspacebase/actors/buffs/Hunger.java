@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
-import com.wafitz.pixelspacebase.items.artifacts.HornOfPlenty;
+import com.wafitz.pixelspacebase.items.artifacts.SurvivalModule;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -122,7 +122,7 @@ public class Hunger extends Buff implements Hero.Doom {
 
     public void satisfy(float energy) {
 
-        Artifact.ArtifactBuff buff = target.buff(HornOfPlenty.hornRecharge.class);
+        Artifact.ArtifactBuff buff = target.buff(SurvivalModule.hornRecharge.class);
         if (buff != null && buff.isMalfunctioning()) {
             energy *= 0.67f;
             GLog.n(Messages.get(this, "malfunctioninghorn"));

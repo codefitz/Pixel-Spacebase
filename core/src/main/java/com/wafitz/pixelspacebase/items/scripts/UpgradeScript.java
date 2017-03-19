@@ -32,13 +32,13 @@ import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
-import com.wafitz.pixelspacebase.windows.WndBag;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 
 public class UpgradeScript extends InventoryScript {
 
     {
         initials = 11;
-        mode = WndBag.Mode.UPGRADEABLE;
+        mode = WndContainer.Mode.UPGRADEABLE;
 
         bones = true;
     }
@@ -53,17 +53,17 @@ public class UpgradeScript extends InventoryScript {
         if (item instanceof Weapon) {
             Weapon w = (Weapon) item;
             boolean wasMalfunctioning = w.malfunctioning;
-            boolean hadMalfunctioningEnchant = w.hasMalfunctionEnchant();
-            boolean hadGoodEnchant = w.hasGoodEnchant();
+            boolean hadMalfunctioningEnhance = w.hasMalfunctionEnhance();
+            boolean hadGoodEnhance = w.hasGoodEnhance();
 
             w.upgrade();
 
-            if (hadMalfunctioningEnchant && !w.hasMalfunctionEnchant()) {
+            if (hadMalfunctioningEnhance && !w.hasMalfunctionEnhance()) {
                 fix(Dungeon.hero);
             } else if (wasMalfunctioning && !w.malfunctioning) {
                 tweakMalfunction(Dungeon.hero);
             }
-            if (hadGoodEnchant && !w.hasGoodEnchant()) {
+            if (hadGoodEnhance && !w.hasGoodEnhance()) {
                 GLog.w(Messages.get(Weapon.class, "incompatible"));
             }
 
@@ -118,17 +118,17 @@ public class UpgradeScript extends InventoryScript {
     }
 
     private static void tweakMalfunction(Hero hero) {
-        GLog.p(Messages.get(UpgradeScript.class, "tweak_malfunction"));
+        GLog.p(Messages.get(UpgradeScript.class, "tweak_malfunction", curItem.name()));
         hero.sprite.emitter().start(ShadowParticle.UP, 0.05f, 5);
     }
 
     private static void fix(Hero hero) {
-        GLog.p(Messages.get(UpgradeScript.class, "fix"));
+        GLog.p(Messages.get(UpgradeScript.class, "fix", curItem.name()));
         hero.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
     }
 
     @Override
-    public int price() {
-        return isKnown() ? 50 * quantity : super.price();
+    public int cost() {
+        return isKnown() ? 50 * quantity : super.cost();
     }
 }

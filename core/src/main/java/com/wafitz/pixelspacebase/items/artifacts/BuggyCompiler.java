@@ -36,7 +36,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
-import com.wafitz.pixelspacebase.windows.WndBag;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -63,7 +63,7 @@ public class BuggyCompiler extends Artifact {
 
     private final ArrayList<Class> scripts = new ArrayList<>();
 
-    protected WndBag.Mode mode = WndBag.Mode.SCRIPT;
+    protected WndContainer.Mode mode = WndContainer.Mode.SCRIPT;
 
     public BuggyCompiler() {
         super();
@@ -202,7 +202,7 @@ public class BuggyCompiler extends Artifact {
         }
     }
 
-    protected WndBag.Listener itemSelector = new WndBag.Listener() {
+    protected WndContainer.Listener itemSelector = new WndContainer.Listener() {
         @Override
         public void onSelect(Item item) {
             if (item != null && item instanceof Script && item.isIdentified()) {

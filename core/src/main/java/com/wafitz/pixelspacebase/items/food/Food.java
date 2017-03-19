@@ -42,7 +42,7 @@ public class Food extends Item {
 
     private static final float TIME_TO_EAT = 3f;
 
-    static final String AC_EAT = "EAT";
+    static final String AC_USE = "EAT";
 
     public float energy = Hunger.HUNGRY;
     public String message = Messages.get(this, "eat_msg");
@@ -59,7 +59,7 @@ public class Food extends Item {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        actions.add(AC_EAT);
+        actions.add(AC_USE);
         return actions;
     }
 
@@ -68,7 +68,7 @@ public class Food extends Item {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_EAT)) {
+        if (action.equals(AC_USE)) {
 
             detach(hero.belongings.backpack);
 
@@ -116,7 +116,7 @@ public class Food extends Item {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 10 * quantity;
     }
 }

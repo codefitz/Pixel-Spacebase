@@ -43,10 +43,10 @@ import com.wafitz.pixelspacebase.items.DroneController;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.bags.BlasterHolster;
-import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
-import com.wafitz.pixelspacebase.items.bags.GadgetBag;
-import com.wafitz.pixelspacebase.items.bags.ScriptHolder;
+import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
+import com.wafitz.pixelspacebase.items.containers.GadgetCase;
+import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
+import com.wafitz.pixelspacebase.items.containers.XPort;
 import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
@@ -73,8 +73,9 @@ import com.wafitz.pixelspacebase.ui.Toast;
 import com.wafitz.pixelspacebase.ui.Toolbar;
 import com.wafitz.pixelspacebase.ui.Window;
 import com.wafitz.pixelspacebase.utils.GLog;
-import com.wafitz.pixelspacebase.windows.WndBag;
-import com.wafitz.pixelspacebase.windows.WndBag.Mode;
+import com.wafitz.pixelspacebase.windows.WndBotMake;
+import com.wafitz.pixelspacebase.windows.WndContainer;
+import com.wafitz.pixelspacebase.windows.WndContainer.Mode;
 import com.wafitz.pixelspacebase.windows.WndGame;
 import com.wafitz.pixelspacebase.windows.WndHero;
 import com.wafitz.pixelspacebase.windows.WndInfoCell;
@@ -85,7 +86,6 @@ import com.wafitz.pixelspacebase.windows.WndInfoVent;
 import com.wafitz.pixelspacebase.windows.WndMessage;
 import com.wafitz.pixelspacebase.windows.WndOptions;
 import com.wafitz.pixelspacebase.windows.WndStory;
-import com.wafitz.pixelspacebase.windows.WndTradeItem;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -510,7 +510,7 @@ public class GameScene extends PixelScene {
     @Override
     protected void onMenuPressed() {
         if (Dungeon.hero.ready) {
-            selectItem(null, WndBag.Mode.ALL, null);
+            selectItem(null, WndContainer.Mode.ALL, null);
         }
     }
 
@@ -771,19 +771,19 @@ public class GameScene extends PixelScene {
         }
     }
 
-    public static WndBag selectItem(WndBag.Listener listener, WndBag.Mode mode, String title) {
+    public static WndContainer selectItem(WndContainer.Listener listener, WndContainer.Mode mode, String title) {
         cancelCellSelector();
 
-        WndBag wnd =
+        WndContainer wnd =
                 mode == Mode.GADGET ?
-                        WndBag.getBag(GadgetBag.class, listener, mode, title) :
+                        WndContainer.getContainer(GadgetCase.class, listener, mode, title) :
                         mode == Mode.SCRIPT ?
-                                WndBag.getBag(ScriptHolder.class, listener, mode, title) :
+                                WndContainer.getContainer(ScriptLibrary.class, listener, mode, title) :
                                 mode == Mode.EXPERIMENTALTECH ?
-                                        WndBag.getBag(ExperimentalTechBandolier.class, listener, mode, title) :
+                                        WndContainer.getContainer(XPort.class, listener, mode, title) :
                                         mode == Mode.BLASTER ?
-                                                WndBag.getBag(BlasterHolster.class, listener, mode, title) :
-                                                WndBag.lastBag(listener, mode, title);
+                                                WndContainer.getContainer(BlasterHolster.class, listener, mode, title) :
+                                                WndContainer.lastContainer(listener, mode, title);
 
         scene.addToFront(wnd);
 
@@ -877,8 +877,8 @@ public class GameScene extends PixelScene {
             GameScene.show(new WndInfoMob((Mob) o));
         } else if (o instanceof Heap) {
             Heap heap = (Heap) o;
-            if (heap.type == Heap.Type.FOR_SALE && heap.size() == 1 && heap.peek().price() > 0) {
-                GameScene.show(new WndTradeItem(heap, false));
+            if (heap.type == Heap.Type.TO_MAKE && heap.size() == 1 && heap.peek().cost() > 0) {
+                GameScene.show(new WndBotMake(heap, false));
             } else {
                 GameScene.show(new WndInfoItem(heap));
             }

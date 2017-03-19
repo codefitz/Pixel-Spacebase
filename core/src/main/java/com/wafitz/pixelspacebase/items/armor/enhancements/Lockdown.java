@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.effects.particles.EarthParticle;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSprite.Glowing;
-import com.wafitz.pixelspacebase.triggers.Earthroot;
+import com.wafitz.pixelspacebase.triggers.WeakForcefield;
 import com.watabou.noosa.Camera;
 import com.watabou.utils.Random;
 
@@ -44,7 +44,7 @@ public class Lockdown extends Armor.Enhancement {
         if (Random.Int(3) == 0) {
 
             Buff.prolong(defender, LockedDown.class, 5);
-            Buff.affect(defender, Earthroot.Armor.class).level(5 + level);
+            Buff.affect(defender, WeakForcefield.Armor.class).level(5 + level);
             CellEmitter.bottom(defender.pos).start(EarthParticle.FACTORY, 0.05f, 8);
             Camera.main.shake(1, 0.4f);
 

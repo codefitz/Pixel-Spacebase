@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.DroneController;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
-import com.wafitz.pixelspacebase.items.artifacts.MasterThievesArmband;
+import com.wafitz.pixelspacebase.items.artifacts.McGyvrModule;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.sprites.ThiefSprite;
@@ -51,7 +51,7 @@ public class Thief extends Mob {
         EXP = 5;
         maxLvl = 10;
 
-        loot = new MasterThievesArmband().identify();
+        loot = new McGyvrModule().identify();
         lootChance = 0.01f;
 
         FLEEING = new Fleeing();

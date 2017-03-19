@@ -29,8 +29,8 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.MakerBotSprite;
-import com.wafitz.pixelspacebase.windows.WndBag;
-import com.wafitz.pixelspacebase.windows.WndTradeItem;
+import com.wafitz.pixelspacebase.windows.WndBotMake;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 
 public class MakerBot extends NPC {
 
@@ -62,7 +62,7 @@ public class MakerBot extends NPC {
 
     public void flee() {
         for (Heap heap : Dungeon.level.heaps.values()) {
-            if (heap.type == Heap.Type.FOR_SALE) {
+            if (heap.type == Heap.Type.TO_MAKE) {
                 CellEmitter.get(heap.pos).burst(ElmoParticle.FACTORY, 4);
                 heap.destroy();
             }
@@ -79,23 +79,23 @@ public class MakerBot extends NPC {
         return true;
     }
 
-    public static WndBag sell() {
-        return GameScene.selectItem(itemSelector, WndBag.Mode.FOR_SALE, Messages.get(MakerBot.class, "sell"));
+    public static WndContainer render() {
+        return GameScene.selectItem(itemSelector, WndContainer.Mode.TO_MAKE, Messages.get(MakerBot.class, "render"));
     }
 
-    private static WndBag.Listener itemSelector = new WndBag.Listener() {
+    private static WndContainer.Listener itemSelector = new WndContainer.Listener() {
         @Override
         public void onSelect(Item item) {
             if (item != null) {
-                WndBag parentWnd = sell();
-                GameScene.show(new WndTradeItem(item, parentWnd));
+                WndContainer parentWnd = render();
+                GameScene.show(new WndBotMake(item, parentWnd));
             }
         }
     };
 
     @Override
     public boolean interact() {
-        sell();
+        render();
         return false;
     }
 }

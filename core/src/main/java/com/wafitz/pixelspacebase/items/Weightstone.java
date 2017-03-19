@@ -32,7 +32,7 @@ import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
 import com.wafitz.pixelspacebase.ui.Window;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.wafitz.pixelspacebase.windows.IconTitle;
-import com.wafitz.pixelspacebase.windows.WndBag;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class Weightstone extends Item {
         if (action.equals(AC_APPLY)) {
 
             curUser = hero;
-            GameScene.selectItem(itemSelector, WndBag.Mode.WEAPON, Messages.get(this, "select"));
+            GameScene.selectItem(itemSelector, WndContainer.Mode.WEAPON, Messages.get(this, "select"));
 
         }
     }
@@ -101,11 +101,11 @@ public class Weightstone extends Item {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 50 * quantity;
     }
 
-    private final WndBag.Listener itemSelector = new WndBag.Listener() {
+    private final WndContainer.Listener itemSelector = new WndContainer.Listener() {
         @Override
         public void onSelect(Item item) {
             if (item != null) {
@@ -114,7 +114,7 @@ public class Weightstone extends Item {
         }
     };
 
-    public class WndBalance extends Window {
+    private class WndBalance extends Window {
 
         private static final int WIDTH = 120;
         private static final int MARGIN = 2;

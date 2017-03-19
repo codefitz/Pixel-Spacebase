@@ -75,7 +75,7 @@ public class GuardianVent extends Vent {
         public Guardian() {
             super();
 
-            weapon.enchant(null);
+            weapon.enhance(null);
             weapon.degrade(weapon.level());
         }
 

@@ -59,7 +59,7 @@ public class StealthModule extends Artifact {
 
     private boolean stealthed = false;
 
-    public static final String AC_STEALTH = "STEALTH";
+    private static final String AC_STEALTH = "STEALTH";
 
     @Override
     public ArrayList<String> actions(Hero hero) {
@@ -163,11 +163,11 @@ public class StealthModule extends Artifact {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 0;
     }
 
-    public class stealthRecharge extends ArtifactBuff {
+    private class stealthRecharge extends ArtifactBuff {
         @Override
         public boolean act() {
             if (charge < chargeCap) {

@@ -41,7 +41,7 @@ public class WndInfoItem extends Window {
 
         super();
 
-        if (heap.type == Heap.Type.HEAP || heap.type == Heap.Type.FOR_SALE) {
+        if (heap.type == Heap.Type.HEAP || heap.type == Heap.Type.TO_MAKE) {
 
             Item item = heap.peek();
 
@@ -60,7 +60,7 @@ public class WndInfoItem extends Window {
         }
     }
 
-    public WndInfoItem(Item item) {
+    WndInfoItem(Item item) {
 
         super();
 

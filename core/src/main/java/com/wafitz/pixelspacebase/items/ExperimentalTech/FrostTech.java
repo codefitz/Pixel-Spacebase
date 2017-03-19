@@ -60,7 +60,7 @@ public class FrostTech extends ExperimentalTech {
     }
 
     @Override
-    public int price() {
-        return isKnown() ? 30 * quantity : super.price();
+    public int cost() {
+        return isKnown() ? 30 * quantity : super.cost();
     }
 }

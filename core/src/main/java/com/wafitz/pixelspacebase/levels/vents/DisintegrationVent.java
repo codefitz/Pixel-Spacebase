@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.Beam;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.bags.Bag;
+import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -67,20 +67,20 @@ public class DisintegrationVent extends Vent {
                     GLog.n(Messages.get(this, "ondeath"));
                 } else {
                     Item item = hero.belongings.randomUnequipped();
-                    Bag bag = hero.belongings.backpack;
-                    //bags do not protect against this trap
-                    if (item instanceof Bag) {
-                        bag = (Bag) item;
-                        item = Random.element(bag.items);
+                    Container container = hero.belongings.backpack;
+                    //containers do not protect against this trap
+                    if (item instanceof Container) {
+                        container = (Container) item;
+                        item = Random.element(container.items);
                     }
                     if (item == null || item.level() > 0 || item.unique) return;
                     if (!item.stackable) {
-                        item.detachAll(bag);
+                        item.detachAll(container);
                         GLog.w(Messages.get(this, "one", item.name()));
                     } else {
                         int n = Random.NormalIntRange(1, (item.quantity() + 1) / 2);
                         for (int i = 1; i <= n; i++)
-                            item.detach(bag);
+                            item.detach(container);
                         GLog.w(Messages.get(this, "some", item.name()));
                     }
                 }

@@ -54,7 +54,7 @@ public class CurareDart extends MissileWeapon {
         this(1);
     }
 
-    public CurareDart(int number) {
+    private CurareDart(int number) {
         super();
         quantity = number;
     }
@@ -72,7 +72,7 @@ public class CurareDart extends MissileWeapon {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 8 * quantity;
     }
 }

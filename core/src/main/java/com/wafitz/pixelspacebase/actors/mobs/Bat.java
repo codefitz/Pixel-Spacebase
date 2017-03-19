@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Vampiric;
 import com.wafitz.pixelspacebase.sprites.BatSprite;
 import com.watabou.utils.Random;
 

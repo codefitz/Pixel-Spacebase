@@ -45,8 +45,8 @@ public class HeroAction {
         }
     }
 
-    public static class Buy extends HeroAction {
-        public Buy(int dst) {
+    public static class WorkshopMake extends HeroAction {
+        public WorkshopMake(int dst) {
             this.dst = dst;
         }
     }

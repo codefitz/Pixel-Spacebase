@@ -37,15 +37,15 @@ import com.wafitz.pixelspacebase.effects.Splash;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.AlienTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.MightTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
 import com.wafitz.pixelspacebase.items.artifacts.MakersToolkit;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
-import com.wafitz.pixelspacebase.items.food.Blandfruit;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.FrozenCarpaccio;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
@@ -71,7 +71,7 @@ public class Heap implements Bundlable {
 
     public enum Type {
         HEAP,
-        FOR_SALE,
+        TO_MAKE,
         CHEST,
         LOCKED_CHEST,
         CRYSTAL_CHEST,
@@ -93,7 +93,7 @@ public class Heap implements Bundlable {
     public int image() {
         switch (type) {
             case HEAP:
-            case FOR_SALE:
+            case TO_MAKE:
                 return size() > 0 ? items.peek().image() : 0;
             case CHEST:
             case CONFUSEDSHAPESHIFTER:
@@ -114,7 +114,7 @@ public class Heap implements Bundlable {
     }
 
     public ItemSprite.Glowing glowing() {
-        return (type == Type.HEAP || type == Type.FOR_SALE) && items.size() > 0 ? items.peek().glowing() : null;
+        return (type == Type.HEAP || type == Type.TO_MAKE) && items.size() > 0 ? items.peek().glowing() : null;
     }
 
     public void open(Hero hero) {
@@ -175,7 +175,7 @@ public class Heap implements Bundlable {
 
     public void drop(Item item) {
 
-        if (item.stackable && type != Type.FOR_SALE) {
+        if (item.stackable && type != Type.TO_MAKE) {
 
             for (Item i : items) {
                 if (i.isSimilar(item)) {
@@ -188,14 +188,14 @@ public class Heap implements Bundlable {
 
         }
 
-        if (item instanceof Dewdrop && type != Type.FOR_SALE) {
+        if (item instanceof Dewdrop && type != Type.TO_MAKE) {
             items.add(item);
         } else {
             items.addFirst(item);
         }
 
         if (sprite != null) {
-            if (type == Type.HEAP || type == Type.FOR_SALE)
+            if (type == Type.HEAP || type == Type.TO_MAKE)
                 sprite.view(items.peek());
             else
                 sprite.view(image(), glowing());
@@ -327,7 +327,7 @@ public class Heap implements Bundlable {
                 replace(item, FrozenCarpaccio.make((MysteryMeat) item));
                 frozen = true;
             } else if (item instanceof ExperimentalTech
-                    && !(item instanceof StrengthTech || item instanceof MightTech)) {
+                    && !(item instanceof StrengthTech || item instanceof PowerTech)) {
                 items.remove(item);
                 ((ExperimentalTech) item).shatter(pos);
                 frozen = true;
@@ -355,12 +355,12 @@ public class Heap implements Bundlable {
         int count = 0;
 
 
-        if (items.size() == 2 && items.get(0) instanceof Gadget && items.get(1) instanceof Blandfruit) {
+        if (items.size() == 2 && items.get(0) instanceof Gadget && items.get(1) instanceof AlienTech) {
 
             Sample.INSTANCE.play(Assets.SND_PUFF);
             CellEmitter.center(pos).burst(Speck.factory(Speck.EVOKE), 3);
 
-            Blandfruit result = new Blandfruit();
+            AlienTech result = new AlienTech();
             result.make((Gadget) items.get(0));
 
             destroy();

@@ -34,7 +34,7 @@ import java.util.ResourceBundle;
 
 	The core idea here is that each string resource's key is a combination of the class definition and a local value.
 	An object or static method would usually call this with an object/class reference (usually its own) and a local key.
-	This means that an object can just ask for "name" rather than, say, "items.weapon.enchantments.death.name"
+	This means that an object can just ask for "name" rather than, say, "items.weapon.enhancements.death.name"
  */
 public class Messages {
 

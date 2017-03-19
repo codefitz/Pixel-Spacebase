@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.MindVisionTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityTech;
 import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
@@ -166,7 +166,7 @@ public enum HeroClass {
 
         Dungeon.quickslot.setSlot(0, boomerang);
 
-        new MindVisionTech().setKnown();
+        new SecurityTech().setKnown();
     }
 
     public String title() {

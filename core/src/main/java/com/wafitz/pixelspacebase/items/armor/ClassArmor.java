@@ -72,7 +72,7 @@ abstract public class ClassArmor extends Armor {
 
         classArmor.level(armor.level());
         classArmor.armorTier = armor.tier;
-        classArmor.inscribe(armor.enhancement);
+        classArmor.enhance(armor.enhancement);
 
         return classArmor;
     }
@@ -162,7 +162,7 @@ abstract public class ClassArmor extends Armor {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 0;
     }
 

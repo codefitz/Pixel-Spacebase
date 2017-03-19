@@ -27,27 +27,27 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
-import com.wafitz.pixelspacebase.items.modules.FurorModule;
+import com.wafitz.pixelspacebase.items.modules.AttackModule;
 import com.wafitz.pixelspacebase.items.modules.TargetingModule;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Blazing;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Buggy;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Chilling;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Dazzling;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Eldritch;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Lucky;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Projecting;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Shocking;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Stunning;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Vampiric;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Venomous;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Vorpal;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Blazing;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Buggy;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Chilling;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Dazzling;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Eldritch;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Lucky;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Projecting;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Shocking;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Stunning;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Vampiric;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Venomous;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Vorpal;
 import com.wafitz.pixelspacebase.items.weapon.malfunctions.Annoying;
+import com.wafitz.pixelspacebase.items.weapon.malfunctions.Backfiring;
 import com.wafitz.pixelspacebase.items.weapon.malfunctions.Displacing;
-import com.wafitz.pixelspacebase.items.weapon.malfunctions.Exhausting;
 import com.wafitz.pixelspacebase.items.weapon.malfunctions.Fragile;
-import com.wafitz.pixelspacebase.items.weapon.malfunctions.Sacrificial;
-import com.wafitz.pixelspacebase.items.weapon.malfunctions.Wayward;
+import com.wafitz.pixelspacebase.items.weapon.malfunctions.LowEnergy;
+import com.wafitz.pixelspacebase.items.weapon.malfunctions.Misfiring;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -93,13 +93,13 @@ abstract public class Weapon extends KindOfWeapon {
 
     private int hitsToKnow = HITS_TO_KNOW;
 
-    public Enchantment enchantment;
+    public Enhancement enhancement;
 
     @Override
     public int proc(Char attacker, Char defender, int damage) {
 
-        if (enchantment != null) {
-            damage = enchantment.proc(this, attacker, defender, damage);
+        if (enhancement != null) {
+            damage = enhancement.proc(this, attacker, defender, damage);
         }
 
         if (!levelKnown) {
@@ -114,14 +114,14 @@ abstract public class Weapon extends KindOfWeapon {
     }
 
     private static final String UNFAMILIRIARITY = "unfamiliarity";
-    private static final String ENCHANTMENT = "enchantment";
+    private static final String ENHANCEMENT = "enhancement";
     private static final String IMBUE = "imbue";
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
         bundle.put(UNFAMILIRIARITY, hitsToKnow);
-        bundle.put(ENCHANTMENT, enchantment);
+        bundle.put(ENHANCEMENT, enhancement);
         bundle.put(IMBUE, imbue);
     }
 
@@ -131,7 +131,7 @@ abstract public class Weapon extends KindOfWeapon {
         if ((hitsToKnow = bundle.getInt(UNFAMILIRIARITY)) == 0) {
             hitsToKnow = HITS_TO_KNOW;
         }
-        enchantment = (Enchantment) bundle.get(ENCHANTMENT);
+        enhancement = (Enhancement) bundle.get(ENHANCEMENT);
         imbue = bundle.getEnum(IMBUE, Imbue.class);
     }
 
@@ -140,7 +140,7 @@ abstract public class Weapon extends KindOfWeapon {
 
         int encumbrance = STRReq() - hero.STR();
 
-        if (hasEnchant(Wayward.class))
+        if (hasEnhance(Misfiring.class))
             encumbrance = Math.max(3, encumbrance + 3);
 
         float ACC = this.ACC;
@@ -163,7 +163,7 @@ abstract public class Weapon extends KindOfWeapon {
 
         float DLY = imbue.delayFactor(this.DLY);
 
-        int bonus = FurorModule.getBonus(hero, FurorModule.Furor.class);
+        int bonus = AttackModule.getBonus(hero, AttackModule.Furor.class);
 
         DLY = (float) (0.2 + (DLY - 0.2) * Math.pow(0.85, bonus));
 
@@ -173,7 +173,7 @@ abstract public class Weapon extends KindOfWeapon {
 
     @Override
     public int reachFactor(Hero hero) {
-        return hasEnchant(Projecting.class) ? RCH + 1 : RCH;
+        return hasEnhance(Projecting.class) ? RCH + 1 : RCH;
     }
 
     @Override
@@ -197,12 +197,12 @@ abstract public class Weapon extends KindOfWeapon {
 
     public abstract int STRReq(int lvl);
 
-    public Item upgrade(boolean enchant) {
+    public Item upgrade(boolean enhance) {
 
-        if (enchant && (enchantment == null || enchantment.malfunction())) {
-            enchant(Enchantment.random());
-        } else if (!enchant && Random.Float() > Math.pow(0.9, level())) {
-            enchant(null);
+        if (enhance && (enhancement == null || enhancement.malfunction())) {
+            enhance(Enhancement.random());
+        } else if (!enhance && Random.Float() > Math.pow(0.9, level())) {
+            enhance(null);
         }
 
         return super.upgrade();
@@ -210,7 +210,7 @@ abstract public class Weapon extends KindOfWeapon {
 
     @Override
     public String name() {
-        return enchantment != null && (malfunctioningKnown || !enchantment.malfunction()) ? enchantment.name(super.name()) : super.name();
+        return enhancement != null && (malfunctioningKnown || !enhancement.malfunction()) ? enhancement.name(super.name()) : super.name();
     }
 
     @Override
@@ -218,7 +218,7 @@ abstract public class Weapon extends KindOfWeapon {
         float roll = Random.Float();
         if (roll < 0.3f) {
             //30% chance to be level 0 and malfunctioning
-            enchant(Enchantment.randomMalfunction());
+            enhance(Enhancement.randomMalfunction());
             malfunctioning = true;
             return this;
         } else if (roll < 0.75f) {
@@ -233,47 +233,47 @@ abstract public class Weapon extends KindOfWeapon {
 
         //if not malfunctioning, 10% chance to be enchanted (7% overall)
         if (Random.Int(10) == 0)
-            enchant();
+            enhance();
 
         return this;
     }
 
-    public Weapon enchant(Enchantment ench) {
-        enchantment = ench;
+    public Weapon enhance(Enhancement ench) {
+        enhancement = ench;
         return this;
     }
 
-    public Weapon enchant() {
+    public Weapon enhance() {
 
-        Class<? extends Enchantment> oldEnchantment = enchantment != null ? enchantment.getClass() : null;
-        Enchantment ench = Enchantment.random();
-        while (ench.getClass() == oldEnchantment) {
-            ench = Enchantment.random();
+        Class<? extends Enhancement> oldEnhancement = enhancement != null ? enhancement.getClass() : null;
+        Enhancement ench = Enhancement.random();
+        while (ench.getClass() == oldEnhancement) {
+            ench = Enhancement.random();
         }
 
-        return enchant(ench);
+        return enhance(ench);
     }
 
-    protected boolean hasEnchant(Class<? extends Enchantment> type) {
-        return enchantment != null && enchantment.getClass() == type;
+    protected boolean hasEnhance(Class<? extends Enhancement> type) {
+        return enhancement != null && enhancement.getClass() == type;
     }
 
-    public boolean hasGoodEnchant() {
-        return enchantment != null && !enchantment.malfunction();
+    public boolean hasGoodEnhance() {
+        return enhancement != null && !enhancement.malfunction();
     }
 
-    public boolean hasMalfunctionEnchant() {
-        return enchantment != null && enchantment.malfunction();
+    public boolean hasMalfunctionEnhance() {
+        return enhancement != null && enhancement.malfunction();
     }
 
     @Override
     public ItemSprite.Glowing glowing() {
-        return enchantment != null && (malfunctioningKnown || !enchantment.malfunction()) ? enchantment.glowing() : null;
+        return enhancement != null && (malfunctioningKnown || !enhancement.malfunction()) ? enhancement.glowing() : null;
     }
 
-    public static abstract class Enchantment implements Bundlable {
+    public static abstract class Enhancement implements Bundlable {
 
-        private static final Class<?>[] enchants = new Class<?>[]{
+        private static final Class<?>[] enhances = new Class<?>[]{
                 Blazing.class, Venomous.class, Vorpal.class, Shocking.class,
                 Chilling.class, Eldritch.class, Lucky.class, Projecting.class, Buggy.class, Dazzling.class,
                 Grim.class, Stunning.class, Vampiric.class,};
@@ -283,14 +283,14 @@ abstract public class Weapon extends KindOfWeapon {
                 2, 2, 2};
 
         private static final Class<?>[] malfunctions = new Class<?>[]{
-                Annoying.class, Displacing.class, Exhausting.class, Fragile.class, Sacrificial.class, Wayward.class
+                Annoying.class, Displacing.class, LowEnergy.class, Fragile.class, Backfiring.class, Misfiring.class
         };
 
         public abstract int proc(Weapon weapon, Char attacker, Char defender, int damage);
 
         public String name() {
             if (!malfunction())
-                return name(Messages.get(this, "enchant"));
+                return name(Messages.get(this, "enhance"));
             else
                 return name(Messages.get(Item.class, "malfunction"));
         }
@@ -318,9 +318,9 @@ abstract public class Weapon extends KindOfWeapon {
         public abstract ItemSprite.Glowing glowing();
 
         @SuppressWarnings("unchecked")
-        public static Enchantment random() {
+        public static Enhancement random() {
             try {
-                return ((Class<Enchantment>) enchants[Random.chances(chances)]).newInstance();
+                return ((Class<Enhancement>) enhances[Random.chances(chances)]).newInstance();
             } catch (Exception e) {
                 PixelSpacebase.reportException(e);
                 return null;
@@ -328,9 +328,9 @@ abstract public class Weapon extends KindOfWeapon {
         }
 
         @SuppressWarnings("unchecked")
-        public static Enchantment randomMalfunction() {
+        public static Enhancement randomMalfunction() {
             try {
-                return ((Class<Enchantment>) Random.oneOf(malfunctions)).newInstance();
+                return ((Class<Enhancement>) Random.oneOf(malfunctions)).newInstance();
             } catch (Exception e) {
                 PixelSpacebase.reportException(e);
                 return null;

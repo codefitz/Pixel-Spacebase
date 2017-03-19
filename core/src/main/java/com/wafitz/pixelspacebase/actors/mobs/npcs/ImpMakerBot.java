@@ -50,7 +50,7 @@ public class ImpMakerBot extends MakerBot {
     @Override
     public void flee() {
         for (Heap heap : Dungeon.level.heaps.values()) {
-            if (heap.type == Heap.Type.FOR_SALE) {
+            if (heap.type == Heap.Type.TO_MAKE) {
                 CellEmitter.get(heap.pos).burst(ElmoParticle.FACTORY, 4);
                 heap.destroy();
             }

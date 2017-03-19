@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
-import com.wafitz.pixelspacebase.windows.WndBag;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -58,7 +58,7 @@ public class MakersToolkit extends Artifact {
     private int gadgetsToExperimentalTech = 0;
 
     private String inventoryTitle = "Select experimental tech";
-    protected WndBag.Mode mode = WndBag.Mode.EXPERIMENTALTECH;
+    protected WndContainer.Mode mode = WndContainer.Mode.EXPERIMENTALTECH;
 
     public MakersToolkit() {
         super();
@@ -255,7 +255,7 @@ public class MakersToolkit extends Artifact {
 
     }
 
-    protected WndBag.Listener itemSelector = new WndBag.Listener() {
+    protected WndContainer.Listener itemSelector = new WndContainer.Listener() {
         @Override
         public void onSelect(Item item) {
             if (item != null && item instanceof ExperimentalTech && item.isIdentified()) {

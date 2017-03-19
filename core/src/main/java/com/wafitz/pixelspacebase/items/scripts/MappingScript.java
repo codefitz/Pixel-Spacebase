@@ -86,8 +86,8 @@ public class MappingScript extends Script {
     }
 
     @Override
-    public int price() {
-        return isKnown() ? 40 * quantity : super.price();
+    public int cost() {
+        return isKnown() ? 40 * quantity : super.cost();
     }
 
     public static void discover(int cell) {

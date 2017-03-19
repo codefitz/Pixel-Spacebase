@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Weakness;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Grim;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;

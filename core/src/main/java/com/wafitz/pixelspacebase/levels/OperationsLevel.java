@@ -30,9 +30,9 @@ import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.WeakForcefield;
 import com.wafitz.pixelspacebase.items.armor.Uniform;
-import com.wafitz.pixelspacebase.items.bags.BlasterHolster;
-import com.wafitz.pixelspacebase.items.bags.ExperimentalTechBandolier;
-import com.wafitz.pixelspacebase.items.bags.GadgetBag;
+import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
+import com.wafitz.pixelspacebase.items.containers.GadgetCase;
+import com.wafitz.pixelspacebase.items.containers.XPort;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.levels.vents.AlarmVent;
@@ -153,9 +153,9 @@ public class OperationsLevel extends RegularLevel {
                     drop(new Food().identify(), pos);
                     // Testing
                 drop(new MappingScript().identify(), pos);
-                drop(new GadgetBag().identify(), pos);
+                drop(new GadgetCase().identify(), pos);
                 drop(new BlasterHolster().identify(), pos);
-                drop(new ExperimentalTechBandolier().identify(), pos);
+                drop(new XPort().identify(), pos);
                 drop(new WeakForcefield().identify(), pos);
                 }
         }

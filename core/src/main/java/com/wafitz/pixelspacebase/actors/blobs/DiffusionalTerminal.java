@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.effects.BlobEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.MightTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Generator.Category;
@@ -121,7 +121,7 @@ public class DiffusionalTerminal extends WellWater {
             n.degrade(-level);
         }
 
-        n.enchantment = w.enchantment;
+        n.enhancement = w.enhancement;
         n.levelKnown = w.levelKnown;
         n.malfunctioningKnown = w.malfunctioningKnown;
         n.malfunctioning = w.malfunctioning;
@@ -216,9 +216,9 @@ public class DiffusionalTerminal extends WellWater {
     private ExperimentalTech changeExperimentalTech(ExperimentalTech p) {
         if (p instanceof StrengthTech) {
 
-            return new MightTech();
+            return new PowerTech();
 
-        } else if (p instanceof MightTech) {
+        } else if (p instanceof PowerTech) {
 
             return new StrengthTech();
 

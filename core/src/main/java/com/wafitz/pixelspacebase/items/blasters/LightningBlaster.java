@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Lightning;
 import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
-import com.wafitz.pixelspacebase.items.weapon.enchantments.Shocking;
+import com.wafitz.pixelspacebase.items.weapon.enhancements.Shocking;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.vents.LightningVent;
@@ -88,7 +88,7 @@ public class LightningBlaster extends DamageBlaster {
 
     @Override
     public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
-        //acts like shocking enchantment
+        //acts like shocking enhancement
         new Shocking().proc(staff, attacker, defender, damage);
     }
 

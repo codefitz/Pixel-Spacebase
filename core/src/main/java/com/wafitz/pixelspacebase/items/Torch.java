@@ -31,9 +31,9 @@ import java.util.ArrayList;
 
 public class Torch extends Item {
 
-    public static final String AC_LIGHT = "LIGHT";
+    private static final String AC_LIGHT = "LIGHT";
 
-    public static final float TIME_TO_LIGHT = 1;
+    private static final float TIME_TO_LIGHT = 1;
 
     {
         image = ItemSpriteSheet.TORCH;
@@ -82,7 +82,7 @@ public class Torch extends Item {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 10 * quantity;
     }
 

@@ -74,7 +74,7 @@ public class TerrorScript extends Script {
     }
 
     @Override
-    public int price() {
-        return isKnown() ? 30 * quantity : super.price();
+    public int cost() {
+        return isKnown() ? 30 * quantity : super.cost();
     }
 }

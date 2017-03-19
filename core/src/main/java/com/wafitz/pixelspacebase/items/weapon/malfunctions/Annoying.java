@@ -33,7 +33,7 @@ import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
-public class Annoying extends Weapon.Enchantment {
+public class Annoying extends Weapon.Enhancement {
 
     private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 

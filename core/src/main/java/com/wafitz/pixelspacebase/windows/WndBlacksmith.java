@@ -68,7 +68,7 @@ public class WndBlacksmith extends Window {
             @Override
             protected void onClick() {
                 btnPressed = btnItem1;
-                GameScene.selectItem(itemSelector, WndBag.Mode.UPGRADEABLE, Messages.get(WndBlacksmith.class, "select"));
+                GameScene.selectItem(itemSelector, WndContainer.Mode.UPGRADEABLE, Messages.get(WndBlacksmith.class, "select"));
             }
         };
         btnItem1.setRect((WIDTH - BTN_GAP) / 2 - BTN_SIZE, message.top() + message.height() + BTN_GAP, BTN_SIZE, BTN_SIZE);
@@ -78,7 +78,7 @@ public class WndBlacksmith extends Window {
             @Override
             protected void onClick() {
                 btnPressed = btnItem2;
-                GameScene.selectItem(itemSelector, WndBag.Mode.UPGRADEABLE, Messages.get(WndBlacksmith.class, "select"));
+                GameScene.selectItem(itemSelector, WndContainer.Mode.UPGRADEABLE, Messages.get(WndBlacksmith.class, "select"));
             }
         };
         btnItem2.setRect(btnItem1.right() + BTN_GAP, btnItem1.top(), BTN_SIZE, BTN_SIZE);
@@ -99,7 +99,7 @@ public class WndBlacksmith extends Window {
         resize(WIDTH, (int) btnReforge.bottom());
     }
 
-    protected WndBag.Listener itemSelector = new WndBag.Listener() {
+    protected WndContainer.Listener itemSelector = new WndContainer.Listener() {
         @Override
         public void onSelect(Item item) {
             if (item != null) {
@@ -118,7 +118,7 @@ public class WndBlacksmith extends Window {
         }
     };
 
-    public static class ItemButton extends Component {
+    private static class ItemButton extends Component {
 
         protected NinePatch bg;
         protected ItemSlot slot;

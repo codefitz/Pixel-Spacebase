@@ -208,7 +208,7 @@ public abstract class Char extends Actor {
         return 0;
     }
 
-    protected String defenseVerb() {
+    public String defenseVerb() {
         return Messages.get(this, "def_verb");
     }
 

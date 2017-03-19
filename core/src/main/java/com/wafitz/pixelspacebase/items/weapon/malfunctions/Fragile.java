@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.watabou.utils.Bundle;
 
-public class Fragile extends Weapon.Enchantment {
+public class Fragile extends Weapon.Enhancement {
 
     private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
     private int hits = 0;

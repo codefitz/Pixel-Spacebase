@@ -25,8 +25,8 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.KindofMisc;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.bags.Bag;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
+import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
 import com.wafitz.pixelspacebase.items.keys.Key;
 import com.wafitz.pixelspacebase.items.scripts.FixScript;
@@ -42,7 +42,7 @@ public class Belongings implements Iterable<Item> {
 
     private Hero owner;
 
-    public Bag backpack;
+    public Container backpack;
 
     public KindOfWeapon weapon = null;
     public Armor armor = null;
@@ -55,8 +55,8 @@ public class Belongings implements Iterable<Item> {
     Belongings(Hero owner) {
         this.owner = owner;
 
-        backpack = new Bag() {{
-            name = Messages.get(Bag.class, "name");
+        backpack = new Container() {{
+            name = Messages.get(Container.class, "name");
             size = BACKPACK_SIZE;
         }};
         backpack.owner = owner;
@@ -191,8 +191,8 @@ public class Belongings implements Iterable<Item> {
             } else if (item.unique) {
                 item.detachAll(backpack);
                 //you keep the bag itself, not its contents.
-                if (item instanceof Bag) {
-                    ((Bag) item).clear();
+                if (item instanceof Container) {
+                    ((Container) item).clear();
                 }
                 item.collect();
             } else if (!item.isEquipped(owner)) {

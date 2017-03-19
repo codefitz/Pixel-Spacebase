@@ -25,15 +25,15 @@ import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.FireTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.FrostTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.InvisibilityTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.LevitationTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.LiquidFlameTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.MightTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.MindVisionTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ParalyticGasTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PurityTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ParalyzingTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PolymerMembrane;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.RocketTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ToxicGasTech;
 import com.wafitz.pixelspacebase.items.armor.Armor;
@@ -45,18 +45,17 @@ import com.wafitz.pixelspacebase.items.armor.Uniform;
 import com.wafitz.pixelspacebase.items.artifacts.AlienDNA;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
 import com.wafitz.pixelspacebase.items.artifacts.BuggyCompiler;
+import com.wafitz.pixelspacebase.items.artifacts.GnollTechShield;
 import com.wafitz.pixelspacebase.items.artifacts.GravityGun;
 import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.HornOfPlenty;
 import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
 import com.wafitz.pixelspacebase.items.artifacts.MakersToolkit;
-import com.wafitz.pixelspacebase.items.artifacts.MasterThievesArmband;
-import com.wafitz.pixelspacebase.items.artifacts.SandalsOfNature;
+import com.wafitz.pixelspacebase.items.artifacts.McGyvrModule;
 import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
 import com.wafitz.pixelspacebase.items.artifacts.StrongForcefield;
-import com.wafitz.pixelspacebase.items.artifacts.TalismanOfForesight;
-import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
-import com.wafitz.pixelspacebase.items.bags.Bag;
+import com.wafitz.pixelspacebase.items.artifacts.SurveyorModule;
+import com.wafitz.pixelspacebase.items.artifacts.SurvivalModule;
+import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.blasters.Disintergrator;
 import com.wafitz.pixelspacebase.items.blasters.EMP;
@@ -69,17 +68,18 @@ import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
 import com.wafitz.pixelspacebase.items.blasters.TransfusionBlaster;
 import com.wafitz.pixelspacebase.items.blasters.VenomBlaster;
 import com.wafitz.pixelspacebase.items.blasters.WaveBlaster;
+import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.items.food.Pasty;
 import com.wafitz.pixelspacebase.items.modules.AccuracyModule;
+import com.wafitz.pixelspacebase.items.modules.AttackModule;
+import com.wafitz.pixelspacebase.items.modules.BallisticModule;
 import com.wafitz.pixelspacebase.items.modules.ElementsModule;
 import com.wafitz.pixelspacebase.items.modules.EvasionModule;
 import com.wafitz.pixelspacebase.items.modules.ForceModule;
-import com.wafitz.pixelspacebase.items.modules.FurorModule;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.modules.PowerModule;
-import com.wafitz.pixelspacebase.items.modules.ScienceModule;
 import com.wafitz.pixelspacebase.items.modules.SpeedModule;
 import com.wafitz.pixelspacebase.items.modules.SteelModule;
 import com.wafitz.pixelspacebase.items.modules.TargetingModule;
@@ -106,9 +106,9 @@ import com.wafitz.pixelspacebase.items.weapon.melee.Dirk;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
 import com.wafitz.pixelspacebase.items.weapon.melee.Glaive;
 import com.wafitz.pixelspacebase.items.weapon.melee.Greataxe;
-import com.wafitz.pixelspacebase.items.weapon.melee.Greatshield;
 import com.wafitz.pixelspacebase.items.weapon.melee.Greatsword;
 import com.wafitz.pixelspacebase.items.weapon.melee.HandAxe;
+import com.wafitz.pixelspacebase.items.weapon.melee.ImperialShield;
 import com.wafitz.pixelspacebase.items.weapon.melee.Knuckles;
 import com.wafitz.pixelspacebase.items.weapon.melee.Longsword;
 import com.wafitz.pixelspacebase.items.weapon.melee.Mace;
@@ -130,19 +130,19 @@ import com.wafitz.pixelspacebase.items.weapon.missiles.IncendiaryDart;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Javelin;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Shuriken;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Tamahawk;
-import com.wafitz.pixelspacebase.triggers.BlandfruitBush;
-import com.wafitz.pixelspacebase.triggers.Blindweed;
-import com.wafitz.pixelspacebase.triggers.Dreamfoil;
-import com.wafitz.pixelspacebase.triggers.Earthroot;
-import com.wafitz.pixelspacebase.triggers.Fadeleaf;
-import com.wafitz.pixelspacebase.triggers.Firebloom;
-import com.wafitz.pixelspacebase.triggers.Icecap;
-import com.wafitz.pixelspacebase.triggers.Rotberry;
-import com.wafitz.pixelspacebase.triggers.Sorrowmoss;
-import com.wafitz.pixelspacebase.triggers.Starflower;
-import com.wafitz.pixelspacebase.triggers.Stormvine;
-import com.wafitz.pixelspacebase.triggers.Sungrass;
+import com.wafitz.pixelspacebase.triggers.AlienPlant;
+import com.wafitz.pixelspacebase.triggers.AlienTrap;
+import com.wafitz.pixelspacebase.triggers.Blinding;
+import com.wafitz.pixelspacebase.triggers.Boost;
+import com.wafitz.pixelspacebase.triggers.Disorient;
+import com.wafitz.pixelspacebase.triggers.FireTrigger;
+import com.wafitz.pixelspacebase.triggers.Healing;
+import com.wafitz.pixelspacebase.triggers.IceTrigger;
+import com.wafitz.pixelspacebase.triggers.Knockout;
+import com.wafitz.pixelspacebase.triggers.Teleportation;
 import com.wafitz.pixelspacebase.triggers.Trigger;
+import com.wafitz.pixelspacebase.triggers.Venom;
+import com.wafitz.pixelspacebase.triggers.WeakForcefield;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
@@ -188,7 +188,7 @@ public class Generator {
                 }
             }
 
-            return item instanceof Bag ? Integer.MAX_VALUE : Integer.MAX_VALUE - 1;
+            return item instanceof Container ? Integer.MAX_VALUE : Integer.MAX_VALUE - 1;
         }
     }
 
@@ -229,14 +229,14 @@ public class Generator {
                 HealingTech.class,
                 ExperienceTech.class,
                 ToxicGasTech.class,
-                ParalyticGasTech.class,
-                LiquidFlameTech.class,
-                LevitationTech.class,
+                ParalyzingTech.class,
+                FireTech.class,
+                RocketTech.class,
                 StrengthTech.class,
-                MindVisionTech.class,
-                PurityTech.class,
+                SecurityTech.class,
+                PolymerMembrane.class,
                 InvisibilityTech.class,
-                MightTech.class,
+                PowerTech.class,
                 FrostTech.class};
         Category.EXPERIMENTALTECH.probs = new float[]{45, 4, 15, 10, 15, 10, 0, 20, 12, 10, 0, 10};
 
@@ -308,7 +308,7 @@ public class Generator {
                 WarHammer.class,
                 Glaive.class,
                 Greataxe.class,
-                Greatshield.class,
+                ImperialShield.class,
                 Tamahawk.class
         };
         Category.WEP_T5.probs = new float[]{6, 5, 5, 4, 4, 6};
@@ -333,9 +333,9 @@ public class Generator {
                 EvasionModule.class,
                 ElementsModule.class,
                 ForceModule.class,
-                FurorModule.class,
+                AttackModule.class,
                 SpeedModule.class,
-                ScienceModule.class, //currently removed from drop tables, pending rework
+                BallisticModule.class, //currently removed from drop tables, pending rework
                 PowerModule.class,
                 TargetingModule.class,
                 SteelModule.class,
@@ -346,11 +346,11 @@ public class Generator {
                 StrongForcefield.class,
                 AlienDNA.class,
                 StealthModule.class,
-                HornOfPlenty.class,
-                MasterThievesArmband.class,
-                SandalsOfNature.class,
-                TalismanOfForesight.class,
-                TimekeepersHourglass.class,
+                SurvivalModule.class,
+                McGyvrModule.class,
+                GnollTechShield.class,
+                SurveyorModule.class,
+                TimeFolder.class,
                 BuggyCompiler.class,
                 MakersToolkit.class, //currently removed from drop tables, pending rework.
                 HoloPad.class, //starts with no chance of spawning, chance is set directly after beating ghost quest.
@@ -360,18 +360,18 @@ public class Generator {
         Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
 
         Category.GADGET.classes = new Class<?>[]{
-                Firebloom.Gadget.class,
-                Icecap.Gadget.class,
-                Sorrowmoss.Gadget.class,
-                Blindweed.Gadget.class,
-                Sungrass.Gadget.class,
-                Earthroot.Gadget.class,
-                Fadeleaf.Gadget.class,
-                Rotberry.Gadget.class,
-                BlandfruitBush.Gadget.class,
-                Dreamfoil.Gadget.class,
-                Stormvine.Gadget.class,
-                Starflower.Gadget.class};
+                FireTrigger.Gadget.class,
+                IceTrigger.Gadget.class,
+                Venom.Gadget.class,
+                Blinding.Gadget.class,
+                Healing.Gadget.class,
+                WeakForcefield.Gadget.class,
+                Teleportation.Gadget.class,
+                AlienTrap.Gadget.class,
+                AlienPlant.Gadget.class,
+                Knockout.Gadget.class,
+                Disorient.Gadget.class,
+                Boost.Gadget.class};
         Category.GADGET.probs = new float[]{12, 12, 12, 12, 12, 12, 12, 0, 4, 12, 12, 1};
     }
 

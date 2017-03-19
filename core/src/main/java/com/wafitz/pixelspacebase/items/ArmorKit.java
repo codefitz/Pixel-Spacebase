@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.HeroSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
-import com.wafitz.pixelspacebase.windows.WndBag;
+import com.wafitz.pixelspacebase.windows.WndContainer;
 import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class ArmorKit extends Item {
         if (action == AC_APPLY) {
 
             curUser = hero;
-            GameScene.selectItem(itemSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt"));
+            GameScene.selectItem(itemSelector, WndContainer.Mode.ARMOR, Messages.get(this, "prompt"));
 
         }
     }
@@ -106,7 +106,7 @@ public class ArmorKit extends Item {
         Sample.INSTANCE.play(Assets.SND_EVOKE);
     }
 
-    private final WndBag.Listener itemSelector = new WndBag.Listener() {
+    private final WndContainer.Listener itemSelector = new WndContainer.Listener() {
         @Override
         public void onSelect(Item item) {
             if (item != null) {

@@ -51,12 +51,12 @@ public class FrozenCarpaccio extends Food {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_EAT)) {
+        if (action.equals(AC_USE)) {
             effect(hero);
         }
     }
 
-    public int price() {
+    public int cost() {
         return 10 * quantity;
     }
 

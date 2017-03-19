@@ -42,21 +42,21 @@ import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.particles.FlowParticle;
 import com.wafitz.pixelspacebase.effects.particles.WindParticle;
 import com.wafitz.pixelspacebase.items.Dewdrop;
+import com.wafitz.pixelspacebase.items.EnhancementChip;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.AlienTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.MightTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.Stylus;
 import com.wafitz.pixelspacebase.items.Torch;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
 import com.wafitz.pixelspacebase.items.artifacts.MakersToolkit;
-import com.wafitz.pixelspacebase.items.artifacts.TimekeepersHourglass;
-import com.wafitz.pixelspacebase.items.bags.GadgetBag;
-import com.wafitz.pixelspacebase.items.bags.ScriptHolder;
-import com.wafitz.pixelspacebase.items.food.Blandfruit;
+import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
+import com.wafitz.pixelspacebase.items.containers.GadgetCase;
+import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
 import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
@@ -71,7 +71,7 @@ import com.wafitz.pixelspacebase.mechanics.ShadowCaster;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
-import com.wafitz.pixelspacebase.triggers.BlandfruitBush;
+import com.wafitz.pixelspacebase.triggers.AlienPlant;
 import com.wafitz.pixelspacebase.triggers.Trigger;
 import com.wafitz.pixelspacebase.ui.CustomTileVisual;
 import com.wafitz.pixelspacebase.utils.BArray;
@@ -198,7 +198,7 @@ public abstract class Level implements Bundlable {
 
             if (Dungeon.posNeeded()) {
                 if (Random.Float() > Math.pow(0.925, bonus))
-                    addItemToSpawn(new MightTech());
+                    addItemToSpawn(new PowerTech());
                 else
                     addItemToSpawn(new StrengthTech());
                 Dungeon.limitedDrops.strengthTech.count++;
@@ -212,8 +212,8 @@ public abstract class Level implements Bundlable {
             }
             if (Dungeon.asNeeded()) {
                 if (Random.Float() > Math.pow(0.925, bonus))
-                    addItemToSpawn(new Stylus());
-                addItemToSpawn(new Stylus());
+                    addItemToSpawn(new EnhancementChip());
+                addItemToSpawn(new EnhancementChip());
                 Dungeon.limitedDrops.arcaneStyli.count++;
             }
 
@@ -667,11 +667,11 @@ public abstract class Level implements Bundlable {
     public Heap drop(Item item, int cell) {
 
         //This messy if statement deals will items which should not drop in challenges primarily.
-        if ((Dungeon.isChallenged(Challenges.NO_FOOD) && (item instanceof Food || item instanceof BlandfruitBush.Gadget)) ||
+        if ((Dungeon.isChallenged(Challenges.NO_FOOD) && (item instanceof Food || item instanceof AlienPlant.Gadget)) ||
                 (Dungeon.isChallenged(Challenges.NO_ARMOR) && item instanceof Armor) ||
                 (Dungeon.isChallenged(Challenges.NO_HEALING) && item instanceof HealingTech) ||
-                (Dungeon.isChallenged(Challenges.NO_HERBALISM) && (item instanceof Trigger.Gadget || item instanceof Dewdrop || item instanceof GadgetBag)) ||
-                (Dungeon.isChallenged(Challenges.NO_SCRIPTS) && ((item instanceof Script && !(item instanceof UpgradeScript || item instanceof EnhancementScript)) || item instanceof ScriptHolder)) ||
+                (Dungeon.isChallenged(Challenges.NO_HERBALISM) && (item instanceof Trigger.Gadget || item instanceof Dewdrop || item instanceof GadgetCase)) ||
+                (Dungeon.isChallenged(Challenges.NO_SCRIPTS) && ((item instanceof Script && !(item instanceof UpgradeScript || item instanceof EnhancementScript)) || item instanceof ScriptLibrary)) ||
                 item == null) {
 
             //create a dummy heap, give it a dummy sprite, don't add it to the game, and return it.
@@ -684,9 +684,9 @@ public abstract class Level implements Bundlable {
         }
 
         if ((map[cell] == Terrain.CRAFTING) && (
-                !(item instanceof Trigger.Gadget || item instanceof Blandfruit) ||
-                        item instanceof BlandfruitBush.Gadget ||
-                        (item instanceof Blandfruit && (((Blandfruit) item).experimentalTechAttrib != null || heaps.get(cell) != null)) ||
+                !(item instanceof Trigger.Gadget || item instanceof AlienTech) ||
+                        item instanceof AlienPlant.Gadget ||
+                        (item instanceof AlienTech && (((AlienTech) item).experimentalTechAttrib != null || heaps.get(cell) != null)) ||
                         Dungeon.hero.buff(MakersToolkit.crafting.class) != null && Dungeon.hero.buff(MakersToolkit.crafting.class).isMalfunctioning())) {
             int n;
             do {
@@ -824,7 +824,7 @@ public abstract class Level implements Bundlable {
                 break;
         }
 
-        TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+        TimeFolder.timeFreeze timeFreeze = Dungeon.hero.buff(TimeFolder.timeFreeze.class);
 
         if (vent != null) {
             if (timeFreeze == null) {
@@ -888,7 +888,7 @@ public abstract class Level implements Bundlable {
         int cy = c.pos / width();
 
         boolean sighted = c.buff(Blindness.class) == null && c.buff(Camoflaged.class) == null
-                && c.buff(TimekeepersHourglass.timeStasis.class) == null && c.isAlive();
+                && c.buff(TimeFolder.timeStasis.class) == null && c.isAlive();
         if (sighted) {
             ShadowCaster.castShadow(cx, cy, fieldOfView, c.viewDistance);
         } else {

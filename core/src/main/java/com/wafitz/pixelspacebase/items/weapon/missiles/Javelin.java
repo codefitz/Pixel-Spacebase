@@ -52,7 +52,7 @@ public class Javelin extends MissileWeapon {
         this(1);
     }
 
-    public Javelin(int number) {
+    private Javelin(int number) {
         super();
         quantity = number;
     }
@@ -70,7 +70,7 @@ public class Javelin extends MissileWeapon {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         return 12 * quantity;
     }
 }

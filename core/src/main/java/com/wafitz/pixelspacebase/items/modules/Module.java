@@ -49,9 +49,9 @@ public class Module extends KindofMisc {
             EvasionModule.class,
             ElementsModule.class,
             ForceModule.class,
-            FurorModule.class,
+            AttackModule.class,
             SpeedModule.class,
-            ScienceModule.class,
+            BallisticModule.class,
             PowerModule.class,
             TargetingModule.class,
             SteelModule.class,
@@ -201,7 +201,7 @@ public class Module extends KindofMisc {
     }
 
     @Override
-    public int price() {
+    public int cost() {
         int price = 75;
         if (malfunctioning && malfunctioningKnown) {
             price /= 2;
