@@ -20,12 +20,24 @@
  */
 package com.wafitz.pixelspacebase.items.armor;
 
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
+import com.wafitz.pixelspacebase.scenes.StartScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
 public class SpaceSuit extends Armor {
 
     {
+
         image = ItemSpriteSheet.ARMOR_SPACESUIT;
+        setArmor(this);
+
+    }
+
+    public void setArmor(Armor armor) {
+
+        if (StartScene.curClass == HeroClass.DM3000) {
+            armor.image = ItemSpriteSheet.ARMOR_DM3000_SPACESUIT;
+        }
     }
 
     public SpaceSuit() {
