@@ -22,12 +22,12 @@ package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.actors.mobs.Skeleton;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.FireTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.Firestarter;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
-import com.wafitz.pixelspacebase.items.quest.CorpseDust;
+import com.wafitz.pixelspacebase.items.quest.Lazer;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -43,7 +43,7 @@ public class MassGravePainter extends Painter {
 
         Room.Door entrance = room.entrance();
         entrance.set(Room.Door.Type.BARRICADE);
-        level.addItemToSpawn(new FireTech());
+        level.addItemToSpawn(new Firestarter());
 
         fill(level, room, Terrain.WALL);
         fill(level, room, 1, Terrain.EMPTY_SP);
@@ -64,7 +64,7 @@ public class MassGravePainter extends Painter {
 
         ArrayList<Item> items = new ArrayList<>();
         //100% corpse dust, 2x100% 1 coin, 2x30% coins, 1x60% random item, 1x30% armor
-        items.add(new CorpseDust());
+        items.add(new Lazer());
         items.add(new Parts(1));
         items.add(new Parts(1));
         if (Random.Float() <= 0.3f) items.add(new Parts());

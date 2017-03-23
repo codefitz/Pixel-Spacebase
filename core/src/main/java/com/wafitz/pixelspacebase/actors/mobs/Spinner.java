@@ -90,7 +90,7 @@ class Spinner extends Mob {
     @Override
     public void move(int step) {
         if (state == FLEEING) {
-            GameScene.add(Blob.gadget(pos, Random.Int(5, 7), Web.class));
+            GameScene.add(Blob.device(pos, Random.Int(5, 7), Web.class));
         }
         super.move(step);
     }

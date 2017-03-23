@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.PurpleParticle;
 import com.wafitz.pixelspacebase.items.Dewdrop;
-import com.wafitz.pixelspacebase.items.blasters.Disintergrator;
+import com.wafitz.pixelspacebase.items.blasters.Disintegrator;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Vampiric;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -68,7 +68,7 @@ public class Eye extends Mob {
 
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange(20, 30);
+        return Random.NormalIntRange(Dungeon.depth, Dungeon.depth + 4);
     }
 
     @Override
@@ -225,7 +225,7 @@ public class Eye extends Mob {
     private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 
     static {
-        RESISTANCES.add(Disintergrator.class);
+        RESISTANCES.add(Disintegrator.class);
         RESISTANCES.add(Grim.class);
         RESISTANCES.add(Vampiric.class);
     }

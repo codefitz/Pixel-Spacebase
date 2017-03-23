@@ -46,7 +46,7 @@ public enum Icons {
     SLEEP,
     ALERT,
     BACKPACK,
-    GADGET_CASE,
+    DEVICE_CASE,
     SCRIPT_LIBRARY,
     XPORT,
     BLASTER_HOLSTER,
@@ -129,7 +129,7 @@ public enum Icons {
             case SCRIPT_LIBRARY:
                 icon.frame(icon.texture.uvRect(68, 0, 78, 10));
                 break;
-            case GADGET_CASE:
+            case DEVICE_CASE:
                 icon.frame(icon.texture.uvRect(78, 0, 88, 10));
                 break;
             case BLASTER_HOLSTER:

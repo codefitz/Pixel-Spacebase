@@ -94,7 +94,7 @@ public class Camoflaged extends Camoflage {
 
     @Override
     public int icon() {
-        return BuffIndicator.SHADOWS;
+        return BuffIndicator.CAMOFLAGED;
     }
 
     @Override

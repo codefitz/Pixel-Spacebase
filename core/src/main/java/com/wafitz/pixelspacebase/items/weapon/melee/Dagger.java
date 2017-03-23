@@ -45,7 +45,7 @@ public class Dagger extends MeleeWeapon {
         Char enemy = hero.enemy();
         if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) {
             //deals avg damage to max on surprise, instead of min to max.
-            int damage = imbue.damageFactor(Random.NormalIntRange((min() + max()) / 2, max()));
+            int damage = convert.damageFactor(Random.NormalIntRange((min() + max()) / 2, max()));
             int exStr = hero.STR() - STRReq();
             if (exStr > 0) {
                 damage += Random.IntRange(0, exStr);

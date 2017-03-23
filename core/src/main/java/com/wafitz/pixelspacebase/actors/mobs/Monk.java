@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Imp;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.weapon.melee.Knuckles;
@@ -76,7 +76,7 @@ public class Monk extends Mob {
 
     @Override
     public void die(Object cause) {
-        Imp.Quest.process(this);
+        Arp.Quest.process(this);
 
         super.die(cause);
     }

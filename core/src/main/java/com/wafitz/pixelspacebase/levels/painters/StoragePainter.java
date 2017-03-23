@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.items.DroneController;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.FireTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.Firestarter;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -54,7 +54,7 @@ public class StoragePainter extends Painter {
         }
 
         room.entrance().set(Room.Door.Type.BARRICADE);
-        level.addItemToSpawn(new FireTech());
+        level.addItemToSpawn(new Firestarter());
     }
 
     private static Item prize(Level level) {

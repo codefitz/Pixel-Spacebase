@@ -40,7 +40,7 @@ public class SpearVent extends Vent {
     }
 
     @Override
-    public void trigger() {
+    public void mine() {
         if (Dungeon.visible[pos]) {
             Sample.INSTANCE.play(Assets.SND_TRAP);
         }

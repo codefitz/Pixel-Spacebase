@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.levels.vents;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Sheep;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.YogSheep;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -55,10 +55,10 @@ public class FlockVent extends Vent {
                 for (int i = 0; i < PathFinder.distance.length; i++) {
                     if (PathFinder.distance[i] < Integer.MAX_VALUE)
                         if (Dungeon.level.insideMap(i) && Actor.findChar(i) == null && !(Level.pit[i])) {
-                            Sheep sheep = new Sheep();
-                            sheep.lifespan = 2 + Random.Int(Dungeon.depth + 10);
-                            sheep.pos = i;
-                            GameScene.add(sheep);
+                            YogSheep yogSheep = new YogSheep();
+                            yogSheep.lifespan = 2 + Random.Int(Dungeon.depth + 10);
+                            yogSheep.pos = i;
+                            GameScene.add(yogSheep);
                             CellEmitter.get(i).burst(Speck.factory(Speck.WOOL), 4);
                         }
                 }

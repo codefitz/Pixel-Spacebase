@@ -47,7 +47,7 @@ public class GravityGun extends Artifact {
     private static final String AC_SHOOT = "SHOOT";
 
     {
-        image = ItemSpriteSheet.ARTIFACT_CHAINS;
+        image = ItemSpriteSheet.GRAVITY_GUN;
 
         levelCap = 5;
         exp = 0;

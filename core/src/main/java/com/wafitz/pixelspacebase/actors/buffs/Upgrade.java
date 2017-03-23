@@ -31,7 +31,7 @@ public class Upgrade extends FlavourBuff {
 
     @Override
     public int icon() {
-        return BuffIndicator.BLESS;
+        return BuffIndicator.UPGRADE;
     }
 
     @Override

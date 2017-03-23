@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.VenomGas;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Venomous;
-import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -46,7 +46,7 @@ public class VenomBlaster extends Blaster {
 
     @Override
     protected void onZap(Ballistica bolt) {
-        Blob venomGas = Blob.gadget(bolt.collisionPos, 50 + 10 * level(), VenomGas.class);
+        Blob venomGas = Blob.device(bolt.collisionPos, 50 + 10 * level(), VenomGas.class);
         ((VenomGas) venomGas).setStrength(level() + 1);
         GameScene.add(venomGas);
 
@@ -65,13 +65,13 @@ public class VenomBlaster extends Blaster {
     }
 
     @Override
-    public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
+    public void onHit(DM3000Launcher launcher, Char attacker, Char defender, int damage) {
         //acts like venomous enhancement
-        new Venomous().proc(staff, attacker, defender, damage);
+        new Venomous().proc(launcher, attacker, defender, damage);
     }
 
     @Override
-    public void staffFx(DM3000Staff.StaffParticle particle) {
+    public void launcherFx(DM3000Launcher.launcherParticle particle) {
         particle.color(ColorMath.random(0x8844FF, 0x00FF00));
         particle.am = 0.6f;
         particle.setLifespan(1f);

@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class ImperialShield extends MeleeWeapon {
 
     {
-        image = ItemSpriteSheet.GREATSHIELD;
+        image = ItemSpriteSheet.GNOLLSHIELD;
 
         tier = 5;
     }

@@ -69,7 +69,7 @@ public class KnowledgebaseTerminal extends WellWater {
 
         GLog.p(Messages.get(this, "procced"));
 
-        Journal.remove(Feature.WELL_OF_AWARENESS);
+        Journal.remove(Feature.KNOWLEDGE_TERMINAL);
 
         return true;
     }
@@ -84,7 +84,7 @@ public class KnowledgebaseTerminal extends WellWater {
 
             emitter.parent.add(new Identification(DungeonTilemap.tileCenterToWorld(pos)));
 
-            Journal.remove(Feature.WELL_OF_AWARENESS);
+            Journal.remove(Feature.KNOWLEDGE_TERMINAL);
 
             return item;
         }

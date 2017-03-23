@@ -57,17 +57,17 @@ public class ExperimentalTech extends Item {
 
     private static final Class<?>[] experimentaltech = {
             HealingTech.class,
-            ExperienceTech.class,
-            ToxicGasTech.class,
-            FireTech.class,
-            StrengthTech.class,
-            ParalyzingTech.class,
-            RocketTech.class,
-            SecurityTech.class,
+            ExperienceBooster.class,
+            ToxicAgent.class,
+            Firestarter.class,
+            StrengthUpgrade.class,
+            ParalyzingAgent.class,
+            ExperimentalRockets.class,
+            SecurityOverride.class,
             PolymerMembrane.class,
-            InvisibilityTech.class,
-            PowerTech.class,
-            FrostTech.class,
+            InvisibilityEnhancement.class,
+            PowerUpgrade.class,
+            Cryongenics.class
     };
 
     private static final HashMap<String, Integer> colors = new HashMap<String, Integer>() {
@@ -91,7 +91,7 @@ public class ExperimentalTech extends Item {
 
     private String color;
 
-    boolean ownedByFruit = false;
+    public boolean ownedByFruit = false;
 
     {
         stackable = true;
@@ -143,13 +143,13 @@ public class ExperimentalTech extends Item {
         if (action.equals(AC_USE)) {
 
             if (isKnown() && (
-                    this instanceof FireTech ||
-                            this instanceof ToxicGasTech ||
-                            this instanceof ParalyzingTech)) {
+                    this instanceof Firestarter ||
+                            this instanceof ToxicAgent ||
+                            this instanceof ParalyzingAgent)) {
 
                 GameScene.show(
                         new WndOptions(Messages.get(ExperimentalTech.class, "harmful"),
-                                Messages.get(ExperimentalTech.class, "sure_drink"),
+                                Messages.get(ExperimentalTech.class, "sure_plug"),
                                 Messages.get(ExperimentalTech.class, "yes"), Messages.get(ExperimentalTech.class, "no")) {
                             @Override
                             protected void onSelect(int index) {
@@ -171,12 +171,12 @@ public class ExperimentalTech extends Item {
     public void doThrow(final Hero hero) {
 
         if (isKnown() && (
-                this instanceof ExperienceTech ||
+                this instanceof ExperienceBooster ||
                         this instanceof HealingTech ||
-                        this instanceof SecurityTech ||
-                        this instanceof StrengthTech ||
-                        this instanceof InvisibilityTech ||
-                        this instanceof PowerTech)) {
+                        this instanceof SecurityOverride ||
+                        this instanceof StrengthUpgrade ||
+                        this instanceof InvisibilityEnhancement ||
+                        this instanceof PowerUpgrade)) {
 
             GameScene.show(
                     new WndOptions(Messages.get(ExperimentalTech.class, "beneficial"),

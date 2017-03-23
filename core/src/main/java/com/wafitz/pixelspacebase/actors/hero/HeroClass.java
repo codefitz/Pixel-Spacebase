@@ -24,15 +24,15 @@ import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityOverride;
 import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
-import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dagger;
 import com.wafitz.pixelspacebase.items.weapon.melee.Knuckles;
-import com.wafitz.pixelspacebase.items.weapon.melee.WornShortsword;
+import com.wafitz.pixelspacebase.items.weapon.melee.Spanner;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Boomerang;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Dart;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -103,7 +103,7 @@ public enum HeroClass {
     }
 
     private static void initCommander(Hero hero) {
-        (hero.belongings.weapon = new WornShortsword()).identify();
+        (hero.belongings.weapon = new Spanner()).identify();
         Dart darts = new Dart(8);
         darts.identify().collect();
 
@@ -125,19 +125,19 @@ public enum HeroClass {
     }
 
     private static void initDM3000(Hero hero) {
-        DM3000Staff staff;
+        DM3000Launcher launcher;
 
         if (Badges.isUnlocked(Badges.Badge.TUTORIAL_DM3000)) {
-            staff = new DM3000Staff(new MissileBlaster());
+            launcher = new DM3000Launcher(new MissileBlaster());
         } else {
-            staff = new DM3000Staff();
+            launcher = new DM3000Launcher();
             new MissileBlaster().identify().collect();
         }
 
-        (hero.belongings.weapon = staff).identify();
+        (hero.belongings.weapon = launcher).identify();
         hero.belongings.weapon.activate(hero);
 
-        Dungeon.quickslot.setSlot(0, staff);
+        Dungeon.quickslot.setSlot(0, launcher);
 
         new UpgradeScript().setKnown();
     }
@@ -166,7 +166,7 @@ public enum HeroClass {
 
         Dungeon.quickslot.setSlot(0, boomerang);
 
-        new SecurityTech().setKnown();
+        new SecurityOverride().setKnown();
     }
 
     public String title() {

@@ -368,7 +368,7 @@ public class Yog extends Mob {
         public boolean act() {
 
             for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
-                GameScene.add(Blob.gadget(pos + PathFinder.NEIGHBOURS9[i], 2, Fire.class));
+                GameScene.add(Blob.device(pos + PathFinder.NEIGHBOURS9[i], 2, Fire.class));
             }
 
             return super.act();

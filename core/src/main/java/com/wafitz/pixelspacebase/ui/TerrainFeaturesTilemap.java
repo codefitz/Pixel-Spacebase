@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.DungeonTilemap;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
-import com.wafitz.pixelspacebase.triggers.Trigger;
+import com.wafitz.pixelspacebase.mines.Mine;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
@@ -35,7 +35,7 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
 
-//TODO add in a proper set of vfx for triggers growing/withering, lightedvent burning, discovering vents
+//TODO add in a proper set of vfx for mines growing/withering, lightedvent burning, discovering vents
 public class TerrainFeaturesTilemap extends Tilemap {
 
     public static final int SIZE = 16;
@@ -45,13 +45,13 @@ public class TerrainFeaturesTilemap extends Tilemap {
     private int[] map;
     private float[] tileVariance;
 
-    private SparseArray<Trigger> triggers;
+    private SparseArray<Mine> mines;
     private SparseArray<Vent> vents;
 
-    public TerrainFeaturesTilemap(SparseArray<Trigger> triggers, SparseArray<Vent> vents) {
+    public TerrainFeaturesTilemap(SparseArray<Mine> mines, SparseArray<Vent> vents) {
         super(Assets.TERRAIN_FEATURES, new TextureFilm(Assets.TERRAIN_FEATURES, SIZE, SIZE));
 
-        this.triggers = triggers;
+        this.mines = mines;
         this.vents = vents;
 
         Random.seed(Dungeon.seedCurDepth());
@@ -107,8 +107,8 @@ public class TerrainFeaturesTilemap extends Tilemap {
                 return (vent.active ? vent.color : Vent.BLACK) + (vent.shape * 16);
         }
 
-        if (triggers.get(pos) != null) {
-            return triggers.get(pos).image + 7 * 16;
+        if (mines.get(pos) != null) {
+            return mines.get(pos).image + 7 * 16;
         }
 
         if (tile == Terrain.OFFVENT) {
@@ -128,17 +128,17 @@ public class TerrainFeaturesTilemap extends Tilemap {
         return img;
     }
 
-    public void growTrigger(final int pos) {
-        final Image trigger = tile(pos, map[pos]);
-        trigger.origin.set(8, 12);
-        trigger.scale.set(0);
-        trigger.point(DungeonTilemap.tileToWorld(pos));
+    public void growMine(final int pos) {
+        final Image mine = tile(pos, map[pos]);
+        mine.origin.set(8, 12);
+        mine.scale.set(0);
+        mine.point(DungeonTilemap.tileToWorld(pos));
 
-        parent.add(trigger);
+        parent.add(mine);
 
-        parent.add(new ScaleTweener(trigger, new PointF(1, 1), 0.2f) {
+        parent.add(new ScaleTweener(mine, new PointF(1, 1), 0.2f) {
             protected void onComplete() {
-                trigger.killAndErase();
+                mine.killAndErase();
                 killAndErase();
                 updateMapCell(pos);
             }

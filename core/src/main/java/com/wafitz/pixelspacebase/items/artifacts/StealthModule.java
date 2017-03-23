@@ -40,7 +40,7 @@ import java.util.ArrayList;
 public class StealthModule extends Artifact {
 
     {
-        image = ItemSpriteSheet.ARTIFACT_CLOAK;
+        image = ItemSpriteSheet.STEALTH_MODULE;
 
         exp = 0;
         levelCap = 14;
@@ -203,7 +203,7 @@ public class StealthModule extends Artifact {
 
         @Override
         public int icon() {
-            return BuffIndicator.INVISIBLE;
+            return BuffIndicator.CAMOFLAGE;
         }
 
         @Override

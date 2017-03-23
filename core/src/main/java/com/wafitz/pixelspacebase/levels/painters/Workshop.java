@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.levels.painters;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.ImpMakerBot;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.ArpTrader;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.MakerBot;
 import com.wafitz.pixelspacebase.items.Bomb;
 import com.wafitz.pixelspacebase.items.Clone;
@@ -44,7 +44,7 @@ import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
-import com.wafitz.pixelspacebase.items.containers.GadgetCase;
+import com.wafitz.pixelspacebase.items.containers.DeviceCase;
 import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
 import com.wafitz.pixelspacebase.items.containers.XPort;
 import com.wafitz.pixelspacebase.items.food.SynthesizedFood;
@@ -54,12 +54,12 @@ import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.items.weapon.melee.BattleAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.Greatsword;
-import com.wafitz.pixelspacebase.items.weapon.melee.HandAxe;
+import com.wafitz.pixelspacebase.items.weapon.melee.LazerSword;
 import com.wafitz.pixelspacebase.items.weapon.melee.Longsword;
-import com.wafitz.pixelspacebase.items.weapon.melee.Mace;
-import com.wafitz.pixelspacebase.items.weapon.melee.NewShortsword;
-import com.wafitz.pixelspacebase.items.weapon.melee.Sword;
+import com.wafitz.pixelspacebase.items.weapon.melee.MCPickAxe;
+import com.wafitz.pixelspacebase.items.weapon.melee.Spade;
 import com.wafitz.pixelspacebase.items.weapon.melee.WarHammer;
+import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
 import com.wafitz.pixelspacebase.items.weapon.missiles.CurareDart;
 import com.wafitz.pixelspacebase.items.weapon.missiles.IncendiaryDart;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Javelin;
@@ -69,7 +69,7 @@ import com.wafitz.pixelspacebase.levels.LastWorkshopLevel;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.triggers.Trigger;
+import com.wafitz.pixelspacebase.mines.Mine;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -128,7 +128,7 @@ public class Workshop extends Painter {
 
         switch (Dungeon.depth) {
             case 6:
-                itemsToSpawn.add((Random.Int(2) == 0 ? new NewShortsword().identify() : new HandAxe()).identify());
+                itemsToSpawn.add((Random.Int(2) == 0 ? new Wrench().identify() : new MCPickAxe()).identify());
                 itemsToSpawn.add(Random.Int(2) == 0 ?
                         new IncendiaryDart().quantity(Random.NormalIntRange(2, 4)) :
                         new CurareDart().quantity(Random.NormalIntRange(1, 3)));
@@ -136,7 +136,7 @@ public class Workshop extends Painter {
                 break;
 
             case 11:
-                itemsToSpawn.add((Random.Int(2) == 0 ? new Sword().identify() : new Mace()).identify());
+                itemsToSpawn.add((Random.Int(2) == 0 ? new LazerSword().identify() : new Spade()).identify());
                 itemsToSpawn.add(Random.Int(2) == 0 ?
                         new CurareDart().quantity(Random.NormalIntRange(2, 5)) :
                         new Shuriken().quantity(Random.NormalIntRange(3, 6)));
@@ -263,12 +263,12 @@ public class Workshop extends Painter {
 
     private static void ChooseContainer(Belongings pack) {
 
-        int gadgets = 0, scripts = 0, experimentaltech = 0, blasters = 0;
+        int devices = 0, scripts = 0, experimentaltech = 0, blasters = 0;
 
         //count up items in the main bag, for containers which haven't yet been dropped.
         for (Item item : pack.backpack.items) {
-            if (!Dungeon.limitedDrops.gadgetCase.dropped() && item instanceof Trigger.Gadget)
-                gadgets++;
+            if (!Dungeon.limitedDrops.deviceCase.dropped() && item instanceof Mine.Device)
+                devices++;
             else if (!Dungeon.limitedDrops.scriptContainer.dropped() && item instanceof Script)
                 scripts++;
             else if (!Dungeon.limitedDrops.xPort.dropped() && item instanceof ExperimentalTech)
@@ -279,9 +279,9 @@ public class Workshop extends Painter {
 
         //then pick whichever valid bag has the most items available to put into it.
         //note that the order here gives a perference if counts are otherwise equal
-        if (gadgets >= scripts && gadgets >= experimentaltech && gadgets >= blasters && !Dungeon.limitedDrops.gadgetCase.dropped()) {
-            Dungeon.limitedDrops.gadgetCase.drop();
-            itemsToSpawn.add(new GadgetCase());
+        if (devices >= scripts && devices >= experimentaltech && devices >= blasters && !Dungeon.limitedDrops.deviceCase.dropped()) {
+            Dungeon.limitedDrops.deviceCase.drop();
+            itemsToSpawn.add(new DeviceCase());
 
         } else if (scripts >= experimentaltech && scripts >= blasters && !Dungeon.limitedDrops.scriptContainer.dropped()) {
             Dungeon.limitedDrops.scriptContainer.drop();
@@ -312,7 +312,7 @@ public class Workshop extends Painter {
             pos = level.pointToCell(room.random());
         } while (level.heaps.get(pos) != null);
 
-        Mob makerbot = level instanceof LastWorkshopLevel ? new ImpMakerBot() : new MakerBot();
+        Mob makerbot = level instanceof LastWorkshopLevel ? new ArpTrader() : new MakerBot();
         makerbot.pos = pos;
         level.mobs.add(makerbot);
 

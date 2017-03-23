@@ -30,8 +30,8 @@ import com.wafitz.pixelspacebase.actors.buffs.Recharging;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.SpellSprite;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.AlienTech;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -48,7 +48,7 @@ public class SurvivalModule extends Artifact {
 
 
     {
-        image = ItemSpriteSheet.ARTIFACT_HORN1;
+        image = ItemSpriteSheet.SUVIVAL_MODULE_1;
 
         levelCap = 30;
 
@@ -123,9 +123,9 @@ public class SurvivalModule extends Artifact {
 
                 Badges.validateFoodEaten();
 
-                if (charge >= 15) image = ItemSpriteSheet.ARTIFACT_HORN4;
-                else if (charge >= 10) image = ItemSpriteSheet.ARTIFACT_HORN3;
-                else if (charge >= 5) image = ItemSpriteSheet.ARTIFACT_HORN2;
+                if (charge >= 15) image = ItemSpriteSheet.SUVIVAL_MODULE_4;
+                else if (charge >= 10) image = ItemSpriteSheet.SUVIVAL_MODULE_3;
+                else if (charge >= 5) image = ItemSpriteSheet.SUVIVAL_MODULE_2;
 
                 updateQuickslot();
             }
@@ -174,9 +174,9 @@ public class SurvivalModule extends Artifact {
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        if (charge >= 15) image = ItemSpriteSheet.ARTIFACT_HORN4;
-        else if (charge >= 10) image = ItemSpriteSheet.ARTIFACT_HORN3;
-        else if (charge >= 5) image = ItemSpriteSheet.ARTIFACT_HORN2;
+        if (charge >= 15) image = ItemSpriteSheet.SUVIVAL_MODULE_4;
+        else if (charge >= 10) image = ItemSpriteSheet.SUVIVAL_MODULE_3;
+        else if (charge >= 5) image = ItemSpriteSheet.SUVIVAL_MODULE_2;
     }
 
     public class hornRecharge extends ArtifactBuff {
@@ -194,10 +194,10 @@ public class SurvivalModule extends Artifact {
                     charge++;
                     partialCharge -= Hunger.STARVING / 10;
 
-                    if (charge >= 15) image = ItemSpriteSheet.ARTIFACT_HORN4;
-                    else if (charge >= 10) image = ItemSpriteSheet.ARTIFACT_HORN3;
-                    else if (charge >= 5) image = ItemSpriteSheet.ARTIFACT_HORN2;
-                    else image = ItemSpriteSheet.ARTIFACT_HORN1;
+                    if (charge >= 15) image = ItemSpriteSheet.SUVIVAL_MODULE_4;
+                    else if (charge >= 10) image = ItemSpriteSheet.SUVIVAL_MODULE_3;
+                    else if (charge >= 5) image = ItemSpriteSheet.SUVIVAL_MODULE_2;
+                    else image = ItemSpriteSheet.SUVIVAL_MODULE_1;
 
                     if (charge == chargeCap) {
                         GLog.p(Messages.get(SurvivalModule.class, "full"));
@@ -216,7 +216,7 @@ public class SurvivalModule extends Artifact {
         @Override
         public void onSelect(Item item) {
             if (item != null && item instanceof Food) {
-                if (item instanceof AlienTech && ((AlienTech) item).experimentalTechAttrib == null) {
+                if (item instanceof AlienPod && ((AlienPod) item).experimentalTechAttrib == null) {
                     GLog.w(Messages.get(SurvivalModule.class, "reject"));
                 } else {
                     Hero hero = Dungeon.hero;

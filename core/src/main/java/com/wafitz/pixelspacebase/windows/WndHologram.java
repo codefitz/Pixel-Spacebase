@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
-import com.wafitz.pixelspacebase.sprites.GnollTricksterSprite;
+import com.wafitz.pixelspacebase.sprites.DarkLordGnollSprite;
 import com.wafitz.pixelspacebase.sprites.GreatCrabSprite;
 import com.wafitz.pixelspacebase.sprites.ToughXenoSprite;
 import com.wafitz.pixelspacebase.ui.RedButton;
@@ -54,7 +54,7 @@ public class WndHologram extends Window {
                 message = PixelScene.renderMultiline(Messages.get(this, "xenomorph") + Messages.get(this, "give_item"), 6);
                 break;
             case 2:
-                titlebar.icon(new GnollTricksterSprite());
+                titlebar.icon(new DarkLordGnollSprite());
                 titlebar.label(Messages.get(this, "gnoll_title"));
                 message = PixelScene.renderMultiline(Messages.get(this, "gnoll") + Messages.get(this, "give_item"), 6);
                 break;

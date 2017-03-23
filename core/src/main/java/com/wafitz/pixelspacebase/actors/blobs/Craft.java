@@ -57,8 +57,8 @@ public class Craft extends Blob {
     }
 
     @Override
-    public void gadget(Level level, int cell, int amount) {
-        super.gadget(level, cell, amount);
+    public void device(Level level, int cell, int amount) {
+        super.device(level, cell, amount);
 
         cur[pos] = 0;
         pos = cell;

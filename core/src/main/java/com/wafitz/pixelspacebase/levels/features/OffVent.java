@@ -36,8 +36,8 @@ import com.wafitz.pixelspacebase.items.armor.enhancements.Camouflage;
 import com.wafitz.pixelspacebase.items.artifacts.GnollTechShield;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
+import com.wafitz.pixelspacebase.mines.AlienPlant;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.triggers.AlienPlant;
 import com.watabou.utils.Random;
 
 public class OffVent {
@@ -63,17 +63,17 @@ public class OffVent {
             }
 
             if (naturalismLevel >= 0) {
-                // Gadget, scales from 1/16 to 1/4
+                // Device, scales from 1/16 to 1/4
                 if (Random.Int(16 - naturalismLevel * 3) == 0) {
-                    Item gadget = Generator.random(Generator.Category.GADGET);
+                    Item device = Generator.random(Generator.Category.DEVICE);
 
-                    if (gadget instanceof AlienPlant.Gadget) {
-                        if (Random.Int(15) - Dungeon.limitedDrops.alienTechGadget.count >= 0) {
-                            level.drop(gadget, pos).sprite.drop();
-                            Dungeon.limitedDrops.alienTechGadget.count++;
+                    if (device instanceof AlienPlant.Device) {
+                        if (Random.Int(15) - Dungeon.limitedDrops.alienTechDevice.count >= 0) {
+                            level.drop(device, pos).sprite.drop();
+                            Dungeon.limitedDrops.alienTechDevice.count++;
                         }
                     } else
-                        level.drop(gadget, pos).sprite.drop();
+                        level.drop(device, pos).sprite.drop();
                 }
 
                 // Dew, scales from 1/6 to 1/3

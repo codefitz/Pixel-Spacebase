@@ -26,9 +26,9 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.mines.WeakForcefield;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
-import com.wafitz.pixelspacebase.triggers.WeakForcefield;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.wafitz.pixelspacebase.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
@@ -39,7 +39,7 @@ import java.util.ArrayList;
 public class AlienDNA extends Artifact {
 
     {
-        image = ItemSpriteSheet.ARTIFACT_CHALICE1;
+        image = ItemSpriteSheet.ALIEN_DNA_1;
 
         levelCap = 10;
     }
@@ -117,17 +117,17 @@ public class AlienDNA extends Artifact {
     @Override
     public Item upgrade() {
         if (level() >= 6)
-            image = ItemSpriteSheet.ARTIFACT_CHALICE3;
+            image = ItemSpriteSheet.ALIEN_DNA_3;
         else if (level() >= 2)
-            image = ItemSpriteSheet.ARTIFACT_CHALICE2;
+            image = ItemSpriteSheet.ALIEN_DNA_2;
         return super.upgrade();
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        if (level() >= 7) image = ItemSpriteSheet.ARTIFACT_CHALICE3;
-        else if (level() >= 3) image = ItemSpriteSheet.ARTIFACT_CHALICE2;
+        if (level() >= 7) image = ItemSpriteSheet.ALIEN_DNA_3;
+        else if (level() >= 3) image = ItemSpriteSheet.ALIEN_DNA_2;
     }
 
     @Override

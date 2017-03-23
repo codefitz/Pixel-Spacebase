@@ -54,7 +54,7 @@ public class LaboratoryPainter extends Painter {
         set(level, pot, Terrain.CRAFTING);
 
         Craft craft = new Craft();
-        craft.gadget(level, pot.x + level.width() * pot.y, 1);
+        craft.device(level, pot.x + level.width() * pot.y, 1);
         level.blobs.put(Craft.class, craft);
 
         int n = Random.IntRange(2, 3);

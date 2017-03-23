@@ -38,7 +38,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Recharging;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.ConfusedShapeshifter;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Sheep;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.YogSheep;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Flare;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
@@ -60,9 +60,9 @@ import com.wafitz.pixelspacebase.levels.vents.SummoningVent;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Languages;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.mines.Mine;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.InterlevelScene;
-import com.wafitz.pixelspacebase.triggers.Trigger;
 import com.wafitz.pixelspacebase.ui.HealthIndicator;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.wafitz.pixelspacebase.windows.WndOptions;
@@ -135,7 +135,7 @@ class MalfunctioningBlaster {
                                 c == Terrain.EMPTY_DECO ||
                                 c == Terrain.LIGHTEDVENT ||
                                 c == Terrain.OFFVENT) {
-                            GameScene.add(Blob.gadget(bolt.collisionPos, 30, Regrowth.class));
+                            GameScene.add(Blob.device(bolt.collisionPos, 30, Regrowth.class));
                         }
                         blaster.blasterUsed();
                     }
@@ -183,13 +183,13 @@ class MalfunctioningBlaster {
                     public void call() {
                         switch (Random.Int(3)) {
                             case 0:
-                                GameScene.add(Blob.gadget(bolt.collisionPos, 800, ConfusionGas.class));
+                                GameScene.add(Blob.device(bolt.collisionPos, 800, ConfusionGas.class));
                                 break;
                             case 1:
-                                GameScene.add(Blob.gadget(bolt.collisionPos, 500, ToxicGas.class));
+                                GameScene.add(Blob.device(bolt.collisionPos, 500, ToxicGas.class));
                                 break;
                             case 2:
-                                GameScene.add(Blob.gadget(bolt.collisionPos, 200, ParalyticGas.class));
+                                GameScene.add(Blob.device(bolt.collisionPos, 200, ParalyticGas.class));
                                 break;
                         }
                         blaster.blasterUsed();
@@ -203,12 +203,12 @@ class MalfunctioningBlaster {
     private static void uncommonEffect(final Blaster blaster, final Hero user, final Ballistica bolt) {
         switch (Random.Int(4)) {
 
-            //Random triggers
+            //Random mines
             case 0:
                 malfunctioningFX(user, bolt, new Callback() {
                     public void call() {
                         int pos = bolt.collisionPos;
-                        //place the triggers infront of an enemy so they walk into it.
+                        //place the mines infront of an enemy so they walk into it.
                         if (Actor.findChar(pos) != null && bolt.dist > 1) {
                             pos = bolt.path.get(bolt.dist - 1);
                         }
@@ -218,7 +218,7 @@ class MalfunctioningBlaster {
                                 pos == Terrain.EMPTY_DECO ||
                                 pos == Terrain.LIGHTEDVENT ||
                                 pos == Terrain.OFFVENT) {
-                            Dungeon.level.trigger((Trigger.Gadget) Generator.random(Generator.Category.GADGET), pos);
+                            Dungeon.level.mine((Mine.Device) Generator.random(Generator.Category.DEVICE), pos);
                         }
                         blaster.blasterUsed();
                     }
@@ -294,15 +294,15 @@ class MalfunctioningBlaster {
                         if (ch != null && ch != user
                                 && !ch.properties().contains(Char.Property.BOSS)
                                 && !ch.properties().contains(Char.Property.MINIBOSS)) {
-                            Sheep sheep = new Sheep();
-                            sheep.lifespan = 10;
-                            sheep.pos = ch.pos;
+                            YogSheep yogSheep = new YogSheep();
+                            yogSheep.lifespan = 10;
+                            yogSheep.pos = ch.pos;
                             ch.destroy();
                             ch.sprite.killAndErase();
                             Dungeon.level.mobs.remove(ch);
                             HealthIndicator.instance.target(null);
-                            GameScene.add(sheep);
-                            CellEmitter.get(sheep.pos).burst(Speck.factory(Speck.WOOL), 4);
+                            GameScene.add(yogSheep);
+                            CellEmitter.get(yogSheep.pos).burst(Speck.factory(Speck.WOOL), 4);
                         } else {
                             GLog.i(Messages.get(MalfunctioningBlaster.class, "nothing"));
                         }
@@ -363,11 +363,11 @@ class MalfunctioningBlaster {
                             c == Terrain.EMPTY_DECO ||
                             c == Terrain.LIGHTEDVENT ||
                             c == Terrain.OFFVENT) {
-                        GameScene.add(Blob.gadget(i, 15, Regrowth.class));
+                        GameScene.add(Blob.device(i, 15, Regrowth.class));
                     }
                 }
                 do {
-                    GameScene.add(Blob.gadget(Dungeon.level.randomDestination(), 10, Fire.class));
+                    GameScene.add(Blob.device(Dungeon.level.randomDestination(), 10, Fire.class));
                 } while (Random.Int(5) != 0);
                 new Flare(8, 32).color(0xFFFF66, true).show(user.sprite, 2f);
                 Sample.INSTANCE.play(Assets.SND_TELEPORT);

@@ -33,7 +33,7 @@ public class Knockout extends Buff {
 
     @Override
     public int icon() {
-        return BuffIndicator.DROWSY;
+        return BuffIndicator.KNOCKOUT;
     }
 
     public boolean attachTo(Char target) {

@@ -30,22 +30,22 @@ import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Frost;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.ConfusedShapeshifter;
-import com.wafitz.pixelspacebase.actors.mobs.Wraith;
+import com.wafitz.pixelspacebase.actors.mobs.Turret;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.Splash;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.AlienTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceBooster;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
-import com.wafitz.pixelspacebase.items.artifacts.MakersToolkit;
+import com.wafitz.pixelspacebase.items.artifacts.TechToolkit;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
+import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.FrozenCarpaccio;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
@@ -53,9 +53,10 @@ import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.mines.Mine;
+import com.wafitz.pixelspacebase.mines.Mine.Device;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
-import com.wafitz.pixelspacebase.triggers.Trigger.Gadget;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -67,7 +68,7 @@ import java.util.LinkedList;
 
 public class Heap implements Bundlable {
 
-    private static final int GADGETS_TO_EXPERIMENTALTECH = 3;
+    private static final int DEVICES_TO_TECH = 3;
 
     public enum Type {
         HEAP,
@@ -103,9 +104,9 @@ public class Heap implements Bundlable {
             case CRYSTAL_CHEST:
                 return ItemSpriteSheet.CRYSTAL_CHEST;
             case TOMB:
-                return ItemSpriteSheet.TOMB;
+                return ItemSpriteSheet.REDTERMINAL;
             case SKELETON:
-                return ItemSpriteSheet.BONES;
+                return ItemSpriteSheet.DISCARDEDSUIT;
             case REMAINS:
                 return ItemSpriteSheet.REMAINS;
             default:
@@ -127,14 +128,14 @@ public class Heap implements Bundlable {
                 }
                 break;
             case TOMB:
-                Wraith.spawnAround(hero.pos);
+                Turret.spawnAround(hero.pos);
                 break;
             case REMAINS:
             case SKELETON:
                 CellEmitter.center(pos).start(Speck.factory(Speck.RATTLE), 0.1f, 3);
                 for (Item item : items) {
                     if (item.malfunctioning) {
-                        if (Wraith.spawnAt(pos) == null) {
+                        if (Turret.spawnAt(pos) == null) {
                             hero.sprite.emitter().burst(ShadowParticle.MALFUNCTION, 6);
                             hero.damage(hero.HP / 2, this);
                         }
@@ -327,7 +328,7 @@ public class Heap implements Bundlable {
                 replace(item, FrozenCarpaccio.make((MysteryMeat) item));
                 frozen = true;
             } else if (item instanceof ExperimentalTech
-                    && !(item instanceof StrengthTech || item instanceof PowerTech)) {
+                    && !(item instanceof StrengthUpgrade || item instanceof PowerUpgrade)) {
                 items.remove(item);
                 ((ExperimentalTech) item).shatter(pos);
                 frozen = true;
@@ -355,13 +356,13 @@ public class Heap implements Bundlable {
         int count = 0;
 
 
-        if (items.size() == 2 && items.get(0) instanceof Gadget && items.get(1) instanceof AlienTech) {
+        if (items.size() == 2 && items.get(0) instanceof Mine.Device && items.get(1) instanceof AlienPod) {
 
             Sample.INSTANCE.play(Assets.SND_PUFF);
             CellEmitter.center(pos).burst(Speck.factory(Speck.EVOKE), 3);
 
-            AlienTech result = new AlienTech();
-            result.make((Gadget) items.get(0));
+            AlienPod result = new AlienPod();
+            result.make((Mine.Device) items.get(0));
 
             destroy();
 
@@ -371,7 +372,7 @@ public class Heap implements Bundlable {
 
         int index = 0;
         for (Item item : items) {
-            if (item instanceof Gadget) {
+            if (item instanceof Mine.Device) {
                 count += item.quantity;
                 chances[index++] = item.quantity;
             } else {
@@ -380,11 +381,11 @@ public class Heap implements Bundlable {
             }
         }
 
-        //makers toolkit gives a chance to make a potion in two or even one gadgets
-        MakersToolkit.crafting crafting = Dungeon.hero.buff(MakersToolkit.crafting.class);
+        //makers toolkit gives a chance to make a potion in two or even one devices
+        TechToolkit.crafting crafting = Dungeon.hero.buff(TechToolkit.crafting.class);
         int bonus = crafting != null ? crafting.itemLevel() : -1;
 
-        if (bonus != -1 ? crafting.tryMake(count) : count >= GADGETS_TO_EXPERIMENTALTECH) {
+        if (bonus != -1 ? crafting.tryMake(count) : count >= DEVICES_TO_TECH) {
 
             CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
             Sample.INSTANCE.play(Assets.SND_PUFF);
@@ -404,7 +405,7 @@ public class Heap implements Bundlable {
 
             } else {
 
-                Gadget proto = (Gadget) items.get(Random.chances(chances));
+                Mine.Device proto = (Device) items.get(Random.chances(chances));
                 Class<? extends Item> itemClass = proto.craftingClass;
 
                 destroy();
@@ -427,7 +428,7 @@ public class Heap implements Bundlable {
             //not a buff per-se, meant to cancel out higher experimentaltech accuracy when ppl are farming for ExperimentalTech of exp.
             if (bonus > 0)
                 if (Random.Int(1000 / bonus) == 0)
-                    return new ExperienceTech();
+                    return new ExperienceBooster();
 
             while (experimentaltech instanceof HealingTech && Random.Int(10) < Dungeon.limitedDrops.makingHP.count)
                 experimentaltech = Generator.random(Generator.Category.EXPERIMENTALTECH);

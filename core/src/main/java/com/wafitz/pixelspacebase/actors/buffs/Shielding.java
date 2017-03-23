@@ -57,7 +57,7 @@ public class Shielding extends Buff {
 
     @Override
     public int icon() {
-        return BuffIndicator.BARKSKIN;
+        return BuffIndicator.SHIELDING;
     }
 
     @Override

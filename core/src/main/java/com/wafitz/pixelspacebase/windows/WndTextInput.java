@@ -203,7 +203,7 @@ public class WndTextInput extends Window {
                             .instance.getSystemService(Activity.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(textInput.getWindowToken(), 0);
 
-                    //Soft keyboard sometimes triggers software buttons, so make sure to reassert immersive
+                    //Soft keyboard sometimes mines software buttons, so make sure to reassert immersive
                     PixelSpacebase.updateImmersiveMode();
 
                     textInput = null;

@@ -81,12 +81,12 @@ public class ItemSlot extends Button {
     };
     static final Item TOMB = new Item() {
         public int image() {
-            return ItemSpriteSheet.TOMB;
+            return ItemSpriteSheet.REDTERMINAL;
         }
     };
     static final Item SKELETON = new Item() {
         public int image() {
-            return ItemSpriteSheet.BONES;
+            return ItemSpriteSheet.DISCARDEDSUIT;
         }
     };
     public static final Item REMAINS = new Item() {

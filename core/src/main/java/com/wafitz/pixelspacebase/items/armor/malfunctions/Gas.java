@@ -37,7 +37,7 @@ public class Gas extends Armor.Enhancement {
 
         if (Random.Int(8) == 0) {
 
-            GameScene.add(Blob.gadget(defender.pos, 250, ToxicGas.class));
+            GameScene.add(Blob.device(defender.pos, 250, ToxicGas.class));
 
         }
 

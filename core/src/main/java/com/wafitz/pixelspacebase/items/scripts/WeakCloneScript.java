@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.items.scripts;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.MirrorImage;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.WeakClone;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
@@ -56,7 +56,7 @@ public class WeakCloneScript extends Script {
         while (nImages > 0 && respawnPoints.size() > 0) {
             int index = Random.index(respawnPoints);
 
-            MirrorImage mob = new MirrorImage();
+            WeakClone mob = new WeakClone();
             mob.duplicate(curUser);
             GameScene.add(mob);
             TeleportationScript.appear(mob, respawnPoints.get(index));

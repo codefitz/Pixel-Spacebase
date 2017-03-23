@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.PixelSpacebase;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.RocketTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalRockets;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -121,7 +121,7 @@ public class LiveVentsPainter extends Painter {
             level.drop(prize(level), pos);
         }
 
-        level.addItemToSpawn(new RocketTech());
+        level.addItemToSpawn(new ExperimentalRockets());
     }
 
     private static Item prize(Level level) {

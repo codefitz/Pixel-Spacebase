@@ -35,7 +35,7 @@ import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
 import com.wafitz.pixelspacebase.items.containers.Container;
-import com.wafitz.pixelspacebase.items.containers.GadgetCase;
+import com.wafitz.pixelspacebase.items.containers.DeviceCase;
 import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
 import com.wafitz.pixelspacebase.items.containers.XPort;
 import com.wafitz.pixelspacebase.items.food.Food;
@@ -44,10 +44,10 @@ import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Boomerang;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.mines.Mine.Device;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
-import com.wafitz.pixelspacebase.triggers.Trigger.Gadget;
 import com.wafitz.pixelspacebase.ui.Icons;
 import com.wafitz.pixelspacebase.ui.ItemSlot;
 import com.wafitz.pixelspacebase.ui.QuickSlotButton;
@@ -70,7 +70,7 @@ public class WndContainer extends WndTabbed {
         ARMOR,
         ENHANCEABLE,
         BLASTER,
-        GADGET,
+        DEVICE,
         FOOD,
         EXPERIMENTALTECH,
         SCRIPT,
@@ -129,7 +129,7 @@ public class WndContainer extends WndTabbed {
         Belongings stuff = Dungeon.hero.belongings;
         Container[] containers = {
                 stuff.backpack,
-                stuff.getItem(GadgetCase.class),
+                stuff.getItem(DeviceCase.class),
                 stuff.getItem(ScriptLibrary.class),
                 stuff.getItem(XPort.class),
                 stuff.getItem(BlasterHolster.class)};
@@ -278,8 +278,8 @@ public class WndContainer extends WndTabbed {
         }
 
         private Image icon() {
-            if (container instanceof GadgetCase) {
-                return Icons.get(Icons.GADGET_CASE);
+            if (container instanceof DeviceCase) {
+                return Icons.get(Icons.DEVICE_CASE);
             } else if (container instanceof ScriptLibrary) {
                 return Icons.get(Icons.SCRIPT_LIBRARY);
             } else if (container instanceof BlasterHolster) {
@@ -376,7 +376,7 @@ public class WndContainer extends WndTabbed {
                                     mode == Mode.ARMOR && (item instanceof Armor) ||
                                     mode == Mode.ENHANCEABLE && (item instanceof MeleeWeapon || item instanceof Boomerang || item instanceof Armor) ||
                                     mode == Mode.BLASTER && (item instanceof Blaster) ||
-                                    mode == Mode.GADGET && (item instanceof Gadget) ||
+                                    mode == Mode.DEVICE && (item instanceof Device) ||
                                     mode == Mode.FOOD && (item instanceof Food) ||
                                     mode == Mode.EXPERIMENTALTECH && (item instanceof ExperimentalTech) ||
                                     mode == Mode.SCRIPT && (item instanceof Script) ||

@@ -36,7 +36,7 @@ import com.wafitz.pixelspacebase.effects.MagicMissile;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
 import com.wafitz.pixelspacebase.items.containers.Container;
-import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.CellSelector;
@@ -55,7 +55,7 @@ public abstract class Blaster extends Item {
 
     private static final int USAGES_TO_KNOW = 20;
 
-    private static final String AC_ZAP = "ZAP";
+    private static final String AC_SHOOT = "SHOOT";
 
     private static final float TIME_TO_ZAP = 1f;
 
@@ -72,7 +72,7 @@ public abstract class Blaster extends Item {
     int collisionProperties = Ballistica.MAGIC_BOLT;
 
     {
-        defaultAction = AC_ZAP;
+        defaultAction = AC_SHOOT;
         usesTargeting = true;
     }
 
@@ -80,7 +80,7 @@ public abstract class Blaster extends Item {
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
         if (curCharges > 0 || !curChargeKnown) {
-            actions.add(AC_ZAP);
+            actions.add(AC_SHOOT);
         }
 
         return actions;
@@ -91,7 +91,7 @@ public abstract class Blaster extends Item {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_ZAP)) {
+        if (action.equals(AC_SHOOT)) {
 
             curUser = hero;
             curItem = this;
@@ -102,7 +102,7 @@ public abstract class Blaster extends Item {
 
     protected abstract void onZap(Ballistica attack);
 
-    public abstract void onHit(DM3000Staff staff, Char attacker, Char defender, int damage);
+    public abstract void onHit(DM3000Launcher launcher, Char attacker, Char defender, int damage);
 
     @Override
     public boolean collect(Container container) {
@@ -238,7 +238,7 @@ public abstract class Blaster extends Item {
         Sample.INSTANCE.play(Assets.SND_ZAP);
     }
 
-    public void staffFx(DM3000Staff.StaffParticle particle) {
+    public void launcherFx(DM3000Launcher.launcherParticle particle) {
         particle.color(0xFFFFFF);
         particle.am = 0.3f;
         particle.setLifespan(1f);

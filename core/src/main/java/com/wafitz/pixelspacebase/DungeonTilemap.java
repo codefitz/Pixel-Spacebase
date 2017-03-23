@@ -81,7 +81,7 @@ public class DungeonTilemap extends Tilemap {
         defaultVisuals.put(Terrain.WATER, 63);
     }
 
-    //These alt visuals will triggers 50% of the time
+    //These alt visuals will mines 50% of the time
     private static SparseIntArray commonAltVisuals = new SparseIntArray(32);
 
     static {
@@ -96,7 +96,7 @@ public class DungeonTilemap extends Tilemap {
         commonAltVisuals.put(23, 46);
     }
 
-    //These alt visuals triggers 10% of the time (and also override common alts when they show up)
+    //These alt visuals mines 10% of the time (and also override common alts when they show up)
     private static SparseIntArray rareAltVisuals = new SparseIntArray(32);
 
     static {

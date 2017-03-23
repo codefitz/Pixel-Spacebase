@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
-import com.wafitz.pixelspacebase.actors.mobs.GnollTrickster;
+import com.wafitz.pixelspacebase.actors.mobs.DarkLordGnoll;
 import com.wafitz.pixelspacebase.actors.mobs.GreatCrab;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.ToughXeno;
@@ -42,7 +42,7 @@ import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
-import com.wafitz.pixelspacebase.items.weapon.melee.NewShortsword;
+import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
 import com.wafitz.pixelspacebase.levels.OperationsLevel;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -123,15 +123,15 @@ public class Hologram extends NPC {
                         case 1:
                         default:
                             //GameScene.show(new WndQuest(this, Messages.get(this, "rat_2")));
-                            GLog.w(Messages.get(this, "rat_2"));
+                            GLog.w(Messages.get(this, "xeno_2", Dungeon.hero.givenName()));
                             break;
                         case 2:
                             //GameScene.show(new WndQuest(this, Messages.get(this, "gnoll_2")));
-                            GLog.w(Messages.get(this, "gnoll_2"));
+                            GLog.w(Messages.get(this, "gnoll_2", Dungeon.hero.givenName()));
                             break;
                         case 3:
                             //GameScene.show(new WndQuest(this, Messages.get(this, "crab_2")));
-                            GLog.w(Messages.get(this, "crab_2"));
+                            GLog.w(Messages.get(this, "crab_2", Dungeon.hero.givenName()));
                             break;
                     }
 
@@ -159,10 +159,10 @@ public class Hologram extends NPC {
                 case 1:
                 default:
                     questBoss = new ToughXeno();
-                    txt_quest = Messages.get(this, "rat_1", Dungeon.hero.givenName());
+                    txt_quest = Messages.get(this, "xeno_1", Dungeon.hero.givenName());
                     break;
                 case 2:
-                    questBoss = new GnollTrickster();
+                    questBoss = new DarkLordGnoll();
                     txt_quest = Messages.get(this, "gnoll_1", Dungeon.hero.givenName());
                     break;
                 case 3:
@@ -310,7 +310,7 @@ public class Hologram extends NPC {
                     } while (!(weapon instanceof MeleeWeapon));
                 } catch (Exception e) {
                     PixelSpacebase.reportException(e);
-                    weapon = new NewShortsword();
+                    weapon = new Wrench();
                 }
 
                 //50%:+0, 30%:+1, 15%:+2, 5%:+3

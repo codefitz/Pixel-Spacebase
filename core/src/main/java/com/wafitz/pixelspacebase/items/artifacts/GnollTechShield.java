@@ -29,10 +29,10 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.EarthParticle;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.mines.Mine;
+import com.wafitz.pixelspacebase.mines.WeakForcefield;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
-import com.wafitz.pixelspacebase.triggers.Trigger;
-import com.wafitz.pixelspacebase.triggers.WeakForcefield;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.wafitz.pixelspacebase.windows.WndContainer;
 import com.watabou.noosa.Camera;
@@ -45,7 +45,7 @@ import java.util.Collections;
 public class GnollTechShield extends Artifact {
 
     {
-        image = ItemSpriteSheet.ARTIFACT_SANDALS;
+        image = ItemSpriteSheet.GNOLLTECH_SHIELD_1;
 
         levelCap = 3;
 
@@ -57,9 +57,9 @@ public class GnollTechShield extends Artifact {
     private static final String AC_APPLY = "APPLY";
     private static final String AC_ROOT = "ROOT";
 
-    protected WndContainer.Mode mode = WndContainer.Mode.GADGET;
+    protected WndContainer.Mode mode = WndContainer.Mode.DEVICE;
 
-    public ArrayList<Class> gadgets = new ArrayList<>();
+    public ArrayList<Class> devices = new ArrayList<>();
 
     @Override
     public ArrayList<String> actions(Hero hero) {
@@ -115,8 +115,8 @@ public class GnollTechShield extends Artifact {
                 desc += "\n\n" + Messages.get(this, "desc_ability");
         }
 
-        if (!gadgets.isEmpty()) {
-            desc += "\n\n" + Messages.get(this, "desc_gadgets", gadgets.size());
+        if (!devices.isEmpty()) {
+            desc += "\n\n" + Messages.get(this, "desc_devices", devices.size());
         }
 
         return desc;
@@ -124,32 +124,32 @@ public class GnollTechShield extends Artifact {
 
     @Override
     public Item upgrade() {
-        if (level() < 0) image = ItemSpriteSheet.ARTIFACT_SANDALS;
-        else if (level() == 0) image = ItemSpriteSheet.ARTIFACT_SHOES;
-        else if (level() == 1) image = ItemSpriteSheet.ARTIFACT_BOOTS;
-        else if (level() >= 2) image = ItemSpriteSheet.ARTIFACT_GREAVES;
+        if (level() < 0) image = ItemSpriteSheet.GNOLLTECH_SHIELD_1;
+        else if (level() == 0) image = ItemSpriteSheet.GNOLLTECH_SHIELD_2;
+        else if (level() == 1) image = ItemSpriteSheet.GNOLLTECH_SHIELD_3;
+        else if (level() >= 2) image = ItemSpriteSheet.GNOLLTECH_SHIELD_4;
         name = Messages.get(this, "name_" + (level() + 1));
         return super.upgrade();
     }
 
 
-    private static final String GADGETS = "gadgets";
+    private static final String DEVICES = "devices";
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
-        bundle.put(GADGETS, gadgets.toArray(new Class[gadgets.size()]));
+        bundle.put(DEVICES, devices.toArray(new Class[devices.size()]));
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
         if (level() > 0) name = Messages.get(this, "name_" + level());
-        if (bundle.contains(GADGETS))
-            Collections.addAll(gadgets, bundle.getClassArray(GADGETS));
-        if (level() == 1) image = ItemSpriteSheet.ARTIFACT_SHOES;
-        else if (level() == 2) image = ItemSpriteSheet.ARTIFACT_BOOTS;
-        else if (level() >= 3) image = ItemSpriteSheet.ARTIFACT_GREAVES;
+        if (bundle.contains(DEVICES))
+            Collections.addAll(devices, bundle.getClassArray(DEVICES));
+        if (level() == 1) image = ItemSpriteSheet.GNOLLTECH_SHIELD_2;
+        else if (level() == 2) image = ItemSpriteSheet.GNOLLTECH_SHIELD_3;
+        else if (level() >= 3) image = ItemSpriteSheet.GNOLLTECH_SHIELD_4;
     }
 
     public class Naturalism extends ArtifactBuff {
@@ -165,26 +165,26 @@ public class GnollTechShield extends Artifact {
     protected WndContainer.Listener itemSelector = new WndContainer.Listener() {
         @Override
         public void onSelect(Item item) {
-            if (item != null && item instanceof Trigger.Gadget) {
-                if (gadgets.contains(item.getClass())) {
+            if (item != null && item instanceof Mine.Device) {
+                if (devices.contains(item.getClass())) {
                     GLog.w(Messages.get(GnollTechShield.class, "already_applied"));
                 } else {
-                    gadgets.add(item.getClass());
+                    devices.add(item.getClass());
 
                     Hero hero = Dungeon.hero;
                     hero.sprite.operate(hero.pos);
                     Sample.INSTANCE.play(Assets.SND_PLANT);
                     hero.busy();
                     hero.spend(2f);
-                    if (gadgets.size() >= 3 + (level() * 3)) {
-                        gadgets.clear();
+                    if (devices.size() >= 3 + (level() * 3)) {
+                        devices.clear();
                         upgrade();
                         if (level() >= 1 && level() <= 3) {
                             GLog.p(Messages.get(GnollTechShield.class, "levelup"));
                         }
 
                     } else {
-                        GLog.i(Messages.get(GnollTechShield.class, "absorb_gadget"));
+                        GLog.i(Messages.get(GnollTechShield.class, "absorb_device"));
                     }
                     item.detach(hero.belongings.backpack);
                 }

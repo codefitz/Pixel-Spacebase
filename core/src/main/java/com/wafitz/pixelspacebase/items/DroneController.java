@@ -44,7 +44,7 @@ public class DroneController extends Item {
     private static final String AC_SHATTER = "SHATTER";
 
     {
-        image = ItemSpriteSheet.HONEYPOT;
+        image = ItemSpriteSheet.DRONECONTROLLER;
 
         defaultAction = AC_THROW;
         usesTargeting = true;
@@ -147,7 +147,7 @@ public class DroneController extends Item {
     public static class ShatteredPot extends Item {
 
         {
-            image = ItemSpriteSheet.SHATTPOT;
+            image = ItemSpriteSheet.DEADDRONECONT;
             stackable = false;
         }
 

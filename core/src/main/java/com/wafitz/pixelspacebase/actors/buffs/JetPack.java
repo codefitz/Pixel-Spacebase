@@ -50,7 +50,7 @@ public class JetPack extends FlavourBuff {
 
     @Override
     public int icon() {
-        return BuffIndicator.LEVITATION;
+        return BuffIndicator.JETPACK;
     }
 
     @Override

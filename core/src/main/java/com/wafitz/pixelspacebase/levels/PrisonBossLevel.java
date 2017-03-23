@@ -36,8 +36,8 @@ import com.wafitz.pixelspacebase.levels.painters.MazePainter;
 import com.wafitz.pixelspacebase.levels.vents.SpearVent;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.mines.Mine;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.triggers.Trigger;
 import com.wafitz.pixelspacebase.ui.CustomTileVisual;
 import com.wafitz.pixelspacebase.ui.HealthIndicator;
 import com.watabou.noosa.Group;
@@ -267,9 +267,9 @@ public class PrisonBossLevel extends Level {
                     mob.sprite.killAndErase();
             }
         }
-        for (Trigger trigger : triggers.values()) {
-            if (safeArea == null || !safeArea.inside(cellToPoint(trigger.pos))) {
-                triggers.remove(trigger.pos);
+        for (Mine mine : mines.values()) {
+            if (safeArea == null || !safeArea.inside(cellToPoint(mine.pos))) {
+                mines.remove(mine.pos);
             }
         }
     }

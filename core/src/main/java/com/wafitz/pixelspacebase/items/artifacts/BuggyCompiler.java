@@ -47,7 +47,7 @@ import java.util.Collections;
 public class BuggyCompiler extends Artifact {
 
     {
-        image = ItemSpriteSheet.ARTIFACT_COMPILER;
+        image = ItemSpriteSheet.BUGGY_COMPILER;
 
         levelCap = 10;
 

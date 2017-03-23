@@ -86,10 +86,10 @@ public class Weightstone extends Item {
         detach(curUser.belongings.backpack);
 
         if (forSpeed) {
-            weapon.imbue = Weapon.Imbue.LIGHT;
+            weapon.convert = Weapon.Convert.LIGHT;
             GLog.p(Messages.get(this, "light"));
         } else {
-            weapon.imbue = Weapon.Imbue.HEAVY;
+            weapon.convert = Weapon.Convert.HEAVY;
             GLog.p(Messages.get(this, "heavy"));
         }
 
@@ -135,7 +135,7 @@ public class Weightstone extends Item {
 
             float pos = tfMesage.top() + tfMesage.height();
 
-            if (weapon.imbue != Weapon.Imbue.LIGHT) {
+            if (weapon.convert != Weapon.Convert.LIGHT) {
                 RedButton btnSpeed = new RedButton(Messages.get(this, "light")) {
                     @Override
                     protected void onClick() {
@@ -149,7 +149,7 @@ public class Weightstone extends Item {
                 pos = btnSpeed.bottom();
             }
 
-            if (weapon.imbue != Weapon.Imbue.HEAVY) {
+            if (weapon.convert != Weapon.Convert.HEAVY) {
                 RedButton btnAccuracy = new RedButton(Messages.get(this, "heavy")) {
                     @Override
                     protected void onClick() {

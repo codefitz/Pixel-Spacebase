@@ -30,16 +30,16 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
 import com.wafitz.pixelspacebase.items.Dewdrop;
 import com.wafitz.pixelspacebase.items.Generator;
-import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
+import com.wafitz.pixelspacebase.mines.AlienPlant;
+import com.wafitz.pixelspacebase.mines.Boost;
+import com.wafitz.pixelspacebase.mines.Healing;
+import com.wafitz.pixelspacebase.mines.Mine;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
-import com.wafitz.pixelspacebase.triggers.AlienPlant;
-import com.wafitz.pixelspacebase.triggers.Boost;
-import com.wafitz.pixelspacebase.triggers.Healing;
-import com.wafitz.pixelspacebase.triggers.Trigger;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.ColorMath;
@@ -79,15 +79,15 @@ public class EMP extends Blaster {
             }
         }
 
-        float numTriggers, numDews, numPods, numStars;
+        float numMines, numDews, numPods, numStars;
 
         int chrgUsed = chargesPerCast();
-        //numbers greater than n*100% means n guaranteed triggers, e.g. 210% = 2 triggers w/10% chance for 3 triggers.
-        numTriggers = 0.2f + chrgUsed * chrgUsed * 0.020f; //scales from 22% to 220%
+        //numbers greater than n*100% means n guaranteed mines, e.g. 210% = 2 mines w/10% chance for 3 mines.
+        numMines = 0.2f + chrgUsed * chrgUsed * 0.020f; //scales from 22% to 220%
         numDews = 0.05f + chrgUsed * chrgUsed * 0.016f; //scales from 6.6% to 165%
         numPods = 0.02f + chrgUsed * chrgUsed * 0.013f; //scales from 3.3% to 135%
         numStars = (chrgUsed * chrgUsed * chrgUsed / 5f) * 0.005f; //scales from 0.1% to 100%
-        placeTriggers(numTriggers, numDews, numPods, numStars);
+        placeMines(numMines, numDews, numPods, numStars);
 
         for (int i : affectedCells) {
             int c = Dungeon.level.map[i];
@@ -102,7 +102,7 @@ public class EMP extends Blaster {
                 processSoulMark(ch, chargesPerCast());
             }
 
-            GameScene.add(Blob.gadget(i, 10, Regrowth.class));
+            GameScene.add(Blob.device(i, 10, Regrowth.class));
 
         }
     }
@@ -121,36 +121,36 @@ public class EMP extends Blaster {
             visualCells.add(cell);
     }
 
-    private void placeTriggers(float numTriggers, float numDews, float numPods, float numStars) {
+    private void placeMines(float numMines, float numDews, float numPods, float numStars) {
         Iterator<Integer> cells = affectedCells.iterator();
         Level floor = Dungeon.level;
 
-        while (cells.hasNext() && Random.Float() <= numTriggers) {
-            Trigger.Gadget gadget = (Trigger.Gadget) Generator.random(Generator.Category.GADGET);
+        while (cells.hasNext() && Random.Float() <= numMines) {
+            Mine.Device device = (Mine.Device) Generator.random(Generator.Category.DEVICE);
 
-            if (gadget instanceof AlienPlant.Gadget) {
-                if (Random.Int(15) - Dungeon.limitedDrops.alienTechGadget.count >= 0) {
-                    floor.trigger(gadget, cells.next());
-                    Dungeon.limitedDrops.alienTechGadget.count++;
+            if (device instanceof AlienPlant.Device) {
+                if (Random.Int(15) - Dungeon.limitedDrops.alienTechDevice.count >= 0) {
+                    floor.mine(device, cells.next());
+                    Dungeon.limitedDrops.alienTechDevice.count++;
                 }
             } else
-                floor.trigger(gadget, cells.next());
+                floor.mine(device, cells.next());
 
-            numTriggers--;
+            numMines--;
         }
 
         while (cells.hasNext() && Random.Float() <= numDews) {
-            floor.trigger(new Dewcatcher.Gadget(), cells.next());
+            floor.mine(new Dewcatcher.Device(), cells.next());
             numDews--;
         }
 
         while (cells.hasNext() && Random.Float() <= numPods) {
-            floor.trigger(new Gadgetpod.Gadget(), cells.next());
+            floor.mine(new Devicepod.Device(), cells.next());
             numPods--;
         }
 
         while (cells.hasNext() && Random.Float() <= numStars) {
-            floor.trigger(new Boost.Gadget(), cells.next());
+            floor.mine(new Boost.Device(), cells.next());
             numStars--;
         }
 
@@ -165,10 +165,10 @@ public class EMP extends Blaster {
     }
 
     @Override
-    public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
+    public void onHit(DM3000Launcher launcher, Char attacker, Char defender, int damage) {
         //like pre-nerf vampiric enhancement, except with herbal healing buff
 
-        int level = Math.max(0, staff.level());
+        int level = Math.max(0, launcher.level());
 
         // lvl 0 - 33%
         // lvl 1 - 43%
@@ -232,7 +232,7 @@ public class EMP extends Blaster {
     }
 
     @Override
-    public void staffFx(DM3000Staff.StaffParticle particle) {
+    public void launcherFx(DM3000Launcher.launcherParticle particle) {
         particle.color(ColorMath.random(0x004400, 0x88CC44));
         particle.am = 1f;
         particle.setLifespan(1f);
@@ -243,7 +243,7 @@ public class EMP extends Blaster {
         particle.y += dst;
     }
 
-    private static class Dewcatcher extends Trigger {
+    private static class Dewcatcher extends Mine {
 
         {
             image = 12;
@@ -269,15 +269,15 @@ public class EMP extends Blaster {
 
         }
 
-        //gadget is never dropped, only care about triggers class
-        static class Gadget extends Trigger.Gadget {
+        //device is never dropped, only care about mines class
+        static class Device extends Mine.Device {
             {
-                triggerClass = Dewcatcher.class;
+                mineClass = Dewcatcher.class;
             }
         }
     }
 
-    private static class Gadgetpod extends Trigger {
+    private static class Devicepod extends Mine {
 
         {
             image = 13;
@@ -286,7 +286,7 @@ public class EMP extends Blaster {
         @Override
         public void activate() {
 
-            int nGadgets = Random.NormalIntRange(1, 5);
+            int nDevices = Random.NormalIntRange(1, 5);
 
             ArrayList<Integer> candidates = new ArrayList<>();
             for (int i : PathFinder.NEIGHBOURS8) {
@@ -295,18 +295,18 @@ public class EMP extends Blaster {
                 }
             }
 
-            for (int i = 0; i < nGadgets && !candidates.isEmpty(); i++) {
+            for (int i = 0; i < nDevices && !candidates.isEmpty(); i++) {
                 Integer c = Random.element(candidates);
-                Dungeon.level.drop(Generator.random(Generator.Category.GADGET), c).sprite.drop(pos);
+                Dungeon.level.drop(Generator.random(Generator.Category.DEVICE), c).sprite.drop(pos);
                 candidates.remove(c);
             }
 
         }
 
-        //gadget is never dropped, only care about triggers class
-        static class Gadget extends Trigger.Gadget {
+        //device is never dropped, only care about mines class
+        static class Device extends Mine.Device {
             {
-                triggerClass = Gadgetpod.class;
+                mineClass = Devicepod.class;
             }
         }
 

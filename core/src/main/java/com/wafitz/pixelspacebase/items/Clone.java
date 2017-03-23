@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 public class Clone extends Item {
 
-    private static final String AC_BLESS = "BLESS";
+    private static final String AC_BLESS = "UPGRADE";
 
     {
         image = ItemSpriteSheet.CLONE;

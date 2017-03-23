@@ -40,7 +40,7 @@ import java.util.ArrayList;
 public class SurveyorModule extends Artifact {
 
     {
-        image = ItemSpriteSheet.ARTIFACT_TALISMAN;
+        image = ItemSpriteSheet.SURVEYOR_MODULE;
 
         exp = 0;
         levelCap = 10;
@@ -214,7 +214,7 @@ public class SurveyorModule extends Artifact {
             if (warn == 0)
                 return BuffIndicator.NONE;
             else
-                return BuffIndicator.FORESIGHT;
+                return BuffIndicator.SURVEY;
         }
     }
 }

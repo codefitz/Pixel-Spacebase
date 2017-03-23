@@ -28,10 +28,10 @@ import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Blacksmith;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Imp;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Leonard;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Generator;
@@ -87,20 +87,20 @@ public class Dungeon {
         arcaneStyli,
 
         //all unlimited health potion sources (except guards, which are at the bottom.
-        swarmHP,
+        squiddardHP,
         batHP,
         warlockHP,
         scorpioHP,
         makingHP,
         //blandfruit, which can technically be an unlimited health potion source
-        alienTechGadget,
+        alienTechDevice,
 
         //doesn't use Generator, so we have to enforce one armband drop here
         armband,
 
         //containers
         airTank,
-        gadgetCase,
+        deviceCase,
         scriptContainer,
         xPort,
         blasterHolster,
@@ -180,8 +180,8 @@ public class Dungeon {
 
         Hologram.Quest.reset();
         Gunsmith.Quest.reset();
-        Blacksmith.Quest.reset();
-        Imp.Quest.reset();
+        Leonard.Quest.reset();
+        Arp.Quest.reset();
 
         Generator.initArtifacts();
         hero = new Hero();
@@ -468,8 +468,8 @@ public class Dungeon {
             Bundle quests = new Bundle();
             Hologram.Quest.storeInBundle(quests);
             Gunsmith.Quest.storeInBundle(quests);
-            Blacksmith.Quest.storeInBundle(quests);
-            Imp.Quest.storeInBundle(quests);
+            Leonard.Quest.storeInBundle(quests);
+            Arp.Quest.storeInBundle(quests);
             bundle.put(QUESTS, quests);
 
             Room.storeRoomsInBundle(bundle);
@@ -579,13 +579,13 @@ public class Dungeon {
             if (!quests.isNull()) {
                 Hologram.Quest.restoreFromBundle(quests);
                 Gunsmith.Quest.restoreFromBundle(quests);
-                Blacksmith.Quest.restoreFromBundle(quests);
-                Imp.Quest.restoreFromBundle(quests);
+                Leonard.Quest.restoreFromBundle(quests);
+                Arp.Quest.restoreFromBundle(quests);
             } else {
                 Hologram.Quest.reset();
                 Gunsmith.Quest.reset();
-                Blacksmith.Quest.reset();
-                Imp.Quest.reset();
+                Leonard.Quest.reset();
+                Arp.Quest.reset();
             }
 
             Room.restoreRoomsFromBundle(bundle);

@@ -33,8 +33,8 @@ import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.effects.Flare;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.ArmorKit;
-import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
-import com.wafitz.pixelspacebase.items.blasters.Disintergrator;
+import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
+import com.wafitz.pixelspacebase.items.blasters.Disintegrator;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
 import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
 import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
@@ -156,7 +156,7 @@ public class King extends Mob {
 
         Badges.validateBossSlain();
 
-        LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
+        PortableMaker beacon = Dungeon.hero.belongings.getItem(PortableMaker.class);
         if (beacon != null) {
             beacon.upgrade();
         }
@@ -234,7 +234,7 @@ public class King extends Mob {
         RESISTANCES.add(ToxicGas.class);
         RESISTANCES.add(Grim.class);
         RESISTANCES.add(PsionicBlastScript.class);
-        RESISTANCES.add(Disintergrator.class);
+        RESISTANCES.add(Disintegrator.class);
     }
 
     @Override

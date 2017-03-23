@@ -33,7 +33,7 @@ import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
-import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
+import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
 import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
@@ -61,7 +61,7 @@ public class FeralShapeshifter extends Mob {
         defenseSkill = 8;
         spriteClass = FeralShapeshifterSprite.class;
 
-        loot = new LloydsBeacon().identify();
+        loot = new PortableMaker().identify();
         lootChance = 0.333f;
 
         properties.add(Property.BOSS);
@@ -147,7 +147,7 @@ public class FeralShapeshifter extends Mob {
             PathFinder.buildDistanceMap(pos, BArray.not(Level.solid, null), 2);
             for (int i = 0; i < PathFinder.distance.length; i++) {
                 if (PathFinder.distance[i] < Integer.MAX_VALUE)
-                    GameScene.add(Blob.gadget(i, 2, ShapeshifterWarn.class));
+                    GameScene.add(Blob.device(i, 2, ShapeshifterWarn.class));
             }
             pumpedUp++;
 
@@ -180,7 +180,7 @@ public class FeralShapeshifter extends Mob {
             for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
                 int j = pos + PathFinder.NEIGHBOURS9[i];
                 if (!Level.solid[j]) {
-                    GameScene.add(Blob.gadget(j, 2, ShapeshifterWarn.class));
+                    GameScene.add(Blob.device(j, 2, ShapeshifterWarn.class));
                 }
             }
 

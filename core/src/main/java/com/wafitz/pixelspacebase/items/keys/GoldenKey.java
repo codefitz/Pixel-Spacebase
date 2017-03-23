@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class GoldenKey extends Key {
 
     {
-        image = ItemSpriteSheet.GOLDEN_KEY;
+        image = ItemSpriteSheet.GOLDEN_KEYCARD;
     }
 
     @Override

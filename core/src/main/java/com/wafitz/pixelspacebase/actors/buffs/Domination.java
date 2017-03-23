@@ -55,7 +55,7 @@ public class Domination extends Buff {
 
     @Override
     public int icon() {
-        return BuffIndicator.CORRUPT;
+        return BuffIndicator.DOMINATION;
     }
 
     @Override

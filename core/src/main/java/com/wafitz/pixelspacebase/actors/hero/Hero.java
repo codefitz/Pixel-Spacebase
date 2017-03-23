@@ -51,8 +51,8 @@ import com.wafitz.pixelspacebase.items.Amulet;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.Dewdrop;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
@@ -91,13 +91,13 @@ import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.CraftingTerminal;
 import com.wafitz.pixelspacebase.levels.features.Sign;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.mines.Healing;
+import com.wafitz.pixelspacebase.mines.WeakForcefield;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.wafitz.pixelspacebase.scenes.SurfaceScene;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.sprites.HeroSprite;
-import com.wafitz.pixelspacebase.triggers.Healing;
-import com.wafitz.pixelspacebase.triggers.WeakForcefield;
 import com.wafitz.pixelspacebase.ui.AttackIndicator;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
 import com.wafitz.pixelspacebase.ui.QuickSlotButton;
@@ -656,7 +656,7 @@ public class Hero extends Char {
 
                         boolean important =
                                 ((item instanceof UpgradeScript || item instanceof EnhancementScript) && ((Script) item).isKnown()) ||
-                                        ((item instanceof StrengthTech || item instanceof PowerTech) && ((ExperimentalTech) item).isKnown());
+                                        ((item instanceof StrengthUpgrade || item instanceof PowerUpgrade) && ((ExperimentalTech) item).isKnown());
                         if (important) {
                             GLog.p(Messages.get(this, "you_now_have", item.name()));
                         } else {

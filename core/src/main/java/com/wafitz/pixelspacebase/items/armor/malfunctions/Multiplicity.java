@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.MirrorImage;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.WeakClone;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -58,10 +58,10 @@ public class Multiplicity extends Armor.Enhancement {
 
             if (spawnPoints.size() > 0) {
 
-                Mob m = null;
+                Mob m;
                 if (Random.Int(2) == 0 && defender instanceof Hero) {
-                    m = new MirrorImage();
-                    ((MirrorImage) m).duplicate((Hero) defender);
+                    m = new WeakClone();
+                    ((WeakClone) m).duplicate((Hero) defender);
 
                 } else {
                     if (attacker.properties().contains(Char.Property.BOSS) || attacker.properties().contains(Char.Property.MINIBOSS)) {

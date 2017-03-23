@@ -54,7 +54,7 @@ public class MedicalTerminal extends WellWater {
 
         GLog.p(Messages.get(this, "procced"));
 
-        Journal.remove(Feature.WELL_OF_HEALTH);
+        Journal.remove(Feature.HEALTH_TERMINAL);
 
         return true;
     }
@@ -63,7 +63,7 @@ public class MedicalTerminal extends WellWater {
     protected Item affectItem(Item item) {
         if (item instanceof AirTank && !((AirTank) item).isFull()) {
             ((AirTank) item).fill();
-            Journal.remove(Feature.WELL_OF_HEALTH);
+            Journal.remove(Feature.HEALTH_TERMINAL);
             return item;
         }
 

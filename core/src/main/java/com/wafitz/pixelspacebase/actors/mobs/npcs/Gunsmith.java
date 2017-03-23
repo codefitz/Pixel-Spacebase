@@ -29,14 +29,14 @@ import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.quest.CeremonialCandle;
-import com.wafitz.pixelspacebase.items.quest.CorpseDust;
 import com.wafitz.pixelspacebase.items.quest.Embers;
+import com.wafitz.pixelspacebase.items.quest.Lazer;
 import com.wafitz.pixelspacebase.levels.PrisonLevel;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.mines.AlienTrap;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.GunsmithSprite;
-import com.wafitz.pixelspacebase.triggers.AlienTrap;
 import com.wafitz.pixelspacebase.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -85,13 +85,13 @@ public class Gunsmith extends NPC {
             switch (Quest.type) {
                 case 1:
                 default:
-                    item = Dungeon.hero.belongings.getItem(CorpseDust.class);
+                    item = Dungeon.hero.belongings.getItem(Lazer.class);
                     break;
                 case 2:
                     item = Dungeon.hero.belongings.getItem(Embers.class);
                     break;
                 case 3:
-                    item = Dungeon.hero.belongings.getItem(AlienTrap.Gadget.class);
+                    item = Dungeon.hero.belongings.getItem(AlienTrap.Device.class);
                     break;
             }
 
@@ -101,13 +101,13 @@ public class Gunsmith extends NPC {
                 String msg = "";
                 switch (Quest.type) {
                     case 1:
-                        msg = Messages.get(this, "reminder_dust", Dungeon.hero.givenName());
+                        msg = Messages.get(this, "reminder_lazer", Dungeon.hero.givenName());
                         break;
                     case 2:
                         msg = Messages.get(this, "reminder_ember", Dungeon.hero.givenName());
                         break;
                     case 3:
-                        msg = Messages.get(this, "reminder_berry", Dungeon.hero.givenName());
+                        msg = Messages.get(this, "reminder_device", Dungeon.hero.givenName());
                         break;
                 }
                 GameScene.show(new WndQuest(this, msg));
@@ -136,13 +136,13 @@ public class Gunsmith extends NPC {
 
             switch (Quest.type) {
                 case 1:
-                    msg2 += Messages.get(this, "intro_dust");
+                    msg2 += Messages.get(this, "intro_lazer");
                     break;
                 case 2:
                     msg2 += Messages.get(this, "intro_ember");
                     break;
                 case 3:
-                    msg2 += Messages.get(this, "intro_berry");
+                    msg2 += Messages.get(this, "intro_device");
                     break;
             }
 

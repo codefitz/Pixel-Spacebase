@@ -48,7 +48,7 @@ public class LockedDown extends FlavourBuff {
 
     @Override
     public int icon() {
-        return BuffIndicator.ROOTS;
+        return BuffIndicator.LOCKDOWN;
     }
 
     @Override

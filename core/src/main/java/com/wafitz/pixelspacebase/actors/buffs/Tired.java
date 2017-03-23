@@ -79,7 +79,7 @@ public class Tired extends Buff {
 
     @Override
     public int icon() {
-        return BuffIndicator.MAGIC_SLEEP;
+        return BuffIndicator.TIRED;
     }
 
     @Override

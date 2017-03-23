@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.DungeonTilemap;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Imp;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
 import com.wafitz.pixelspacebase.levels.Room.Type;
 import com.wafitz.pixelspacebase.levels.vents.BlazingVent;
 import com.wafitz.pixelspacebase.levels.vents.DisarmingVent;
@@ -122,7 +122,7 @@ public class CityLevel extends RegularLevel {
     protected void createItems() {
         super.createItems();
 
-        Imp.Quest.spawn(this);
+        Arp.Quest.spawn(this);
     }
 
     @Override

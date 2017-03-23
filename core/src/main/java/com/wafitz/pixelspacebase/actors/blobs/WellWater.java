@@ -57,11 +57,11 @@ public class WellWater extends Blob {
 
         if (Dungeon.visible[pos]) {
             if (this instanceof KnowledgebaseTerminal) {
-                Journal.add(Feature.WELL_OF_AWARENESS);
+                Journal.add(Feature.KNOWLEDGE_TERMINAL);
             } else if (this instanceof MedicalTerminal) {
-                Journal.add(Feature.WELL_OF_HEALTH);
+                Journal.add(Feature.HEALTH_TERMINAL);
             } else if (this instanceof DiffusionalTerminal) {
-                Journal.add(Feature.WELL_OF_TRANSMUTATION);
+                Journal.add(Feature.DIFFUSION_TERMINAL);
             }
         }
     }
@@ -126,8 +126,8 @@ public class WellWater extends Blob {
     }
 
     @Override
-    public void gadget(Level level, int cell, int amount) {
-        super.gadget(level, cell, amount);
+    public void device(Level level, int cell, int amount) {
+        super.device(level, cell, amount);
 
         cur[pos] = 0;
         pos = cell;

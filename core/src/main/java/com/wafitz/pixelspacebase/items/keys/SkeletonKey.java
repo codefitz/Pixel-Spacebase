@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class SkeletonKey extends Key {
 
     {
-        image = ItemSpriteSheet.SKELETON_KEY;
+        image = ItemSpriteSheet.SECURITY_KEYCARD;
         stackable = false;
     }
 

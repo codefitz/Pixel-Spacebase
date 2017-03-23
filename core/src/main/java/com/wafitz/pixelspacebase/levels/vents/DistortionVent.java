@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
+import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
 import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.watabou.noosa.Game;
 
@@ -43,8 +43,8 @@ public class DistortionVent extends Vent {
         belongings.ironKeys[Dungeon.depth] = 0;
         belongings.specialKeys[Dungeon.depth] = 0;
         for (Item i : belongings) {
-            if (i instanceof LloydsBeacon && ((LloydsBeacon) i).returnDepth == Dungeon.depth)
-                ((LloydsBeacon) i).returnDepth = -1;
+            if (i instanceof PortableMaker && ((PortableMaker) i).returnDepth == Dungeon.depth)
+                ((PortableMaker) i).returnDepth = -1;
         }
 
         for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))

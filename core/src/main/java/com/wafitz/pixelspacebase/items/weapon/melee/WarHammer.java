@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class WarHammer extends MeleeWeapon {
 
     {
-        image = ItemSpriteSheet.WAR_HAMMER;
+        image = ItemSpriteSheet.LAZER_HAMMER;
 
         tier = 5;
         ACC = 1.15f; //15% boost to accuracy

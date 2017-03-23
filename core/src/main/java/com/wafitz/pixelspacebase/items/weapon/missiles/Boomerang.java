@@ -132,7 +132,7 @@ public class Boomerang extends MissileWeapon {
     @Override
     public String desc() {
         String info = super.desc();
-        switch (imbue) {
+        switch (convert) {
             case LIGHT:
                 info += "\n\n" + Messages.get(Weapon.class, "lighter");
                 break;

@@ -70,7 +70,7 @@ public class ToughXeno extends Xenomorph {
     @Override
     public int defenseProc(Char enemy, int damage) {
 
-        GameScene.add(Blob.gadget(pos, 20, StenchGas.class));
+        GameScene.add(Blob.device(pos, 20, StenchGas.class));
 
         return super.defenseProc(enemy, damage);
     }

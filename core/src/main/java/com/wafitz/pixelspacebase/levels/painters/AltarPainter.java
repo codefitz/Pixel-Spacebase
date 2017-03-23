@@ -57,7 +57,7 @@ public class AltarPainter extends Painter {
         if (fire == null) {
 			fire = new SacrificialFire();
 		}
-		fire.gadget( c.x + c.y * Level.WIDTH, 5 + Dungeon.depth * 5 );
+		fire.device( c.x + c.y * Level.WIDTH, 5 + Dungeon.depth * 5 );
 		level.blobs.put( SacrificialFire.class, fire );*/
 
         door.set(Room.Door.Type.EMPTY);

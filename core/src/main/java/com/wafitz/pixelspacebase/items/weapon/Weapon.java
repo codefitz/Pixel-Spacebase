@@ -67,7 +67,7 @@ abstract public class Weapon extends KindOfWeapon {
     public float DLY = 1f;    // Speed modifier
     public int RCH = 1;    // Reach modifier (only applies to melee hits)
 
-    public enum Imbue {
+    public enum Convert {
         NONE(1.0f, 1.00f),
         LIGHT(0.7f, 0.67f),
         HEAVY(1.5f, 1.67f);
@@ -75,7 +75,7 @@ abstract public class Weapon extends KindOfWeapon {
         private float damageFactor;
         private float delayFactor;
 
-        Imbue(float dmg, float dly) {
+        Convert(float dmg, float dly) {
             damageFactor = dmg;
             delayFactor = dly;
         }
@@ -89,7 +89,7 @@ abstract public class Weapon extends KindOfWeapon {
         }
     }
 
-    public Imbue imbue = Imbue.NONE;
+    public Convert convert = Convert.NONE;
 
     private int hitsToKnow = HITS_TO_KNOW;
 
@@ -115,14 +115,14 @@ abstract public class Weapon extends KindOfWeapon {
 
     private static final String UNFAMILIRIARITY = "unfamiliarity";
     private static final String ENHANCEMENT = "enhancement";
-    private static final String IMBUE = "imbue";
+    private static final String CONVERT = "convert";
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
         bundle.put(UNFAMILIRIARITY, hitsToKnow);
         bundle.put(ENHANCEMENT, enhancement);
-        bundle.put(IMBUE, imbue);
+        bundle.put(CONVERT, convert);
     }
 
     @Override
@@ -132,7 +132,7 @@ abstract public class Weapon extends KindOfWeapon {
             hitsToKnow = HITS_TO_KNOW;
         }
         enhancement = (Enhancement) bundle.get(ENHANCEMENT);
-        imbue = bundle.getEnum(IMBUE, Imbue.class);
+        convert = bundle.getEnum(CONVERT, Convert.class);
     }
 
     @Override
@@ -161,7 +161,7 @@ abstract public class Weapon extends KindOfWeapon {
             encumrance -= 2;
         }
 
-        float DLY = imbue.delayFactor(this.DLY);
+        float DLY = convert.delayFactor(this.DLY);
 
         int bonus = AttackModule.getBonus(hero, AttackModule.Furor.class);
 
@@ -188,7 +188,7 @@ abstract public class Weapon extends KindOfWeapon {
             }
         }
 
-        return imbue.damageFactor(damage);
+        return convert.damageFactor(damage);
     }
 
     public int STRReq() {

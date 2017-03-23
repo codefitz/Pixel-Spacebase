@@ -26,8 +26,8 @@ import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.effects.BlobEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Generator.Category;
 import com.wafitz.pixelspacebase.items.Item;
@@ -38,10 +38,10 @@ import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
-import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.triggers.Trigger;
+import com.wafitz.pixelspacebase.mines.Mine;
 import com.watabou.utils.Random;
 
 public class DiffusionalTerminal extends WellWater {
@@ -49,8 +49,8 @@ public class DiffusionalTerminal extends WellWater {
     @Override
     protected Item affectItem(Item item) {
 
-        if (item instanceof DM3000Staff) {
-            item = changeStaff((DM3000Staff) item);
+        if (item instanceof DM3000Launcher) {
+            item = changeLauncher((DM3000Launcher) item);
         } else if (item instanceof MeleeWeapon) {
             item = changeWeapon((MeleeWeapon) item);
         } else if (item instanceof Script) {
@@ -61,8 +61,8 @@ public class DiffusionalTerminal extends WellWater {
             item = changeModule((Module) item);
         } else if (item instanceof Blaster) {
             item = changeBlaster((Blaster) item);
-        } else if (item instanceof Trigger.Gadget) {
-            item = changeGadget((Trigger.Gadget) item);
+        } else if (item instanceof Mine.Device) {
+            item = changeDevice((Mine.Device) item);
         } else if (item instanceof Artifact) {
             item = changeArtifact((Artifact) item);
         } else {
@@ -70,7 +70,7 @@ public class DiffusionalTerminal extends WellWater {
         }
 
         if (item != null) {
-            Journal.remove(Feature.WELL_OF_TRANSMUTATION);
+            Journal.remove(Feature.DIFFUSION_TERMINAL);
         }
 
         return item;
@@ -83,8 +83,8 @@ public class DiffusionalTerminal extends WellWater {
         emitter.start(Speck.factory(Speck.CHANGE), 0.2f, 0);
     }
 
-    private DM3000Staff changeStaff(DM3000Staff staff) {
-        Class<? extends Blaster> blasterClass = staff.blasterClass();
+    private DM3000Launcher changeLauncher(DM3000Launcher launcher) {
+        Class<? extends Blaster> blasterClass = launcher.blasterClass();
 
         if (blasterClass == null) {
             return null;
@@ -94,10 +94,10 @@ public class DiffusionalTerminal extends WellWater {
                 n = (Blaster) Generator.random(Category.BLASTER);
             } while (n.getClass() == blasterClass);
             n.level(0);
-            staff.imbueBlaster(n, null);
+            launcher.convertBlaster(n, null);
         }
 
-        return staff;
+        return launcher;
     }
 
     private Weapon changeWeapon(MeleeWeapon w) {
@@ -125,7 +125,7 @@ public class DiffusionalTerminal extends WellWater {
         n.levelKnown = w.levelKnown;
         n.malfunctioningKnown = w.malfunctioningKnown;
         n.malfunctioning = w.malfunctioning;
-        n.imbue = w.imbue;
+        n.convert = w.convert;
 
         return n;
 
@@ -183,12 +183,12 @@ public class DiffusionalTerminal extends WellWater {
         return n;
     }
 
-    private Trigger.Gadget changeGadget(Trigger.Gadget s) {
+    private Mine.Device changeDevice(Mine.Device s) {
 
-        Trigger.Gadget n;
+        Mine.Device n;
 
         do {
-            n = (Trigger.Gadget) Generator.random(Category.GADGET);
+            n = (Mine.Device) Generator.random(Category.DEVICE);
         } while (n.getClass() == s.getClass());
 
         return n;
@@ -214,13 +214,13 @@ public class DiffusionalTerminal extends WellWater {
     }
 
     private ExperimentalTech changeExperimentalTech(ExperimentalTech p) {
-        if (p instanceof StrengthTech) {
+        if (p instanceof StrengthUpgrade) {
 
-            return new PowerTech();
+            return new PowerUpgrade();
 
-        } else if (p instanceof PowerTech) {
+        } else if (p instanceof PowerUpgrade) {
 
-            return new StrengthTech();
+            return new StrengthUpgrade();
 
         } else {
 

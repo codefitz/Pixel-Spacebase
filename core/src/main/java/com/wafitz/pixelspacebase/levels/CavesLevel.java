@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.DungeonTilemap;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Blacksmith;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Leonard;
 import com.wafitz.pixelspacebase.levels.Room.Type;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.levels.vents.ConfusionVent;
@@ -100,7 +100,7 @@ public class CavesLevel extends RegularLevel {
     protected boolean assignRoomType() {
         if (!super.assignRoomType()) return false;
 
-        return !(!Blacksmith.Quest.spawn(rooms) && Dungeon.depth == 14);
+        return !(!Leonard.Quest.spawn(rooms) && Dungeon.depth == 14);
 
     }
 

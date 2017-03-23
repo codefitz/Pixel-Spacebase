@@ -192,7 +192,7 @@ public class InterlevelScene extends PixelScene {
                 } else if ((int) waitingTime == 10) {
                     waitingTime = 11f;
                     PixelSpacebase.reportException(
-                            new RuntimeException("waited more than 10 seconds on levelgen. Gadget:" + Dungeon.seed + " depth:" + Dungeon.depth)
+                            new RuntimeException("waited more than 10 seconds on levelgen. Device:" + Dungeon.seed + " depth:" + Dungeon.depth)
                     );
                 }
                 break;

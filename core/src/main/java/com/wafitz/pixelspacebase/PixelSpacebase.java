@@ -27,21 +27,24 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
+import com.wafitz.pixelspacebase.actors.mobs.DarkLordGnoll;
 import com.wafitz.pixelspacebase.actors.mobs.ToughXeno;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Lockdown;
-import com.wafitz.pixelspacebase.items.blasters.FireBlaster;
-import com.wafitz.pixelspacebase.items.blasters.FreezeBlaster;
-import com.wafitz.pixelspacebase.items.blasters.MindBlaster;
+import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
+import com.wafitz.pixelspacebase.items.blasters.DominationBlaster;
+import com.wafitz.pixelspacebase.items.blasters.FlameThrower;
+import com.wafitz.pixelspacebase.items.blasters.FreezeThrower;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
 import com.wafitz.pixelspacebase.items.blasters.VenomBlaster;
 import com.wafitz.pixelspacebase.items.blasters.WaveBlaster;
 import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Buggy;
+import com.wafitz.pixelspacebase.items.weapon.melee.Spanner;
 import com.wafitz.pixelspacebase.messages.Languages;
+import com.wafitz.pixelspacebase.mines.AlienTrap;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.scenes.WelcomeScene;
-import com.wafitz.pixelspacebase.triggers.AlienTrap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
@@ -70,22 +73,22 @@ public class PixelSpacebase extends Game {
 
         // 0.2.4d
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon.class,
-                "com.wafitz.pixelspacebase.items.LloydsBeacon");
+                PortableMaker.class,
+                "com.wafitz.pixelspacebase.items.PortableMaker");
 
         // 0.3.0, lots of blasters
         com.watabou.utils.Bundle.addAlias(
                 VenomBlaster.class,
                 "com.wafitz.pixelspacebase.items.blasters.VenomBlaster");
         com.watabou.utils.Bundle.addAlias(
-                FreezeBlaster.class,
-                "com.wafitz.pixelspacebase.items.blasters.FreezeBlaster");
+                FreezeThrower.class,
+                "com.wafitz.pixelspacebase.items.blasters.FreezeThrower");
         com.watabou.utils.Bundle.addAlias(
-                FireBlaster.class,
-                "com.wafitz.pixelspacebase.items.blasters.FireBlaster");
+                FlameThrower.class,
+                "com.wafitz.pixelspacebase.items.blasters.FlameThrower");
         com.watabou.utils.Bundle.addAlias(
-                MindBlaster.class,
-                "com.wafitz.pixelspacebase.items.blasters.MindBlaster");
+                DominationBlaster.class,
+                "com.wafitz.pixelspacebase.items.blasters.DominationBlaster");
         com.watabou.utils.Bundle.addAlias(
                 WaveBlaster.class,
                 "com.wafitz.pixelspacebase.items.blasters.WaveBlaster");
@@ -107,8 +110,8 @@ public class PixelSpacebase extends Game {
                 ToughXeno.class,
                 "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$ToughXeno");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.actors.mobs.GnollTrickster.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$GnollTrickster");
+                DarkLordGnoll.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$DarkLordGnoll");
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.actors.mobs.GreatCrab.class,
                 "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$GreatCrab");
@@ -116,13 +119,13 @@ public class PixelSpacebase extends Game {
                 AlienTrap.class,
                 "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$AlienTrap");
         com.watabou.utils.Bundle.addAlias(
-                AlienTrap.Gadget.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$AlienTrap$Gadget");
+                AlienTrap.Device.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$AlienTrap$Device");
 
         //0.4.0
         //equipment
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.items.weapon.melee.WornShortsword.class,
+                Spanner.class,
                 "com.wafitz.pixelspacebase.items.weapon.melee.ShortSword");
         //enhancements
         com.watabou.utils.Bundle.addAlias(
@@ -130,7 +133,7 @@ public class PixelSpacebase extends Game {
                 "com.wafitz.pixelspacebase.items.weapon.enhancements.Death");
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.items.weapon.enhancements.Blazing.class,
-                "com.wafitz.pixelspacebase.items.weapon.enhancements.FireTrigger");
+                "com.wafitz.pixelspacebase.items.weapon.enhancements.FireMine");
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.items.weapon.enhancements.Eldritch.class,
                 "com.wafitz.pixelspacebase.items.weapon.enhancements.Horror");

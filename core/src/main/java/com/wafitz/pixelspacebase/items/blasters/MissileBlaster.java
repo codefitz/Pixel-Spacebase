@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Recharging;
 import com.wafitz.pixelspacebase.effects.SpellSprite;
-import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
@@ -58,8 +58,8 @@ public class MissileBlaster extends DamageBlaster {
     }
 
     @Override
-    public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
-        Buff.prolong(attacker, Recharging.class, 1 + staff.level() / 2f);
+    public void onHit(DM3000Launcher launcher, Char attacker, Char defender, int damage) {
+        Buff.prolong(attacker, Recharging.class, 1 + launcher.level() / 2f);
         SpellSprite.show(attacker, SpellSprite.CHARGE);
 
     }

@@ -23,12 +23,12 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.levels.painters.AltarPainter;
 import com.wafitz.pixelspacebase.levels.painters.ArmoryPainter;
-import com.wafitz.pixelspacebase.levels.painters.BlacksmithPainter;
 import com.wafitz.pixelspacebase.levels.painters.BossExitPainter;
 import com.wafitz.pixelspacebase.levels.painters.CryptPainter;
 import com.wafitz.pixelspacebase.levels.painters.EntrancePainter;
 import com.wafitz.pixelspacebase.levels.painters.ExitPainter;
 import com.wafitz.pixelspacebase.levels.painters.LaboratoryPainter;
+import com.wafitz.pixelspacebase.levels.painters.LeonardPainter;
 import com.wafitz.pixelspacebase.levels.painters.LibraryPainter;
 import com.wafitz.pixelspacebase.levels.painters.LiveVentsPainter;
 import com.wafitz.pixelspacebase.levels.painters.MassGravePainter;
@@ -37,7 +37,7 @@ import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.levels.painters.PassagePainter;
 import com.wafitz.pixelspacebase.levels.painters.PitPainter;
 import com.wafitz.pixelspacebase.levels.painters.PoolPainter;
-import com.wafitz.pixelspacebase.levels.painters.RatKingPainter;
+import com.wafitz.pixelspacebase.levels.painters.QueenXenoPainter;
 import com.wafitz.pixelspacebase.levels.painters.RitualSitePainter;
 import com.wafitz.pixelspacebase.levels.painters.RotGardenPainter;
 import com.wafitz.pixelspacebase.levels.painters.StandardPainter;
@@ -79,7 +79,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
         TUNNEL(TunnelPainter.class),
         PASSAGE(PassagePainter.class),
         WORKSHOP(Workshop.class),
-        BLACKSMITH(BlacksmithPainter.class),
+        LEONARD(LeonardPainter.class),
         TREASURY(TreasuryPainter.class),
         ARMORY(ArmoryPainter.class),
         LIBRARY(LibraryPainter.class),
@@ -92,7 +92,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
         CRYPT(CryptPainter.class),
         STATUE(StatuePainter.class),
         POOL(PoolPainter.class),
-        RAT_KING(RatKingPainter.class),
+        RAT_KING(QueenXenoPainter.class),
         WEAK_FLOOR(WeakFloorPainter.class),
         PIT(PitPainter.class),
         ALTAR(AltarPainter.class),

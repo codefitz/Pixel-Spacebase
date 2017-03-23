@@ -34,7 +34,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
-import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
+import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
 import com.wafitz.pixelspacebase.items.artifacts.StrongForcefield;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
 import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
@@ -86,7 +86,7 @@ public class DM300 extends Mob {
     @Override
     public boolean act() {
 
-        GameScene.add(Blob.gadget(pos, 30, ToxicGas.class));
+        GameScene.add(Blob.device(pos, 30, ToxicGas.class));
 
         return super.act();
     }
@@ -150,7 +150,7 @@ public class DM300 extends Mob {
 
         Badges.validateBossSlain();
 
-        LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
+        PortableMaker beacon = Dungeon.hero.belongings.getItem(PortableMaker.class);
         if (beacon != null) {
             beacon.upgrade();
         }

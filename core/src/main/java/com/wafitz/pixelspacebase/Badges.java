@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
-import com.wafitz.pixelspacebase.items.containers.GadgetCase;
+import com.wafitz.pixelspacebase.items.containers.DeviceCase;
 import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
 import com.wafitz.pixelspacebase.items.containers.XPort;
 import com.wafitz.pixelspacebase.items.modules.Module;
@@ -71,7 +71,7 @@ public class Badges {
         ALL_MODULES_IDENTIFIED(18),
         ALL_BLASTERS_IDENTIFIED(19),
         ALL_ITEMS_IDENTIFIED(35, true),
-        GADGET_CONTAINER_MADE,
+        DEVICE_CONTAINER_MADE,
         SCRIPT_LIBRARY_MADE,
         XPORT_MADE,
         BLASTER_HOLSTER_MADE,
@@ -409,7 +409,7 @@ public class Badges {
         // 2) When an item is upgraded (UpgradeScript, WeaponUpgradeScript, ShortSword, MissileBlaster)
         // 3) When an item is identified
 
-        // Note that artifacts should never triggers this badge as they are alternatively upgraded
+        // Note that artifacts should never mines this badge as they are alternatively upgraded
         if (!item.levelKnown || item instanceof Artifact) {
             return;
         }
@@ -490,8 +490,8 @@ public class Badges {
     public static void validateAllContainersMade(Item container) {
 
         Badge badge = null;
-        if (container instanceof GadgetCase) {
-            badge = Badge.GADGET_CONTAINER_MADE;
+        if (container instanceof DeviceCase) {
+            badge = Badge.DEVICE_CONTAINER_MADE;
         } else if (container instanceof ScriptLibrary) {
             badge = Badge.SCRIPT_LIBRARY_MADE;
         } else if (container instanceof XPort) {
@@ -505,7 +505,7 @@ public class Badges {
             local.add(badge);
 
             if (!local.contains(Badge.ALL_CONTAINERS_MADE) &&
-                    local.contains(Badge.GADGET_CONTAINER_MADE) &&
+                    local.contains(Badge.DEVICE_CONTAINER_MADE) &&
                     local.contains(Badge.SCRIPT_LIBRARY_MADE) &&
                     local.contains(Badge.XPORT_MADE) &&
                     local.contains(Badge.BLASTER_HOLSTER_MADE)) {

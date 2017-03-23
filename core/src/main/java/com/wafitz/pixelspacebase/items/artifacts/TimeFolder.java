@@ -43,7 +43,7 @@ import java.util.ArrayList;
 public class TimeFolder extends Artifact {
 
     {
-        image = ItemSpriteSheet.ARTIFACT_HOURGLASS;
+        image = ItemSpriteSheet.TIMEFOLDER;
 
         levelCap = 5;
 
@@ -295,7 +295,7 @@ public class TimeFolder extends Artifact {
                 presses.add(cell);
         }
 
-        private void triggerPresses() {
+        private void mineTriggers() {
             for (int cell : presses)
                 Dungeon.level.press(cell, null);
 
@@ -320,7 +320,7 @@ public class TimeFolder extends Artifact {
             updateQuickslot();
             super.detach();
             activeBuff = null;
-            triggerPresses();
+            mineTriggers();
         }
 
         private static final String PRESSES = "presses";

@@ -41,9 +41,9 @@ public class Lucky extends Weapon.Enhancement {
         if (Random.Int(100) < (55 + level)) {
             int exStr = 0;
             if (attacker == Dungeon.hero) exStr = Math.max(0, Dungeon.hero.STR() - weapon.STRReq());
-            damage = weapon.imbue.damageFactor(weapon.max()) + exStr - defender.drRoll();
+            damage = weapon.convert.damageFactor(weapon.max()) + exStr - defender.drRoll();
         } else {
-            damage = weapon.imbue.damageFactor(weapon.min()) - defender.drRoll();
+            damage = weapon.convert.damageFactor(weapon.min()) - defender.drRoll();
         }
 
         if (attacker == Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.BERSERKER) {

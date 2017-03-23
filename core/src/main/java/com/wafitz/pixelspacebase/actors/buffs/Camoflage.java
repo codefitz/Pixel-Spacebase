@@ -55,7 +55,7 @@ public class Camoflage extends FlavourBuff {
 
     @Override
     public int icon() {
-        return BuffIndicator.INVISIBLE;
+        return BuffIndicator.CAMOFLAGE;
     }
 
     @Override

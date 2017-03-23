@@ -44,7 +44,7 @@ import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
-import com.wafitz.pixelspacebase.items.containers.GadgetCase;
+import com.wafitz.pixelspacebase.items.containers.DeviceCase;
 import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
 import com.wafitz.pixelspacebase.items.containers.XPort;
 import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
@@ -52,11 +52,11 @@ import com.wafitz.pixelspacebase.levels.RegularLevel;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.mines.Mine;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.sprites.DiscardedItemSprite;
 import com.wafitz.pixelspacebase.sprites.HeroSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
-import com.wafitz.pixelspacebase.triggers.Trigger;
 import com.wafitz.pixelspacebase.ui.ActionIndicator;
 import com.wafitz.pixelspacebase.ui.AttackIndicator;
 import com.wafitz.pixelspacebase.ui.Banner;
@@ -80,8 +80,8 @@ import com.wafitz.pixelspacebase.windows.WndGame;
 import com.wafitz.pixelspacebase.windows.WndHero;
 import com.wafitz.pixelspacebase.windows.WndInfoCell;
 import com.wafitz.pixelspacebase.windows.WndInfoItem;
+import com.wafitz.pixelspacebase.windows.WndInfoMine;
 import com.wafitz.pixelspacebase.windows.WndInfoMob;
-import com.wafitz.pixelspacebase.windows.WndInfoTrigger;
 import com.wafitz.pixelspacebase.windows.WndInfoVent;
 import com.wafitz.pixelspacebase.windows.WndMessage;
 import com.wafitz.pixelspacebase.windows.WndOptions;
@@ -125,7 +125,7 @@ public class GameScene extends PixelScene {
     private Group customTiles;
     private Group levelVisuals;
     private Group ripples;
-    private Group triggers;
+    private Group mines;
     private Group vents;
     private Group heaps;
     private Group mobs;
@@ -193,7 +193,7 @@ public class GameScene extends PixelScene {
             addCustomTile(visual.create());
         }
 
-        terrainFeatures = new TerrainFeaturesTilemap(Dungeon.level.triggers, Dungeon.level.vents);
+        terrainFeatures = new TerrainFeaturesTilemap(Dungeon.level.mines, Dungeon.level.vents);
         terrain.add(terrainFeatures);
 
         levelVisuals = Dungeon.level.addVisuals();
@@ -332,8 +332,8 @@ public class GameScene extends PixelScene {
                 int pos = Dungeon.level.randomRespawnCell();
                 if (item instanceof ExperimentalTech) {
                     ((ExperimentalTech) item).shatter(pos);
-                } else if (item instanceof Trigger.Gadget) {
-                    Dungeon.level.trigger((Trigger.Gadget) item, pos);
+                } else if (item instanceof Mine.Device) {
+                    Dungeon.level.mine((Mine.Device) item, pos);
                 } else if (item instanceof DroneController) {
                     Dungeon.level.drop(((DroneController) item).shatter(null, pos), pos);
                 } else {
@@ -532,7 +532,7 @@ public class GameScene extends PixelScene {
         heaps.add(heap.sprite);
     }
 
-    private void addTriggerSprite(Trigger trigger) {
+    private void addMineSprite(Mine mine) {
 
     }
 
@@ -583,9 +583,9 @@ public class GameScene extends PixelScene {
 
     // -------------------------------------------------------
 
-    public static void add(Trigger trigger) {
+    public static void add(Mine mine) {
         if (scene != null) {
-            scene.addTriggerSprite(trigger);
+            scene.addMineSprite(mine);
         }
     }
 
@@ -693,9 +693,9 @@ public class GameScene extends PixelScene {
         }
     }
 
-    public static void triggerGadget(int cell) {
+    public static void mineDevice(int cell) {
         if (scene != null) {
-            scene.terrainFeatures.growTrigger(cell);
+            scene.terrainFeatures.growMine(cell);
         }
     }
 
@@ -775,8 +775,8 @@ public class GameScene extends PixelScene {
         cancelCellSelector();
 
         WndContainer wnd =
-                mode == Mode.GADGET ?
-                        WndContainer.getContainer(GadgetCase.class, listener, mode, title) :
+                mode == Mode.DEVICE ?
+                        WndContainer.getContainer(DeviceCase.class, listener, mode, title) :
                         mode == Mode.SCRIPT ?
                                 WndContainer.getContainer(ScriptLibrary.class, listener, mode, title) :
                                 mode == Mode.EXPERIMENTALTECH ?
@@ -842,10 +842,10 @@ public class GameScene extends PixelScene {
             names.add(Messages.titleCase(heap.toString()));
         }
 
-        Trigger trigger = Dungeon.level.triggers.get(cell);
-        if (trigger != null) {
-            objects.add(trigger);
-            names.add(Messages.titleCase(trigger.triggerName));
+        Mine mine = Dungeon.level.mines.get(cell);
+        if (mine != null) {
+            objects.add(mine);
+            names.add(Messages.titleCase(mine.mineName));
         }
 
         Vent vent = Dungeon.level.vents.get(cell);
@@ -882,8 +882,8 @@ public class GameScene extends PixelScene {
             } else {
                 GameScene.show(new WndInfoItem(heap));
             }
-        } else if (o instanceof Trigger) {
-            GameScene.show(new WndInfoTrigger((Trigger) o));
+        } else if (o instanceof Mine) {
+            GameScene.show(new WndInfoMine((Mine) o));
         } else if (o instanceof Vent) {
             GameScene.show(new WndInfoVent((Vent) o));
         } else {

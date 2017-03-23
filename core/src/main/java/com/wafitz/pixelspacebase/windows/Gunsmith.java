@@ -23,12 +23,12 @@ package com.wafitz.pixelspacebase.windows;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
-import com.wafitz.pixelspacebase.items.quest.CorpseDust;
 import com.wafitz.pixelspacebase.items.quest.Embers;
+import com.wafitz.pixelspacebase.items.quest.Lazer;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.mines.AlienTrap;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
-import com.wafitz.pixelspacebase.triggers.AlienTrap;
 import com.wafitz.pixelspacebase.ui.RedButton;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
 import com.wafitz.pixelspacebase.ui.Window;
@@ -51,11 +51,11 @@ public class Gunsmith extends Window {
         add(titlebar);
 
         String msg = "";
-        if (item instanceof CorpseDust) {
+        if (item instanceof Lazer) {
             msg = Messages.get(this, "dust");
         } else if (item instanceof Embers) {
             msg = Messages.get(this, "ember");
-        } else if (item instanceof AlienTrap.Gadget) {
+        } else if (item instanceof AlienTrap.Device) {
             msg = Messages.get(this, "berry");
         }
 

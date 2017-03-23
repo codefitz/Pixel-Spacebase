@@ -35,7 +35,7 @@ public class ConfusionVent extends Vent {
     @Override
     public void activate() {
 
-        GameScene.add(Blob.gadget(pos, 300 + 20 * Dungeon.depth, ConfusionGas.class));
+        GameScene.add(Blob.device(pos, 300 + 20 * Dungeon.depth, ConfusionGas.class));
 
     }
 }

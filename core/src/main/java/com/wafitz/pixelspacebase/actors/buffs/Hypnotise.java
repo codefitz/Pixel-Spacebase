@@ -50,7 +50,7 @@ public class Hypnotise extends FlavourBuff {
 
     @Override
     public int icon() {
-        return BuffIndicator.HEART;
+        return BuffIndicator.HYPNOTISE;
     }
 
     @Override

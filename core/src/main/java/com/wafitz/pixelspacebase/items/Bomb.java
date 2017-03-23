@@ -133,7 +133,7 @@ public class Bomb extends Item {
                     terrainAffected = true;
                 }
 
-                //destroys items / triggers bombs caught in the blast.
+                //destroys items / mines bombs caught in the blast.
                 Heap heap = Dungeon.level.heaps.get(c);
                 if (heap != null)
                     heap.explode();

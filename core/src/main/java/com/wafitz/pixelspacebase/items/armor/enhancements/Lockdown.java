@@ -26,9 +26,9 @@ import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.EarthParticle;
 import com.wafitz.pixelspacebase.items.armor.Armor;
+import com.wafitz.pixelspacebase.mines.WeakForcefield;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSprite.Glowing;
-import com.wafitz.pixelspacebase.triggers.WeakForcefield;
 import com.watabou.noosa.Camera;
 import com.watabou.utils.Random;
 

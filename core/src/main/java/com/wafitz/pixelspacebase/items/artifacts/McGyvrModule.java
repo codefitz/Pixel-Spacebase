@@ -28,7 +28,7 @@ import com.watabou.utils.Random;
 public class McGyvrModule extends Artifact {
 
     {
-        image = ItemSpriteSheet.ARTIFACT_ARMBAND;
+        image = ItemSpriteSheet.MCGYVR_MODULE;
 
         levelCap = 10;
 

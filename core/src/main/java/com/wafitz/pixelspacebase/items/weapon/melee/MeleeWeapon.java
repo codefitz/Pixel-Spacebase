@@ -62,7 +62,7 @@ public class MeleeWeapon extends Weapon {
         String info = desc();
 
         if (levelKnown) {
-            info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, imbue.damageFactor(min()), imbue.damageFactor(max()), STRReq());
+            info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, convert.damageFactor(min()), convert.damageFactor(max()), STRReq());
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(Weapon.class, "too_heavy");
             } else if (Dungeon.hero.STR() > STRReq()) {
@@ -78,7 +78,7 @@ public class MeleeWeapon extends Weapon {
         String stats_desc = Messages.get(this, "stats_desc");
         if (!stats_desc.equals("")) info += "\n\n" + stats_desc;
 
-        switch (imbue) {
+        switch (convert) {
             case LIGHT:
                 info += "\n\n" + Messages.get(Weapon.class, "lighter");
                 break;

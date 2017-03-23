@@ -45,7 +45,7 @@ public class Targeted extends FlavourBuff {
 
     @Override
     public int icon() {
-        return BuffIndicator.MARK;
+        return BuffIndicator.TARGETED;
     }
 
     @Override

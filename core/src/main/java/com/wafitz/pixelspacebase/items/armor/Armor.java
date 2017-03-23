@@ -31,9 +31,9 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.WeakForcefield;
-import com.wafitz.pixelspacebase.items.armor.enhancements.Brimstone;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Camouflage;
 import com.wafitz.pixelspacebase.items.armor.enhancements.EMP;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Fire;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Flow;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Forcefield;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Horror;
@@ -173,7 +173,7 @@ public class Armor extends EquipableItem {
     public void applyForcefield(WeakForcefield forcefield) {
         this.forcefield = forcefield;
         if (forcefield.level() > 0) {
-            //doesn't triggers upgrading logic such as affecting malfunctions/enhancements
+            //doesn't mines upgrading logic such as affecting malfunctions/enhancements
             level(level() + 1);
             Badges.validateItemLevelAquired(this);
         }
@@ -423,7 +423,7 @@ public class Armor extends EquipableItem {
 
         private static final Class<?>[] enhancements = new Class<?>[]{
                 Obfuscation.class, Speed.class, Forcefield.class, Potential.class,
-                Brimstone.class, Viscosity.class, Lockdown.class, Repulsion.class, Camouflage.class, Flow.class,
+                Fire.class, Viscosity.class, Lockdown.class, Repulsion.class, Camouflage.class, Flow.class,
                 Hypnosis.class, EMP.class, Horror.class};
         private static final float[] chances = new float[]{
                 10, 10, 10, 10,

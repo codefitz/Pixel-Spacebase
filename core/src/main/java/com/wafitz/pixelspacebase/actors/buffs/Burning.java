@@ -24,13 +24,12 @@ import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
-import com.wafitz.pixelspacebase.actors.blobs.Fire;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Thief;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.armor.enhancements.Brimstone;
+import com.wafitz.pixelspacebase.items.armor.enhancements.Fire;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.items.modules.ElementsModule.Resistance;
@@ -84,9 +83,9 @@ public class Burning extends Buff implements Hero.Doom {
 
                 Hero hero = (Hero) target;
 
-                if (hero.belongings.armor != null && hero.belongings.armor.hasEnhancement(Brimstone.class)) {
+                if (hero.belongings.armor != null && hero.belongings.armor.hasEnhancement(Fire.class)) {
 
-                    Buff.affect(target, Brimstone.BrimstoneShield.class);
+                    Buff.affect(target, Fire.FireShield.class);
 
                 } else {
 
@@ -133,15 +132,15 @@ public class Burning extends Buff implements Hero.Doom {
 
         } else {
 
-            Brimstone.BrimstoneShield brimShield = target.buff(Brimstone.BrimstoneShield.class);
+            Fire.FireShield brimShield = target.buff(Fire.FireShield.class);
             if (brimShield != null)
                 brimShield.startDecay();
 
             detach();
         }
 
-        if (Level.flamable[target.pos] && Blob.volumeAt(target.pos, Fire.class) == 0) {
-            GameScene.add(Blob.gadget(target.pos, 4, Fire.class));
+        if (Level.flamable[target.pos] && Blob.volumeAt(target.pos, com.wafitz.pixelspacebase.actors.blobs.Fire.class) == 0) {
+            GameScene.add(Blob.device(target.pos, 4, com.wafitz.pixelspacebase.actors.blobs.Fire.class));
         }
 
         spend(TICK);

@@ -29,9 +29,9 @@ import java.util.ArrayList;
 public class Journal {
 
     public enum Feature {
-        WELL_OF_HEALTH,
-        WELL_OF_AWARENESS,
-        WELL_OF_TRANSMUTATION,
+        HEALTH_TERMINAL,
+        KNOWLEDGE_TERMINAL,
+        DIFFUSION_TERMINAL,
         CRAFTING,
         MEDICALBAY,
         OLDWARBOT,
@@ -39,7 +39,7 @@ public class Journal {
         HOLOGRAM,
         GUNSMITH,
         TROLL,
-        IMP;
+        ARP;
 
         public String desc() {
             return Messages.get(this, name());

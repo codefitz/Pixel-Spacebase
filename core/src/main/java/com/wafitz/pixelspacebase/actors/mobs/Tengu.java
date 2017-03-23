@@ -32,7 +32,7 @@ import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.TomeOfMastery;
-import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
+import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
@@ -140,7 +140,7 @@ public class Tengu extends Mob {
 
         Badges.validateBossSlain();
 
-        LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
+        PortableMaker beacon = Dungeon.hero.belongings.getItem(PortableMaker.class);
         if (beacon != null) {
             beacon.upgrade();
         }

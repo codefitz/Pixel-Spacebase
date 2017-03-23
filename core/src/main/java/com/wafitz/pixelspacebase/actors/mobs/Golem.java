@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.buffs.Sleep;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Imp;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
 import com.wafitz.pixelspacebase.sprites.GolemSprite;
 import com.watabou.utils.Random;
 
@@ -64,7 +64,7 @@ public class Golem extends Mob {
 
     @Override
     public void die(Object cause) {
-        Imp.Quest.process(this);
+        Arp.Quest.process(this);
 
         super.die(cause);
     }

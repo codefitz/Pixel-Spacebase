@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.effects.Effects;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
 import com.wafitz.pixelspacebase.effects.Pushing;
-import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -144,8 +144,8 @@ public class WaveBlaster extends DamageBlaster {
 
     @Override
     //behaves just like enhancement of Repulsion
-    public void onHit(DM3000Staff staff, Char attacker, Char defender, int damage) {
-        int level = Math.max(0, staff.level());
+    public void onHit(DM3000Launcher launcher, Char attacker, Char defender, int damage) {
+        int level = Math.max(0, launcher.level());
 
         // lvl 0 - 25%
         // lvl 1 - 40%
@@ -164,7 +164,7 @@ public class WaveBlaster extends DamageBlaster {
     }
 
     @Override
-    public void staffFx(DM3000Staff.StaffParticle particle) {
+    public void launcherFx(DM3000Launcher.launcherParticle particle) {
         particle.color(0x664422);
         particle.am = 0.6f;
         particle.setLifespan(3f);

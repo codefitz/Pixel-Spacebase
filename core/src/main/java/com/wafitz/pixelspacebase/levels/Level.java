@@ -43,20 +43,20 @@ import com.wafitz.pixelspacebase.effects.particles.FlowParticle;
 import com.wafitz.pixelspacebase.effects.particles.WindParticle;
 import com.wafitz.pixelspacebase.items.Dewdrop;
 import com.wafitz.pixelspacebase.items.EnhancementChip;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.AlienTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Torch;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.MakersToolkit;
+import com.wafitz.pixelspacebase.items.artifacts.TechToolkit;
 import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
-import com.wafitz.pixelspacebase.items.containers.GadgetCase;
+import com.wafitz.pixelspacebase.items.containers.DeviceCase;
 import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
+import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
 import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
@@ -69,10 +69,10 @@ import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
 import com.wafitz.pixelspacebase.mechanics.ShadowCaster;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.mines.AlienPlant;
+import com.wafitz.pixelspacebase.mines.Mine;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
-import com.wafitz.pixelspacebase.triggers.AlienPlant;
-import com.wafitz.pixelspacebase.triggers.Trigger;
 import com.wafitz.pixelspacebase.ui.CustomTileVisual;
 import com.wafitz.pixelspacebase.utils.BArray;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -140,7 +140,7 @@ public abstract class Level implements Bundlable {
     public HashSet<Mob> mobs;
     public SparseArray<Heap> heaps;
     public HashMap<Class<? extends Blob>, Blob> blobs;
-    public SparseArray<Trigger> triggers;
+    public SparseArray<Mine> mines;
     public SparseArray<Vent> vents;
     public HashSet<CustomTileVisual> customTiles;
 
@@ -163,7 +163,7 @@ public abstract class Level implements Bundlable {
     private static final String EXIT = "exit";
     private static final String LOCKED = "locked";
     private static final String HEAPS = "heaps";
-    private static final String TRIGGERS = "triggers";
+    private static final String MINES = "mines";
     private static final String VENTS = "vents";
     private static final String CUSTOM_TILES = "customTiles";
     private static final String MOBS = "mobs";
@@ -198,9 +198,9 @@ public abstract class Level implements Bundlable {
 
             if (Dungeon.posNeeded()) {
                 if (Random.Float() > Math.pow(0.925, bonus))
-                    addItemToSpawn(new PowerTech());
+                    addItemToSpawn(new PowerUpgrade());
                 else
-                    addItemToSpawn(new StrengthTech());
+                    addItemToSpawn(new StrengthUpgrade());
                 Dungeon.limitedDrops.strengthTech.count++;
             }
             if (Dungeon.souNeeded()) {
@@ -264,7 +264,7 @@ public abstract class Level implements Bundlable {
             mobs = new HashSet<>();
             heaps = new SparseArray<>();
             blobs = new HashMap<>();
-            triggers = new SparseArray<>();
+            mines = new SparseArray<>();
             vents = new SparseArray<>();
             customTiles = new HashSet<>();
 
@@ -316,7 +316,7 @@ public abstract class Level implements Bundlable {
         mobs = new HashSet<>();
         heaps = new SparseArray<>();
         blobs = new HashMap<>();
-        triggers = new SparseArray<>();
+        mines = new SparseArray<>();
         vents = new SparseArray<>();
         customTiles = new HashSet<>();
 
@@ -349,10 +349,10 @@ public abstract class Level implements Bundlable {
                 heaps.put(heap.pos, heap);
         }
 
-        collection = bundle.getCollection(TRIGGERS);
+        collection = bundle.getCollection(MINES);
         for (Bundlable p : collection) {
-            Trigger trigger = (Trigger) p;
-            triggers.put(trigger.pos, trigger);
+            Mine mine = (Mine) p;
+            mines.put(mine.pos, mine);
         }
 
         collection = bundle.getCollection(VENTS);
@@ -401,7 +401,7 @@ public abstract class Level implements Bundlable {
         bundle.put(EXIT, exit);
         bundle.put(LOCKED, locked);
         bundle.put(HEAPS, heaps.values());
-        bundle.put(TRIGGERS, triggers.values());
+        bundle.put(MINES, mines.values());
         bundle.put(VENTS, vents.values());
         bundle.put(CUSTOM_TILES, customTiles);
         bundle.put(MOBS, mobs);
@@ -667,10 +667,10 @@ public abstract class Level implements Bundlable {
     public Heap drop(Item item, int cell) {
 
         //This messy if statement deals will items which should not drop in challenges primarily.
-        if ((Dungeon.isChallenged(Challenges.NO_FOOD) && (item instanceof Food || item instanceof AlienPlant.Gadget)) ||
+        if ((Dungeon.isChallenged(Challenges.NO_FOOD) && (item instanceof Food || item instanceof AlienPlant.Device)) ||
                 (Dungeon.isChallenged(Challenges.NO_ARMOR) && item instanceof Armor) ||
                 (Dungeon.isChallenged(Challenges.NO_HEALING) && item instanceof HealingTech) ||
-                (Dungeon.isChallenged(Challenges.NO_HERBALISM) && (item instanceof Trigger.Gadget || item instanceof Dewdrop || item instanceof GadgetCase)) ||
+                (Dungeon.isChallenged(Challenges.NO_HERBALISM) && (item instanceof Mine.Device || item instanceof Dewdrop || item instanceof DeviceCase)) ||
                 (Dungeon.isChallenged(Challenges.NO_SCRIPTS) && ((item instanceof Script && !(item instanceof UpgradeScript || item instanceof EnhancementScript)) || item instanceof ScriptLibrary)) ||
                 item == null) {
 
@@ -684,10 +684,10 @@ public abstract class Level implements Bundlable {
         }
 
         if ((map[cell] == Terrain.CRAFTING) && (
-                !(item instanceof Trigger.Gadget || item instanceof AlienTech) ||
-                        item instanceof AlienPlant.Gadget ||
-                        (item instanceof AlienTech && (((AlienTech) item).experimentalTechAttrib != null || heaps.get(cell) != null)) ||
-                        Dungeon.hero.buff(MakersToolkit.crafting.class) != null && Dungeon.hero.buff(MakersToolkit.crafting.class).isMalfunctioning())) {
+                !(item instanceof Mine.Device || item instanceof AlienPod) ||
+                        item instanceof AlienPlant.Device ||
+                        (item instanceof AlienPod && (((AlienPod) item).experimentalTechAttrib != null || heaps.get(cell) != null)) ||
+                        Dungeon.hero.buff(TechToolkit.crafting.class) != null && Dungeon.hero.buff(TechToolkit.crafting.class).isMalfunctioning())) {
             int n;
             do {
                 n = cell + PathFinder.NEIGHBOURS8[Random.Int(8)];
@@ -727,11 +727,11 @@ public abstract class Level implements Bundlable {
         return heap;
     }
 
-    public Trigger trigger(Trigger.Gadget gadget, int pos) {
+    public Mine mine(Mine.Device device, int pos) {
 
-        Trigger trigger = triggers.get(pos);
-        if (trigger != null) {
-            trigger.wither();
+        Mine mine = mines.get(pos);
+        if (mine != null) {
+            mine.wither();
         }
 
         if (map[pos] == Terrain.OFFVENT ||
@@ -742,16 +742,16 @@ public abstract class Level implements Bundlable {
             flamable[pos] = true;
         }
 
-        trigger = gadget.couch(pos);
-        triggers.put(pos, trigger);
+        mine = device.couch(pos);
+        mines.put(pos, mine);
 
-        GameScene.triggerGadget(pos);
+        GameScene.mineDevice(pos);
 
-        return trigger;
+        return mine;
     }
 
     public void uproot(int pos) {
-        triggers.remove(pos);
+        mines.remove(pos);
         GameScene.updateMap(pos);
     }
 
@@ -832,7 +832,7 @@ public abstract class Level implements Bundlable {
                 if (ch == Dungeon.hero)
                     Dungeon.hero.interrupt();
 
-                vent.trigger();
+                vent.mine();
 
             } else {
 
@@ -845,9 +845,9 @@ public abstract class Level implements Bundlable {
             }
         }
 
-        Trigger trigger = triggers.get(cell);
-        if (trigger != null) {
-            trigger.trigger();
+        Mine mine = mines.get(cell);
+        if (mine != null) {
+            mine.mine();
         }
     }
 
@@ -873,12 +873,12 @@ public abstract class Level implements Bundlable {
         }
 
         if (vent != null) {
-            vent.trigger();
+            vent.mine();
         }
 
-        Trigger trigger = triggers.get(cell);
-        if (trigger != null) {
-            trigger.trigger();
+        Mine mine = mines.get(cell);
+        if (mine != null) {
+            mine.mine();
         }
     }
 

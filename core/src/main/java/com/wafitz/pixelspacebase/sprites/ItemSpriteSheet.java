@@ -46,10 +46,10 @@ public class ItemSpriteSheet {
     public static final int DBL_BOMB = UNCOLLECTIBLE + 4;
 
     private static final int CONTAINERS = xy(1, 2);   //16 slots
-    public static final int BONES = CONTAINERS;
+    public static final int DISCARDEDSUIT = CONTAINERS;
     public static final int REMAINS = CONTAINERS + 1;
-    public static final int TOMB = CONTAINERS + 2;
-    public static final int GRAVE = CONTAINERS + 3;
+    public static final int REDTERMINAL = CONTAINERS + 2;
+    public static final int BLUETERMINAL = CONTAINERS + 3;
     public static final int CHEST = CONTAINERS + 4;
     public static final int LOCKED_CHEST = CONTAINERS + 5;
     public static final int CRYSTAL_CHEST = CONTAINERS + 6;
@@ -62,11 +62,11 @@ public class ItemSpriteSheet {
     public static final int TORCH = SINGLE_USE + 4;
     public static final int BEACON = SINGLE_USE + 5;
     public static final int BOMB = SINGLE_USE + 6;
-    public static final int HONEYPOT = SINGLE_USE + 7;
-    public static final int SHATTPOT = SINGLE_USE + 8;
-    public static final int IRON_KEY = SINGLE_USE + 9;
-    public static final int GOLDEN_KEY = SINGLE_USE + 10;
-    public static final int SKELETON_KEY = SINGLE_USE + 11;
+    public static final int DRONECONTROLLER = SINGLE_USE + 7;
+    public static final int DEADDRONECONT = SINGLE_USE + 8;
+    public static final int IRON_KEYCARD = SINGLE_USE + 9;
+    public static final int GOLDEN_KEYCARD = SINGLE_USE + 10;
+    public static final int SECURITY_KEYCARD = SINGLE_USE + 11;
     public static final int MASTERY = SINGLE_USE + 12;
     public static final int KIT = SINGLE_USE + 13;
     public static final int AMULET = SINGLE_USE + 14;
@@ -74,27 +74,27 @@ public class ItemSpriteSheet {
     //32 free slots
 
     private static final int WEP_TIER1 = xy(1, 7);   //8 slots
-    public static final int WORN_SHORTSWORD = WEP_TIER1;
-    public static final int CUDGEL = WEP_TIER1 + 1;
+    public static final int SPANNER = WEP_TIER1;
+    //public static final int CUDGEL = WEP_TIER1 + 1;
     public static final int KNUCKLEDUSTER = WEP_TIER1 + 2;
-    public static final int RAPIER = WEP_TIER1 + 3;
+    //public static final int RAPIER = WEP_TIER1 + 3;
     public static final int DAGGER = WEP_TIER1 + 4;
-    public static final int DM3000_STAFF = WEP_TIER1 + 5;
+    public static final int DM3000_ROCKET_LAUNCHER = WEP_TIER1 + 5;
 
     private static final int WEP_TIER2 = xy(9, 7);   //8 slots
-    public static final int SHORTSWORD = WEP_TIER2;
-    public static final int HAND_AXE = WEP_TIER2 + 1;
+    public static final int WRENCH = WEP_TIER2;
+    public static final int PICK_AXE = WEP_TIER2 + 1;
     public static final int SPEAR = WEP_TIER2 + 2;
-    public static final int QUARTERSTAFF = WEP_TIER2 + 3;
+    public static final int DRILL = WEP_TIER2 + 3;
     public static final int DIRK = WEP_TIER2 + 4;
 
     private static final int WEP_TIER3 = xy(1, 8);   //8 slots
-    public static final int SWORD = WEP_TIER3;
-    public static final int MACE = WEP_TIER3 + 1;
-    public static final int SCIMITAR = WEP_TIER3 + 2;
-    public static final int ROUND_SHIELD = WEP_TIER3 + 3;
+    public static final int LAZER_SWORD = WEP_TIER3;
+    public static final int SPADE = WEP_TIER3 + 1;
+    public static final int HOLO_SCIMITAR = WEP_TIER3 + 2;
+    public static final int ULTON_SHIELD = WEP_TIER3 + 3;
     public static final int SAI = WEP_TIER3 + 4;
-    public static final int WHIP = WEP_TIER3 + 5;
+    public static final int LAZER_WHIP = WEP_TIER3 + 5;
 
     private static final int WEP_TIER4 = xy(9, 8);   //8 slots
     public static final int LONGSWORD = WEP_TIER4;
@@ -105,10 +105,10 @@ public class ItemSpriteSheet {
 
     private static final int WEP_TIER5 = xy(1, 9);   //8 slots
     public static final int GREATSWORD = WEP_TIER5;
-    public static final int WAR_HAMMER = WEP_TIER5 + 1;
+    public static final int LAZER_HAMMER = WEP_TIER5 + 1;
     public static final int GLAIVE = WEP_TIER5 + 2;
     public static final int GREATAXE = WEP_TIER5 + 3;
-    public static final int GREATSHIELD = WEP_TIER5 + 4;
+    public static final int GNOLLSHIELD = WEP_TIER5 + 4;
 
     //8 free slots
 
@@ -131,6 +131,8 @@ public class ItemSpriteSheet {
     public static final int ARMOR_DM3000 = ARMOR + 6;
     public static final int ARMOR_SHAPESHIFTER = ARMOR + 7;
     public static final int ARMOR_CAPTAIN = ARMOR + 8;
+    public static final int ARMOR_DM3000_SPACESUIT = ARMOR + 9;
+    public static final int ARMOR_DM3000_HUNTER = ARMOR + 10;
 
     //32 free slots
 
@@ -164,29 +166,29 @@ public class ItemSpriteSheet {
     public static final int MODULE_DIAMOND = MODULES + 11;
 
     private static final int ARTIFACTS = xy(1, 16);  //32 slots
-    public static final int ARTIFACT_CLOAK = ARTIFACTS;
-    public static final int ARTIFACT_ARMBAND = ARTIFACTS + 1;
-    public static final int ARTIFACT_CAPE = ARTIFACTS + 2;
-    public static final int ARTIFACT_TALISMAN = ARTIFACTS + 3;
-    public static final int ARTIFACT_HOURGLASS = ARTIFACTS + 4;
-    public static final int ARTIFACT_TOOLKIT = ARTIFACTS + 5;
-    public static final int ARTIFACT_COMPILER = ARTIFACTS + 6;
-    public static final int ARTIFACT_BEACON = ARTIFACTS + 7;
-    public static final int ARTIFACT_CHAINS = ARTIFACTS + 8;
-    public static final int ARTIFACT_HORN1 = ARTIFACTS + 9;
-    public static final int ARTIFACT_HORN2 = ARTIFACTS + 10;
-    public static final int ARTIFACT_HORN3 = ARTIFACTS + 11;
-    public static final int ARTIFACT_HORN4 = ARTIFACTS + 12;
-    public static final int ARTIFACT_CHALICE1 = ARTIFACTS + 13;
-    public static final int ARTIFACT_CHALICE2 = ARTIFACTS + 14;
-    public static final int ARTIFACT_CHALICE3 = ARTIFACTS + 15;
-    public static final int ARTIFACT_SANDALS = ARTIFACTS + 16;
-    public static final int ARTIFACT_SHOES = ARTIFACTS + 17;
-    public static final int ARTIFACT_BOOTS = ARTIFACTS + 18;
-    public static final int ARTIFACT_GREAVES = ARTIFACTS + 19;
-    public static final int ARTIFACT_HOLOPAD1 = ARTIFACTS + 20;
-    public static final int ARTIFACT_HOLOPAD2 = ARTIFACTS + 21;
-    public static final int ARTIFACT_HOLOPAD3 = ARTIFACTS + 22;
+    public static final int STEALTH_MODULE = ARTIFACTS;
+    public static final int MCGYVR_MODULE = ARTIFACTS + 1;
+    public static final int STRONG_FORCEFIELD = ARTIFACTS + 2;
+    public static final int SURVEYOR_MODULE = ARTIFACTS + 3;
+    public static final int TIMEFOLDER = ARTIFACTS + 4;
+    public static final int TECH_TOOLKIT = ARTIFACTS + 5;
+    public static final int BUGGY_COMPILER = ARTIFACTS + 6;
+    public static final int PORTABLE_MAKER = ARTIFACTS + 7;
+    public static final int GRAVITY_GUN = ARTIFACTS + 8;
+    public static final int SUVIVAL_MODULE_1 = ARTIFACTS + 9;
+    public static final int SUVIVAL_MODULE_2 = ARTIFACTS + 10;
+    public static final int SUVIVAL_MODULE_3 = ARTIFACTS + 11;
+    public static final int SUVIVAL_MODULE_4 = ARTIFACTS + 12;
+    public static final int ALIEN_DNA_1 = ARTIFACTS + 13;
+    public static final int ALIEN_DNA_2 = ARTIFACTS + 14;
+    public static final int ALIEN_DNA_3 = ARTIFACTS + 15;
+    public static final int GNOLLTECH_SHIELD_1 = ARTIFACTS + 16;
+    public static final int GNOLLTECH_SHIELD_2 = ARTIFACTS + 17;
+    public static final int GNOLLTECH_SHIELD_3 = ARTIFACTS + 18;
+    public static final int GNOLLTECH_SHIELD_4 = ARTIFACTS + 19;
+    public static final int HOLOPAD_1 = ARTIFACTS + 20;
+    public static final int HOLOPAD_2 = ARTIFACTS + 21;
+    public static final int HOLOPAD_3 = ARTIFACTS + 22;
 
     //32 free slots
 
@@ -218,19 +220,19 @@ public class ItemSpriteSheet {
     public static final int SILVER_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 10;
     public static final int IVORY_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 11;
 
-    private static final int GADGETS = xy(1, 22);  //16 slots
-    public static final int ROTBERRY_GADGET = GADGETS;
-    public static final int FIREBLOOM_GADGET = GADGETS + 1;
-    public static final int STARFLOWER_GADGET = GADGETS + 2;
-    public static final int BLINDWEED_GADGET = GADGETS + 3;
-    public static final int SUNGRASS_GADGET = GADGETS + 4;
-    public static final int ICECAP_GADGET = GADGETS + 5;
-    public static final int STORMVINE_GADGET = GADGETS + 6;
-    public static final int SORROWMOSS_GADGET = GADGETS + 7;
-    public static final int DREAMFOIL_GADGET = GADGETS + 8;
-    public static final int EARTHROOT_GADGET = GADGETS + 9;
-    public static final int FADELEAF_GADGET = GADGETS + 10;
-    public static final int ALIENTECH_GADGET = GADGETS + 11;
+    private static final int DEVICES = xy(1, 22);  //16 slots
+    public static final int ALIEN_HUNTER_TRAP = DEVICES;
+    public static final int FIREBLOOM_DEVICE = DEVICES + 1;
+    public static final int STARFLOWER_DEVICE = DEVICES + 2;
+    public static final int BLINDWEED_DEVICE = DEVICES + 3;
+    public static final int SUNGRASS_DEVICE = DEVICES + 4;
+    public static final int ICECAP_DEVICE = DEVICES + 5;
+    public static final int STORMVINE_DEVICE = DEVICES + 6;
+    public static final int SORROWMOSS_DEVICE = DEVICES + 7;
+    public static final int DREAMFOIL_DEVICE = DEVICES + 8;
+    public static final int EARTHROOT_DEVICE = DEVICES + 9;
+    public static final int FADELEAF_DEVICE = DEVICES + 10;
+    public static final int ALIENTECH_DEVICE = DEVICES + 11;
 
     //32 free slots
 
@@ -239,7 +241,7 @@ public class ItemSpriteSheet {
     public static final int STEAK = FOOD + 1;
     public static final int OVERPRICED = FOOD + 2;
     public static final int CARPACCIO = FOOD + 3;
-    public static final int ALIENTECH = FOOD + 4;
+    public static final int ALIENPOD = FOOD + 4;
     public static final int RATION = FOOD + 5;
     public static final int PASTY = FOOD + 6;
     public static final int PUMPKIN_PIE = FOOD + 7;

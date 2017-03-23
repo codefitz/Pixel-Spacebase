@@ -31,7 +31,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.actors.mobs.Wraith;
+import com.wafitz.pixelspacebase.actors.mobs.Turret;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.NPC;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
@@ -57,7 +57,7 @@ import java.util.HashSet;
 public class HoloPad extends Artifact {
 
     {
-        image = ItemSpriteSheet.ARTIFACT_HOLOPAD1;
+        image = ItemSpriteSheet.HOLOPAD_1;
 
         levelCap = 10;
 
@@ -163,9 +163,9 @@ public class HoloPad extends Artifact {
     @Override
     public Item upgrade() {
         if (level() >= 9)
-            image = ItemSpriteSheet.ARTIFACT_HOLOPAD3;
+            image = ItemSpriteSheet.HOLOPAD_3;
         else if (level() >= 4)
-            image = ItemSpriteSheet.ARTIFACT_HOLOPAD2;
+            image = ItemSpriteSheet.HOLOPAD_2;
 
         //For upgrade transferring via well of transmutation
         droppedHoloBatteries = Math.max(level(), droppedHoloBatteries);
@@ -226,7 +226,7 @@ public class HoloPad extends Artifact {
                 }
 
                 if (spawnPoints.size() > 0) {
-                    Wraith.spawnAt(Random.element(spawnPoints));
+                    Turret.spawnAt(Random.element(spawnPoints));
                     Sample.INSTANCE.play(Assets.SND_CURSED);
                 }
 
@@ -531,7 +531,7 @@ public class HoloPad extends Artifact {
                 {
                         "I don't like this place... we should leave as soon as we can..."
                 }, {
-                "Hello source viewer, I'm writing this here as this line should never triggers. Have a nice day!"
+                "Hello source viewer, I'm writing this here as this line should never mines. Have a nice day!"
         }
         }
         };

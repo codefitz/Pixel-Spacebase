@@ -22,9 +22,9 @@ package com.wafitz.pixelspacebase.levels.features;
 
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.AlienTech;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.windows.WndContainer;
@@ -52,7 +52,7 @@ public class CraftingTerminal {
         if (heap == null)
             while (items.hasNext() && !foundFruit) {
                 curItem = items.next();
-                if (curItem instanceof AlienTech && ((AlienTech) curItem).experimentalTechAttrib == null) {
+                if (curItem instanceof AlienPod && ((AlienPod) curItem).experimentalTechAttrib == null) {
                     GameScene.show(
                             new WndOptions(Messages.get(CraftingTerminal.class, "pot"),
                                     Messages.get(CraftingTerminal.class, "options"),
@@ -63,7 +63,7 @@ public class CraftingTerminal {
                                     if (index == 0) {
                                         curItem.cast(CraftingTerminal.hero, CraftingTerminal.pos);
                                     } else
-                                        GameScene.selectItem(itemSelector, WndContainer.Mode.GADGET, Messages.get(CraftingTerminal.class, "select_gadget"));
+                                        GameScene.selectItem(itemSelector, WndContainer.Mode.DEVICE, Messages.get(CraftingTerminal.class, "select_device"));
                                 }
                             }
                     );
@@ -72,7 +72,7 @@ public class CraftingTerminal {
             }
 
         if (!foundFruit)
-            GameScene.selectItem(itemSelector, WndContainer.Mode.GADGET, Messages.get(CraftingTerminal.class, "select_gadget"));
+            GameScene.selectItem(itemSelector, WndContainer.Mode.DEVICE, Messages.get(CraftingTerminal.class, "select_device"));
     }
 
     private static final WndContainer.Listener itemSelector = new WndContainer.Listener() {

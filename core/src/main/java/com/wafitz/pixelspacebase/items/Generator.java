@@ -23,19 +23,19 @@ package com.wafitz.pixelspacebase.items;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.Cryongenics;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceBooster;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalRockets;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.FireTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.FrostTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.Firestarter;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.InvisibilityTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ParalyzingTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.InvisibilityEnhancement;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ParalyzingAgent;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.PolymerMembrane;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.RocketTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ToxicGasTech;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityOverride;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ToxicAgent;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
@@ -48,24 +48,24 @@ import com.wafitz.pixelspacebase.items.artifacts.BuggyCompiler;
 import com.wafitz.pixelspacebase.items.artifacts.GnollTechShield;
 import com.wafitz.pixelspacebase.items.artifacts.GravityGun;
 import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.LloydsBeacon;
-import com.wafitz.pixelspacebase.items.artifacts.MakersToolkit;
 import com.wafitz.pixelspacebase.items.artifacts.McGyvrModule;
+import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
 import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
 import com.wafitz.pixelspacebase.items.artifacts.StrongForcefield;
 import com.wafitz.pixelspacebase.items.artifacts.SurveyorModule;
 import com.wafitz.pixelspacebase.items.artifacts.SurvivalModule;
+import com.wafitz.pixelspacebase.items.artifacts.TechToolkit;
 import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
-import com.wafitz.pixelspacebase.items.blasters.Disintergrator;
+import com.wafitz.pixelspacebase.items.blasters.Disintegrator;
+import com.wafitz.pixelspacebase.items.blasters.DominationBlaster;
 import com.wafitz.pixelspacebase.items.blasters.EMP;
-import com.wafitz.pixelspacebase.items.blasters.FireBlaster;
-import com.wafitz.pixelspacebase.items.blasters.FreezeBlaster;
-import com.wafitz.pixelspacebase.items.blasters.LightBlaster;
-import com.wafitz.pixelspacebase.items.blasters.LightningBlaster;
-import com.wafitz.pixelspacebase.items.blasters.MindBlaster;
+import com.wafitz.pixelspacebase.items.blasters.FlameThrower;
+import com.wafitz.pixelspacebase.items.blasters.FreezeThrower;
+import com.wafitz.pixelspacebase.items.blasters.LazerGun;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
-import com.wafitz.pixelspacebase.items.blasters.TransfusionBlaster;
+import com.wafitz.pixelspacebase.items.blasters.ShockBlaster;
+import com.wafitz.pixelspacebase.items.blasters.VampiricBlaster;
 import com.wafitz.pixelspacebase.items.blasters.VenomBlaster;
 import com.wafitz.pixelspacebase.items.blasters.WaveBlaster;
 import com.wafitz.pixelspacebase.items.containers.Container;
@@ -100,29 +100,29 @@ import com.wafitz.pixelspacebase.items.scripts.WeakCloneScript;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.AssassinsBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.BattleAxe;
-import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Staff;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dagger;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dirk;
+import com.wafitz.pixelspacebase.items.weapon.melee.Drill;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
 import com.wafitz.pixelspacebase.items.weapon.melee.Glaive;
 import com.wafitz.pixelspacebase.items.weapon.melee.Greataxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.Greatsword;
-import com.wafitz.pixelspacebase.items.weapon.melee.HandAxe;
+import com.wafitz.pixelspacebase.items.weapon.melee.HoloScimitar;
 import com.wafitz.pixelspacebase.items.weapon.melee.ImperialShield;
 import com.wafitz.pixelspacebase.items.weapon.melee.Knuckles;
+import com.wafitz.pixelspacebase.items.weapon.melee.LazerSword;
+import com.wafitz.pixelspacebase.items.weapon.melee.LazerWhip;
 import com.wafitz.pixelspacebase.items.weapon.melee.Longsword;
-import com.wafitz.pixelspacebase.items.weapon.melee.Mace;
-import com.wafitz.pixelspacebase.items.weapon.melee.NewShortsword;
-import com.wafitz.pixelspacebase.items.weapon.melee.Quarterstaff;
-import com.wafitz.pixelspacebase.items.weapon.melee.RoundShield;
+import com.wafitz.pixelspacebase.items.weapon.melee.MCPickAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.RunicBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.Sai;
-import com.wafitz.pixelspacebase.items.weapon.melee.Scimitar;
+import com.wafitz.pixelspacebase.items.weapon.melee.Spade;
+import com.wafitz.pixelspacebase.items.weapon.melee.Spanner;
 import com.wafitz.pixelspacebase.items.weapon.melee.Spear;
-import com.wafitz.pixelspacebase.items.weapon.melee.Sword;
+import com.wafitz.pixelspacebase.items.weapon.melee.UltonShield;
 import com.wafitz.pixelspacebase.items.weapon.melee.WarHammer;
-import com.wafitz.pixelspacebase.items.weapon.melee.Whip;
-import com.wafitz.pixelspacebase.items.weapon.melee.WornShortsword;
+import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Boomerang;
 import com.wafitz.pixelspacebase.items.weapon.missiles.CurareDart;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Dart;
@@ -130,19 +130,19 @@ import com.wafitz.pixelspacebase.items.weapon.missiles.IncendiaryDart;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Javelin;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Shuriken;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Tamahawk;
-import com.wafitz.pixelspacebase.triggers.AlienPlant;
-import com.wafitz.pixelspacebase.triggers.AlienTrap;
-import com.wafitz.pixelspacebase.triggers.Blinding;
-import com.wafitz.pixelspacebase.triggers.Boost;
-import com.wafitz.pixelspacebase.triggers.Disorient;
-import com.wafitz.pixelspacebase.triggers.FireTrigger;
-import com.wafitz.pixelspacebase.triggers.Healing;
-import com.wafitz.pixelspacebase.triggers.IceTrigger;
-import com.wafitz.pixelspacebase.triggers.Knockout;
-import com.wafitz.pixelspacebase.triggers.Teleportation;
-import com.wafitz.pixelspacebase.triggers.Trigger;
-import com.wafitz.pixelspacebase.triggers.Venom;
-import com.wafitz.pixelspacebase.triggers.WeakForcefield;
+import com.wafitz.pixelspacebase.mines.AlienPlant;
+import com.wafitz.pixelspacebase.mines.AlienTrap;
+import com.wafitz.pixelspacebase.mines.Blinding;
+import com.wafitz.pixelspacebase.mines.Boost;
+import com.wafitz.pixelspacebase.mines.Disorient;
+import com.wafitz.pixelspacebase.mines.FireMine;
+import com.wafitz.pixelspacebase.mines.Healing;
+import com.wafitz.pixelspacebase.mines.IceMine;
+import com.wafitz.pixelspacebase.mines.Knockout;
+import com.wafitz.pixelspacebase.mines.Mine;
+import com.wafitz.pixelspacebase.mines.Teleportation;
+import com.wafitz.pixelspacebase.mines.Venom;
+import com.wafitz.pixelspacebase.mines.WeakForcefield;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
@@ -166,7 +166,7 @@ public class Generator {
         BLASTER(40, Blaster.class),
         MODULE(15, Module.class),
         ARTIFACT(15, Artifact.class),
-        GADGET(50, Trigger.Gadget.class),
+        DEVICE(50, Mine.Device.class),
         FOOD(0, Food.class),
         PARTS(500, Parts.class);
 
@@ -227,33 +227,33 @@ public class Generator {
 
         Category.EXPERIMENTALTECH.classes = new Class<?>[]{
                 HealingTech.class,
-                ExperienceTech.class,
-                ToxicGasTech.class,
-                ParalyzingTech.class,
-                FireTech.class,
-                RocketTech.class,
-                StrengthTech.class,
-                SecurityTech.class,
+                ExperienceBooster.class,
+                ToxicAgent.class,
+                ParalyzingAgent.class,
+                Firestarter.class,
+                ExperimentalRockets.class,
+                StrengthUpgrade.class,
+                SecurityOverride.class,
                 PolymerMembrane.class,
-                InvisibilityTech.class,
-                PowerTech.class,
-                FrostTech.class};
+                InvisibilityEnhancement.class,
+                PowerUpgrade.class,
+                Cryongenics.class};
         Category.EXPERIMENTALTECH.probs = new float[]{45, 4, 15, 10, 15, 10, 0, 20, 12, 10, 0, 10};
 
         //TODO: add last ones when implemented
         Category.BLASTER.classes = new Class<?>[]{
                 MissileBlaster.class,
-                LightningBlaster.class,
-                Disintergrator.class,
-                FireBlaster.class,
+                ShockBlaster.class,
+                Disintegrator.class,
+                FlameThrower.class,
                 VenomBlaster.class,
                 WaveBlaster.class,
                 //WandOfLivingEarth.class,
-                FreezeBlaster.class,
-                LightBlaster.class,
+                FreezeThrower.class,
+                LazerGun.class,
                 //WandOfWarding.class,
-                TransfusionBlaster.class,
-                MindBlaster.class,
+                VampiricBlaster.class,
+                DominationBlaster.class,
                 EMP.class};
         Category.BLASTER.probs = new float[]{5, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, 3, 3};
 
@@ -262,32 +262,32 @@ public class Generator {
         Category.WEAPON.probs = new float[]{};
 
         Category.WEP_T1.classes = new Class<?>[]{
-                WornShortsword.class,
+                Spanner.class,
                 Knuckles.class,
                 Dagger.class,
-                DM3000Staff.class,
+                DM3000Launcher.class,
                 Boomerang.class,
                 Dart.class
         };
         Category.WEP_T1.probs = new float[]{1, 1, 1, 0, 0, 1};
 
         Category.WEP_T2.classes = new Class<?>[]{
-                NewShortsword.class,
-                HandAxe.class,
+                Wrench.class,
+                MCPickAxe.class,
                 Spear.class,
-                Quarterstaff.class,
+                Drill.class,
                 Dirk.class,
                 IncendiaryDart.class
         };
         Category.WEP_T2.probs = new float[]{6, 5, 5, 4, 4, 6};
 
         Category.WEP_T3.classes = new Class<?>[]{
-                Sword.class,
-                Mace.class,
-                Scimitar.class,
-                RoundShield.class,
+                LazerSword.class,
+                Spade.class,
+                HoloScimitar.class,
+                UltonShield.class,
                 Sai.class,
-                Whip.class,
+                LazerWhip.class,
                 Shuriken.class,
                 CurareDart.class
         };
@@ -352,27 +352,27 @@ public class Generator {
                 SurveyorModule.class,
                 TimeFolder.class,
                 BuggyCompiler.class,
-                MakersToolkit.class, //currently removed from drop tables, pending rework.
+                TechToolkit.class, //currently removed from drop tables, pending rework.
                 HoloPad.class, //starts with no chance of spawning, chance is set directly after beating ghost quest.
-                LloydsBeacon.class,
+                PortableMaker.class,
                 GravityGun.class
         };
         Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
 
-        Category.GADGET.classes = new Class<?>[]{
-                FireTrigger.Gadget.class,
-                IceTrigger.Gadget.class,
-                Venom.Gadget.class,
-                Blinding.Gadget.class,
-                Healing.Gadget.class,
-                WeakForcefield.Gadget.class,
-                Teleportation.Gadget.class,
-                AlienTrap.Gadget.class,
-                AlienPlant.Gadget.class,
-                Knockout.Gadget.class,
-                Disorient.Gadget.class,
-                Boost.Gadget.class};
-        Category.GADGET.probs = new float[]{12, 12, 12, 12, 12, 12, 12, 0, 4, 12, 12, 1};
+        Category.DEVICE.classes = new Class<?>[]{
+                FireMine.Device.class,
+                IceMine.Device.class,
+                Venom.Device.class,
+                Blinding.Device.class,
+                Healing.Device.class,
+                WeakForcefield.Device.class,
+                Teleportation.Device.class,
+                AlienTrap.Device.class,
+                AlienPlant.Device.class,
+                Knockout.Device.class,
+                Disorient.Device.class,
+                Boost.Device.class};
+        Category.DEVICE.probs = new float[]{12, 12, 12, 12, 12, 12, 12, 0, 4, 12, 12, 1};
     }
 
     public static void reset() {

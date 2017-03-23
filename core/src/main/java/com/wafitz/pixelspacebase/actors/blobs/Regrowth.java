@@ -47,7 +47,7 @@ public class Regrowth extends Blob {
                         int c1 = c;
                         if (c == Terrain.EMPTY || c == Terrain.EMBERS || c == Terrain.EMPTY_DECO) {
                             c1 = cur[cell] > 9 ? Terrain.OFFVENT : Terrain.LIGHTEDVENT;
-                        } else if (c == Terrain.LIGHTEDVENT && cur[cell] > 9 && Dungeon.level.triggers.get(cell) == null) {
+                        } else if (c == Terrain.LIGHTEDVENT && cur[cell] > 9 && Dungeon.level.mines.get(cell) == null) {
                             c1 = Terrain.OFFVENT;
                         }
 

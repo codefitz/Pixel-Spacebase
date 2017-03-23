@@ -22,23 +22,23 @@ package com.wafitz.pixelspacebase.utils;
 
 import com.watabou.utils.Random;
 
-//This class defines the parameters for gadgets in ShatteredPD and contains a few convenience methods
+//This class defines the parameters for devices in ShatteredPD and contains a few convenience methods
 public class DungeonSeed {
 
-    private static long TOTAL_SEEDS = 5429503678976L; //26^9 possible gadgets
+    private static long TOTAL_SEEDS = 5429503678976L; //26^9 possible devices
 
     public static long randomSeed() {
         return Random.Long(TOTAL_SEEDS);
     }
 
-    //Gadget codes take the form @@@-@@@-@@@ where @ is any letter from A to Z (only uppercase)
-    //This is effectively a base-26 number system, therefore 26^9 unique gadgets are possible.
+    //Device codes take the form @@@-@@@-@@@ where @ is any letter from A to Z (only uppercase)
+    //This is effectively a base-26 number system, therefore 26^9 unique devices are possible.
 
-    //Gadget codes exist to make sharing and inputting gadgets easier
+    //Device codes exist to make sharing and inputting devices easier
     //ZZZ-ZZZ-ZZZ is much easier to enter and share than 5,429,503,678,975
 
 
-    //Takes a gadget code (@@@@@@@@@) and converts it to the equivalent long value
+    //Takes a device code (@@@@@@@@@) and converts it to the equivalent long value
     public static long convertFromCode(String code) {
         if (code.length() != 9)
             throw new IllegalArgumentException("codes must be 9 A-Z characters.");
@@ -54,7 +54,7 @@ public class DungeonSeed {
         return result;
     }
 
-    //Takes a long value and converts it to the equivalent gadget code
+    //Takes a long value and converts it to the equivalent device code
     public static String convertToCode(long seed) {
         if (seed < 0 || seed >= TOTAL_SEEDS)
             throw new IllegalArgumentException("seeds must be within the range [0, TOTAL_SEEDS)");
@@ -82,9 +82,9 @@ public class DungeonSeed {
         return result;
     }
 
-    //Using this we can let users input 'fun' plaintext gadgets and convert them to a long equivalent.
+    //Using this we can let users input 'fun' plaintext devices and convert them to a long equivalent.
     // This is basically the same as string.hashcode except with long, and accounting for overflow
-    // to ensure the produced gadget is always in the range [0, TOTAL_SEEDS)
+    // to ensure the produced device is always in the range [0, TOTAL_SEEDS)
     public static long convertFromText(String inputText) {
         long total = 0;
         for (char c : inputText.toCharArray()) {

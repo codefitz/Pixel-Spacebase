@@ -37,7 +37,7 @@ public class IntruderAlert extends FlavourBuff {
 
     @Override
     public int icon() {
-        return BuffIndicator.MIND_VISION;
+        return BuffIndicator.INTRUDER_ALERT;
     }
 
     @Override

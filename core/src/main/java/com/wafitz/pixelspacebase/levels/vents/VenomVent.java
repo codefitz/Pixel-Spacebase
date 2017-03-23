@@ -35,7 +35,7 @@ public class VenomVent extends Vent {
     @Override
     public void activate() {
 
-        VenomGas venomGas = Blob.gadget(pos, 80 + 5 * Dungeon.depth, VenomGas.class);
+        VenomGas venomGas = Blob.device(pos, 80 + 5 * Dungeon.depth, VenomGas.class);
 
         venomGas.setStrength(1 + Dungeon.depth / 4);
 

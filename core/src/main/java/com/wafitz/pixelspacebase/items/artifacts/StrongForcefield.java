@@ -31,7 +31,7 @@ import com.watabou.utils.Random;
 public class StrongForcefield extends Artifact {
 
     {
-        image = ItemSpriteSheet.ARTIFACT_CAPE;
+        image = ItemSpriteSheet.STRONG_FORCEFIELD;
 
         levelCap = 10;
 
@@ -124,7 +124,7 @@ public class StrongForcefield extends Artifact {
             if (cooldown == 0)
                 return BuffIndicator.NONE;
             else
-                return BuffIndicator.THORNS;
+                return BuffIndicator.STRONGFORCEFIELD;
         }
 
         @Override

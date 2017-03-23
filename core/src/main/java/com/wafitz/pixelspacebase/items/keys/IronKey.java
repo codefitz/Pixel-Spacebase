@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class IronKey extends Key {
 
     {
-        image = ItemSpriteSheet.IRON_KEY;
+        image = ItemSpriteSheet.IRON_KEYCARD;
     }
 
     @Override

@@ -77,7 +77,7 @@ public abstract class Vent implements Bundlable {
         return this;
     }
 
-    public void trigger() {
+    public void mine() {
         if (active) {
             if (Dungeon.visible[pos]) {
                 Sample.INSTANCE.play(Assets.SND_TRAP);
