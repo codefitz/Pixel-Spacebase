@@ -22,20 +22,12 @@ package com.wafitz.pixelspacebase.items.weapon.melee;
 
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
-public class RunicBlade extends MeleeWeapon {
+public class DualBlade extends MeleeWeapon {
 
     {
-        image = ItemSpriteSheet.RUNIC_BLADE;
+        image = ItemSpriteSheet.DUALBLADE;
 
-        tier = 4;
+        tier = 5;
     }
 
-    //Essentially it's a tier 4 weapon, with tier 3 base max damage, and tier 5 scaling.
-    //equal to tier 4 in damage at +5
-
-    @Override
-    public int max(int lvl) {
-        return 5 * (tier) +                    //20 base, down from 25
-                Math.round(lvl * (tier + 2));    //+6 per level, up from +5
-    }
 }

@@ -18,60 +18,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.weapon.missiles;
+package com.wafitz.pixelspacebase.items.weapon.melee;
 
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Bleeding;
-import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
-public class Tamahawk extends MissileWeapon {
+public class DarkSaber extends MeleeWeapon {
 
     {
-        image = ItemSpriteSheet.TOMAHAWK;
+        image = ItemSpriteSheet.DARK_SABER;
 
-    }
-
-    @Override
-    public int min(int lvl) {
-        return 4;
+        tier = 4;
     }
 
     @Override
     public int max(int lvl) {
-        return 20;
+        return 4 * (tier + 1) +    //20 base, down from 25
+                lvl * (tier + 1);   //scaling unchanged
     }
 
     @Override
-    public int STRReq(int lvl) {
-        return 17;
+    public int damageRoll(Hero hero) {
+        Char enemy = hero.enemy();
+        if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) {
+            //deals avg damage to max on surprise, instead of min to max.
+            int damage = convert.damageFactor(Random.NormalIntRange((min() + max()) / 2, max()));
+            int exStr = hero.STR() - STRReq();
+            if (exStr > 0) {
+                damage += Random.IntRange(0, exStr);
+            }
+            return damage;
+        } else
+            return super.damageRoll(hero);
     }
 
-    public Tamahawk() {
-        this(1);
-    }
-
-    private Tamahawk(int number) {
-        super();
-        quantity = number;
-    }
-
-    @Override
-    public int proc(Char attacker, Char defender, int damage) {
-        Buff.affect(defender, Bleeding.class).set(damage);
-        return super.proc(attacker, defender, damage);
-    }
-
-    @Override
-    public Item random() {
-        quantity = Random.Int(5, 12);
-        return this;
-    }
-
-    @Override
-    public int cost() {
-        return 15 * quantity;
-    }
 }

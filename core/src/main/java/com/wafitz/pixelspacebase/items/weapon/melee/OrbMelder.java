@@ -22,25 +22,20 @@ package com.wafitz.pixelspacebase.items.weapon.melee;
 
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
-public class Greataxe extends MeleeWeapon {
+public class OrbMelder extends MeleeWeapon {
 
     {
-        image = ItemSpriteSheet.GREATAXE;
+        image = ItemSpriteSheet.ORB_MELDER;
 
         tier = 5;
+        DLY = 1.5f; //0.67x speed
+        RCH = 2;    //extra reach
     }
 
     @Override
     public int max(int lvl) {
-        return 5 * (tier + 3) +    //40 base, up from 30
-                lvl * (tier + 1);   //scaling unchanged
-    }
-
-    @Override
-    public int STRReq(int lvl) {
-        lvl = Math.max(0, lvl);
-        //20 base strength req, up from 18
-        return (10 + tier * 2) - (int) (Math.sqrt(8 * lvl + 1) - 1) / 2;
+        return Math.round(6.67f * (tier + 1)) +    //40 base, up from 30
+                lvl * Math.round(1.33f * (tier + 1)); //+8 per level, up from +6
     }
 
 }

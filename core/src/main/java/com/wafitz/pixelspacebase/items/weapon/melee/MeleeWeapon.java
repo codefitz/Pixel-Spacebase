@@ -64,9 +64,9 @@ public class MeleeWeapon extends Weapon {
         if (levelKnown) {
             info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, convert.damageFactor(min()), convert.damageFactor(max()), STRReq());
             if (STRReq() > Dungeon.hero.STR()) {
-                info += " " + Messages.get(Weapon.class, "too_heavy");
+                info += " " + Messages.get(Weapon.class, "too_heavy", name());
             } else if (Dungeon.hero.STR() > STRReq()) {
-                info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
+                info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq(), name());
             }
         } else {
             info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
@@ -80,10 +80,10 @@ public class MeleeWeapon extends Weapon {
 
         switch (convert) {
             case LIGHT:
-                info += "\n\n" + Messages.get(Weapon.class, "lighter");
+                info += "\n\n" + Messages.get(Weapon.class, "lighter", name());
                 break;
             case HEAVY:
-                info += "\n\n" + Messages.get(Weapon.class, "heavier");
+                info += "\n\n" + Messages.get(Weapon.class, "heavier", name());
                 break;
             case NONE:
         }
@@ -94,9 +94,9 @@ public class MeleeWeapon extends Weapon {
         }
 
         if (malfunctioning && isEquipped(Dungeon.hero)) {
-            info += "\n\n" + Messages.get(Weapon.class, "malfunctioning_worn");
+            info += "\n\n" + Messages.get(Weapon.class, "malfunctioning_worn", name());
         } else if (malfunctioningKnown && malfunctioning) {
-            info += "\n\n" + Messages.get(Weapon.class, "malfunctioning");
+            info += "\n\n" + Messages.get(Weapon.class, "malfunctioning", name());
         }
 
         return info;

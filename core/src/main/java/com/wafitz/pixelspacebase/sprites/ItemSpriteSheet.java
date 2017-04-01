@@ -97,29 +97,29 @@ public class ItemSpriteSheet {
     public static final int LAZER_WHIP = WEP_TIER3 + 5;
 
     private static final int WEP_TIER4 = xy(9, 8);   //8 slots
-    public static final int LONGSWORD = WEP_TIER4;
-    public static final int BATTLE_AXE = WEP_TIER4 + 1;
+    public static final int GNOLL_SWORD = WEP_TIER4;
+    public static final int HOLO_AXE = WEP_TIER4 + 1;
     public static final int FLAIL = WEP_TIER4 + 2;
-    public static final int RUNIC_BLADE = WEP_TIER4 + 3;
-    public static final int ASSASSINS_BLADE = WEP_TIER4 + 4;
+    public static final int BRIGHT_SABER = WEP_TIER4 + 3;
+    public static final int DARK_SABER = WEP_TIER4 + 4;
 
     private static final int WEP_TIER5 = xy(1, 9);   //8 slots
-    public static final int GREATSWORD = WEP_TIER5;
-    public static final int LAZER_HAMMER = WEP_TIER5 + 1;
-    public static final int GLAIVE = WEP_TIER5 + 2;
-    public static final int GREATAXE = WEP_TIER5 + 3;
+    public static final int DUALBLADE = WEP_TIER5;
+    public static final int BRIGHT_HAMMER = WEP_TIER5 + 1;
+    public static final int ORB_MELDER = WEP_TIER5 + 2;
+    public static final int ULTONAXE = WEP_TIER5 + 3;
     public static final int GNOLLSHIELD = WEP_TIER5 + 4;
 
     //8 free slots
 
     private static final int MISSILE_WEP = xy(1, 10);  //16 slots
     public static final int DART = MISSILE_WEP;
-    public static final int BOOMERANG = MISSILE_WEP + 1;
+    public static final int HUNTERDISC = MISSILE_WEP + 1;
     public static final int INCENDIARY_DART = MISSILE_WEP + 2;
     public static final int SHURIKEN = MISSILE_WEP + 3;
     public static final int CURARE_DART = MISSILE_WEP + 4;
-    public static final int JAVELIN = MISSILE_WEP + 5;
-    public static final int TOMAHAWK = MISSILE_WEP + 6;
+    public static final int HUNTERJAVELIN = MISSILE_WEP + 5;
+    public static final int NANOBOTS = MISSILE_WEP + 6;
 
     private static final int ARMOR = xy(1, 11);  //16 slots
     public static final int ARMOR_UNIFORM = ARMOR;
@@ -221,18 +221,18 @@ public class ItemSpriteSheet {
     public static final int IVORY_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 11;
 
     private static final int DEVICES = xy(1, 22);  //16 slots
-    public static final int ALIEN_HUNTER_TRAP = DEVICES;
-    public static final int FIREBLOOM_DEVICE = DEVICES + 1;
-    public static final int STARFLOWER_DEVICE = DEVICES + 2;
-    public static final int BLINDWEED_DEVICE = DEVICES + 3;
-    public static final int SUNGRASS_DEVICE = DEVICES + 4;
-    public static final int ICECAP_DEVICE = DEVICES + 5;
-    public static final int STORMVINE_DEVICE = DEVICES + 6;
-    public static final int SORROWMOSS_DEVICE = DEVICES + 7;
-    public static final int DREAMFOIL_DEVICE = DEVICES + 8;
-    public static final int EARTHROOT_DEVICE = DEVICES + 9;
-    public static final int FADELEAF_DEVICE = DEVICES + 10;
-    public static final int ALIENTECH_DEVICE = DEVICES + 11;
+    public static final int HUNTER_TRAPPER = DEVICES;
+    public static final int EXPLOSIVE_COMPOUND = DEVICES + 1;
+    public static final int ADRENAL_BOOST = DEVICES + 2;
+    public static final int FLASH_MINE_DEVICE = DEVICES + 3;
+    public static final int HEALING_DEVICE = DEVICES + 4;
+    public static final int ICE = DEVICES + 5;
+    public static final int VERTIGO_COMPOUND = DEVICES + 6;
+    public static final int SNAKE_HEAD = DEVICES + 7;
+    public static final int KNOCKOUT_DEVICE = DEVICES + 8;
+    public static final int FORCEFIELD_TECH = DEVICES + 9;
+    public static final int TELEPORT_TECH = DEVICES + 10;
+    public static final int DEAD_ALIEN = DEVICES + 11;
 
     //32 free slots
 

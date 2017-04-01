@@ -26,8 +26,8 @@ import com.wafitz.pixelspacebase.actors.blobs.Medical;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.mines.AlienPlant;
-import com.wafitz.pixelspacebase.mines.Healing;
+import com.wafitz.pixelspacebase.mines.AlienEgg;
+import com.wafitz.pixelspacebase.mines.KoltoPod;
 import com.watabou.utils.Random;
 
 public class MedicalPainter extends Painter {
@@ -42,22 +42,22 @@ public class MedicalPainter extends Painter {
 
         if (Dungeon.isChallenged(Challenges.NO_FOOD)) {
             if (Random.Int(2) == 0) {
-                level.mine(new Healing.Device(), level.pointToCell(room.random()));
+                level.mine(new KoltoPod.Device(), level.pointToCell(room.random()));
             }
         } else {
             int bushes = Random.Int(3);
             if (bushes == 0) {
-                level.mine(new Healing.Device(), level.pointToCell(room.random()));
+                level.mine(new KoltoPod.Device(), level.pointToCell(room.random()));
             } else if (bushes == 1) {
-                level.mine(new AlienPlant.Device(), level.pointToCell(room.random()));
+                level.mine(new AlienEgg.Device(), level.pointToCell(room.random()));
             } else if (Random.Int(5) == 0) {
                 int mine1, mine2;
                 mine1 = level.pointToCell(room.random());
-                level.mine(new Healing.Device(), mine1);
+                level.mine(new KoltoPod.Device(), mine1);
                 do {
                     mine2 = level.pointToCell(room.random());
                 } while (mine2 == mine1);
-                level.mine(new AlienPlant.Device(), mine2);
+                level.mine(new AlienEgg.Device(), mine2);
             }
         }
 

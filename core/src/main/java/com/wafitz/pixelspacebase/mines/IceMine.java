@@ -51,7 +51,7 @@ public class IceMine extends Mine {
 
     public static class Device extends Mine.Device {
         {
-            image = ItemSpriteSheet.ICECAP_DEVICE;
+            image = ItemSpriteSheet.ICE;
 
             mineClass = IceMine.class;
             craftingClass = Cryongenics.class;

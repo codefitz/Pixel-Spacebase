@@ -37,7 +37,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
 
-public class Knockout extends Mine {
+public class KnockoutMine extends Mine {
 
     {
         image = 10;
@@ -65,9 +65,9 @@ public class Knockout extends Mine {
 
     public static class Device extends Mine.Device {
         {
-            image = ItemSpriteSheet.DREAMFOIL_DEVICE;
+            image = ItemSpriteSheet.KNOCKOUT_DEVICE;
 
-            mineClass = Knockout.class;
+            mineClass = KnockoutMine.class;
             craftingClass = PolymerMembrane.class;
         }
     }

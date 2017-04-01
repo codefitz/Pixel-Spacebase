@@ -36,7 +36,7 @@ import com.wafitz.pixelspacebase.items.armor.enhancements.Camouflage;
 import com.wafitz.pixelspacebase.items.artifacts.GnollTechShield;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.mines.AlienPlant;
+import com.wafitz.pixelspacebase.mines.AlienEgg;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.utils.Random;
 
@@ -67,7 +67,7 @@ public class OffVent {
                 if (Random.Int(16 - naturalismLevel * 3) == 0) {
                     Item device = Generator.random(Generator.Category.DEVICE);
 
-                    if (device instanceof AlienPlant.Device) {
+                    if (device instanceof AlienEgg.Device) {
                         if (Random.Int(15) - Dungeon.limitedDrops.alienTechDevice.count >= 0) {
                             level.drop(device, pos).sprite.drop();
                             Dungeon.limitedDrops.alienTechDevice.count++;

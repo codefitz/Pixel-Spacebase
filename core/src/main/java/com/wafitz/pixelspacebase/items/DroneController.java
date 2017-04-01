@@ -41,7 +41,7 @@ import java.util.ArrayList;
 
 public class DroneController extends Item {
 
-    private static final String AC_SHATTER = "SHATTER";
+    private static final String AC_ACTIVATE = "ACTIVATE";
 
     {
         image = ItemSpriteSheet.DRONECONTROLLER;
@@ -55,7 +55,7 @@ public class DroneController extends Item {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        actions.add(AC_SHATTER);
+        actions.add(AC_ACTIVATE);
         return actions;
     }
 
@@ -64,7 +64,7 @@ public class DroneController extends Item {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_SHATTER)) {
+        if (action.equals(AC_ACTIVATE)) {
 
             hero.sprite.zap(hero.pos);
 
@@ -122,7 +122,7 @@ public class DroneController extends Item {
             drone.sprite.parent.add(new AlphaTweener(drone.sprite, 1, 0.15f));
 
             Sample.INSTANCE.play(Assets.SND_BEE);
-            return new ShatteredPot().setDrone(drone);
+            return new ActivatedDrone().setDrone(drone);
         } else {
             return this;
         }
@@ -144,7 +144,7 @@ public class DroneController extends Item {
     }
 
     //The bee's broken 'home', all this item does is let its bee know where it is, and who owns it (if anyone).
-    public static class ShatteredPot extends Item {
+    public static class ActivatedDrone extends Item {
 
         {
             image = ItemSpriteSheet.DEADDRONECONT;

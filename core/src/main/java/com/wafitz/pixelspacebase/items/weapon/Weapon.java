@@ -105,7 +105,7 @@ abstract public class Weapon extends KindOfWeapon {
         if (!levelKnown) {
             if (--hitsToKnow <= 0) {
                 levelKnown = true;
-                GLog.i(Messages.get(Weapon.class, "identify"));
+                GLog.i(Messages.get(Weapon.class, "identify", name()));
                 Badges.validateItemLevelAquired(this);
             }
         }
@@ -300,7 +300,7 @@ abstract public class Weapon extends KindOfWeapon {
         }
 
         public String desc() {
-            return Messages.get(this, "desc");
+            return Messages.get(this, "desc", name());
         }
 
         public boolean malfunction() {

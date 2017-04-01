@@ -79,12 +79,12 @@ public class ItemSlot extends Button {
             return ItemSpriteSheet.CRYSTAL_CHEST;
         }
     };
-    static final Item TOMB = new Item() {
+    static final Item CMD_TERMINAL = new Item() {
         public int image() {
             return ItemSpriteSheet.REDTERMINAL;
         }
     };
-    static final Item SKELETON = new Item() {
+    static final Item EMPTY_SPACESUIT = new Item() {
         public int image() {
             return ItemSpriteSheet.DISCARDEDSUIT;
         }

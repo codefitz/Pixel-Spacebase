@@ -34,7 +34,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
-public class Healing extends Mine {
+public class KoltoPod extends Mine {
 
     {
         image = 4;
@@ -45,7 +45,7 @@ public class Healing extends Mine {
         Char ch = Actor.findChar(pos);
 
         if (ch == Dungeon.hero) {
-            Buff.affect(ch, Health.class).boost(ch.HT);
+            Buff.affect(ch, Health.class).boost(ch != null ? ch.HT : 0);
         }
 
         if (Dungeon.visible[pos]) {
@@ -55,9 +55,9 @@ public class Healing extends Mine {
 
     public static class Device extends Mine.Device {
         {
-            image = ItemSpriteSheet.SUNGRASS_DEVICE;
+            image = ItemSpriteSheet.HEALING_DEVICE;
 
-            mineClass = Healing.class;
+            mineClass = KoltoPod.class;
             craftingClass = HealingTech.class;
 
             bones = true;

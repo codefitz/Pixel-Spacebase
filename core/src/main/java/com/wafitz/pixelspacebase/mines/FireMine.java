@@ -46,7 +46,7 @@ public class FireMine extends Mine {
 
     public static class Device extends Mine.Device {
         {
-            image = ItemSpriteSheet.FIREBLOOM_DEVICE;
+            image = ItemSpriteSheet.EXPLOSIVE_COMPOUND;
 
             mineClass = FireMine.class;
             craftingClass = Firestarter.class;

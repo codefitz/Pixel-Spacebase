@@ -20,17 +20,20 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
+import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalRockets;
+import com.wafitz.pixelspacebase.actors.buffs.Poison;
+import com.wafitz.pixelspacebase.effects.CellEmitter;
+import com.wafitz.pixelspacebase.effects.particles.PoisonParticle;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ToxicAgent;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
-public class Disorient extends Mine {
+public class VenomMine extends Mine {
 
     {
-        image = 9;
+        image = 2;
     }
 
     @Override
@@ -38,16 +41,20 @@ public class Disorient extends Mine {
         Char ch = Actor.findChar(pos);
 
         if (ch != null) {
-            Buff.affect(ch, Vertigo.class, Vertigo.duration(ch));
+            Buff.affect(ch, Poison.class).set(Poison.durationFactor(ch) * (4 + Dungeon.depth / 2));
+        }
+
+        if (Dungeon.visible[pos]) {
+            CellEmitter.center(pos).burst(PoisonParticle.SPLASH, 3);
         }
     }
 
     public static class Device extends Mine.Device {
         {
-            image = ItemSpriteSheet.STORMVINE_DEVICE;
+            image = ItemSpriteSheet.SNAKE_HEAD;
 
-            mineClass = Disorient.class;
-            craftingClass = ExperimentalRockets.class;
+            mineClass = VenomMine.class;
+            craftingClass = ToxicAgent.class;
         }
     }
 }

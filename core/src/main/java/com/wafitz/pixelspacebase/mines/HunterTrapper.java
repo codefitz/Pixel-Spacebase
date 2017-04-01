@@ -18,23 +18,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.weapon.melee;
+package com.wafitz.pixelspacebase.mines;
 
+import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
-public class WarHammer extends MeleeWeapon {
+public class HunterTrapper extends Mine {
 
     {
-        image = ItemSpriteSheet.LAZER_HAMMER;
-
-        tier = 5;
-        ACC = 1.15f; //15% boost to accuracy
+        image = 7;
     }
 
     @Override
-    public int max(int lvl) {
-        return 4 * (tier + 1) +    //24 base, down from 30
-                lvl * (tier + 1);   //scaling unchanged
+    public void activate() {
+        Dungeon.level.drop(new Device(), pos).sprite.drop();
     }
 
+    public static class Device extends Mine.Device {
+        {
+            image = ItemSpriteSheet.HUNTER_TRAPPER;
+
+            mineClass = HunterTrapper.class;
+            craftingClass = StrengthUpgrade.class;
+        }
+    }
 }

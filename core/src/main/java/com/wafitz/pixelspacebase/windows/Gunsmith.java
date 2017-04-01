@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.quest.Embers;
 import com.wafitz.pixelspacebase.items.quest.Lazer;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.mines.AlienTrap;
+import com.wafitz.pixelspacebase.mines.HunterTrapper;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.ui.RedButton;
@@ -55,7 +55,7 @@ public class Gunsmith extends Window {
             msg = Messages.get(this, "dust");
         } else if (item instanceof Embers) {
             msg = Messages.get(this, "ember");
-        } else if (item instanceof AlienTrap.Device) {
+        } else if (item instanceof HunterTrapper.Device) {
             msg = Messages.get(this, "berry");
         }
 

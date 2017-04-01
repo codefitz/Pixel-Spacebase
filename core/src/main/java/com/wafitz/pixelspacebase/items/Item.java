@@ -31,7 +31,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Targeted;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.containers.Container;
-import com.wafitz.pixelspacebase.items.weapon.missiles.Boomerang;
+import com.wafitz.pixelspacebase.items.weapon.missiles.HunterDisc;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -188,7 +188,7 @@ public class Item implements Bundlable {
             }
 
             items.add(this);
-            if (stackable || this instanceof Boomerang) Dungeon.quickslot.replaceSimilar(this);
+            if (stackable || this instanceof HunterDisc) Dungeon.quickslot.replaceSimilar(this);
             updateQuickslot();
             Collections.sort(items, itemComparator);
             return true;
@@ -213,7 +213,7 @@ public class Item implements Bundlable {
 
         } else if (quantity == 1) {
 
-            if (stackable || this instanceof Boomerang) {
+            if (stackable || this instanceof HunterDisc) {
                 Dungeon.quickslot.convertToPlaceholder(this);
             }
 

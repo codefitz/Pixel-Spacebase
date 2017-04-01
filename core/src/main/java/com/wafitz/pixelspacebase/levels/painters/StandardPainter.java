@@ -50,7 +50,7 @@ public class StandardPainter extends Painter {
                             return;
                         }
                         break;
-                    } else {
+                        //} else {
                         // Burned room
                     }
                 case 1:
@@ -78,7 +78,7 @@ public class StandardPainter extends Painter {
                             return;
                         }
                         break;
-                    } else {
+                        //} else {
                         // Fissure
                     }
                 case 5:
@@ -137,7 +137,7 @@ public class StandardPainter extends Painter {
             int pos = w > h ?
                     room.left + 1 + shift + i * 2 + (room.top + 2 + Random.Int(h - 2)) * level.width() :
                     (room.left + 2 + Random.Int(w - 2)) + (room.top + 1 + shift + i * 2) * level.width();
-            level.drop(i == index ? Generator.random() : new Parts().random(), pos).type = Heap.Type.TOMB;
+            level.drop(i == index ? Generator.random() : new Parts().random(), pos).type = Heap.Type.CMD_TERMINAL;
         }
     }
 

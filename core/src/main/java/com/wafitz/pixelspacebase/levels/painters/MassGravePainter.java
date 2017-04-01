@@ -78,7 +78,7 @@ public class MassGravePainter extends Painter {
                 pos = level.pointToCell(room.random());
             } while (level.map[pos] != Terrain.EMPTY_SP || level.heaps.get(pos) != null);
             Heap h = level.drop(item, pos);
-            h.type = Heap.Type.SKELETON;
+            h.type = Heap.Type.EMPTY_SPACESUIT;
         }
     }
 

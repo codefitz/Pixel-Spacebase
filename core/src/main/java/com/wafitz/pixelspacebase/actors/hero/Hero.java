@@ -91,7 +91,7 @@ import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.CraftingTerminal;
 import com.wafitz.pixelspacebase.levels.features.Sign;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.mines.Healing;
+import com.wafitz.pixelspacebase.mines.KoltoPod;
 import com.wafitz.pixelspacebase.mines.WeakForcefield;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.InterlevelScene;
@@ -705,11 +705,11 @@ public class Hero extends Char {
                 }
 
                 switch (heap.type) {
-                    case TOMB:
+                    case CMD_TERMINAL:
                         Sample.INSTANCE.play(Assets.SND_TOMB);
                         Camera.main.shake(1, 0.5f);
                         break;
-                    case SKELETON:
+                    case EMPTY_SPACESUIT:
                     case REMAINS:
                         break;
                     default:
@@ -916,7 +916,7 @@ public class Hero extends Char {
             damage = armor.absorb(damage);
         }
 
-        Healing.Health health = buff(Healing.Health.class);
+        KoltoPod.Health health = buff(KoltoPod.Health.class);
         if (health != null) {
             health.absorb(damage);
         }
@@ -1467,7 +1467,7 @@ public class Hero extends Char {
         } else if (curAction instanceof HeroAction.OpenChest) {
 
             Heap heap = Dungeon.level.heaps.get(((HeroAction.OpenChest) curAction).dst);
-            if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
+            if (heap.type == Type.EMPTY_SPACESUIT || heap.type == Type.REMAINS) {
                 Sample.INSTANCE.play(Assets.SND_BONES);
             } else if (heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST) {
                 belongings.specialKeys[Dungeon.depth]--;

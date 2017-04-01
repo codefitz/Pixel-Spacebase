@@ -36,7 +36,7 @@ import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.PortableRender;
 import com.wafitz.pixelspacebase.items.Torch;
-import com.wafitz.pixelspacebase.items.Weightstone;
+import com.wafitz.pixelspacebase.items.WeaponTuner;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
@@ -52,19 +52,19 @@ import com.wafitz.pixelspacebase.items.scripts.FixScript;
 import com.wafitz.pixelspacebase.items.scripts.IdentifyScript;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.weapon.melee.BattleAxe;
-import com.wafitz.pixelspacebase.items.weapon.melee.Greatsword;
+import com.wafitz.pixelspacebase.items.weapon.melee.BrightHammer;
+import com.wafitz.pixelspacebase.items.weapon.melee.DualBlade;
+import com.wafitz.pixelspacebase.items.weapon.melee.GnollSword;
+import com.wafitz.pixelspacebase.items.weapon.melee.HoloAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.LazerSword;
-import com.wafitz.pixelspacebase.items.weapon.melee.Longsword;
 import com.wafitz.pixelspacebase.items.weapon.melee.MCPickAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.Spade;
-import com.wafitz.pixelspacebase.items.weapon.melee.WarHammer;
 import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
 import com.wafitz.pixelspacebase.items.weapon.missiles.CurareDart;
+import com.wafitz.pixelspacebase.items.weapon.missiles.HunterJavelin;
 import com.wafitz.pixelspacebase.items.weapon.missiles.IncendiaryDart;
-import com.wafitz.pixelspacebase.items.weapon.missiles.Javelin;
+import com.wafitz.pixelspacebase.items.weapon.missiles.Nanobots;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Shuriken;
-import com.wafitz.pixelspacebase.items.weapon.missiles.Tamahawk;
 import com.wafitz.pixelspacebase.levels.LastWorkshopLevel;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
@@ -144,18 +144,18 @@ public class Workshop extends Painter {
                 break;
 
             case 16:
-                itemsToSpawn.add((Random.Int(2) == 0 ? new Longsword().identify() : new BattleAxe()).identify());
+                itemsToSpawn.add((Random.Int(2) == 0 ? new GnollSword().identify() : new HoloAxe()).identify());
                 itemsToSpawn.add(Random.Int(2) == 0 ?
                         new Shuriken().quantity(Random.NormalIntRange(4, 7)) :
-                        new Javelin().quantity(Random.NormalIntRange(3, 6)));
+                        new HunterJavelin().quantity(Random.NormalIntRange(3, 6)));
                 itemsToSpawn.add(new HoverPod().identify());
                 break;
 
             case 21:
-                itemsToSpawn.add(Random.Int(2) == 0 ? new Greatsword().identify() : new WarHammer().identify());
+                itemsToSpawn.add(Random.Int(2) == 0 ? new DualBlade().identify() : new BrightHammer().identify());
                 itemsToSpawn.add(Random.Int(2) == 0 ?
-                        new Javelin().quantity(Random.NormalIntRange(4, 7)) :
-                        new Tamahawk().quantity(Random.NormalIntRange(4, 7)));
+                        new HunterJavelin().quantity(Random.NormalIntRange(4, 7)) :
+                        new Nanobots().quantity(Random.NormalIntRange(4, 7)));
                 itemsToSpawn.add(new Loader().identify());
                 itemsToSpawn.add(new Torch());
                 itemsToSpawn.add(new Torch());
@@ -203,9 +203,9 @@ public class Workshop extends Painter {
 
         if (Dungeon.depth == 6) {
             itemsToSpawn.add(new Clone());
-            itemsToSpawn.add(new Weightstone());
+            itemsToSpawn.add(new WeaponTuner());
         } else {
-            itemsToSpawn.add(Random.Int(2) == 0 ? new Clone() : new Weightstone());
+            itemsToSpawn.add(Random.Int(2) == 0 ? new Clone() : new WeaponTuner());
         }
 
 

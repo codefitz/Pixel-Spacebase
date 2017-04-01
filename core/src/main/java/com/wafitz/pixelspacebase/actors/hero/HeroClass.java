@@ -33,8 +33,8 @@ import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dagger;
 import com.wafitz.pixelspacebase.items.weapon.melee.Knuckles;
 import com.wafitz.pixelspacebase.items.weapon.melee.Spanner;
-import com.wafitz.pixelspacebase.items.weapon.missiles.Boomerang;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Dart;
+import com.wafitz.pixelspacebase.items.weapon.missiles.HunterDisc;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.watabou.utils.Bundle;
 
@@ -161,10 +161,10 @@ public enum HeroClass {
     private static void initCaptain(Hero hero) {
 
         (hero.belongings.weapon = new Knuckles()).identify();
-        Boomerang boomerang = new Boomerang();
-        boomerang.identify().collect();
+        HunterDisc hunterDisc = new HunterDisc();
+        hunterDisc.identify().collect();
 
-        Dungeon.quickslot.setSlot(0, boomerang);
+        Dungeon.quickslot.setSlot(0, hunterDisc);
 
         new SecurityOverride().setKnown();
     }

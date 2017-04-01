@@ -69,7 +69,7 @@ import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
 import com.wafitz.pixelspacebase.mechanics.ShadowCaster;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.mines.AlienPlant;
+import com.wafitz.pixelspacebase.mines.AlienEgg;
 import com.wafitz.pixelspacebase.mines.Mine;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
@@ -667,7 +667,7 @@ public abstract class Level implements Bundlable {
     public Heap drop(Item item, int cell) {
 
         //This messy if statement deals will items which should not drop in challenges primarily.
-        if ((Dungeon.isChallenged(Challenges.NO_FOOD) && (item instanceof Food || item instanceof AlienPlant.Device)) ||
+        if ((Dungeon.isChallenged(Challenges.NO_FOOD) && (item instanceof Food || item instanceof AlienEgg.Device)) ||
                 (Dungeon.isChallenged(Challenges.NO_ARMOR) && item instanceof Armor) ||
                 (Dungeon.isChallenged(Challenges.NO_HEALING) && item instanceof HealingTech) ||
                 (Dungeon.isChallenged(Challenges.NO_HERBALISM) && (item instanceof Mine.Device || item instanceof Dewdrop || item instanceof DeviceCase)) ||
@@ -685,7 +685,7 @@ public abstract class Level implements Bundlable {
 
         if ((map[cell] == Terrain.CRAFTING) && (
                 !(item instanceof Mine.Device || item instanceof AlienPod) ||
-                        item instanceof AlienPlant.Device ||
+                        item instanceof AlienEgg.Device ||
                         (item instanceof AlienPod && (((AlienPod) item).experimentalTechAttrib != null || heaps.get(cell) != null)) ||
                         Dungeon.hero.buff(TechToolkit.crafting.class) != null && Dungeon.hero.buff(TechToolkit.crafting.class).isMalfunctioning())) {
             int n;

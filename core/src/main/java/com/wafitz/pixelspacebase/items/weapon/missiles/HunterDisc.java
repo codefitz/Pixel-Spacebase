@@ -31,10 +31,10 @@ import com.wafitz.pixelspacebase.sprites.MissileSprite;
 
 import java.util.ArrayList;
 
-public class Boomerang extends MissileWeapon {
+public class HunterDisc extends MissileWeapon {
 
     {
-        image = ItemSpriteSheet.BOOMERANG;
+        image = ItemSpriteSheet.HUNTERDISC;
 
         stackable = false;
 

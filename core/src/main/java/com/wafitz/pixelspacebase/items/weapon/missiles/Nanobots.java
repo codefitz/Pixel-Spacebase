@@ -18,41 +18,60 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.mines;
+package com.wafitz.pixelspacebase.items.weapon.missiles;
 
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.buffs.Bleeding;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Upgrade;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceBooster;
+import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
-public class Boost extends Mine {
+public class Nanobots extends MissileWeapon {
 
     {
-        image = 11;
+        image = ItemSpriteSheet.NANOBOTS;
+
     }
 
     @Override
-    public void activate() {
-        Char ch = Actor.findChar(pos);
-
-        if (ch != null) Buff.prolong(ch, Upgrade.class, 30f);
-
-        if (Random.Int(5) == 0) {
-            Dungeon.level.drop(new Device(), pos).sprite.drop();
-        }
+    public int min(int lvl) {
+        return 4;
     }
 
-    public static class Device extends Mine.Device {
+    @Override
+    public int max(int lvl) {
+        return 20;
+    }
 
-        {
-            image = ItemSpriteSheet.STARFLOWER_DEVICE;
+    @Override
+    public int STRReq(int lvl) {
+        return 17;
+    }
 
-            mineClass = Boost.class;
-            craftingClass = ExperienceBooster.class;
-        }
+    public Nanobots() {
+        this(1);
+    }
+
+    private Nanobots(int number) {
+        super();
+        quantity = number;
+    }
+
+    @Override
+    public int proc(Char attacker, Char defender, int damage) {
+        Buff.affect(defender, Bleeding.class).set(damage);
+        return super.proc(attacker, defender, damage);
+    }
+
+    @Override
+    public Item random() {
+        quantity = Random.Int(5, 12);
+        return this;
+    }
+
+    @Override
+    public int cost() {
+        return 15 * quantity;
     }
 }

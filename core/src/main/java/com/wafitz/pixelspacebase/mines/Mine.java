@@ -84,7 +84,7 @@ public abstract class Mine implements Bundlable {
             if (Random.Int(5 - (naturalismLevel / 2)) == 0) {
                 Item device = Generator.random(Generator.Category.DEVICE);
 
-                if (device instanceof AlienPlant.Device) {
+                if (device instanceof AlienEgg.Device) {
                     if (Random.Int(15) - Dungeon.limitedDrops.alienTechDevice.count >= 0) {
                         Dungeon.level.drop(device, pos).sprite.drop();
                         Dungeon.limitedDrops.alienTechDevice.count++;
@@ -116,7 +116,7 @@ public abstract class Mine implements Bundlable {
 
     public static class Device extends Item {
 
-        static final String AC_MINE = "MINE";
+        static final String AC_SET = "SET";
 
         private static final float TIME_TO_SET_MINE = 1f;
 
@@ -132,7 +132,7 @@ public abstract class Mine implements Bundlable {
         @Override
         public ArrayList<String> actions(Hero hero) {
             ArrayList<String> actions = super.actions(hero);
-            actions.add(AC_MINE);
+            actions.add(AC_SET);
             return actions;
         }
 
@@ -150,7 +150,7 @@ public abstract class Mine implements Bundlable {
 
             super.execute(hero, action);
 
-            if (action.equals(AC_MINE)) {
+            if (action.equals(AC_SET)) {
 
                 hero.spend(TIME_TO_SET_MINE);
                 hero.busy();
@@ -195,9 +195,13 @@ public abstract class Mine implements Bundlable {
             return Messages.get(mineClass, "desc");
         }
 
+        public String minename() {
+            return Messages.get(mineClass, "name");
+        }
+
         @Override
         public String info() {
-            return Messages.get(Device.class, "info", desc());
+            return Messages.get(Device.class, "info", name(), desc(), minename());
         }
     }
 }

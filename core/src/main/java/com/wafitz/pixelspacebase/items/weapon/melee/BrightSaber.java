@@ -18,29 +18,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.mines;
+package com.wafitz.pixelspacebase.items.weapon.melee;
 
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
-public class AlienTrap extends Mine {
+public class BrightSaber extends MeleeWeapon {
 
     {
-        image = 7;
+        image = ItemSpriteSheet.BRIGHT_SABER;
+
+        tier = 4;
     }
+
+    //Essentially it's a tier 4 weapon, with tier 3 base max damage, and tier 5 scaling.
+    //equal to tier 4 in damage at +5
 
     @Override
-    public void activate() {
-        Dungeon.level.drop(new Device(), pos).sprite.drop();
-    }
-
-    public static class Device extends Mine.Device {
-        {
-            image = ItemSpriteSheet.ALIEN_HUNTER_TRAP;
-
-            mineClass = AlienTrap.class;
-            craftingClass = StrengthUpgrade.class;
-        }
+    public int max(int lvl) {
+        return 5 * (tier) +                    //20 base, down from 25
+                Math.round(lvl * (tier + 2));    //+6 per level, up from +5
     }
 }

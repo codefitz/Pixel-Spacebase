@@ -675,7 +675,7 @@ public abstract class RegularLevel extends Level {
             Heap.Type type;
             switch (Random.Int(20)) {
                 case 0:
-                    type = Heap.Type.SKELETON;
+                    type = Heap.Type.EMPTY_SPACESUIT;
                     break;
                 case 1:
                 case 2:

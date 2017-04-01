@@ -34,9 +34,9 @@ import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
-import com.wafitz.pixelspacebase.mines.AlienPlant;
-import com.wafitz.pixelspacebase.mines.Boost;
-import com.wafitz.pixelspacebase.mines.Healing;
+import com.wafitz.pixelspacebase.mines.AdrenalBoost;
+import com.wafitz.pixelspacebase.mines.AlienEgg;
+import com.wafitz.pixelspacebase.mines.KoltoPod;
 import com.wafitz.pixelspacebase.mines.Mine;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -128,7 +128,7 @@ public class EMP extends Blaster {
         while (cells.hasNext() && Random.Float() <= numMines) {
             Mine.Device device = (Mine.Device) Generator.random(Generator.Category.DEVICE);
 
-            if (device instanceof AlienPlant.Device) {
+            if (device instanceof AlienEgg.Device) {
                 if (Random.Int(15) - Dungeon.limitedDrops.alienTechDevice.count >= 0) {
                     floor.mine(device, cells.next());
                     Dungeon.limitedDrops.alienTechDevice.count++;
@@ -150,7 +150,7 @@ public class EMP extends Blaster {
         }
 
         while (cells.hasNext() && Random.Float() <= numStars) {
-            floor.mine(new Boost.Device(), cells.next());
+            floor.mine(new AdrenalBoost.Device(), cells.next());
             numStars--;
         }
 
@@ -176,7 +176,7 @@ public class EMP extends Blaster {
         int maxValue = damage * (level + 2) / (level + 6);
         int effValue = Math.min(Random.IntRange(0, maxValue), attacker.HT - attacker.HP);
 
-        Buff.affect(attacker, Healing.Health.class).boost(effValue);
+        Buff.affect(attacker, KoltoPod.Health.class).boost(effValue);
 
     }
 

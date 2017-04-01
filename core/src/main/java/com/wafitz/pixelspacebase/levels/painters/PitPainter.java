@@ -58,7 +58,7 @@ public class PitPainter extends Painter {
             remains = level.pointToCell(room.random());
         }
 
-        level.drop(new IronKey(Dungeon.depth), remains).type = Type.SKELETON;
+        level.drop(new IronKey(Dungeon.depth), remains).type = Type.EMPTY_SPACESUIT;
         int loot = Random.Int(3);
         if (loot == 0) {
             level.drop(Generator.random(Generator.Category.MODULE), remains);

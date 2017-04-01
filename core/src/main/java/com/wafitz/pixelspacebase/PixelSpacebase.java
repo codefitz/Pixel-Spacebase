@@ -41,7 +41,7 @@ import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Buggy;
 import com.wafitz.pixelspacebase.items.weapon.melee.Spanner;
 import com.wafitz.pixelspacebase.messages.Languages;
-import com.wafitz.pixelspacebase.mines.AlienTrap;
+import com.wafitz.pixelspacebase.mines.HunterTrapper;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.scenes.WelcomeScene;
@@ -116,11 +116,11 @@ public class PixelSpacebase extends Game {
                 com.wafitz.pixelspacebase.actors.mobs.GreatCrab.class,
                 "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$GreatCrab");
         com.watabou.utils.Bundle.addAlias(
-                AlienTrap.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$AlienTrap");
+                HunterTrapper.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$HunterTrapper");
         com.watabou.utils.Bundle.addAlias(
-                AlienTrap.Device.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$AlienTrap$Device");
+                HunterTrapper.Device.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$HunterTrapper$Device");
 
         //0.4.0
         //equipment

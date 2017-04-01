@@ -23,61 +23,47 @@ package com.wafitz.pixelspacebase.mines;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.buffs.Blindness;
+import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityOverride;
-import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.InvisibilityEnhancement;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
+import com.watabou.utils.Random;
 
-public class Teleportation extends Mine {
+public class FlashMine extends Mine {
 
     {
-        image = 6;
+        image = 3;
     }
 
     @Override
     public void activate() {
         Char ch = Actor.findChar(pos);
 
-        if (ch instanceof Hero) {
-
-            TeleportationScript.teleportHero((Hero) ch);
-            ((Hero) ch).curAction = null;
-
-        } else if (ch instanceof Mob && !ch.properties().contains(Char.Property.IMMOVABLE)) {
-
-            int count = 10;
-            int newPos;
-            do {
-                newPos = Dungeon.level.randomRespawnCell();
-                if (count-- <= 0) {
-                    break;
-                }
-            } while (newPos == -1);
-
-            if (newPos != -1 && !Dungeon.bossLevel()) {
-
-                ch.pos = newPos;
-                ch.sprite.place(ch.pos);
-                ch.sprite.visible = Dungeon.visible[ch.pos];
-
+        if (ch != null) {
+            int len = Random.Int(5, 10);
+            Buff.prolong(ch, Blindness.class, len);
+            Buff.prolong(ch, Cripple.class, len);
+            if (ch instanceof Mob) {
+                if (((Mob) ch).state == ((Mob) ch).HUNTING) ((Mob) ch).state = ((Mob) ch).WANDERING;
+                ((Mob) ch).beckon(Dungeon.level.randomDestination());
             }
-
         }
 
         if (Dungeon.visible[pos]) {
-            CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+            CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
         }
     }
 
     public static class Device extends Mine.Device {
         {
-            image = ItemSpriteSheet.FADELEAF_DEVICE;
+            image = ItemSpriteSheet.FLASH_MINE_DEVICE;
 
-            mineClass = Teleportation.class;
-            craftingClass = SecurityOverride.class;
+            mineClass = FlashMine.class;
+            craftingClass = InvisibilityEnhancement.class;
         }
     }
 }

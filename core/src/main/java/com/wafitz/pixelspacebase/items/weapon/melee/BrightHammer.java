@@ -22,12 +22,19 @@ package com.wafitz.pixelspacebase.items.weapon.melee;
 
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
-public class Greatsword extends MeleeWeapon {
+public class BrightHammer extends MeleeWeapon {
 
     {
-        image = ItemSpriteSheet.GREATSWORD;
+        image = ItemSpriteSheet.BRIGHT_HAMMER;
 
         tier = 5;
+        ACC = 1.15f; //15% boost to accuracy
+    }
+
+    @Override
+    public int max(int lvl) {
+        return 4 * (tier + 1) +    //24 base, down from 30
+                lvl * (tier + 1);   //scaling unchanged
     }
 
 }

@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 public class Clone extends Item {
 
-    private static final String AC_BLESS = "UPGRADE";
+    private static final String AC_UPGRADE = "UPGRADE";
 
     {
         image = ItemSpriteSheet.CLONE;
@@ -45,7 +45,7 @@ public class Clone extends Item {
         bones = true;
     }
 
-    private Boolean blessed = false;
+    private Boolean upgraded = false;
 
     @Override
     public boolean isUpgradable() {
@@ -61,8 +61,8 @@ public class Clone extends Item {
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
         AirTank vial = hero.belongings.getItem(AirTank.class);
-        if (vial != null && vial.isFull() && !blessed)
-            actions.add(AC_BLESS);
+        if (vial != null && vial.isFull() && !upgraded)
+            actions.add(AC_UPGRADE);
         return actions;
     }
 
@@ -71,13 +71,13 @@ public class Clone extends Item {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_BLESS)) {
+        if (action.equals(AC_UPGRADE)) {
 
             AirTank vial = hero.belongings.getItem(AirTank.class);
             if (vial != null) {
-                blessed = true;
+                upgraded = true;
                 vial.empty();
-                GLog.p(Messages.get(this, "bless"));
+                GLog.p(Messages.get(this, "upgrade"));
                 hero.spend(1f);
                 hero.busy();
 
@@ -91,14 +91,14 @@ public class Clone extends Item {
 
     @Override
     public String desc() {
-        if (blessed)
-            return Messages.get(this, "desc_blessed");
+        if (upgraded)
+            return Messages.get(this, "desc_upgraded");
         else
             return super.desc();
     }
 
     public Boolean isBlessed() {
-        return blessed;
+        return upgraded;
     }
 
     private static final Glowing WHITE = new Glowing(0xFFFFCC);
@@ -108,18 +108,18 @@ public class Clone extends Item {
         return isBlessed() ? WHITE : null;
     }
 
-    private static final String BLESSED = "blessed";
+    private static final String UPGRADED = "upgraded";
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
-        bundle.put(BLESSED, blessed);
+        bundle.put(UPGRADED, upgraded);
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        blessed = bundle.getBoolean(BLESSED);
+        upgraded = bundle.getBoolean(UPGRADED);
     }
 
     @Override

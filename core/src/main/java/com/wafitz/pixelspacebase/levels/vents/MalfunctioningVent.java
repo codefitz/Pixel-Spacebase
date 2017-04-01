@@ -34,7 +34,7 @@ import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
-import com.wafitz.pixelspacebase.items.weapon.missiles.Boomerang;
+import com.wafitz.pixelspacebase.items.weapon.missiles.HunterDisc;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -77,7 +77,7 @@ public class MalfunctioningVent extends Vent {
         ArrayList<Item> canMalfunction = new ArrayList<>();
 
         KindOfWeapon weapon = hero.belongings.weapon;
-        if (weapon instanceof Weapon && !weapon.malfunctioning && !(weapon instanceof Boomerang)) {
+        if (weapon instanceof Weapon && !weapon.malfunctioning && !(weapon instanceof HunterDisc)) {
             if (((Weapon) weapon).enhancement == null)
                 priorityMalfunction.add(weapon);
             else

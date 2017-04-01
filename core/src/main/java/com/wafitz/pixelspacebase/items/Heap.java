@@ -76,8 +76,8 @@ public class Heap implements Bundlable {
         CHEST,
         LOCKED_CHEST,
         CRYSTAL_CHEST,
-        TOMB,
-        SKELETON,
+        CMD_TERMINAL,
+        EMPTY_SPACESUIT,
         REMAINS,
         CONFUSEDSHAPESHIFTER
     }
@@ -103,9 +103,9 @@ public class Heap implements Bundlable {
                 return ItemSpriteSheet.LOCKED_CHEST;
             case CRYSTAL_CHEST:
                 return ItemSpriteSheet.CRYSTAL_CHEST;
-            case TOMB:
+            case CMD_TERMINAL:
                 return ItemSpriteSheet.REDTERMINAL;
-            case SKELETON:
+            case EMPTY_SPACESUIT:
                 return ItemSpriteSheet.DISCARDEDSUIT;
             case REMAINS:
                 return ItemSpriteSheet.REMAINS;
@@ -127,11 +127,11 @@ public class Heap implements Bundlable {
                     type = Type.CHEST;
                 }
                 break;
-            case TOMB:
+            case CMD_TERMINAL:
                 Turret.spawnAround(hero.pos);
                 break;
             case REMAINS:
-            case SKELETON:
+            case EMPTY_SPACESUIT:
                 CellEmitter.center(pos).start(Speck.factory(Speck.RATTLE), 0.1f, 3);
                 for (Item item : items) {
                     if (item.malfunctioning) {
@@ -271,7 +271,7 @@ public class Heap implements Bundlable {
     public void explode() {
 
         //breaks open most standard containers, mimics die.
-        if (type == Type.CONFUSEDSHAPESHIFTER || type == Type.CHEST || type == Type.SKELETON) {
+        if (type == Type.CONFUSEDSHAPESHIFTER || type == Type.CHEST || type == Type.EMPTY_SPACESUIT) {
             type = Type.HEAP;
             sprite.link();
             sprite.drop();
@@ -475,10 +475,10 @@ public class Heap implements Bundlable {
                 return Messages.get(this, "locked_chest");
             case CRYSTAL_CHEST:
                 return Messages.get(this, "crystal_chest");
-            case TOMB:
-                return Messages.get(this, "tomb");
-            case SKELETON:
-                return Messages.get(this, "skeleton");
+            case CMD_TERMINAL:
+                return Messages.get(this, "cmd_terminal");
+            case EMPTY_SPACESUIT:
+                return Messages.get(this, "empty_spacesuit");
             case REMAINS:
                 return Messages.get(this, "remains");
             default:
@@ -500,10 +500,10 @@ public class Heap implements Bundlable {
                     return Messages.get(this, "crystal_chest_desc", Messages.get(this, "blaster"));
                 else
                     return Messages.get(this, "crystal_chest_desc", Messages.get(this, "module"));
-            case TOMB:
-                return Messages.get(this, "tomb_desc");
-            case SKELETON:
-                return Messages.get(this, "skeleton_desc");
+            case CMD_TERMINAL:
+                return Messages.get(this, "terminal_desc");
+            case EMPTY_SPACESUIT:
+                return Messages.get(this, "spacesuit_desc");
             case REMAINS:
                 return Messages.get(this, "remains_desc");
             default:

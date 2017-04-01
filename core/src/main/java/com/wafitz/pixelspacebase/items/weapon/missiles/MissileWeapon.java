@@ -68,14 +68,14 @@ abstract public class MissileWeapon extends Weapon {
     protected void onThrow(int cell) {
         Char enemy = Actor.findChar(cell);
         if (enemy == null || enemy == curUser) {
-            if (this instanceof Boomerang)
+            if (this instanceof HunterDisc)
                 super.onThrow(cell);
             else
                 miss(cell);
         } else {
             if (!curUser.shoot(enemy, this)) {
                 miss(cell);
-            } else if (!(this instanceof Boomerang)) {
+            } else if (!(this instanceof HunterDisc)) {
 
                 int bonus = TargetingModule.getBonus(curUser, TargetingModule.Aim.class);
 

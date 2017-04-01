@@ -97,8 +97,8 @@ public class Thief extends Mob {
         if (item != null) {
             Dungeon.level.drop(item, pos).sprite.drop();
             //updates position
-            if (item instanceof DroneController.ShatteredPot)
-                ((DroneController.ShatteredPot) item).setHolder(this);
+            if (item instanceof DroneController.ActivatedDrone)
+                ((DroneController.ActivatedDrone) item).setHolder(this);
         }
     }
 
@@ -154,8 +154,8 @@ public class Thief extends Mob {
                 item.detach(hero.belongings.backpack);
             } else {
                 this.item = item.detach(hero.belongings.backpack);
-                if (item instanceof DroneController.ShatteredPot)
-                    ((DroneController.ShatteredPot) item).setHolder(this);
+                if (item instanceof DroneController.ActivatedDrone)
+                    ((DroneController.ActivatedDrone) item).setHolder(this);
             }
 
             return true;

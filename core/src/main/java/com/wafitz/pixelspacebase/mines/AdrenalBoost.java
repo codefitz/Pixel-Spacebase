@@ -23,47 +23,36 @@ package com.wafitz.pixelspacebase.mines;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Blindness;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Cripple;
-import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.effects.CellEmitter;
-import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.InvisibilityEnhancement;
+import com.wafitz.pixelspacebase.actors.buffs.Upgrade;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceBooster;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
-public class Blinding extends Mine {
+public class AdrenalBoost extends Mine {
 
     {
-        image = 3;
+        image = 11;
     }
 
     @Override
     public void activate() {
         Char ch = Actor.findChar(pos);
 
-        if (ch != null) {
-            int len = Random.Int(5, 10);
-            Buff.prolong(ch, Blindness.class, len);
-            Buff.prolong(ch, Cripple.class, len);
-            if (ch instanceof Mob) {
-                if (((Mob) ch).state == ((Mob) ch).HUNTING) ((Mob) ch).state = ((Mob) ch).WANDERING;
-                ((Mob) ch).beckon(Dungeon.level.randomDestination());
-            }
-        }
+        if (ch != null) Buff.prolong(ch, Upgrade.class, 30f);
 
-        if (Dungeon.visible[pos]) {
-            CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
+        if (Random.Int(5) == 0) {
+            Dungeon.level.drop(new Device(), pos).sprite.drop();
         }
     }
 
     public static class Device extends Mine.Device {
-        {
-            image = ItemSpriteSheet.BLINDWEED_DEVICE;
 
-            mineClass = Blinding.class;
-            craftingClass = InvisibilityEnhancement.class;
+        {
+            image = ItemSpriteSheet.ADRENAL_BOOST;
+
+            mineClass = AdrenalBoost.class;
+            craftingClass = ExperienceBooster.class;
         }
     }
 }

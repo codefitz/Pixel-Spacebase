@@ -18,41 +18,59 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.weapon.melee;
+package com.wafitz.pixelspacebase.items.weapon.missiles;
 
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.Cripple;
+import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
-public class AssassinsBlade extends MeleeWeapon {
+public class HunterJavelin extends MissileWeapon {
 
     {
-        image = ItemSpriteSheet.ASSASSINS_BLADE;
+        image = ItemSpriteSheet.HUNTERJAVELIN;
+    }
 
-        tier = 4;
+    @Override
+    public int min(int lvl) {
+        return 2;
     }
 
     @Override
     public int max(int lvl) {
-        return 4 * (tier + 1) +    //20 base, down from 25
-                lvl * (tier + 1);   //scaling unchanged
+        return 15;
     }
 
     @Override
-    public int damageRoll(Hero hero) {
-        Char enemy = hero.enemy();
-        if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) {
-            //deals avg damage to max on surprise, instead of min to max.
-            int damage = convert.damageFactor(Random.NormalIntRange((min() + max()) / 2, max()));
-            int exStr = hero.STR() - STRReq();
-            if (exStr > 0) {
-                damage += Random.IntRange(0, exStr);
-            }
-            return damage;
-        } else
-            return super.damageRoll(hero);
+    public int STRReq(int lvl) {
+        return 15;
     }
 
+    public HunterJavelin() {
+        this(1);
+    }
+
+    private HunterJavelin(int number) {
+        super();
+        quantity = number;
+    }
+
+    @Override
+    public int proc(Char attacker, Char defender, int damage) {
+        Buff.prolong(defender, Cripple.class, Cripple.DURATION);
+        return super.proc(attacker, defender, damage);
+    }
+
+    @Override
+    public Item random() {
+        quantity = Random.Int(5, 15);
+        return this;
+    }
+
+    @Override
+    public int cost() {
+        return 12 * quantity;
+    }
 }

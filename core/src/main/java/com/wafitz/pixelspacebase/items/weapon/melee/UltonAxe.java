@@ -18,30 +18,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.mines;
+package com.wafitz.pixelspacebase.items.weapon.melee;
 
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
-public class AlienPlant extends Mine {
+public class UltonAxe extends MeleeWeapon {
 
     {
-        image = 8;
+        image = ItemSpriteSheet.ULTONAXE;
+
+        tier = 5;
     }
 
     @Override
-    public void activate() {
-        Dungeon.level.drop(new AlienPod(), pos).sprite.drop();
+    public int max(int lvl) {
+        return 5 * (tier + 3) +    //40 base, up from 30
+                lvl * (tier + 1);   //scaling unchanged
     }
 
-    public static class Device extends Mine.Device {
-        {
-            image = ItemSpriteSheet.ALIENTECH_DEVICE;
-
-            mineClass = AlienPlant.class;
-            craftingClass = null;
-        }
-
+    @Override
+    public int STRReq(int lvl) {
+        lvl = Math.max(0, lvl);
+        //20 base strength req, up from 18
+        return (10 + tier * 2) - (int) (Math.sqrt(8 * lvl + 1) - 1) / 2;
     }
+
 }

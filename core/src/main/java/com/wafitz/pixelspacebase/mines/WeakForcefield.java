@@ -44,7 +44,7 @@ public class WeakForcefield extends Mine {
         Char ch = Actor.findChar(pos);
 
         if (ch == Dungeon.hero) {
-            Buff.affect(ch, Armor.class).level(ch.HT);
+            Buff.affect(ch, Armor.class).level(ch != null ? ch.HT : 0);
         }
 
         if (Dungeon.visible[pos]) {
@@ -55,7 +55,7 @@ public class WeakForcefield extends Mine {
 
     public static class Device extends Mine.Device {
         {
-            image = ItemSpriteSheet.EARTHROOT_DEVICE;
+            image = ItemSpriteSheet.FORCEFIELD_TECH;
 
             mineClass = WeakForcefield.class;
             craftingClass = ParalyzingAgent.class;

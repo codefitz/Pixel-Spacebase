@@ -18,59 +18,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.weapon.missiles;
+package com.wafitz.pixelspacebase.mines;
 
+import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Cripple;
-import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
+import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalRockets;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
-import com.watabou.utils.Random;
 
-public class Javelin extends MissileWeapon {
+public class DisorientationMine extends Mine {
 
     {
-        image = ItemSpriteSheet.JAVELIN;
+        image = 9;
     }
 
     @Override
-    public int min(int lvl) {
-        return 2;
+    public void activate() {
+        Char ch = Actor.findChar(pos);
+
+        if (ch != null) {
+            Buff.affect(ch, Vertigo.class, Vertigo.duration(ch));
+        }
     }
 
-    @Override
-    public int max(int lvl) {
-        return 15;
-    }
+    public static class Device extends Mine.Device {
+        {
+            image = ItemSpriteSheet.VERTIGO_COMPOUND;
 
-    @Override
-    public int STRReq(int lvl) {
-        return 15;
-    }
-
-    public Javelin() {
-        this(1);
-    }
-
-    private Javelin(int number) {
-        super();
-        quantity = number;
-    }
-
-    @Override
-    public int proc(Char attacker, Char defender, int damage) {
-        Buff.prolong(defender, Cripple.class, Cripple.DURATION);
-        return super.proc(attacker, defender, damage);
-    }
-
-    @Override
-    public Item random() {
-        quantity = Random.Int(5, 15);
-        return this;
-    }
-
-    @Override
-    public int cost() {
-        return 12 * quantity;
+            mineClass = DisorientationMine.class;
+            craftingClass = ExperimentalRockets.class;
+        }
     }
 }

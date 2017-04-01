@@ -98,50 +98,50 @@ import com.wafitz.pixelspacebase.items.scripts.TerrorScript;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.items.scripts.WeakCloneScript;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
-import com.wafitz.pixelspacebase.items.weapon.melee.AssassinsBlade;
-import com.wafitz.pixelspacebase.items.weapon.melee.BattleAxe;
+import com.wafitz.pixelspacebase.items.weapon.melee.BrightHammer;
+import com.wafitz.pixelspacebase.items.weapon.melee.BrightSaber;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dagger;
+import com.wafitz.pixelspacebase.items.weapon.melee.DarkSaber;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dirk;
 import com.wafitz.pixelspacebase.items.weapon.melee.Drill;
+import com.wafitz.pixelspacebase.items.weapon.melee.DualBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
-import com.wafitz.pixelspacebase.items.weapon.melee.Glaive;
-import com.wafitz.pixelspacebase.items.weapon.melee.Greataxe;
-import com.wafitz.pixelspacebase.items.weapon.melee.Greatsword;
+import com.wafitz.pixelspacebase.items.weapon.melee.GnollSword;
+import com.wafitz.pixelspacebase.items.weapon.melee.HoloAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.HoloScimitar;
 import com.wafitz.pixelspacebase.items.weapon.melee.ImperialShield;
 import com.wafitz.pixelspacebase.items.weapon.melee.Knuckles;
 import com.wafitz.pixelspacebase.items.weapon.melee.LazerSword;
 import com.wafitz.pixelspacebase.items.weapon.melee.LazerWhip;
-import com.wafitz.pixelspacebase.items.weapon.melee.Longsword;
 import com.wafitz.pixelspacebase.items.weapon.melee.MCPickAxe;
-import com.wafitz.pixelspacebase.items.weapon.melee.RunicBlade;
+import com.wafitz.pixelspacebase.items.weapon.melee.OrbMelder;
 import com.wafitz.pixelspacebase.items.weapon.melee.Sai;
 import com.wafitz.pixelspacebase.items.weapon.melee.Spade;
 import com.wafitz.pixelspacebase.items.weapon.melee.Spanner;
 import com.wafitz.pixelspacebase.items.weapon.melee.Spear;
+import com.wafitz.pixelspacebase.items.weapon.melee.UltonAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.UltonShield;
-import com.wafitz.pixelspacebase.items.weapon.melee.WarHammer;
 import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
-import com.wafitz.pixelspacebase.items.weapon.missiles.Boomerang;
 import com.wafitz.pixelspacebase.items.weapon.missiles.CurareDart;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Dart;
+import com.wafitz.pixelspacebase.items.weapon.missiles.HunterDisc;
+import com.wafitz.pixelspacebase.items.weapon.missiles.HunterJavelin;
 import com.wafitz.pixelspacebase.items.weapon.missiles.IncendiaryDart;
-import com.wafitz.pixelspacebase.items.weapon.missiles.Javelin;
+import com.wafitz.pixelspacebase.items.weapon.missiles.Nanobots;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Shuriken;
-import com.wafitz.pixelspacebase.items.weapon.missiles.Tamahawk;
-import com.wafitz.pixelspacebase.mines.AlienPlant;
-import com.wafitz.pixelspacebase.mines.AlienTrap;
-import com.wafitz.pixelspacebase.mines.Blinding;
-import com.wafitz.pixelspacebase.mines.Boost;
-import com.wafitz.pixelspacebase.mines.Disorient;
+import com.wafitz.pixelspacebase.mines.AdrenalBoost;
+import com.wafitz.pixelspacebase.mines.AlienEgg;
+import com.wafitz.pixelspacebase.mines.DisorientationMine;
 import com.wafitz.pixelspacebase.mines.FireMine;
-import com.wafitz.pixelspacebase.mines.Healing;
+import com.wafitz.pixelspacebase.mines.FlashMine;
+import com.wafitz.pixelspacebase.mines.HunterTrapper;
 import com.wafitz.pixelspacebase.mines.IceMine;
-import com.wafitz.pixelspacebase.mines.Knockout;
+import com.wafitz.pixelspacebase.mines.KnockoutMine;
+import com.wafitz.pixelspacebase.mines.KoltoPod;
 import com.wafitz.pixelspacebase.mines.Mine;
-import com.wafitz.pixelspacebase.mines.Teleportation;
-import com.wafitz.pixelspacebase.mines.Venom;
+import com.wafitz.pixelspacebase.mines.TeleportationPod;
+import com.wafitz.pixelspacebase.mines.VenomMine;
 import com.wafitz.pixelspacebase.mines.WeakForcefield;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
@@ -266,7 +266,7 @@ public class Generator {
                 Knuckles.class,
                 Dagger.class,
                 DM3000Launcher.class,
-                Boomerang.class,
+                HunterDisc.class,
                 Dart.class
         };
         Category.WEP_T1.probs = new float[]{1, 1, 1, 0, 0, 1};
@@ -294,22 +294,22 @@ public class Generator {
         Category.WEP_T3.probs = new float[]{6, 5, 5, 4, 4, 4, 6, 6};
 
         Category.WEP_T4.classes = new Class<?>[]{
-                Longsword.class,
-                BattleAxe.class,
+                GnollSword.class,
+                HoloAxe.class,
                 Flail.class,
-                RunicBlade.class,
-                AssassinsBlade.class,
-                Javelin.class
+                DarkSaber.class,
+                BrightSaber.class,
+                HunterJavelin.class
         };
         Category.WEP_T4.probs = new float[]{6, 5, 5, 4, 4, 6};
 
         Category.WEP_T5.classes = new Class<?>[]{
-                Greatsword.class,
-                WarHammer.class,
-                Glaive.class,
-                Greataxe.class,
+                DualBlade.class,
+                BrightHammer.class,
+                OrbMelder.class,
+                UltonAxe.class,
                 ImperialShield.class,
-                Tamahawk.class
+                Nanobots.class
         };
         Category.WEP_T5.probs = new float[]{6, 5, 5, 4, 4, 6};
 
@@ -362,16 +362,16 @@ public class Generator {
         Category.DEVICE.classes = new Class<?>[]{
                 FireMine.Device.class,
                 IceMine.Device.class,
-                Venom.Device.class,
-                Blinding.Device.class,
-                Healing.Device.class,
+                VenomMine.Device.class,
+                FlashMine.Device.class,
+                KoltoPod.Device.class,
                 WeakForcefield.Device.class,
-                Teleportation.Device.class,
-                AlienTrap.Device.class,
-                AlienPlant.Device.class,
-                Knockout.Device.class,
-                Disorient.Device.class,
-                Boost.Device.class};
+                TeleportationPod.Device.class,
+                HunterTrapper.Device.class,
+                AlienEgg.Device.class,
+                KnockoutMine.Device.class,
+                DisorientationMine.Device.class,
+                AdrenalBoost.Device.class};
         Category.DEVICE.probs = new float[]{12, 12, 12, 12, 12, 12, 12, 0, 4, 12, 12, 1};
     }
 

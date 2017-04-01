@@ -22,10 +22,10 @@ package com.wafitz.pixelspacebase.items.weapon.melee;
 
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
-public class Longsword extends MeleeWeapon {
+public class GnollSword extends MeleeWeapon {
 
     {
-        image = ItemSpriteSheet.LONGSWORD;
+        image = ItemSpriteSheet.GNOLL_SWORD;
 
         tier = 4;
     }

@@ -21,40 +21,27 @@
 package com.wafitz.pixelspacebase.mines;
 
 import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.actors.Actor;
-import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Poison;
-import com.wafitz.pixelspacebase.effects.CellEmitter;
-import com.wafitz.pixelspacebase.effects.particles.PoisonParticle;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ToxicAgent;
+import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
-public class Venom extends Mine {
+public class AlienEgg extends Mine {
 
     {
-        image = 2;
+        image = 8;
     }
 
     @Override
     public void activate() {
-        Char ch = Actor.findChar(pos);
-
-        if (ch != null) {
-            Buff.affect(ch, Poison.class).set(Poison.durationFactor(ch) * (4 + Dungeon.depth / 2));
-        }
-
-        if (Dungeon.visible[pos]) {
-            CellEmitter.center(pos).burst(PoisonParticle.SPLASH, 3);
-        }
+        Dungeon.level.drop(new AlienPod(), pos).sprite.drop();
     }
 
     public static class Device extends Mine.Device {
         {
-            image = ItemSpriteSheet.SORROWMOSS_DEVICE;
+            image = ItemSpriteSheet.DEAD_ALIEN;
 
-            mineClass = Venom.class;
-            craftingClass = ToxicAgent.class;
+            mineClass = AlienEgg.class;
+            craftingClass = null;
         }
+
     }
 }

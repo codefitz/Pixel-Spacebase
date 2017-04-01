@@ -37,7 +37,7 @@ import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
-public class Weightstone extends Item {
+public class WeaponTuner extends Item {
 
     private static final float TIME_TO_APPLY = 2;
 
@@ -87,10 +87,10 @@ public class Weightstone extends Item {
 
         if (forSpeed) {
             weapon.convert = Weapon.Convert.LIGHT;
-            GLog.p(Messages.get(this, "light"));
+            GLog.p(Messages.get(this, "light", weapon.name()));
         } else {
             weapon.convert = Weapon.Convert.HEAVY;
-            GLog.p(Messages.get(this, "heavy"));
+            GLog.p(Messages.get(this, "heavy", weapon.name()));
         }
 
         curUser.sprite.operate(curUser.pos);
@@ -128,7 +128,7 @@ public class Weightstone extends Item {
             titlebar.setRect(0, 0, WIDTH, 0);
             add(titlebar);
 
-            RenderedTextMultiline tfMesage = PixelScene.renderMultiline(Messages.get(this, "choice"), 8);
+            RenderedTextMultiline tfMesage = PixelScene.renderMultiline(Messages.get(this, "choice", weapon.name()), 8);
             tfMesage.maxWidth(WIDTH - MARGIN * 2);
             tfMesage.setPos(MARGIN, titlebar.bottom() + MARGIN);
             add(tfMesage);
@@ -140,7 +140,7 @@ public class Weightstone extends Item {
                     @Override
                     protected void onClick() {
                         hide();
-                        Weightstone.this.apply(weapon, true);
+                        WeaponTuner.this.apply(weapon, true);
                     }
                 };
                 btnSpeed.setRect(MARGIN, pos + MARGIN, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -154,7 +154,7 @@ public class Weightstone extends Item {
                     @Override
                     protected void onClick() {
                         hide();
-                        Weightstone.this.apply(weapon, false);
+                        WeaponTuner.this.apply(weapon, false);
                     }
                 };
                 btnAccuracy.setRect(MARGIN, pos + MARGIN, BUTTON_WIDTH, BUTTON_HEIGHT);

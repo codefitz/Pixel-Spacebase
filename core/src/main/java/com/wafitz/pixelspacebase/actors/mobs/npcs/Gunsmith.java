@@ -34,7 +34,7 @@ import com.wafitz.pixelspacebase.items.quest.Lazer;
 import com.wafitz.pixelspacebase.levels.PrisonLevel;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.mines.AlienTrap;
+import com.wafitz.pixelspacebase.mines.HunterTrapper;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.GunsmithSprite;
 import com.wafitz.pixelspacebase.windows.WndQuest;
@@ -91,7 +91,7 @@ public class Gunsmith extends NPC {
                     item = Dungeon.hero.belongings.getItem(Embers.class);
                     break;
                 case 3:
-                    item = Dungeon.hero.belongings.getItem(AlienTrap.Device.class);
+                    item = Dungeon.hero.belongings.getItem(HunterTrapper.Device.class);
                     break;
             }
 

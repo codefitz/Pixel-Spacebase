@@ -22,10 +22,10 @@ package com.wafitz.pixelspacebase.items.weapon.melee;
 
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
-public class BattleAxe extends MeleeWeapon {
+public class HoloAxe extends MeleeWeapon {
 
     {
-        image = ItemSpriteSheet.BATTLE_AXE;
+        image = ItemSpriteSheet.HOLO_AXE;
 
         tier = 4;
         ACC = 1.175f; //17.5% boost to accuracy

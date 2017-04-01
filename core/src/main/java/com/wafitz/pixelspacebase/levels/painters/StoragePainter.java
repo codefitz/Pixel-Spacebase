@@ -38,7 +38,7 @@ public class StoragePainter extends Painter {
         fill(level, room, Terrain.WALL);
         fill(level, room, 1, floor);
 
-        boolean honeyPot = Random.Int(2) == 0;
+        boolean droneController = Random.Int(2) == 0;
 
         int n = Random.IntRange(3, 4);
         for (int i = 0; i < n; i++) {
@@ -46,9 +46,9 @@ public class StoragePainter extends Painter {
             do {
                 pos = level.pointToCell(room.random());
             } while (level.map[pos] != floor);
-            if (honeyPot) {
+            if (droneController) {
                 level.drop(new DroneController(), pos);
-                honeyPot = false;
+                droneController = false;
             } else
                 level.drop(prize(level), pos);
         }
