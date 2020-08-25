@@ -254,7 +254,7 @@ abstract public class Weapon extends KindOfWeapon {
         return enhance(ench);
     }
 
-    protected boolean hasEnhance(Class<? extends Enhancement> type) {
+    public boolean hasEnhance(Class<? extends Enhancement> type) {
         return enhancement != null && enhancement.getClass() == type;
     }
 

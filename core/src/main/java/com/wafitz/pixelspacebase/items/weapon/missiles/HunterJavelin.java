@@ -52,7 +52,7 @@ public class HunterJavelin extends MissileWeapon {
         this(1);
     }
 
-    private HunterJavelin(int number) {
+    public HunterJavelin(int number) {
         super();
         quantity = number;
     }

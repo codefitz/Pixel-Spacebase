@@ -43,7 +43,7 @@ public class WndItem extends Window {
     private static final int WIDTH_P = 120;
     private static final int WIDTH_L = 144;
 
-    WndItem(final WndContainer owner, final Item item) {
+    public WndItem(final WndContainer owner, final Item item) {
         this(owner, item, owner != null);
     }
 

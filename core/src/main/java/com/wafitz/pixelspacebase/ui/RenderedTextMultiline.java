@@ -34,7 +34,7 @@ import java.util.List;
 public class RenderedTextMultiline extends Component {
 
     private int maxWidth = Integer.MAX_VALUE;
-    int nLines;
+    public int nLines;
 
     private String text;
     private List<String> tokens;
@@ -110,7 +110,7 @@ public class RenderedTextMultiline extends Component {
                 } else {
                     if (str.startsWith(UNDERSCORE)) {
                         highlighting = !highlighting;
-                        word = new RenderedText(str.substring(1, str.length()), size);
+                        word = new RenderedText(str.substring(1), size);
                     } else if (str.endsWith(UNDERSCORE)) {
                         word = new RenderedText(str.substring(0, str.length() - 1), size);
                     } else {
@@ -125,11 +125,14 @@ public class RenderedTextMultiline extends Component {
                 words.add(word);
                 add(word);
 
+                //Log.d("wafitz.v4: ", "RenderedTextMultiline, str = " + str);
+
                 if (height < word.baseLine()) height = word.baseLine();
 
             }
-            Log.d("wafitz.v4: ", "RenderedTextMultiline, build str = " + str);
+            //Log.d("wafitz.v4: ", "RenderedTextMultiline, build str = " + str);
         }
+        Log.d("wafitz.v4: ", "RenderedTextMultiline, tokens = " + Arrays.toString(tokens.toArray()));
         layout();
     }
 

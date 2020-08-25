@@ -57,7 +57,7 @@ public class IncendiaryDart extends MissileWeapon {
         this(1);
     }
 
-    private IncendiaryDart(int number) {
+    public IncendiaryDart(int number) {
         super();
         quantity = number;
     }

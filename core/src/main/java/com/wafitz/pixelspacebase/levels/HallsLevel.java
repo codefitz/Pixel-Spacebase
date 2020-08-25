@@ -174,7 +174,7 @@ public class HallsLevel extends RegularLevel {
         return visuals;
     }
 
-    static void addHallsVisuals(Level level, Group group) {
+    public static void addHallsVisuals(Level level, Group group) {
         for (int i = 0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WATER) {
                 group.add(new Stream(i));
@@ -188,7 +188,7 @@ public class HallsLevel extends RegularLevel {
 
         private float delay;
 
-        Stream(int pos) {
+        public Stream(int pos) {
             super();
 
             this.pos = pos;
@@ -223,7 +223,7 @@ public class HallsLevel extends RegularLevel {
         }
     }
 
-    private static class FireParticle extends PixelParticle.Shrinking {
+    public static class FireParticle extends PixelParticle.Shrinking {
 
         public FireParticle() {
             super();

@@ -20,6 +20,8 @@
  */
 package com.wafitz.pixelspacebase.items.weapon.missiles;
 
+import android.util.Log;
+
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
@@ -137,12 +139,13 @@ abstract public class MissileWeapon extends Weapon {
 
         String info = desc();
 
-        info += "\n\n" + Messages.get(MissileWeapon.class, "stats", convert.damageFactor(min()), convert.damageFactor(max()), STRReq());
+        info += "\n\n" + Messages.get(MissileWeapon.class, "stats", convert.damageFactor(min()), convert.damageFactor(max()), STRReq(), name());
 
         if (STRReq() > Dungeon.hero.STR()) {
             info += " " + Messages.get(Weapon.class, "too_heavy");
         } else if (Dungeon.hero.heroClass == HeroClass.CAPTAIN && Dungeon.hero.STR() > STRReq()) {
-            info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
+            Log.d("wafitz.v6: ", "Info = " + info + ", " + Dungeon.hero.STR() + ", " + STRReq() + ", " + name());
+            info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq(), name());
         }
 
         if (enhancement != null && (malfunctioningKnown || !enhancement.malfunction())) {

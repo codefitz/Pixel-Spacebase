@@ -51,7 +51,7 @@ public class Shuriken extends MissileWeapon {
         this(1);
     }
 
-    private Shuriken(int number) {
+    public Shuriken(int number) {
         super();
         quantity = number;
     }

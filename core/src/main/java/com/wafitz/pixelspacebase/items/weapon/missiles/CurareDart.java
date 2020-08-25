@@ -54,7 +54,7 @@ public class CurareDart extends MissileWeapon {
         this(1);
     }
 
-    private CurareDart(int number) {
+    public CurareDart(int number) {
         super();
         quantity = number;
     }

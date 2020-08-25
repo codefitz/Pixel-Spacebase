@@ -166,7 +166,7 @@ public class CityLevel extends RegularLevel {
         return visuals;
     }
 
-    static void addCityVisuals(Level level, Group group) {
+    public static void addCityVisuals(Level level, Group group) {
         for (int i = 0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WALL_DECO) {
                 group.add(new Smoke(i));
@@ -187,7 +187,7 @@ public class CityLevel extends RegularLevel {
             }
         };
 
-        Smoke(int pos) {
+        public Smoke(int pos) {
             super();
 
             this.pos = pos;
@@ -206,7 +206,7 @@ public class CityLevel extends RegularLevel {
         }
     }
 
-    private static final class SmokeParticle extends PixelParticle {
+    public static final class SmokeParticle extends PixelParticle {
 
         public SmokeParticle() {
             super();

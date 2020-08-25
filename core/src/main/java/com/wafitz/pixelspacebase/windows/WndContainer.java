@@ -77,13 +77,13 @@ public class WndContainer extends WndTabbed {
         EQUIPMENT
     }
 
-    private static final int COLS_P = 4;
-    private static final int COLS_L = 6;
+    protected static final int COLS_P = 4;
+    protected static final int COLS_L = 6;
 
-    private static final int SLOT_SIZE = 28;
-    private static final int SLOT_MARGIN = 1;
+    protected static final int SLOT_SIZE = 28;
+    protected static final int SLOT_MARGIN = 1;
 
-    private static final int TITLE_HEIGHT = 12;
+    protected static final int TITLE_HEIGHT = 12;
 
     private Listener listener;
     private WndContainer.Mode mode;
@@ -93,8 +93,8 @@ public class WndContainer extends WndTabbed {
     private int nRows;
 
     protected int count;
-    private int col;
-    private int row;
+    protected int col;
+    protected int row;
 
     private static Mode lastMode;
     private static Container lastContainer;
@@ -166,7 +166,7 @@ public class WndContainer extends WndTabbed {
                 lastContainer(listener, mode, title);
     }
 
-    private void placeItems(Container container) {
+    protected void placeItems(Container container) {
 
         // Equipped items
         Belongings stuff = Dungeon.hero.belongings;
@@ -200,7 +200,7 @@ public class WndContainer extends WndTabbed {
         }
     }
 
-    private void placeItem(final Item item) {
+    protected void placeItem(final Item item) {
 
         int x = col * (SLOT_SIZE + SLOT_MARGIN);
         int y = TITLE_HEIGHT + row * (SLOT_SIZE + SLOT_MARGIN);
@@ -247,7 +247,7 @@ public class WndContainer extends WndTabbed {
 
         private Container container;
 
-        ContainerTab(Container container) {
+        public ContainerTab(Container container) {
             super();
 
             this.container = container;
@@ -297,7 +297,7 @@ public class WndContainer extends WndTabbed {
             name = null;
         }
 
-        Placeholder(int image) {
+        public Placeholder(int image) {
             this.image = image;
         }
 
@@ -320,7 +320,7 @@ public class WndContainer extends WndTabbed {
         private Item item;
         private ColorBlock bg;
 
-        ItemButton(Item item) {
+        public ItemButton(Item item) {
 
             super(item);
 

@@ -169,7 +169,8 @@ public class Dungeon {
         QuickSlotButton.reset();
 
         depth = 0;
-        parts = 0;
+        //depth = 15; // Test Starting Depth
+        parts = 20000; // Buy lots of stuff
 
         droppedItems = new SparseArray<>();
 
@@ -296,6 +297,7 @@ public class Dungeon {
 
     // wafitz.v1 - You get a shop, you get a shop, every level get's a shop!
     public static boolean workshopOnLevel() {
+        //return depth == 6 || depth == 11 || depth == 16;
         return true;
     }
 
@@ -459,7 +461,7 @@ public class Dungeon {
             bundle.put(LIMDROPS, dropValues);
 
             int count = 0;
-            int ids[] = new int[chapters.size()];
+            int[] ids = new int[chapters.size()];
             for (Integer id : chapters) {
                 ids[count++] = id;
             }
@@ -568,7 +570,7 @@ public class Dungeon {
                         dropValues[value.ordinal()] : 0;
 
             chapters = new HashSet<>();
-            int ids[] = bundle.getIntArray(CHAPTERS);
+            int[] ids = bundle.getIntArray(CHAPTERS);
             if (ids != null) {
                 for (int id : ids) {
                     chapters.add(id);
@@ -726,7 +728,7 @@ public class Dungeon {
             BArray.setFalse(passable);
     }
 
-    public static PathFinder.Path findPath(Char ch, int from, int to, boolean pass[], boolean[] visible) {
+    public static PathFinder.Path findPath(Char ch, int from, int to, boolean[] pass, boolean[] visible) {
 
         setupPassable();
         if (ch.flying || ch.buff(Paranoid.class) != null) {
@@ -745,7 +747,7 @@ public class Dungeon {
 
     }
 
-    public static int findStep(Char ch, int from, int to, boolean pass[], boolean[] visible) {
+    public static int findStep(Char ch, int from, int to, boolean[] pass, boolean[] visible) {
 
         if (level.adjacent(from, to)) {
             return Actor.findChar(to) == null && (pass[to] || Level.avoid[to]) ? to : -1;
@@ -768,7 +770,7 @@ public class Dungeon {
 
     }
 
-    public static int flee(Char ch, int cur, int from, boolean pass[], boolean[] visible) {
+    public static int flee(Char ch, int cur, int from, boolean[] pass, boolean[] visible) {
 
         setupPassable();
         if (ch.flying) {

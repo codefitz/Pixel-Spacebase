@@ -20,8 +20,11 @@
  */
 package com.wafitz.pixelspacebase.messages;
 
+import android.util.Log;
+
 import com.wafitz.pixelspacebase.PixelSpacebase;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -87,7 +90,7 @@ public class Messages {
                 //android 2.2 doesn't use UTF-8 by default, need to force it.
                 if (android.os.Build.VERSION.SDK_INT == 8) {
                     try {
-                        value = new String(value.getBytes("ISO-8859-1"), "UTF-8");
+                        value = new String(value.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
                     } catch (Exception e) {
                         PixelSpacebase.reportException(e);
                     }
@@ -120,6 +123,7 @@ public class Messages {
             key = k;
 
         if (strings.containsKey(key.toLowerCase(Locale.ENGLISH))) {
+            Log.d("wafitz.v6: ", "Key : " + key + " Args : " + Arrays.toString(args));
             if (args.length > 0) return format(strings.get(key.toLowerCase(Locale.ENGLISH)), args);
             else return strings.get(key.toLowerCase(Locale.ENGLISH));
         } else {
@@ -127,6 +131,7 @@ public class Messages {
             //in cases where text is commonly grabbed as a utility from classes that aren't mean to be instantiated
             //(e.g. flavourbuff.dispTurns()) using .class directly is probably smarter to prevent unnecessary recursive calls.
             if (c != null && c.getSuperclass() != null) {
+                Log.d("wafitz.v6: ", "Class : " + c.getName() + " Superclass : " + c.getSuperclass().getName());
                 return get(c.getSuperclass(), k, args);
             } else {
                 return "!!!NO TEXT FOUND!!!";
@@ -148,13 +153,11 @@ public class Messages {
         else return Character.toTitleCase(str.charAt(0)) + str.substring(1);
     }
 
-    //Words which should not be capitalized in title case, mostly prepositions which appear ingame
+    //Words which should not be capitalized in title case, mostly prepositions which appear in game
     //This list is not comprehensive!
     private static final HashSet<String> noCaps = new HashSet<>(
-            Arrays.asList(new String[]{
-                    //English
-                    "a", "of", "by", "to", "the", "x"
-            })
+            Arrays.asList(//English
+                    "a", "of", "by", "to", "the", "x")
     );
 
     public static String titleCase(String str) {

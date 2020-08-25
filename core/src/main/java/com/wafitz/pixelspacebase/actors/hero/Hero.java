@@ -129,7 +129,7 @@ public class Hero extends Char {
 
     public static final int MAX_LEVEL = 30;
 
-    private static final int STARTING_STR = 10;
+    private static final int STARTING_STR = 100; // Was 10 - Super powered for testing
 
     private static final float TIME_TO_REST = 1f;
     private static final float TIME_TO_SEARCH = 2f;
@@ -137,8 +137,8 @@ public class Hero extends Char {
     public HeroClass heroClass = HeroClass.SHAPESHIFTER;
     public HeroSubClass subClass = HeroSubClass.NONE;
 
-    private int attackSkill = 10;
-    private int defenseSkill = 5;
+    private int attackSkill = 100; // Was 10 Super Power for Testing
+    private int defenseSkill = 50; // Was 5 Super Power for Testing
 
     public boolean ready = false;
     private boolean damageInterrupt = true;

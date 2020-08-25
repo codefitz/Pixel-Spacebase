@@ -258,7 +258,7 @@ public class CavesLevel extends RegularLevel {
         return visuals;
     }
 
-    static void addCavesVisuals(Level level, Group group) {
+    public static void addCavesVisuals(Level level, Group group) {
         for (int i = 0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WALL_DECO) {
                 group.add(new Vein(i));
@@ -272,7 +272,7 @@ public class CavesLevel extends RegularLevel {
 
         private float delay;
 
-        Vein(int pos) {
+        public Vein(int pos) {
             super();
 
             this.pos = pos;
@@ -306,7 +306,7 @@ public class CavesLevel extends RegularLevel {
         }
     }
 
-    private static final class Sparkle extends PixelParticle {
+    public static final class Sparkle extends PixelParticle {
 
         public void reset(float x, float y) {
             revive();

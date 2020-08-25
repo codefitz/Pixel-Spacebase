@@ -283,9 +283,13 @@ public abstract class Level implements Bundlable {
     // Randomised Level Sizing
     protected void setupSize() {
         if (width == 0 || height == 0) {
-            width = Random.Int(16, 52);
-            height = Random.Int(width <= 24 ? 30 : 16, width >= 44 ? 36 : 52);
-            //width = height = 32;
+            if (Dungeon.bossLevel()) {
+                width = height = 32; // Default
+            } else {
+                width = Random.Int(16, 52);
+                // If width lt or eq 24, then 30 else 16, if width gt or eq 44 then 36 else 52)
+                height = Random.Int(width <= 24 ? 30 : 16, width >= 44 ? 36 : 52);
+            }
             length = width * height;
         }
     }
