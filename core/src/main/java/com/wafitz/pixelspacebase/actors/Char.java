@@ -127,9 +127,14 @@ public abstract class Char extends Actor {
 
         if (hit(this, enemy, false)) {
 
-            // FIXME
-            int dr = this instanceof Hero && ((Hero) this).rangedWeapon != null && ((Hero) this).subClass ==
-                    HeroSubClass.SNIPER ? 0 : enemy.drRoll();
+            // Snipers ignore enemy damage reduction when attacking with a ranged weapon
+            int dr = enemy.drRoll();
+            if (this instanceof Hero) {
+                Hero hero = (Hero) this;
+                if (hero.rangedWeapon != null && hero.subClass == HeroSubClass.SNIPER) {
+                    dr = 0;
+                }
+            }
 
             int dmg = damageRoll();
             int effectiveDamage = Math.max(dmg - dr, 0);
