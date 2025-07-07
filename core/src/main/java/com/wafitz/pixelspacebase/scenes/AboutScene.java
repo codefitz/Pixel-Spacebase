@@ -37,7 +37,8 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.TouchArea;
 
-class AboutScene extends PixelScene {
+// Game.switchScene uses reflection, so this class must be public
+public class AboutScene extends PixelScene {
 
     private static final String TTL_PS = "Pixel Spacebase";
 
