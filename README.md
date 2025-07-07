@@ -37,3 +37,8 @@ The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/E
 * Armor Perma-buffs
 * Modules and upgrades
 * Story elements
+
+## Development Setup
+
+Run `scripts/setup.sh` to install the Android SDK and NDK and create the required `local.properties` file. The script assumes a Debian-based system with `apt` available.
+
