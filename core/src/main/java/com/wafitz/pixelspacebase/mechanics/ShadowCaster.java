@@ -67,28 +67,36 @@ public final class ShadowCaster {
 
         obs.reset();
 
-        for (int p = 1; p <= distance; p++) {
+        final int width = Dungeon.level.width();
+        final int height = Dungeon.level.height();
+        final int[] roundingDistance = rounding[distance];
+        final int stepPos = m4 * width + m1;
 
-            float dq2 = 0.5f / p;
+        int rowXBase = cx + m3;
+        int rowYBase = cy + m2;
+        int rowPosBase = rowYBase * width;
+        final int rowStride = m2 * width;
 
-            int pp = rounding[distance][p];
+        for (int p = 1; p <= distance; p++, rowXBase += m3, rowYBase += m2, rowPosBase += rowStride) {
+
+            final float invP = 1f / p;
+            final float dq2 = 0.5f * invP;
+
+            final int pp = roundingDistance[p];
+            
+            float a0 = 0f;
+            int x = rowXBase;
+            int y = rowYBase;
+            int pos = rowPosBase + rowXBase;
+
             for (int q = 0; q <= pp; q++) {
 
-                int x = cx + q * m1 + p * m3;
-                int y = cy + p * m2 + q * m4;
+                if (y >= 0 && y < height && x >= 0 && x < width) {
 
-                if (y >= 0 && y < Dungeon.level.height() && x >= 0 && x < Dungeon.level.width()) {
-
-                    float a0 = (float) q / p;
                     float a1 = a0 - dq2;
                     float a2 = a0 + dq2;
 
-                    int pos = y * Dungeon.level.width() + x;
-
-                    if (obs.isBlocked(a0) && obs.isBlocked(a1) && obs.isBlocked(a2)) {
-
-                        // Do nothing
-                    } else {
+                    if (!(obs.isBlocked(a0) && obs.isBlocked(a1) && obs.isBlocked(a2))) {
                         fieldOfView[pos] = true;
                     }
 
@@ -97,6 +105,11 @@ public final class ShadowCaster {
                     }
 
                 }
+
+                a0 += invP;
+                x += m1;
+                y += m4;
+                pos += stepPos;
             }
 
             obs.nextRow();
