@@ -127,7 +127,7 @@ public class ConfusedShapeshifter extends Mob {
                 Actor.addDelayed(new Pushing(ch, ch.pos, newPos), -1);
 
                 ch.pos = newPos;
-                // FIXME
+                // trigger traps, doors, vents, etc. for the displaced character
                 if (ch instanceof Mob) {
                     Dungeon.level.mobPress((Mob) ch);
                 } else {
