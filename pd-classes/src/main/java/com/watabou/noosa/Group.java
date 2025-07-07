@@ -23,6 +23,7 @@ package com.watabou.noosa;
 
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Random;
+import com.watabou.utils.Logger;
 
 import java.util.ArrayList;
 
@@ -188,11 +189,11 @@ public class Group extends Gizmo {
 			
 		} else {
 			
-			try {
-				return add( c.newInstance() );
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+                       try {
+                               return add( c.newInstance() );
+                       } catch (Exception e) {
+                               Logger.e("Unable to recycle gizmo " + c, e);
+                       }
 		}
 		
 		return null;

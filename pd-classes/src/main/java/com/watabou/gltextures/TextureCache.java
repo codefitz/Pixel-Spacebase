@@ -29,6 +29,8 @@ import com.watabou.glwrap.Texture;
 
 import java.util.HashMap;
 
+import com.watabou.utils.Logger;
+
 public class TextureCache {
 
 	public static Context context;
@@ -147,13 +149,13 @@ public class TextureCache {
 				return null;
 				
 			}
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-			return null;
-			
-		}
-	}
+               } catch (Exception e) {
+
+                       Logger.e("Failed to load bitmap from " + src, e);
+                       return null;
+
+               }
+       }
 	
 	public static boolean contains( Object key ) {
 		return all.containsKey( key );
