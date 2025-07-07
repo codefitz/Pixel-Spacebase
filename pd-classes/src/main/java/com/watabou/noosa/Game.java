@@ -44,6 +44,7 @@ import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BitmapCache;
 import com.watabou.utils.SystemTime;
+import com.watabou.utils.Logger;
 
 import java.util.ArrayList;
 
@@ -288,11 +289,11 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 			try {
 				requestedScene = sceneClass.newInstance();
 				switchScene();
-			} catch (InstantiationException e){
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+                       } catch (InstantiationException e){
+                               Logger.e("Unable to instantiate scene " + sceneClass, e);
+                       } catch (IllegalAccessException e) {
+                               Logger.e("Illegal access while creating scene " + sceneClass, e);
+                       }
 
 		}
 		
