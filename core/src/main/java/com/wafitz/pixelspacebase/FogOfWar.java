@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase;
 
 import android.opengl.GLES20;
 
-import com.watabou.gltextures.SmartTexture;
+import com.watabou.gltextures.FastEditTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Texture;
 import com.watabou.noosa.Image;
@@ -30,9 +30,6 @@ import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.utils.Rect;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
 
 public class FogOfWar extends Image {
 
@@ -82,7 +79,7 @@ public class FogOfWar extends Image {
         width = width2 * size;
         height = height2 * size;
 
-        texture(new FogTexture(width2, height2));
+        texture(new FastEditTexture(width2, height2, FogOfWar.class));
 
         scale.set(
                 DungeonTilemap.SIZE,
@@ -114,7 +111,7 @@ public class FogOfWar extends Image {
 
         moveToUpdating();
 
-        FogTexture fog = (FogTexture) texture;
+        FastEditTexture fog = (FastEditTexture) texture;
 
         int brightness = PixelSpacebase.brightness() + 2;
 
@@ -147,74 +144,6 @@ public class FogOfWar extends Image {
 
     }
 
-    //provides a native intbuffer implementation because android.graphics.bitmap is too slow
-    //TODO perhaps should spin this off into something like FastEditTexture in SPD-classes
-    private class FogTexture extends SmartTexture {
-
-        private IntBuffer pixels;
-
-        FogTexture(int w, int h) {
-            super();
-            width = w;
-            height = h;
-            pixels = ByteBuffer.
-                    allocateDirect(w * h * 4).
-                    order(ByteOrder.nativeOrder()).
-                    asIntBuffer();
-
-            TextureCache.add(FogOfWar.class, this);
-        }
-
-        @Override
-        protected void generate() {
-            int[] ids = new int[1];
-            GLES20.glGenTextures(1, ids, 0);
-            id = ids[0];
-        }
-
-        @Override
-        public void reload() {
-            generate();
-            update();
-        }
-
-        public void update() {
-            bind();
-            filter(Texture.LINEAR, Texture.LINEAR);
-            pixels.position(0);
-            GLES20.glTexImage2D(
-                    GLES20.GL_TEXTURE_2D,
-                    0,
-                    GLES20.GL_RGBA,
-                    width,
-                    height,
-                    0,
-                    GLES20.GL_RGBA,
-                    GLES20.GL_UNSIGNED_BYTE,
-                    pixels);
-        }
-
-        //allows partially updating the texture
-        public void update(int top, int bottom) {
-            bind();
-            filter(Texture.LINEAR, Texture.LINEAR);
-            pixels.position(top * width);
-            GLES20.glTexSubImage2D(GLES20.GL_TEXTURE_2D,
-                    0,
-                    0,
-                    top,
-                    width,
-                    bottom - top,
-                    GLES20.GL_RGBA,
-                    GLES20.GL_UNSIGNED_BYTE,
-                    pixels);
-        }
-
-        @Override
-        public void delete() {
-            super.delete();
-        }
-    }
 
     @Override
     protected NoosaScript script() {
