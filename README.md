@@ -29,6 +29,7 @@ The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/E
 * Reskin/Names of all textures and sprites
 * Game tweaks
 * Bug fixing
+* Cached auto-aim pathfinding to reduce lag
 
 ### Changes planned:
 

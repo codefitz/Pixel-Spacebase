@@ -34,6 +34,8 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.watabou.utils.PathFinder;
 
+import java.util.Arrays;
+
 public class QuickSlotButton extends Button implements WndContainer.Listener {
 
     private static QuickSlotButton[] instance = new QuickSlotButton[4];
@@ -43,6 +45,9 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
 
     private static Image crossB;
     private static Image crossM;
+
+    private static boolean[] passableCache;
+    private static int cachedPos = -1;
 
     private static boolean targeting = false;
     public static Char lastTarget = null;
@@ -198,7 +203,13 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
         return autoAim(target, new Item());
     }
 
-    //FIXME: this is currently very expensive, should either optimize ballistica or this, or both
+    /**
+     * Attempts to find a cell near {@code target} that will guarantee a hit.
+     * <p>
+     * PathFinder calculations were a hotspot during profiling due to
+     * allocations of a new boolean map every call. Results are now cached
+     * and rebuilt only when the target position changes to reduce overhead.
+     */
     private static int autoAim(Char target, Item item) {
 
         //first try to directly target
@@ -206,8 +217,17 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
             return target.pos;
         }
 
-        //Otherwise pick nearby tiles to try and 'angle' the shot, auto-aim basically.
-        PathFinder.buildDistanceMap(target.pos, BArray.not(new boolean[Dungeon.level.length()], null), 2);
+        //rebuild passable map only when target changed
+        if (passableCache == null || passableCache.length != Dungeon.level.length()) {
+            passableCache = new boolean[Dungeon.level.length()];
+        }
+        if (cachedPos != target.pos) {
+            Arrays.fill(passableCache, true);
+            PathFinder.buildDistanceMap(target.pos, passableCache, 2);
+            cachedPos = target.pos;
+        }
+
+        //search nearby tiles within 2 cells for a valid throw path
         for (int i = 0; i < PathFinder.distance.length; i++) {
             if (PathFinder.distance[i] < Integer.MAX_VALUE
                     && item.throwPos(Dungeon.hero, i) == target.pos)
