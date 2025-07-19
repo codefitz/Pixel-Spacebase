@@ -42,6 +42,27 @@ The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/E
 
 Run `scripts/setup.sh` to install the Android SDK and NDK and create the required `local.properties` file. The script assumes a Debian-based system with `apt` available.
 
+## Building and Installing on Android
+
+1. Build the debug APK using:
+   ```bash
+   ./gradlew :core:assembleDebug
+   ```
+   The APK will be written to `core/build/outputs/apk/debug/core-debug.apk`.
+2. Enable **Developer Options** and **USB debugging** on your device and connect it via USB.
+3. Install the APK with `adb`:
+   ```bash
+   adb install -r core/build/outputs/apk/debug/core-debug.apk
+   ```
+   Alternatively, copy the APK to your phone and open it to sideload (allow "install unknown apps" when prompted).
+4. You can also run `./gradlew :core:installDebug` to build and install in one step if a device is connected.
+
+To execute the unit tests locally run:
+
+```bash
+./gradlew test
+```
+
 ### macOS
 
 macOS users can run `scripts/setup-macos.sh` instead. It uses Homebrew to
@@ -58,3 +79,7 @@ To install the debug build on an emulator or connected device, run:
 ./gradlew installDebug
 ```
 
+## Possible Improvements
+
+* Update the Gradle wrapper or Android Gradle plugin so that the project builds without manual configuration.
+* Provide signing instructions for release builds and additional platform setup notes.
