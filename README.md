@@ -42,3 +42,19 @@ The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/E
 
 Run `scripts/setup.sh` to install the Android SDK and NDK and create the required `local.properties` file. The script assumes a Debian-based system with `apt` available.
 
+### macOS
+
+macOS users can run `scripts/setup-macos.sh` instead. It uses Homebrew to
+install OpenJDK 8 and downloads the Android SDK and NDK to
+`$HOME/android-sdk`. After running the script, build the project with:
+
+```bash
+./gradlew build
+```
+
+To install the debug build on an emulator or connected device, run:
+
+```bash
+./gradlew installDebug
+```
+
