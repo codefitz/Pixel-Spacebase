@@ -63,8 +63,23 @@ To execute the unit tests locally run:
 ./gradlew test
 ```
 
+### macOS
+
+macOS users can run `scripts/setup-macos.sh` instead. It uses Homebrew to
+install OpenJDK 8 and downloads the Android SDK and NDK to
+`$HOME/android-sdk`. After running the script, build the project with:
+
+```bash
+./gradlew build
+```
+
+To install the debug build on an emulator or connected device, run:
+
+```bash
+./gradlew installDebug
+```
+
 ## Possible Improvements
 
 * Update the Gradle wrapper or Android Gradle plugin so that the project builds without manual configuration.
 * Provide signing instructions for release builds and additional platform setup notes.
-
