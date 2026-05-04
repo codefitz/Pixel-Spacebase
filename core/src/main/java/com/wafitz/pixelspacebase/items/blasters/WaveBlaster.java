@@ -68,12 +68,20 @@ public class WaveBlaster extends DamageBlaster {
 
         //presses all tiles in the AOE first
         for (int i : PathFinder.NEIGHBOURS9) {
-            Dungeon.level.press(bolt.collisionPos + i, Actor.findChar(bolt.collisionPos + i));
+            int cell = bolt.collisionPos + i;
+            if (validCell(cell)) {
+                Dungeon.level.press(cell, Actor.findChar(cell));
+            }
         }
 
         //throws other chars around the center.
         for (int i : PathFinder.NEIGHBOURS8) {
-            Char ch = Actor.findChar(bolt.collisionPos + i);
+            int cell = bolt.collisionPos + i;
+            if (!validCell(cell)) {
+                continue;
+            }
+
+            Char ch = Actor.findChar(cell);
 
             if (ch != null) {
                 processSoulMark(ch, chargesPerCast());
@@ -114,9 +122,15 @@ public class WaveBlaster extends DamageBlaster {
 
         if (dist == 0 || ch.properties().contains(Char.Property.IMMOVABLE)) return;
 
-        if (Actor.findChar(trajectory.path.get(dist)) != null) {
+        dist = Math.min(dist, trajectory.path.size() - 1);
+
+        if (dist <= 0) return;
+
+        if (!validCell(trajectory.path.get(dist)) || Actor.findChar(trajectory.path.get(dist)) != null) {
             dist--;
         }
+
+        if (dist <= 0 || !validCell(trajectory.path.get(dist))) return;
 
         final int newPos = trajectory.path.get(dist);
 
@@ -140,6 +154,10 @@ public class WaveBlaster extends DamageBlaster {
                 Dungeon.level.press(ch.pos, ch);
             }
         }), -1);
+    }
+
+    private static boolean validCell(int cell) {
+        return cell >= 0 && cell < Dungeon.level.length();
     }
 
     @Override

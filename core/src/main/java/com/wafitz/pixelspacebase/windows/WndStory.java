@@ -69,7 +69,7 @@ public class WndStory extends Window {
         tf.maxWidth(PixelSpacebase.landscape() ?
                 WIDTH_L - MARGIN * 2 :
                 WIDTH_P - MARGIN * 2);
-        tf.invert();
+        tf.hardlight(0xEAFDFF);
         tf.setPos(MARGIN, 0);
         add(tf);
 

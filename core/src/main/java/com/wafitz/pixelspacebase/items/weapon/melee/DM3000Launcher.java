@@ -122,7 +122,7 @@ public class DM3000Launcher extends MeleeWeapon {
                 return;
             }
 
-            blaster.execute(hero, AC_FIRE);
+            blaster.execute(hero);
         }
     }
 
@@ -143,6 +143,11 @@ public class DM3000Launcher extends MeleeWeapon {
             reach++;
         }
         return reach;
+    }
+
+    @Override
+    public int throwPos(Hero user, int dst) {
+        return blaster != null ? blaster.targetPos(user, dst) : super.throwPos(user, dst);
     }
 
     @Override

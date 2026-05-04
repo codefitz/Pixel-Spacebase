@@ -245,6 +245,11 @@ public class RenderedText extends Image {
 		clearCache();
 	}
 
+	public static void setFontFamily(String family, int style){
+		font = Typeface.create(family, style);
+		clearCache();
+	}
+
 	public static Typeface getFont(){
 		return font;
 	}

@@ -28,6 +28,7 @@ import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
+import com.wafitz.pixelspacebase.levels.painters.Workshop;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.GameLog;
 import com.wafitz.pixelspacebase.windows.WndError;
@@ -210,6 +211,7 @@ public class InterlevelScene extends PixelScene {
             }
             GameLog.wipe();
         } else {
+            Workshop.carryStockFrom(Dungeon.level);
             Dungeon.saveAll();
         }
 
@@ -226,6 +228,7 @@ public class InterlevelScene extends PixelScene {
     private void fall() throws IOException {
 
         Actor.fixTime();
+        Workshop.carryStockFrom(Dungeon.level);
         Dungeon.saveAll();
 
         Level level;

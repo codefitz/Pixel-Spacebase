@@ -25,7 +25,9 @@ import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.watabou.input.Touchscreen.Touch;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.TouchArea;
+import com.watabou.noosa.ui.Button;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 
@@ -44,8 +46,36 @@ public class CellSelector extends TouchArea {
         dragThreshold = PixelScene.defaultZoom * DungeonTilemap.SIZE / 2;
     }
 
+    private float pressTime;
+    private boolean longPressProcessed;
+
+    @Override
+    public void update() {
+        super.update();
+
+        if (enabled && touch != null && !dragging && !pinching && !longPressProcessed) {
+            if ((pressTime += Game.elapsed) >= Button.longClick) {
+                longPressProcessed = true;
+                int cell = ((DungeonTilemap) target).screenToTile(
+                        (int) touch.current.x,
+                        (int) touch.current.y);
+
+                if (cell != -1) {
+                    GameScene.examineCell(cell);
+                    Game.vibrate(50);
+                    reset();
+                }
+            }
+        }
+    }
+
     @Override
     protected void onClick(Touch touch) {
+        if (longPressProcessed) {
+            longPressProcessed = false;
+            return;
+        }
+
         if (dragging) {
 
             dragging = false;
@@ -114,6 +144,9 @@ public class CellSelector extends TouchArea {
             dragging = false;
         } else if (t != touch) {
             reset();
+        } else if (!pinching) {
+            pressTime = 0;
+            longPressProcessed = false;
         }
     }
 
@@ -178,6 +211,8 @@ public class CellSelector extends TouchArea {
     public void reset() {
         super.reset();
         another = null;
+        pressTime = 0;
+        longPressProcessed = false;
         if (pinching) {
             pinching = false;
 

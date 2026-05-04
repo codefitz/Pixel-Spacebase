@@ -20,29 +20,25 @@
  */
 package com.wafitz.pixelspacebase.scenes;
 
-import android.opengl.GLES20;
-
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.Rankings;
-import com.wafitz.pixelspacebase.effects.BannerSprites;
-import com.wafitz.pixelspacebase.effects.Fireball;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.RedButton;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
+import com.wafitz.pixelspacebase.ui.Starfield;
+import com.wafitz.pixelspacebase.ui.Window;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 
 import java.util.UUID;
 
-import javax.microedition.khronos.opengles.GL10;
-
 public class WelcomeScene extends PixelScene {
 
-    private static int LATEST_UPDATE = 139;
+    private static int LATEST_UPDATE = 10000;
 
     @Override
     public void create() {
@@ -60,39 +56,18 @@ public class WelcomeScene extends PixelScene {
         int w = Camera.main.width;
         int h = Camera.main.height;
 
-        Image title = BannerSprites.get(BannerSprites.Type.PIXEL_DUNGEON);
-        title.brightness(0.6f);
-        add(title);
+        Starfield starfield = new Starfield();
+        starfield.setSize(w, h);
+        add(starfield);
 
         float topRegion = Math.max(95f, h * 0.45f);
 
+        RenderedText title = renderText("PIXEL SPACEBASE", PixelSpacebase.landscape() ? 17 : 15);
+        title.hardlight(Window.TITLE_COLOR);
         title.x = (w - title.width()) / 2f;
-        if (PixelSpacebase.landscape())
-            title.y = (topRegion - title.height()) / 2f;
-        else
-            title.y = 16 + (topRegion - title.height() - 16) / 2f;
-
+        title.y = PixelSpacebase.landscape() ? 18 : 28;
         align(title);
-
-        Image signs = new Image(BannerSprites.get(BannerSprites.Type.PIXEL_DUNGEON_SIGNS)) {
-            private float time = 0;
-
-            @Override
-            public void update() {
-                super.update();
-                am = (float) Math.sin(-(time += Game.elapsed));
-            }
-
-            @Override
-            public void draw() {
-                GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
-                super.draw();
-                GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-            }
-        };
-        signs.x = title.x + (title.width() - signs.width()) / 2f;
-        signs.y = title.y;
-        add(signs);
+        add(title);
 
         DarkRedButton okay = new DarkRedButton(Messages.get(this, "continue")) {
             @Override
@@ -112,15 +87,15 @@ public class WelcomeScene extends PixelScene {
                     PixelSpacebase.switchScene(ChangesScene.class);
                 }
             };
-            okay.setRect(title.x, h - 20, (title.width() / 2) - 2, 16);
+            okay.setRect(10, h - 20, (w / 2f) - 12, 16);
             okay.textColor(0xBBBB33);
             add(okay);
 
-            changes.setRect(okay.right() + 2, h - 20, (title.width() / 2) - 2, 16);
+            changes.setRect(okay.right() + 4, h - 20, (w / 2f) - 12, 16);
             changes.textColor(0xBBBB33);
             add(changes);
         } else {
-            okay.setRect(title.x, h - 20, title.width(), 16);
+            okay.setRect(10, h - 20, w - 20, 16);
             okay.textColor(0xBBBB33);
             add(okay);
         }
@@ -178,12 +153,6 @@ public class WelcomeScene extends PixelScene {
         }
 
         PixelSpacebase.version(PixelSpacebase.versionCode);
-    }
-
-    private void placeTorch(float x, float y) {
-        Fireball fb = new Fireball();
-        fb.setPos(x, y);
-        add(fb);
     }
 
     private class DarkRedButton extends RedButton {

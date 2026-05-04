@@ -25,9 +25,6 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.DungeonTilemap;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Domination;
-import com.wafitz.pixelspacebase.actors.buffs.Hypnotise;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.Beam;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
@@ -76,15 +73,15 @@ public class VampiricBlaster extends Blaster {
         Char ch = Actor.findChar(cell);
         Heap heap = Dungeon.level.heaps.get(cell);
 
-        //this blaster does a bunch of different things depending on what it targets.
+        boolean damageHero = true;
 
         //if we find a character..
         if (ch != null && ch instanceof Mob) {
 
             processSoulMark(ch, chargesPerCast());
 
-            //heals an ally, or charmed/corrupted enemy
-            if (((Mob) ch).ally || ch.buff(Hypnotise.class) != null || ch.buff(Domination.class) != null) {
+            //heals an ally by transferring some of the user's life energy.
+            if (((Mob) ch).ally) {
 
                 int missingHP = ch.HT - ch.HP;
                 //heals 30%+3%*lvl missing HP.
@@ -93,7 +90,7 @@ public class VampiricBlaster extends Blaster {
                 ch.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1 + level() / 2);
                 ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
 
-                //harms the undead
+                //disrupts undead, but cannot draw usable life force from them.
             } else if (ch.properties().contains(Char.Property.UNDEAD)) {
 
                 //deals 30%+5%*lvl total HP.
@@ -102,17 +99,26 @@ public class VampiricBlaster extends Blaster {
                 ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
                 Sample.INSTANCE.play(Assets.SND_BURNING);
 
-                //charms an enemy
+                damageHero = false;
+
+                //steals life force from hostile living targets
             } else {
 
-                float duration = 5 + level();
-                Buff.affect(ch, Hypnotise.class, Hypnotise.durationFactor(ch) * duration).object = curUser.id();
+                int beforeHP = ch.HP;
+                int damage = (int) Math.ceil(ch.HT * (0.20f + (0.04f * level())));
+                ch.damage(damage, this);
+                ch.sprite.emitter().burst(BloodParticle.BURST, 10 + level() * 2);
+                ch.sprite.flash();
 
-                duration *= Random.Float(0.75f, 1f);
-                Buff.affect(curUser, Hypnotise.class, Hypnotise.durationFactor(ch) * duration).object = ch.id();
+                int drained = Math.max(0, beforeHP - ch.HP);
+                int healing = Math.min(curUser.HT - curUser.HP, Math.max(1, Math.round(drained * (0.60f + (0.05f * level())))));
+                if (healing > 0) {
+                    curUser.HP += healing;
+                    curUser.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1 + level() / 2);
+                    curUser.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
+                }
 
-                ch.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
-                curUser.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
+                damageHero = false;
 
             }
 
@@ -162,7 +168,7 @@ public class VampiricBlaster extends Blaster {
         } else
             return; //don't damage the hero if we can't find a target;
 
-        if (!freeCharge) {
+        if (!freeCharge && damageHero) {
             damageHero();
         } else {
             freeCharge = false;

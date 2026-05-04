@@ -42,7 +42,9 @@ public class Food extends Item {
 
     private static final float TIME_TO_EAT = 3f;
 
-    static final String AC_USE = "EAT";
+    public static final String AC_USE = "EAT";
+
+    private Float eatTimeOverride = null;
 
     public float energy = Hunger.HUNGRY;
     public String message = Messages.get(this, "eat_msg");
@@ -97,11 +99,20 @@ public class Food extends Item {
             SpellSprite.show(hero, SpellSprite.FOOD);
             Sample.INSTANCE.play(Assets.SND_EAT);
 
-            hero.spend(TIME_TO_EAT);
+            hero.spend(eatTimeOverride == null ? TIME_TO_EAT : eatTimeOverride);
 
             Statistics.foodEaten++;
             Badges.validateFoodEaten();
 
+        }
+    }
+
+    public void emergencyEat(Hero hero) {
+        try {
+            eatTimeOverride = 1f;
+            execute(hero, AC_USE);
+        } finally {
+            eatTimeOverride = null;
         }
     }
 

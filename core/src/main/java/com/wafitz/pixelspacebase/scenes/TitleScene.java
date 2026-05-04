@@ -20,18 +20,15 @@
  */
 package com.wafitz.pixelspacebase.scenes;
 
-import android.opengl.GLES20;
-
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.PixelSpacebase;
-import com.wafitz.pixelspacebase.effects.BannerSprites;
-import com.wafitz.pixelspacebase.effects.Fireball;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.ui.Archs;
 import com.wafitz.pixelspacebase.ui.ChangesButton;
 import com.wafitz.pixelspacebase.ui.ExitButton;
 import com.wafitz.pixelspacebase.ui.LanguageButton;
 import com.wafitz.pixelspacebase.ui.PrefsButton;
+import com.wafitz.pixelspacebase.ui.Starfield;
+import com.wafitz.pixelspacebase.ui.Window;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -40,8 +37,6 @@ import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
-
-import javax.microedition.khronos.opengles.GL10;
 
 public class TitleScene extends PixelScene {
 
@@ -58,45 +53,25 @@ public class TitleScene extends PixelScene {
         int w = Camera.main.width;
         int h = Camera.main.height;
 
-        Archs archs = new Archs();
-        archs.setSize(w, h);
-        add(archs);
-
-        Image title = BannerSprites.get(BannerSprites.Type.PIXEL_DUNGEON);
-        add(title);
+        Starfield starfield = new Starfield();
+        starfield.setSize(w, h);
+        add(starfield);
 
         float topRegion = Math.max(95f, h * 0.45f);
 
+        RenderedText title = renderText("PIXEL SPACEBASE", PixelSpacebase.landscape() ? 17 : 15);
+        title.hardlight(Window.TITLE_COLOR);
         title.x = (w - title.width()) / 2f;
-        if (PixelSpacebase.landscape())
-            title.y = (topRegion - title.height()) / 2f;
-        else
-            title.y = 16 + (topRegion - title.height() - 16) / 2f;
-
+        title.y = PixelSpacebase.landscape() ? 18 : 28;
         align(title);
+        add(title);
 
-        placeTorch(title.x + 22, title.y + 46);
-        placeTorch(title.x + title.width - 22, title.y + 46);
-
-        Image signs = new Image(BannerSprites.get(BannerSprites.Type.PIXEL_DUNGEON_SIGNS)) {
-            private float time = 0;
-
-            @Override
-            public void update() {
-                super.update();
-                am = (float) Math.sin(-(time += Game.elapsed));
-            }
-
-            @Override
-            public void draw() {
-                GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
-                super.draw();
-                GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-            }
-        };
-        signs.x = title.x + (title.width() - signs.width()) / 2f;
-        signs.y = title.y;
-        add(signs);
+        RenderedText subtitle = renderText("FORWARD THROUGH THE VOID", 7);
+        subtitle.hardlight(0x66E6FF);
+        subtitle.x = (w - subtitle.width()) / 2f;
+        subtitle.y = title.y + title.height() + 5;
+        align(subtitle);
+        add(subtitle);
 
         DashboardItem btnBadges = new DashboardItem(Messages.get(this, "badges"), 3) {
             @Override
@@ -166,12 +141,6 @@ public class TitleScene extends PixelScene {
         add(btnExit);
 
         fadeIn();
-    }
-
-    private void placeTorch(float x, float y) {
-        Fireball fb = new Fireball();
-        fb.setPos(x, y);
-        add(fb);
     }
 
     private static class DashboardItem extends Button {

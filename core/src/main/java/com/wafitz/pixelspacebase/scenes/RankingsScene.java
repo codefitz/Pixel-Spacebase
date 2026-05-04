@@ -27,10 +27,10 @@ import com.wafitz.pixelspacebase.effects.Flare;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
-import com.wafitz.pixelspacebase.ui.Archs;
 import com.wafitz.pixelspacebase.ui.ExitButton;
 import com.wafitz.pixelspacebase.ui.Icons;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
+import com.wafitz.pixelspacebase.ui.Starfield;
 import com.wafitz.pixelspacebase.ui.Window;
 import com.wafitz.pixelspacebase.windows.WndError;
 import com.wafitz.pixelspacebase.windows.WndRanking;
@@ -51,8 +51,6 @@ public class RankingsScene extends PixelScene {
 
     private static final float GAP = 4;
 
-    private Archs archs;
-
     @Override
     public void create() {
 
@@ -66,9 +64,9 @@ public class RankingsScene extends PixelScene {
         int w = Camera.main.width;
         int h = Camera.main.height;
 
-        archs = new Archs();
-        archs.setSize(w, h);
-        add(archs);
+        Starfield starfield = new Starfield();
+        starfield.setSize(w, h);
+        add(starfield);
 
         Rankings.INSTANCE.load();
 

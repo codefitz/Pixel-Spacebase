@@ -47,8 +47,8 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.mines.Mine.Device;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
+import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
-import com.wafitz.pixelspacebase.ui.Icons;
 import com.wafitz.pixelspacebase.ui.ItemSlot;
 import com.wafitz.pixelspacebase.ui.QuickSlotButton;
 import com.watabou.gltextures.TextureCache;
@@ -278,17 +278,7 @@ public class WndContainer extends WndTabbed {
         }
 
         private Image icon() {
-            if (container instanceof DeviceCase) {
-                return Icons.get(Icons.DEVICE_CASE);
-            } else if (container instanceof ScriptLibrary) {
-                return Icons.get(Icons.SCRIPT_LIBRARY);
-            } else if (container instanceof BlasterHolster) {
-                return Icons.get(Icons.BLASTER_HOLSTER);
-            } else if (container instanceof XPort) {
-                return Icons.get(Icons.XPORT);
-            } else {
-                return Icons.get(Icons.BACKPACK);
-            }
+            return new ItemSprite(container.image(), null);
         }
     }
 

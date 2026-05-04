@@ -107,13 +107,17 @@ public class Drone extends Mob {
 
     @Override
     protected Char chooseEnemy() {
-        //if the pot is no longer present, target the hero
-        if (potHolder == -1 && potPos == -1)
-            return Dungeon.hero;
+        //if the controller is no longer present, clear mines or idle.
+        if (potHolder == -1 && potPos == -1) {
+            target = findMineTarget(pos);
+            return null;
+        }
 
             //if something is holding the pot, target that
-        else if (Actor.findById(potHolder) != null)
-            return (Char) Actor.findById(potHolder);
+        else if (Actor.findById(potHolder) != null) {
+            Actor holder = Actor.findById(potHolder);
+            return holder instanceof Mob && ((Mob) holder).hostile ? (Char) holder : null;
+        }
 
             //if the pot is on the ground
         else {
@@ -127,23 +131,47 @@ public class Drone extends Mob {
             //find all mobs near the pot
             HashSet<Char> enemies = new HashSet<>();
             for (Mob mob : Dungeon.level.mobs)
-                if (!(mob instanceof Drone) && Dungeon.level.distance(mob.pos, potPos) <= 3 && (mob.hostile || mob.ally))
+                if (!(mob instanceof Drone) && Dungeon.level.distance(mob.pos, potPos) <= 3 && mob.hostile)
                     enemies.add(mob);
 
-            //pick one, if there are none, check if the hero is near the pot, go for them, otherwise go for nothing.
+            //pick one, if there are none, clear nearby mines or idle.
             if (enemies.size() > 0) return Random.element(enemies);
-            else
-                return (Dungeon.level.distance(Dungeon.hero.pos, potPos) <= 3) ? Dungeon.hero : null;
+            target = findMineTarget(potPos);
+            return null;
         }
     }
 
     @Override
     protected boolean getCloser(int target) {
+        if (Dungeon.level.mines.get(target) != null) {
+            return super.getCloser(target);
+        }
         if (enemy != null && Actor.findById(potHolder) == enemy) {
             target = enemy.pos;
         } else if (potPos != -1 && (state == WANDERING || Dungeon.level.distance(target, potPos) > 3))
             this.target = target = potPos;
         return super.getCloser(target);
+    }
+
+    @Override
+    public void move(int step) {
+        super.move(step);
+        if (Dungeon.level.mines.get(pos) != null) {
+            Dungeon.level.mines.get(pos).wither();
+        }
+    }
+
+    private int findMineTarget(int origin) {
+        int best = -1;
+        int bestDistance = Integer.MAX_VALUE;
+        for (int key : Dungeon.level.mines.keyArray()) {
+            int distance = Dungeon.level.distance(origin, key);
+            if (distance < bestDistance) {
+                best = key;
+                bestDistance = distance;
+            }
+        }
+        return best;
     }
 
     private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

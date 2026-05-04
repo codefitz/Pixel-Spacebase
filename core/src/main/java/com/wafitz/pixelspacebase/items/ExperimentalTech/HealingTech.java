@@ -26,6 +26,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.actors.buffs.Weakness;
+import com.wafitz.pixelspacebase.actors.buffs.XenoInfection;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -42,6 +43,7 @@ public class HealingTech extends ExperimentalTech {
     @Override
     public void apply(Hero hero) {
         setKnown();
+        Buff.detach(hero, XenoInfection.class);
         heal(Dungeon.hero);
         GLog.p(Messages.get(this, "heal"));
     }

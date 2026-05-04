@@ -10,7 +10,7 @@ I started out with the original build of PD but ran into unending complications 
 
 Still, massive credit to Evan for reworking level generation - I stand on the shoulders of tiny pixel giants.
 
-![alt tag](https://github.com/codefitz/Pixel-Spacebase/tree/master/app/src/main/assets/loader1.png)
+![Pixel Spacebase title art](core/src/main/assets/banners.png)
 
 ## What's Different?
 
@@ -66,7 +66,7 @@ To execute the unit tests locally run:
 ### macOS
 
 macOS users can run `scripts/setup-macos.sh` instead. It uses Homebrew to
-install OpenJDK 8 and downloads the Android SDK and NDK to
+install OpenJDK 17 and downloads the Android SDK and NDK to
 `$HOME/android-sdk`. After running the script, build the project with:
 
 ```bash

@@ -100,6 +100,10 @@ public abstract class Blaster extends Item {
         }
     }
 
+    public int targetPos(Hero user, int dst) {
+        return new Ballistica(user.pos, dst, collisionProperties).collisionPos;
+    }
+
     protected abstract void onZap(Ballistica attack);
 
     public abstract void onHit(DM3000Launcher launcher, Char attacker, Char defender, int damage);
@@ -345,10 +349,8 @@ public abstract class Blaster extends Item {
                 curUser.sprite.zap(cell);
 
                 //attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
-                if (Actor.findChar(target) != null)
-                    QuickSlotButton.target(Actor.findChar(target));
-                else
-                    QuickSlotButton.target(Actor.findChar(cell));
+                Char aimed = Actor.findChar(target);
+                QuickSlotButton.aim(aimed != null ? aimed : Actor.findChar(cell));
 
                 if (curBlaster.curCharges >= (curBlaster.malfunctioning ? 1 : curBlaster.chargesPerCast())) {
 

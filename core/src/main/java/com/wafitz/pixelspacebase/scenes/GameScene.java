@@ -823,13 +823,68 @@ public class GameScene extends PixelScene {
         ArrayList<String> names = new ArrayList<>();
         final ArrayList<Object> objects = new ArrayList<>();
 
-        if (cell == Dungeon.hero.pos) {
-            objects.add(Dungeon.hero);
-            names.add(Dungeon.hero.className().toUpperCase(Locale.ENGLISH));
+        collectExamineObjects(cell, names, objects, true);
+
+        if (objects.isEmpty()) {
+            GameScene.show(new WndInfoCell(cell));
+        } else if (objects.size() == 1) {
+            examineObject(objects.get(0));
         } else {
-            if (Dungeon.visible[cell]) {
-                Mob mob = (Mob) Actor.findChar(cell);
-                if (mob != null) {
+            GameScene.show(new WndOptions(Messages.get(GameScene.class, "choose_examine"),
+                    Messages.get(GameScene.class, "multiple_examine"), names.toArray(new String[names.size()])) {
+                @Override
+                protected void onSelect(int index) {
+                    examineObject(objects.get(index));
+                }
+            });
+
+        }
+    }
+
+    public static void examineNearby() {
+        final ArrayList<String> names = new ArrayList<>();
+        final ArrayList<Object> objects = new ArrayList<>();
+
+        int distance = 1;
+        int cx = Dungeon.hero.pos % Dungeon.level.width();
+        int cy = Dungeon.hero.pos / Dungeon.level.width();
+        int ax = Math.max(0, cx - distance);
+        int bx = Math.min(Dungeon.level.width() - 1, cx + distance);
+        int ay = Math.max(0, cy - distance);
+        int by = Math.min(Dungeon.level.height() - 1, cy + distance);
+
+        for (int y = ay; y <= by; y++) {
+            for (int x = ax, cell = ax + y * Dungeon.level.width(); x <= bx; x++, cell++) {
+                if (Dungeon.level.visited[cell] || Dungeon.level.mapped[cell]) {
+                    collectExamineObjects(cell, names, objects, false);
+                }
+            }
+        }
+
+        if (objects.isEmpty()) {
+            return;
+        } else if (objects.size() == 1) {
+            examineObject(objects.get(0));
+        } else {
+            GameScene.show(new WndOptions(Messages.get(GameScene.class, "nearby_examine"),
+                    Messages.get(GameScene.class, "multiple_examine"), names.toArray(new String[names.size()])) {
+                @Override
+                protected void onSelect(int index) {
+                    examineObject(objects.get(index));
+                }
+            });
+        }
+    }
+
+    private static void collectExamineObjects(int cell, ArrayList<String> names, ArrayList<Object> objects, boolean includeHero) {
+        if (Dungeon.visible[cell]) {
+            if (includeHero && cell == Dungeon.hero.pos) {
+                objects.add(Dungeon.hero);
+                names.add(Dungeon.hero.className().toUpperCase(Locale.ENGLISH));
+            } else {
+                Actor actor = Actor.findChar(cell);
+                if (actor instanceof Mob) {
+                    Mob mob = (Mob) actor;
                     objects.add(mob);
                     names.add(Messages.titleCase(mob.name));
                 }
@@ -852,21 +907,6 @@ public class GameScene extends PixelScene {
         if (vent != null && vent.visible) {
             objects.add(vent);
             names.add(Messages.titleCase(vent.name));
-        }
-
-        if (objects.isEmpty()) {
-            GameScene.show(new WndInfoCell(cell));
-        } else if (objects.size() == 1) {
-            examineObject(objects.get(0));
-        } else {
-            GameScene.show(new WndOptions(Messages.get(GameScene.class, "choose_examine"),
-                    Messages.get(GameScene.class, "multiple_examine"), names.toArray(new String[names.size()])) {
-                @Override
-                protected void onSelect(int index) {
-                    examineObject(objects.get(index));
-                }
-            });
-
         }
     }
 

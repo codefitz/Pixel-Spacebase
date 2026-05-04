@@ -70,6 +70,8 @@ import com.wafitz.pixelspacebase.items.artifacts.StrongForcefield;
 import com.wafitz.pixelspacebase.items.artifacts.SurveyorModule;
 import com.wafitz.pixelspacebase.items.artifacts.SurvivalModule;
 import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
+import com.wafitz.pixelspacebase.items.food.AlienPod;
+import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.keys.Key;
 import com.wafitz.pixelspacebase.items.modules.AttackModule;
 import com.wafitz.pixelspacebase.items.modules.ElementsModule;
@@ -142,6 +144,7 @@ public class Hero extends Char {
 
     public boolean ready = false;
     private boolean damageInterrupt = true;
+    private boolean emergencyEating = false;
     public HeroAction curAction = null;
     public HeroAction lastAction = null;
 
@@ -963,6 +966,42 @@ public class Hero extends Char {
         }
 
         super.damage(dmg, src);
+
+        if (!emergencyEating && isAlive() && HP > 0 && HP * 4 <= HT) {
+            emergencyEat();
+        }
+    }
+
+    private void emergencyEat() {
+        Food food = emergencyFood();
+        if (food == null) {
+            return;
+        }
+
+        emergencyEating = true;
+        try {
+            GLog.w(Messages.get(this, "auto_eat"));
+            food.emergencyEat(this);
+        } finally {
+            emergencyEating = false;
+        }
+    }
+
+    private Food emergencyFood() {
+        for (Item item : belongings.backpack.items) {
+            if (!(item instanceof Food)) {
+                continue;
+            }
+
+            if (item instanceof AlienPod && ((AlienPod) item).experimentalTechAttrib == null) {
+                continue;
+            }
+
+            if (item.actions(this).contains(Food.AC_USE)) {
+                return (Food) item;
+            }
+        }
+        return null;
     }
 
     private void checkVisibleMobs() {

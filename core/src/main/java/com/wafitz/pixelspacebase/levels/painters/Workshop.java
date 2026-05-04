@@ -83,6 +83,9 @@ public class Workshop extends Painter {
     private static int pasHeight;
 
     private static ArrayList<Item> itemsToSpawn;
+    private static ArrayList<Item> areaStock;
+    private static int stockArea = -1;
+    private static int stockDepth = -1;
 
     public static void paint(Level level, Room room) {
 
@@ -93,8 +96,7 @@ public class Workshop extends Painter {
         pasHeight = room.height() - 2;
         int per = pasWidth * 2 + pasHeight * 2;
 
-        if (itemsToSpawn == null)
-            generateItems();
+        itemsToSpawn = stockForCurrentDepth();
 
         int pos = xy2p(room, room.entrance()) + (per - itemsToSpawn.size()) / 2;
         for (Item item : itemsToSpawn) {
@@ -119,7 +121,50 @@ public class Workshop extends Painter {
             door.set(Room.Door.Type.REGULAR);
         }
 
-        itemsToSpawn = null;
+    }
+
+    public static void carryStockFrom(Level level) {
+        if (level == null || level.heaps == null || !Dungeon.workshopOnLevel()) {
+            return;
+        }
+
+        int area = areaForDepth(Dungeon.depth);
+        if (area != stockArea) {
+            areaStock = new ArrayList<>();
+            stockArea = area;
+            stockDepth = Dungeon.depth;
+        } else if (areaStock == null) {
+            areaStock = new ArrayList<>();
+        } else {
+            areaStock.clear();
+        }
+
+        for (int key : level.heaps.keyArray()) {
+            Heap heap = level.heaps.get(key);
+            if (heap != null && heap.type == Heap.Type.TO_MAKE && heap.items != null) {
+                areaStock.addAll(heap.items);
+                heap.destroy();
+            }
+        }
+    }
+
+    private static ArrayList<Item> stockForCurrentDepth() {
+        int area = areaForDepth(Dungeon.depth);
+        if (areaStock == null || stockArea != area || (areaStart(Dungeon.depth) && stockDepth != Dungeon.depth)) {
+            generateItems();
+            areaStock = itemsToSpawn;
+            stockArea = area;
+            stockDepth = Dungeon.depth;
+        }
+        return areaStock;
+    }
+
+    private static int areaForDepth(int depth) {
+        return Math.max(0, (depth - 1) / 5);
+    }
+
+    private static boolean areaStart(int depth) {
+        return depth == 1 || depth == 6 || depth == 11 || depth == 16 || depth == 21;
     }
 
     private static void generateItems() {
@@ -298,8 +343,7 @@ public class Workshop extends Painter {
     }
 
     public static int spaceNeeded() {
-        if (itemsToSpawn == null)
-            generateItems();
+        itemsToSpawn = stockForCurrentDepth();
 
         //plus one for the shopkeeper
         return itemsToSpawn.size() + 1;

@@ -23,22 +23,31 @@ package com.wafitz.pixelspacebase.scenes;
 import com.wafitz.pixelspacebase.Chrome;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.ui.Archs;
 import com.wafitz.pixelspacebase.ui.ExitButton;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
 import com.wafitz.pixelspacebase.ui.ScriptPane;
+import com.wafitz.pixelspacebase.ui.Starfield;
 import com.wafitz.pixelspacebase.ui.Window;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
 
-//TODO: update this class with relevant info as new versions come out.
 public class ChangesScene extends PixelScene {
 
     private static final String TXT_Update =
-            "_v0:_\n" +
-                    "_-_ Bugfixes\n" +
+            "_v1.0.0:_\n" +
+                    "_-_ Rebased visible versioning for Pixel Spacebase.\n" +
+                    "_-_ Replaced the title screen soundtrack with the new intro theme.\n" +
+                    "_-_ Updated title, HUD, popup, and badge presentation toward a spacebase visual identity.\n" +
+                    "_-_ Updated About screen credits for Pixel Spacebase, Shattered Pixel Dungeon v0.4.3, and Pixel Dungeon.\n" +
+                    "\n" +
+                    "_Historic conversion work:_\n" +
+                    "_-_ Converted the package and game identity from Shattered Pixel Dungeon to Pixel Spacebase.\n" +
+                    "_-_ Added Commander, DM3000, Shapeshifter, and Captain player classes.\n" +
+                    "_-_ Reworked items toward parts, modules, tech, blasters, spacesuits, and gene mods.\n" +
+                    "_-_ Added spacebase enemies, NPCs, terminals, vents, mines, and level text.\n" +
+                    "_-_ Modernized the Android Gradle build so the project builds on current SDK tooling.\n" +
                     "\n";
 
     @Override
@@ -91,9 +100,9 @@ public class ChangesScene extends PixelScene {
                 panel.innerHeight() + 2);
         list.scriptTo(0, 0);
 
-        Archs archs = new Archs();
-        archs.setSize(Camera.main.width, Camera.main.height);
-        addToBack(archs);
+        Starfield starfield = new Starfield();
+        starfield.setSize(Camera.main.width, Camera.main.height);
+        addToBack(starfield);
 
         fadeIn();
     }
@@ -103,5 +112,3 @@ public class ChangesScene extends PixelScene {
         PixelSpacebase.switchNoFade(TitleScene.class);
     }
 }
-
-

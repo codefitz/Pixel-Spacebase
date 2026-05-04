@@ -479,9 +479,9 @@ public class HoloPad extends Artifact {
         static final String[][][] VOICE_ENEMIES = {
                 {
                         {
-                                "Let's make the sewers safe again...",
+                                "Let's make the service decks safe again...",
                                 "If the guards couldn't defeat them, perhaps we can...",
-                                "These crabs are extremely annoying..."
+                                "These maintenance crawlers are extremely annoying..."
                         }, {
                         "Beware FeralShapeshifter!...",
                         "Many of my friends died to this thing, time for vengeance...",
@@ -499,8 +499,8 @@ public class HoloPad extends Artifact {
         }
         }, {
                 {
-                        "The aliens here are aggressive, just like in Operations... ",
-                        "more gnolls, I hate gnolls...",
+                        "The aliens here are aggressive, just like on the Maintenance decks... ",
+                        "More Yendor raiders. I hate Yendor raiders...",
                         "Even the bats are bloodthirsty here..."
                 }, {
                 "Only dwarves would build a mining machine that kills looters...",

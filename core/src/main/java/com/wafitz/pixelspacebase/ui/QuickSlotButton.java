@@ -121,6 +121,7 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
 
         crossM = new Image();
         crossM.copy(crossB);
+        crossM.hardlight(0xFF3333);
     }
 
     @Override
@@ -183,8 +184,7 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
                 Dungeon.visible[lastTarget.pos]) {
 
             targeting = true;
-            lastTarget.sprite.parent.add(crossM);
-            crossM.point(DungeonTilemap.tileToWorld(lastTarget.pos));
+            mark(lastTarget);
             crossB.x = x + (width - crossB.width) / 2;
             crossB.y = y + (height - crossB.height) / 2;
             crossB.visible = true;
@@ -251,6 +251,26 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
             lastTarget = target;
 
             HealthIndicator.instance.target(target);
+        }
+    }
+
+    public static void aim(Char target) {
+        target(target);
+
+        if (target != null && target != Dungeon.hero && target.sprite != null && target.sprite.parent != null) {
+            mark(target);
+        } else if (!targeting && crossM != null) {
+            crossM.remove();
+        }
+    }
+
+    private static void mark(Char target) {
+        if (crossM != null) {
+            crossM.remove();
+            target.sprite.parent.add(crossM);
+            crossM.point(DungeonTilemap.tileToWorld(target.pos));
+            crossM.hardlight(0xFF3333);
+            crossM.visible = true;
         }
     }
 

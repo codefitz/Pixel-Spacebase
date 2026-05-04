@@ -21,6 +21,7 @@
 package com.wafitz.pixelspacebase;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -266,7 +267,7 @@ public class PixelSpacebase extends Game {
         if (classicFont()) {
             RenderedText.setFont("pixelfont.ttf");
         } else {
-            RenderedText.setFont(null);
+            RenderedText.setFontFamily("sans-serif-condensed", Typeface.BOLD);
         }
     }
 
@@ -506,12 +507,12 @@ public class PixelSpacebase extends Game {
         if (classic) {
             RenderedText.setFont("pixelfont.ttf");
         } else {
-            RenderedText.setFont(null);
+            RenderedText.setFontFamily("sans-serif-condensed", Typeface.BOLD);
         }
     }
 
     public static boolean classicFont() {
-        return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT, true);
+        return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT, false);
     }
 
     public static void lastClass(int value) {

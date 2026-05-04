@@ -25,8 +25,8 @@ import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.effects.BadgeBanner;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.ui.Archs;
 import com.wafitz.pixelspacebase.ui.ExitButton;
+import com.wafitz.pixelspacebase.ui.Starfield;
 import com.wafitz.pixelspacebase.ui.Window;
 import com.wafitz.pixelspacebase.windows.WndBadge;
 import com.watabou.noosa.Camera;
@@ -56,9 +56,9 @@ public class BadgesScene extends PixelScene {
         int w = Camera.main.width;
         int h = Camera.main.height;
 
-        Archs archs = new Archs();
-        archs.setSize(w, h);
-        add(archs);
+        Starfield starfield = new Starfield();
+        starfield.setSize(w, h);
+        add(starfield);
 
         float pw = Math.min(w, (PixelSpacebase.landscape() ? MIN_WIDTH_L : MIN_WIDTH_P) * 3) - 16;
         float ph = Math.min(h, (PixelSpacebase.landscape() ? MIN_HEIGHT_L : MIN_HEIGHT_P) * 3) - 32;

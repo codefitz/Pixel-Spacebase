@@ -57,7 +57,7 @@ public class TechToolkit extends Artifact {
 
     private int devicesToTech = 0;
 
-    private String inventoryTitle = "Select experimental tech";
+    private String inventoryTitle = "Select gene mod";
     protected WndContainer.Mode mode = WndContainer.Mode.EXPERIMENTALTECH;
 
     public TechToolkit() {
@@ -117,7 +117,7 @@ public class TechToolkit extends Artifact {
 
         if (score == 0) {
 
-            GLog.i("Your mixture is complete, but none of the ExperimentalTech you used seem to react well. " +
+            GLog.i("Your mixture is complete, but none of the gene mods you used seem to react well. " +
                     "The brew is useless, you throw it away.");
 
         } else if (score > level()) {
@@ -132,7 +132,7 @@ public class TechToolkit extends Artifact {
                 bstGuess = new ArrayList<>();
                 GLog.p("The mixture you've created seems perfect, you don't think there is any way to improve it!");
             } else {
-                GLog.w("you finish mixing ExperimentalTech, " + brewDesc(numWrongPlace, numRight) +
+                GLog.w("you finish mixing gene mods, " + brewDesc(numWrongPlace, numRight) +
                         ". This is your best brew yet!");
             }
 
@@ -165,8 +165,8 @@ public class TechToolkit extends Artifact {
 
     @Override
     public String desc() {
-        String result = "This toolkit contains a number of regents and herbs used to improve the process of " +
-                "making Experimental Tech.\n\n";
+        String result = "This toolkit contains reagents, catalysts, and sealed ampoules used to improve the process of " +
+                "making gene mods.\n\n";
 
         if (isEquipped(Dungeon.hero))
             if (malfunctioning)

@@ -86,11 +86,16 @@ public class FeralShapeshifterSprite extends MobSprite {
 
     @Override
     public int blood() {
-        return 0xFF000000;
+        return 0xFF66E6FF;
     }
 
     public void spray(boolean on) {
         spray.on = on;
+    }
+
+    public void clearSpray() {
+        spray.on = false;
+        spray.killAndErase();
     }
 
     @Override

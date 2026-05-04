@@ -30,11 +30,11 @@ import com.wafitz.pixelspacebase.effects.BannerSprites;
 import com.wafitz.pixelspacebase.effects.BannerSprites.Type;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.ui.Archs;
 import com.wafitz.pixelspacebase.ui.ExitButton;
 import com.wafitz.pixelspacebase.ui.Icons;
 import com.wafitz.pixelspacebase.ui.RedButton;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
+import com.wafitz.pixelspacebase.ui.Starfield;
 import com.wafitz.pixelspacebase.windows.WndChallenges;
 import com.wafitz.pixelspacebase.windows.WndClass;
 import com.wafitz.pixelspacebase.windows.WndMessage;
@@ -71,8 +71,11 @@ public class StartScene extends PixelScene {
     private GameButton btnLoad;
     private GameButton btnNewGame;
 
-    private boolean captainUnlocked;
+    private boolean shapeshifterUnlocked;
+    private boolean dm3000Unlocked;
     private Group unlock;
+    private RenderedTextMultiline unlockShapeshifter;
+    private RenderedTextMultiline unlockDM3000;
 
     public static HeroClass curClass;
 
@@ -101,9 +104,9 @@ public class StartScene extends PixelScene {
         float top = (h - height) / 2;
         float bottom = h - top;
 
-        Archs archs = new Archs();
-        archs.setSize(w, h);
-        add(archs);
+        Starfield starfield = new Starfield();
+        starfield.setSize(w, h);
+        add(starfield);
 
         Image title = BannerSprites.get(Type.SELECT_YOUR_HERO);
         title.x = (w - title.width()) / 2;
@@ -198,16 +201,14 @@ public class StartScene extends PixelScene {
         unlock = new Group();
         add(unlock);
 
-        if (!(captainUnlocked = Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3))) {
+        shapeshifterUnlocked = Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1);
+        dm3000Unlocked = Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3);
 
-            RenderedTextMultiline text = PixelScene.renderMultiline(Messages.get(this, "unlock"), 9);
-            text.maxWidth((int) width);
-            text.hardlight(0xFFFF00);
-            text.setPos(w / 2 - text.width() / 2, (bottom - BUTTON_HEIGHT) + (BUTTON_HEIGHT - text.height()) / 2);
-            align(text);
-            unlock.add(text);
-
-        }
+        unlockShapeshifter = createUnlockText(Messages.get(this, "unlock_shapeshifter"), width, w / 2f, buttonY);
+        unlock.add(unlockShapeshifter);
+        unlockDM3000 = createUnlockText(Messages.get(this, "unlock_dm3000"), width, w / 2f, buttonY);
+        unlock.add(unlockDM3000);
+        unlock.visible = false;
 
         ExitButton btnExit = new ExitButton();
         btnExit.setPos(Camera.main.width - btnExit.width(), 0);
@@ -250,7 +251,7 @@ public class StartScene extends PixelScene {
         }
         shields.get(curClass = cl).highlight(true);
 
-        if (cl != HeroClass.CAPTAIN || captainUnlocked) {
+        if (isUnlocked(cl)) {
 
             unlock.visible = false;
 
@@ -279,11 +280,38 @@ public class StartScene extends PixelScene {
 
         } else {
 
-            unlock.visible = true;
+            showUnlockMessage(cl);
             btnLoad.visible = false;
             btnNewGame.visible = false;
 
         }
+    }
+
+    private RenderedTextMultiline createUnlockText(String message, float width, float centerX, float y) {
+        RenderedTextMultiline text = PixelScene.renderMultiline(message, 9);
+        text.maxWidth((int) width);
+        text.hardlight(0xFFFF00);
+        text.setPos(centerX - text.width() / 2, y + (BUTTON_HEIGHT - text.height()) / 2);
+        align(text);
+        text.visible = false;
+        return text;
+    }
+
+    private boolean isUnlocked(HeroClass cl) {
+        switch (cl) {
+            case DM3000:
+                return dm3000Unlocked;
+            case SHAPESHIFTER:
+                return shapeshifterUnlocked;
+            default:
+                return true;
+        }
+    }
+
+    private void showUnlockMessage(HeroClass cl) {
+        unlock.visible = true;
+        unlockShapeshifter.visible = cl == HeroClass.SHAPESHIFTER;
+        unlockDM3000.visible = cl == HeroClass.DM3000;
     }
 
     private void startNewGame() {

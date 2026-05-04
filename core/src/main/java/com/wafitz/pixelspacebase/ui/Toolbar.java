@@ -86,6 +86,7 @@ public class Toolbar extends Component {
             @Override
             protected void onClick() {
                 Dungeon.hero.search(true);
+                GameScene.examineNearby();
 
                 // wafitz.v2 Swapped the function, you're probably using search more than examine.
 

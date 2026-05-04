@@ -484,7 +484,7 @@ public class Item implements Bundlable {
         Sample.INSTANCE.play(Assets.SND_MISS, 0.6f, 0.6f, 1.5f);
 
         Char enemy = Actor.findChar(cell);
-        QuickSlotButton.target(enemy);
+        QuickSlotButton.aim(enemy);
 
         // FIXME!!!
         float delay = TIME_TO_THROW;

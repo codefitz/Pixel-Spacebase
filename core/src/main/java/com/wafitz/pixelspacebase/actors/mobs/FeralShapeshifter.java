@@ -33,8 +33,10 @@ import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
+import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
 import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
+import com.wafitz.pixelspacebase.items.modules.TechModule;
 import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -42,6 +44,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.sprites.FeralShapeshifterSprite;
+import com.wafitz.pixelspacebase.sprites.RestoredShapeshifterSprite;
 import com.wafitz.pixelspacebase.ui.BossHealthBar;
 import com.wafitz.pixelspacebase.utils.BArray;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -232,7 +235,12 @@ public class FeralShapeshifter extends Mob {
     @Override
     public void die(Object cause) {
 
-        super.die(cause);
+        if (sprite != null) {
+            sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "defeated"));
+        }
+        yell(Messages.get(this, "defeated"));
+
+        resolveBossFight();
 
         Dungeon.level.unseal();
 
@@ -240,8 +248,29 @@ public class FeralShapeshifter extends Mob {
         Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).sprite.drop();
 
         Badges.validateBossSlain();
+    }
 
-        yell(Messages.get(this, "defeated"));
+    private void resolveBossFight() {
+        destroy();
+
+        if (sprite != null) {
+            CellEmitter.center(pos).burst(Speck.factory(Speck.LIGHT), 20);
+            Sample.INSTANCE.play(Assets.SND_TELEPORT);
+            if (sprite instanceof FeralShapeshifterSprite) {
+                ((FeralShapeshifterSprite) sprite).clearSpray();
+            }
+            sprite.killAndErase();
+        }
+        RestoredShapeshifterSprite.show(pos);
+
+        float lootChance = this.lootChance;
+        int bonus = TechModule.getBonus(Dungeon.hero, TechModule.Wealth.class);
+        lootChance *= Math.pow(1.15, bonus);
+
+        if (Random.Float() < lootChance && Dungeon.hero.lvl <= maxLvl + 2) {
+            Item loot = createLoot();
+            if (loot != null) Dungeon.level.drop(loot, pos).sprite.drop();
+        }
     }
 
     @Override

@@ -24,11 +24,10 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.wafitz.pixelspacebase.PixelSpacebase;
-import com.wafitz.pixelspacebase.effects.Flare;
-import com.wafitz.pixelspacebase.ui.Archs;
 import com.wafitz.pixelspacebase.ui.ExitButton;
 import com.wafitz.pixelspacebase.ui.Icons;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
+import com.wafitz.pixelspacebase.ui.Starfield;
 import com.wafitz.pixelspacebase.ui.Window;
 import com.watabou.input.Touchscreen.Touch;
 import com.watabou.noosa.Camera;
@@ -42,11 +41,12 @@ public class AboutScene extends PixelScene {
 
     private static final String TTL_PS = "Pixel Spacebase";
 
-    private static final String TXT_PS = "Design, Code, & Graphics: Wafitz";
+    private static final String TXT_PS =
+            "Spacebase conversion, design, code, and graphics: Wafitz";
 
     private static final String LNK_PS = "github.com/codefitz/Pixel-Spacebase";
 
-    private static final String TTL_SHPX = "Shattered Pixel Dungeon";
+    private static final String TTL_SHPX = "Built from Shattered Pixel Dungeon v0.4.3";
 
     private static final String TXT_SHPX =
             "Design, Code, & Graphics: Evan";
@@ -65,109 +65,120 @@ public class AboutScene extends PixelScene {
     public void create() {
         super.create();
 
-        final float colWidth = Camera.main.width / (PixelSpacebase.landscape() ? 2 : 1);
-        final float colTop = (Camera.main.height / 2) - (PixelSpacebase.landscape() ? 30 : 90);
-        final float wataOffset = PixelSpacebase.landscape() ? colWidth : 0;
+        final float width = Camera.main.width;
+        final float top = PixelSpacebase.landscape() ? 16 : 24;
+        final int textWidth = (int) Math.min(width - 20, PixelSpacebase.landscape() ? 210 : 132);
 
-        Image shpx = Icons.SHPX.get();
-        shpx.x = (colWidth - shpx.width()) / 2;
-        shpx.y = colTop;
-        align(shpx);
-        add(shpx);
+        RenderedText title = renderText(TTL_PS, 12);
+        title.hardlight(Window.TITLE_COLOR);
+        title.x = (width - title.width()) / 2;
+        title.y = top;
+        align(title);
+        add(title);
 
-        new Flare(7, 64).color(0x225511, true).show(shpx, 0).angularSpeed = +20;
+        RenderedText version = renderText("version " + Game.version, 7);
+        version.hardlight(0x66E6FF);
+        version.x = (width - version.width()) / 2;
+        version.y = title.y + title.height() + 2;
+        align(version);
+        add(version);
 
-        RenderedText shpxtitle = renderText(TTL_SHPX, 8);
-        shpxtitle.hardlight(Window.SHPX_COLOR);
-        add(shpxtitle);
+        Image commander = Icons.COMMANDER.get();
+        Image dm3000 = Icons.DM3000.get();
+        Image shapeshifter = Icons.SHAPESHIFTER.get();
+        Image captain = Icons.CAPTAIN.get();
+        Image[] crew = {commander, dm3000, shapeshifter, captain};
+        float crewWidth = 16 * crew.length + 4 * (crew.length - 1);
+        float crewX = (width - crewWidth) / 2;
+        float crewY = version.y + version.height() + 10;
+        for (int i = 0; i < crew.length; i++) {
+            crew[i].x = crewX + i * 20;
+            crew[i].y = crewY;
+            align(crew[i]);
+            add(crew[i]);
+        }
 
-        shpxtitle.x = (colWidth - shpxtitle.width()) / 2;
-        shpxtitle.y = shpx.y + shpx.height + 5;
-        align(shpxtitle);
+        float y = crewY + 25;
+        RenderedTextMultiline psText = renderMultiline(TXT_PS, 7);
+        psText.maxWidth(textWidth);
+        psText.hardlight(0xEAFDFF);
+        psText.setPos((width - psText.width()) / 2, y);
+        align(psText);
+        add(psText);
 
-        RenderedTextMultiline shpxtext = renderMultiline(TXT_SHPX, 8);
-        shpxtext.maxWidth((int) Math.min(colWidth, 120));
-        add(shpxtext);
+        y = psText.bottom() + 8;
+        RenderedTextMultiline psLink = addLink(LNK_PS, textWidth, y, 0x66E6FF);
+        addLinkHotArea(psLink, "https://" + LNK_PS);
 
-        shpxtext.setPos((colWidth - shpxtext.width()) / 2, shpxtitle.y + shpxtitle.height() + 12);
-        align(shpxtext);
+        y = psLink.bottom() + 12;
+        RenderedTextMultiline shpxTitle = renderMultiline(TTL_SHPX, 7);
+        shpxTitle.maxWidth(textWidth);
+        shpxTitle.hardlight(Window.SHPX_COLOR);
+        shpxTitle.setPos((width - shpxTitle.width()) / 2, y);
+        align(shpxTitle);
+        add(shpxTitle);
 
-        RenderedTextMultiline shpxlink = renderMultiline(LNK_SHPX, 8);
-        shpxlink.maxWidth(shpxtext.maxWidth());
-        shpxlink.hardlight(Window.SHPX_COLOR);
-        add(shpxlink);
+        y = shpxTitle.bottom() + 4;
+        RenderedTextMultiline shpxText = renderMultiline(TXT_SHPX, 7);
+        shpxText.maxWidth(textWidth);
+        shpxText.setPos((width - shpxText.width()) / 2, y);
+        align(shpxText);
+        add(shpxText);
 
-        shpxlink.setPos((colWidth - shpxlink.width()) / 2, shpxtext.bottom() + 6);
-        align(shpxlink);
+        y = shpxText.bottom() + 4;
+        RenderedTextMultiline shpxLink = addLink(LNK_SHPX, textWidth, y, Window.SHPX_COLOR);
+        addLinkHotArea(shpxLink, "http://" + LNK_SHPX);
 
-        TouchArea shpxhotArea = new TouchArea(shpxlink.left(), shpxlink.top(), shpxlink.width(), shpxlink.height()) {
-            @Override
-            protected void onClick(Touch touch) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + LNK_SHPX));
-                Game.instance.startActivity(intent);
-            }
-        };
-        add(shpxhotArea);
-
-        Image wata = Icons.WATA.get();
-        wata.x = wataOffset + (colWidth - wata.width()) / 2;
-        wata.y = PixelSpacebase.landscape() ?
-                colTop :
-                shpxlink.top() + wata.height + 20;
-        align(wata);
-        add(wata);
-
-        new Flare(7, 64).color(0x112233, true).show(wata, 0).angularSpeed = +20;
-
-        RenderedText wataTitle = renderText(TTL_WATA, 8);
+        y = shpxLink.bottom() + 10;
+        RenderedTextMultiline wataTitle = renderMultiline(TTL_WATA, 7);
+        wataTitle.maxWidth(textWidth);
         wataTitle.hardlight(Window.TITLE_COLOR);
+        wataTitle.setPos((width - wataTitle.width()) / 2, y);
+        align(wataTitle);
         add(wataTitle);
 
-        wataTitle.x = wataOffset + (colWidth - wataTitle.width()) / 2;
-        wataTitle.y = wata.y + wata.height + 11;
-        align(wataTitle);
-
-        RenderedTextMultiline wataText = renderMultiline(TXT_WATA, 8);
-        wataText.maxWidth((int) Math.min(colWidth, 120));
+        y = wataTitle.bottom() + 4;
+        RenderedTextMultiline wataText = renderMultiline(TXT_WATA + "\\n" + TXT_MUSI, 7);
+        wataText.maxWidth(textWidth);
+        wataText.setPos((width - wataText.width()) / 2, y);
+        align(wataText);
         add(wataText);
 
-        RenderedTextMultiline wataMusi = renderMultiline(TXT_MUSI, 8);
-        wataMusi.maxWidth((int) Math.min(colWidth, 120));
-        add(wataMusi);
-
-        wataText.setPos(wataOffset + (colWidth - wataText.width()) / 2, wataTitle.y + wataTitle.height() + 12);
-        align(wataText);
-
-        wataMusi.setPos(wataOffset + (colWidth - wataMusi.width()) / 2, wataTitle.y + wataTitle.height() + 24);
-        align(wataMusi);
-
-        RenderedTextMultiline wataLink = renderMultiline(LNK_WATA, 8);
-        wataLink.maxWidth((int) Math.min(colWidth, 120));
-        wataLink.hardlight(Window.TITLE_COLOR);
-        add(wataLink);
-
-        wataLink.setPos(wataOffset + (colWidth - wataLink.width()) / 2, wataTitle.y + wataTitle.height() + 36);
-        align(wataLink);
-
-        TouchArea hotArea = new TouchArea(wataLink.left(), wataLink.top(), wataLink.width(), wataLink.height()) {
-            @Override
-            protected void onClick(Touch touch) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + LNK_WATA));
-                Game.instance.startActivity(intent);
-            }
-        };
-        add(hotArea);
+        y = wataText.bottom() + 4;
+        RenderedTextMultiline wataLink = addLink(LNK_WATA, textWidth, y, Window.TITLE_COLOR);
+        addLinkHotArea(wataLink, "http://" + LNK_WATA);
 
 
-        Archs archs = new Archs();
-        archs.setSize(Camera.main.width, Camera.main.height);
-        addToBack(archs);
+        Starfield starfield = new Starfield();
+        starfield.setSize(Camera.main.width, Camera.main.height);
+        addToBack(starfield);
 
         ExitButton btnExit = new ExitButton();
         btnExit.setPos(Camera.main.width - btnExit.width(), 0);
         add(btnExit);
 
         fadeIn();
+    }
+
+    private RenderedTextMultiline addLink(String text, int width, float y, int color) {
+        RenderedTextMultiline link = renderMultiline(text, 7);
+        link.maxWidth(width);
+        link.hardlight(color);
+        link.setPos((Camera.main.width - link.width()) / 2, y);
+        align(link);
+        add(link);
+        return link;
+    }
+
+    private void addLinkHotArea(final RenderedTextMultiline link, final String url) {
+        TouchArea hotArea = new TouchArea(link.left(), link.top(), link.width(), link.height()) {
+            @Override
+            protected void onClick(Touch touch) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                Game.instance.startActivity(intent);
+            }
+        };
+        add(hotArea);
     }
 
     @Override

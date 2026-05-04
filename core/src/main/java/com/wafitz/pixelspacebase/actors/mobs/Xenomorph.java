@@ -20,11 +20,17 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
+import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.levels.Level;
+import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.XenomorphSprite;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-class Xenomorph extends Mob {
+import java.util.ArrayList;
+
+public class Xenomorph extends Mob {
 
     {
         spriteClass = XenomorphSprite.class;
@@ -48,5 +54,26 @@ class Xenomorph extends Mob {
     @Override
     public int drRoll() {
         return Random.NormalIntRange(0, 1);
+    }
+
+    public static boolean spawnAdjacent(int pos) {
+        ArrayList<Integer> spawnPoints = new ArrayList<>();
+
+        for (int offset : PathFinder.NEIGHBOURS8) {
+            int cell = pos + offset;
+            if ((Level.passable[cell] || Level.avoid[cell]) && Actor.findChar(cell) == null) {
+                spawnPoints.add(cell);
+            }
+        }
+
+        if (spawnPoints.isEmpty()) {
+            return false;
+        }
+
+        Xenomorph xenomorph = new Xenomorph();
+        xenomorph.pos = Random.element(spawnPoints);
+        xenomorph.state = xenomorph.HUNTING;
+        GameScene.add(xenomorph);
+        return true;
     }
 }
