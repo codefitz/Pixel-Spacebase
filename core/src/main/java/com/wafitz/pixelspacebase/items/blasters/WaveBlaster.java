@@ -32,6 +32,7 @@ import com.wafitz.pixelspacebase.effects.Pushing;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.Game;
@@ -92,9 +93,13 @@ public class WaveBlaster extends DamageBlaster {
                 ch.damage(Math.round(damage * 0.667f), this);
 
                 if (ch.isAlive()) {
-                    Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
-                    int strength = 1 + Math.round(level() / 2f);
-                    throwChar(ch, trajectory, strength);
+                    int targetCell = ch.pos + i;
+                    // Only create trajectory if target cell is valid to prevent crashes
+                    if (validCell(targetCell)) {
+                        Ballistica trajectory = new Ballistica(ch.pos, targetCell, Ballistica.MAGIC_BOLT);
+                        int strength = Math.round(1.5f + level() / 2f);
+                        throwChar(ch, trajectory, strength);
+                    }
                 }
             }
         }
@@ -106,9 +111,12 @@ public class WaveBlaster extends DamageBlaster {
             ch.damage(damage, this);
 
             if (ch.isAlive() && bolt.path.size() > bolt.dist + 1) {
-                Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt.dist + 1), Ballistica.MAGIC_BOLT);
-                int strength = level() + 3;
-                throwChar(ch, trajectory, strength);
+                int nextCell = bolt.path.get(bolt.dist + 1);
+                if (validCell(nextCell)) {
+                    Ballistica trajectory = new Ballistica(ch.pos, nextCell, Ballistica.MAGIC_BOLT);
+                    int strength = level() + 3;
+                    throwChar(ch, trajectory, strength);
+                }
             }
         }
 
@@ -121,24 +129,35 @@ public class WaveBlaster extends DamageBlaster {
     public static void throwChar(final Char ch, final Ballistica trajectory, int power) {
         int dist = Math.min(trajectory.dist, power);
 
-        if (ch.properties().contains(Char.Property.BOSS))
-            dist /= 2;
+        if (ch.properties().contains(Char.Property.BOSS)) {
+            dist = (dist + 1) / 2;
+        }
 
-        if (dist == 0 || ch.properties().contains(Char.Property.IMMOVABLE)) return;
+        if (dist <= 0 || ch.properties().contains(Char.Property.IMMOVABLE) || ch.rooted) {
+            return;
+        }
 
+        // Cap dist to path size - 1 to prevent IndexOutOfBoundsException
         dist = Math.min(dist, trajectory.path.size() - 1);
 
-        if (dist <= 0) return;
-
-        if (!validCell(trajectory.path.get(dist)) || Actor.findChar(trajectory.path.get(dist)) != null) {
+        // Find a valid landing cell by backing up from intended distance
+        while (dist > 0) {
+            int landingCell = trajectory.path.get(dist);
+            if (validCell(landingCell) && Actor.findChar(landingCell) == null) {
+                break;
+            }
             dist--;
         }
 
-        if (dist <= 0 || !validCell(trajectory.path.get(dist))) return;
+        if (dist <= 0 || !validCell(trajectory.path.get(dist))) {
+            return;
+        }
 
         final int newPos = trajectory.path.get(dist);
 
-        if (newPos == ch.pos) return;
+        if (newPos == ch.pos) {
+            return;
+        }
 
         final int finalDist = dist;
         final int initialpos = ch.pos;
@@ -146,14 +165,15 @@ public class WaveBlaster extends DamageBlaster {
         Actor.addDelayed(new Pushing(ch, ch.pos, newPos, new Callback() {
             public void call() {
                 if (initialpos != ch.pos) {
-                    //something cased movement before pushing resolved, cancel to be safe.
+                    //something caused movement before pushing resolved, cancel to be safe.
                     ch.sprite.place(ch.pos);
                     return;
                 }
                 ch.pos = newPos;
-                if (ch.pos == trajectory.collisionPos) {
-                    ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), this);
-                    Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange((finalDist + 1) / 2, finalDist));
+                // Apply collision damage if character landed on blast center
+                if (ch.pos == trajectory.collisionPos && finalDist > 0) {
+                    ch.damage(Random.NormalIntRange(finalDist, 2 * finalDist), this);
+                    Paralysis.prolong(ch, Paralysis.class, 1 + finalDist / 2f);
                 }
                 Dungeon.level.press(ch.pos, ch);
             }

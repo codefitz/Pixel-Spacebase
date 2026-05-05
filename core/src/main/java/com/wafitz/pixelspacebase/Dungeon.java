@@ -168,13 +168,13 @@ public class Dungeon {
         quickslot.reset();
         QuickSlotButton.reset();
 
-        depth = 0;
-        parts = 0;
+        //depth = 0;
+        //parts = 0;
 
         // TEMP DEV TESTING - REMOVE BEFORE RELEASE:
         // Starts new hero test runs on depth 6 with plenty of parts for shop testing.
         // newLevel() increments depth before creating the level, so seed depth 5 here.
-        depth = 5;
+        depth = 4;
         parts = 20000;
 
         droppedItems = new SparseArray<>();
@@ -211,7 +211,6 @@ public class Dungeon {
         depth++;
         if (depth > Statistics.deepestFloor) {
             Statistics.deepestFloor = depth;
-
             Statistics.completedWithNoKilling = Statistics.qualifiedForNoKilling;
         }
 

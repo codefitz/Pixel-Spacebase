@@ -90,7 +90,6 @@ public enum HeroClass {
 
         WaveBlaster waveBlaster = new WaveBlaster();
         waveBlaster.identify().collect();
-        Dungeon.quickslot.setSlot(2, waveBlaster);
     }
 
     public Badges.Badge masteryBadge() {
