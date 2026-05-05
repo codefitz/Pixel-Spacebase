@@ -27,6 +27,7 @@ import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityOverride;
 import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
+import com.wafitz.pixelspacebase.items.blasters.WaveBlaster;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
@@ -86,6 +87,10 @@ public enum HeroClass {
 
         //if (!Dungeon.isChallenged(Challenges.NO_FOOD))
         //    new Food().identify().collect();
+
+        WaveBlaster waveBlaster = new WaveBlaster();
+        waveBlaster.identify().collect();
+        Dungeon.quickslot.setSlot(2, waveBlaster);
     }
 
     public Badges.Badge masteryBadge() {

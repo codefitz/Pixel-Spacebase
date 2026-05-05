@@ -109,7 +109,10 @@ public class Drone extends Mob {
     protected Char chooseEnemy() {
         //if the controller is no longer present, clear mines or idle.
         if (potHolder == -1 && potPos == -1) {
-            target = findMineTarget(pos);
+            int mineTarget = findMineTarget(pos);
+            if (mineTarget != -1) {
+                target = mineTarget;
+            }
             return null;
         }
 
@@ -136,7 +139,10 @@ public class Drone extends Mob {
 
             //pick one, if there are none, clear nearby mines or idle.
             if (enemies.size() > 0) return Random.element(enemies);
-            target = findMineTarget(potPos);
+            int mineTarget = findMineTarget(potPos);
+            if (mineTarget != -1) {
+                target = mineTarget;
+            }
             return null;
         }
     }

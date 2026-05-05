@@ -155,6 +155,8 @@ public class DM300 extends Mob {
             beacon.upgrade();
         }
 
+        GLog.i(Messages.get(Dungeon.hero, "dm300_rebuild"));
+
         yell(Messages.get(this, "defeated"));
     }
 

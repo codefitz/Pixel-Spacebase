@@ -169,8 +169,13 @@ public class Dungeon {
         QuickSlotButton.reset();
 
         depth = 0;
-        //depth = 15; // Test Starting Depth
-        parts = 20000; // Buy lots of stuff
+        parts = 0;
+
+        // TEMP DEV TESTING - REMOVE BEFORE RELEASE:
+        // Starts new hero test runs on depth 6 with plenty of parts for shop testing.
+        // newLevel() increments depth before creating the level, so seed depth 5 here.
+        depth = 5;
+        parts = 20000;
 
         droppedItems = new SparseArray<>();
 
@@ -191,6 +196,7 @@ public class Dungeon {
         Badges.reset();
 
         StartScene.curClass.initHero(hero);
+
     }
 
     public static boolean isChallenged(int mask) {

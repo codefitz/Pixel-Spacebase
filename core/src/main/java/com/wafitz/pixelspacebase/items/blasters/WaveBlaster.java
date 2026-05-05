@@ -61,6 +61,10 @@ public class WaveBlaster extends DamageBlaster {
 
     @Override
     protected void onZap(Ballistica bolt) {
+        if (!validCell(bolt.collisionPos)) {
+            return;
+        }
+
         Sample.INSTANCE.play(Assets.SND_BLAST);
         BlastWave.blast(bolt.collisionPos);
 
@@ -157,7 +161,7 @@ public class WaveBlaster extends DamageBlaster {
     }
 
     private static boolean validCell(int cell) {
-        return cell >= 0 && cell < Dungeon.level.length();
+        return cell >= 0 && cell < Dungeon.level.length() && Dungeon.level.insideMap(cell);
     }
 
     @Override
@@ -226,6 +230,9 @@ public class WaveBlaster extends DamageBlaster {
 
         static void blast(int pos) {
             Group parent = Dungeon.hero.sprite.parent;
+            if (parent == null) {
+                return;
+            }
             BlastWave b = (BlastWave) parent.recycle(BlastWave.class);
             parent.bringToFront(b);
             b.reset(pos);

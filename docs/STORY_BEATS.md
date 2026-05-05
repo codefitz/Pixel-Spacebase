@@ -18,7 +18,7 @@ The player character returns to take back control of the station, survive the de
 The run opens in the Maintenance decks. Existing signs establish immediate environmental hazards:
 
 - Xenomorphs were once kept as pets and are now banned due to uncontrolled breeding.
-- Vents are unreliable because of gas leaks and electrical faults.
+- Floor lighting panels are unreliable because of gas leaks and electrical faults.
 - Some floors are flooded by faulty life-support hardware.
 - Shapeshifter psychological check-ins became mandatory before the disaster.
 - Level 5 is sealed because of an unidentified hazard.
@@ -29,7 +29,7 @@ The player is therefore not entering a clean dungeon equivalent; they are enteri
 
 ### Floors 1-4: Maintenance
 
-Maintenance is the most converted area. It contains station infrastructure, vents, coolant/flooding, abandoned service binders, workshops, maker-bots, and early xenomorph/Yendor/crawler threats.
+Maintenance is the most converted area. It contains station infrastructure, floor lighting hazards, coolant/flooding, abandoned service binders, workshops, maker-bots, and early xenomorph/Yendor/crawler threats.
 
 Primary story function:
 
@@ -55,7 +55,7 @@ Open story need:
 
 ### Floors 6-9: Prison / Security Block
 
-Current resources still describe an inherited prison under the station, with dangerous prisoners, guards, and a dark influence from below. This can be reframed as Pixel Spacebase's detention/security block.
+Current chapter text now frames this area as Pixel Spacebase's Security Block, a sealed detention and confiscated-weapons sector where guards, prisoners, and automated defenses turned on each other during the breach.
 
 Primary story function:
 
@@ -75,7 +75,7 @@ Current beat:
 
 - Tengu is an infamous assassin restrained in the prison block.
 - The player becomes the only thing stopping his escape.
-- He uses vents, deception, and precision attacks.
+- He uses floor lighting systems, deception, and precision attacks.
 - On defeat he says, "Free at last..."
 
 Open story need:
@@ -84,7 +84,7 @@ Open story need:
 
 ### Floors 11-14: Lower Engineering / Caves
 
-Current resources still call this "caves" and describe an abandoned route between civilizations. In Pixel Spacebase terms, this can become lower engineering, asteroid excavation, or reactor-adjacent service tunnels.
+Current chapter text now frames this area as Lower Engineering: reactor conduits, abandoned excavation tunnels, coolant lines, and old service routes beneath the detention decks.
 
 Primary story function:
 
@@ -104,29 +104,33 @@ Boss: DM-300.
 Current beat:
 
 - DM-300 detects unauthorized personnel.
+- DM-300 now reveals the unstable command module through combat text: it recognizes its protection role, but its emotion core is beyond tactical tolerance.
 - It repairs itself during the fight.
-- On defeat it shuts down.
+- On defeat it questions why it was made angry.
 - This encounter currently gates the DM3000 playable class.
+
+Current story direction:
+
+- DM-300 is now described as a heavy station defense and construction platform with a recovered core, upgraded chassis, and emotionally unstable command module.
 
 Open story need:
 
-- Convert old Dwarven construction-machine lore into station defense, mining, or war-bot lore.
 - Decide why this unit treats the player as unauthorized despite their class identity.
 
 ### Floors 16-19: City / Habitation or Command Sector
 
-Current resources still describe Dwarven Metropolis and the corruption of an old city. In Pixel Spacebase terms, this likely becomes the station's command/habitation core or a preserved alien/colony module integrated into the base.
+Current chapter text now frames this area as the Habitation and Command Sector: crew quarters, civic decks, command offices, and simulation suites overrun by old command systems, rogue holograms, raiders, and defense machines.
 
 Primary story function:
 
 - Show that the breach is older and stranger than a simple xenomorph infestation.
 - Introduce advanced raiders, warlocks, golems, and the undead court theme.
-- Bring in Arp as an overt side-quest/game-aware figure.
+- Bring in Y, formerly Arp internally, as an overt side-quest/game-aware figure.
 
 Current side content:
 
-- Arp asks the player to kill golems or monks and rewards completion.
-- Arp appears to understand the game layer and can be left as comic/meta relief or replaced with a more in-world anomaly later.
+- Y asks the player to kill golems or monks and rewards completion.
+- Y appears to understand the game layer and can be left as comic/meta relief or replaced with a more in-world anomaly later.
 
 ### Floor 20: City Boss
 
@@ -154,7 +158,7 @@ Story function:
 
 ### Floors 22-24: Demon Halls / Deep Containment
 
-Current resources describe Demon Halls and the outskirts of a fallen metropolis. Pixel Spacebase can reframe this as deep containment, reactor shadow space, or an extradimensional breach zone under the station.
+Current chapter text now frames this area as Deep Containment: sealed experiments, alien growths, and breach hardware below the mapped station.
 
 Primary story function:
 
@@ -178,16 +182,16 @@ Open story need:
 
 ### Floor 26: Finale / Escape
 
-Current end-game still uses the Amulet of Yendor and an escape/end-game flow. The hero also has a line indicating an escape pod is visible but the airlock door has been welded shut.
+Current end-game now presents the inherited Amulet item as an escape pod override in player-facing text. The hero also has a line indicating an escape pod is visible but the airlock door has been welded shut.
 
 Current finale function:
 
-- The player obtains the Amulet of Yendor and can end the game.
+- The player obtains the escape pod override and can end the game.
 - The station escape route exists but is blocked until the late/end-game condition.
 
 Open story need:
 
-- Rename or reinterpret the Amulet of Yendor as a Pixel Spacebase artifact, station core, jump key, command override, or alien relic.
+- Continue converting any remaining internal or surrounding end-game flow that still assumes the inherited Amulet of Yendor framing.
 - Decide whether the winning ending is evacuation, taking command, sealing the breach, or using the artifact to rewrite the station's fate.
 
 ## Side Quests
@@ -220,13 +224,13 @@ Story role:
 - Humanizes the station with a survivor who stayed behind.
 - Frames repair/salvage as more than loot: the station might still be recoverable.
 
-### Old Gunsmith
+### Quartermaster
 
-NPC: Old Gunsmith.
+NPC: Quartermaster, formerly Old Gunsmith internally.
 
 Current variants:
 
-- Requests a lazer, fresh embers, or a rotberry mine charge.
+- Requests a lazer, plasma embers, or a bio-charge core recovered from a mature rotberry mine.
 - Rewards new blaster options.
 
 Story role:
@@ -234,9 +238,9 @@ Story role:
 - Supports the station resistance/reclamation fantasy.
 - Gives the player a practical reason to explore dangerous rooms and bring materials back.
 
-### Arp
+### Y
 
-NPC: Arp.
+NPC: Y, formerly Arp internally.
 
 Current variants:
 
@@ -267,15 +271,15 @@ Story role:
 | --- | --- | --- | --- |
 | 5 | Feral Shapeshifter | Shapeshifter collapse in Maintenance | Strong Pixel Spacebase fit |
 | 10 | Tengu | Prisoner/assassin containment failure | Partial fit |
-| 15 | DM-300 | Unauthorized-defense machine | Partial fit |
+| 15 | DM-300 | Unstable station defense platform | Good Pixel Spacebase fit, DM3000 naming split still open |
 | 20 | King of Dwarves | Undead immortal ruler | Mostly inherited fantasy |
 | 25 | Yog-Dzewa | Imprisoned old god/final threat | Mostly inherited fantasy, usable as cosmic breach |
 
 ## Current Continuity Gaps
 
-- Prison, caves, city, and halls chapter text still use inherited dungeon/fantasy framing.
-- The Amulet of Yendor has not yet been converted into a spacebase-native end-game objective.
-- Yendor is both a raider faction and still tied to the inherited amulet name.
+- Prison, caves, city, and halls chapter text now use sci-fi framing; individual tiles, enemies, and boss lore in those areas still need follow-up conversion.
+- The Amulet item has player-facing escape pod override text, but surrounding code/class names and any remaining end-game assumptions may still need cleanup.
+- Yendor remains a raider faction and may still appear in inherited story/item names outside the updated end artifact text.
 - DM-300/DM3000 naming and lore need a clean split between boss machine and playable robot class.
 - The final victory condition needs a Pixel Spacebase-specific ending.
 

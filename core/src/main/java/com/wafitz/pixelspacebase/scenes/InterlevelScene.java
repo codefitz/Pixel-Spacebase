@@ -205,6 +205,7 @@ public class InterlevelScene extends PixelScene {
         Actor.fixTime();
         if (Dungeon.hero == null) {
             Dungeon.init();
+            Dungeon.depth = 5;
             if (noStory) {
                 Dungeon.chapters.add(WndStory.ID_OPERATIONS);
                 noStory = false;

@@ -7,7 +7,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Class | Current role and behavior |
 | --- | --- |
 | Commander | Starts with forcefield-oriented armor identity. Food restores some HP. Healing tech is identified from the beginning. |
-| Shapeshifter | Starts with stealth/cloak identity. Better at detecting hidden doors and vents. Can go longer without food. Mapping tech is identified from the beginning. |
+| Shapeshifter | Starts with stealth/cloak identity. Better at detecting hidden doors and floor lighting. Can go longer without food. Mapping tech is identified from the beginning. |
 | DM3000 | Robot class with rocket launcher/DM3000 launcher identity. Can retrofit blasters into the launcher. Food recharges blasters. Upgrade tech is identified from the beginning. Currently locked until the floor 15 boss is defeated. |
 | Captain | Missile/ranged-weapon class. Starts with hunter disc identity. Can sense nearby enemies. Mind Vision tech is identified from the beginning. Available from the start. |
 
@@ -17,10 +17,10 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | --- | --- |
 | Chief Engineer Leonard | Mid-game survivor/engineer. Offers a repair/reforge-style quest involving parts or protection. Rewards item improvement support. |
 | Hologram Distress Call | Princess Pixel of Yendor projection. Gives one of several optional hunt quests: evolved xenomorph, Dark Lord of Yendor, or armored maintenance crawler. Rewards the player after completion. |
-| Old Gunsmith | Requests a specific material or quest item, then offers blaster rewards. Reinforces the station reclamation/resistance theme. |
+| Quartermaster | Formerly Old Gunsmith internally. Requests a specific material or quest item, then offers blaster rewards. Reinforces the station reclamation/resistance theme. |
 | Maker-Bot | Workshop/matter-recycling support NPC. Can break items down into parts. Appears unaware or unconcerned that the station is under attack. |
-| Arp | Optional meta/anomaly quest NPC. Asks the player to kill a set number of golems or monks and rewards completion. |
-| Arp Trader | Follow-up/trader variant of Arp. Acknowledges survival and provides additional interaction. |
+| Y | Optional meta/anomaly quest NPC. Formerly Arp internally. Asks the player to kill a set number of golems or monks and rewards completion. |
+| Y Trader | Follow-up/trader variant of Y. Formerly Arp Trader internally. Acknowledges survival and provides additional interaction. |
 | Queen Xenomorph | Nonstandard xenomorph personality/encounter. Implied cause of excessive xenomorph breeding on Pixel Spacebase. |
 | Weak Clone | Temporary allied clone created by tech. Distracts and attacks enemies but is fragile. |
 | Yog Sheep | Joke/summoned neutral creature from flock-style effects. |
@@ -30,8 +30,8 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Boss | Floor | Current behavior |
 | --- | --- | --- |
 | Feral Shapeshifter | 5 | Aggressive shapeshifter boss. Signals attack buildup, enrages, and thanks the player when restored/defeated. Unlocks Shapeshifter progression. |
-| Tengu | 10 | Mobile assassin boss. Uses vents, deception, repositioning, and precise attacks. Represents prison/security containment failure. |
-| DM-300 | 15 | Heavy machine boss. Detects unauthorized personnel, repairs itself, and drops the boss key. Unlocks DM3000 class progression. |
+| Tengu | 10 | Mobile assassin boss. Uses floor lighting systems, deception, repositioning, and precise attacks. Represents prison/security containment failure. |
+| DM-300 | 15 | Heavy station defense/construction platform with an emotionally unstable command module. Detects unauthorized personnel, babbles about protection and anger, repairs itself, and drops the boss key. Unlocks DM3000 class progression. |
 | King of Dwarves | 20 | Undead ruler boss. Summons undead retainers, parries, and speaks of immortality. Still mostly inherited fantasy lore. |
 | Yog-Dzewa | 25 | Final major boss. Old-god entity with fists/larvae support. Current end threat for the deepest area. |
 
@@ -50,29 +50,29 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Crab / Maintenance Crawler | Early station maintenance crawler enemy. |
 | Great Crab / Armored Crawler | Shield-claw crawler. Blocks frontal attacks unless surprised. |
 | Squiddard | Aquatic/alien-style enemy with movement and combat behavior around passable spaces. |
-| Skeleton | Undead enemy that explodes/disintegrates when damaged enough. |
-| Thief | Steals an item and attempts to escape. |
-| Bandit | Rare thief variant with enhanced stealing threat. |
-| Guard | Security/prison-style enemy. Pulls or pressures the player in combat. |
+| Ruptured Crew Suit (`Skeleton`) | Former skeleton. Corrupted emergency suit/servo enemy that ruptures into shrapnel when damaged enough. |
+| Jawar (`Thief`) | Former thief. Steals an item and attempts to escape. |
+| Jawar Scavenger (`Bandit`) | Rare Jawar variant with enhanced stealing threat. |
+| Bith Acolyte (`Guard`) | Former prison guard. Security adept with a force-pull rig; mechanically still pulls or pressures the player in combat. Sprite/chain visual still needs a later pass. |
 | Bat | Vampire-bat style enemy that replenishes health when attacking. |
 | Brute | Heavy melee enemy with low-health threat spike. |
-| Spinner | Web/poison-style enemy from the deeper middle areas. |
-| Elemental | Elemental enemy with special damage flavor. |
-| Newborn Elemental | Quest-related elemental source for embers. |
-| Monk | Fast late-mid enemy with disciplined melee behavior. |
-| Senior | Rare monk variant. |
-| Warlock | Caster enemy. Soul/dark magic flavor and ranged pressure. |
-| Golem | Heavy mechanical/magical enemy from later areas. |
-| Succubus | Charm/hypnotise-style enemy that interferes with the player's target choices. |
-| Eye | Dangerous ranged enemy with charged deathgaze beam. |
-| Scorpio | Late ranged enemy with crippling projectiles. |
+| Facehugger (`Spinner`) | Former cave spinner. Uses web/poison mechanics, now described as adhesive biofilament and paralytic toxin. Egg-like latch/spawn behavior remains future work. |
+| Plasma Anomaly (`Elemental`) | Former fire elemental. Reactor/containment leak enemy with special damage flavor. |
+| Plasma Spark (`Newborn Elemental`) | Quest-related discharge source for plasma embers, now framed as a fresh containment leak. |
+| Jeda Knight (`Monk`) | Fast late-mid disciplined melee enemy. Text conversion is done; sprite remains future work. |
+| Jeda Master (`Senior`) | Rare Jeda Knight variant. Text conversion is done; sprite remains future work. |
+| Signal Witch (`Warlock`) | Caster enemy that weaponizes corrupted telemetry and neural feedback. |
+| War Machine (`Golem`) | Heavy corridor-suppression machine from command-sector defense systems. |
+| Signal Siren (`Succubus`) | Charm/hypnotise-style intrusion organism that interferes with the player's target choices. |
+| Observer Horror (`Eye`) | Sci-fi horror ranged enemy with a charged focused beam. |
+| Skitter Cannon (`Scorpio`) | Late containment predator with long-range crippling projectiles. |
 | Acidic | Rare scorpio variant with acid theme. |
 | Old War Bot | Old combat machine with useful weapon/guardian flavor. |
 | Drone | Allied or controller-based mobile unit. Now attacks hostile targets and clears mines, not the hero. |
 | Turret | Station defensive turret. Automated, terminal/security themed. |
-| WaterThing | Invisible or water-bound threat in flooded areas. |
-| Rot Heart | Station/organic hazard core tied to rotberry mine structures. |
-| Rot Lasher | Immobile defensive plant/organic hazard that attacks adjacent targets. |
+| Coolant Phantom (`WaterThing`) | Invisible or water-bound threat in flooded/coolant areas. |
+| Bio-Charge Heart (`RotHeart`) | Station/organic hazard core tied to bio-charge mine structures. |
+| Bio-Charge Tendril (`RotLasher`) | Immobile defensive organic hazard that attacks adjacent targets. |
 | Confused Shapeshifter | Special shapeshifter-related entity that can replace defeated enemies and become a static restored character. |
 
 ## Core Item Systems
@@ -88,13 +88,13 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Armor | Defensive equipment with strength requirements, upgrades, malfunctions, and enhancements. |
 | Modules | Ring-like equipment that modifies combat or utility stats. Can malfunction. |
 | Artifacts | Unique charge/progression items with special mechanics, such as stealth, gravity control, time manipulation, alien DNA, recycling, and YendorTech shield behavior. |
-| Containers | Inventory sub-containers such as backpack-style storage and blaster holster. |
+| Containers | Inventory sub-containers such as backpack-style storage, Bionetics gene-mod storage, and blaster holster. |
 | Mines / Devices | Placeable or environmental charges. Can be triggered from floors, fabricated, combined, or cleared by drones. |
 | Parts | Currency/material used in workshops and Maker-Bot/recycling flows. |
 | Keys | Floor/depth access control for locked doors, chests, and boss exits. |
 | Dewdrop / Medigel | Small healing resource from station emergency systems. Can fill air tank-style storage. |
 | Air Tank | Stores medigel droplets and can heal; a full tank has stronger restorative/blessing utility. |
-| Amulet of Yendor | Current inherited end-game artifact. Winning artifact is not yet converted to Pixel Spacebase lore. |
+| Escape Pod Override (`Amulet`) | Internal class remains `Amulet`, but player-facing text now frames the winning artifact as the command override needed to access sealed evacuation systems. |
 
 ## Notable Blasters
 
@@ -128,16 +128,19 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Buggy Compiler | Bug-themed artifact that consumes tech/scripts for unusual utility and dependency flavor. |
 | Tech Toolkit | Item-improvement/crafting support artifact. |
 | Survival Module | Survival-oriented artifact tied to hunger/food/resource behavior. |
+| Impact Gauntlet | Former Knuckleduster. Fast melee weapon presented as a powered maintenance impact tool. |
+| Mastery Datacore (`TomeOfMastery`) | Former Tome of Mastery. Player-facing text now presents subclass selection as synchronizing with an advanced combat protocol. |
 
 ## Quest and Special Items
 
 | Item | Current behavior |
 | --- | --- |
 | Screwdriver | Leonard quest tool for harvesting parts from exposed components. |
-| Embers | Gunsmith quest material from newborn elemental/ritual content. |
-| Pickaxe | Heavy mining/tool quest item, also usable as a weapon. |
-| Corpse Dust | Inherited quest item with malevolent-energy flavor; still needs spacebase conversion. |
-| Rotberry / Rotberry Mine Charge | Organic/device quest ingredient tied to the gunsmith and Fabricator systems. |
+| Core Stabilizer (`CeremonialCandle`) | Former ceremonial candle. Used with the restart marker to focus energy for a damaged core restart. |
+| Plasma Embers (`Embers`) | Quartermaster quest material harvested from newborn elemental discharge content. |
+| Ore Cutter (`Pickaxe`) | Heavy industrial cutter quest item, also usable as a weapon. |
+| Containment Ash (`CorpseDust`) | Sealed hostile residue quest item with residual anomaly flavor. |
+| Bio-Charge Core / Rotberry Mine Charge | Organic/device quest ingredient tied to the Quartermaster and Fabricator systems. |
 | Hunter Disc | Captain starter/ranged identity weapon. |
 | Darts / Hunter's Dart | Missile-weapon family still earmarked for stronger sci-fi naming/art in earlier conversion work. |
 | Bomb | Explosive utility item. |
@@ -147,7 +150,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 
 | Interactable | Current behavior |
 | --- | --- |
-| Vents | Former traps. Hidden or visible station mechanisms that trigger gas, fire, lightning, teleport, alarm, summoning, disintegration, pitfall, and other effects. |
+| Floor Lighting | Former vents/traps. Hidden or visible station floor systems that trigger gas, fire, lightning, teleport, alarm, summoning, disintegration, pitfall, and other effects. Behavior is still inherited from the vent system. |
 | Fabricator | Former alchemy/crafting terminal. Combines Dead Alien Bugs, mine charges, and gene mod/tech inputs into useful outputs. |
 | Workshop | Former shop. Present every level; stock refreshes at area starts and persists within an area. |
 | Terminal / Powered-Off Terminal | Former wells. Used for mapping/transmutation/healing-style interactions depending on subclass or original well logic. |
