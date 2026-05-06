@@ -13,8 +13,8 @@ This reference maps the current terrain IDs to plain-text descriptions for graph
 | 4 | `WALL` | 4 | Standard wall/bulkhead/solid boundary. | Solid + blocks line of sight. |
 | 5 | `DOOR` | 5 | Closed door or airlock-style door. | Passable, solid, blocks line of sight, flammable in inherited rules. |
 | 6 | `OPEN_DOOR` | 6 | Open door/airlock panel. | Passable. |
-| 7 | `ENTRANCE` | 7 | Up-depth entrance, hatch, lift, ladder, or ramp. | Passable. |
-| 8 | `EXIT` | 8 | Down-depth exit, hatch, lift, ladder, or ramp. | Passable. |
+| 7 | `ENTRANCE` | 8 | Previous-deck entrance, hatch, lift, ladder, or ramp. | Passable. |
+| 8 | `EXIT` | 7 | Next-deck exit, hatch, lift, ladder, or ramp. | Passable. |
 | 9 | `EMBERS` | 9 | Plasma residue, scorched floor, active residue, or hot reactor debris. | Passable. |
 | 10 | `LOCKED_DOOR` | 10 | Locked security door or keyed airlock. | Solid + blocks line of sight. |
 | 11 | `PEDESTAL` | 11 | Plinth, console stand, display base, ritual marker center, or item mount. | Passable. |
@@ -42,10 +42,10 @@ This reference maps the current terrain IDs to plain-text descriptions for graph
 | Area | Tile variations currently named in resources |
 | --- | --- |
 | Maintenance / Operations | Water is coolant. Decorative floors are dark stains and scrape marks. Shelves are technical binders and maintenance logs. |
-| Prison / Security | Water is dark cold water. Decorative floors are old blood stains. Shelves are old prison-library remnants. |
+| Prison / Security | Water is security runoff. Decorative floors have old blood and scuffed restraint marks. Shelves are security binders, intake records, and confiscation logs. |
 | Caves / Lower Engineering | Floor lighting can still appear as fluorescent moss. Off floor lighting becomes fluorescent mushrooms. Water is freezing cold water. Wall deco can be ore/parts. |
-| City / Command-Habitation | Water is suspiciously colored. Off floor lighting becomes high blooming flowers. Special floor can be carpet. Statues depict old war bots/dwarven figures. |
-| Halls / Deep Containment | Water is cold lava. Floor lighting can still appear as embermoss. Off floor lighting becomes emberfungi. Statues become skull pillars. |
+| Habitation / Command Sector | Water is recycled fountain water. Off floor lighting becomes dormant atrium planters. Special floor is command-suite carpet. Statues depict old war bots and training-sim figures. |
+| Deep Containment | Water is containment fluid. Floor lighting can appear as bioluminescent growth. Off floor lighting becomes dormant spore columns. Statues become sealed specimen pillars. |
 
 ## Generic ASCII Tile Legend
 
@@ -66,8 +66,8 @@ _  INACTIVE_VENT spent floor lighting
 +  DOOR
 /  OPEN_DOOR
 !  LOCKED_DOOR
-<  ENTRANCE
->  EXIT
+<  ENTRANCE / previous-deck route
+>  EXIT / next-deck route
 X  LOCKED_EXIT
 O  UNLOCKED_EXIT
 =  EMBERS / plasma residue

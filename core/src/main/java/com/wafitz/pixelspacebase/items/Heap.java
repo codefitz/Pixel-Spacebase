@@ -75,6 +75,7 @@ public class Heap implements Bundlable {
         TO_MAKE,
         CHEST,
         LOCKED_CHEST,
+        JAMMED_CHEST,
         CRYSTAL_CHEST,
         CMD_TERMINAL,
         EMPTY_SPACESUIT,
@@ -100,6 +101,7 @@ public class Heap implements Bundlable {
             case CONFUSEDSHAPESHIFTER:
                 return ItemSpriteSheet.CHEST;
             case LOCKED_CHEST:
+            case JAMMED_CHEST:
                 return ItemSpriteSheet.LOCKED_CHEST;
             case CRYSTAL_CHEST:
                 return ItemSpriteSheet.CRYSTAL_CHEST;
@@ -473,6 +475,8 @@ public class Heap implements Bundlable {
                 return Messages.get(this, "chest");
             case LOCKED_CHEST:
                 return Messages.get(this, "locked_chest");
+            case JAMMED_CHEST:
+                return Messages.get(this, "jammed_chest");
             case CRYSTAL_CHEST:
                 return Messages.get(this, "crystal_chest");
             case CMD_TERMINAL:
@@ -493,6 +497,8 @@ public class Heap implements Bundlable {
                 return Messages.get(this, "chest_desc");
             case LOCKED_CHEST:
                 return Messages.get(this, "locked_chest_desc");
+            case JAMMED_CHEST:
+                return Messages.get(this, "jammed_chest_desc");
             case CRYSTAL_CHEST:
                 if (peek() instanceof Artifact)
                     return Messages.get(this, "crystal_chest_desc", Messages.get(this, "artifact"));

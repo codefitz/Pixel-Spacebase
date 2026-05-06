@@ -40,6 +40,8 @@ public class Crab extends Mob {
 
         loot = Parts.class;
         lootChance = 0.167f;
+
+        properties.add(Property.MACHINE);
     }
 
     @Override

@@ -45,6 +45,7 @@ public class OldWarBot extends Mob {
 
         EXP = 0;
         state = PASSIVE;
+        properties.add(Property.MACHINE);
     }
 
     protected Weapon weapon;

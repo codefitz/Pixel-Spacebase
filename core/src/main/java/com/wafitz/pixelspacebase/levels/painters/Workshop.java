@@ -394,10 +394,25 @@ public class Workshop extends Painter {
 
     private static void placeMakerBot(Level level, Room room) {
 
+        ArrayList<Integer> candidates = new ArrayList<>();
+
+        for (int y = room.top + 1; y < room.bottom; y++) {
+            for (int x = room.left + 1; x < room.right; x++) {
+                int cell = x + y * level.width();
+                if (level.heaps.get(cell) == null && level.map[cell] == Terrain.EMPTY_SP && touchesWall(level, cell)) {
+                    candidates.add(cell);
+                }
+            }
+        }
+
         int pos;
-        do {
-            pos = level.pointToCell(room.random());
-        } while (level.heaps.get(pos) != null);
+        if (!candidates.isEmpty()) {
+            pos = Random.element(candidates);
+        } else {
+            do {
+                pos = level.pointToCell(room.random());
+            } while (level.heaps.get(pos) != null);
+        }
 
         Mob makerbot = level instanceof LastWorkshopLevel ? new ArpTrader() : new MakerBot();
         makerbot.pos = pos;
@@ -411,6 +426,16 @@ public class Workshop extends Painter {
                 }
             }
         }
+    }
+
+    private static boolean touchesWall(Level level, int cell) {
+        for (int offset : PathFinder.NEIGHBOURS4) {
+            int tile = level.map[cell + offset];
+            if (tile == Terrain.WALL || tile == Terrain.WALL_DECO) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static int xy2p(Room room, Point xy) {

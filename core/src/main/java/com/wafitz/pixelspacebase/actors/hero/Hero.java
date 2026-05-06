@@ -30,6 +30,7 @@ import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Berserk;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.Combo;
 import com.wafitz.pixelspacebase.actors.buffs.Fury;
@@ -58,6 +59,7 @@ import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.armor.Armor;
+import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.enhancements.EMP;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Flow;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Forcefield;
@@ -705,6 +707,12 @@ public class Hero extends Char {
                     ready();
                     return false;
 
+                }
+
+                if (heap.type == Type.JAMMED_CHEST) {
+                    GLog.w(Messages.get(this, "jammed_chest"));
+                    ready();
+                    return false;
                 }
 
                 switch (heap.type) {
@@ -1648,6 +1656,9 @@ public class Hero extends Char {
         for (Buff buff : buffs()) {
             for (Class<?> immunity : buff.immunities)
                 immunities.add(immunity);
+        }
+        if (belongings.armor instanceof Loader) {
+            immunities.add(Burning.class);
         }
         return immunities;
     }

@@ -18,7 +18,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Chief Engineer Leonard | Mid-game survivor/engineer. Offers a repair/reforge-style quest involving parts or protection. Rewards item improvement support. |
 | Hologram Distress Call | Princess Pixel of Yendor projection. Gives one of several optional hunt quests: evolved xenomorph, Dark Lord of Yendor, or armored maintenance crawler. Rewards the player after completion. |
 | Quartermaster | Formerly Old Gunsmith internally. Requests a specific material or quest item, then offers blaster rewards. Reinforces the station reclamation/resistance theme. |
-| Maker-Bot | Workshop/matter-recycling support NPC. Can break items down into parts. Appears unaware or unconcerned that the station is under attack. |
+| Maker Bench | Wall-mounted workshop matter-recycling station. Can break items down into parts. Internally still uses the MakerBot interaction flow. |
 | Y | Optional meta/anomaly quest NPC. Formerly Arp internally. Addresses the player directly, references game systems, asks for war-machine or Jeda Knight kills, and trades anomaly tokens for a reward. |
 | Y Trader | Follow-up/trader variant of Y. Formerly Arp Trader internally. Acknowledges survival with the same game-aware tone. |
 | Queen Xenomorph | Nonstandard xenomorph personality/encounter. Implied cause of excessive xenomorph breeding on Pixel Spacebase. |
@@ -29,11 +29,11 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 
 | Boss | Floor | Current behavior |
 | --- | --- | --- |
-| Feral Shapeshifter | 5 | Aggressive shapeshifter boss. Signals attack buildup, enrages, and thanks the player when restored/defeated. Unlocks Shapeshifter progression. |
+| Feral Shapeshifter | 5 | Shapeshifter crew colleague destabilized by repeated emergency shifts. Signals attack buildup, enrages, and thanks the player when restored/defeated. Unlocks Shapeshifter progression. |
 | Tengu | 10 | Mobile assassin boss. Uses floor lighting systems, deception, repositioning, and precise attacks. Represents prison/security containment failure. |
 | DM-300 | 15 | Heavy station defense/construction platform with an emotionally unstable command module. Detects unauthorized personnel, babbles about protection and anger, repairs itself, and drops the boss key. Unlocks DM-3000 class progression. |
-| King of Dwarves | 20 | Undead ruler boss. Summons undead retainers, parries, and speaks of immortality. Still mostly inherited fantasy lore. |
-| Yog-Dzewa | 25 | Final major boss. Old-god entity with fists/larvae support. Current end threat for the deepest area. |
+| Holodeck Monarch (`King`) | 20 | Rogue hard-light training sim. Summons hologram retainers, parries, and speaks as a corrupted monarch program. |
+| Yog-Dzewa | 25 | Final major boss. Bio-containment parasite fused around the evacuation spine, with appendages and larvae defending the escape route. |
 
 ## Standard Enemies
 
@@ -56,7 +56,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Bith Acolyte (`Guard`) | Former prison guard. Security adept with a force-pull rig; mechanically still pulls or pressures the player in combat. Sprite/chain visual still needs a later pass. |
 | Siphon Drone | Flying medical-drain drone that replenishes health when attacking. |
 | Yendor Shock Trooper | Heavy melee enemy with low-health combat-rig overclock. |
-| Facehugger (`Spinner`) | Former cave spinner. Uses web/poison mechanics, now described as adhesive biofilament and paralytic toxin. Egg-like latch/spawn behavior remains future work. |
+| Facehugger (`Spinner`) | Former cave spinner. Uses web/poison mechanics as adhesive biofilament and paralytic toxin. Successful latches can infect the hero; if the infection runs its course it spawns a tougher xenomorph. |
 | Plasma Anomaly (`Elemental`) | Former fire elemental. Reactor/containment leak enemy with special damage flavor. |
 | Plasma Spark (`Newborn Elemental`) | Quest-related discharge source for plasma embers, now framed as a fresh containment leak. |
 | Jeda Knight (`Monk`) | Fast late-mid disciplined melee enemy. Text conversion is done; sprite remains future work. |
@@ -73,7 +73,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Coolant Phantom (`WaterThing`) | Invisible or water-bound threat in flooded/coolant areas. |
 | Bio-Charge Heart (`RotHeart`) | Station/organic hazard core tied to bio-charge mine structures. |
 | Bio-Charge Tendril (`RotLasher`) | Immobile defensive organic hazard that attacks adjacent targets. |
-| Confused Shapeshifter | Special shapeshifter-related entity that can replace defeated enemies and become a static restored character. |
+| Confused Shapeshifter | Special shapeshifter-related entity affected by the same identity collapse; can replace defeated enemies and become a static restored character. |
 
 ## Core Item Systems
 

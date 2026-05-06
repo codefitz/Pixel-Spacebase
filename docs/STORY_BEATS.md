@@ -44,14 +44,14 @@ Boss: Feral Shapeshifter.
 
 Current beat:
 
-- A shapeshifter has lost coherent control and attacks in a rage.
-- On defeat, the shapeshifter briefly regains awareness and thanks the player.
+- A shapeshifter crew colleague has lost coherent control after repeated emergency shifts during the breach.
+- On defeat, the shapeshifter briefly regains identity and thanks the player for bringing them back.
 - This encounter unlocks the Shapeshifter class path in the current progression.
 
-Open story need:
+Resolved story note:
 
-- Clarify whether this boss was a colleague, patient, prisoner, or station officer.
-- Tie the restored static shapeshifter character into later story, if desired.
+- The boss is a colleague from the station's shapeshifter crew, driven unstable by identity loss rather than simple monster rage.
+- The restored static shapeshifter sprite now represents a person briefly recovered from the collapse.
 
 ### Floors 6-9: Prison / Security Block
 
@@ -76,11 +76,11 @@ Current beat:
 - Tengu is an infamous assassin restrained in the prison block.
 - The player becomes the only thing stopping his escape.
 - He uses floor lighting systems, deception, and precision attacks.
-- On defeat he says, "Free at last..."
+- On defeat he says, "Free at last... no more locks. No more breath."
 
-Open story need:
+Resolved story note:
 
-- Decide whether "free at last" means death, release from mind control, or release from the station's failing systems.
+- "Free at last" means death: Tengu treats dying as the only release left from confinement.
 
 ### Floors 11-14: Lower Engineering / Caves
 
@@ -119,7 +119,7 @@ Open story need:
 
 ### Floors 16-19: City / Habitation or Command Sector
 
-Current chapter text now frames this area as the Habitation and Command Sector: crew quarters, civic decks, command offices, and simulation suites overrun by old command systems, rogue holograms, raiders, and defense machines.
+Current chapter text, terminal copy, and terrain descriptions now frame this area as the Habitation and Command Sector: crew quarters, civic decks, command offices, and simulation suites overrun by old command systems, rogue holograms, raiders, and defense machines.
 
 Primary story function:
 
@@ -134,16 +134,16 @@ Current side content:
 
 ### Floor 20: City Boss
 
-Boss: King of Dwarves.
+Boss: Holodeck Monarch.
 
 Current beat:
 
-- An immortal king raises undead retainers and refuses to truly die.
-- This is currently the least converted major boss beat.
+- A corrupted command-sector training sim has become a lethal hard-light monarch.
+- It raises broken hologram retainers through court protocol and refuses to accept that the simulation can end.
 
-Open story need:
+Resolved story note:
 
-- Decide whether this remains a fantasy/alien civilization pocket inside the station or becomes a station AI, corporate founder, cryo-lord, or resurrected command figure.
+- The floor 20 boss room is now framed as Holodeck Control. Some fantasy styling can remain as intentional simulation content, but player-facing text frames it as failed station tech.
 
 ### Floor 21: Final Workshop
 
@@ -156,9 +156,9 @@ Story function:
 
 - Signal that the player is leaving salvageable station space and entering the deepest contaminated zone.
 
-### Floors 22-24: Demon Halls / Deep Containment
+### Floors 22-24: Deep Containment
 
-Current chapter text now frames this area as Deep Containment: sealed experiments, alien growths, and breach hardware below the mapped station.
+Current chapter text and tile descriptions now frame this area as Deep Containment: sealed experiments, alien growths, containment fluid, and breach hardware above the mapped station.
 
 Primary story function:
 
@@ -172,27 +172,28 @@ Boss: Yog-Dzewa.
 
 Current beat:
 
-- Yog-Dzewa is an old god imprisoned long ago after a costly war.
-- Its appendages and spawn defend it.
-- It speaks in despairing, cosmic terms: "Hope is an illusion..."
+- Yog-Dzewa is an organism fused around the evacuation spine.
+- Its appendages and larvae defend the route to the escape pods.
+- It speaks as hunger and containment failure rather than inherited dungeon prophecy.
 
-Open story need:
+Resolved story note:
 
-- Decide how Yog-Dzewa connects to Pixel Spacebase: reactor anomaly, ancient artifact, alien god sealed in the asteroid, or a portal opened by Yendor/old station experiments.
+- Yog-Dzewa is now framed as a sealed bio-containment parasite whose origin remains ambiguous: sample, stowaway, or breach experiment.
 
 ### Floor 26: Finale / Escape
 
-Current end-game now presents the inherited Amulet item as an escape pod override in player-facing text. The hero also has a line indicating an escape pod is visible but the airlock door has been welded shut.
+Current end-game now presents the inherited Amulet item as an escape pod override in player-facing text. Floor 26 is framed as the evacuation cradle for the last working escape pod, with launch-or-stay wording in the victory scene. The hero also has a line indicating an escape pod is visible but the airlock door has been welded shut earlier in the run.
 
 Current finale function:
 
-- The player obtains the escape pod override and can end the game.
+- The player obtains the escape pod override from the evacuation cradle and can launch the escape pod.
 - The station escape route exists but is blocked until the late/end-game condition.
+- The current ending choice is optional: launch immediately or stay on the station with the override.
 
 Open story need:
 
-- Continue converting any remaining internal or surrounding end-game flow that still assumes the inherited Amulet of Yendor framing.
-- Decide whether the winning ending is evacuation, taking command, sealing the breach, or using the artifact to rewrite the station's fate.
+- Continue converting any remaining internal class names or surrounding flow that still assumes the inherited Amulet of Yendor framing.
+- A deeper reclaim/seal-the-station ending can be added later, but the active win condition is evacuation by escape pod.
 
 ## Side Quests
 
@@ -272,8 +273,8 @@ Story role:
 | 5 | Feral Shapeshifter | Shapeshifter collapse in Maintenance | Strong Pixel Spacebase fit |
 | 10 | Tengu | Prisoner/assassin containment failure | Partial fit |
 | 15 | DM-300 | Unstable station defense platform | Good Pixel Spacebase fit, now split from DM-3000 player class |
-| 20 | King of Dwarves | Undead immortal ruler | Mostly inherited fantasy |
-| 25 | Yog-Dzewa | Imprisoned old god/final threat | Mostly inherited fantasy, usable as cosmic breach |
+| 20 | Holodeck Monarch | Rogue hard-light monarch simulation | Player-facing text converted; sprite remains inherited |
+| 25 | Yog-Dzewa | Bio-containment parasite fused around evacuation access | Player-facing text converted; mechanics remain inherited |
 
 ## Current Continuity Gaps
 

@@ -772,6 +772,7 @@ public abstract class Level implements Bundlable {
 
     public void disarmVent(int pos) {
         set(pos, Terrain.INACTIVE_VENT);
+        vents.remove(pos);
         GameScene.updateMap(pos);
     }
 

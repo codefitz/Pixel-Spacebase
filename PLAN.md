@@ -12,10 +12,10 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 
 ## Suggestions
 
-- [ ] Decide on a replacement concept for the King of Dwarves / floor 20 holodeck boss. Options to consider: rogue holodeck monarch, corrupted historical sim, glitched training tyrant, or deliberately anachronistic fantasy hologram.
-- [ ] Decide on the final boss direction. Options to consider: escape-pod guardian AI, ancient ship parasite, extradimensional stowaway, corrupted evacuation protocol, or biomechanical station core.
-- [ ] Decide on the floor 22-24 area name and mood. Options to consider: Bio-Containment Decks, Quarantine Habitat, Infested Habitation, Deep Life-Support, or Xenobiology Annex.
-- [ ] Decide whether the floor 26 finale should force a choice: escape immediately, go back for another objective, or reclaim/seal the station.
+- [x] Decide on a replacement concept for the King of Dwarves / floor 20 holodeck boss: rogue holodeck monarch with lethal hard-light retainers.
+- [x] Decide on the final boss direction: Yog-Dzewa is a sealed bio-containment parasite fused around the evacuation spine.
+- [x] Decide on the floor 22-24 area name and mood: Deep Containment with space-horror bio-containment imagery.
+- [x] Decide floor 26 finale choice: launch the escape pod immediately, or stay on the station with the override for optional future objectives.
 - [ ] Decide whether the workshop should become a fixed room template before adding more workbench mechanics.
 
 ## Sprites
@@ -23,7 +23,7 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [ ] Replicator Swarm sprite to be updated.
 - [ ] Loader armour sprite could do with a makeover.
 - [ ] Tengu: keep as an assassin but update sprite to futuristic.
-- [ ] King of Dwarves / floor 20 boss sprite needs a sci-fi or holodeck-relative replacement once the boss concept is chosen.
+- [ ] Holodeck Monarch / floor 20 boss sprite needs a sci-fi or holodeck-relative replacement.
 - [ ] Skeleton sprite still needs updating to a suitably sci-fi enemy.
 - [ ] Thief sprite should look like a Jawa-style scavenger.
 - [ ] Guard sprite should become a Bith-style apprentice; remove or replace the chain visual with force-pull styling.
@@ -36,7 +36,7 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [ ] Prison / security block tiles should match a futuristic spaceship detention area.
 - [ ] Lower Engineering / caves tiles need a lower engineering aesthetic.
 - [ ] City / command-sector tiles need a Star Trek TNG-style pass.
-- [ ] Ladder tiles need to be swapped around to match ascending/descending.
+- [x] Ladder tiles swapped so the previous-deck entrance and next-deck exit use the correct visual frames.
 - [ ] VENT should visually convert to an electric charge / spent powered plate after triggering, rather than a colored vent.
 - [x] INACTIVE_VENT now stays off permanently after traps/floor-lighting are spent.
 - [x] SIGN renamed to terminal.
@@ -48,32 +48,47 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [ ] Y should send the player to take down rogue holograms from the holodeck, with hologram emitters as drops.
 - [ ] After the floor 10 boss is defeated, Y should pop in, trigger the level change, tease the player, then disappear after the hero moves with: "We shall meet again if you survive".
 - [x] Player-dropped items in workshop rooms now carry forward with workshop stock inside the same area.
-- [ ] Add an option to open and scroll the full log.
+- [x] Add an option to open and scroll the full log.
 - [x] Stepping on an alien egg now briefly fades to black and shows the "what happened" infection dialog.
 - [x] Xeno-booster now uses the x-port/Bionetics icon after crafting.
 - [x] Floor lighting now lights up when non-flying characters stand on it, while trap/floor-lighting activation still runs through normal press handling.
 - [x] Missiles and thrown items can cross unpowered floor lighting without treating it as projectile-blocking terrain.
-- [ ] Turn the Maker-Bot into a workbench and anchor it to a wall.
+- [x] Turn the Maker-Bot into a workbench and anchor it to a wall.
 - [ ] Make the workshop the same size and layout for each area.
 - [ ] Add another workshop bench inspired by the Chief Engineer that lets the player combine items to upgrade.
-- [ ] Spinner / facehugger should latch like the alien egg and spawn a stronger xeno if it succeeds.
+- [x] Spinner / facehugger should latch like the alien egg and spawn a stronger xeno if it succeeds.
+- [x] Search options include a 'search' button, so if you're near something of interest but are checking walls, you can still just check the wall.
+- [x] McGyver should just break the item if it fails, not dissapear everything in the workshop.
+- [x] Replace EMP blaster with a repair blaster, the repair blaster can transform traps to light, fix broken doors/blocked doors, has high hit points on robots and machines but does nothing to beings.
+- [x] Repair blaster has a chance to unlock chests and doors, but also has a chance to break the lock permenantly (warn player with % chance - higher skill greater chance).
+- [x] Loader armor should be fireproof
+- [ ] Repair blaster doesn't attempt door locks - needs to have a % chance of successfully open or break (warn player)
+- [ ] Repair blaster doesn't work on siphon drone.
+- [ ] Repair blaster doesn't work on replicator swarm.
+- [ ] Golden drone doesn't move - just sits there.
+- [ ] The alien facehugger mechanic ddoesn't seem to work - it still does paralaysis effect.
 
 ## Cosmetic / Narrative
 
-- [ ] Floor 5 boss: frame the Feral Shapeshifter as the shapeshifter colleague the player unlocks, driven unstable by identity issues from repeated shifting.
-- [ ] Floors 6-9 should be reframed as a futuristic spaceship prisoner detention / security area.
-- [ ] Floor 10 boss death line: "Free at last" should imply death.
-- [ ] Floors 16-19 should clarify whether the area is habitation, command sector, or holodeck-adjacent.
-- [ ] Floor 20 boss room can be the holodeck; decide whether to keep a fantasy figure as an intentional hologram or replace the boss identity entirely.
-- [ ] Floors 22-24 should shift from Demon Halls to eerie space-horror, possibly an infested habitation or containment area.
-- [ ] Floor 25 boss should guard the route to the escape pods.
-- [ ] Floor 25 boss should evoke a familiar classic space-horror trope without being the alien queen.
-- [ ] Floor 26 finale should be the route to the escape pod.
+- [x] All defined signs/terminals updated with sci-fi story/hint elements.
+- [x] Floor 5 boss framed as a shapeshifter crew colleague, driven unstable by identity loss from repeated emergency shifting.
+- [x] Floors 6-9 reframed as a futuristic spaceship prisoner detention / security area.
+- [x] Floor 10 boss death line now implies death rather than escape.
+- [x] Floors 16-19 clarified as habitation and command-sector decks leading toward the holodeck.
+- [x] Floor 20 boss room is Holodeck Control, with the fantasy figure kept as an intentional hard-light scenario.
+- [x] Floors 22-24 shifted from Demon Halls wording to Deep Containment space-horror text.
+- [x] Floor 25 boss now guards the route to the escape pods.
+- [x] Floor 25 boss now evokes a sealed bio-containment parasite rather than the alien queen.
+- [x] Floor 26 finale is the route to the escape pod.
 - [ ] Floor 26 may need a twist that gives the player a reason to go back.
 - [x] Arp / Arp Trader player-facing name updated to Y.
 - [x] Y now addresses the player directly and references inventory, badges, rankings, and quest tracking.
 - [x] Old Gunsmith updated to a more futuristic quest character.
 - [x] Ceremonial candle and ceremony text reframed as reactivating the core.
+- [x] The target for blasters is in the shape of a gun, it should just be a crosshair.
+- [ ] Text slightly overlaps dialogue boxes, suggest quick fix of updating dialogue box graphic to have smaller borders. More like a futuristic floating touchscreen glass.
+- [ ] Makerbench still needs to be set against the wall, also sprite needs to change to a static bench - remove NPC lint.
+- [ ] Add track lockdown.mp4 to security levels.
 
 ## Completed Conversion Notes
 
@@ -121,3 +136,34 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] The drone does not wander; it moves like the clones.
 - [x] Wave blaster crash at maximum length fixed.
 - [x] WaveBlaster immediate crash note captured in `docs/BUG_NOTES.md`; `BlastWave` must stay public for reflective effect recycling.
+- [x] Entrance/exit ladder visual frames swapped and documented for the station's upward progression.
+- [x] Tengu's defeat line clarified: "Free at last" is death as release from confinement.
+- [x] Floor 6-9 signs and prison-level tile text reframed around the Security Block detention sector.
+- [x] Floor 16-19 signs and city-level tile text reframed around habitation, command offices, civic decks, and the holodeck approach.
+- [x] Floor 20 terminal reframed the boss room as Holodeck Control with a failed monarch hard-light scenario.
+- [x] Remaining lower-engineering and final-workshop terminal tips converted from inherited dungeon hints into station notices.
+- [x] Floor 26 evacuation cradle, escape pod override action, and victory scene now frame the finale as launching the last working escape pod.
+- [x] Floor 20 boss player-facing text reframed as a rogue holodeck monarch with hologram retainers.
+- [x] Deep Containment terrain descriptions converted from lava/skulls/books to containment fluid, growths, specimen pillars, and experiment logs.
+- [x] Yog-Dzewa player-facing text reframed as a bio-containment parasite blocking the evacuation spine.
+- [x] Feral Shapeshifter player-facing text reframed as a restored crew colleague suffering shapeshifter identity collapse.
+- [x] Full message log can be opened from the game menu and scrolled.
+- [x] Journal showing 'No Text Found'
+- [x] Just went to step on vent and the game crashed.
+- [x] Journal feature enum names now have matching message keys.
+- [x] Vent stepping crash hardened by making log history merging tolerant of old HUD entries and clearing disarmed vent objects from the active vent map.
+- [x] Nearby scanner results now include Search as an option instead of forcing examine over wall checks.
+- [x] Stepping on the egg doesn't black out before "ugh, what happened"
+
+# Ideas (not to implement yet)
+
+- [ ] Torch - permanent item with battery pickups
+- [ ] Spacesuit needed for spacewalk (captain, commander)
+- [ ] Shapeshifter doesn't use weapons, but gets stronger as levels increase, throws objects which will act as single use projectiles
+- [ ] DM3000 resistant to most elements and traps but no improvement in armor strength - increases slowly with level increase but weaker than other characters
+- [ ] DM3000 has permanent light
+- [ ] DM3000 doesn't require food
+- [ ] Rooms light up on entry, do away with floor lights. Some levels need to reset the breaker to activate lights
+- [ ] Workshop has reusable chests where items can be stored (any not stored remain on level)
+- [ ] Tech and biogenetics reorganised to defensive (apply to player) vs offensive (used as weapon/action) - have generic storage icon that is opened up and then reveals what it is.
+- [ ] Add NPCs that need protection. End game player leaves on escape pod or goes back to stablise ship so NPCs can be rescued

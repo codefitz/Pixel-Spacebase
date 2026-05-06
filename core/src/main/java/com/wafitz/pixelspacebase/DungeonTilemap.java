@@ -53,8 +53,8 @@ public class DungeonTilemap extends Tilemap {
         defaultVisuals.put(Terrain.WALL, 4);
         defaultVisuals.put(Terrain.DOOR, 5);
         defaultVisuals.put(Terrain.OPEN_DOOR, 6);
-        defaultVisuals.put(Terrain.ENTRANCE, 7);
-        defaultVisuals.put(Terrain.EXIT, 8);
+        defaultVisuals.put(Terrain.ENTRANCE, 8);
+        defaultVisuals.put(Terrain.EXIT, 7);
         defaultVisuals.put(Terrain.EMBERS, 9);
         defaultVisuals.put(Terrain.LOCKED_DOOR, 10);
         defaultVisuals.put(Terrain.PEDESTAL, 11);

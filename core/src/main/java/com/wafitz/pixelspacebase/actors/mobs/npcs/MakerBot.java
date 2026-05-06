@@ -38,6 +38,7 @@ public class MakerBot extends NPC {
         spriteClass = MakerBotSprite.class;
 
         properties.add(Property.IMMOVABLE);
+        properties.add(Property.MACHINE);
     }
 
     @Override

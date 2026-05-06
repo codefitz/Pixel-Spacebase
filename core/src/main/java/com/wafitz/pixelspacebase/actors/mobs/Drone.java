@@ -43,6 +43,7 @@ public class Drone extends Mob {
 
         flying = true;
         state = WANDERING;
+        properties.add(Property.MACHINE);
     }
 
     private int level;

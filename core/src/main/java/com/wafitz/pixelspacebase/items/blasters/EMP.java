@@ -24,12 +24,15 @@ import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.Regrowth;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.MagicMissile;
 import com.wafitz.pixelspacebase.items.Dewdrop;
 import com.wafitz.pixelspacebase.items.Generator;
+import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -38,8 +41,10 @@ import com.wafitz.pixelspacebase.mines.AdrenalBoost;
 import com.wafitz.pixelspacebase.mines.AlienEgg;
 import com.wafitz.pixelspacebase.mines.KoltoPod;
 import com.wafitz.pixelspacebase.mines.Mine;
+import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
+import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.ColorMath;
@@ -64,47 +69,112 @@ public class EMP extends Blaster {
     private HashSet<Integer> visualCells;
     private int direction = 0;
 
+    private static final int BASE_UNLOCK_CHANCE = 45;
+    private static final int UNLOCK_CHANCE_PER_LEVEL = 10;
+
     @Override
     protected void onZap(Ballistica bolt) {
 
-        //ignore tiles which can't have anything grow in them.
-        for (Iterator<Integer> i = affectedCells.iterator(); i.hasNext(); ) {
-            int c = Dungeon.level.map[i.next()];
-            if (!(c == Terrain.EMPTY ||
-                    c == Terrain.EMBERS ||
-                    c == Terrain.EMPTY_DECO ||
-                    c == Terrain.LIGHTEDVENT ||
-                    c == Terrain.OFFVENT)) {
-                i.remove();
-            }
-        }
-
-        float numMines, numDews, numPods, numStars;
-
-        int chrgUsed = chargesPerCast();
-        //numbers greater than n*100% means n guaranteed mines, e.g. 210% = 2 mines w/10% chance for 3 mines.
-        numMines = 0.2f + chrgUsed * chrgUsed * 0.020f; //scales from 22% to 220%
-        numDews = 0.05f + chrgUsed * chrgUsed * 0.016f; //scales from 6.6% to 165%
-        numPods = 0.02f + chrgUsed * chrgUsed * 0.013f; //scales from 3.3% to 135%
-        numStars = (chrgUsed * chrgUsed * chrgUsed / 5f) * 0.005f; //scales from 0.1% to 100%
-        placeMines(numMines, numDews, numPods, numStars);
+        boolean repaired = false;
 
         for (int i : affectedCells) {
-            int c = Dungeon.level.map[i];
-            if (c == Terrain.EMPTY ||
-                    c == Terrain.EMBERS ||
-                    c == Terrain.EMPTY_DECO) {
-                Level.set(i, Terrain.LIGHTEDVENT);
-            }
-
-            Char ch = Actor.findChar(i);
-            if (ch != null) {
-                processSoulMark(ch, chargesPerCast());
-            }
-
-            GameScene.add(Blob.device(i, 10, Regrowth.class));
-
+            repaired |= repairTerrain(i);
+            repaired |= repairHeap(Dungeon.level.heaps.get(i));
+            repaired |= repairMachine(Actor.findChar(i));
         }
+
+        if (!repaired) {
+            GLog.i("The repair beam finds nothing mechanical to fix.");
+        }
+    }
+
+    private boolean repairTerrain(int cell) {
+        switch (Dungeon.level.map[cell]) {
+            case Terrain.VENT:
+            case Terrain.HIDDEN_VENT:
+                Level.set(cell, Terrain.LIGHTEDVENT);
+                GameScene.updateMap(cell);
+                return true;
+            case Terrain.OFFVENT:
+                Level.set(cell, Terrain.LIGHTEDVENT);
+                GameScene.updateMap(cell);
+                return true;
+            case Terrain.LOCKED_DOOR:
+                return repairLock(cell);
+            case Terrain.BARRICADE:
+            case Terrain.BOOKSHELF:
+                Level.set(cell, Terrain.DOOR);
+                GameScene.updateMap(cell);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private boolean repairHeap(Heap heap) {
+        if (heap == null || (heap.type != Heap.Type.LOCKED_CHEST && heap.type != Heap.Type.CRYSTAL_CHEST)) {
+            return false;
+        }
+
+        if (unlockRoll()) {
+            heap.type = Heap.Type.CHEST;
+            GLog.p(Messages.get(this, "lock_opened"));
+        } else {
+            heap.type = Heap.Type.JAMMED_CHEST;
+            GLog.w(Messages.get(this, "lock_jammed"));
+        }
+        if (heap.sprite != null) {
+            heap.sprite.view(heap.image(), heap.glowing());
+        }
+        return true;
+    }
+
+    private boolean repairLock(int cell) {
+        if (unlockRoll()) {
+            Level.set(cell, Terrain.DOOR);
+            GLog.p(Messages.get(this, "lock_opened"));
+        } else {
+            Level.set(cell, Terrain.BARRICADE);
+            GLog.w(Messages.get(this, "lock_jammed"));
+        }
+        GameScene.updateMap(cell);
+        return true;
+    }
+
+    private boolean unlockRoll() {
+        int chance = unlockChance();
+        GLog.w(Messages.get(this, "unlock_chance", chance));
+        return Random.Int(100) < chance;
+    }
+
+    private int unlockChance() {
+        return Math.min(95, BASE_UNLOCK_CHANCE + Math.max(0, level()) * UNLOCK_CHANCE_PER_LEVEL);
+    }
+
+    private boolean repairMachine(Char ch) {
+        if (ch == null || !ch.properties().contains(Char.Property.MACHINE)) {
+            return false;
+        }
+
+        if (isHostileMachine(ch)) {
+            int damage = Math.max(1, 12 + chargesPerCast() * 6 + level() * 4);
+            ch.damage(damage, this);
+            if (ch.sprite != null) {
+                ch.sprite.emitter().burst(Speck.factory(Speck.STEAM), 3);
+            }
+            return true;
+        }
+
+        int repair = Math.max(1, 8 + chargesPerCast() * 4 + level() * 3);
+        ch.HP = Math.min(ch.HT, ch.HP + repair);
+        if (ch.sprite != null) {
+            ch.sprite.emitter().burst(Speck.factory(Speck.HEALING), 2);
+        }
+        return true;
+    }
+
+    private boolean isHostileMachine(Char ch) {
+        return ch instanceof Mob && ((Mob) ch).hostile;
     }
 
     private void spreadRegrowth(int cell, float strength) {
@@ -166,17 +236,11 @@ public class EMP extends Blaster {
 
     @Override
     public void onHit(DM3000Launcher launcher, Char attacker, Char defender, int damage) {
-        //like pre-nerf vampiric enhancement, except with herbal healing buff
-
-        int level = Math.max(0, launcher.level());
-
-        // lvl 0 - 33%
-        // lvl 1 - 43%
-        // lvl 2 - 50%
-        int maxValue = damage * (level + 2) / (level + 6);
-        int effValue = Math.min(Random.IntRange(0, maxValue), attacker.HT - attacker.HP);
-
-        Buff.affect(attacker, KoltoPod.Health.class).boost(effValue);
+        if (isHostileMachine(defender)) {
+            defender.damage(Math.max(1, damage / 2 + Math.max(0, launcher.level()) * 2), this);
+        } else if (defender.properties().contains(Char.Property.MACHINE)) {
+            defender.HP = Math.min(defender.HT, defender.HP + Math.max(1, damage / 2));
+        }
 
     }
 
@@ -188,34 +252,12 @@ public class EMP extends Blaster {
         int maxDist = Math.round(1.2f + chargesPerCast() * .8f);
         int dist = Math.min(bolt.dist, maxDist);
 
-        for (int i = 0; i < PathFinder.CIRCLE8.length; i++) {
-            if (bolt.sourcePos + PathFinder.CIRCLE8[i] == bolt.path.get(1)) {
-                direction = i;
-                break;
-            }
-        }
-
-        float strength = maxDist;
         for (int c : bolt.subPath(1, dist)) {
-            strength--; //as we start at dist 1, not 0.
-            if (!Level.losBlocking[c]) {
-                affectedCells.add(c);
-                spreadRegrowth(c + PathFinder.CIRCLE8[left(direction)], strength - 1);
-                spreadRegrowth(c + PathFinder.CIRCLE8[direction], strength - 1);
-                spreadRegrowth(c + PathFinder.CIRCLE8[right(direction)], strength - 1);
-            } else {
-                visualCells.add(c);
-            }
+            affectedCells.add(c);
         }
+        affectedCells.add(bolt.collisionPos);
 
-        //going to call this one manually
-        visualCells.remove(bolt.path.get(dist));
-
-        for (int cell : visualCells) {
-            //this way we only get the cells at the tip, much better performance.
-            MagicMissile.foliage(curUser.sprite.parent, bolt.sourcePos, cell, null);
-        }
-        MagicMissile.foliage(curUser.sprite.parent, bolt.sourcePos, bolt.path.get(dist), callback);
+        MagicMissile.whiteLight(curUser.sprite.parent, bolt.sourcePos, bolt.path.get(dist), callback);
 
         Sample.INSTANCE.play(Assets.SND_ZAP);
     }

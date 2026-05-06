@@ -96,6 +96,7 @@ import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.noosa.tweeners.Delayer;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
@@ -734,6 +735,23 @@ public class GameScene extends PixelScene {
         scene.fadeIn(0xFF000000 | color, true);
     }
 
+    public static void flashThenShowMessage(int color, final String message) {
+        if (scene == null) {
+            return;
+        }
+
+        flash(color);
+        scene.add(new Delayer(0.45f) {
+            @Override
+            protected void onComplete() {
+                super.onComplete();
+                if (scene != null) {
+                    GameScene.show(new WndMessage(message));
+                }
+            }
+        });
+    }
+
     public static void gameOver() {
         Banner gameOver = new Banner(BannerSprites.get(BannerSprites.Type.GAME_OVER));
         gameOver.show(0x000000, 1f);
@@ -862,15 +880,31 @@ public class GameScene extends PixelScene {
         }
 
         if (objects.isEmpty()) {
-            return;
+            Dungeon.hero.search(true);
         } else if (objects.size() == 1) {
-            examineObject(objects.get(0));
-        } else {
+            names.add(Messages.get(GameScene.class, "search"));
             GameScene.show(new WndOptions(Messages.get(GameScene.class, "nearby_examine"),
                     Messages.get(GameScene.class, "multiple_examine"), names.toArray(new String[names.size()])) {
                 @Override
                 protected void onSelect(int index) {
-                    examineObject(objects.get(index));
+                    if (index == objects.size()) {
+                        Dungeon.hero.search(true);
+                    } else {
+                        examineObject(objects.get(index));
+                    }
+                }
+            });
+        } else {
+            names.add(Messages.get(GameScene.class, "search"));
+            GameScene.show(new WndOptions(Messages.get(GameScene.class, "nearby_examine"),
+                    Messages.get(GameScene.class, "multiple_examine"), names.toArray(new String[names.size()])) {
+                @Override
+                protected void onSelect(int index) {
+                    if (index == objects.size()) {
+                        Dungeon.hero.search(true);
+                    } else {
+                        examineObject(objects.get(index));
+                    }
                 }
             });
         }
