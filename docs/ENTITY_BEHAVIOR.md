@@ -8,7 +8,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | --- | --- |
 | Commander | Starts with forcefield-oriented armor identity. Food restores some HP. Healing tech is identified from the beginning. |
 | Shapeshifter | Starts with stealth/cloak identity. Better at detecting hidden doors and floor lighting. Can go longer without food. Mapping tech is identified from the beginning. |
-| DM-3000 | Robot class with rocket launcher identity. Can retrofit blasters into the launcher. Food recharges blasters. Upgrade tech is identified from the beginning. Currently locked until the floor 15 boss is defeated. |
+| DM-3000 | Robot class with rocket launcher identity. Can retrofit blasters into the launcher. Does not need food, has a permanent utility light, and can consume energy packs to recharge blasters. Upgrade tech is identified from the beginning. Currently locked until the floor 15 boss is defeated. |
 | Captain | Missile/ranged-weapon class. Starts with hunter disc identity. Can sense nearby enemies. Mind Vision tech is identified from the beginning. Available from the start. |
 
 ## NPCs and Quest Characters
@@ -19,7 +19,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Hologram Distress Call | Princess Pixel of Yendor projection. Gives one of several optional hunt quests: evolved xenomorph, Dark Lord of Yendor, or armored maintenance crawler. Rewards the player after completion. |
 | Quartermaster | Formerly Old Gunsmith internally. Requests a specific material or quest item, then offers blaster rewards. Reinforces the station reclamation/resistance theme. |
 | Maker Bench | Wall-mounted workshop matter-recycling station. Can break items down into parts. Internally still uses the MakerBot interaction flow. |
-| Y | Optional meta/anomaly quest NPC. Formerly Arp internally. Addresses the player directly, references game systems, asks for war-machine or Jeda Knight kills, and trades anomaly tokens for a reward. |
+| Y | Optional meta/anomaly quest NPC. Formerly Arp internally. Addresses the player directly, references game systems, asks for war-machine or Jeda Knight kills, and trades anomaly tokens for a reward. Also appears as a brief floor 10 interlude after Tengu is defeated, then vanishes once the hero moves. |
 | Y Trader | Follow-up/trader variant of Y. Formerly Arp Trader internally. Acknowledges survival with the same game-aware tone. |
 | Queen Xenomorph | Nonstandard xenomorph personality/encounter. Implied cause of excessive xenomorph breeding on Pixel Spacebase. |
 | Weak Clone | Temporary allied clone created by tech. Distracts and attacks enemies but is fragile. |
@@ -79,7 +79,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 
 | Item family | Current behavior |
 | --- | --- |
-| Food | Restores hunger. Class-specific effects apply: Commander heals, DM-3000 recharges blasters, Shapeshifter/Captain get normal hunger value. Emergency auto-eat now triggers at 25% HP or below if valid food is in the backpack. |
+| Food | Restores hunger for biological classes. Class-specific effects apply: Commander heals, DM-3000 can consume energy packs to recharge blasters without needing food, Shapeshifter/Captain get normal hunger value. Emergency auto-eat now triggers at 25% HP or below for non-DM-3000 heroes if valid food is in the backpack. |
 | Alien Egg / Dead Alien Bug (`AlienPod`) | Internal class remains `AlienPod` for the dropped bug. The alien egg device uses the alien pod/egg item icon, plants as an egg mine, briefly fades to black and shows the infection dialog when triggered by the hero, then drops a raw bug. Raw bug cannot be eaten. Can be combined in the Fabricator into xeno-booster/gene-mod outcomes; crafted xeno-boosters use the x-port/Bionetics icon. |
 | Gene Mods (`ExperimentalTech`) | Former potion-like system. Single-use biological/tech effects such as healing, strength, invisibility, toxic payloads, security override, cryogenics, and other enhancements. Regen Gene Mod cures alien egg infection. |
 | Tech (`Script`) | Former scroll-like system. Single-use technology effects such as identify, mapping, upgrade, recharging, teleport, cloning, terror/pheromone, fix, and other utility effects. |
@@ -94,7 +94,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Containers | Inventory sub-containers such as backpack-style storage, Bionetics gene-mod storage, and blaster holster. |
 | Mines / Devices | Placeable or environmental charges. Can be triggered from floors, fabricated, combined, or cleared by drones. |
 | Parts | Currency/material used in workshops and Maker-Bot/recycling flows. |
-| Keys | Floor/depth access control for locked doors, chests, and boss exits. |
+| Keys | Floor/depth access control for locked doors, chests, and boss exits. Security Block floors also place a reusable max-security override keycard in the entrance room; it opens normal locked detention doors on that floor without being consumed. |
 | Dewdrop / Medigel | Small healing resource from station emergency systems. Can fill air tank-style storage. |
 | Air Tank | Stores medigel droplets and can heal; a full tank has stronger restorative/blessing utility. |
 | Escape Pod Override (`Amulet`) | Internal class remains `Amulet`, but player-facing text now frames the winning artifact as the command override needed to access sealed evacuation systems. |

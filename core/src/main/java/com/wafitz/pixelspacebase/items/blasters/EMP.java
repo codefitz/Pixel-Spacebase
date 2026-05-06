@@ -57,6 +57,9 @@ import java.util.Iterator;
 
 public class EMP extends Blaster {
 
+    // Compatibility note: player-facing text presents this as the Repair Blaster.
+    // Keep the internal EMP class name for saves, generator tables, and message keys.
+
     {
         image = ItemSpriteSheet.EMP;
 

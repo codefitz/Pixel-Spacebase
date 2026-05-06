@@ -330,8 +330,7 @@ public class Dungeon {
 
         hero.pos = pos != -1 ? pos : level.exit;
 
-        Light light = hero.buff(Light.class);
-        hero.viewDistance = light == null ? level.viewDistance : Math.max(Light.DISTANCE, level.viewDistance);
+        hero.viewDistance = heroViewDistance();
 
         observe();
         try {
@@ -691,6 +690,17 @@ public class Dungeon {
 
     public static void observe() {
         observe(hero.viewDistance + 1);
+    }
+
+    public static int heroViewDistance() {
+        int distance = level.viewDistance;
+        if (hero != null && hero.heroClass == HeroClass.DM3000) {
+            distance = Math.max(distance, Light.DISTANCE);
+        }
+        if (hero != null && hero.buff(Light.class) != null) {
+            distance = Math.max(distance, Light.DISTANCE);
+        }
+        return distance;
     }
 
     public static void observe(int dist) {

@@ -38,6 +38,9 @@ import java.util.HashSet;
 
 public abstract class Script extends Item {
 
+    // Internal compatibility name. Player-facing catalog text calls this family Tech.
+    // Many generator, container, and save paths still depend on the inherited Script hierarchy.
+
     private static final String AC_RUN = "RUN";
 
     static final float TIME_TO_READ = 1f;

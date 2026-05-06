@@ -26,6 +26,8 @@ import com.wafitz.pixelspacebase.DungeonTilemap;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith;
 import com.wafitz.pixelspacebase.effects.Halo;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
+import com.wafitz.pixelspacebase.items.Heap;
+import com.wafitz.pixelspacebase.items.keys.SecurityKey;
 import com.wafitz.pixelspacebase.levels.Room.Type;
 import com.wafitz.pixelspacebase.levels.vents.AlarmVent;
 import com.wafitz.pixelspacebase.levels.vents.ChillingVent;
@@ -49,6 +51,8 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 public class PrisonLevel extends RegularLevel {
+
+    private static final int SECURITY_LOCK_CHANCE = 75;
 
     {
         color1 = 0x6a723d;
@@ -103,6 +107,8 @@ public class PrisonLevel extends RegularLevel {
     @Override
     protected void decorate() {
 
+        secureDoors();
+
         for (int i = width() + 1; i < length() - width() - 1; i++) {
             if (map[i] == Terrain.EMPTY) {
 
@@ -146,6 +152,46 @@ public class PrisonLevel extends RegularLevel {
         }
 
         placeSign();
+    }
+
+    private void secureDoors() {
+        int firstDoor = -1;
+        int lockedDoors = 0;
+
+        for (int i = width() + 1; i < length() - width() - 1; i++) {
+            if (map[i] == Terrain.DOOR) {
+                if (firstDoor == -1) {
+                    firstDoor = i;
+                }
+                if (Random.Int(100) < SECURITY_LOCK_CHANCE) {
+                    map[i] = Terrain.LOCKED_DOOR;
+                    lockedDoors++;
+                }
+            }
+        }
+
+        if (lockedDoors == 0 && firstDoor != -1) {
+            map[firstDoor] = Terrain.LOCKED_DOOR;
+        }
+    }
+
+    @Override
+    protected void createItems() {
+        super.createItems();
+        drop(new SecurityKey(Dungeon.depth), randomEntranceDropCell()).type = Heap.Type.HEAP;
+    }
+
+    private int randomEntranceDropCell() {
+        while (true) {
+            int pos = pointToCell(roomEntrance.random());
+            if (pos != entrance
+                    && map[pos] != Terrain.SIGN
+                    && vents.get(pos) == null
+                    && heaps.get(pos) == null
+                    && Level.passable[pos]) {
+                return pos;
+            }
+        }
     }
 
     @Override

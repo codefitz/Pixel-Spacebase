@@ -13,10 +13,10 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 ## Refactor / Naming Audit
 
 - [x] Add naming audit separating player-facing cleanup from inherited internal compatibility names.
-- [ ] Add compatibility wrappers or comments for intentionally retained legacy class names.
-- [ ] Decide whether to introduce a `RepairBlaster` wrapper around internal `EMP`.
-- [ ] Decide whether `ExperimentalTech` and `Script` package names should be migrated or left as internal compatibility names.
-- [ ] Audit old `SewerLevel`/Operations fallback resource keys and remove or mark them if unused.
+- [x] Add compatibility wrappers or comments for intentionally retained legacy class names.
+- [x] Decide whether to introduce a `RepairBlaster` wrapper around internal `EMP`: no wrapper for now; keep `EMP` as internal compatibility name.
+- [x] Decide whether `ExperimentalTech` and `Script` package names should be migrated or left as internal compatibility names: leave as compatibility names for now.
+- [x] Audit old `SewerLevel`/Operations fallback resource keys and mark them as legacy fallback strings.
 
 ## Suggestions
 
@@ -52,9 +52,9 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 
 ## Mechanics
 
-- [ ] Prison / security levels should use mostly locked doors, with one super key on each level.
+- [x] Prison / security levels should use mostly locked doors, with one super key on each level.
 - [ ] Y should send the player to take down rogue holograms from the holodeck, with hologram emitters as drops.
-- [ ] After the floor 10 boss is defeated, Y should pop in, trigger the level change, tease the player, then disappear after the hero moves with: "We shall meet again if you survive".
+- [x] After the floor 10 boss is defeated, Y should pop in, trigger the level change, tease the player, then disappear after the hero moves with: "We shall meet again if you survive".
 - [x] Player-dropped items in workshop rooms now carry forward with workshop stock inside the same area.
 - [x] Add an option to open and scroll the full log.
 - [x] Stepping on an alien egg now briefly fades to black and shows the "what happened" infection dialog.
@@ -95,8 +95,12 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] Ceremonial candle and ceremony text reframed as reactivating the core.
 - [x] The target for blasters is in the shape of a gun, it should just be a crosshair.
 - [ ] Text slightly overlaps dialogue boxes, suggest quick fix of updating dialogue box graphic to have smaller borders. More like a futuristic floating touchscreen glass.
-- [ ] Makerbench still needs to be set against the wall, also sprite needs to change to a static bench - remove NPC lint.
+- [x] Maker Bench is wall-anchored and uses static bench behavior/sprite animation instead of NPC-facing idle motion.
 - [ ] Add track lockdown.mp4 to security levels.
+- [ ] Where tengu says let's make this interesting - change this to the disembodied voice of Y.
+- [ ] "We shall meet again..." should be Y, not alien.
+- [ ] After DM300 (why did they may me so angry), hero can say "We can rebuild him, we have the technology..."
+- [ ] Have DM300 spout cliche LLM lines e.g. "You are absolutely right..." etc...
 
 ## Completed Conversion Notes
 
@@ -156,6 +160,12 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] Repair blaster includes repairable blocked terrain just beyond the beam collision point, so locked doors receive the override roll.
 - [x] Golden drone targeting no longer depends on whether the hero can see the drone's target.
 - [x] Naming audit added; stale player-facing blacksmith/bookshelf/stairs/caves/oldWarBot wording cleaned up where safe.
+- [x] Legacy compatibility comments added for `EMP`, `ExperimentalTech`, and `Script`; no wrapper/package migration for now.
+- [x] DM-3000 no longer accrues hunger or auto-eats, while manual food use still recharges blasters.
+- [x] DM-3000 keeps at least the utility-light view radius, including after temporary light buffs end.
+- [x] Security Block floors now convert most ordinary doors into locked detention doors and place a reusable max-security override keycard near the entrance.
+- [x] Maker Bench no longer turns to face the hero and its sprite animation is static.
+- [x] Floor 10 boss victory now summons a brief Y interlude that vanishes after the hero moves and delivers the survival tease.
 - [x] Floor 20 boss player-facing text reframed as a rogue holodeck monarch with hologram retainers.
 - [x] Deep Containment terrain descriptions converted from lava/skulls/books to containment fluid, growths, specimen pillars, and experiment logs.
 - [x] Yog-Dzewa player-facing text reframed as a bio-containment parasite blocking the evacuation spine.
@@ -167,6 +177,7 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] Vent stepping crash hardened by making log history merging tolerant of old HUD entries and clearing disarmed vent objects from the active vent map.
 - [x] Nearby scanner results now include Search as an option instead of forcing examine over wall checks.
 - [x] Stepping on the egg doesn't black out before "ugh, what happened"
+- [ ] One of the badges comes up "No Text Found" after applying a gene mod
 
 # Ideas (not to implement yet)
 
@@ -174,8 +185,8 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [ ] Spacesuit needed for spacewalk (captain, commander)
 - [ ] Shapeshifter doesn't use weapons, but gets stronger as levels increase, throws objects which will act as single use projectiles
 - [ ] DM3000 resistant to most elements and traps but no improvement in armor strength - increases slowly with level increase but weaker than other characters
-- [ ] DM3000 has permanent light
-- [ ] DM3000 doesn't require food
+- [x] DM3000 has permanent light
+- [x] DM3000 doesn't require food
 - [ ] Rooms light up on entry, do away with floor lights. Some levels need to reset the breaker to activate lights
 - [ ] Workshop has reusable chests where items can be stored (any not stored remain on level)
 - [ ] Tech and biogenetics reorganised to defensive (apply to player) vs offensive (used as weapon/action) - have generic storage icon that is opened up and then reveals what it is.

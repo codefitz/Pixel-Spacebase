@@ -18,29 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.sprites;
+package com.wafitz.pixelspacebase.items.keys;
 
-import com.wafitz.pixelspacebase.Assets;
-import com.watabou.noosa.TextureFilm;
+import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
-public class MakerBotSprite extends MobSprite {
+public class SecurityKey extends IronKey {
 
-    public MakerBotSprite() {
-        super();
+    {
+        image = ItemSpriteSheet.SECURITY_KEYCARD;
+        stackable = false;
+    }
 
-        texture(Assets.MAKERBOT);
-        TextureFilm film = new TextureFilm(texture, 14, 14);
+    public SecurityKey() {
+        this(0);
+    }
 
-        idle = new Animation(1, true);
-        idle.frames(film, 0);
-
-        die = new Animation(1, false);
-        die.frames(film, 0);
-
-        run = idle.clone();
-
-        attack = idle.clone();
-
-        idle();
+    public SecurityKey(int depth) {
+        super(depth);
     }
 }

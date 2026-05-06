@@ -23,9 +23,9 @@ This audit separates player-facing cleanup from internal compatibility names. Th
 | `Spinner` | Facehugger | Mechanics have been converted to xeno infection latch. Sprite/class can be renamed later. |
 | `Bat` | Siphon Drone | Player-facing text is converted; repair blaster machine behavior now matches. |
 | `Squiddard` | Replicator Swarm | Player-facing naming exists, but class/sprite need later cleanup. |
-| `ExperimentalTech` | Gene Mods | Package name is awkward but mechanically broad. Rename after catalog/resource audit. |
-| `Script` | Tech | Same as above; many generators, containers, and UI paths use this package. |
-| `EMP` | Repair Blaster | Startup and player-facing text are repair-themed. Internal class can stay until blaster package cleanup. |
+| `ExperimentalTech` | Gene Mods | Package name is awkward but mechanically broad. Keep as an internal compatibility name; add local comments instead of migration now. |
+| `Script` | Tech | Same as above; many generators, containers, and UI paths use this package. Keep as an internal compatibility name for now. |
+| `EMP` | Repair Blaster | Startup and player-facing text are repair-themed. Keep internal name; a wrapper would split save/message identities without enough benefit right now. |
 | `Torch` | Future permanent light/battery item | Current inherited item still exists and is on the plan for redesign. Mark as legacy until the new mechanic is built. |
 
 ## Safe Cleanup Targets
@@ -42,18 +42,18 @@ These are low-risk because they are mostly resource strings, docs, or small alia
 
 These should be done one at a time with a build after each:
 
-- Rename `EMP` to a repair-blaster class or introduce a `RepairBlaster extends EMP` compatibility wrapper.
+- Rename `EMP` to a repair-blaster class only if a future blaster package cleanup includes save and message-key migration. Do not add a wrapper in the current codebase.
 - Rename `Amulet`/`AmuletScene` only if old save class-name compatibility is handled.
 - Rename mob classes such as `King`, `Spinner`, `Bat`, `Squiddard`, and `Skeleton` only after checking bundle serialization and resource key lookup.
-- Rename package `items.ExperimentalTech` to `items.genemods`; the uppercase package name is nonstandard Java style but widely referenced.
-- Rename package `items.scripts` to `items.tech`; broad but conceptually clean.
+- Rename package `items.ExperimentalTech` to `items.genemods`; the uppercase package name is nonstandard Java style but widely referenced. Current decision: leave as internal compatibility naming.
+- Rename package `items.scripts` to `items.tech`; broad but conceptually clean. Current decision: leave as internal compatibility naming.
 - Rename tileset asset constants from `PRISON/CAVES/CITY/HALLS` to current area names. This touches assets, level classes, and docs.
 
 ## Unused Or Legacy Mechanics To Mark Before Removing
 
 - `Torch`: inherited light item. Keep until the battery/torch plan item replaces it.
 - `XenoSkull`: explicitly retained for old quest save support.
-- `SewerLevel` message keys: likely fallback/legacy for Operations-era naming. Keep until resource lookup confirms they are unused.
+- `SewerLevel` message keys: no `SewerLevel` class remains. They are legacy fallback strings next to Operations resources; keep marked as legacy unless runtime lookup proves they are dead.
 - `WndBlacksmith`: UI class remains useful for Leonard-style rebuild/reforge mechanics; player-facing text should avoid blacksmith language.
 - Inherited copyright headers and original project names should stay as license provenance, not conversion debt.
 

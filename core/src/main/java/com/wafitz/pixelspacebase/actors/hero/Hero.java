@@ -90,6 +90,7 @@ import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.levels.Level;
+import com.wafitz.pixelspacebase.levels.PrisonLevel;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.CraftingTerminal;
@@ -975,7 +976,7 @@ public class Hero extends Char {
 
         super.damage(dmg, src);
 
-        if (!emergencyEating && isAlive() && HP > 0 && HP * 4 <= HT) {
+        if (!emergencyEating && heroClass != HeroClass.DM3000 && isAlive() && HP > 0 && HP * 4 <= HT) {
             emergencyEat();
         }
     }
@@ -1500,7 +1501,9 @@ public class Hero extends Char {
             int door = Dungeon.level.map[doorCell];
 
             if (door == Terrain.LOCKED_DOOR) {
-                belongings.ironKeys[Dungeon.depth]--;
+                if (!(Dungeon.level instanceof PrisonLevel)) {
+                    belongings.ironKeys[Dungeon.depth]--;
+                }
                 Level.set(doorCell, Terrain.DOOR);
             } else {
                 belongings.specialKeys[Dungeon.depth]--;
