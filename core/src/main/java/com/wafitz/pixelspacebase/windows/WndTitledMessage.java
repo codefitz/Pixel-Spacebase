@@ -32,6 +32,7 @@ public class WndTitledMessage extends Window {
     protected static final int WIDTH_P = 120;
     protected static final int WIDTH_L = 144;
     protected static final int GAP = 2;
+    protected static final int PADDING = 2;
 
     public WndTitledMessage(Image icon, String title, String message) {
 
@@ -45,14 +46,14 @@ public class WndTitledMessage extends Window {
 
         int width = PixelSpacebase.landscape() ? WIDTH_L : WIDTH_P;
 
-        titlebar.setRect(0, 0, width, 0);
+        titlebar.setRect(PADDING, PADDING, width - PADDING * 2, 0);
         add(titlebar);
 
         RenderedTextMultiline text = PixelScene.renderMultiline(6);
-        text.text(message, width);
+        text.text(message, width - PADDING * 2);
         text.setPos(titlebar.left(), titlebar.bottom() + GAP);
         add(text);
 
-        resize(width, (int) text.bottom());
+        resize(width, (int) text.bottom() + PADDING);
     }
 }

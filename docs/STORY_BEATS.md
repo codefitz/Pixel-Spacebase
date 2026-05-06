@@ -188,7 +188,7 @@ Current finale function:
 
 - The player obtains the escape pod override from the evacuation cradle and can launch the escape pod.
 - The station escape route exists but is blocked until the late/end-game condition.
-- The current ending choice is optional: launch immediately or stay on the station with the override.
+- The current ending choice is optional: launch immediately, or stay on the station with the override because it can reopen sealed rescue cradles and create a route out for anyone still alive.
 
 Open story need:
 

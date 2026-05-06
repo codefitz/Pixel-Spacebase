@@ -24,7 +24,7 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] Decide on the final boss direction: Yog-Dzewa is a sealed bio-containment parasite fused around the evacuation spine.
 - [x] Decide on the floor 22-24 area name and mood: Deep Containment with space-horror bio-containment imagery.
 - [x] Decide floor 26 finale choice: launch the escape pod immediately, or stay on the station with the override for optional future objectives.
-- [ ] Decide whether the workshop should become a fixed room template before adding more workbench mechanics.
+- [x] Decide whether the workshop should become a fixed room template before adding more workbench mechanics: yes, use a fixed interior template inside generated workshop rooms before adding upgrade/storage benches.
 
 ## Sprites
 
@@ -88,19 +88,19 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] Floor 25 boss now guards the route to the escape pods.
 - [x] Floor 25 boss now evokes a sealed bio-containment parasite rather than the alien queen.
 - [x] Floor 26 finale is the route to the escape pod.
-- [ ] Floor 26 may need a twist that gives the player a reason to go back.
+- [x] Floor 26 may need a twist that gives the player a reason to go back.
 - [x] Arp / Arp Trader player-facing name updated to Y.
 - [x] Y now addresses the player directly and references inventory, badges, rankings, and quest tracking.
 - [x] Old Gunsmith updated to a more futuristic quest character.
 - [x] Ceremonial candle and ceremony text reframed as reactivating the core.
 - [x] The target for blasters is in the shape of a gun, it should just be a crosshair.
-- [ ] Text slightly overlaps dialogue boxes, suggest quick fix of updating dialogue box graphic to have smaller borders. More like a futuristic floating touchscreen glass.
+- [x] Text slightly overlaps dialogue boxes; quick layout padding added while a future graphic pass can make the frame look like futuristic floating touchscreen glass.
 - [x] Maker Bench is wall-anchored and uses static bench behavior/sprite animation instead of NPC-facing idle motion.
 - [ ] Add track lockdown.mp4 to security levels.
-- [ ] Where tengu says let's make this interesting - change this to the disembodied voice of Y.
-- [ ] "We shall meet again..." should be Y, not alien.
-- [ ] After DM300 (why did they may me so angry), hero can say "We can rebuild him, we have the technology..."
-- [ ] Have DM300 spout cliche LLM lines e.g. "You are absolutely right..." etc...
+- [x] Where tengu says let's make this interesting - change this to the disembodied voice of Y.
+- [x] "We shall meet again..." should be Y, not alien.
+- [x] After DM300 (why did they may me so angry), hero can say "We can rebuild him, we have the technology..."
+- [x] Have DM300 spout cliche LLM lines e.g. "You are absolutely right..." etc...
 
 ## Completed Conversion Notes
 
@@ -166,6 +166,11 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] Security Block floors now convert most ordinary doors into locked detention doors and place a reusable max-security override keycard near the entrance.
 - [x] Maker Bench no longer turns to face the hero and its sprite animation is static.
 - [x] Floor 10 boss victory now summons a brief Y interlude that vanishes after the hero moves and delivers the survival tease.
+- [x] Tengu's phase-change tease is now attributed to Y, the Y interlude has a Y name key, and DM-300 has expanded corrupted assistant-style combat barks.
+- [x] Message, quest, and story windows now use slightly safer text padding to reduce border overlap.
+- [x] Badge message aliases added for current gene-mod badge enum names, preventing "No Text Found" when gene-mod badges unlock.
+- [x] DM-3000 now has class-level resistance to fire/toxic/poison sources and immunity to poison, fear, paralysis, and vertigo without changing armor strength.
+- [x] Floor 26 escape pod override text now explains that staying behind could reopen sealed rescue cradles and evacuation routes for survivors.
 - [x] Floor 20 boss player-facing text reframed as a rogue holodeck monarch with hologram retainers.
 - [x] Deep Containment terrain descriptions converted from lava/skulls/books to containment fluid, growths, specimen pillars, and experiment logs.
 - [x] Yog-Dzewa player-facing text reframed as a bio-containment parasite blocking the evacuation spine.
@@ -177,14 +182,14 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] Vent stepping crash hardened by making log history merging tolerant of old HUD entries and clearing disarmed vent objects from the active vent map.
 - [x] Nearby scanner results now include Search as an option instead of forcing examine over wall checks.
 - [x] Stepping on the egg doesn't black out before "ugh, what happened"
-- [ ] One of the badges comes up "No Text Found" after applying a gene mod
+- [x] One of the badges comes up "No Text Found" after applying a gene mod
 
 # Ideas (not to implement yet)
 
 - [ ] Torch - permanent item with battery pickups
 - [ ] Spacesuit needed for spacewalk (captain, commander)
 - [ ] Shapeshifter doesn't use weapons, but gets stronger as levels increase, throws objects which will act as single use projectiles
-- [ ] DM3000 resistant to most elements and traps but no improvement in armor strength - increases slowly with level increase but weaker than other characters
+- [x] DM3000 resistant to most elements and traps but no improvement in armor strength - increases slowly with level increase but weaker than other characters
 - [x] DM3000 has permanent light
 - [x] DM3000 doesn't require food
 - [ ] Rooms light up on entry, do away with floor lights. Some levels need to reset the breaker to activate lights

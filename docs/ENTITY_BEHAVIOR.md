@@ -90,14 +90,14 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Armor | Defensive equipment with strength requirements, upgrades, malfunctions, and enhancements. |
 | Modules | Ring-like equipment that modifies combat or utility stats. Can malfunction. |
 | Artifacts | Unique charge/progression items with special mechanics, such as stealth, gravity control, time manipulation, alien DNA, recycling, and YendorTech shield behavior. |
-| Workshops | Workshop stock carries forward within the same area. Player-dropped normal heaps inside the workshop room now carry forward with that stock instead of being left behind on the old floor. |
+| Workshops | Workshop stock carries forward within the same area. Player-dropped normal heaps inside the workshop room now carry forward with that stock instead of being left behind on the old floor. The next workshop mechanics should assume a fixed interior template inside generated workshop rooms, so benches and storage can occupy predictable cells without requiring a broader room-generation rewrite. |
 | Containers | Inventory sub-containers such as backpack-style storage, Bionetics gene-mod storage, and blaster holster. |
 | Mines / Devices | Placeable or environmental charges. Can be triggered from floors, fabricated, combined, or cleared by drones. |
 | Parts | Currency/material used in workshops and Maker-Bot/recycling flows. |
 | Keys | Floor/depth access control for locked doors, chests, and boss exits. Security Block floors also place a reusable max-security override keycard in the entrance room; it opens normal locked detention doors on that floor without being consumed. |
 | Dewdrop / Medigel | Small healing resource from station emergency systems. Can fill air tank-style storage. |
 | Air Tank | Stores medigel droplets and can heal; a full tank has stronger restorative/blessing utility. |
-| Escape Pod Override (`Amulet`) | Internal class remains `Amulet`, but player-facing text now frames the winning artifact as the command override needed to access sealed evacuation systems. |
+| Escape Pod Override (`Amulet`) | Internal class remains `Amulet`, but player-facing text now frames the winning artifact as the command override needed to access sealed evacuation systems. It can launch the final pod immediately, or justify returning to reopen sealed rescue cradles for survivors. |
 
 ## Notable Blasters
 

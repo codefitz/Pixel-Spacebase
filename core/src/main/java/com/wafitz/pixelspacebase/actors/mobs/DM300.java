@@ -88,6 +88,9 @@ public class DM300 extends Mob {
     public boolean act() {
 
         GameScene.add(Blob.device(pos, 30, ToxicGas.class));
+        if (Dungeon.visible[pos] && Random.Int(15) == 0) {
+            yell(Messages.get(this, Random.element(LLM_BARKS)));
+        }
 
         return super.act();
     }
@@ -181,6 +184,13 @@ public class DM300 extends Mob {
     }
 
     private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
+
+    private static final String[] LLM_BARKS = {
+            "llm_1",
+            "llm_2",
+            "llm_3",
+            "llm_4"
+    };
 
     static {
         IMMUNITIES.add(ToxicGas.class);

@@ -28,6 +28,8 @@ import com.wafitz.pixelspacebase.GamesInProgress;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.blobs.Fire;
+import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
 import com.wafitz.pixelspacebase.actors.buffs.Berserk;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
@@ -37,9 +39,11 @@ import com.wafitz.pixelspacebase.actors.buffs.Fury;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
 import com.wafitz.pixelspacebase.actors.buffs.Knockout;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
+import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.actors.buffs.Regeneration;
 import com.wafitz.pixelspacebase.actors.buffs.Shielding;
 import com.wafitz.pixelspacebase.actors.buffs.Targeted;
+import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.buffs.Upgrade;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
@@ -1650,7 +1654,14 @@ public class Hero extends Char {
     @Override
     public HashSet<Class<?>> resistances() {
         ElementsModule.Resistance r = buff(ElementsModule.Resistance.class);
-        return r == null ? super.resistances() : r.resistances();
+        HashSet<Class<?>> resistances = new HashSet<>(r == null ? super.resistances() : r.resistances());
+        if (heroClass == HeroClass.DM3000) {
+            resistances.add(Fire.class);
+            resistances.add(ToxicGas.class);
+            resistances.add(Burning.class);
+            resistances.add(Poison.class);
+        }
+        return resistances;
     }
 
     @Override
@@ -1662,6 +1673,12 @@ public class Hero extends Char {
         }
         if (belongings.armor instanceof Loader) {
             immunities.add(Burning.class);
+        }
+        if (heroClass == HeroClass.DM3000) {
+            immunities.add(Poison.class);
+            immunities.add(Terror.class);
+            immunities.add(Paralysis.class);
+            immunities.add(Vertigo.class);
         }
         return immunities;
     }
