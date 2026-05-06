@@ -45,7 +45,7 @@ public class AlienEgg extends Mine {
 
     public static class Device extends Mine.Device {
         {
-            image = ItemSpriteSheet.DEAD_ALIEN;
+            image = ItemSpriteSheet.ALIENPOD;
 
             mineClass = AlienEgg.class;
             craftingClass = null;

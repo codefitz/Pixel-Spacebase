@@ -33,10 +33,15 @@ The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/E
 
 ### Changes planned:
 
-* Oxygen mechanics
-* Armor Perma-buffs
-* Modules and upgrades
-* Story elements
+The active backlog is tracked in [`PLAN.md`](PLAN.md). Current work is sorted into:
+
+* Suggestions - unsettled ideas and design options before they become implementation tasks.
+* Sprites - character, enemy, item, and equipment sprite work.
+* Tiles - tileset, terrain, water, ladder, and floor-feature art or tile behavior.
+* Mechanics - gameplay, persistence, quest, workshop, combat, and UI behavior changes.
+* Cosmetic / Narrative - lore, naming, dialogue, area framing, and story polish.
+
+When adding new work, put rough ideas in the Suggestions section first. Once the direction is chosen, move the item into the relevant work category and keep implementation batches small enough to test and rebuild quickly.
 
 ## Development Setup
 

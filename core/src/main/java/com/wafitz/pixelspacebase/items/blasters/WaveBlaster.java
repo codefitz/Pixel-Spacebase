@@ -32,7 +32,6 @@ import com.wafitz.pixelspacebase.effects.Pushing;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.Game;
@@ -110,13 +109,11 @@ public class WaveBlaster extends DamageBlaster {
             processSoulMark(ch, chargesPerCast());
             ch.damage(damage, this);
 
-            if (ch.isAlive() && bolt.path.size() > bolt.dist + 1) {
-                int nextCell = bolt.path.get(bolt.dist + 1);
-                if (validCell(nextCell)) {
-                    Ballistica trajectory = new Ballistica(ch.pos, nextCell, Ballistica.MAGIC_BOLT);
-                    int strength = level() + 3;
-                    throwChar(ch, trajectory, strength);
-                }
+            Integer nextCell = cellBeyondImpact(bolt);
+            if (ch.isAlive() && nextCell != null) {
+                Ballistica trajectory = new Ballistica(ch.pos, nextCell, Ballistica.MAGIC_BOLT);
+                int strength = level() + 3;
+                throwChar(ch, trajectory, strength);
             }
         }
 
@@ -127,6 +124,10 @@ public class WaveBlaster extends DamageBlaster {
     }
 
     public static void throwChar(final Char ch, final Ballistica trajectory, int power) {
+        if (trajectory == null || trajectory.path.isEmpty()) {
+            return;
+        }
+
         int dist = Math.min(trajectory.dist, power);
 
         if (ch.properties().contains(Char.Property.BOSS)) {
@@ -172,12 +173,36 @@ public class WaveBlaster extends DamageBlaster {
                 ch.pos = newPos;
                 // Apply collision damage if character landed on blast center
                 if (ch.pos == trajectory.collisionPos && finalDist > 0) {
-                    ch.damage(Random.NormalIntRange(finalDist, 2 * finalDist), this);
+                    ch.damage(Random.NormalIntRange(finalDist, 2 * finalDist), WaveBlaster.class);
                     Paralysis.prolong(ch, Paralysis.class, 1 + finalDist / 2f);
                 }
                 Dungeon.level.press(ch.pos, ch);
             }
         }), -1);
+    }
+
+    private static Integer cellBeyondImpact(Ballistica bolt) {
+        if (bolt == null || bolt.path.isEmpty() || bolt.dist == null) {
+            return null;
+        }
+
+        int dist = Math.min(bolt.dist, bolt.path.size() - 1);
+        if (dist < 0 || !validCell(bolt.path.get(dist))) {
+            return null;
+        }
+
+        if (bolt.path.size() > dist + 1 && validCell(bolt.path.get(dist + 1))) {
+            return bolt.path.get(dist + 1);
+        }
+
+        if (dist <= 0) {
+            return null;
+        }
+
+        int current = bolt.path.get(dist);
+        int previous = bolt.path.get(dist - 1);
+        int projected = current + (current - previous);
+        return validCell(projected) ? projected : null;
     }
 
     private static boolean validCell(int cell) {
@@ -215,7 +240,7 @@ public class WaveBlaster extends DamageBlaster {
         particle.radiateXY(2.5f);
     }
 
-    private static class BlastWave extends Image {
+    public static class BlastWave extends Image {
 
         private static final float TIME_TO_FADE = 0.2f;
 
@@ -254,6 +279,9 @@ public class WaveBlaster extends DamageBlaster {
                 return;
             }
             BlastWave b = (BlastWave) parent.recycle(BlastWave.class);
+            if (b == null) {
+                return;
+            }
             parent.bringToFront(b);
             b.reset(pos);
         }

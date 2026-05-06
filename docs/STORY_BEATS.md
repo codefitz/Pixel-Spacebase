@@ -10,7 +10,7 @@ The player character returns to take back control of the station, survive the de
 
 - Commander: expected by survivors as someone returning to reclaim Pixel Spacebase.
 - Shapeshifter: tied to a larger shapeshifter instability thread in Maintenance.
-- DM3000: a shut-down or repurposed robot brought back into service.
+- DM-3000: a shut-down or repurposed robot brought back into service.
 - Captain: a station authority figure gathering control after evacuation.
 
 ## Beginning
@@ -107,7 +107,7 @@ Current beat:
 - DM-300 now reveals the unstable command module through combat text: it recognizes its protection role, but its emotion core is beyond tactical tolerance.
 - It repairs itself during the fight.
 - On defeat it questions why it was made angry.
-- This encounter currently gates the DM3000 playable class.
+- This encounter currently gates the DM-3000 playable class.
 
 Current story direction:
 
@@ -124,13 +124,13 @@ Current chapter text now frames this area as the Habitation and Command Sector: 
 Primary story function:
 
 - Show that the breach is older and stranger than a simple xenomorph infestation.
-- Introduce advanced raiders, warlocks, golems, and the undead court theme.
+- Introduce advanced raiders, warlocks, war machines, and the unresolved command-court theme.
 - Bring in Y, formerly Arp internally, as an overt side-quest/game-aware figure.
 
 Current side content:
 
-- Y asks the player to kill golems or monks and rewards completion.
-- Y appears to understand the game layer and can be left as comic/meta relief or replaced with a more in-world anomaly later.
+- Y asks the player to kill war machines or Jeda Knights and rewards completion through anomaly tokens.
+- Y appears to understand the game layer, directly addresses the player, and comments on systems such as inventory, badges, rankings, and quest tracking.
 
 ### Floor 20: City Boss
 
@@ -217,7 +217,7 @@ NPC: Chief Engineer Leonard.
 Current variants:
 
 - Needs parts to build or repair a flux-capacitor-like component.
-- Needs protection from bats while restoring power.
+- Needs protection from siphon drones while restoring power.
 
 Story role:
 
@@ -244,8 +244,8 @@ NPC: Y, formerly Arp internally.
 
 Current variants:
 
-- Asks the player to kill golems or monks.
-- Speaks as though aware of the game.
+- Asks the player to kill war machines or Jeda Knights and collect anomaly tokens.
+- Speaks as though aware of the game, including inventory, badges, rankings, and quest tracking.
 
 Story role:
 
@@ -271,7 +271,7 @@ Story role:
 | --- | --- | --- | --- |
 | 5 | Feral Shapeshifter | Shapeshifter collapse in Maintenance | Strong Pixel Spacebase fit |
 | 10 | Tengu | Prisoner/assassin containment failure | Partial fit |
-| 15 | DM-300 | Unstable station defense platform | Good Pixel Spacebase fit, DM3000 naming split still open |
+| 15 | DM-300 | Unstable station defense platform | Good Pixel Spacebase fit, now split from DM-3000 player class |
 | 20 | King of Dwarves | Undead immortal ruler | Mostly inherited fantasy |
 | 25 | Yog-Dzewa | Imprisoned old god/final threat | Mostly inherited fantasy, usable as cosmic breach |
 
@@ -280,7 +280,7 @@ Story role:
 - Prison, caves, city, and halls chapter text now use sci-fi framing; individual tiles, enemies, and boss lore in those areas still need follow-up conversion.
 - The Amulet item has player-facing escape pod override text, but surrounding code/class names and any remaining end-game assumptions may still need cleanup.
 - Yendor remains a raider faction and may still appear in inherited story/item names outside the updated end artifact text.
-- DM-300/DM3000 naming and lore need a clean split between boss machine and playable robot class.
+- DM-300 is the unstable floor-15 boss machine; DM-3000 is the playable robot class brought back into service after that encounter.
 - The final victory condition needs a Pixel Spacebase-specific ending.
 
 ## Suggested Canon Direction

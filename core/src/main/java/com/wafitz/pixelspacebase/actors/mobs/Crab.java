@@ -21,7 +21,8 @@
 package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.items.food.MysteryMeat;
+import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.sprites.CrabSprite;
 import com.watabou.utils.Random;
 
@@ -37,7 +38,7 @@ public class Crab extends Mob {
         EXP = 4;
         maxLvl = 9;
 
-        loot = new MysteryMeat();
+        loot = Parts.class;
         lootChance = 0.167f;
     }
 
@@ -54,5 +55,10 @@ public class Crab extends Mob {
     @Override
     public int drRoll() {
         return Random.NormalIntRange(0, 4);
+    }
+
+    @Override
+    protected Item createLoot() {
+        return new Parts(Random.IntRange(10, 25));
     }
 }

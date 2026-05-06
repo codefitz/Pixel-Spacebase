@@ -8,7 +8,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | --- | --- |
 | Commander | Starts with forcefield-oriented armor identity. Food restores some HP. Healing tech is identified from the beginning. |
 | Shapeshifter | Starts with stealth/cloak identity. Better at detecting hidden doors and floor lighting. Can go longer without food. Mapping tech is identified from the beginning. |
-| DM3000 | Robot class with rocket launcher/DM3000 launcher identity. Can retrofit blasters into the launcher. Food recharges blasters. Upgrade tech is identified from the beginning. Currently locked until the floor 15 boss is defeated. |
+| DM-3000 | Robot class with rocket launcher identity. Can retrofit blasters into the launcher. Food recharges blasters. Upgrade tech is identified from the beginning. Currently locked until the floor 15 boss is defeated. |
 | Captain | Missile/ranged-weapon class. Starts with hunter disc identity. Can sense nearby enemies. Mind Vision tech is identified from the beginning. Available from the start. |
 
 ## NPCs and Quest Characters
@@ -19,8 +19,8 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Hologram Distress Call | Princess Pixel of Yendor projection. Gives one of several optional hunt quests: evolved xenomorph, Dark Lord of Yendor, or armored maintenance crawler. Rewards the player after completion. |
 | Quartermaster | Formerly Old Gunsmith internally. Requests a specific material or quest item, then offers blaster rewards. Reinforces the station reclamation/resistance theme. |
 | Maker-Bot | Workshop/matter-recycling support NPC. Can break items down into parts. Appears unaware or unconcerned that the station is under attack. |
-| Y | Optional meta/anomaly quest NPC. Formerly Arp internally. Asks the player to kill a set number of golems or monks and rewards completion. |
-| Y Trader | Follow-up/trader variant of Y. Formerly Arp Trader internally. Acknowledges survival and provides additional interaction. |
+| Y | Optional meta/anomaly quest NPC. Formerly Arp internally. Addresses the player directly, references game systems, asks for war-machine or Jeda Knight kills, and trades anomaly tokens for a reward. |
+| Y Trader | Follow-up/trader variant of Y. Formerly Arp Trader internally. Acknowledges survival with the same game-aware tone. |
 | Queen Xenomorph | Nonstandard xenomorph personality/encounter. Implied cause of excessive xenomorph breeding on Pixel Spacebase. |
 | Weak Clone | Temporary allied clone created by tech. Distracts and attacks enemies but is fragile. |
 | Yog Sheep | Joke/summoned neutral creature from flock-style effects. |
@@ -31,7 +31,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | --- | --- | --- |
 | Feral Shapeshifter | 5 | Aggressive shapeshifter boss. Signals attack buildup, enrages, and thanks the player when restored/defeated. Unlocks Shapeshifter progression. |
 | Tengu | 10 | Mobile assassin boss. Uses floor lighting systems, deception, repositioning, and precise attacks. Represents prison/security containment failure. |
-| DM-300 | 15 | Heavy station defense/construction platform with an emotionally unstable command module. Detects unauthorized personnel, babbles about protection and anger, repairs itself, and drops the boss key. Unlocks DM3000 class progression. |
+| DM-300 | 15 | Heavy station defense/construction platform with an emotionally unstable command module. Detects unauthorized personnel, babbles about protection and anger, repairs itself, and drops the boss key. Unlocks DM-3000 class progression. |
 | King of Dwarves | 20 | Undead ruler boss. Summons undead retainers, parries, and speaks of immortality. Still mostly inherited fantasy lore. |
 | Yog-Dzewa | 25 | Final major boss. Old-god entity with fists/larvae support. Current end threat for the deepest area. |
 
@@ -45,28 +45,28 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Yendor Scout (`Gnoll`) | Fast light raider from Yendor. |
 | Dark Lord of Yendor | Miniboss/quest enemy. Uses toxin and incendiary flechettes. |
 | Yendor Shaman | Ranged/caster Yendor enemy with battle spells. |
-| Yendor Brute | Large heavy raider that becomes more dangerous when wounded. |
-| Shielded | Brute variant with added defensive behavior. |
-| Crab / Maintenance Crawler | Early station maintenance crawler enemy. |
-| Great Crab / Armored Crawler | Shield-claw crawler. Blocks frontal attacks unless surprised. |
+| Yendor Shock Trooper | Large heavy raider with a combat rig that becomes more dangerous when wounded. |
+| Shielded Shock Trooper | Shock trooper variant with added defensive behavior. |
+| Crab / Maintenance Crawler | Early station maintenance crawler enemy. Drops parts instead of meat. |
+| Great Crab / Armored Crawler | Shield-claw crawler. Blocks frontal attacks unless surprised. Drops a larger parts bundle instead of meat. |
 | Squiddard | Aquatic/alien-style enemy with movement and combat behavior around passable spaces. |
 | Ruptured Crew Suit (`Skeleton`) | Former skeleton. Corrupted emergency suit/servo enemy that ruptures into shrapnel when damaged enough. |
 | Jawar (`Thief`) | Former thief. Steals an item and attempts to escape. |
 | Jawar Scavenger (`Bandit`) | Rare Jawar variant with enhanced stealing threat. |
 | Bith Acolyte (`Guard`) | Former prison guard. Security adept with a force-pull rig; mechanically still pulls or pressures the player in combat. Sprite/chain visual still needs a later pass. |
-| Bat | Vampire-bat style enemy that replenishes health when attacking. |
-| Brute | Heavy melee enemy with low-health threat spike. |
+| Siphon Drone | Flying medical-drain drone that replenishes health when attacking. |
+| Yendor Shock Trooper | Heavy melee enemy with low-health combat-rig overclock. |
 | Facehugger (`Spinner`) | Former cave spinner. Uses web/poison mechanics, now described as adhesive biofilament and paralytic toxin. Egg-like latch/spawn behavior remains future work. |
 | Plasma Anomaly (`Elemental`) | Former fire elemental. Reactor/containment leak enemy with special damage flavor. |
 | Plasma Spark (`Newborn Elemental`) | Quest-related discharge source for plasma embers, now framed as a fresh containment leak. |
 | Jeda Knight (`Monk`) | Fast late-mid disciplined melee enemy. Text conversion is done; sprite remains future work. |
-| Jeda Master (`Senior`) | Rare Jeda Knight variant. Text conversion is done; sprite remains future work. |
+| Jeda Master (`Senior`) | Rare Jeda Knight variant with stronger strikes and brief paralysis. Text conversion is done; sprite remains future work. |
 | Signal Witch (`Warlock`) | Caster enemy that weaponizes corrupted telemetry and neural feedback. |
 | War Machine (`Golem`) | Heavy corridor-suppression machine from command-sector defense systems. |
 | Signal Siren (`Succubus`) | Charm/hypnotise-style intrusion organism that interferes with the player's target choices. |
 | Observer Horror (`Eye`) | Sci-fi horror ranged enemy with a charged focused beam. |
 | Skitter Cannon (`Scorpio`) | Late containment predator with long-range crippling projectiles. |
-| Acidic | Rare scorpio variant with acid theme. |
+| Acid-spitter Cannon | Rare skitter-cannon variant with acid blood and corrosive spines. |
 | Old War Bot | Old combat machine with useful weapon/guardian flavor. |
 | Drone | Allied or controller-based mobile unit. Now attacks hostile targets and clears mines, not the hero. |
 | Turret | Station defensive turret. Automated, terminal/security themed. |
@@ -79,15 +79,18 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 
 | Item family | Current behavior |
 | --- | --- |
-| Food | Restores hunger. Class-specific effects apply: Commander heals, DM3000 recharges blasters, Shapeshifter/Captain get normal hunger value. Emergency auto-eat now triggers at 25% HP or below if valid food is in the backpack. |
-| Dead Alien Bug (`AlienPod`) | Internal class remains `AlienPod`. Raw bug cannot be eaten. Can be combined in the Fabricator into xeno-booster/gene-mod outcomes. |
+| Food | Restores hunger. Class-specific effects apply: Commander heals, DM-3000 recharges blasters, Shapeshifter/Captain get normal hunger value. Emergency auto-eat now triggers at 25% HP or below if valid food is in the backpack. |
+| Alien Egg / Dead Alien Bug (`AlienPod`) | Internal class remains `AlienPod` for the dropped bug. The alien egg device uses the alien pod/egg item icon, plants as an egg mine, briefly fades to black and shows the infection dialog when triggered by the hero, then drops a raw bug. Raw bug cannot be eaten. Can be combined in the Fabricator into xeno-booster/gene-mod outcomes; crafted xeno-boosters use the x-port/Bionetics icon. |
 | Gene Mods (`ExperimentalTech`) | Former potion-like system. Single-use biological/tech effects such as healing, strength, invisibility, toxic payloads, security override, cryogenics, and other enhancements. Regen Gene Mod cures alien egg infection. |
 | Tech (`Script`) | Former scroll-like system. Single-use technology effects such as identify, mapping, upgrade, recharging, teleport, cloning, terror/pheromone, fix, and other utility effects. |
-| Blasters | Rechargeable ranged weapons with charge counts. Each blaster has a distinct projectile/effect and can be used by DM3000 launcher mechanics. |
+| Blasters | Rechargeable ranged weapons with charge counts. Each blaster has a distinct projectile/effect and can be used by DM-3000 launcher mechanics. |
+| Floor lighting | Unpowered floor lighting activates when any non-flying character stands on it; it still uses normal press handling for traps and mines. Spent trap/floor-lighting tiles become inactive and stay off permanently. |
+| Projectile pathing | Missiles and thrown items can cross unpowered floor lighting even though it still blocks sight until activated. |
 | Weapons | Melee and missile weapons with tiers, upgrades, malfunctions, and enhancements. |
 | Armor | Defensive equipment with strength requirements, upgrades, malfunctions, and enhancements. |
 | Modules | Ring-like equipment that modifies combat or utility stats. Can malfunction. |
 | Artifacts | Unique charge/progression items with special mechanics, such as stealth, gravity control, time manipulation, alien DNA, recycling, and YendorTech shield behavior. |
+| Workshops | Workshop stock carries forward within the same area. Player-dropped normal heaps inside the workshop room now carry forward with that stock instead of being left behind on the old floor. |
 | Containers | Inventory sub-containers such as backpack-style storage, Bionetics gene-mod storage, and blaster holster. |
 | Mines / Devices | Placeable or environmental charges. Can be triggered from floors, fabricated, combined, or cleared by drones. |
 | Parts | Currency/material used in workshops and Maker-Bot/recycling flows. |

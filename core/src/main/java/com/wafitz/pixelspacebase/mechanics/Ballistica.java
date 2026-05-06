@@ -24,6 +24,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.levels.Level;
+import com.wafitz.pixelspacebase.levels.Terrain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +109,7 @@ public class Ballistica {
 
             path.add(cell);
 
-            if ((stopTerrain && cell != sourcePos && Level.losBlocking[cell])
+            if ((stopTerrain && cell != sourcePos && Level.losBlocking[cell] && Dungeon.level.map[cell] != Terrain.OFFVENT)
                     || (cell != sourcePos && stopChars && Actor.findChar(cell) != null)
                     || (cell == to && stopTarget)) {
                 collide(cell);

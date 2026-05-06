@@ -76,6 +76,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 
 public class Workshop extends Painter {
 
@@ -139,13 +140,55 @@ public class Workshop extends Painter {
             areaStock.clear();
         }
 
+        boolean[] workshopCells = workshopCells(level);
+
         for (int key : level.heaps.keyArray()) {
             Heap heap = level.heaps.get(key);
-            if (heap != null && heap.type == Heap.Type.TO_MAKE && heap.items != null) {
+            if (heap != null
+                    && (heap.type == Heap.Type.TO_MAKE || heap.type == Heap.Type.HEAP && workshopCells[key])
+                    && heap.items != null) {
                 areaStock.addAll(heap.items);
                 heap.destroy();
             }
         }
+    }
+
+    private static boolean[] workshopCells(Level level) {
+        boolean[] cells = new boolean[level.length()];
+        int start = -1;
+
+        for (Mob mob : level.mobs) {
+            if (mob instanceof MakerBot || mob instanceof ArpTrader) {
+                start = mob.pos;
+                break;
+            }
+        }
+
+        if (start == -1) {
+            return cells;
+        }
+
+        LinkedList<Integer> queue = new LinkedList<>();
+        cells[start] = true;
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            int cell = queue.removeFirst();
+            for (int offset : PathFinder.NEIGHBOURS4) {
+                int next = cell + offset;
+                if (!level.insideMap(next) || cells[next] || !isWorkshopFloor(level.map[next])) {
+                    continue;
+                }
+                cells[next] = true;
+                queue.add(next);
+            }
+        }
+
+        return cells;
+    }
+
+    private static boolean isWorkshopFloor(int tile) {
+        return tile == Terrain.EMPTY_SP || tile == Terrain.WATER;
     }
 
     private static ArrayList<Item> stockForCurrentDepth() {

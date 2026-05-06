@@ -23,7 +23,9 @@ package com.wafitz.pixelspacebase.actors.buffs;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Xenomorph;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.utils.GLog;
+import com.wafitz.pixelspacebase.windows.WndMessage;
 import com.watabou.utils.Bundle;
 
 public class XenoInfection extends Buff {
@@ -38,7 +40,10 @@ public class XenoInfection extends Buff {
             XenoInfection infection = Buff.affect(hero, XenoInfection.class);
             infection.turns = 0;
             infection.spend(TICK);
-            GLog.w(Messages.get(XenoInfection.class, "start"));
+            String message = Messages.get(XenoInfection.class, "start");
+            GLog.w(message);
+            GameScene.flash(0x000000);
+            GameScene.show(new WndMessage(message));
         }
     }
 
