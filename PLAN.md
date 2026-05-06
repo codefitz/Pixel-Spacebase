@@ -10,6 +10,14 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 4. Update this plan and any relevant docs after each batch.
 5. Build the core debug APK after code or asset changes.
 
+## Refactor / Naming Audit
+
+- [x] Add naming audit separating player-facing cleanup from inherited internal compatibility names.
+- [ ] Add compatibility wrappers or comments for intentionally retained legacy class names.
+- [ ] Decide whether to introduce a `RepairBlaster` wrapper around internal `EMP`.
+- [ ] Decide whether `ExperimentalTech` and `Script` package names should be migrated or left as internal compatibility names.
+- [ ] Audit old `SewerLevel`/Operations fallback resource keys and remove or mark them if unused.
+
 ## Suggestions
 
 - [x] Decide on a replacement concept for the King of Dwarves / floor 20 holodeck boss: rogue holodeck monarch with lethal hard-light retainers.
@@ -147,6 +155,7 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] Facehugger attacks now use the xeno infection latch without applying the old poison effect.
 - [x] Repair blaster includes repairable blocked terrain just beyond the beam collision point, so locked doors receive the override roll.
 - [x] Golden drone targeting no longer depends on whether the hero can see the drone's target.
+- [x] Naming audit added; stale player-facing blacksmith/bookshelf/stairs/caves/oldWarBot wording cleaned up where safe.
 - [x] Floor 20 boss player-facing text reframed as a rogue holodeck monarch with hologram retainers.
 - [x] Deep Containment terrain descriptions converted from lava/skulls/books to containment fluid, growths, specimen pillars, and experiment logs.
 - [x] Yog-Dzewa player-facing text reframed as a bio-containment parasite blocking the evacuation spine.

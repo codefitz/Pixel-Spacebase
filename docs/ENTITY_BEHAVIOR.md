@@ -56,7 +56,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Bith Acolyte (`Guard`) | Former prison guard. Security adept with a force-pull rig; mechanically still pulls or pressures the player in combat. Sprite/chain visual still needs a later pass. |
 | Siphon Drone | Flying medical-drain drone that replenishes health when attacking. |
 | Yendor Shock Trooper | Heavy melee enemy with low-health combat-rig overclock. |
-| Facehugger (`Spinner`) | Former cave spinner. Uses web/poison mechanics as adhesive biofilament and paralytic toxin. Successful latches can infect the hero; if the infection runs its course it spawns a tougher xenomorph. |
+| Facehugger (`Spinner`) | Former cave spinner. Uses web behavior as adhesive biofilament. Successful latches infect the hero like an alien egg; if the infection runs its course it spawns a tougher xenomorph. |
 | Plasma Anomaly (`Elemental`) | Former fire elemental. Reactor/containment leak enemy with special damage flavor. |
 | Plasma Spark (`Newborn Elemental`) | Quest-related discharge source for plasma embers, now framed as a fresh containment leak. |
 | Jeda Knight (`Monk`) | Fast late-mid disciplined melee enemy. Text conversion is done; sprite remains future work. |
@@ -113,7 +113,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Dominator | Attempts to permanently dominate enemies; stronger against weakened targets and ineffective against bosses. |
 | Bio-Siphon Blaster (`VampiricBlaster`) | Former vampiric/hypnotise blaster. Now steals life from hostile living targets, healing the hero from actual HP removed. Still transfers hero life into allies or support effects, and disrupts undead without healing. |
 | Venom Blaster | Creates venom/toxic gas cloud at target area. |
-| EMP | Anti-machine/anti-tech style blaster with disabling utility. |
+| Repair Blaster (`EMP`) | Internal class remains `EMP`. Repair beam fixes compatible terrain, forces locks with an open-or-jam roll, repairs allied machines, and damages hostile machine enemies. |
 | Malfunctioning Blaster | Chaotic blaster that can randomly produce many effects, including harmful ones. |
 
 ## Notable Artifacts and Utility Items
