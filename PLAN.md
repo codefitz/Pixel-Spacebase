@@ -62,11 +62,11 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] Replace EMP blaster with a repair blaster, the repair blaster can transform traps to light, fix broken doors/blocked doors, has high hit points on robots and machines but does nothing to beings.
 - [x] Repair blaster has a chance to unlock chests and doors, but also has a chance to break the lock permenantly (warn player with % chance - higher skill greater chance).
 - [x] Loader armor should be fireproof
-- [ ] Repair blaster doesn't attempt door locks - needs to have a % chance of successfully open or break (warn player)
-- [ ] Repair blaster doesn't work on siphon drone.
-- [ ] Repair blaster doesn't work on replicator swarm.
-- [ ] Golden drone doesn't move - just sits there.
-- [ ] The alien facehugger mechanic ddoesn't seem to work - it still does paralaysis effect.
+- [x] Repair blaster attempts door locks with a warned percent chance to open or jam them.
+- [x] Repair blaster works on siphon drones.
+- [x] Repair blaster works on replicator swarms.
+- [x] Golden drone uses its own short-range sensor instead of hero field-of-view when pursuing targets.
+- [x] Alien facehugger latch no longer applies the old poison/paralysis-style effect.
 
 ## Cosmetic / Narrative
 
@@ -143,6 +143,10 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] Floor 20 terminal reframed the boss room as Holodeck Control with a failed monarch hard-light scenario.
 - [x] Remaining lower-engineering and final-workshop terminal tips converted from inherited dungeon hints into station notices.
 - [x] Floor 26 evacuation cradle, escape pod override action, and victory scene now frame the finale as launching the last working escape pod.
+- [x] Siphon drones and replicator swarms tagged as machine enemies for repair blaster damage.
+- [x] Facehugger attacks now use the xeno infection latch without applying the old poison effect.
+- [x] Repair blaster includes repairable blocked terrain just beyond the beam collision point, so locked doors receive the override roll.
+- [x] Golden drone targeting no longer depends on whether the hero can see the drone's target.
 - [x] Floor 20 boss player-facing text reframed as a rogue holodeck monarch with hologram retainers.
 - [x] Deep Containment terrain descriptions converted from lava/skulls/books to containment fluid, growths, specimen pillars, and experiment logs.
 - [x] Yog-Dzewa player-facing text reframed as a bio-containment parasite blocking the evacuation spine.

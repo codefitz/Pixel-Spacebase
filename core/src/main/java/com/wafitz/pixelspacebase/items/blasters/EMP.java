@@ -111,6 +111,23 @@ public class EMP extends Blaster {
         }
     }
 
+    private boolean isRepairableTerrain(int cell) {
+        if (!Dungeon.level.insideMap(cell)) {
+            return false;
+        }
+        switch (Dungeon.level.map[cell]) {
+            case Terrain.VENT:
+            case Terrain.HIDDEN_VENT:
+            case Terrain.OFFVENT:
+            case Terrain.LOCKED_DOOR:
+            case Terrain.BARRICADE:
+            case Terrain.BOOKSHELF:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     private boolean repairHeap(Heap heap) {
         if (heap == null || (heap.type != Heap.Type.LOCKED_CHEST && heap.type != Heap.Type.CRYSTAL_CHEST)) {
             return false;
@@ -256,6 +273,12 @@ public class EMP extends Blaster {
             affectedCells.add(c);
         }
         affectedCells.add(bolt.collisionPos);
+        if (bolt.dist + 1 < bolt.path.size()) {
+            int blockedCell = bolt.path.get(bolt.dist + 1);
+            if (isRepairableTerrain(blockedCell)) {
+                affectedCells.add(blockedCell);
+            }
+        }
 
         MagicMissile.whiteLight(curUser.sprite.parent, bolt.sourcePos, bolt.path.get(dist), callback);
 

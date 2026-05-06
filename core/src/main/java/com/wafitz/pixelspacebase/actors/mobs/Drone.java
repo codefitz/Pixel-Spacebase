@@ -149,6 +149,14 @@ public class Drone extends Mob {
     }
 
     @Override
+    protected boolean seesEnemy(Char enemy) {
+        return enemy != null
+                && enemy.isAlive()
+                && enemy.invisible <= 0
+                && Dungeon.level.distance(pos, enemy.pos) <= viewDistance;
+    }
+
+    @Override
     protected boolean getCloser(int target) {
         if (Dungeon.level.mines.get(target) != null) {
             return super.getCloser(target);

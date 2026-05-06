@@ -73,7 +73,7 @@ class Spinner extends Mob {
         boolean result = super.act();
 
         if (state == FLEEING && buff(Terror.class) == null &&
-                enemy != null && enemySeen && enemy.buff(Poison.class) == null) {
+                enemy != null && enemySeen && enemy.buff(XenoInfection.class) == null) {
             state = HUNTING;
         }
         return result;
@@ -82,7 +82,6 @@ class Spinner extends Mob {
     @Override
     public int attackProc(Char enemy, int damage) {
         if (Random.Int(2) == 0) {
-            Buff.affect(enemy, Poison.class).set(Random.Int(7, 9) * Poison.durationFactor(enemy));
             if (enemy instanceof Hero) {
                 XenoInfection.infectStrong((Hero) enemy);
             }
