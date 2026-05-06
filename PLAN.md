@@ -26,22 +26,30 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] Decide floor 26 finale choice: launch the escape pod immediately, or stay on the station with the override for optional future objectives.
 - [x] Decide whether the workshop should become a fixed room template before adding more workbench mechanics: yes, use a fixed interior template inside generated workshop rooms before adding upgrade/storage benches.
 
+## Next Recommended Batches
+
+- [ ] Workshop foundation: make workshop rooms use the same size/layout, then add reusable storage chests and the Chief Engineer-style upgrade bench.
+- [ ] Y / Holodeck quest: have Y send the player after rogue holograms, then add hologram emitter drops as the quest/reward loop.
+- [ ] Lighting and powered-floor pass: finish the spent floor-lighting visual, then decide whether room lighting and breaker resets should replace most floor lights.
+- [ ] Area visual pass: batch sprites and terrain tiles by area so security, lower engineering, command-sector, and Deep Containment art changes stay coherent.
+- [ ] Endgame rescue pass: connect the floor 26 override twist to protectable NPCs, sealed rescue cradles, and the optional stabilize-the-ship route.
+
 ## Sprites
 
 - [ ] Replicator Swarm sprite to be updated.
 - [ ] Loader armour sprite could do with a makeover.
-- [ ] Tengu: keep as an assassin but update sprite to futuristic.
+- [x] Tengu: keep as an assassin but update sprite to futuristic.
 - [ ] Holodeck Monarch / floor 20 boss sprite needs a sci-fi or holodeck-relative replacement.
 - [ ] Skeleton sprite still needs updating to a suitably sci-fi enemy.
 - [ ] Thief sprite should look like a Jawa-style scavenger.
-- [ ] Guard sprite should become a Bith-style apprentice; remove or replace the chain visual with force-pull styling.
+- [x] Guard sprite should become a Bith-style apprentice; remove or replace the chain visual with force-pull styling.
 - [ ] Spinner sprite should become a little facehugger.
 - [ ] Monk sprite should become a Jeda Knight.
 - [ ] Senior sprite should become a Jeda Master.
 
 ## Tiles
 
-- [ ] Prison / security block tiles should match a futuristic spaceship detention area.
+- [x] Prison / security block tiles should match a futuristic spaceship detention area.
 - [ ] Lower Engineering / caves tiles need a lower engineering aesthetic.
 - [ ] City / command-sector tiles need a Star Trek TNG-style pass.
 - [x] Ladder tiles swapped so the previous-deck entrance and next-deck exit use the correct visual frames.
