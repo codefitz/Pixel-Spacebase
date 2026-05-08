@@ -1,4 +1,5 @@
 # Pixel Spacebase Plan
+# Targeted Release: v1.0.1
 
 This plan is organized by the kind of work needed next. Use it as the active backlog, then move completed work to the done section with a short note about what changed.
 
@@ -40,18 +41,18 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [ ] Loader armour sprite could do with a makeover.
 - [x] Tengu: keep as an assassin but update sprite to futuristic.
 - [ ] Holodeck Monarch / floor 20 boss sprite needs a sci-fi or holodeck-relative replacement.
-- [ ] Skeleton sprite still needs updating to a suitably sci-fi enemy.
+- [ ] Ruptured crew suit / old Skeleton sprite still needs updating to a suitably sci-fi enemy.
 - [ ] Thief sprite should look like a Jawa-style scavenger.
 - [x] Guard sprite should become a Bith-style apprentice; remove or replace the chain visual with force-pull styling.
 - [ ] Spinner sprite should become a little facehugger.
-- [ ] Monk sprite should become a Jeda Knight.
+- [ ] Jeda Knight / old Monk sprite should become a Jeda Knight.
 - [ ] Senior sprite should become a Jeda Master.
 
 ## Tiles
 
-- [x] Prison / security block tiles should match a futuristic spaceship detention area.
-- [ ] Lower Engineering / caves tiles need a lower engineering aesthetic.
-- [ ] City / command-sector tiles need a Star Trek TNG-style pass.
+- [x] Security Block tiles should match a futuristic spaceship detention area.
+- [ ] Lower Engineering tiles need a lower engineering aesthetic.
+- [ ] Habitation / Command Sector tiles need a Star Trek TNG-style pass.
 - [x] Ladder tiles swapped so the previous-deck entrance and next-deck exit use the correct visual frames.
 - [x] VENT should visually convert to a spent powered plate after triggering, rather than disappearing into plain floor.
 - [x] INACTIVE_VENT now stays off permanently after traps/floor-lighting are spent.
@@ -60,7 +61,7 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 
 ## Mechanics
 
-- [x] Prison / security levels should use mostly locked doors, with one super key on each level.
+- [x] Security Block levels should use mostly locked doors, with one super key on each level.
 - [x] Y should send the player to take down rogue holograms from the holodeck, with hologram emitters as drops.
 - [x] After the floor 10 boss is defeated, Y should pop in, trigger the level change, tease the player, then disappear after the hero moves with: "We shall meet again if you survive".
 - [x] Player-dropped items in workshop rooms now carry forward with workshop stock inside the same area.
@@ -193,7 +194,7 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] Stepping on the egg doesn't black out before "ugh, what happened"
 - [x] One of the badges comes up "No Text Found" after applying a gene mod
 
-# Ideas (not to implement yet)
+# v1.0.2 Ideas (not to implement yet)
 
 - [ ] Torch - permanent item with battery pickups
 - [ ] Spacesuit needed for spacewalk (captain, commander)
@@ -206,3 +207,5 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [ ] Tech and biogenetics reorganised to defensive (apply to player) vs offensive (used as weapon/action) - have generic storage icon that is opened up and then reveals what it is.
 - [ ] Add NPCs that need protection. End game player leaves on escape pod or goes back to stablise ship so NPCs can be rescued
 - [ ] A cat that will follow the adventurer. Sign warning "Do not pet the cat".
+- [ ] Renaming plan: Dungeon, King, Skeleton, DdarkLordGnoll, PrisonLevel, CavesLevel etc...
+- [ ] Replace garden with one-square booth - healing tank sort of thing.

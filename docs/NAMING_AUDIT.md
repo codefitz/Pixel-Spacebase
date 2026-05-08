@@ -59,4 +59,4 @@ These should be done one at a time with a build after each:
 
 ## Immediate Audit Result
 
-The biggest remaining naming debt is not player-facing text; it is internal compatibility naming. The safest next refactor is to add explicit compatibility notes and small wrapper names around high-value concepts, then slowly migrate isolated systems.
+The biggest remaining naming debt is not player-facing text; it is internal compatibility naming. The latest pass cleaned up additional live resource strings around ghost/projection rewards, subclass labels, Yendor warlord wording, keycard/chest copy, bio-siphon/lazer descriptions, and area docs. The safest next refactor is still to add explicit compatibility notes and small wrapper names around high-value concepts, then slowly migrate isolated systems.

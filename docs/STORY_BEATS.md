@@ -53,7 +53,7 @@ Resolved story note:
 - The boss is a colleague from the station's shapeshifter crew, driven unstable by identity loss rather than simple monster rage.
 - The restored static shapeshifter sprite now represents a person briefly recovered from the collapse.
 
-### Floors 6-9: Prison / Security Block
+### Floors 6-9: Security Block
 
 Current chapter text now frames this area as Pixel Spacebase's Security Block, a sealed detention and confiscated-weapons sector where guards, prisoners, and automated defenses turned on each other during the breach.
 
@@ -67,7 +67,7 @@ Key note:
 
 - A sign from Warden Smith tells Thomas to check Tengu's cell and flee, warning that soon nobody will be able to leave.
 
-### Floor 10: Prison Boss
+### Floor 10: Security Boss
 
 Boss: Tengu.
 
@@ -82,7 +82,7 @@ Resolved story note:
 
 - "Free at last" means death: Tengu treats dying as the only release left from confinement.
 
-### Floors 11-14: Lower Engineering / Caves
+### Floors 11-14: Lower Engineering
 
 Current chapter text now frames this area as Lower Engineering: reactor conduits, abandoned excavation tunnels, coolant lines, and old service routes beneath the detention decks.
 
@@ -117,22 +117,22 @@ Open story need:
 
 - Decide why this unit treats the player as unauthorized despite their class identity.
 
-### Floors 16-19: City / Habitation or Command Sector
+### Floors 16-19: Habitation and Command Sector
 
 Current chapter text, terminal copy, and terrain descriptions now frame this area as the Habitation and Command Sector: crew quarters, civic decks, command offices, and simulation suites overrun by old command systems, rogue holograms, raiders, and defense machines.
 
 Primary story function:
 
 - Show that the breach is older and stranger than a simple xenomorph infestation.
-- Introduce advanced raiders, warlocks, war machines, and the unresolved command-court theme.
+- Introduce advanced raiders, signal witches, war machines, and the unresolved command-court theme.
 - Bring in Y, formerly Arp internally, as an overt side-quest/game-aware figure.
 
 Current side content:
 
-- Y asks the player to kill war machines or Jeda Knights and rewards completion through anomaly tokens.
+- Y asks the player to recover hologram emitters from the Holodeck Monarch's hard-light retainers and rewards completion through a module.
 - Y appears to understand the game layer, directly addresses the player, and comments on systems such as inventory, badges, rankings, and quest tracking.
 
-### Floor 20: City Boss
+### Floor 20: Holodeck Control Boss
 
 Boss: Holodeck Monarch.
 
@@ -278,7 +278,7 @@ Story role:
 
 ## Current Continuity Gaps
 
-- Prison, caves, city, and halls chapter text now use sci-fi framing; individual tiles, enemies, and boss lore in those areas still need follow-up conversion.
+- Security Block, Lower Engineering, Habitation/Command, and Deep Containment chapter text now use sci-fi framing; individual tiles, enemies, and boss lore in those areas still need follow-up conversion.
 - The Amulet item has player-facing escape pod override text, but surrounding code/class names and any remaining end-game assumptions may still need cleanup.
 - Yendor remains a raider faction and may still appear in inherited story/item names outside the updated end artifact text.
 - DM-300 is the unstable floor-15 boss machine; DM-3000 is the playable robot class brought back into service after that encounter.
