@@ -19,7 +19,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Hologram Distress Call | Princess Pixel of Yendor projection. Gives one of several optional hunt quests: evolved xenomorph, Dark Lord of Yendor, or armored maintenance crawler. Rewards the player after completion. |
 | Quartermaster | Formerly Old Gunsmith internally. Requests a specific material or quest item, then offers blaster rewards. Reinforces the station reclamation/resistance theme. |
 | Maker Bench | Wall-mounted workshop matter-recycling station. Can break items down into parts. Internally still uses the MakerBot interaction flow. |
-| Y | Optional meta/anomaly quest NPC. Formerly Arp internally. Addresses the player directly, references game systems, asks for war-machine or Jeda Knight kills, and trades anomaly tokens for a reward. Also appears as a brief floor 10 interlude after Tengu is defeated, then vanishes once the hero moves. |
+| Y | Optional meta/anomaly quest NPC. Formerly Arp internally. Addresses the player directly, references game systems, asks the player to recover hologram emitters from the Holodeck Monarch's hard-light retainers, and trades them for a reward. Also appears as a brief floor 10 interlude after Tengu is defeated, then vanishes once the hero moves. |
 | Y Trader | Follow-up/trader variant of Y. Formerly Arp Trader internally. Acknowledges survival with the same game-aware tone. |
 | Queen Xenomorph | Nonstandard xenomorph personality/encounter. Implied cause of excessive xenomorph breeding on Pixel Spacebase. |
 | Weak Clone | Temporary allied clone created by tech. Distracts and attacks enemies but is fragile. |
@@ -84,13 +84,13 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Gene Mods (`ExperimentalTech`) | Former potion-like system. Single-use biological/tech effects such as healing, strength, invisibility, toxic payloads, security override, cryogenics, and other enhancements. Regen Gene Mod cures alien egg infection. |
 | Tech (`Script`) | Former scroll-like system. Single-use technology effects such as identify, mapping, upgrade, recharging, teleport, cloning, terror/pheromone, fix, and other utility effects. |
 | Blasters | Rechargeable ranged weapons with charge counts. Each blaster has a distinct projectile/effect and can be used by DM-3000 launcher mechanics. |
-| Floor lighting | Unpowered floor lighting activates when any non-flying character stands on it; it still uses normal press handling for traps and mines. Spent trap/floor-lighting tiles become inactive and stay off permanently. |
+| Floor lighting | Unpowered floor lighting activates when any non-flying character stands on it; it still uses normal press handling for traps and mines. Spent trap/floor-lighting tiles become inactive, stay off permanently, and remain visible as spent powered plates. |
 | Projectile pathing | Missiles and thrown items can cross unpowered floor lighting even though it still blocks sight until activated. |
 | Weapons | Melee and missile weapons with tiers, upgrades, malfunctions, and enhancements. |
 | Armor | Defensive equipment with strength requirements, upgrades, malfunctions, and enhancements. |
 | Modules | Ring-like equipment that modifies combat or utility stats. Can malfunction. |
 | Artifacts | Unique charge/progression items with special mechanics, such as stealth, gravity control, time manipulation, alien DNA, recycling, and YendorTech shield behavior. |
-| Workshops | Workshop stock carries forward within the same area. Player-dropped normal heaps inside the workshop room now carry forward with that stock instead of being left behind on the old floor. The next workshop mechanics should assume a fixed interior template inside generated workshop rooms, so benches and storage can occupy predictable cells without requiring a broader room-generation rewrite. |
+| Workshops | Ordinary workshop stock is random per floor and stays on that floor. Special support items such as backpack-modifier containers and Time Folder batteries carry forward within the same area if left in the workshop. Player-dropped normal heaps inside the workshop room carry forward into reusable workshop storage chests instead of being left behind on the old floor. Generated workshop rooms paint a fixed interior template with a Maker Bench, storage chests, and a Chief Engineer-style upgrade bench for merging two compatible upgradeable items. |
 | Containers | Inventory sub-containers such as backpack-style storage, Bionetics gene-mod storage, and blaster holster. |
 | Mines / Devices | Placeable or environmental charges. Can be triggered from floors, fabricated, combined, or cleared by drones. |
 | Parts | Currency/material used in workshops and Maker-Bot/recycling flows. |
@@ -145,6 +145,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Containment Ash (`CorpseDust`) | Sealed hostile residue quest item with residual anomaly flavor. |
 | Bio-Charge Core / Rotberry Mine Charge | Organic/device quest ingredient tied to the Quartermaster and Fabricator systems. |
 | Hunter Disc | Captain starter/ranged identity weapon. |
+| Hologram Emitter (`DwarfToken`) | Internal class remains `DwarfToken` for save compatibility. Drops from the Holodeck Monarch's hard-light retainers after Y gives the objective, and can be traded back to Y for the quest reward. |
 | Darts / Hunter's Dart | Missile-weapon family still earmarked for stronger sci-fi naming/art in earlier conversion work. |
 | Bomb | Explosive utility item. |
 | Mobile Turret | Deployable/mobile weapon concept, now intended as station tech rather than spirit magic. |

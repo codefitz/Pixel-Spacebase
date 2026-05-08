@@ -168,13 +168,7 @@ public class Dungeon {
         quickslot.reset();
         QuickSlotButton.reset();
 
-        //depth = 0;
-        //parts = 0;
-
-        // TEMP DEV TESTING - REMOVE BEFORE RELEASE:
-        // Starts new hero test runs on depth 6 with plenty of parts for shop testing.
-        // newLevel() increments depth before creating the level, so seed depth 5 here.
-        depth = 4;
+        depth = 0;
         parts = 20000;
 
         droppedItems = new SparseArray<>();

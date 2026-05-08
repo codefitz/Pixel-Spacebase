@@ -28,9 +28,9 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 
 ## Next Recommended Batches
 
-- [ ] Workshop foundation: make workshop rooms use the same size/layout, then add reusable storage chests and the Chief Engineer-style upgrade bench.
-- [ ] Y / Holodeck quest: have Y send the player after rogue holograms, then add hologram emitter drops as the quest/reward loop.
-- [ ] Lighting and powered-floor pass: finish the spent floor-lighting visual, then decide whether room lighting and breaker resets should replace most floor lights.
+- [x] Workshop foundation: add the Chief Engineer-style upgrade bench to the fixed workshop layout.
+- [x] Y / Holodeck quest: have Y send the player after rogue holograms, then add hologram emitter drops as the quest/reward loop.
+- [x] Lighting and powered-floor pass: spent floor-lighting now leaves a visible powered-plate overlay; keep room lighting and breaker resets as a separate future mechanic rather than replacing most floor lights now.
 - [ ] Area visual pass: batch sprites and terrain tiles by area so security, lower engineering, command-sector, and Deep Containment art changes stay coherent.
 - [ ] Endgame rescue pass: connect the floor 26 override twist to protectable NPCs, sealed rescue cradles, and the optional stabilize-the-ship route.
 
@@ -53,7 +53,7 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [ ] Lower Engineering / caves tiles need a lower engineering aesthetic.
 - [ ] City / command-sector tiles need a Star Trek TNG-style pass.
 - [x] Ladder tiles swapped so the previous-deck entrance and next-deck exit use the correct visual frames.
-- [ ] VENT should visually convert to an electric charge / spent powered plate after triggering, rather than a colored vent.
+- [x] VENT should visually convert to a spent powered plate after triggering, rather than disappearing into plain floor.
 - [x] INACTIVE_VENT now stays off permanently after traps/floor-lighting are spent.
 - [x] SIGN renamed to terminal.
 - [ ] WATER needs a sci-fi aesthetic per area while keeping current gameplay properties.
@@ -61,7 +61,7 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 ## Mechanics
 
 - [x] Prison / security levels should use mostly locked doors, with one super key on each level.
-- [ ] Y should send the player to take down rogue holograms from the holodeck, with hologram emitters as drops.
+- [x] Y should send the player to take down rogue holograms from the holodeck, with hologram emitters as drops.
 - [x] After the floor 10 boss is defeated, Y should pop in, trigger the level change, tease the player, then disappear after the hero moves with: "We shall meet again if you survive".
 - [x] Player-dropped items in workshop rooms now carry forward with workshop stock inside the same area.
 - [x] Add an option to open and scroll the full log.
@@ -70,8 +70,9 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] Floor lighting now lights up when non-flying characters stand on it, while trap/floor-lighting activation still runs through normal press handling.
 - [x] Missiles and thrown items can cross unpowered floor lighting without treating it as projectile-blocking terrain.
 - [x] Turn the Maker-Bot into a workbench and anchor it to a wall.
-- [ ] Make the workshop the same size and layout for each area.
-- [ ] Add another workshop bench inspired by the Chief Engineer that lets the player combine items to upgrade.
+- [x] Make the workshop the same size and layout for each area.
+- [x] Add reusable storage chests to the fixed workshop layout.
+- [x] Add another workshop bench inspired by the Chief Engineer that lets the player combine items to upgrade.
 - [x] Spinner / facehugger should latch like the alien egg and spawn a stronger xeno if it succeeds.
 - [x] Search options include a 'search' button, so if you're near something of interest but are checking walls, you can still just check the wall.
 - [x] McGyver should just break the item if it fails, not dissapear everything in the workshop.
@@ -104,7 +105,7 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] The target for blasters is in the shape of a gun, it should just be a crosshair.
 - [x] Text slightly overlaps dialogue boxes; quick layout padding added while a future graphic pass can make the frame look like futuristic floating touchscreen glass.
 - [x] Maker Bench is wall-anchored and uses static bench behavior/sprite animation instead of NPC-facing idle motion.
-- [ ] Add track lockdown.mp4 to security levels.
+- [x] Add track lockdown.mp4 to security levels.
 - [x] Where tengu says let's make this interesting - change this to the disembodied voice of Y.
 - [x] "We shall meet again..." should be Y, not alien.
 - [x] After DM300 (why did they may me so angry), hero can say "We can rebuild him, we have the technology..."
@@ -201,6 +202,7 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [x] DM3000 has permanent light
 - [x] DM3000 doesn't require food
 - [ ] Rooms light up on entry, do away with floor lights. Some levels need to reset the breaker to activate lights
-- [ ] Workshop has reusable chests where items can be stored (any not stored remain on level)
+- [x] Workshop has reusable chests where items can be stored.
 - [ ] Tech and biogenetics reorganised to defensive (apply to player) vs offensive (used as weapon/action) - have generic storage icon that is opened up and then reveals what it is.
 - [ ] Add NPCs that need protection. End game player leaves on escape pod or goes back to stablise ship so NPCs can be rescued
+- [ ] A cat that will follow the adventurer. Sign warning "Do not pet the cat".

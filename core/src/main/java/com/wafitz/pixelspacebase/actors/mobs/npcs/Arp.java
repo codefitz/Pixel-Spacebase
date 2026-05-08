@@ -24,9 +24,8 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.mobs.Golem;
+import com.wafitz.pixelspacebase.actors.mobs.King;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.actors.mobs.Monk;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.quest.DwarfToken;
@@ -40,6 +39,8 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Arp extends NPC {
+
+    private static final int REQUIRED_EMITTERS = 6;
 
     {
         spriteClass = ImpSprite.class;
@@ -91,16 +92,14 @@ public class Arp extends NPC {
         if (Quest.given) {
 
             DwarfToken tokens = Dungeon.hero.belongings.getItem(DwarfToken.class);
-            if (tokens != null && (tokens.quantity() >= 8 || (!Quest.alternative && tokens.quantity() >= 6))) {
+            if (tokens != null && tokens.quantity() >= REQUIRED_EMITTERS) {
                 GameScene.show(new WndArp(this, tokens));
             } else {
-                tell(Quest.alternative ?
-                        Messages.get(this, "monks_2", Dungeon.hero.givenName())
-                        : Messages.get(this, "golems_2", Dungeon.hero.givenName()));
+                tell(Messages.get(this, "golems_2", Dungeon.hero.givenName()));
             }
 
         } else {
-            tell(Quest.alternative ? Messages.get(this, "monks_1", Dungeon.hero.givenName()) : Messages.get(this, "golems_1", Dungeon.hero.givenName()));
+            tell(Messages.get(this, "golems_1", Dungeon.hero.givenName()));
             Quest.given = true;
             Quest.completed = false;
 
@@ -187,7 +186,7 @@ public class Arp extends NPC {
                 level.mobs.add(npc);
 
                 spawned = true;
-                alternative = Random.Int(2) == 0;
+                alternative = false;
 
                 given = false;
 
@@ -201,10 +200,21 @@ public class Arp extends NPC {
 
         public static void process(Mob mob) {
             if (spawned && given && !completed) {
-                if ((alternative && mob instanceof Monk) ||
-                        (!alternative && mob instanceof Golem)) {
-
+                if (mob instanceof King.Undead) {
                     Dungeon.level.drop(new DwarfToken(), mob.pos).sprite.drop();
+                }
+            }
+        }
+
+        public static void processMonarchDefeat(int pos) {
+            if (spawned && given && !completed) {
+                int missing = REQUIRED_EMITTERS;
+                DwarfToken tokens = Dungeon.hero.belongings.getItem(DwarfToken.class);
+                if (tokens != null) {
+                    missing -= tokens.quantity();
+                }
+                if (missing > 0) {
+                    Dungeon.level.drop(new DwarfToken().quantity(missing), pos).sprite.drop();
                 }
             }
         }

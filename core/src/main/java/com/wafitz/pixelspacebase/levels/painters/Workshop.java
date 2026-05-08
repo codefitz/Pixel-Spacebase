@@ -70,9 +70,11 @@ import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.mines.Mine;
+import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,43 +82,48 @@ import java.util.LinkedList;
 
 public class Workshop extends Painter {
 
-    private static int pasWidth;
-    private static int pasHeight;
+    private static final int TEMPLATE_WIDTH = 8;
+    private static final int TEMPLATE_HEIGHT = 7;
+    private static final int TEMPLATE_CAPACITY = (TEMPLATE_WIDTH - 1) * (TEMPLATE_HEIGHT - 1);
 
     private static ArrayList<Item> itemsToSpawn;
-    private static ArrayList<Item> areaStock;
+    private static ArrayList<Item> carriedStock;
+    private static ArrayList<Item> storedItems;
     private static int stockArea = -1;
     private static int stockDepth = -1;
+    private static int storedArea = -1;
 
     public static void paint(Level level, Room room) {
 
         fill(level, room, Terrain.WALL);
-        fill(level, room, 1, Terrain.EMPTY_SP);
 
-        pasWidth = room.width() - 2;
-        pasHeight = room.height() - 2;
-        int per = pasWidth * 2 + pasHeight * 2;
+        Rect workshop = fixedWorkshop(room);
+        fill(level, workshop, 1, Terrain.EMPTY_SP);
+        for (Room.Door door : room.connected.values()) {
+            carveAccessPath(level, room, workshop, door);
+        }
 
         itemsToSpawn = stockForCurrentDepth();
 
-        int pos = xy2p(room, room.entrance()) + (per - itemsToSpawn.size()) / 2;
+        int makerPos = makerBotPosition(level, workshop);
+        int[] storageCells = storageCells(level, workshop);
+        int upgradePos = upgradeBenchPosition(level, workshop);
+        ArrayList<Integer> itemCells = itemCells(level, workshop, makerPos, upgradePos, storageCells);
+        trimStockToFit(itemCells.size());
+        int pos = itemStartIndex(level, itemCells, room.entrance());
         for (Item item : itemsToSpawn) {
 
-            Point xy = p2xy(room, (pos + per) % per);
-            int cell = xy.x + xy.y * level.width();
-
-            if (level.heaps.get(cell) != null) {
-                do {
-                    cell = level.pointToCell(room.random());
-                } while (level.heaps.get(cell) != null);
-            }
+            int cell = itemCells.get(pos % itemCells.size());
 
             level.drop(item, cell).type = Heap.Type.TO_MAKE;
 
             pos++;
         }
+        carriedStock.clear();
 
-        placeMakerBot(level, room);
+        placeStorageChests(level, storageCells);
+        placeUpgradeBench(level, upgradePos);
+        placeMakerBot(level, makerPos);
 
         for (Room.Door door : room.connected.values()) {
             door.set(Room.Door.Type.REGULAR);
@@ -129,28 +136,94 @@ public class Workshop extends Painter {
             return;
         }
 
+        prepareCarriedStock(Dungeon.depth);
         int area = areaForDepth(Dungeon.depth);
-        if (area != stockArea) {
-            areaStock = new ArrayList<>();
-            stockArea = area;
-            stockDepth = Dungeon.depth;
-        } else if (areaStock == null) {
-            areaStock = new ArrayList<>();
+
+        if (area != storedArea) {
+            storedItems = new ArrayList<>();
+            storedArea = area;
+        } else if (storedItems == null) {
+            storedItems = new ArrayList<>();
         } else {
-            areaStock.clear();
+            storedItems.clear();
         }
 
         boolean[] workshopCells = workshopCells(level);
+        boolean[] storageCells = storageCells(level);
 
         for (int key : level.heaps.keyArray()) {
             Heap heap = level.heaps.get(key);
-            if (heap != null
-                    && (heap.type == Heap.Type.TO_MAKE || heap.type == Heap.Type.HEAP && workshopCells[key])
-                    && heap.items != null) {
-                areaStock.addAll(heap.items);
+            if (heap == null || heap.items == null) {
+                continue;
+            }
+
+            if (heap.type == Heap.Type.TO_MAKE) {
+                for (Item item : heap.items.toArray(new Item[0])) {
+                    if (carriesToNextWorkshop(item)) {
+                        carriedStock.add(item);
+                        heap.items.remove(item);
+                    }
+                }
+                if (heap.isEmpty()) {
+                    heap.destroy();
+                } else if (heap.sprite != null) {
+                    heap.sprite.view(heap.image(), heap.glowing());
+                }
+            } else if (heap.type == Heap.Type.WORKSHOP_STORAGE) {
+                storedItems.addAll(heap.items);
+                heap.items.clear();
+                if (heap.sprite != null) {
+                    heap.sprite.view(heap.image(), heap.glowing());
+                }
+            } else if (heap.type == Heap.Type.HEAP && workshopCells[key]) {
+                storedItems.addAll(heap.items);
                 heap.destroy();
             }
         }
+    }
+
+    public static void deliverStorageTo(Level level) {
+        if (level == null || level.heaps == null || storedItems == null || storedItems.isEmpty()) {
+            return;
+        }
+        if (storedArea != areaForDepth(Dungeon.depth)) {
+            storedItems.clear();
+            return;
+        }
+
+        ArrayList<Integer> cells = new ArrayList<>();
+        for (int key : level.heaps.keyArray()) {
+            Heap heap = level.heaps.get(key);
+            if (heap != null && heap.type == Heap.Type.WORKSHOP_STORAGE) {
+                cells.add(key);
+            }
+        }
+
+        if (cells.isEmpty()) {
+            boolean[] storageCells = storageCells(level);
+            for (int cell = 0; cell < storageCells.length; cell++) {
+                if (storageCells[cell]) {
+                    Heap heap = new Heap();
+                    heap.seen = Dungeon.visible[cell];
+                    heap.pos = cell;
+                    heap.type = Heap.Type.WORKSHOP_STORAGE;
+                    level.heaps.put(cell, heap);
+                    GameScene.add(heap);
+                    cells.add(cell);
+                }
+            }
+        }
+
+        if (cells.isEmpty()) {
+            return;
+        }
+
+        int index = 0;
+        for (Item item : storedItems) {
+            level.drop(item, cells.get(index % cells.size())).type = Heap.Type.WORKSHOP_STORAGE;
+            index++;
+        }
+        storedItems.clear();
     }
 
     private static boolean[] workshopCells(Level level) {
@@ -187,19 +260,64 @@ public class Workshop extends Painter {
         return cells;
     }
 
+    private static boolean[] storageCells(Level level) {
+        boolean[] workshopCells = workshopCells(level);
+        boolean[] storageCells = new boolean[level.length()];
+        int bottom = -1;
+
+        for (int cell = 0; cell < workshopCells.length; cell++) {
+            if (workshopCells[cell]) {
+                bottom = Math.max(bottom, cell / level.width());
+            }
+        }
+
+        if (bottom == -1) {
+            return storageCells;
+        }
+
+        int left = Integer.MAX_VALUE;
+        int right = -1;
+        for (int cell = 0; cell < workshopCells.length; cell++) {
+            if (workshopCells[cell] && cell / level.width() == bottom) {
+                left = Math.min(left, cell % level.width());
+                right = Math.max(right, cell % level.width());
+            }
+        }
+
+        storageCells[left + bottom * level.width()] = true;
+        storageCells[right + bottom * level.width()] = true;
+        return storageCells;
+    }
+
     private static boolean isWorkshopFloor(int tile) {
         return tile == Terrain.EMPTY_SP || tile == Terrain.WATER;
     }
 
     private static ArrayList<Item> stockForCurrentDepth() {
-        int area = areaForDepth(Dungeon.depth);
-        if (areaStock == null || stockArea != area || (areaStart(Dungeon.depth) && stockDepth != Dungeon.depth)) {
+        if (stockDepth != Dungeon.depth) {
+            prepareCarriedStock(Dungeon.depth);
             generateItems();
-            areaStock = itemsToSpawn;
-            stockArea = area;
+            itemsToSpawn.addAll(0, carriedStock);
             stockDepth = Dungeon.depth;
         }
-        return areaStock;
+        return itemsToSpawn;
+    }
+
+    private static void prepareCarriedStock(int depth) {
+        int area = areaForDepth(depth);
+        if (carriedStock == null || stockArea != area || areaStart(depth) && stockDepth != depth) {
+            carriedStock = new ArrayList<>();
+            stockArea = area;
+        }
+    }
+
+    private static ArrayList<Item> storageForCurrentDepth() {
+        int area = areaForDepth(Dungeon.depth);
+        if (storedItems == null || storedArea != area || areaStart(Dungeon.depth) && stockDepth != Dungeon.depth) {
+            storedItems = new ArrayList<>();
+            storedArea = area;
+        }
+        return storedItems;
     }
 
     private static int areaForDepth(int depth) {
@@ -208,6 +326,14 @@ public class Workshop extends Painter {
 
     private static boolean areaStart(int depth) {
         return depth == 1 || depth == 6 || depth == 11 || depth == 16 || depth == 21;
+    }
+
+    private static boolean carriesToNextWorkshop(Item item) {
+        return item instanceof DeviceCase
+                || item instanceof ScriptLibrary
+                || item instanceof XPort
+                || item instanceof BlasterHolster
+                || item instanceof TimeFolder.TimeBattery;
     }
 
     private static void generateItems() {
@@ -257,19 +383,13 @@ public class Workshop extends Painter {
 
 
         itemsToSpawn.add(new HealingTech());
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 2; i++)
             itemsToSpawn.add(Generator.random(Generator.Category.EXPERIMENTALTECH));
 
         itemsToSpawn.add(new IdentifyScript());
         itemsToSpawn.add(new FixScript());
         itemsToSpawn.add(new MappingScript());
         itemsToSpawn.add(Generator.random(Generator.Category.SCRIPT));
-
-        for (int i = 0; i < 2; i++)
-            itemsToSpawn.add(Random.Int(2) == 0 ?
-                    Generator.random(Generator.Category.EXPERIMENTALTECH) :
-                    Generator.random(Generator.Category.SCRIPT));
-
 
         itemsToSpawn.add(new SynthesizedFood());
         itemsToSpawn.add(new SynthesizedFood());
@@ -388,32 +508,165 @@ public class Workshop extends Painter {
     public static int spaceNeeded() {
         itemsToSpawn = stockForCurrentDepth();
 
-        //plus one for the shopkeeper
+        //plus one for the shopkeeper; stock is trimmed later so storage cells stay clear
         return itemsToSpawn.size() + 1;
     }
 
-    private static void placeMakerBot(Level level, Room room) {
+    public static boolean canHostFixedLayout(Room room) {
+        return (room.width() - 1) * (room.height() - 1) >= spaceNeeded();
+    }
 
-        ArrayList<Integer> candidates = new ArrayList<>();
+    private static Rect fixedWorkshop(Room room) {
+        int width;
+        int height;
+        if (room.width() >= TEMPLATE_WIDTH && room.height() >= TEMPLATE_HEIGHT) {
+            width = TEMPLATE_WIDTH;
+            height = TEMPLATE_HEIGHT;
+        } else if (room.width() >= TEMPLATE_HEIGHT && room.height() >= TEMPLATE_WIDTH) {
+            width = TEMPLATE_HEIGHT;
+            height = TEMPLATE_WIDTH;
+        } else {
+            width = room.width();
+            height = room.height();
+        }
+        int left = room.left + (room.width() - width) / 2;
+        int top = room.top + (room.height() - height) / 2;
+        return new Rect(left, top, left + width, top + height);
+    }
 
-        for (int y = room.top + 1; y < room.bottom; y++) {
-            for (int x = room.left + 1; x < room.right; x++) {
+    private static void carveAccessPath(Level level, Room room, Rect workshop, Point door) {
+        Point target = nearestInteriorPoint(workshop, door);
+        Point step = new Point();
+        if (door.x == room.left) {
+            step.set(+1, 0);
+        } else if (door.x == room.right) {
+            step.set(-1, 0);
+        } else if (door.y == room.top) {
+            step.set(0, +1);
+        } else {
+            step.set(0, -1);
+        }
+
+        Point p = new Point(door).offset(step);
+        while (p.x != target.x || p.y != target.y) {
+            set(level, p, Terrain.EMPTY_SP);
+            if (p.x < target.x) {
+                p.x++;
+            } else if (p.x > target.x) {
+                p.x--;
+            } else if (p.y < target.y) {
+                p.y++;
+            } else if (p.y > target.y) {
+                p.y--;
+            }
+        }
+        set(level, target, Terrain.EMPTY_SP);
+    }
+
+    private static Point nearestInteriorPoint(Rect workshop, Point point) {
+        return new Point(
+                Math.max(workshop.left + 1, Math.min(workshop.right - 1, point.x)),
+                Math.max(workshop.top + 1, Math.min(workshop.bottom - 1, point.y))
+        );
+    }
+
+    private static int makerBotPosition(Level level, Rect workshop) {
+        return (workshop.left + workshop.right) / 2 + (workshop.top + 1) * level.width();
+    }
+
+    private static int[] storageCells(Level level, Rect workshop) {
+        return new int[]{
+                workshop.left + 1 + (workshop.bottom - 1) * level.width(),
+                workshop.right - 1 + (workshop.bottom - 1) * level.width()
+        };
+    }
+
+    private static int upgradeBenchPosition(Level level, Rect workshop) {
+        return (workshop.left + workshop.right) / 2 + (workshop.bottom - 1) * level.width();
+    }
+
+    private static ArrayList<Integer> itemCells(Level level, Rect workshop, int makerPos, int upgradePos, int[] storageCells) {
+        ArrayList<Integer> cells = new ArrayList<>();
+        for (int y = workshop.top + 1; y < workshop.bottom; y++) {
+            for (int x = workshop.left + 1; x < workshop.right; x++) {
                 int cell = x + y * level.width();
-                if (level.heaps.get(cell) == null && level.map[cell] == Terrain.EMPTY_SP && touchesWall(level, cell)) {
-                    candidates.add(cell);
+                if (cell != makerPos && cell != upgradePos && !contains(storageCells, cell)) {
+                    cells.add(cell);
                 }
             }
         }
+        return cells;
+    }
 
-        int pos;
-        if (!candidates.isEmpty()) {
-            pos = Random.element(candidates);
-        } else {
-            do {
-                pos = level.pointToCell(room.random());
-            } while (level.heaps.get(pos) != null);
+    private static void placeStorageChests(Level level, int[] storageCells) {
+        ArrayList<Item> stored = storageForCurrentDepth();
+        for (int cell : storageCells) {
+            Heap heap = level.heaps.get(cell);
+            if (heap == null) {
+                heap = new Heap();
+                heap.seen = Dungeon.visible[cell];
+                heap.pos = cell;
+                heap.type = Heap.Type.WORKSHOP_STORAGE;
+                level.heaps.put(cell, heap);
+                GameScene.add(heap);
+            } else {
+                heap.type = Heap.Type.WORKSHOP_STORAGE;
+            }
         }
 
+        int index = 0;
+        for (Item item : stored) {
+            level.drop(item, storageCells[index % storageCells.length]).type = Heap.Type.WORKSHOP_STORAGE;
+            index++;
+        }
+    }
+
+    private static void placeUpgradeBench(Level level, int cell) {
+        Heap heap = level.heaps.get(cell);
+        if (heap == null) {
+            heap = new Heap();
+            heap.seen = Dungeon.visible[cell];
+            heap.pos = cell;
+            heap.type = Heap.Type.WORKSHOP_UPGRADE;
+            level.heaps.put(cell, heap);
+            GameScene.add(heap);
+        } else {
+            heap.type = Heap.Type.WORKSHOP_UPGRADE;
+        }
+    }
+
+    private static void trimStockToFit(int maxItems) {
+        while (itemsToSpawn.size() > maxItems) {
+            itemsToSpawn.remove(itemsToSpawn.size() - 1);
+        }
+    }
+
+    private static boolean contains(int[] cells, int cell) {
+        for (int c : cells) {
+            if (c == cell) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static int itemStartIndex(Level level, ArrayList<Integer> itemCells, Point entrance) {
+        int entranceCell = entrance.x + entrance.y * level.width();
+        int nearestIndex = 0;
+        int nearestDistance = Integer.MAX_VALUE;
+        for (int i = 0; i < itemCells.size(); i++) {
+            int cell = itemCells.get(i);
+            int distance = Math.abs(cell % level.width() - entranceCell % level.width())
+                    + Math.abs(cell / level.width() - entranceCell / level.width());
+            if (distance < nearestDistance) {
+                nearestDistance = distance;
+                nearestIndex = i;
+            }
+        }
+        return nearestIndex;
+    }
+
+    private static void placeMakerBot(Level level, int pos) {
         Mob makerbot = level instanceof LastWorkshopLevel ? new ArpTrader() : new MakerBot();
         makerbot.pos = pos;
         level.mobs.add(makerbot);
@@ -428,57 +681,4 @@ public class Workshop extends Painter {
         }
     }
 
-    private static boolean touchesWall(Level level, int cell) {
-        for (int offset : PathFinder.NEIGHBOURS4) {
-            int tile = level.map[cell + offset];
-            if (tile == Terrain.WALL || tile == Terrain.WALL_DECO) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static int xy2p(Room room, Point xy) {
-        if (xy.y == room.top) {
-
-            return (xy.x - room.left - 1);
-
-        } else if (xy.x == room.right) {
-
-            return (xy.y - room.top - 1) + pasWidth;
-
-        } else if (xy.y == room.bottom) {
-
-            return (room.right - xy.x - 1) + pasWidth + pasHeight;
-
-        } else {
-
-            if (xy.y == room.top + 1) {
-                return 0;
-            } else {
-                return (room.bottom - xy.y - 1) + pasWidth * 2 + pasHeight;
-            }
-
-        }
-    }
-
-    private static Point p2xy(Room room, int p) {
-        if (p < pasWidth) {
-
-            return new Point(room.left + 1 + p, room.top + 1);
-
-        } else if (p < pasWidth + pasHeight) {
-
-            return new Point(room.right - 1, room.top + 1 + (p - pasWidth));
-
-        } else if (p < pasWidth * 2 + pasHeight) {
-
-            return new Point(room.right - 1 - (p - (pasWidth + pasHeight)), room.bottom - 1);
-
-        } else {
-
-            return new Point(room.left + 1, room.bottom - 1 - (p - (pasWidth * 2 + pasHeight)));
-
-        }
-    }
 }

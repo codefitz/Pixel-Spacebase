@@ -148,7 +148,7 @@ public class GameScene extends PixelScene {
     @Override
     public void create() {
 
-        Music.INSTANCE.play(Assets.TUNE, true);
+        Music.INSTANCE.play(Dungeon.depth >= 6 && Dungeon.depth <= 9 ? Assets.LOCKDOWN : Assets.TUNE, true);
         Music.INSTANCE.volume(PixelSpacebase.musicVol() / 10f);
 
         PixelSpacebase.lastClass(Dungeon.hero.heroClass.ordinal());

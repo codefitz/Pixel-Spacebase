@@ -27,6 +27,7 @@ import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.levels.Room.Type;
+import com.wafitz.pixelspacebase.levels.painters.Workshop;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.watabou.noosa.Group;
 import com.watabou.utils.Graph;
@@ -111,14 +112,14 @@ public class LastWorkshopLevel extends RegularLevel {
         for (Room r : rooms) {
             if (r.type == Type.NULL && r.connected.size() > 0) {
                 r.type = Type.PASSAGE;
-                if (r.square() > workshopSquare) {
+                if (Workshop.canHostFixedLayout(r) && r.square() > workshopSquare) {
                     roomWorkshop = r;
                     workshopSquare = r.square();
                 }
             }
         }
 
-        if (roomWorkshop == null || workshopSquare < 54) {
+        if (roomWorkshop == null) {
             return false;
         } else {
             roomWorkshop.type = Arp.Quest.isCompleted() ? Room.Type.WORKSHOP : Room.Type.STANDARD;
