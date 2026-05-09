@@ -148,7 +148,7 @@ public class GameScene extends PixelScene {
     @Override
     public void create() {
 
-        Music.INSTANCE.play(Dungeon.depth >= 6 && Dungeon.depth <= 9 ? Assets.LOCKDOWN : Assets.TUNE, true);
+        Music.INSTANCE.play(musicForDepth(), true);
         Music.INSTANCE.volume(PixelSpacebase.musicVol() / 10f);
 
         PixelSpacebase.lastClass(Dungeon.hero.heroClass.ordinal());
@@ -381,6 +381,20 @@ public class GameScene extends PixelScene {
             fadeIn();
         }
 
+    }
+
+    private String musicForDepth() {
+        if (Dungeon.depth >= 1 && Dungeon.depth <= 4) {
+            return Assets.OXYGEN_WARNING;
+        } else if (Dungeon.depth == 10) {
+            return Assets.SECTOR_9;
+        } else if (Dungeon.depth >= 6 && Dungeon.depth <= 9) {
+            return Assets.LOCKDOWN;
+        } else if (Dungeon.depth >= 11 && Dungeon.depth <= 14) {
+            return Assets.PROTOCOL;
+        } else {
+            return Assets.TUNE;
+        }
     }
 
     public void destroy() {

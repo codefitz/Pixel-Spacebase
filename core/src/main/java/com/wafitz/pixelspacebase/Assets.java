@@ -128,6 +128,9 @@ public class Assets {
     public static final String THEME = "intro.mp4";
     public static final String TUNE = "pursuit.mp4";
     public static final String LOCKDOWN = "lockdown.mp4";
+    public static final String OXYGEN_WARNING = "oxygen_warning.mp4";
+    public static final String PROTOCOL = "protocol.mp4";
+    public static final String SECTOR_9 = "sector-9.mp4";
     public static final String HAPPY = "surface.ogg";
 
     public static final String SND_CLICK = "snd_click.mp3";

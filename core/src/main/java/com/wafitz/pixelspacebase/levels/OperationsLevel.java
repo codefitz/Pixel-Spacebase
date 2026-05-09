@@ -201,6 +201,8 @@ public class OperationsLevel extends RegularLevel {
     @Override
     public String tileDesc(int tile) {
         switch (tile) {
+            case Terrain.WATER:
+                return Messages.get(OperationsLevel.class, "water_desc");
             case Terrain.EMPTY_DECO:
                 return Messages.get(OperationsLevel.class, "empty_deco_desc");
             case Terrain.BOOKSHELF:

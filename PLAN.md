@@ -51,13 +51,13 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 ## Tiles
 
 - [x] Security Block tiles should match a futuristic spaceship detention area.
-- [ ] Lower Engineering tiles need a lower engineering aesthetic.
+- [x] Lower Engineering tiles need a lower engineering aesthetic.
 - [ ] Habitation / Command Sector tiles need a Star Trek TNG-style pass.
 - [x] Ladder tiles swapped so the previous-deck entrance and next-deck exit use the correct visual frames.
 - [x] VENT should visually convert to a spent powered plate after triggering, rather than disappearing into plain floor.
 - [x] INACTIVE_VENT now stays off permanently after traps/floor-lighting are spent.
 - [x] SIGN renamed to terminal.
-- [ ] WATER needs a sci-fi aesthetic per area while keeping current gameplay properties.
+- [x] WATER needs a sci-fi aesthetic per area while keeping current gameplay properties.
 
 ## Mechanics
 
@@ -199,6 +199,7 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [ ] Torch - permanent item with battery pickups
 - [ ] Spacesuit needed for spacewalk (captain, commander)
 - [ ] Shapeshifter doesn't use weapons, but gets stronger as levels increase, throws objects which will act as single use projectiles
+- [ ] Shapeshifter health packs are debuffed, don't work as well, but standing in water give small recovery.
 - [x] DM3000 resistant to most elements and traps but no improvement in armor strength - increases slowly with level increase but weaker than other characters
 - [x] DM3000 has permanent light
 - [x] DM3000 doesn't require food
@@ -209,3 +210,8 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [ ] A cat that will follow the adventurer. Sign warning "Do not pet the cat".
 - [ ] Renaming plan: Dungeon, King, Skeleton, DdarkLordGnoll, PrisonLevel, CavesLevel etc...
 - [ ] Replace garden with one-square booth - healing tank sort of thing.
+- [ ] Security levels should start with the 'piercing sound' from the trap (it sounds like an alarm).
+- [ ] Mines with a positive effect should become stimulants (automatic apply).
+- [ ] Remove the '3d' effect/overlay from floor lights.
+- [ ] Bionetics with an offensive nature (i.e. fire) should become grenades.
+- [ ] Remove chains graphic, change name to 'the force' and make it seem like being pulled by the force.
