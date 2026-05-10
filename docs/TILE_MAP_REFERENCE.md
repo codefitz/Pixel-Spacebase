@@ -2,6 +2,8 @@
 
 This reference maps the current terrain IDs to plain-text descriptions for graphics planning. It is based on `Terrain.java`, `DungeonTilemap.java`, and the current tile names/descriptions in `levels.properties`.
 
+For a visual grid with frame numbers and labels, see [TILE_SHEET_LAYOUT.md](TILE_SHEET_LAYOUT.md).
+
 ## Terrain Tiles
 
 | ID | Constant | Default visual frame | Generic visual brief | Gameplay flags / behavior |
@@ -15,7 +17,7 @@ This reference maps the current terrain IDs to plain-text descriptions for graph
 | 6 | `OPEN_DOOR` | 6 | Open door/airlock panel. | Passable. |
 | 7 | `ENTRANCE` | 8 | Previous-deck entrance, hatch, lift, ladder, or ramp. | Passable. |
 | 8 | `EXIT` | 7 | Next-deck exit, hatch, lift, ladder, or ramp. | Passable. |
-| 9 | `EMBERS` | 9 | Plasma residue, scorched floor, active residue, or hot reactor debris. | Passable. |
+| 9 | `EMBERS` | 9 | Core residue, scorched floor, active residue, or hot reactor debris. | Passable. |
 | 10 | `LOCKED_DOOR` | 10 | Locked security door or keyed airlock. | Solid + blocks line of sight. |
 | 11 | `PEDESTAL` | 11 | Plinth, console stand, display base, ritual marker center, or item mount. | Passable. |
 | 12 | `WALL_DECO` | 12 | Decorated wall variant: pipes, panels, ore vein, wiring, or damaged bulkhead. | Same as wall. |
@@ -70,7 +72,7 @@ _  INACTIVE_VENT spent floor lighting
 >  EXIT / next-deck route
 X  LOCKED_EXIT
 O  UNLOCKED_EXIT
-=  EMBERS / plasma residue
+=  EMBERS / core residue
 T  WELL / active terminal
 t  EMPTY_WELL / powered-off terminal
 F  CRAFTING / fabricator

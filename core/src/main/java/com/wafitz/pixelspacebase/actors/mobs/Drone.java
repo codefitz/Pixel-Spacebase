@@ -43,6 +43,8 @@ public class Drone extends Mob {
 
         flying = true;
         state = WANDERING;
+        hostile = false;
+        ally = true;
         properties.add(Property.MACHINE);
     }
 
@@ -117,10 +119,19 @@ public class Drone extends Mob {
             return null;
         }
 
-            //if something is holding the pot, target that
+            //if something is holding the controller, follow and defend them.
         else if (Actor.findById(potHolder) != null) {
             Actor holder = Actor.findById(potHolder);
-            return holder instanceof Mob && ((Mob) holder).hostile ? (Char) holder : null;
+            potPos = ((Char) holder).pos;
+            if (holder instanceof Mob && ((Mob) holder).hostile) {
+                return (Char) holder;
+            }
+
+            Char hostileTarget = findHostileTarget(potPos);
+            if (hostileTarget != null) {
+                return hostileTarget;
+            }
+            return null;
         }
 
             //if the pot is on the ground
@@ -132,14 +143,9 @@ public class Drone extends Mob {
                     && Dungeon.level.distance(enemy.pos, potPos) <= 3)
                 return enemy;
 
-            //find all mobs near the pot
-            HashSet<Char> enemies = new HashSet<>();
-            for (Mob mob : Dungeon.level.mobs)
-                if (!(mob instanceof Drone) && Dungeon.level.distance(mob.pos, potPos) <= 3 && mob.hostile)
-                    enemies.add(mob);
-
             //pick one, if there are none, clear nearby mines or idle.
-            if (enemies.size() > 0) return Random.element(enemies);
+            Char hostileTarget = findHostileTarget(potPos);
+            if (hostileTarget != null) return hostileTarget;
             int mineTarget = findMineTarget(potPos);
             if (mineTarget != -1) {
                 target = mineTarget;
@@ -161,10 +167,21 @@ public class Drone extends Mob {
         if (Dungeon.level.mines.get(target) != null) {
             return super.getCloser(target);
         }
-        if (enemy != null && Actor.findById(potHolder) == enemy) {
+
+        Actor holder = Actor.findById(potHolder);
+        if (holder instanceof Char) {
+            potPos = ((Char) holder).pos;
+        }
+
+        if (enemy != null && holder == enemy) {
             target = enemy.pos;
-        } else if (potPos != -1 && (state == WANDERING || Dungeon.level.distance(target, potPos) > 3))
-            this.target = target = potPos;
+        } else if (potPos != -1 && state == WANDERING) {
+            if (Dungeon.level.distance(pos, potPos) > 2) {
+                this.target = target = potPos;
+            } else if (target == -1 || target == pos || Dungeon.level.distance(target, potPos) > 4) {
+                this.target = target = patrolDestination(potPos);
+            }
+        }
         return super.getCloser(target);
     }
 
@@ -187,6 +204,28 @@ public class Drone extends Mob {
             }
         }
         return best;
+    }
+
+    private Char findHostileTarget(int origin) {
+        HashSet<Char> enemies = new HashSet<>();
+        for (Mob mob : Dungeon.level.mobs) {
+            if (!(mob instanceof Drone) && mob.hostile && mob.invisible <= 0
+                    && (Dungeon.level.distance(mob.pos, pos) <= viewDistance
+                    || origin != -1 && Dungeon.level.distance(mob.pos, origin) <= viewDistance)) {
+                enemies.add(mob);
+            }
+        }
+        return enemies.size() > 0 ? Random.element(enemies) : null;
+    }
+
+    private int patrolDestination(int origin) {
+        HashSet<Integer> candidates = new HashSet<>();
+        for (int i = 0; i < Level.passable.length; i++) {
+            if (Level.passable[i] && Actor.findChar(i) == null && Dungeon.level.distance(i, origin) <= 3) {
+                candidates.add(i);
+            }
+        }
+        return candidates.size() > 0 ? Random.element(candidates) : origin;
     }
 
     private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

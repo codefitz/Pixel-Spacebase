@@ -58,7 +58,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Yendor Shock Trooper | Heavy melee enemy with low-health combat-rig overclock. |
 | Facehugger (`Spinner`) | Former cave spinner. Uses web behavior as adhesive biofilament. Successful latches infect the hero like an alien egg; if the infection runs its course it spawns a tougher xenomorph. |
 | Plasma Anomaly (`Elemental`) | Former fire elemental. Reactor/containment leak enemy with special damage flavor. |
-| Plasma Spark (`Newborn Elemental`) | Quest-related discharge source for plasma embers, now framed as a fresh containment leak. |
+| Plasma Spark (`Newborn Elemental`) | Quest-related discharge source for a faulty core module ejected by the restart sequence. |
 | Jeda Knight (`Monk`) | Fast late-mid disciplined melee enemy. Text conversion is done; sprite remains future work. |
 | Jeda Master (`Senior`) | Rare Jeda Knight variant with stronger strikes and brief paralysis. Text conversion is done; sprite remains future work. |
 | Signal Witch (`Warlock`) | Caster enemy that weaponizes corrupted telemetry and neural feedback. |
@@ -140,7 +140,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | --- | --- |
 | Screwdriver | Leonard quest tool for harvesting parts from exposed components. |
 | Core Stabilizer (`CeremonialCandle`) | Former ceremonial candle. Used with the restart marker to focus energy for a damaged core restart. |
-| Plasma Embers (`Embers`) | Quartermaster quest material harvested from newborn elemental discharge content. |
+| Faulty Core Module (`Embers`) | Quartermaster quest material recovered from the failed core restart sequence. |
 | Ore Cutter (`Pickaxe`) | Heavy industrial cutter quest item, also usable as a weapon. |
 | Containment Ash (`CorpseDust`) | Sealed hostile residue quest item with residual anomaly flavor. |
 | Bio-Charge Core / Rotberry Mine Charge | Organic/device quest ingredient tied to the Quartermaster and Fabricator systems. |

@@ -231,7 +231,7 @@ NPC: Quartermaster, formerly Old Gunsmith internally.
 
 Current variants:
 
-- Requests a lazer, plasma embers, or a bio-charge core recovered from a mature rotberry mine.
+- Requests a lazer, a faulty core module, or a bio-charge core recovered from a mature rotberry mine.
 - Rewards new blaster options.
 
 Story role:

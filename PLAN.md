@@ -198,7 +198,7 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 
 - [ ] Torch - permanent item with battery pickups
 - [ ] Spacesuit needed for spacewalk (captain, commander)
-- [ ] Shapeshifter doesn't use weapons, but gets stronger as levels increase, throws objects which will act as single use projectiles
+- [ ] Shapeshifter doesn't use blaster weapons, but gets stronger as levels increase, can shapeshift into items, which has same effect as camoflage and gives boosted suprise attack.
 - [ ] Shapeshifter health packs are debuffed, don't work as well, but standing in water give small recovery.
 - [x] DM3000 resistant to most elements and traps but no improvement in armor strength - increases slowly with level increase but weaker than other characters
 - [x] DM3000 has permanent light
@@ -208,10 +208,11 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [ ] Tech and biogenetics reorganised to defensive (apply to player) vs offensive (used as weapon/action) - have generic storage icon that is opened up and then reveals what it is.
 - [ ] Add NPCs that need protection. End game player leaves on escape pod or goes back to stablise ship so NPCs can be rescued
 - [ ] A cat that will follow the adventurer. Sign warning "Do not pet the cat".
-- [ ] Renaming plan: Dungeon, King, Skeleton, DdarkLordGnoll, PrisonLevel, CavesLevel etc...
+- [ ] Renaming plan: Dungeon, King, Skeleton, DarkLordGnoll, PrisonLevel, CavesLevel etc...
 - [ ] Replace garden with one-square booth - healing tank sort of thing.
 - [ ] Security levels should start with the 'piercing sound' from the trap (it sounds like an alarm).
 - [ ] Mines with a positive effect should become stimulants (automatic apply).
 - [ ] Remove the '3d' effect/overlay from floor lights.
 - [ ] Bionetics with an offensive nature (i.e. fire) should become grenades.
 - [ ] Remove chains graphic, change name to 'the force' and make it seem like being pulled by the force.
+- [ ] Shapeshifter shouldn't battle himself, so if shapeshifter gets to to the first boss, he should meet Y who pits him to the test of a battle against 50 enemies in an arena.
