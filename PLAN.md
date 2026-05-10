@@ -37,22 +37,22 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 
 ## Sprites
 
-- [ ] Replicator Swarm sprite to be updated.
-- [ ] Loader armour sprite could do with a makeover.
+- [x] Replicator Swarm sprite to be updated.
+- [x] Loader armour sprite could do with a makeover.
 - [x] Tengu: keep as an assassin but update sprite to futuristic.
-- [ ] Holodeck Monarch / floor 20 boss sprite needs a sci-fi or holodeck-relative replacement.
-- [ ] Ruptured crew suit / old Skeleton sprite still needs updating to a suitably sci-fi enemy.
-- [ ] Thief sprite should look like a Jawa-style scavenger.
+- [x] Holodeck Monarch / floor 20 boss sprite needs a sci-fi or holodeck-relative replacement.
+- [x] Ruptured crew suit / old Skeleton sprite still needs updating to a suitably sci-fi enemy.
+- [x] Thief sprite should look like a Jawa-style scavenger.
 - [x] Guard sprite should become a Bith-style apprentice; remove or replace the chain visual with force-pull styling.
-- [ ] Spinner sprite should become a little facehugger.
-- [ ] Jeda Knight / old Monk sprite should become a Jeda Knight.
-- [ ] Senior sprite should become a Jeda Master.
+- [x] Spinner sprite should become a little facehugger.
+- [x] Jeda Knight / old Monk sprite should become a Jeda Knight.
+- [x] Senior sprite should become a Jeda Master.
 
 ## Tiles
 
 - [x] Security Block tiles should match a futuristic spaceship detention area.
 - [x] Lower Engineering tiles need a lower engineering aesthetic.
-- [ ] Habitation / Command Sector tiles need a Star Trek TNG-style pass.
+- [x] Habitation / Command Sector tiles need a Star Trek TNG-style pass.
 - [x] Ladder tiles swapped so the previous-deck entrance and next-deck exit use the correct visual frames.
 - [x] VENT should visually convert to a spent powered plate after triggering, rather than disappearing into plain floor.
 - [x] INACTIVE_VENT now stays off permanently after traps/floor-lighting are spent.
@@ -216,3 +216,4 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [ ] Bionetics with an offensive nature (i.e. fire) should become grenades.
 - [ ] Remove chains graphic, change name to 'the force' and make it seem like being pulled by the force.
 - [ ] Shapeshifter shouldn't battle himself, so if shapeshifter gets to to the first boss, he should meet Y who pits him to the test of a battle against 50 enemies in an arena.
+- [ ] Bug: Getting warped back down to an area in lower levels causes the chests to empty irrecoverably.
