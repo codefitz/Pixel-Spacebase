@@ -1,6 +1,8 @@
 Pixel Spacebase
 ===============
 
+**Alpha status:** Pixel Spacebase is currently alpha software. Core systems, balance, artwork, naming, and save compatibility are still changing while the game is converted from its Pixel Dungeon roots into a spacebase escape roguelike.
+
 This is a fork of Shattered Pixel Dungeon v4.3, based on Pixel Dungeon. I'm new to coding in a statically typed language like Java - this is primarily a hobby/learning project but I hope it might grow into a nice spin on the endless PD forks.
 
 * Original by Watabou: https://github.com/watabou/pixel-dungeon
@@ -14,7 +16,7 @@ Still, massive credit to Evan for reworking level generation - I stand on the sh
 
 ## What's Different?
 
-The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/Escape RPG.
+The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/Escape RPG. The project is playable as an alpha, but expect unfinished content, rough edges, and ongoing balance changes.
 
 ### Major Changes:
 

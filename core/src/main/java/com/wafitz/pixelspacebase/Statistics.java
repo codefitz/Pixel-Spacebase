@@ -39,6 +39,7 @@ public class Statistics {
     static boolean completedWithNoKilling = false;
 
     public static boolean amuletObtained = false;
+    public static int rescueCradleDepths = 0;
 
     public static void reset() {
 
@@ -56,6 +57,7 @@ public class Statistics {
         qualifiedForNoKilling = false;
 
         amuletObtained = false;
+        rescueCradleDepths = 0;
 
     }
 
@@ -69,6 +71,7 @@ public class Statistics {
     private static final String CLONES = "clonesSpent";
     private static final String DURATION = "duration";
     private static final String AMULET = "amuletObtained";
+    private static final String RESCUE_CRADLES = "rescueCradleDepths";
 
     public static void storeInBundle(Bundle bundle) {
         bundle.put(PARTS, partsCollected);
@@ -81,6 +84,7 @@ public class Statistics {
         bundle.put(CLONES, clonesSpent);
         bundle.put(DURATION, duration);
         bundle.put(AMULET, amuletObtained);
+        bundle.put(RESCUE_CRADLES, rescueCradleDepths);
     }
 
     public static void restoreFromBundle(Bundle bundle) {
@@ -94,6 +98,7 @@ public class Statistics {
         clonesSpent = bundle.getInt(CLONES);
         duration = bundle.getFloat(DURATION);
         amuletObtained = bundle.getBoolean(AMULET);
+        rescueCradleDepths = bundle.getInt(RESCUE_CRADLES);
     }
 
 }

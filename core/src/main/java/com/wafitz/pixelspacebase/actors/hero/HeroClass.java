@@ -26,7 +26,6 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityOverride;
 import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
-import com.wafitz.pixelspacebase.items.blasters.EMP;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
@@ -88,8 +87,6 @@ public enum HeroClass {
         //if (!Dungeon.isChallenged(Challenges.NO_FOOD))
         //    new Food().identify().collect();
 
-        EMP repairBlaster = new EMP();
-        repairBlaster.identify().collect();
     }
 
     public Badges.Badge masteryBadge() {

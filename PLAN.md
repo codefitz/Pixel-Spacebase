@@ -217,3 +217,4 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [ ] Remove chains graphic, change name to 'the force' and make it seem like being pulled by the force.
 - [ ] Shapeshifter shouldn't battle himself, so if shapeshifter gets to to the first boss, he should meet Y who pits him to the test of a battle against 50 enemies in an arena.
 - [ ] Bug: Getting warped back down to an area in lower levels causes the chests to empty irrecoverably.
+- [ ] New mechanic - random levels set to dark, hero can find a breaker that switches the lights back on. Breaker also exists on every level (so can turn lights off - maybe future enemy mechanic.)

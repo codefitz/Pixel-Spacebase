@@ -152,9 +152,7 @@ public class LastWorkshopLevel extends RegularLevel {
             }
         }
 
-        if (Arp.Quest.isCompleted()) {
-            placeSign();
-        }
+        placeSign();
     }
 
     @Override
