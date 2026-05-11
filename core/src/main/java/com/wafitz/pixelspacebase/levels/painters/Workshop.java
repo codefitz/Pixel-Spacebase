@@ -149,7 +149,6 @@ public class Workshop extends Painter {
         }
 
         boolean[] workshopCells = workshopCells(level);
-        boolean[] storageCells = storageCells(level);
 
         for (int key : level.heaps.keyArray()) {
             Heap heap = level.heaps.get(key);
