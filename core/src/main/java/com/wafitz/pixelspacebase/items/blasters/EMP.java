@@ -165,7 +165,9 @@ public class EMP extends Blaster {
     }
 
     private boolean isHostileMachine(Char ch) {
-        return ch instanceof Mob && ((Mob) ch).hostile;
+        return ch instanceof Mob
+                && ((Mob) ch).hostile
+                && ch.properties().contains(Char.Property.MACHINE);
     }
 
     @Override
