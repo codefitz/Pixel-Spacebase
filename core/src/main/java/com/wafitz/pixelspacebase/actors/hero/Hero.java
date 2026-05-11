@@ -132,6 +132,7 @@ public class Hero extends Char {
     public static final int MAX_LEVEL = 30;
 
     private static final int STARTING_STR = 100; // Was 10 - Super powered for testing
+    private static final boolean DEV_TEST_INVULNERABLE = true; // Dev/test only. Disable for release.
 
     private static final float TIME_TO_REST = 1f;
     private static final float TIME_TO_SEARCH = 2f;
@@ -946,6 +947,11 @@ public class Hero extends Char {
             GLog.w(Messages.get(this, "pain_resist"));
         }
 
+        if (DEV_TEST_INVULNERABLE) {
+            HP = HT;
+            return;
+        }
+
         StrongForcefield.Shield shield = buff(StrongForcefield.Shield.class);
         if (shield != null) {
             dmg = shield.proc(dmg, (src instanceof Char ? (Char) src : null), this);
@@ -1316,9 +1322,8 @@ public class Hero extends Char {
 
         curAction = null;
 
-        // wafitz.v1 - God Mode - Remove after testing (for release)
-        heal(Dungeon.hero);
-        if (isAlive()) {
+        if (DEV_TEST_INVULNERABLE) {
+            heal(this);
             new Flare(8, 32).color(0xFFFF66, true).show(sprite, 2f);
             return;
         }

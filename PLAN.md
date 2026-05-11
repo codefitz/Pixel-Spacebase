@@ -1,26 +1,93 @@
 # Targeted Release: v1.0.2
 
-- [ ] Torch - permanent item with battery pickups
-- [ ] Spacesuit needed for spacewalk (captain, commander)
-- [ ] Shapeshifter doesn't use blaster weapons, but gets stronger as levels increase, can shapeshift into items, which has same effect as camoflage and gives boosted suprise attack.
-- [ ] Shapeshifter health packs are debuffed, don't work as well, but standing in water give small recovery.
-- [ ] Rooms light up on entry, do away with floor lights. Some levels need to reset the breaker to activate lights
-- [ ] Tech and biogenetics reorganised to defensive (apply to player) vs offensive (used as weapon/action) - have generic storage icon that is opened up and then reveals what it is.
-- [ ] Add NPCs that need protection. End game player leaves on escape pod or goes back to stablise ship so NPCs can be rescued
-- [ ] A cat that will follow the adventurer. Sign warning "Do not pet the cat".
-- [ ] Renaming plan: Dungeon, King, Skeleton, DarkLordGnoll, PrisonLevel, CavesLevel etc...
-- [ ] Replace garden with one-square booth - healing tank sort of thing.
-- [ ] Security levels should start with the 'piercing sound' from the trap (it sounds like an alarm).
-- [ ] Mines with a positive effect should become stimulants (automatic apply).
-- [ ] Remove the '3d' effect/overlay from floor lights.
-- [ ] Bionetics with an offensive nature (i.e. fire) should become grenades.
-- [ ] Remove chains graphic, change name to 'the force' and make it seem like being pulled by the force.
-- [ ] Shapeshifter shouldn't battle himself, so if shapeshifter gets to to the first boss, he should meet Y who pits him to the test of a battle against 50 enemies in an arena.
-- [ ] Bug: Getting warped back down to an area in lower levels causes the chests to empty irrecoverably.
-- [ ] New mechanic - random levels set to dark, hero can find a breaker that switches the lights back on. Breaker also exists on every level (so can turn lights off - maybe future enemy mechanic.)
-- [ ] Workshop idea - makerbot only provides essential items in the beginning - upgrade makerbot to unlock better items as you go. Basic items level goes up per zone regardless.
-- [ ] Dark Lord of Yendor to have more 'darth sidius' vibes.
-- [ ] Players own items don't persist across workshops in the same area.
+## Cosmetic Changes
+
+- [ ] Update the Dark Lord of Yendor theme to have stronger "Darth Sidious" vibes.
+  - [x] Review actor and item message strings for tone.
+  - [ ] Review encounter presentation and boss text.
+- [ ] Replace the chain/restraint theme with "the force".
+  - [ ] Rename the effect and descriptions so it reads as being pulled by the force.
+  - [x] Remove or replace text that refers to chains.
+- [x] Add "Do not pet the cat" warning sign text.
+
+## Mechanic Changes
+
+- [ ] Torch becomes a permanent item with battery pickups.
+  - [ ] Add permanent torch item behavior.
+  - [ ] Add battery pickup generation and recharge behavior.
+  - [ ] Balance torch charge use against dark-level encounters.
+- [ ] Spacesuit is required for spacewalk areas.
+  - [ ] Gate captain spacewalk access behind spacesuit ownership/equipment.
+  - [ ] Gate commander spacewalk access behind spacesuit ownership/equipment.
+  - [ ] Add failure messaging when the player tries to enter without a spacesuit.
+- [ ] Rework shapeshifter progression.
+  - [ ] Prevent shapeshifter from using blaster weapons.
+  - [ ] Scale shapeshifter strength as level depth increases.
+  - [ ] Let shapeshifter transform into items.
+  - [ ] Make item form apply camouflage-like concealment.
+  - [ ] Give item form a boosted surprise attack.
+- [ ] Rework shapeshifter healing.
+  - [ ] Debuff health pack effectiveness for shapeshifter.
+  - [ ] Add small shapeshifter recovery while standing in water.
+- [ ] Replace the shapeshifter mirror boss path.
+  - [ ] Prevent shapeshifter from battling himself at the first boss.
+  - [ ] Add Y encounter when shapeshifter reaches the first boss.
+  - [ ] Create arena challenge against 50 enemies.
+- [ ] Add room and breaker lighting mechanics.
+  - [ ] Light rooms on entry.
+  - [ ] Remove gameplay dependency on floor lights.
+  - [ ] Add random dark levels.
+  - [ ] Place a breaker on dark levels that restores lights.
+  - [ ] Place a breaker on every level so lights can be toggled off later.
+- [ ] Add generic storage/reveal behavior so the container opens before the tech/biogenetic item identity is known.
+- [ ] Add protectable NPC rescue flow.
+  - [ ] Add NPCs that need protection.
+  - [ ] Add escape pod ending where the player leaves.
+  - [ ] Add return-to-stabilize ending where NPCs can be rescued.
+- [ ] Add cat follower NPC.
+  - [ ] Implement cat following behavior.
+  - [ ] Decide whether petting is blocked, punished, or only warned against.
+- [ ] Replace garden with a one-square healing tank booth.
+  - [ ] Remove or disable garden room generation.
+  - [ ] Add one-square healing tank booth placement.
+  - [ ] Define healing tank interaction behavior.
+- [ ] Security levels should start with the piercing alarm sound from the trap.
+- [ ] Positive-effect mines should become automatically applied stimulants.
+- [ ] Fix chest state after lower-level warp.
+  - [ ] Reproduce the case where being warped back down empties chests irrecoverably.
+  - [ ] Preserve unopened chest contents across lower-level warps.
+- [ ] Rework makerbot workshop progression.
+  - [ ] Limit early makerbot stock to essential items.
+  - [ ] Add makerbot upgrades that unlock better items over time.
+  - [ ] Increase basic item level by zone regardless of makerbot upgrade state.
+- [ ] Persist player-owned items across workshops in the same area.
+- [ ] Add alien egg step event.
+  - [ ] Fade the screen briefly to black when stepping on an alien egg.
+  - [ ] Show a "what happened" dialog when the screen returns.
+
+## Refactorial Changes and Small Adjustments
+
+- [ ] Rename legacy fantasy concepts to spacebase equivalents.
+  - [ ] Rename code/messages/assets that still expose `Dungeon`.
+  - [ ] Rename code/messages/assets that still expose `King`.
+  - [ ] Rename code/messages/assets that still expose `Skeleton`.
+  - [ ] Rename code/messages/assets that still expose `DarkLordGnoll`.
+  - [ ] Rename code/messages/assets that still expose `PrisonLevel`.
+  - [ ] Rename code/messages/assets that still expose `CavesLevel`.
+- [ ] Reorganize tech and biogenetics by use.
+  - [ ] Classify defensive tech/biogenetics as effects applied to the player.
+  - [ ] Classify offensive tech/biogenetics as weapon/action items.
+  - [ ] Convert offensive biogenetics such as fire into grenades.
+- [x] Rename Xeno-booster to align with the x-port concept.
 - [ ] Add an option to open and scroll the full log.
-- [ ] When stepping on the alien egg, have the screen fade to black briefly before coming back - what happened dialog.
-- [ ] Xeno-booster should change to an x-port icon.
+
+## Graphical Changes
+
+- [ ] Remove the 3D effect/overlay from floor lights.
+- [ ] Replace the chain graphic with a force-themed visual.
+- [ ] Add a generic storage icon for unrevealed tech/biogenetics.
+- [ ] Add or update grenade icons for offensive biogenetics.
+- [ ] Add healing tank booth tile/art.
+- [ ] Add cat sprite or reuse/update an existing follower sprite.
+- [ ] Add visual treatment for dark levels and breaker-restored lighting.
+- [ ] Change Xeno-booster to an x-port icon.
