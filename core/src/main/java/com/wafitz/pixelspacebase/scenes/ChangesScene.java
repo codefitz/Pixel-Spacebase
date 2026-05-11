@@ -36,6 +36,13 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
     private static final String TXT_Update =
+            "_v1.0.1:_\n" +
+                    "_-_ Added rescue cradle mechanics tied to the escape pod override.\n" +
+                    "_-_ Expanded workshop storage handling and delivery between levels.\n" +
+                    "_-_ Refreshed deck text, NPC dialogue, item descriptions, and enemy naming for the spacebase theme.\n" +
+                    "_-_ Updated tiles, sprites, audio, and atmosphere videos across the station.\n" +
+                    "_-_ Fixed repair blaster behavior and WaveBlaster trajectory handling.\n" +
+                    "\n" +
             "_v1.0.0:_\n" +
                     "_-_ Rebased visible versioning for Pixel Spacebase.\n" +
                     "_-_ Replaced the title screen soundtrack with the new intro theme.\n" +
