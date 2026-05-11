@@ -39,6 +39,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
     private int lastColor;
 
     private static ArrayList<Entry> entries = new ArrayList<Entry>();
+    private static ArrayList<Entry> history = new ArrayList<Entry>();
 
     public GameLog() {
         super();
@@ -82,12 +83,17 @@ public class GameLog extends Component implements Signal.Listener<String> {
             color = CharSprite.NEUTRAL;
         }
 
-        if (lastEntry != null && color == lastColor && lastEntry.nLines < MAX_LINES) {
+        if (lastEntry != null && color == lastColor && lastEntry.nLines < MAX_LINES && !entries.isEmpty()) {
 
             String lastMessage = lastEntry.text();
             lastEntry.text(lastMessage.length() == 0 ? text : lastMessage + " " + text);
 
             entries.get(entries.size() - 1).text = lastEntry.text();
+            if (history.isEmpty()) {
+                history.add(new Entry(lastEntry.text(), color));
+            } else {
+                history.get(history.size() - 1).text = lastEntry.text();
+            }
 
         } else {
 
@@ -97,6 +103,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
             add(lastEntry);
 
             entries.add(new Entry(text, color));
+            history.add(new Entry(text, color));
 
         }
 
@@ -139,7 +146,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
         super.destroy();
     }
 
-    private static class Entry {
+    public static class Entry {
         public String text;
         public int color;
 
@@ -151,5 +158,10 @@ public class GameLog extends Component implements Signal.Listener<String> {
 
     public static void wipe() {
         entries.clear();
+        history.clear();
+    }
+
+    public static ArrayList<Entry> history() {
+        return new ArrayList<Entry>(history);
     }
 }

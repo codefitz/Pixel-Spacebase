@@ -86,6 +86,7 @@ public enum HeroClass {
 
         //if (!Dungeon.isChallenged(Challenges.NO_FOOD))
         //    new Food().identify().collect();
+
     }
 
     public Badges.Badge masteryBadge() {

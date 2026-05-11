@@ -45,6 +45,7 @@ import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
 import com.wafitz.pixelspacebase.items.artifacts.Artifact;
 import com.wafitz.pixelspacebase.items.artifacts.TechToolkit;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
+import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.FrozenCarpaccio;
@@ -55,8 +56,13 @@ import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.mines.Mine;
 import com.wafitz.pixelspacebase.mines.Mine.Device;
+import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
+import com.wafitz.pixelspacebase.utils.GLog;
+import com.wafitz.pixelspacebase.windows.WndContainer;
+import com.wafitz.pixelspacebase.windows.WndLeonard;
+import com.wafitz.pixelspacebase.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -73,8 +79,11 @@ public class Heap implements Bundlable {
     public enum Type {
         HEAP,
         TO_MAKE,
+        WORKSHOP_STORAGE,
+        WORKSHOP_UPGRADE,
         CHEST,
         LOCKED_CHEST,
+        JAMMED_CHEST,
         CRYSTAL_CHEST,
         CMD_TERMINAL,
         EMPTY_SPACESUIT,
@@ -96,13 +105,16 @@ public class Heap implements Bundlable {
             case HEAP:
             case TO_MAKE:
                 return size() > 0 ? items.peek().image() : 0;
+            case WORKSHOP_STORAGE:
             case CHEST:
             case CONFUSEDSHAPESHIFTER:
                 return ItemSpriteSheet.CHEST;
             case LOCKED_CHEST:
+            case JAMMED_CHEST:
                 return ItemSpriteSheet.LOCKED_CHEST;
             case CRYSTAL_CHEST:
                 return ItemSpriteSheet.CRYSTAL_CHEST;
+            case WORKSHOP_UPGRADE:
             case CMD_TERMINAL:
                 return ItemSpriteSheet.REDTERMINAL;
             case EMPTY_SPACESUIT:
@@ -127,6 +139,16 @@ public class Heap implements Bundlable {
                     type = Type.CHEST;
                 }
                 break;
+            case WORKSHOP_STORAGE:
+                showWorkshopStorage(hero);
+                return;
+            case WORKSHOP_UPGRADE:
+                GameScene.show(new WndLeonard(
+                        new ItemSprite(ItemSpriteSheet.REDTERMINAL, null),
+                        Messages.titleCase(Messages.get(this, "workshop_upgrade")),
+                        hero,
+                        false));
+                return;
             case CMD_TERMINAL:
                 Turret.spawnAround(hero.pos);
                 break;
@@ -172,6 +194,99 @@ public class Heap implements Bundlable {
 
     public Item peek() {
         return items.peek();
+    }
+
+    private void showWorkshopStorage(final Hero hero) {
+        GameScene.show(new WndOptions(
+                Messages.get(this, "workshop_storage"),
+                Messages.get(this, "workshop_storage_prompt", size()),
+                Messages.get(this, "workshop_storage_store"),
+                Messages.get(this, "workshop_storage_take"),
+                Messages.get(this, "workshop_storage_store_all"),
+                Messages.get(this, "workshop_storage_take_all")) {
+            @Override
+            protected void onSelect(int index) {
+                if (index == 0) {
+                    selectItemToStore(hero);
+                } else if (index == 1) {
+                    selectItemToTake(hero);
+                } else if (index == 2) {
+                    for (Item item : hero.belongings.backpack.items.toArray(new Item[0])) {
+                        if (canStore(hero, item)) {
+                            drop(item.detachAll(hero.belongings.backpack));
+                        }
+                    }
+                    updateStorageSprite();
+                } else {
+                    takeAll(hero);
+                }
+            }
+        });
+    }
+
+    private void selectItemToStore(final Hero hero) {
+        GameScene.selectItem(new WndContainer.Listener() {
+            @Override
+            public void onSelect(Item item) {
+                if (item == null) {
+                    return;
+                }
+                if (!canStore(hero, item)) {
+                    GLog.w(Messages.get(Heap.class, "workshop_storage_cant_store"));
+                    return;
+                }
+
+                drop(item.detachAll(hero.belongings.backpack));
+                updateStorageSprite();
+            }
+        }, WndContainer.Mode.ALL, Messages.get(Heap.class, "workshop_storage_select"));
+    }
+
+    private void selectItemToTake(final Hero hero) {
+        if (items.isEmpty()) {
+            GLog.w(Messages.get(Heap.class, "workshop_storage_empty"));
+            return;
+        }
+
+        String[] names = new String[items.size()];
+        for (int i = 0; i < items.size(); i++) {
+            names[i] = items.get(i).toString();
+        }
+
+        GameScene.show(new WndOptions(
+                Messages.get(this, "workshop_storage"),
+                Messages.get(this, "workshop_storage_take_prompt"),
+                names) {
+            @Override
+            protected void onSelect(int index) {
+                Item item = items.remove(index);
+                if (!item.collect(hero.belongings.backpack)) {
+                    drop(item);
+                    GLog.w(Messages.get(Heap.class, "workshop_storage_full"));
+                }
+                updateStorageSprite();
+            }
+        });
+    }
+
+    private void takeAll(Hero hero) {
+        for (Item item : items.toArray(new Item[0])) {
+            items.remove(item);
+            if (!item.collect(hero.belongings.backpack)) {
+                drop(item);
+            }
+        }
+        updateStorageSprite();
+    }
+
+    private boolean canStore(Hero hero, Item item) {
+        return item != null && !item.isEquipped(hero) && !(item instanceof Parts) && !(item instanceof Container);
+    }
+
+    private void updateStorageSprite() {
+        if (sprite != null) {
+            sprite.view(image(), glowing());
+        }
     }
 
     public void drop(Item item) {
@@ -271,7 +386,7 @@ public class Heap implements Bundlable {
     public void explode() {
 
         //breaks open most standard containers, mimics die.
-        if (type == Type.CONFUSEDSHAPESHIFTER || type == Type.CHEST || type == Type.EMPTY_SPACESUIT) {
+        if (type == Type.CONFUSEDSHAPESHIFTER || type == Type.CHEST || type == Type.WORKSHOP_STORAGE || type == Type.WORKSHOP_UPGRADE || type == Type.EMPTY_SPACESUIT) {
             type = Type.HEAP;
             sprite.link();
             sprite.drop();
@@ -471,8 +586,14 @@ public class Heap implements Bundlable {
             case CHEST:
             case CONFUSEDSHAPESHIFTER:
                 return Messages.get(this, "chest");
+            case WORKSHOP_STORAGE:
+                return Messages.get(this, "workshop_storage");
+            case WORKSHOP_UPGRADE:
+                return Messages.get(this, "workshop_upgrade");
             case LOCKED_CHEST:
                 return Messages.get(this, "locked_chest");
+            case JAMMED_CHEST:
+                return Messages.get(this, "jammed_chest");
             case CRYSTAL_CHEST:
                 return Messages.get(this, "crystal_chest");
             case CMD_TERMINAL:
@@ -491,8 +612,14 @@ public class Heap implements Bundlable {
             case CHEST:
             case CONFUSEDSHAPESHIFTER:
                 return Messages.get(this, "chest_desc");
+            case WORKSHOP_STORAGE:
+                return Messages.get(this, "workshop_storage_desc");
+            case WORKSHOP_UPGRADE:
+                return Messages.get(this, "workshop_upgrade_desc");
             case LOCKED_CHEST:
                 return Messages.get(this, "locked_chest_desc");
+            case JAMMED_CHEST:
+                return Messages.get(this, "jammed_chest_desc");
             case CRYSTAL_CHEST:
                 if (peek() instanceof Artifact)
                     return Messages.get(this, "crystal_chest_desc", Messages.get(this, "artifact"));

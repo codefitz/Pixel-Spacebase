@@ -10,7 +10,7 @@ The player character returns to take back control of the station, survive the de
 
 - Commander: expected by survivors as someone returning to reclaim Pixel Spacebase.
 - Shapeshifter: tied to a larger shapeshifter instability thread in Maintenance.
-- DM3000: a shut-down or repurposed robot brought back into service.
+- DM-3000: a shut-down or repurposed robot brought back into service.
 - Captain: a station authority figure gathering control after evacuation.
 
 ## Beginning
@@ -18,7 +18,7 @@ The player character returns to take back control of the station, survive the de
 The run opens in the Maintenance decks. Existing signs establish immediate environmental hazards:
 
 - Xenomorphs were once kept as pets and are now banned due to uncontrolled breeding.
-- Vents are unreliable because of gas leaks and electrical faults.
+- Floor lighting panels are unreliable because of gas leaks and electrical faults.
 - Some floors are flooded by faulty life-support hardware.
 - Shapeshifter psychological check-ins became mandatory before the disaster.
 - Level 5 is sealed because of an unidentified hazard.
@@ -29,7 +29,7 @@ The player is therefore not entering a clean dungeon equivalent; they are enteri
 
 ### Floors 1-4: Maintenance
 
-Maintenance is the most converted area. It contains station infrastructure, vents, coolant/flooding, abandoned service binders, workshops, maker-bots, and early xenomorph/Yendor/crawler threats.
+Maintenance is the most converted area. It contains station infrastructure, floor lighting hazards, coolant/flooding, abandoned service binders, workshops, maker-bots, and early xenomorph/Yendor/crawler threats.
 
 Primary story function:
 
@@ -44,18 +44,18 @@ Boss: Feral Shapeshifter.
 
 Current beat:
 
-- A shapeshifter has lost coherent control and attacks in a rage.
-- On defeat, the shapeshifter briefly regains awareness and thanks the player.
+- A shapeshifter crew colleague has lost coherent control after repeated emergency shifts during the breach.
+- On defeat, the shapeshifter briefly regains identity and thanks the player for bringing them back.
 - This encounter unlocks the Shapeshifter class path in the current progression.
 
-Open story need:
+Resolved story note:
 
-- Clarify whether this boss was a colleague, patient, prisoner, or station officer.
-- Tie the restored static shapeshifter character into later story, if desired.
+- The boss is a colleague from the station's shapeshifter crew, driven unstable by identity loss rather than simple monster rage.
+- The restored static shapeshifter sprite now represents a person briefly recovered from the collapse.
 
-### Floors 6-9: Prison / Security Block
+### Floors 6-9: Security Block
 
-Current resources still describe an inherited prison under the station, with dangerous prisoners, guards, and a dark influence from below. This can be reframed as Pixel Spacebase's detention/security block.
+Current chapter text now frames this area as Pixel Spacebase's Security Block, a sealed detention and confiscated-weapons sector where guards, prisoners, and automated defenses turned on each other during the breach.
 
 Primary story function:
 
@@ -67,7 +67,7 @@ Key note:
 
 - A sign from Warden Smith tells Thomas to check Tengu's cell and flee, warning that soon nobody will be able to leave.
 
-### Floor 10: Prison Boss
+### Floor 10: Security Boss
 
 Boss: Tengu.
 
@@ -75,16 +75,16 @@ Current beat:
 
 - Tengu is an infamous assassin restrained in the prison block.
 - The player becomes the only thing stopping his escape.
-- He uses vents, deception, and precision attacks.
-- On defeat he says, "Free at last..."
+- He uses floor lighting systems, deception, and precision attacks.
+- On defeat he says, "Free at last... no more locks. No more breath."
 
-Open story need:
+Resolved story note:
 
-- Decide whether "free at last" means death, release from mind control, or release from the station's failing systems.
+- "Free at last" means death: Tengu treats dying as the only release left from confinement.
 
-### Floors 11-14: Lower Engineering / Caves
+### Floors 11-14: Lower Engineering
 
-Current resources still call this "caves" and describe an abandoned route between civilizations. In Pixel Spacebase terms, this can become lower engineering, asteroid excavation, or reactor-adjacent service tunnels.
+Current chapter text now frames this area as Lower Engineering: reactor conduits, abandoned excavation tunnels, coolant lines, and old service routes beneath the detention decks.
 
 Primary story function:
 
@@ -104,42 +104,46 @@ Boss: DM-300.
 Current beat:
 
 - DM-300 detects unauthorized personnel.
+- DM-300 now reveals the unstable command module through combat text: it recognizes its protection role, but its emotion core is beyond tactical tolerance.
 - It repairs itself during the fight.
-- On defeat it shuts down.
-- This encounter currently gates the DM3000 playable class.
+- On defeat it questions why it was made angry.
+- This encounter currently gates the DM-3000 playable class.
+
+Current story direction:
+
+- DM-300 is now described as a heavy station defense and construction platform with a recovered core, upgraded chassis, and emotionally unstable command module.
 
 Open story need:
 
-- Convert old Dwarven construction-machine lore into station defense, mining, or war-bot lore.
 - Decide why this unit treats the player as unauthorized despite their class identity.
 
-### Floors 16-19: City / Habitation or Command Sector
+### Floors 16-19: Habitation and Command Sector
 
-Current resources still describe Dwarven Metropolis and the corruption of an old city. In Pixel Spacebase terms, this likely becomes the station's command/habitation core or a preserved alien/colony module integrated into the base.
+Current chapter text, terminal copy, and terrain descriptions now frame this area as the Habitation and Command Sector: crew quarters, civic decks, command offices, and simulation suites overrun by old command systems, rogue holograms, raiders, and defense machines.
 
 Primary story function:
 
 - Show that the breach is older and stranger than a simple xenomorph infestation.
-- Introduce advanced raiders, warlocks, golems, and the undead court theme.
-- Bring in Arp as an overt side-quest/game-aware figure.
+- Introduce advanced raiders, signal witches, war machines, and the unresolved command-court theme.
+- Bring in Y, formerly Arp internally, as an overt side-quest/game-aware figure.
 
 Current side content:
 
-- Arp asks the player to kill golems or monks and rewards completion.
-- Arp appears to understand the game layer and can be left as comic/meta relief or replaced with a more in-world anomaly later.
+- Y asks the player to recover hologram emitters from the Holodeck Monarch's hard-light retainers and rewards completion through a module.
+- Y appears to understand the game layer, directly addresses the player, and comments on systems such as inventory, badges, rankings, and quest tracking.
 
-### Floor 20: City Boss
+### Floor 20: Holodeck Control Boss
 
-Boss: King of Dwarves.
+Boss: Holodeck Monarch.
 
 Current beat:
 
-- An immortal king raises undead retainers and refuses to truly die.
-- This is currently the least converted major boss beat.
+- A corrupted command-sector training sim has become a lethal hard-light monarch.
+- It raises broken hologram retainers through court protocol and refuses to accept that the simulation can end.
 
-Open story need:
+Resolved story note:
 
-- Decide whether this remains a fantasy/alien civilization pocket inside the station or becomes a station AI, corporate founder, cryo-lord, or resurrected command figure.
+- The floor 20 boss room is now framed as Holodeck Control. Some fantasy styling can remain as intentional simulation content, but player-facing text frames it as failed station tech.
 
 ### Floor 21: Final Workshop
 
@@ -152,9 +156,9 @@ Story function:
 
 - Signal that the player is leaving salvageable station space and entering the deepest contaminated zone.
 
-### Floors 22-24: Demon Halls / Deep Containment
+### Floors 22-24: Deep Containment
 
-Current resources describe Demon Halls and the outskirts of a fallen metropolis. Pixel Spacebase can reframe this as deep containment, reactor shadow space, or an extradimensional breach zone under the station.
+Current chapter text and tile descriptions now frame this area as Deep Containment: sealed experiments, alien growths, containment fluid, and breach hardware above the mapped station.
 
 Primary story function:
 
@@ -168,27 +172,28 @@ Boss: Yog-Dzewa.
 
 Current beat:
 
-- Yog-Dzewa is an old god imprisoned long ago after a costly war.
-- Its appendages and spawn defend it.
-- It speaks in despairing, cosmic terms: "Hope is an illusion..."
+- Yog-Dzewa is an organism fused around the evacuation spine.
+- Its appendages and larvae defend the route to the escape pods.
+- It speaks as hunger and containment failure rather than inherited dungeon prophecy.
 
-Open story need:
+Resolved story note:
 
-- Decide how Yog-Dzewa connects to Pixel Spacebase: reactor anomaly, ancient artifact, alien god sealed in the asteroid, or a portal opened by Yendor/old station experiments.
+- Yog-Dzewa is now framed as a sealed bio-containment parasite whose origin remains ambiguous: sample, stowaway, or breach experiment.
 
 ### Floor 26: Finale / Escape
 
-Current end-game still uses the Amulet of Yendor and an escape/end-game flow. The hero also has a line indicating an escape pod is visible but the airlock door has been welded shut.
+Current end-game now presents the inherited Amulet item as an escape pod override in player-facing text. Floor 26 is framed as the evacuation cradle for the last working escape pod, with launch-or-stay wording in the victory scene. The hero also has a line indicating an escape pod is visible but the airlock door has been welded shut earlier in the run.
 
 Current finale function:
 
-- The player obtains the Amulet of Yendor and can end the game.
+- The player obtains the escape pod override from the evacuation cradle and can launch the escape pod.
 - The station escape route exists but is blocked until the late/end-game condition.
+- The current ending choice is optional: launch immediately, or stay on the station with the override because it can reopen sealed rescue cradles and create a route out for anyone still alive.
 
 Open story need:
 
-- Rename or reinterpret the Amulet of Yendor as a Pixel Spacebase artifact, station core, jump key, command override, or alien relic.
-- Decide whether the winning ending is evacuation, taking command, sealing the breach, or using the artifact to rewrite the station's fate.
+- Continue converting any remaining internal class names or surrounding flow that still assumes the inherited Amulet of Yendor framing.
+- A deeper reclaim/seal-the-station ending can be added later, but the active win condition is evacuation by escape pod.
 
 ## Side Quests
 
@@ -213,20 +218,20 @@ NPC: Chief Engineer Leonard.
 Current variants:
 
 - Needs parts to build or repair a flux-capacitor-like component.
-- Needs protection from bats while restoring power.
+- Needs protection from siphon drones while restoring power.
 
 Story role:
 
 - Humanizes the station with a survivor who stayed behind.
 - Frames repair/salvage as more than loot: the station might still be recoverable.
 
-### Old Gunsmith
+### Quartermaster
 
-NPC: Old Gunsmith.
+NPC: Quartermaster, formerly Old Gunsmith internally.
 
 Current variants:
 
-- Requests a lazer, fresh embers, or a rotberry mine charge.
+- Requests a lazer, a faulty core module, or a bio-charge core recovered from a mature rotberry mine.
 - Rewards new blaster options.
 
 Story role:
@@ -234,14 +239,14 @@ Story role:
 - Supports the station resistance/reclamation fantasy.
 - Gives the player a practical reason to explore dangerous rooms and bring materials back.
 
-### Arp
+### Y
 
-NPC: Arp.
+NPC: Y, formerly Arp internally.
 
 Current variants:
 
-- Asks the player to kill golems or monks.
-- Speaks as though aware of the game.
+- Asks the player to kill war machines or Jeda Knights and collect anomaly tokens.
+- Speaks as though aware of the game, including inventory, badges, rankings, and quest tracking.
 
 Story role:
 
@@ -267,16 +272,16 @@ Story role:
 | --- | --- | --- | --- |
 | 5 | Feral Shapeshifter | Shapeshifter collapse in Maintenance | Strong Pixel Spacebase fit |
 | 10 | Tengu | Prisoner/assassin containment failure | Partial fit |
-| 15 | DM-300 | Unauthorized-defense machine | Partial fit |
-| 20 | King of Dwarves | Undead immortal ruler | Mostly inherited fantasy |
-| 25 | Yog-Dzewa | Imprisoned old god/final threat | Mostly inherited fantasy, usable as cosmic breach |
+| 15 | DM-300 | Unstable station defense platform | Good Pixel Spacebase fit, now split from DM-3000 player class |
+| 20 | Holodeck Monarch | Rogue hard-light monarch simulation | Player-facing text converted; sprite remains inherited |
+| 25 | Yog-Dzewa | Bio-containment parasite fused around evacuation access | Player-facing text converted; mechanics remain inherited |
 
 ## Current Continuity Gaps
 
-- Prison, caves, city, and halls chapter text still use inherited dungeon/fantasy framing.
-- The Amulet of Yendor has not yet been converted into a spacebase-native end-game objective.
-- Yendor is both a raider faction and still tied to the inherited amulet name.
-- DM-300/DM3000 naming and lore need a clean split between boss machine and playable robot class.
+- Security Block, Lower Engineering, Habitation/Command, and Deep Containment chapter text now use sci-fi framing; individual tiles, enemies, and boss lore in those areas still need follow-up conversion.
+- The Amulet item has player-facing escape pod override text, but surrounding code/class names and any remaining end-game assumptions may still need cleanup.
+- Yendor remains a raider faction and may still appear in inherited story/item names outside the updated end artifact text.
+- DM-300 is the unstable floor-15 boss machine; DM-3000 is the playable robot class brought back into service after that encounter.
 - The final victory condition needs a Pixel Spacebase-specific ending.
 
 ## Suggested Canon Direction

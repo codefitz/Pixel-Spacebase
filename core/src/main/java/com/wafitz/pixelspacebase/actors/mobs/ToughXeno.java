@@ -20,19 +20,26 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
+import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.StenchGas;
 import com.wafitz.pixelspacebase.actors.buffs.Acid;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
+import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ToughXenoSprite;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class ToughXeno extends Xenomorph {
+
+    private boolean processQuest = true;
 
     {
         spriteClass = ToughXenoSprite.class;
@@ -79,7 +86,47 @@ public class ToughXeno extends Xenomorph {
     public void die(Object cause) {
         super.die(cause);
 
-        Hologram.Quest.process();
+        if (processQuest) {
+            Hologram.Quest.process();
+        }
+    }
+
+    public static boolean spawnAdjacent(int pos, boolean processQuest) {
+        ArrayList<Integer> spawnPoints = new ArrayList<>();
+
+        for (int offset : PathFinder.NEIGHBOURS8) {
+            int cell = pos + offset;
+            if ((Level.passable[cell] || Level.avoid[cell]) && Actor.findChar(cell) == null) {
+                spawnPoints.add(cell);
+            }
+        }
+
+        if (spawnPoints.isEmpty()) {
+            return false;
+        }
+
+        ToughXeno xenomorph = new ToughXeno();
+        xenomorph.processQuest = processQuest;
+        xenomorph.pos = Random.element(spawnPoints);
+        xenomorph.state = xenomorph.HUNTING;
+        GameScene.add(xenomorph);
+        return true;
+    }
+
+    private static final String PROCESS_QUEST = "process_quest";
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(PROCESS_QUEST, processQuest);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        if (bundle.contains(PROCESS_QUEST)) {
+            processQuest = bundle.getBoolean(PROCESS_QUEST);
+        }
     }
 
     private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

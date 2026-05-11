@@ -32,6 +32,7 @@ import com.wafitz.pixelspacebase.ui.ItemSlot;
 import com.wafitz.pixelspacebase.ui.RedButton;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
 import com.wafitz.pixelspacebase.ui.Window;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
@@ -48,14 +49,20 @@ public class WndLeonard extends Window {
     private ItemButton btnItem1;
     private ItemButton btnItem2;
     private RedButton btnReforge;
+    private boolean completeQuest;
 
     public WndLeonard(Leonard troll, Hero hero) {
+        this(troll.sprite(), Messages.titleCase(troll.name), hero, true);
+    }
+
+    public WndLeonard(Image icon, String title, Hero hero, boolean completeQuest) {
 
         super();
+        this.completeQuest = completeQuest;
 
         IconTitle titlebar = new IconTitle();
-        titlebar.icon(troll.sprite());
-        titlebar.label(Messages.titleCase(troll.name));
+        titlebar.icon(icon);
+        titlebar.label(title);
         titlebar.setRect(0, 0, WIDTH, 0);
         add(titlebar);
 
@@ -87,7 +94,7 @@ public class WndLeonard extends Window {
         btnReforge = new RedButton(Messages.get(this, "reforge")) {
             @Override
             protected void onClick() {
-                Leonard.upgrade(btnItem1.item, btnItem2.item);
+                Leonard.upgrade(btnItem1.item, btnItem2.item, completeQuest);
                 hide();
             }
         };

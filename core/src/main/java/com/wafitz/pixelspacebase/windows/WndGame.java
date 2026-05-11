@@ -65,6 +65,14 @@ public class WndGame extends Window {
             });
         }
 
+        addButton(new RedButton(Messages.get(this, "log")) {
+            @Override
+            protected void onClick() {
+                hide();
+                GameScene.show(new WndLog());
+            }
+        });
+
         // Restart
         if (!Dungeon.hero.isAlive()) {
 

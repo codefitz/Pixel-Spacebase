@@ -29,6 +29,7 @@ import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
 import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.TomeOfMastery;
@@ -45,6 +46,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.TenguSprite;
 import com.wafitz.pixelspacebase.ui.BossHealthBar;
+import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -114,7 +116,7 @@ public class Tengu extends Mob {
         //phase 1 of the fight is over
         if (beforeHitHP > HT / 2 && HP <= HT / 2) {
             HP = (HT / 2) - 1;
-            yell(Messages.get(this, "interesting"));
+            GLog.n("%s: \"%s\" ", Messages.get(Arp.class, "name"), Messages.get(Arp.class, "tengu_interesting"));
             ((PrisonBossLevel) Dungeon.level).progress();
             BossHealthBar.bleed(true);
 

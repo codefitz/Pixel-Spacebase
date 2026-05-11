@@ -27,6 +27,8 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
+import com.wafitz.pixelspacebase.actors.buffs.XenoInfection;
+import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.SpinnerSprite;
@@ -71,7 +73,7 @@ class Spinner extends Mob {
         boolean result = super.act();
 
         if (state == FLEEING && buff(Terror.class) == null &&
-                enemy != null && enemySeen && enemy.buff(Poison.class) == null) {
+                enemy != null && enemySeen && enemy.buff(XenoInfection.class) == null) {
             state = HUNTING;
         }
         return result;
@@ -80,7 +82,9 @@ class Spinner extends Mob {
     @Override
     public int attackProc(Char enemy, int damage) {
         if (Random.Int(2) == 0) {
-            Buff.affect(enemy, Poison.class).set(Random.Int(7, 9) * Poison.durationFactor(enemy));
+            if (enemy instanceof Hero) {
+                XenoInfection.infectStrong((Hero) enemy);
+            }
             state = FLEEING;
         }
 

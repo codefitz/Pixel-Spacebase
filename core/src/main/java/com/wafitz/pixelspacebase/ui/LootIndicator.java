@@ -70,10 +70,10 @@ public class LootIndicator extends Tag {
             if (heap != null) {
 
                 Item item =
-                        heap.type == Heap.Type.CHEST || heap.type == Heap.Type.CONFUSEDSHAPESHIFTER ? ItemSlot.CHEST :
+                        heap.type == Heap.Type.CHEST || heap.type == Heap.Type.WORKSHOP_STORAGE || heap.type == Heap.Type.CONFUSEDSHAPESHIFTER ? ItemSlot.CHEST :
                                 heap.type == Heap.Type.LOCKED_CHEST ? ItemSlot.LOCKED_CHEST :
                                         heap.type == Heap.Type.CRYSTAL_CHEST ? ItemSlot.CRYSTAL_CHEST :
-                                                heap.type == Heap.Type.CMD_TERMINAL ? ItemSlot.CMD_TERMINAL :
+                                                heap.type == Heap.Type.WORKSHOP_UPGRADE || heap.type == Heap.Type.CMD_TERMINAL ? ItemSlot.CMD_TERMINAL :
                                                         heap.type == Heap.Type.EMPTY_SPACESUIT ? ItemSlot.EMPTY_SPACESUIT :
                                                                 heap.type == Heap.Type.REMAINS ? ItemSlot.REMAINS :
                                                                         heap.peek();
