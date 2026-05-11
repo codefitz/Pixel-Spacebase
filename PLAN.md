@@ -1,64 +1,3 @@
-# Pixel Spacebase Plan
-# Targeted Release: v1.0.1
-
-This plan is organized by the kind of work needed next. Use it as the active backlog, then move completed work to the done section with a short note about what changed.
-
-## Workflow
-
-1. Add new ideas to **Suggestions** first, especially when the direction is not settled.
-2. Promote accepted ideas into **Sprites**, **Tiles**, **Mechanics**, or **Cosmetic / Narrative**.
-3. Implement small batches that can be tested quickly.
-4. Update this plan and any relevant docs after each batch.
-5. Build the core debug APK after code or asset changes.
-
-## Refactor / Naming Audit
-
-- [x] Add naming audit separating player-facing cleanup from inherited internal compatibility names.
-- [x] Add compatibility wrappers or comments for intentionally retained legacy class names.
-- [x] Decide whether to introduce a `RepairBlaster` wrapper around internal `EMP`: no wrapper for now; keep `EMP` as internal compatibility name.
-- [x] Decide whether `ExperimentalTech` and `Script` package names should be migrated or left as internal compatibility names: leave as compatibility names for now.
-- [x] Audit old `SewerLevel`/Operations fallback resource keys and mark them as legacy fallback strings.
-
-## Suggestions
-
-- [x] Decide on a replacement concept for the King of Dwarves / floor 20 holodeck boss: rogue holodeck monarch with lethal hard-light retainers.
-- [x] Decide on the final boss direction: Yog-Dzewa is a sealed bio-containment parasite fused around the evacuation spine.
-- [x] Decide on the floor 22-24 area name and mood: Deep Containment with space-horror bio-containment imagery.
-- [x] Decide floor 26 finale choice: launch the escape pod immediately, or stay on the station with the override for optional future objectives.
-- [x] Decide whether the workshop should become a fixed room template before adding more workbench mechanics: yes, use a fixed interior template inside generated workshop rooms before adding upgrade/storage benches.
-
-## Next Recommended Batches
-
-- [x] Workshop foundation: add the Chief Engineer-style upgrade bench to the fixed workshop layout.
-- [x] Y / Holodeck quest: have Y send the player after rogue holograms, then add hologram emitter drops as the quest/reward loop.
-- [x] Lighting and powered-floor pass: spent floor-lighting now leaves a visible powered-plate overlay; keep room lighting and breaker resets as a separate future mechanic rather than replacing most floor lights now.
-- [ ] Area visual pass: batch sprites and terrain tiles by area so security, lower engineering, command-sector, and Deep Containment art changes stay coherent.
-- [ ] Endgame rescue pass: connect the floor 26 override twist to protectable NPCs, sealed rescue cradles, and the optional stabilize-the-ship route.
-
-## Sprites
-
-- [x] Replicator Swarm sprite to be updated.
-- [x] Loader armour sprite could do with a makeover.
-- [x] Tengu: keep as an assassin but update sprite to futuristic.
-- [x] Holodeck Monarch / floor 20 boss sprite needs a sci-fi or holodeck-relative replacement.
-- [x] Ruptured crew suit / old Skeleton sprite still needs updating to a suitably sci-fi enemy.
-- [x] Thief sprite should look like a Jawa-style scavenger.
-- [x] Guard sprite should become a Bith-style apprentice; remove or replace the chain visual with force-pull styling.
-- [x] Spinner sprite should become a little facehugger.
-- [x] Jeda Knight / old Monk sprite should become a Jeda Knight.
-- [x] Senior sprite should become a Jeda Master.
-
-## Tiles
-
-- [x] Security Block tiles should match a futuristic spaceship detention area.
-- [x] Lower Engineering tiles need a lower engineering aesthetic.
-- [x] Habitation / Command Sector tiles need a Star Trek TNG-style pass.
-- [x] Ladder tiles swapped so the previous-deck entrance and next-deck exit use the correct visual frames.
-- [x] VENT should visually convert to a spent powered plate after triggering, rather than disappearing into plain floor.
-- [x] INACTIVE_VENT now stays off permanently after traps/floor-lighting are spent.
-- [x] SIGN renamed to terminal.
-- [x] WATER needs a sci-fi aesthetic per area while keeping current gameplay properties.
-
 ## Mechanics
 
 - [x] Security Block levels should use mostly locked doors, with one super key on each level.
@@ -218,3 +157,9 @@ This plan is organized by the kind of work needed next. Use it as the active bac
 - [ ] Shapeshifter shouldn't battle himself, so if shapeshifter gets to to the first boss, he should meet Y who pits him to the test of a battle against 50 enemies in an arena.
 - [ ] Bug: Getting warped back down to an area in lower levels causes the chests to empty irrecoverably.
 - [ ] New mechanic - random levels set to dark, hero can find a breaker that switches the lights back on. Breaker also exists on every level (so can turn lights off - maybe future enemy mechanic.)
+- [ ] Workshop idea - makerbot only provides essential items in the beginning - upgrade makerbot to unlock better items as you go. Basic items level goes up per zone regardless.
+- [ ] Dark Lord of Yendor to have more 'darth sidius' vibes.
+- [ ] Players own items don't persist across workshops in the same area.
+- [ ] Add an option to open and scroll the full log.
+- [ ] When stepping on the alien egg, have the screen fade to black briefly before coming back - what happened dialog.
+- [ ] Xeno-booster should change to an x-port icon.
