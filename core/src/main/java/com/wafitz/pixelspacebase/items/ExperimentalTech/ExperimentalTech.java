@@ -49,6 +49,9 @@ import java.util.HashSet;
 
 public class ExperimentalTech extends Item {
 
+    // Internal compatibility name. Player-facing catalog text calls this family Gene Mods.
+    // The package/class name is intentionally retained until a full save/resource migration exists.
+
     private static final String AC_USE = "USE";
 
     private static final float TIME_TO_USE = 1f;

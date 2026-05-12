@@ -38,6 +38,7 @@ public class MakerBot extends NPC {
         spriteClass = MakerBotSprite.class;
 
         properties.add(Property.IMMOVABLE);
+        properties.add(Property.MACHINE);
     }
 
     @Override
@@ -45,7 +46,6 @@ public class MakerBot extends NPC {
 
         throwItem();
 
-        sprite.turnTo(pos, Dungeon.hero.pos);
         spend(TICK);
         return true;
     }

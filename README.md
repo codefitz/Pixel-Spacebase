@@ -1,6 +1,8 @@
 Pixel Spacebase
 ===============
 
+**Alpha status:** Pixel Spacebase is currently alpha software. Core systems, balance, artwork, naming, and save compatibility are still changing while the game is converted from its Pixel Dungeon roots into a spacebase escape roguelike.
+
 This is a fork of Shattered Pixel Dungeon v4.3, based on Pixel Dungeon. I'm new to coding in a statically typed language like Java - this is primarily a hobby/learning project but I hope it might grow into a nice spin on the endless PD forks.
 
 * Original by Watabou: https://github.com/watabou/pixel-dungeon
@@ -14,7 +16,7 @@ Still, massive credit to Evan for reworking level generation - I stand on the sh
 
 ## What's Different?
 
-The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/Escape RPG.
+The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/Escape RPG. The project is playable as an alpha, but expect unfinished content, rough edges, and ongoing balance changes.
 
 ### Major Changes:
 
@@ -33,10 +35,15 @@ The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/E
 
 ### Changes planned:
 
-* Oxygen mechanics
-* Armor Perma-buffs
-* Modules and upgrades
-* Story elements
+The active backlog is tracked in [`PLAN.md`](PLAN.md). Current work is sorted into:
+
+* Suggestions - unsettled ideas and design options before they become implementation tasks.
+* Sprites - character, enemy, item, and equipment sprite work.
+* Tiles - tileset, terrain, water, ladder, and floor-feature art or tile behavior.
+* Mechanics - gameplay, persistence, quest, workshop, combat, and UI behavior changes.
+* Cosmetic / Narrative - lore, naming, dialogue, area framing, and story polish.
+
+When adding new work, put rough ideas in the Suggestions section first. Once the direction is chosen, move the item into the relevant work category and keep implementation batches small enough to test and rebuild quickly.
 
 ## Development Setup
 

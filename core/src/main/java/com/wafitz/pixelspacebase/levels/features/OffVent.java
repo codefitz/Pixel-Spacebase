@@ -47,18 +47,16 @@ public class OffVent {
         Level.set(pos, Terrain.LIGHTEDVENT);
         GameScene.updateMap(pos);
 
-        if (!Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
+        if (ch instanceof Hero && !Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
             int naturalismLevel = 0;
 
-            if (ch != null) {
-                GnollTechShield.Naturalism naturalism = ch.buff(GnollTechShield.Naturalism.class);
-                if (naturalism != null) {
-                    if (!naturalism.isMalfunctioning()) {
-                        naturalismLevel = naturalism.itemLevel() + 1;
-                        naturalism.charge();
-                    } else {
-                        naturalismLevel = -1;
-                    }
+            GnollTechShield.Naturalism naturalism = ch.buff(GnollTechShield.Naturalism.class);
+            if (naturalism != null) {
+                if (!naturalism.isMalfunctioning()) {
+                    naturalismLevel = naturalism.itemLevel() + 1;
+                    naturalism.charge();
+                } else {
+                    naturalismLevel = -1;
                 }
             }
 

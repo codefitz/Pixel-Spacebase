@@ -71,6 +71,13 @@ public class Hunger extends Buff implements Hero.Doom {
 
             Hero hero = (Hero) target;
 
+            if (hero.heroClass == HeroClass.DM3000) {
+                level = 0;
+                partialDamage = 0;
+                spend(STEP);
+                return true;
+            }
+
             if (isStarving()) {
 
                 partialDamage += target.HT / 100f;

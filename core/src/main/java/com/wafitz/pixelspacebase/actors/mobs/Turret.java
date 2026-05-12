@@ -51,6 +51,7 @@ public class Turret extends Mob {
         flying = true;
 
         properties.add(Property.UNDEAD);
+        properties.add(Property.MACHINE);
     }
 
     private static final String LEVEL = "level";
