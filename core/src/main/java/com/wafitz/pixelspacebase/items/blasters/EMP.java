@@ -188,8 +188,7 @@ public class EMP extends Blaster {
         for (int c : bolt.subPath(1, dist)) {
             affectedCells.add(c);
         }
-        affectedCells.add(bolt.collisionPos);
-        if (bolt.dist + 1 < bolt.path.size()) {
+        if (bolt.dist < maxDist && bolt.dist + 1 < bolt.path.size()) {
             int blockedCell = bolt.path.get(bolt.dist + 1);
             if (isRepairableTerrain(blockedCell)) {
                 affectedCells.add(blockedCell);
