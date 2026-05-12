@@ -117,8 +117,9 @@ public abstract class Mine implements Bundlable {
     public static class Device extends Item {
 
         static final String AC_SET = "SET";
+        static final String AC_USE = "USE";
 
-        private static final float TIME_TO_SET_MINE = 1f;
+        protected static final float TIME_TO_SET_MINE = 1f;
 
         {
             stackable = true;
@@ -202,6 +203,50 @@ public abstract class Mine implements Bundlable {
         @Override
         public String info() {
             return Messages.get(Device.class, "info", name(), desc(), minename());
+        }
+    }
+
+    public static class StimulantDevice extends Device {
+
+        {
+            defaultAction = AC_USE;
+        }
+
+        @Override
+        public ArrayList<String> actions(Hero hero) {
+            ArrayList<String> actions = super.actions(hero);
+            actions.remove(AC_THROW);
+            actions.remove(AC_SET);
+            actions.add(AC_USE);
+            return actions;
+        }
+
+        @Override
+        public void execute(Hero hero, String action) {
+            super.execute(hero, action);
+
+            if (action.equals(AC_USE)) {
+                hero.spend(TIME_TO_SET_MINE);
+                hero.busy();
+
+                detach(hero.belongings.backpack);
+                Mine mine = couch(hero.pos);
+                if (mine != null) {
+                    mine.activate();
+                }
+
+                hero.sprite.operate(hero.pos);
+            }
+        }
+
+        @Override
+        public String desc() {
+            return Messages.get(this, "desc");
+        }
+
+        @Override
+        public String info() {
+            return Messages.get(StimulantDevice.class, "info", name(), desc());
         }
     }
 }

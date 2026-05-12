@@ -2,6 +2,8 @@
 
 ## Cosmetic Changes
 
+- [ ] Update build number to v1.0.2
+- [ ] Update about (give credit to Codex), recent changes
 - [ ] Update the Dark Lord of Yendor theme to have stronger "Darth Sidious" vibes.
   - [x] Review actor and item message strings for tone.
   - [ ] Review encounter presentation and boss text.
@@ -9,6 +11,9 @@
   - [ ] Rename the effect and descriptions so it reads as being pulled by the force.
   - [x] Remove or replace text that refers to chains.
 - [x] Add "Do not pet the cat" warning sign text.
+- [ ] Alien egg - screen still needs to fade to black and return before "Ugh what happened".
+- [ ] Stimulantts need to be updated to a stimulant type of sprite. Also should be renamed "Stims".
+- [ ] Dialogue boxes could do  with a smaller border and make the background semi-transparent
 
 ## Mechanic Changes
 
@@ -51,8 +56,8 @@
   - [ ] Remove or disable garden room generation.
   - [ ] Add one-square healing tank booth placement.
   - [ ] Define healing tank interaction behavior.
-- [ ] Security levels should start with the piercing alarm sound from the trap.
-- [ ] Positive-effect mines should become automatically applied stimulants.
+- [x] Security levels should start with the piercing alarm sound from the trap.
+- [x] Positive-effect mines should become automatically applied stimulants.
 - [ ] Fix chest state after lower-level warp.
   - [ ] Reproduce the case where being warped back down empties chests irrecoverably.
   - [ ] Preserve unopened chest contents across lower-level warps.
@@ -80,14 +85,24 @@
   - [ ] Convert offensive biogenetics such as fire into grenades.
 - [x] Rename Xeno-booster to align with the x-port concept.
 - [ ] Add an option to open and scroll the full log.
+- [ ] Floor lighting overhall
+  - [ ] Lighting that contains a trap, should be invisible - so it's a real trap
+  - [ ] Traps shouldn't ever look like a light - they should look like a blown panel after being set off.
+  - [ ] Adjust terrain features so that only one type appears on each zone/area
+  - [ ] Adjust terrain features to look less 'dungeon' and more like different types of lighting.
+  -  Set mines should look a bit more obvious
 
 ## Graphical Changes
 
-- [ ] Remove the 3D effect/overlay from floor lights.
+- [x] Remove the 3D effect/overlay from floor lights.
 - [ ] Replace the chain graphic with a force-themed visual.
 - [ ] Add a generic storage icon for unrevealed tech/biogenetics.
 - [ ] Add or update grenade icons for offensive biogenetics.
 - [ ] Add healing tank booth tile/art.
 - [ ] Add cat sprite or reuse/update an existing follower sprite.
 - [ ] Add visual treatment for dark levels and breaker-restored lighting.
-- [ ] Change Xeno-booster to an x-port icon.
+- [x] Change Xeno-booster to an x-port icon.
+
+## Bugs
+
+- [ ] Target sometimes doesn't dissapear after certain actions.

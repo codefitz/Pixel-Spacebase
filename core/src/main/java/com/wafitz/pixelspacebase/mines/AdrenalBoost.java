@@ -46,7 +46,7 @@ public class AdrenalBoost extends Mine {
         }
     }
 
-    public static class Device extends Mine.Device {
+    public static class Device extends Mine.StimulantDevice {
 
         {
             image = ItemSpriteSheet.ADRENAL_BOOST;

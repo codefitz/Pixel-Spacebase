@@ -48,6 +48,7 @@ import com.wafitz.pixelspacebase.items.containers.DeviceCase;
 import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
 import com.wafitz.pixelspacebase.items.containers.XPort;
 import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
+import com.wafitz.pixelspacebase.levels.PrisonLevel;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
@@ -353,7 +354,7 @@ public class GameScene extends PixelScene {
                 GLog.h(Messages.get(this, "welcome_back"), Dungeon.depth, Dungeon.hero.givenName());
             } else {
                 GLog.h(Messages.get(this, "welcome"), Dungeon.depth, Dungeon.hero.givenName());
-                Sample.INSTANCE.play(Assets.SND_DESCEND);
+                Sample.INSTANCE.play(Dungeon.level instanceof PrisonLevel ? Assets.SND_ALERT : Assets.SND_DESCEND);
             }
 
             switch (Dungeon.level.feeling) {

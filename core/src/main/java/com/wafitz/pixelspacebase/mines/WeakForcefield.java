@@ -53,7 +53,7 @@ public class WeakForcefield extends Mine {
         }
     }
 
-    public static class Device extends Mine.Device {
+    public static class Device extends Mine.StimulantDevice {
         {
             image = ItemSpriteSheet.FORCEFIELD_TECH;
 

@@ -927,6 +927,10 @@ public class Hero extends Char {
 
     @Override
     public int defenseProc(Char enemy, int damage) {
+        if (DEV_TEST_INVULNERABLE) {
+            restoreDevTestHealth();
+            return 0;
+        }
 
         WeakForcefield.Armor armor = buff(WeakForcefield.Armor.class);
         if (armor != null) {
@@ -961,7 +965,7 @@ public class Hero extends Char {
         }
 
         if (DEV_TEST_INVULNERABLE) {
-            HP = HT;
+            restoreDevTestHealth();
             return;
         }
 
@@ -1336,7 +1340,7 @@ public class Hero extends Char {
         curAction = null;
 
         if (DEV_TEST_INVULNERABLE) {
-            heal(this);
+            restoreDevTestHealth();
             new Flare(8, 32).color(0xFFFF66, true).show(sprite, 2f);
             return;
         }
@@ -1451,12 +1455,30 @@ public class Hero extends Char {
 
     @Override
     public boolean isAlive() {
+        if (DEV_TEST_INVULNERABLE) {
+            if (HP <= 0) {
+                restoreDevTestHealth();
+            }
+            return true;
+        }
         if (subClass == HeroSubClass.BERSERKER
                 && berserk != null
                 && berserk.berserking()) {
             return true;
         }
         return super.isAlive();
+    }
+
+    public static boolean devTestInvulnerable() {
+        return DEV_TEST_INVULNERABLE;
+    }
+
+    public void restoreDevTestHealth() {
+        if (sprite != null && HP < HT) {
+            heal(this);
+        } else {
+            HP = HT;
+        }
     }
 
     @Override
