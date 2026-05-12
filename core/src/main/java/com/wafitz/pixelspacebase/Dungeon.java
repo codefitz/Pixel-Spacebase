@@ -169,8 +169,7 @@ public class Dungeon {
         QuickSlotButton.reset();
 
         depth = 0;
-        //depth = 15; // Test Starting Depth
-        parts = 20000; // Buy lots of stuff
+        parts = 0;
 
         droppedItems = new SparseArray<>();
 
@@ -191,6 +190,7 @@ public class Dungeon {
         Badges.reset();
 
         StartScene.curClass.initHero(hero);
+
     }
 
     public static boolean isChallenged(int mask) {
@@ -205,7 +205,6 @@ public class Dungeon {
         depth++;
         if (depth > Statistics.deepestFloor) {
             Statistics.deepestFloor = depth;
-
             Statistics.completedWithNoKilling = Statistics.qualifiedForNoKilling;
         }
 
@@ -325,8 +324,7 @@ public class Dungeon {
 
         hero.pos = pos != -1 ? pos : level.exit;
 
-        Light light = hero.buff(Light.class);
-        hero.viewDistance = light == null ? level.viewDistance : Math.max(Light.DISTANCE, level.viewDistance);
+        hero.viewDistance = heroViewDistance();
 
         observe();
         try {
@@ -686,6 +684,17 @@ public class Dungeon {
 
     public static void observe() {
         observe(hero.viewDistance + 1);
+    }
+
+    public static int heroViewDistance() {
+        int distance = level.viewDistance;
+        if (hero != null && hero.heroClass == HeroClass.DM3000) {
+            distance = Math.max(distance, Light.DISTANCE);
+        }
+        if (hero != null && hero.buff(Light.class) != null) {
+            distance = Math.max(distance, Light.DISTANCE);
+        }
+        return distance;
     }
 
     public static void observe(int dist) {

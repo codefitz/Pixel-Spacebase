@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
-import com.wafitz.pixelspacebase.items.food.MysteryMeat;
+import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.levels.vents.LightningVent;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
@@ -81,7 +81,6 @@ public class GreatCrab extends Crab {
 
         Hologram.Quest.process();
 
-        Dungeon.level.drop(new MysteryMeat(), pos);
-        Dungeon.level.drop(new MysteryMeat(), pos).sprite.drop();
+        Dungeon.level.drop(new Parts(100), pos).sprite.drop();
     }
 }

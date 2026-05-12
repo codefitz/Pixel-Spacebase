@@ -35,7 +35,7 @@ public class Light extends FlavourBuff {
     public boolean attachTo(Char target) {
         if (super.attachTo(target)) {
             if (Dungeon.level != null) {
-                target.viewDistance = Math.max(Dungeon.level.viewDistance, DISTANCE);
+                target.viewDistance = target == Dungeon.hero ? Dungeon.heroViewDistance() : Math.max(Dungeon.level.viewDistance, DISTANCE);
                 Dungeon.observe();
             }
             return true;
@@ -46,7 +46,7 @@ public class Light extends FlavourBuff {
 
     @Override
     public void detach() {
-        target.viewDistance = Dungeon.level.viewDistance;
+        target.viewDistance = target == Dungeon.hero ? Dungeon.heroViewDistance() : Dungeon.level.viewDistance;
         Dungeon.observe(DISTANCE + 1);
         super.detach();
     }

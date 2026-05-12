@@ -28,17 +28,22 @@ import com.wafitz.pixelspacebase.GamesInProgress;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.blobs.Fire;
+import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
 import com.wafitz.pixelspacebase.actors.buffs.Berserk;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.Combo;
 import com.wafitz.pixelspacebase.actors.buffs.Fury;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
 import com.wafitz.pixelspacebase.actors.buffs.Knockout;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
+import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.actors.buffs.Regeneration;
 import com.wafitz.pixelspacebase.actors.buffs.Shielding;
 import com.wafitz.pixelspacebase.actors.buffs.Targeted;
+import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.buffs.Upgrade;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
@@ -58,6 +63,7 @@ import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.armor.Armor;
+import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.enhancements.EMP;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Flow;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Forcefield;
@@ -88,6 +94,7 @@ import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.levels.Level;
+import com.wafitz.pixelspacebase.levels.PrisonLevel;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.CraftingTerminal;
@@ -140,8 +147,8 @@ public class Hero extends Char {
     public HeroClass heroClass = HeroClass.SHAPESHIFTER;
     public HeroSubClass subClass = HeroSubClass.NONE;
 
-    private int attackSkill = 100; // Was 10 Super Power for Testing
-    private int defenseSkill = 50; // Was 5 Super Power for Testing
+    private int attackSkill = 10;
+    private int defenseSkill = 5;
 
     public boolean ready = false;
     private boolean damageInterrupt = true;
@@ -708,6 +715,12 @@ public class Hero extends Char {
 
                 }
 
+                if (heap.type == Type.JAMMED_CHEST) {
+                    GLog.w(Messages.get(this, "jammed_chest"));
+                    ready();
+                    return false;
+                }
+
                 switch (heap.type) {
                     case CMD_TERMINAL:
                         Sample.INSTANCE.play(Assets.SND_TOMB);
@@ -973,7 +986,7 @@ public class Hero extends Char {
 
         super.damage(dmg, src);
 
-        if (!emergencyEating && isAlive() && HP > 0 && HP * 4 <= HT) {
+        if (!emergencyEating && heroClass != HeroClass.DM3000 && isAlive() && HP > 0 && HP * 4 <= HT) {
             emergencyEat();
         }
     }
@@ -1497,7 +1510,9 @@ public class Hero extends Char {
             int door = Dungeon.level.map[doorCell];
 
             if (door == Terrain.LOCKED_DOOR) {
-                belongings.ironKeys[Dungeon.depth]--;
+                if (!(Dungeon.level instanceof PrisonLevel)) {
+                    belongings.ironKeys[Dungeon.depth]--;
+                }
                 Level.set(doorCell, Terrain.DOOR);
             } else {
                 belongings.specialKeys[Dungeon.depth]--;
@@ -1644,7 +1659,14 @@ public class Hero extends Char {
     @Override
     public HashSet<Class<?>> resistances() {
         ElementsModule.Resistance r = buff(ElementsModule.Resistance.class);
-        return r == null ? super.resistances() : r.resistances();
+        HashSet<Class<?>> resistances = new HashSet<>(r == null ? super.resistances() : r.resistances());
+        if (heroClass == HeroClass.DM3000) {
+            resistances.add(Fire.class);
+            resistances.add(ToxicGas.class);
+            resistances.add(Burning.class);
+            resistances.add(Poison.class);
+        }
+        return resistances;
     }
 
     @Override
@@ -1653,6 +1675,15 @@ public class Hero extends Char {
         for (Buff buff : buffs()) {
             for (Class<?> immunity : buff.immunities)
                 immunities.add(immunity);
+        }
+        if (belongings.armor instanceof Loader) {
+            immunities.add(Burning.class);
+        }
+        if (heroClass == HeroClass.DM3000) {
+            immunities.add(Poison.class);
+            immunities.add(Terror.class);
+            immunities.add(Paralysis.class);
+            immunities.add(Vertigo.class);
         }
         return immunities;
     }

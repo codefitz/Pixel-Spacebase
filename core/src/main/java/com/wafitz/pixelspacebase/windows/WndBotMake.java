@@ -36,6 +36,7 @@ import com.wafitz.pixelspacebase.ui.ItemSlot;
 import com.wafitz.pixelspacebase.ui.RedButton;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
 import com.wafitz.pixelspacebase.ui.Window;
+import com.wafitz.pixelspacebase.utils.GLog;
 
 public class WndBotMake extends Window {
 
@@ -153,10 +154,10 @@ public class WndBotMake extends Window {
                             for (Mob mob : Dungeon.level.mobs) {
                                 if (mob instanceof MakerBot) {
                                     mob.yell(Messages.get(mob, "thief"));
-                                    ((MakerBot) mob).flee();
                                     break;
                                 }
                             }
+                            breakFailedBuild(heap);
                             hide();
                         }
                     }
@@ -264,5 +265,10 @@ public class WndBotMake extends Window {
         if (!item.doPickUp(hero)) {
             Dungeon.level.drop(item, heap.pos).sprite.drop();
         }
+    }
+
+    private void breakFailedBuild(Heap heap) {
+        Item item = heap.pickUp();
+        GLog.w(Messages.get(this, "broken", item.toString()));
     }
 }

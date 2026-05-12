@@ -29,7 +29,7 @@ public class WndMessage extends Window {
 
     private static final int WIDTH_P = 120;
     private static final int WIDTH_L = 144;
-    private static final int MARGIN = 4;
+    private static final int MARGIN = 6;
 
     public WndMessage(String text) {
 

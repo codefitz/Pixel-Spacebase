@@ -137,7 +137,8 @@ public class AlienPod extends Food {
         experimentalTechAttrib = experimentalTech;
         experimentalTechAttrib.ownedByFruit = true;
 
-        experimentalTechAttrib.image = ItemSpriteSheet.ALIENPOD;
+        image = ItemSpriteSheet.XPORT;
+        experimentalTechAttrib.image = ItemSpriteSheet.XPORT;
 
         if (experimentalTechAttrib instanceof HealingTech) {
             name = Messages.get(this, "suntech");

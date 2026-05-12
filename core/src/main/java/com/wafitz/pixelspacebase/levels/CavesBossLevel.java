@@ -298,6 +298,8 @@ public class CavesBossLevel extends Level {
     @Override
     public String tileDesc(int tile) {
         switch (tile) {
+            case Terrain.WATER:
+                return Messages.get(CavesLevel.class, "water_desc");
             case Terrain.ENTRANCE:
                 return Messages.get(CavesLevel.class, "entrance_desc");
             case Terrain.EXIT:

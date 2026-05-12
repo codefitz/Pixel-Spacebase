@@ -475,6 +475,7 @@ public abstract class Char extends Actor {
         MINIBOSS,
         UNDEAD,
         DEMONIC,
+        MACHINE,
         IMMOVABLE
     }
 }

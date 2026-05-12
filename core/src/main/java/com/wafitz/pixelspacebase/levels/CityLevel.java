@@ -140,6 +140,8 @@ public class CityLevel extends RegularLevel {
     @Override
     public String tileDesc(int tile) {
         switch (tile) {
+            case Terrain.WATER:
+                return Messages.get(CityLevel.class, "water_desc");
             case Terrain.ENTRANCE:
                 return Messages.get(CityLevel.class, "entrance_desc");
             case Terrain.EXIT:

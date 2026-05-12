@@ -52,6 +52,7 @@ class Squiddard extends Mob {
         maxLvl = 9;
 
         flying = true;
+        properties.add(Property.MACHINE);
 
         loot = new HealingTech();
         lootChance = 0.1667f; //by default, see die()

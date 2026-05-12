@@ -349,7 +349,7 @@ public abstract class Level implements Bundlable {
         Collection<Bundlable> collection = bundle.getCollection(HEAPS);
         for (Bundlable h : collection) {
             Heap heap = (Heap) h;
-            if (!heap.isEmpty())
+            if (!heap.isEmpty() || heap.type == Heap.Type.WORKSHOP_STORAGE || heap.type == Heap.Type.WORKSHOP_UPGRADE)
                 heaps.put(heap.pos, heap);
         }
 
@@ -771,8 +771,8 @@ public abstract class Level implements Bundlable {
     }
 
     public void disarmVent(int pos) {
-        // wafitz.v4: 'Reset' vent so it can be lighted
-        set(pos, Terrain.OFFVENT);
+        set(pos, Terrain.INACTIVE_VENT);
+        vents.remove(pos);
         GameScene.updateMap(pos);
     }
 
@@ -869,6 +869,10 @@ public abstract class Level implements Bundlable {
 
             case Terrain.VENT:
                 vent = vents.get(cell);
+                break;
+
+            case Terrain.OFFVENT:
+                OffVent.trample(this, cell, mob);
                 break;
 
             case Terrain.DOOR:

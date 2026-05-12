@@ -174,6 +174,10 @@ public class Leonard extends NPC {
     }
 
     public static void upgrade(Item item1, Item item2) {
+        upgrade(item1, item2, true);
+    }
+
+    public static void upgrade(Item item1, Item item2, boolean completeQuest) {
 
         Item first, second;
         if (item2.level() > item1.level()) {
@@ -200,9 +204,10 @@ public class Leonard extends NPC {
         }
         second.detachAll(Dungeon.hero.belongings.backpack);
 
-        Quest.reforged = true;
-
-        Journal.remove(Journal.Feature.TROLL);
+        if (completeQuest) {
+            Quest.reforged = true;
+            Journal.remove(Journal.Feature.TROLL);
+        }
     }
 
     @Override

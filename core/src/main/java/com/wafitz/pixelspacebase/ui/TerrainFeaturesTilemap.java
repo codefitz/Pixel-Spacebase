@@ -111,7 +111,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
             return mines.get(pos).image + 7 * 16;
         }
 
-        if (tile == Terrain.OFFVENT) {
+        if (tile == Terrain.OFFVENT || tile == Terrain.INACTIVE_VENT) {
             return 9 + 16 * ((Dungeon.depth - 1) / 5) + (tileVariance[pos] > 0.5f ? 1 : 0);
         } else if (tile == Terrain.LIGHTEDVENT) {
             return 11 + 16 * ((Dungeon.depth - 1) / 5) + (tileVariance[pos] > 0.5f ? 1 : 0);

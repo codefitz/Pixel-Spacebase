@@ -49,6 +49,11 @@ public class Sign {
 
         } else {
 
+            if (RescueCradle.isAvailableHere()) {
+                RescueCradle.read(pos);
+                return;
+            }
+
             if (Dungeon.depth <= 21) {
                 GameScene.show(new WndMessage(Messages.get(Sign.class, "tip_" + Dungeon.depth)));
             } else {

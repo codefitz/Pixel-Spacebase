@@ -70,7 +70,7 @@ public class WndStory extends Window {
                 WIDTH_L - MARGIN * 2 :
                 WIDTH_P - MARGIN * 2);
         tf.hardlight(0xEAFDFF);
-        tf.setPos(MARGIN, 0);
+        tf.setPos(MARGIN, MARGIN);
         add(tf);
 
         add(new TouchArea(chrome) {
@@ -80,7 +80,7 @@ public class WndStory extends Window {
             }
         });
 
-        resize((int) (tf.width() + MARGIN * 2), (int) Math.min(tf.height(), 180));
+        resize((int) (tf.width() + MARGIN * 2), (int) Math.min(tf.height() + MARGIN * 2, 180));
     }
 
     @Override

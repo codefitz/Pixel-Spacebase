@@ -29,6 +29,8 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.Tengu;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.YInterlude;
+import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
@@ -357,12 +359,35 @@ public class PrisonBossLevel extends Level {
                 clearEntities(null);
 
                 tengu.die(Dungeon.hero);
+                summonYInterlude();
 
                 for (Item item : storedItems)
                     drop(item, randomPrisonCell());
 
                 state = State.WON;
                 break;
+        }
+    }
+
+    private void summonYInterlude() {
+        int pos = -1;
+        for (int offset : PathFinder.NEIGHBOURS8) {
+            int cell = Dungeon.hero.pos + offset;
+            if (passable[cell] && Actor.findChar(cell) == null) {
+                pos = cell;
+                break;
+            }
+        }
+
+        if (pos == -1) {
+            return;
+        }
+
+        YInterlude y = new YInterlude(Dungeon.hero.pos);
+        y.pos = pos;
+        GameScene.add(y);
+        if (y.sprite != null) {
+            y.sprite.emitter().burst(Speck.factory(Speck.WOOL), 15);
         }
     }
 

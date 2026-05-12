@@ -30,6 +30,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
 import com.wafitz.pixelspacebase.effects.Flare;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.ArmorKit;
@@ -151,6 +152,7 @@ public class King extends Mob {
         GameScene.bossSlain();
         Dungeon.level.drop(new ArmorKit(), pos).sprite.drop();
         Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).sprite.drop();
+        Arp.Quest.processMonarchDefeat(pos);
 
         super.die(cause);
 
@@ -254,7 +256,7 @@ public class King extends Mob {
         return IMMUNITIES;
     }
 
-    private static class Undead extends Mob {
+    public static class Undead extends Mob {
 
         public static int count = 0;
 
@@ -312,6 +314,8 @@ public class King extends Mob {
 
         @Override
         public void die(Object cause) {
+            Arp.Quest.process(this);
+
             super.die(cause);
 
             if (Dungeon.visible[pos]) {

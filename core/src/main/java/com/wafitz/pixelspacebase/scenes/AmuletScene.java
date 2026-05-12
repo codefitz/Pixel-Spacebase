@@ -25,6 +25,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.effects.Flare;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Amulet;
+import com.wafitz.pixelspacebase.levels.features.RescueCradle;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.RedButton;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
@@ -50,7 +51,8 @@ public class AmuletScene extends PixelScene {
 
         RenderedTextMultiline text = null;
         if (!noText) {
-            text = renderMultiline(Messages.get(this, "text"), 8);
+            text = renderMultiline(Messages.get(this, "text",
+                    RescueCradle.totalCradles()), 8);
             text.maxWidth(WIDTH);
             add(text);
         }

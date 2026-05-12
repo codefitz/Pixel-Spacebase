@@ -44,6 +44,6 @@ public class Embers extends Item {
 
     @Override
     public ItemSprite.Glowing glowing() {
-        return new ItemSprite.Glowing(0x660000, 3f);
+        return new ItemSprite.Glowing(0x7a33aa, 3f);
     }
 }

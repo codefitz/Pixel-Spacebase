@@ -133,7 +133,9 @@ public abstract class RegularLevel extends Level {
         if (Dungeon.workshopOnLevel()) {
             Room workshop = null;
             for (Room r : roomEntrance.connected.keySet()) {
-                if (r.connected.size() == 1 && ((r.width() - 1) * (r.height() - 1) >= Workshop.spaceNeeded())) {
+                if (r.connected.size() == 1
+                        && Workshop.canHostFixedLayout(r)
+                        && ((r.width() - 1) * (r.height() - 1) >= Workshop.spaceNeeded())) {
                     workshop = r;
                     break;
                 }

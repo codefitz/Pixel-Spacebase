@@ -150,14 +150,16 @@ public class LastLevel extends Level {
     public String tileName(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(HallsLevel.class, "water_name");
+                return Messages.get(LastLevel.class, "water_name");
             case Terrain.LIGHTEDVENT:
                 return Messages.get(HallsLevel.class, "lightedvent_name");
             case Terrain.OFFVENT:
                 return Messages.get(HallsLevel.class, "off_vent_name");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
-                return Messages.get(HallsLevel.class, "statue_name");
+                return Messages.get(LastLevel.class, "statue_name");
+            case Terrain.PEDESTAL:
+                return Messages.get(LastLevel.class, "pedestal_name");
             default:
                 return super.tileName(tile);
         }
@@ -167,10 +169,12 @@ public class LastLevel extends Level {
     public String tileDesc(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(HallsLevel.class, "water_desc");
+                return Messages.get(LastLevel.class, "water_desc");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
-                return Messages.get(HallsLevel.class, "statue_desc");
+                return Messages.get(LastLevel.class, "statue_desc");
+            case Terrain.PEDESTAL:
+                return Messages.get(LastLevel.class, "pedestal_desc");
             case Terrain.BOOKSHELF:
                 return Messages.get(HallsLevel.class, "bookshelf_desc");
             default:

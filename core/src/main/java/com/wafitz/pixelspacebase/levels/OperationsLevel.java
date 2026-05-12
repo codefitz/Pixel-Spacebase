@@ -33,6 +33,7 @@ import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Uniform;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
+import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
 import com.wafitz.pixelspacebase.levels.vents.AlarmVent;
 import com.wafitz.pixelspacebase.levels.vents.ChillingVent;
 import com.wafitz.pixelspacebase.levels.vents.FlockVent;
@@ -149,13 +150,12 @@ public class OperationsLevel extends RegularLevel {
                     drop(Generator.random(), pos).type = Heap.Type.CHEST;
                     drop(new Uniform().identify(), pos);
                     drop(new Food().identify(), pos);
-                    // Testing
-                drop(new MappingScript().identify(), pos);
-                //drop(new DeviceCase().identify(), pos);
-                //drop(new BlasterHolster().identify(), pos);
-                //drop(new XPort().identify(), pos);
-                drop(new WeakForcefield().identify(), pos);
-                drop(new SpaceSuit().identify(), pos);
+                    // TEST - Dev items
+                    drop(new MappingScript().identify(), pos);
+                    drop(new WeakForcefield().identify(), pos);
+                    drop(new SpaceSuit().identify(), pos);
+                    drop(new Wrench().identify(), pos);
+                    drop(new Wrench().identify(), pos);
                 }
         }
     }
@@ -201,6 +201,8 @@ public class OperationsLevel extends RegularLevel {
     @Override
     public String tileDesc(int tile) {
         switch (tile) {
+            case Terrain.WATER:
+                return Messages.get(OperationsLevel.class, "water_desc");
             case Terrain.EMPTY_DECO:
                 return Messages.get(OperationsLevel.class, "empty_deco_desc");
             case Terrain.BOOKSHELF:

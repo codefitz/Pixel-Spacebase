@@ -22,11 +22,8 @@ package com.wafitz.pixelspacebase.sprites;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.particles.PixelParticle;
 
 public class MakerBotSprite extends MobSprite {
-
-    private PixelParticle coin;
 
     public MakerBotSprite() {
         super();
@@ -34,10 +31,10 @@ public class MakerBotSprite extends MobSprite {
         texture(Assets.MAKERBOT);
         TextureFilm film = new TextureFilm(texture, 14, 14);
 
-        idle = new Animation(10, true);
-        idle.frames(film, 1, 1, 1, 1, 1, 0, 0, 0, 0);
+        idle = new Animation(1, true);
+        idle.frames(film, 0);
 
-        die = new Animation(20, false);
+        die = new Animation(1, false);
         die.frames(film, 0);
 
         run = idle.clone();
@@ -46,20 +43,4 @@ public class MakerBotSprite extends MobSprite {
 
         idle();
     }
-
-    // wafitz.v4: Janitor robots don't toss coins
-    /*@Override
-    public void onComplete(Animation anim) {
-        super.onComplete(anim);
-
-        if (visible && anim == idle) {
-            if (coin == null) {
-                coin = new PixelParticle();
-                parent.add(coin);
-            }
-            coin.reset(x + (flipHorizontal ? 0 : 13), y + 7, 0xFFFF00, 1, 0.5f);
-            coin.speed.y = -40;
-            coin.acc.y = +160;
-        }
-    }*/
 }
