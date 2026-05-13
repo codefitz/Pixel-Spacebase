@@ -69,6 +69,8 @@
 - [ ] Add alien egg step event.
   - [ ] Fade the screen briefly to black when stepping on an alien egg.
   - [ ] Show a "what happened" dialog when the screen returns.
+  - [ ] Falling needs to be fixed so it falls to the level below - not up. The locked room needs to appear on the (next) level above.
+  - [ ] Y should appear 3 times in the maze before Tengu main battle (hero to seek him out). If hero finds Y all 3 times, he will look in heros backpack and compare against Tengus stats. If the hero seems to be under equipped - Y even the odds and will provide an offensive ranged weapon with at least 3 charges. If the hero seems to be overequipped - Y will even the odds and remove one random weapon and place it to be found in one of the cells after the battle.
 
 ## Refactorial Changes and Small Adjustments
 
@@ -102,6 +104,7 @@
 - [ ] Add cat sprite or reuse/update an existing follower sprite.
 - [ ] Add visual treatment for dark levels and breaker-restored lighting.
 - [x] Change Xeno-booster to an x-port icon.
+- [ ] Tengu battle arena needs to be more like an alien planet (think Star Trek TOS).
 
 ## Bugs
 
