@@ -21,8 +21,6 @@
 package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.blobs.Blob;
-import com.wafitz.pixelspacebase.actors.blobs.Web;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
@@ -30,7 +28,6 @@ import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.buffs.XenoInfection;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
-import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.SpinnerSprite;
 import com.watabou.utils.Random;
 
@@ -83,20 +80,14 @@ class Spinner extends Mob {
     public int attackProc(Char enemy, int damage) {
         if (Random.Int(2) == 0) {
             if (enemy instanceof Hero) {
-                XenoInfection.infectStrong((Hero) enemy);
+                if (XenoInfection.infectStrong((Hero) enemy)) {
+                    die(enemy);
+                }
             }
             state = FLEEING;
         }
 
         return damage;
-    }
-
-    @Override
-    public void move(int step) {
-        if (state == FLEEING) {
-            GameScene.add(Blob.device(pos, Random.Int(5, 7), Web.class));
-        }
-        super.move(step);
     }
 
     private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();

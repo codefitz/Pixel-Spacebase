@@ -112,6 +112,7 @@ public abstract class Level implements Bundlable {
     public int[] map;
     public boolean[] visited;
     public boolean[] mapped;
+    public boolean[] vacuum;
 
     public int viewDistance = Dungeon.isChallenged(Challenges.DARKNESS) ? 3 : 8;
 
@@ -159,6 +160,7 @@ public abstract class Level implements Bundlable {
     private static final String MAP = "map";
     private static final String VISITED = "visited";
     private static final String MAPPED = "mapped";
+    private static final String VACUUM = "vacuum";
     private static final String ENTRANCE = "entrance";
     private static final String EXIT = "exit";
     private static final String LOCKED = "locked";
@@ -190,6 +192,8 @@ public abstract class Level implements Bundlable {
         Arrays.fill(visited, false);
         mapped = new boolean[length()];
         Arrays.fill(mapped, false);
+        vacuum = new boolean[length()];
+        Arrays.fill(vacuum, false);
 
         if (!(Dungeon.bossLevel() || Dungeon.depth == 21) /*final shop floor*/) {
             addItemToSpawn(Generator.random(Generator.Category.FOOD));
@@ -328,6 +332,7 @@ public abstract class Level implements Bundlable {
 
         visited = bundle.getBooleanArray(VISITED);
         mapped = bundle.getBooleanArray(MAPPED);
+        vacuum = bundle.contains(VACUUM) ? bundle.getBooleanArray(VACUUM) : new boolean[length()];
 
         entrance = bundle.getInt(ENTRANCE);
         exit = bundle.getInt(EXIT);
@@ -401,6 +406,7 @@ public abstract class Level implements Bundlable {
         bundle.put(MAP, map);
         bundle.put(VISITED, visited);
         bundle.put(MAPPED, mapped);
+        bundle.put(VACUUM, vacuum);
         bundle.put(ENTRANCE, entrance);
         bundle.put(EXIT, exit);
         bundle.put(LOCKED, locked);
@@ -415,6 +421,16 @@ public abstract class Level implements Bundlable {
 
     public int tunnelTile() {
         return feeling == Feeling.CHASM ? Terrain.EMPTY_SP : Terrain.EMPTY;
+    }
+
+    public void setVacuum(int cell) {
+        if (vacuum != null && insideMap(cell)) {
+            vacuum[cell] = true;
+        }
+    }
+
+    public boolean isVacuum(int cell) {
+        return vacuum != null && insideMap(cell) && vacuum[cell];
     }
 
     public int width() {

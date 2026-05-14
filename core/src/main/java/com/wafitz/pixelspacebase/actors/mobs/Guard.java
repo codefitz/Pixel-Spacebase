@@ -164,17 +164,17 @@ class Guard extends Mob {
         return null;
     }
 
-    private final String CHAINSUSED = "chainsused";
+    private final String FORCE_PULL_USED = "chainsused";
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
-        bundle.put(CHAINSUSED, forcePullUsed);
+        bundle.put(FORCE_PULL_USED, forcePullUsed);
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        forcePullUsed = bundle.getBoolean(CHAINSUSED);
+        forcePullUsed = bundle.getBoolean(FORCE_PULL_USED);
     }
 }

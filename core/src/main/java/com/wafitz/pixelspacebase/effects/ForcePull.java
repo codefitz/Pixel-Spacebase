@@ -64,11 +64,13 @@ public class ForcePull extends Group {
 
         rotation = (float) (Math.atan2(dy, dx) * A) + 90f;
 
-        int numPulses = Math.round(distance / 6f) + 1;
+        int numPulses = Math.round(distance / 10f) + 1;
 
         pulses = new Image[numPulses];
         for (int i = 0; i < pulses.length; i++) {
-            pulses[i] = new Image(Effects.get(Effects.Type.CHAIN));
+            pulses[i] = new Image(Effects.get(Effects.Type.FORCE_PULSE));
+            pulses[i].hardlight(0x88CCFF);
+            pulses[i].alpha(0.85f);
             pulses[i].angle = rotation;
             pulses[i].origin.set(pulses[i].width() / 2, pulses[i].height());
             add(pulses[i]);

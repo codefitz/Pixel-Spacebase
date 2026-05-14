@@ -88,6 +88,7 @@ import com.wafitz.pixelspacebase.windows.WndMessage;
 import com.wafitz.pixelspacebase.windows.WndOptions;
 import com.wafitz.pixelspacebase.windows.WndStory;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.NoosaScript;
@@ -97,7 +98,7 @@ import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
-import com.watabou.noosa.tweeners.Delayer;
+import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
@@ -755,16 +756,56 @@ public class GameScene extends PixelScene {
             return;
         }
 
-        flash(color);
-        scene.add(new Delayer(0.45f) {
+        scene.addToFront(new FadeOutIn(color, 0.35f, 0.25f, 0.45f, new Callback() {
             @Override
-            protected void onComplete() {
-                super.onComplete();
+            public void call() {
                 if (scene != null) {
                     GameScene.show(new WndMessage(message));
                 }
             }
-        });
+        }));
+    }
+
+    private static class FadeOutIn extends ColorBlock {
+
+        private final float fadeOutTime;
+        private final float holdTime;
+        private final float fadeInTime;
+        private final Callback callback;
+
+        private float time;
+
+        private FadeOutIn(int color, float fadeOutTime, float holdTime, float fadeInTime, Callback callback) {
+            super(uiCamera.width, uiCamera.height, 0xFF000000 | color);
+
+            this.fadeOutTime = fadeOutTime;
+            this.holdTime = holdTime;
+            this.fadeInTime = fadeInTime;
+            this.callback = callback;
+
+            camera = uiCamera;
+            alpha(0f);
+        }
+
+        @Override
+        public void update() {
+            super.update();
+
+            time += Game.elapsed;
+
+            if (time < fadeOutTime) {
+                alpha(time / fadeOutTime);
+            } else if (time < fadeOutTime + holdTime) {
+                alpha(1f);
+            } else if (time < fadeOutTime + holdTime + fadeInTime) {
+                alpha(1f - (time - fadeOutTime - holdTime) / fadeInTime);
+            } else {
+                killAndErase();
+                if (callback != null) {
+                    callback.call();
+                }
+            }
+        }
     }
 
     public static void gameOver() {

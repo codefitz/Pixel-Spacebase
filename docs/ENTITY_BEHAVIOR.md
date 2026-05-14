@@ -53,7 +53,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Ruptured Crew Suit (`Skeleton`) | Former skeleton. Corrupted emergency suit/servo enemy that ruptures into shrapnel when damaged enough. |
 | Jawar (`Thief`) | Former thief. Steals an item and attempts to escape. |
 | Jawar Scavenger (`Bandit`) | Rare Jawar variant with enhanced stealing threat. |
-| Bith Acolyte (`Guard`) | Former prison guard. Security adept with a force-pull rig; mechanically still pulls or pressures the player in combat. Sprite/chain visual still needs a later pass. |
+| Bith Acolyte (`Guard`) | Former prison guard. Security adept with a force-pull rig; mechanically still pulls or pressures the player in combat. |
 | Siphon Drone | Flying medical-drain drone that replenishes health when attacking. |
 | Yendor Shock Trooper | Heavy melee enemy with low-health combat-rig overclock. |
 | Facehugger (`Spinner`) | Former cave spinner. Uses web behavior as adhesive biofilament. Successful latches infect the hero like an alien egg; if the infection runs its course it spawns a tougher xenomorph. |
@@ -87,10 +87,10 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Floor lighting | Unpowered floor lighting activates when any non-flying character stands on it; it still uses normal press handling for traps and mines. Spent trap/floor-lighting tiles become inactive, stay off permanently, and remain visible as spent powered plates. |
 | Projectile pathing | Missiles and thrown items can cross unpowered floor lighting even though it still blocks sight until activated. |
 | Weapons | Melee and missile weapons with tiers, upgrades, malfunctions, and enhancements. |
-| Armor | Defensive equipment with strength requirements, upgrades, malfunctions, and enhancements. |
+| Armor | Defensive equipment with strength requirements, upgrades, malfunctions, and enhancements. Space suits and hunter suits protect biological heroes on exposed bridge walks outside the station. |
 | Modules | Ring-like equipment that modifies combat or utility stats. Can malfunction. |
 | Artifacts | Unique charge/progression items with special mechanics, such as stealth, gravity control, time manipulation, alien DNA, recycling, and YendorTech shield behavior. |
-| Workshops | Ordinary workshop stock is random per floor and stays on that floor. Special support items such as backpack-modifier containers and Time Folder batteries carry forward within the same area if left in the workshop. Player-dropped normal heaps inside the workshop room carry forward into reusable workshop storage chests instead of being left behind on the old floor. Generated workshop rooms paint a fixed interior template with a Maker Bench, storage chests, and a Chief Engineer-style upgrade bench for merging two compatible upgradeable items. |
+| Workshops | Ordinary workshop stock is random per floor and stays on that floor. Special support items such as backpack-modifier containers and Time Folder batteries carry forward within the same area if left in the workshop. Player-dropped normal heaps inside the workshop room carry forward into reusable workshop storage chests instead of being left behind on the old floor. Generated workshop rooms paint a fixed interior template with a Maker Bench, storage chests, and a Chief Engineer-style upgrade bench for merging two compatible upgradeable items. Every workshop offers at least one spacesuit-type armor item. |
 | Containers | Inventory sub-containers such as backpack-style storage, Bionetics gene-mod storage, and blaster holster. |
 | Mines / Devices | Placeable or environmental charges. Can be triggered from floors, fabricated, combined, or cleared by drones. |
 | Parts | Currency/material used in workshops and Maker-Bot/recycling flows. |
@@ -109,7 +109,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Disintegrator | Piercing beam that damages multiple targets and burns through terrain. |
 | Flamethrower | Cone fire attack, consuming charge for area damage. |
 | Freezethrower | Cold damage and chill/freeze behavior. |
-| Shock Blaster | Electrical chain/bounce damage, stronger around water but risky at close range. |
+| Shock Blaster | Electrical arc/bounce damage, stronger around water but risky at close range. |
 | Dominator | Attempts to permanently dominate enemies; stronger against weakened targets and ineffective against bosses. |
 | Bio-Siphon Blaster (`VampiricBlaster`) | Former vampiric/hypnotise blaster. Now steals life from hostile living targets, healing the hero from actual HP removed. Still transfers hero life into allies or support effects, and disrupts unliving or projected targets without healing. |
 | Venom Blaster | Creates venom/toxic gas cloud at target area. |

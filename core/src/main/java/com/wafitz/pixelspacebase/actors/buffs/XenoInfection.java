@@ -36,15 +36,15 @@ public class XenoInfection extends Buff {
     private int turns;
     private boolean strongSpawn;
 
-    public static void infect(Hero hero) {
-        infect(hero, false);
+    public static boolean infect(Hero hero) {
+        return infect(hero, false);
     }
 
-    public static void infectStrong(Hero hero) {
-        infect(hero, true);
+    public static boolean infectStrong(Hero hero) {
+        return infect(hero, true);
     }
 
-    private static void infect(Hero hero, boolean strongSpawn) {
+    private static boolean infect(Hero hero, boolean strongSpawn) {
         if (hero.buff(XenoInfection.class) == null) {
             XenoInfection infection = Buff.affect(hero, XenoInfection.class);
             infection.turns = 0;
@@ -53,7 +53,9 @@ public class XenoInfection extends Buff {
             String message = Messages.get(XenoInfection.class, "start");
             GLog.w(message);
             GameScene.flashThenShowMessage(0x000000, message);
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -77,7 +79,7 @@ public class XenoInfection extends Buff {
             } else {
                 Xenomorph.spawnAdjacent(hero.pos);
             }
-            hero.damage(Math.max(1, hero.HP / 2), this);
+            hero.damage(Math.max(hero.HT / 3, hero.HP * 3 / 4), this);
             detach();
         } else {
             spend(TICK);

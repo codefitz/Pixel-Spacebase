@@ -36,6 +36,16 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
     private static final String TXT_Update =
+            "_v1.0.2:_\n" +
+                    "_-_ Added the alien egg blackout and recovery message sequence.\n" +
+                    "_-_ Made facehugger infection consume the attacker and made alien emergence more dangerous.\n" +
+                    "_-_ Made exposed bridge sections require spacesuit protection, with DM-3000 and Shapeshifter exceptions.\n" +
+                    "_-_ Strengthened the Dark Lord of Yendor quest and victory text.\n" +
+                    "_-_ Reworked chain-themed text and pull visuals toward force-themed effects.\n" +
+                    "_-_ Renamed stimulants to Stims and refreshed related pickup behavior.\n" +
+                    "_-_ Tightened dialogue box presentation and replaced missing item/action text.\n" +
+                    "_-_ Fixed lingering target indicators and Guardian Floor Lighting crashes.\n" +
+                    "\n" +
             "_v1.0.1:_\n" +
                     "_-_ Added rescue cradle mechanics tied to the escape pod override.\n" +
                     "_-_ Expanded workshop storage handling and delivery between levels.\n" +

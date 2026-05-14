@@ -63,7 +63,9 @@ import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.armor.Armor;
+import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
+import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.enhancements.EMP;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Flow;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Forcefield;
@@ -161,6 +163,8 @@ public class Hero extends Char {
     private Item theKey;
 
     public boolean resting = false;
+    private boolean vacuumWarningActive = false;
+    private int vacuumReturnCell = -1;
 
     public MissileWeapon rangedWeapon = null;
     public Belongings belongings;
@@ -205,6 +209,8 @@ public class Hero extends Char {
     private static final String STRENGTH = "STR";
     private static final String LEVEL = "lvl";
     private static final String EXPERIENCE = "exp";
+    private static final String VACUUM_WARNING_ACTIVE = "vacuumWarningActive";
+    private static final String VACUUM_RETURN_CELL = "vacuumReturnCell";
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -221,6 +227,8 @@ public class Hero extends Char {
 
         bundle.put(LEVEL, lvl);
         bundle.put(EXPERIENCE, exp);
+        bundle.put(VACUUM_WARNING_ACTIVE, vacuumWarningActive);
+        bundle.put(VACUUM_RETURN_CELL, vacuumReturnCell);
 
         belongings.storeInBundle(bundle);
     }
@@ -240,6 +248,8 @@ public class Hero extends Char {
 
         lvl = bundle.getInt(LEVEL);
         exp = bundle.getInt(EXPERIENCE);
+        vacuumWarningActive = bundle.getBoolean(VACUUM_WARNING_ACTIVE);
+        vacuumReturnCell = bundle.contains(VACUUM_RETURN_CELL) ? bundle.getInt(VACUUM_RETURN_CELL) : -1;
 
         belongings.restoreFromBundle(bundle);
     }
@@ -1143,6 +1153,19 @@ public class Hero extends Char {
         }
 
         if (step != -1) {
+            if (!Dungeon.level.isVacuum(pos) && !Dungeon.level.isVacuum(step)) {
+                vacuumWarningActive = false;
+                vacuumReturnCell = -1;
+            }
+
+            if (needsVacuumWarningBeforeStep(step)) {
+                vacuumWarningActive = true;
+                vacuumReturnCell = pos;
+                path = null;
+                GLog.w(Messages.get(this, "vacuum_warning"));
+                ready();
+                return false;
+            }
 
             int moveTime = 1;
             if (belongings.armor != null && belongings.armor.hasEnhancement(Forcefield.class) &&
@@ -1231,8 +1254,8 @@ public class Hero extends Char {
         this.exp += exp;
         float percent = exp / (float) maxExp();
 
-        GravityGun.gravityRecharge chains = buff(GravityGun.gravityRecharge.class);
-        if (chains != null) chains.gainExp(percent);
+        GravityGun.gravityRecharge gravityRecharge = buff(GravityGun.gravityRecharge.class);
+        if (gravityRecharge != null) gravityRecharge.gainExp(percent);
 
         SurvivalModule.hornRecharge horn = buff(SurvivalModule.hornRecharge.class);
         if (horn != null) horn.gainCharge(percent);
@@ -1483,6 +1506,7 @@ public class Hero extends Char {
 
     @Override
     public void move(int step) {
+        int previousPos = pos;
         super.move(step);
 
         if (!flying) {
@@ -1494,6 +1518,60 @@ public class Hero extends Char {
             }
             Dungeon.level.press(pos, this);
         }
+        checkVacuumExposure(previousPos);
+    }
+
+    private void checkVacuumExposure(int previousPos) {
+        if (canSurviveVacuum()) {
+            vacuumWarningActive = false;
+            vacuumReturnCell = -1;
+            return;
+        }
+
+        boolean wasInVacuum = Dungeon.level.isVacuum(previousPos);
+        boolean isInVacuum = Dungeon.level.isVacuum(pos);
+
+        if (!isInVacuum) {
+            if (wasInVacuum && vacuumWarningActive && pos != vacuumReturnCell) {
+                killByVacuum();
+                return;
+            }
+            vacuumWarningActive = false;
+            vacuumReturnCell = -1;
+            return;
+        }
+
+        if (vacuumWarningActive && wasInVacuum) {
+            killByVacuum();
+        } else if (!vacuumWarningActive) {
+            vacuumWarningActive = true;
+            vacuumReturnCell = previousPos;
+            GLog.w(Messages.get(this, "vacuum_warning"));
+        }
+    }
+
+    private void killByVacuum() {
+        damage(HP + HT, new Doom() {
+            @Override
+            public void onDeath() {
+                Dungeon.fail(getClass());
+                GLog.n(Messages.get(Hero.class, "vacuum_death"));
+            }
+        });
+    }
+
+    private boolean needsVacuumWarningBeforeStep(int step) {
+        return !vacuumWarningActive
+                && !Dungeon.level.isVacuum(pos)
+                && Dungeon.level.isVacuum(step)
+                && !canSurviveVacuum();
+    }
+
+    private boolean canSurviveVacuum() {
+        return heroClass == HeroClass.DM3000
+                || heroClass == HeroClass.SHAPESHIFTER
+                || belongings.armor instanceof SpaceSuit
+                || belongings.armor instanceof HunterSpaceSuit;
     }
 
     @Override

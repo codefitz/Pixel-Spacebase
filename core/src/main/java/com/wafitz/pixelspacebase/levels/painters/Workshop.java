@@ -376,6 +376,7 @@ public class Workshop extends Painter {
         }
 
         itemsToSpawn.add(new PortableRender());
+        ensureSpaceSuitStock();
 
 
         ChooseContainer(Dungeon.hero.belongings);
@@ -466,6 +467,20 @@ public class Workshop extends Painter {
             throw new RuntimeException("Workshop attempted to carry more than 39 items!");
 
         Collections.shuffle(itemsToSpawn);
+    }
+
+    private static void ensureSpaceSuitStock() {
+        for (Item item : itemsToSpawn) {
+            if (item instanceof SpaceSuit || item instanceof HunterSpaceSuit) {
+                return;
+            }
+        }
+
+        if (Dungeon.depth >= 11) {
+            itemsToSpawn.add(new HunterSpaceSuit().identify());
+        } else {
+            itemsToSpawn.add(new SpaceSuit().identify());
+        }
     }
 
     private static void ChooseContainer(Belongings pack) {

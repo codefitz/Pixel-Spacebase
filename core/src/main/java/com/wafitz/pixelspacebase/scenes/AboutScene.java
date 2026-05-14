@@ -42,7 +42,8 @@ public class AboutScene extends PixelScene {
     private static final String TTL_PS = "Pixel Spacebase";
 
     private static final String TXT_PS =
-            "Spacebase conversion, design, code, and graphics: Wafitz";
+            "Spacebase conversion, design, code, and graphics: Wafitz\n" +
+                    "Implementation assistance: Codex";
 
     private static final String LNK_PS = "github.com/codefitz/Pixel-Spacebase";
 

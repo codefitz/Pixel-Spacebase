@@ -30,7 +30,7 @@ public class Effects {
         LIGHTNING,
         WOUND,
         EXCLAMATION,
-        CHAIN,
+        FORCE_PULSE,
         DEATH_RAY,
         LIGHT_RAY,
         HEALTH_RAY
@@ -51,8 +51,8 @@ public class Effects {
             case EXCLAMATION:
                 icon.frame(icon.texture.uvRect(0, 16, 6, 25));
                 break;
-            case CHAIN:
-                icon.frame(icon.texture.uvRect(6, 16, 11, 22));
+            case FORCE_PULSE:
+                icon.frame(icon.texture.uvRect(16, 23, 32, 31));
                 break;
             case DEATH_RAY:
                 icon.frame(icon.texture.uvRect(16, 16, 32, 24));

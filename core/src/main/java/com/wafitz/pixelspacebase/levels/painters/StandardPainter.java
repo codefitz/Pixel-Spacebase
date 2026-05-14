@@ -240,6 +240,15 @@ public class StandardPainter extends Painter {
             drawInside(level, room, door2, Math.abs(door1.y - door2.y), Terrain.EMPTY_SP);
 
         }
+
+        for (int y = room.top + 1; y < room.bottom; y++) {
+            for (int x = room.left + 1; x < room.right; x++) {
+                int cell = x + y * level.width();
+                if (level.map[cell] == Terrain.EMPTY_SP) {
+                    level.setVacuum(cell);
+                }
+            }
+        }
     }
 
     private static void paintFissure(Level level, Room room) {

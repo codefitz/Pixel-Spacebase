@@ -2,16 +2,16 @@
 
 ## Cosmetic Changes
 
-- [ ] Update build number to v1.0.2
-- [ ] Update about (give credit to Codex), recent changes
-- [ ] Update the Dark Lord of Yendor theme to have stronger "Darth Sidious" vibes.
+- [x] Update build number to v1.0.2
+- [x] Update about (give credit to Codex), recent changes
+- [x] Update the Dark Lord of Yendor theme to have stronger "Darth Sidious" vibes.
   - [x] Review actor and item message strings for tone.
   - [x] Review encounter presentation and boss text.
-- [ ] Replace the chain/restraint theme with "the force".
+- [x] Replace the chain/restraint theme with "the force".
   - [x] Rename the Bith pull effect and descriptions so it reads as being pulled by the force.
   - [x] Remove or replace text that refers to chains.
 - [x] Add "Do not pet the cat" warning sign text.
-- [ ] Alien egg - screen still needs to fade to black and return before "Ugh what happened".
+- [x] Alien egg - screen still needs to fade to black and return before "Ugh what happened".
 - [x] Stimulantts need to be updated to a stimulant type of sprite. Also should be renamed "Stims".
 - [x] Dialogue boxes could do  with a smaller border and make the background semi-transparent
 - [x] The pickaxe has generic text and NO TEXT FOUND. This should be replaced with some other sci-fi item.
@@ -23,10 +23,10 @@
   - [ ] Add permanent torch item behavior.
   - [ ] Add battery pickup generation and recharge behavior.
   - [ ] Balance torch charge use against dark-level encounters.
-- [ ] Spacesuit is required for spacewalk areas.
-  - [ ] Gate captain spacewalk access behind spacesuit ownership/equipment.
-  - [ ] Gate commander spacewalk access behind spacesuit ownership/equipment.
-  - [ ] Add failure messaging when the player tries to enter without a spacesuit.
+- [x] Spacesuit is required for spacewalk areas.
+  - [x] Gate captain spacewalk access behind spacesuit ownership/equipment.
+  - [x] Gate commander spacewalk access behind spacesuit ownership/equipment.
+  - [x] Add failure messaging when the player tries to enter without a spacesuit.
 - [ ] Rework shapeshifter progression.
   - [ ] Prevent shapeshifter from using blaster weapons.
   - [ ] Scale shapeshifter strength as level depth increases.
@@ -69,11 +69,11 @@
   - [ ] Increase basic item level by zone regardless of makerbot upgrade state.
 - [ ] Persist player-owned items across workshops in the same area.
 - [ ] Add alien egg step event.
-  - [ ] Fade the screen briefly to black when stepping on an alien egg.
-  - [ ] Show a "what happened" dialog when the screen returns.
-  - [ ] Falling needs to be fixed so it falls to the level below - not up. The locked room needs to appear on the (next) level above.
+  - [x] Fade the screen briefly to black when stepping on an alien egg.
+  - [x] Show a "what happened" dialog when the screen returns.
+- [ ] Falling needs to be fixed so it falls to the level below - not up. The locked room needs to appear on the (next) level above.
 - [ ] Y should appear 3 times in the maze before Tengu main battle (hero to seek him out). If hero finds Y all 3 times, he will look in heros backpack and compare against Tengus stats. If the hero seems to be under equipped - Y even the odds and will provide an offensive ranged weapon with at least 3 charges. If the hero seems to be overequipped - Y will even the odds and remove one random weapon and place it to be found in one of the cells after the battle.
-- [ ] facehugger should die on infection. Also remove the sticky web effects.
+- [x] facehugger should die on infection. Also remove the sticky web effects.
 
 ## Refactorial Changes and Small Adjustments
 
@@ -101,7 +101,7 @@
 ## Graphical Changes
 
 - [x] Remove the 3D effect/overlay from floor lights.
-- [ ] Replace the chain graphic with a force-themed visual.
+- [x] Replace the chain graphic with a force-themed visual.
 - [ ] Add a generic storage icon for unrevealed tech/biogenetics.
 - [ ] Add or update grenade icons for offensive biogenetics.
 - [ ] Add healing tank booth tile/art.
