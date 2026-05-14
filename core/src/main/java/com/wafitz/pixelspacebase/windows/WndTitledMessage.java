@@ -20,6 +20,7 @@
  */
 package com.wafitz.pixelspacebase.windows;
 
+import com.wafitz.pixelspacebase.Chrome;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
@@ -42,7 +43,8 @@ public class WndTitledMessage extends Window {
 
     public WndTitledMessage(Component titlebar, String message) {
 
-        super();
+        super(0, 0, Chrome.get(Chrome.Type.DIALOG));
+        chrome.alpha(0.88f);
 
         int width = PixelSpacebase.landscape() ? WIDTH_L : WIDTH_P;
 

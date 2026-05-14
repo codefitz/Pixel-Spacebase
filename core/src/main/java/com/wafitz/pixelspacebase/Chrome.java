@@ -28,6 +28,7 @@ public class Chrome {
         TOAST,
         TOAST_TR,
         WINDOW,
+        DIALOG,
         BUTTON,
         TAG,
         GEM,
@@ -42,6 +43,8 @@ public class Chrome {
         switch (type) {
             case WINDOW:
                 return new NinePatch(Asset, 0, 0, 20, 20, 6);
+            case DIALOG:
+                return new NinePatch(Asset, 0, 0, 20, 20, 4);
             case TOAST:
                 return new NinePatch(Asset, 22, 0, 18, 18, 5);
             case TOAST_TR:

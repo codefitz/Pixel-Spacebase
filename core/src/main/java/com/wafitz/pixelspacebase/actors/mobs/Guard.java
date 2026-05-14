@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
-import com.wafitz.pixelspacebase.effects.Chains;
+import com.wafitz.pixelspacebase.effects.ForcePull;
 import com.wafitz.pixelspacebase.effects.Pushing;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.Generator;
@@ -41,8 +41,8 @@ import com.watabou.utils.Random;
 
 class Guard extends Mob {
 
-    //they can only use their chains once
-    private boolean chainsUsed = false;
+    //they can only use their force-pull rig once
+    private boolean forcePullUsed = false;
 
     {
         spriteClass = GuardSprite.class;
@@ -77,7 +77,7 @@ class Guard extends Mob {
                 !Dungeon.level.adjacent(pos, enemy.pos) &&
                 Random.Int(3) == 0 &&
 
-                chain(enemy.pos)) {
+                forcePull(enemy.pos)) {
 
             return false;
 
@@ -86,17 +86,17 @@ class Guard extends Mob {
         }
     }
 
-    private boolean chain(int target) {
-        if (chainsUsed || enemy.properties().contains(Property.IMMOVABLE))
+    private boolean forcePull(int target) {
+        if (forcePullUsed || enemy.properties().contains(Property.IMMOVABLE))
             return false;
 
-        Ballistica chain = new Ballistica(pos, target, Ballistica.PROJECTILE);
+        Ballistica pull = new Ballistica(pos, target, Ballistica.PROJECTILE);
 
-        if (chain.collisionPos != enemy.pos || chain.path.size() < 2 || Level.pit[chain.path.get(1)])
+        if (pull.collisionPos != enemy.pos || pull.path.size() < 2 || Level.pit[pull.path.get(1)])
             return false;
         else {
             int newPos = -1;
-            for (int i : chain.subPath(1, chain.dist)) {
+            for (int i : pull.subPath(1, pull.dist)) {
                 if (!Level.solid[i] && Actor.findChar(i) == null) {
                     newPos = i;
                     break;
@@ -108,7 +108,7 @@ class Guard extends Mob {
             } else {
                 final int newPosFinal = newPos;
                 yell(Messages.get(this, "scorpion"));
-                sprite.parent.add(new Chains(pos, enemy.pos, new Callback() {
+                sprite.parent.add(new ForcePull(pos, enemy.pos, new Callback() {
                     public void call() {
                         Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new Callback() {
                             public void call() {
@@ -127,7 +127,7 @@ class Guard extends Mob {
                 }));
             }
         }
-        chainsUsed = true;
+        forcePullUsed = true;
         return true;
     }
 
@@ -169,12 +169,12 @@ class Guard extends Mob {
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
-        bundle.put(CHAINSUSED, chainsUsed);
+        bundle.put(CHAINSUSED, forcePullUsed);
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        chainsUsed = bundle.getBoolean(CHAINSUSED);
+        forcePullUsed = bundle.getBoolean(CHAINSUSED);
     }
 }

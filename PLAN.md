@@ -6,14 +6,16 @@
 - [ ] Update about (give credit to Codex), recent changes
 - [ ] Update the Dark Lord of Yendor theme to have stronger "Darth Sidious" vibes.
   - [x] Review actor and item message strings for tone.
-  - [ ] Review encounter presentation and boss text.
+  - [x] Review encounter presentation and boss text.
 - [ ] Replace the chain/restraint theme with "the force".
-  - [ ] Rename the effect and descriptions so it reads as being pulled by the force.
+  - [x] Rename the Bith pull effect and descriptions so it reads as being pulled by the force.
   - [x] Remove or replace text that refers to chains.
 - [x] Add "Do not pet the cat" warning sign text.
 - [ ] Alien egg - screen still needs to fade to black and return before "Ugh what happened".
-- [ ] Stimulantts need to be updated to a stimulant type of sprite. Also should be renamed "Stims".
-- [ ] Dialogue boxes could do  with a smaller border and make the background semi-transparent
+- [x] Stimulantts need to be updated to a stimulant type of sprite. Also should be renamed "Stims".
+- [x] Dialogue boxes could do  with a smaller border and make the background semi-transparent
+- [x] The pickaxe has generic text and NO TEXT FOUND. This should be replaced with some other sci-fi item.
+- [x] The surveyor module has NO TEXT FOUND for it's action button.
 
 ## Mechanic Changes
 
@@ -70,7 +72,8 @@
   - [ ] Fade the screen briefly to black when stepping on an alien egg.
   - [ ] Show a "what happened" dialog when the screen returns.
   - [ ] Falling needs to be fixed so it falls to the level below - not up. The locked room needs to appear on the (next) level above.
-  - [ ] Y should appear 3 times in the maze before Tengu main battle (hero to seek him out). If hero finds Y all 3 times, he will look in heros backpack and compare against Tengus stats. If the hero seems to be under equipped - Y even the odds and will provide an offensive ranged weapon with at least 3 charges. If the hero seems to be overequipped - Y will even the odds and remove one random weapon and place it to be found in one of the cells after the battle.
+- [ ] Y should appear 3 times in the maze before Tengu main battle (hero to seek him out). If hero finds Y all 3 times, he will look in heros backpack and compare against Tengus stats. If the hero seems to be under equipped - Y even the odds and will provide an offensive ranged weapon with at least 3 charges. If the hero seems to be overequipped - Y will even the odds and remove one random weapon and place it to be found in one of the cells after the battle.
+- [ ] facehugger should die on infection. Also remove the sticky web effects.
 
 ## Refactorial Changes and Small Adjustments
 
@@ -92,7 +95,8 @@
   - [ ] Traps shouldn't ever look like a light - they should look like a blown panel after being set off.
   - [ ] Adjust terrain features so that only one type appears on each zone/area
   - [ ] Adjust terrain features to look less 'dungeon' and more like different types of lighting.
-  -  Set mines should look a bit more obvious
+  - [ ] Set mines should look a bit more obvious
+  - [ ] Shuriken need to be updated to something suitably sci-fi 
 
 ## Graphical Changes
 
@@ -105,7 +109,9 @@
 - [ ] Add visual treatment for dark levels and breaker-restored lighting.
 - [x] Change Xeno-booster to an x-port icon.
 - [ ] Tengu battle arena needs to be more like an alien planet (think Star Trek TOS).
+- [ ] Siphon drone sprite needs updating.
 
 ## Bugs
 
-- [ ] Target sometimes doesn't dissapear after certain actions.
+- [x] Target sometimes doesn't dissapear after certain actions.
+- [x] Guardian Floor Lighting causes a game crash when walking over it.

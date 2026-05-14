@@ -275,9 +275,13 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
     }
 
     public static void cancel() {
-        if (targeting) {
-            crossB.visible = false;
+        if (crossM != null) {
             crossM.remove();
+        }
+        if (targeting) {
+            if (crossB != null) {
+                crossB.visible = false;
+            }
             targeting = false;
         }
     }

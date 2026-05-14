@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.effects.Chains;
+import com.wafitz.pixelspacebase.effects.GravityTether;
 import com.wafitz.pixelspacebase.effects.Pushing;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -104,12 +104,12 @@ public class GravityGun extends Artifact {
                 int missileProperties = (Dungeon.depth == 10 || Dungeon.depth == 15 || Dungeon.depth == 20 || Dungeon.depth == 25) ?
                         Ballistica.PROJECTILE : Ballistica.STOP_CHARS | Ballistica.STOP_TARGET;
 
-                final Ballistica chain = new Ballistica(curUser.pos, target, missileProperties);
+                final Ballistica pull = new Ballistica(curUser.pos, target, missileProperties);
 
                 //determine if we're grabbing an enemy, pulling to a location, or doing nothing.
-                if (Actor.findChar(chain.collisionPos) != null) {
+                if (Actor.findChar(pull.collisionPos) != null) {
                     int newPos = -1;
-                    for (int i : chain.subPath(1, chain.dist)) {
+                    for (int i : pull.subPath(1, pull.dist)) {
                         if (!Level.solid[i] && Actor.findChar(i) == null) {
                             newPos = i;
                             break;
@@ -119,7 +119,7 @@ public class GravityGun extends Artifact {
                         GLog.w(Messages.get(GravityGun.class, "does_nothing"));
                     } else {
                         final int newMobPos = newPos;
-                        final Char affected = Actor.findChar(chain.collisionPos);
+                        final Char affected = Actor.findChar(pull.collisionPos);
                         int chargeUse = Dungeon.level.distance(affected.pos, newMobPos);
                         if (chargeUse > charge) {
                             GLog.w(Messages.get(GravityGun.class, "no_charge"));
@@ -132,7 +132,7 @@ public class GravityGun extends Artifact {
                             updateQuickslot();
                         }
                         curUser.busy();
-                        curUser.sprite.parent.add(new Chains(curUser.pos, affected.pos, new Callback() {
+                        curUser.sprite.parent.add(new GravityTether(curUser.pos, affected.pos, new Callback() {
                             public void call() {
                                 Actor.add(new Pushing(affected, affected.pos, newMobPos, new Callback() {
                                     public void call() {
@@ -147,13 +147,13 @@ public class GravityGun extends Artifact {
                         }));
                     }
 
-                } else if (Level.solid[chain.path.get(chain.dist)]
-                        || (chain.dist > 0 && Level.solid[chain.path.get(chain.dist - 1)])
-                        || (chain.path.size() > chain.dist + 1 && Level.solid[chain.path.get(chain.dist + 1)])
+                } else if (Level.solid[pull.path.get(pull.dist)]
+                        || (pull.dist > 0 && Level.solid[pull.path.get(pull.dist - 1)])
+                        || (pull.path.size() > pull.dist + 1 && Level.solid[pull.path.get(pull.dist + 1)])
                         //if the player is trying to grapple the edge of the map, let them.
-                        || (chain.path.size() == chain.dist + 1)) {
+                        || (pull.path.size() == pull.dist + 1)) {
                     int newPos = -1;
-                    for (int i : chain.subPath(1, chain.dist)) {
+                    for (int i : pull.subPath(1, pull.dist)) {
                         if (!Level.solid[i] && Actor.findChar(i) == null) newPos = i;
                     }
                     if (newPos == -1) {
@@ -169,7 +169,7 @@ public class GravityGun extends Artifact {
                             updateQuickslot();
                         }
                         curUser.busy();
-                        curUser.sprite.parent.add(new Chains(curUser.pos, target, new Callback() {
+                        curUser.sprite.parent.add(new GravityTether(curUser.pos, target, new Callback() {
                             public void call() {
                                 Actor.add(new Pushing(curUser, curUser.pos, newHeroPos, new Callback() {
                                     public void call() {

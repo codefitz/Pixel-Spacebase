@@ -63,7 +63,7 @@ public class GuardianVent extends Vent {
 
     }
 
-    private static class Guardian extends OldWarBot {
+    public static class Guardian extends OldWarBot {
 
         {
             spriteClass = GuardianSprite.class;
@@ -92,7 +92,7 @@ public class GuardianVent extends Vent {
 
     }
 
-    private static class GuardianSprite extends OldWarBotSprite {
+    public static class GuardianSprite extends OldWarBotSprite {
 
         public GuardianSprite() {
             super();

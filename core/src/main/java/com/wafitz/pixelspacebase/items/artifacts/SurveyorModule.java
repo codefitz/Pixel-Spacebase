@@ -52,7 +52,7 @@ public class SurveyorModule extends Artifact {
         defaultAction = AC_SURVEY;
     }
 
-    private static final String AC_SURVEY = "SURVEY LEVEL";
+    private static final String AC_SURVEY = "SURVEY";
 
     @Override
     public ArrayList<String> actions(Hero hero) {

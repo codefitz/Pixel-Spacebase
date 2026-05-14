@@ -27,7 +27,7 @@ import com.watabou.noosa.Image;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 
-public class Chains extends Group {
+public class ForcePull extends Group {
 
     private static final double A = 180 / Math.PI;
 
@@ -36,20 +36,19 @@ public class Chains extends Group {
 
     private Callback callback;
 
-    private Image[] chains;
-    private int numChains;
+    private Image[] pulses;
     private float distance;
     private float rotation = 0;
 
     private PointF from, to;
 
-    public Chains(int from, int to, Callback callback) {
+    public ForcePull(int from, int to, Callback callback) {
         this(DungeonTilemap.tileCenterToWorld(from),
                 DungeonTilemap.tileCenterToWorld(to),
                 callback);
     }
 
-    public Chains(PointF from, PointF to, Callback callback) {
+    public ForcePull(PointF from, PointF to, Callback callback) {
         super();
 
         this.callback = callback;
@@ -61,19 +60,18 @@ public class Chains extends Group {
         float dy = to.y - from.y;
         distance = (float) Math.hypot(dx, dy);
 
-
         duration = distance / 300f + 0.1f;
 
         rotation = (float) (Math.atan2(dy, dx) * A) + 90f;
 
-        numChains = Math.round(distance / 6f) + 1;
+        int numPulses = Math.round(distance / 6f) + 1;
 
-        chains = new Image[numChains];
-        for (int i = 0; i < chains.length; i++) {
-            chains[i] = new Image(Effects.get(Effects.Type.CHAIN));
-            chains[i].angle = rotation;
-            chains[i].origin.set(chains[i].width() / 2, chains[i].height());
-            add(chains[i]);
+        pulses = new Image[numPulses];
+        for (int i = 0; i < pulses.length; i++) {
+            pulses[i] = new Image(Effects.get(Effects.Type.CHAIN));
+            pulses[i].angle = rotation;
+            pulses[i].origin.set(pulses[i].width() / 2, pulses[i].height());
+            add(pulses[i]);
         }
     }
 
@@ -89,10 +87,10 @@ public class Chains extends Group {
         } else {
             float dx = to.x - from.x;
             float dy = to.y - from.y;
-            for (int i = 0; i < chains.length; i++) {
-                chains[i].center(new PointF(
-                        from.x + ((dx * (i / (float) chains.length)) * (spent / duration)),
-                        from.y + ((dy * (i / (float) chains.length)) * (spent / duration))
+            for (int i = 0; i < pulses.length; i++) {
+                pulses[i].center(new PointF(
+                        from.x + ((dx * (i / (float) pulses.length)) * (spent / duration)),
+                        from.y + ((dy * (i / (float) pulses.length)) * (spent / duration))
                 ));
             }
         }
