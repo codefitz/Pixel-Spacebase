@@ -41,9 +41,11 @@ public abstract class Script extends Item {
     // Internal compatibility name. Player-facing catalog text calls this family Tech.
     // Many generator, container, and save paths still depend on the inherited Script hierarchy.
 
+    private static final String AC_OPEN = "OPEN";
     private static final String AC_RUN = "RUN";
 
     static final float TIME_TO_READ = 1f;
+    private static final String SEALED = "sealed";
 
     protected int initials;
 
@@ -83,6 +85,8 @@ public abstract class Script extends Item {
 
     private String rune;
 
+    private boolean sealed = true;
+
     public boolean ownedByBook = false;
 
     {
@@ -118,17 +122,24 @@ public abstract class Script extends Item {
         super.reset();
         image = handler.image(this);
         rune = handler.label(this);
+        updateDefaultAction();
     }
 
     @Override
     public ArrayList<String> actions(Hero hero) {
+        updateDefaultAction();
         ArrayList<String> actions = super.actions(hero);
-        actions.add(AC_RUN);
+        actions.add(isSealed() ? AC_OPEN : AC_RUN);
         return actions;
     }
 
     @Override
     public void execute(Hero hero, String action) {
+
+        if (isSealed() && (action.equals(AC_OPEN) || action.equals(AC_RUN) || action.equals(AC_THROW))) {
+            openStorage();
+            return;
+        }
 
         super.execute(hero, action);
 
@@ -151,6 +162,21 @@ public abstract class Script extends Item {
 
     abstract protected void doRead();
 
+    private boolean isSealed() {
+        return sealed && !isKnown();
+    }
+
+    private void updateDefaultAction() {
+        defaultAction = isSealed() ? AC_OPEN : AC_RUN;
+    }
+
+    private void openStorage() {
+        sealed = false;
+        updateDefaultAction();
+        updateQuickslot();
+        GLog.i(Messages.get(Script.class, "revealed", name()));
+    }
+
     void readAnimation() {
         curUser.spend(TIME_TO_READ);
         curUser.busy();
@@ -171,24 +197,53 @@ public abstract class Script extends Item {
 
     @Override
     public Item identify() {
+        sealed = false;
+        updateDefaultAction();
         setKnown();
         return super.identify();
     }
 
     @Override
     public String name() {
+        if (isSealed()) {
+            return Messages.get(Script.class, "sealed_name");
+        }
         return isKnown() ? name : Messages.get(Script.class, rune);
     }
 
     @Override
     public String info() {
-        return isKnown() ?
-                desc() :
-                Messages.get(this, "unknown_desc");
+        if (isSealed()) {
+            return Messages.get(Script.class, "sealed_desc");
+        }
+        return isKnown() ? desc() : Messages.get(this, "unknown_desc");
     }
 
     public Integer initials() {
         return isKnown() ? initials : null;
+    }
+
+    @Override
+    public int image() {
+        return isSealed() ? ItemSpriteSheet.SEALED_STORAGE : super.image();
+    }
+
+    @Override
+    public boolean isSimilar(Item item) {
+        return super.isSimilar(item) && item instanceof Script && isSealed() == ((Script) item).isSealed();
+    }
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(SEALED, sealed);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        sealed = !bundle.contains(SEALED) || bundle.getBoolean(SEALED);
+        updateDefaultAction();
     }
 
     @Override

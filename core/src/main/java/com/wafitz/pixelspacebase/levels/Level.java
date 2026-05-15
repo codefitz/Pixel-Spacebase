@@ -50,6 +50,7 @@ import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Torch;
+import com.wafitz.pixelspacebase.items.TorchBattery;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
 import com.wafitz.pixelspacebase.items.artifacts.TechToolkit;
@@ -236,6 +237,10 @@ public abstract class Level implements Bundlable {
             }
 
             if (Dungeon.depth > 1) {
+                if (Random.Int(4) == 0) {
+                    addItemToSpawn(new TorchBattery());
+                }
+
                 switch (Random.Int(10)) {
                     case 0:
                         if (!Dungeon.bossLevel(Dungeon.depth + 1)) {
@@ -250,7 +255,10 @@ public abstract class Level implements Bundlable {
                         break;
                     case 3:
                         feeling = Feeling.DARK;
-                        addItemToSpawn(new Torch());
+                        if (Dungeon.hero.belongings.getItem(Torch.class) == null) {
+                            addItemToSpawn(new Torch());
+                        }
+                        addItemToSpawn(new TorchBattery());
                         viewDistance = (int) Math.ceil(viewDistance / 3f);
                         break;
                 }
@@ -332,7 +340,15 @@ public abstract class Level implements Bundlable {
 
         visited = bundle.getBooleanArray(VISITED);
         mapped = bundle.getBooleanArray(MAPPED);
-        vacuum = bundle.contains(VACUUM) ? bundle.getBooleanArray(VACUUM) : new boolean[length()];
+        boolean hasStoredVacuum = bundle.contains(VACUUM);
+        vacuum = hasStoredVacuum ? bundle.getBooleanArray(VACUUM) : new boolean[length()];
+        if (vacuum == null || vacuum.length != length()) {
+            vacuum = new boolean[length()];
+            hasStoredVacuum = false;
+        }
+        if (!hasStoredVacuum || !hasAnyVacuum()) {
+            rebuildVacuumFromTerrain();
+        }
 
         entrance = bundle.getInt(ENTRANCE);
         exit = bundle.getInt(EXIT);
@@ -430,7 +446,68 @@ public abstract class Level implements Bundlable {
     }
 
     public boolean isVacuum(int cell) {
-        return vacuum != null && insideMap(cell) && vacuum[cell];
+        if (vacuum == null || !insideMap(cell)) {
+            return false;
+        }
+        if (!vacuum[cell] && isExposedBridgeCell(cell)) {
+            vacuum[cell] = true;
+        }
+        return vacuum[cell];
+    }
+
+    private boolean hasAnyVacuum() {
+        if (vacuum == null) {
+            return false;
+        }
+        for (boolean cell : vacuum) {
+            if (cell) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void rebuildVacuumFromTerrain() {
+        if (vacuum == null || map == null) {
+            return;
+        }
+        for (int cell = 0; cell < map.length; cell++) {
+            if (isExposedBridgeCell(cell)) {
+                vacuum[cell] = true;
+            }
+        }
+    }
+
+    private boolean isExposedBridgeCell(int cell) {
+        if (map[cell] != Terrain.EMPTY_SP) {
+            return false;
+        }
+
+        int x = cell % width();
+        int y = cell / width();
+        if (x <= 0 || y <= 0 || x >= width() - 1 || y >= height() - 1) {
+            return false;
+        }
+
+        boolean left = isVacuumBackedTerrain(cell - 1);
+        boolean right = isVacuumBackedTerrain(cell + 1);
+        boolean up = isVacuumBackedTerrain(cell - width());
+        boolean down = isVacuumBackedTerrain(cell + width());
+
+        return left && right || up && down || exposedSideCount(left, right, up, down) >= 2;
+    }
+
+    private boolean isVacuumBackedTerrain(int cell) {
+        return insideMap(cell) && (map[cell] == Terrain.WATER || map[cell] == Terrain.CHASM);
+    }
+
+    private int exposedSideCount(boolean left, boolean right, boolean up, boolean down) {
+        int count = 0;
+        if (left) count++;
+        if (right) count++;
+        if (up) count++;
+        if (down) count++;
+        return count;
     }
 
     public int width() {

@@ -262,6 +262,7 @@ public class ItemSpriteSheet {
     public static final int LIBRARY = BAGS + 2;
     public static final int XPORT = BAGS + 3;
     public static final int HOLSTER = BAGS + 4;
+    public static final int SEALED_STORAGE = BAGS + 5;
 
     //64 free slots
 

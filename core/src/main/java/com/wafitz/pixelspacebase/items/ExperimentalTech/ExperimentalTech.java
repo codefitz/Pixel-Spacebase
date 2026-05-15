@@ -52,9 +52,11 @@ public class ExperimentalTech extends Item {
     // Internal compatibility name. Player-facing catalog text calls this family Gene Mods.
     // The package/class name is intentionally retained until a full save/resource migration exists.
 
+    private static final String AC_OPEN = "OPEN";
     private static final String AC_USE = "USE";
 
     private static final float TIME_TO_USE = 1f;
+    private static final String SEALED = "sealed";
 
     protected Integer initials;
 
@@ -94,6 +96,8 @@ public class ExperimentalTech extends Item {
 
     private String color;
 
+    private boolean sealed = true;
+
     public boolean ownedByFruit = false;
 
     {
@@ -129,17 +133,24 @@ public class ExperimentalTech extends Item {
         super.reset();
         image = handler.image(this);
         color = handler.label(this);
+        updateDefaultAction();
     }
 
     @Override
     public ArrayList<String> actions(Hero hero) {
+        updateDefaultAction();
         ArrayList<String> actions = super.actions(hero);
-        actions.add(AC_USE);
+        actions.add(isSealed() ? AC_OPEN : AC_USE);
         return actions;
     }
 
     @Override
     public void execute(final Hero hero, String action) {
+
+        if (isSealed() && (action.equals(AC_OPEN) || action.equals(AC_USE) || action.equals(AC_THROW))) {
+            openStorage();
+            return;
+        }
 
         super.execute(hero, action);
 
@@ -168,6 +179,21 @@ public class ExperimentalTech extends Item {
             }
 
         }
+    }
+
+    private boolean isSealed() {
+        return sealed && !isKnown();
+    }
+
+    private void updateDefaultAction() {
+        defaultAction = isSealed() ? AC_OPEN : AC_USE;
+    }
+
+    private void openStorage() {
+        sealed = false;
+        updateDefaultAction();
+        updateQuickslot();
+        GLog.i(Messages.get(ExperimentalTech.class, "revealed", name()));
     }
 
     @Override
@@ -260,24 +286,53 @@ public class ExperimentalTech extends Item {
     @Override
     public Item identify() {
 
+        sealed = false;
+        updateDefaultAction();
         setKnown();
         return this;
     }
 
     @Override
     public String name() {
+        if (isSealed()) {
+            return Messages.get(ExperimentalTech.class, "sealed_name");
+        }
         return isKnown() ? super.name() : Messages.get(ExperimentalTech.class, color);
     }
 
     @Override
     public String info() {
-        return isKnown() ?
-                desc() :
-                Messages.get(ExperimentalTech.class, "unknown_desc");
+        if (isSealed()) {
+            return Messages.get(ExperimentalTech.class, "sealed_desc");
+        }
+        return isKnown() ? desc() : Messages.get(ExperimentalTech.class, "unknown_desc");
     }
 
     public Integer initials() {
         return isKnown() ? initials : null;
+    }
+
+    @Override
+    public int image() {
+        return isSealed() ? ItemSpriteSheet.SEALED_STORAGE : super.image();
+    }
+
+    @Override
+    public boolean isSimilar(Item item) {
+        return super.isSimilar(item) && item instanceof ExperimentalTech && isSealed() == ((ExperimentalTech) item).isSealed();
+    }
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(SEALED, sealed);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        sealed = !bundle.contains(SEALED) || bundle.getBoolean(SEALED);
+        updateDefaultAction();
     }
 
     @Override

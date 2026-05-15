@@ -36,6 +36,7 @@ import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.PortableRender;
 import com.wafitz.pixelspacebase.items.Torch;
+import com.wafitz.pixelspacebase.items.TorchBattery;
 import com.wafitz.pixelspacebase.items.WeaponTuner;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
@@ -371,7 +372,7 @@ public class Workshop extends Painter {
                         new Nanobots().quantity(Random.NormalIntRange(4, 7)));
                 itemsToSpawn.add(new Loader().identify());
                 itemsToSpawn.add(new Torch());
-                itemsToSpawn.add(new Torch());
+                itemsToSpawn.add(new TorchBattery().quantity(2));
                 break;
         }
 
@@ -393,6 +394,7 @@ public class Workshop extends Painter {
 
         itemsToSpawn.add(new SynthesizedFood());
         itemsToSpawn.add(new SynthesizedFood());
+        itemsToSpawn.add(new TorchBattery());
 
         itemsToSpawn.add(new Bomb().random());
         switch (Random.Int(5)) {

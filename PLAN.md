@@ -21,10 +21,10 @@
 
 ## Mechanic Changes
 
-- [ ] Torch becomes a permanent item with battery pickups.
-  - [ ] Add permanent torch item behavior.
-  - [ ] Add battery pickup generation and recharge behavior.
-  - [ ] Balance torch charge use against dark-level encounters.
+- [x] Torch becomes a permanent item with battery pickups.
+  - [x] Add permanent torch item behavior.
+  - [x] Add battery pickup generation and recharge behavior.
+  - [x] Balance torch charge use against dark-level encounters.
 - [x] Spacesuit is required for spacewalk areas.
   - [x] Gate captain spacewalk access behind spacesuit ownership/equipment.
   - [x] Gate commander spacewalk access behind spacesuit ownership/equipment.
@@ -48,7 +48,7 @@
   - [ ] Add random dark levels.
   - [ ] Place a breaker on dark levels that restores lights.
   - [ ] Place a breaker on every level so lights can be toggled off later.
-- [ ] Add generic storage/reveal behavior so the container opens before the tech/biogenetic item identity is known.
+- [x] Add generic storage/reveal behavior so the container opens before the tech/biogenetic item identity is known.
 - [ ] Add protectable NPC rescue flow.
   - [ ] Add NPCs that need protection.
   - [ ] Add escape pod ending where the player leaves.
@@ -104,7 +104,7 @@
 
 - [x] Remove the 3D effect/overlay from floor lights.
 - [x] Replace the chain graphic with a force-themed visual.
-- [ ] Add a generic storage icon for unrevealed tech/biogenetics.
+- [x] Add a generic storage icon for unrevealed tech/biogenetics.
 - [ ] Add or update grenade icons for offensive biogenetics.
 - [ ] Add healing tank booth tile/art.
 - [ ] Add cat sprite or reuse/update an existing follower sprite.

@@ -24,23 +24,31 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
+import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
+import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
+import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
-public class Torch extends Item {
+public class Torch extends MeleeWeapon {
 
     private static final String AC_LIGHT = "LIGHT";
 
     private static final float TIME_TO_LIGHT = 1;
+    private static final int MAX_CHARGE = 3;
+    private static final String CHARGE = "charge";
+
+    private int charge = MAX_CHARGE;
 
     {
         image = ItemSpriteSheet.TORCH;
-
-        stackable = true;
-
+        tier = 1;
         defaultAction = AC_LIGHT;
+        levelKnown = true;
+        malfunctioningKnown = true;
     }
 
     @Override
@@ -56,19 +64,58 @@ public class Torch extends Item {
         super.execute(hero, action);
 
         if (action.equals(AC_LIGHT)) {
+            if (!isEquipped(hero)) {
+                GLog.w(Messages.get(this, "need_equip"));
+                return;
+            }
+            if (hero.buff(Light.class) != null) {
+                GLog.i(Messages.get(this, "already_lit"));
+                return;
+            }
+            if (charge <= 0) {
+                GLog.w(Messages.get(this, "no_charge"));
+                return;
+            }
+
+            charge--;
+            updateQuickslot();
 
             hero.spend(TIME_TO_LIGHT);
             hero.busy();
 
             hero.sprite.operate(hero.pos);
-
-            detach(hero.belongings.backpack);
             Buff.affect(hero, Light.class, Light.DURATION);
 
             Emitter emitter = hero.sprite.centerEmitter();
             emitter.start(FlameParticle.FACTORY, 0.2f, 3);
 
+            GLog.p(Messages.get(this, "light_msg"));
         }
+    }
+
+    public boolean canRecharge() {
+        return charge < MAX_CHARGE;
+    }
+
+    public void recharge() {
+        charge = MAX_CHARGE;
+        updateQuickslot();
+    }
+
+    @Override
+    public int min(int lvl) {
+        return 1 + lvl;
+    }
+
+    @Override
+    public int max(int lvl) {
+        return 6 + lvl * 2;
+    }
+
+    @Override
+    public int STRReq(int lvl) {
+        lvl = Math.max(0, lvl);
+        return 8 - (int) (Math.sqrt(8 * lvl + 1) - 1) / 2;
     }
 
     @Override
@@ -82,8 +129,29 @@ public class Torch extends Item {
     }
 
     @Override
-    public int cost() {
-        return 10 * quantity;
+    public String status() {
+        return charge + "/" + MAX_CHARGE;
     }
 
+    @Override
+    public String info() {
+        return super.info() + "\n\n" + Messages.get(this, "charge", charge, MAX_CHARGE);
+    }
+
+    @Override
+    public int cost() {
+        return 30;
+    }
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(CHARGE, charge);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        charge = bundle.contains(CHARGE) ? bundle.getInt(CHARGE) : MAX_CHARGE;
+    }
 }

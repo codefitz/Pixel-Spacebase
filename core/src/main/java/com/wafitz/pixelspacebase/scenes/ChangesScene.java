@@ -40,6 +40,8 @@ public class ChangesScene extends PixelScene {
                     "_-_ Added the alien egg blackout and recovery message sequence.\n" +
                     "_-_ Made facehugger infection consume the attacker and made alien emergence more dangerous.\n" +
                     "_-_ Made exposed bridge sections require spacesuit protection, with DM-3000 and Shapeshifter exceptions.\n" +
+                    "_-_ Added sealed capsules/caches for unrevealed gene mods and tech before their visible markers are exposed.\n" +
+                    "_-_ Reworked torches into permanent equipable utility weapons with rechargeable battery cells.\n" +
                     "_-_ Strengthened the Dark Lord of Yendor quest and victory text.\n" +
                     "_-_ Reworked chain-themed text and pull visuals toward force-themed effects.\n" +
                     "_-_ Renamed stimulants to Stims and refreshed related pickup behavior.\n" +
