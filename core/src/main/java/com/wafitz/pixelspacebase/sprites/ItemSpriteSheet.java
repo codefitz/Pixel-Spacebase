@@ -219,6 +219,9 @@ public class ItemSpriteSheet {
     public static final int CHARCOAL_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 9;
     public static final int SILVER_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 10;
     public static final int IVORY_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 11;
+    public static final int FIRE_GRENADE_GENE_MOD = EXPERIMENTALTECH + 12;
+    public static final int TOXIC_GRENADE_GENE_MOD = EXPERIMENTALTECH + 13;
+    public static final int PARALYSIS_GRENADE_GENE_MOD = EXPERIMENTALTECH + 14;
 
     private static final int DEVICES = xy(1, 22);  //16 slots
     public static final int HUNTER_TRAPPER = DEVICES;
@@ -255,11 +258,13 @@ public class ItemSpriteSheet {
     public static final int PICKAXE = QUEST + 4;
     public static final int ORE = QUEST + 5;
     public static final int TOKEN = QUEST + 6;
+    public static final int BLACK_GOO = QUEST + 7;
 
     private static final int BAGS = xy(1, 28);  //16 slots
     public static final int AIRTANK = BAGS;
     public static final int CASE = BAGS + 1;
-    public static final int LIBRARY = BAGS + 2;
+    public static final int MODS = BAGS + 2;
+    public static final int LIBRARY = MODS;
     public static final int XPORT = BAGS + 3;
     public static final int HOLSTER = BAGS + 4;
     public static final int SEALED_STORAGE = BAGS + 5;

@@ -346,6 +346,17 @@ public class GameScene extends PixelScene {
             Dungeon.droppedItems.remove(Dungeon.depth);
         }
 
+        ArrayList<Heap> droppedHeaps = Dungeon.droppedHeaps.get(Dungeon.depth);
+        if (droppedHeaps != null) {
+            for (Heap heap : droppedHeaps) {
+                int pos = freeRespawnCell();
+                heap.pos = pos;
+                Dungeon.level.heaps.put(pos, heap);
+                add(heap);
+            }
+            Dungeon.droppedHeaps.remove(Dungeon.depth);
+        }
+
         Dungeon.hero.next();
 
         Camera.main.target = hero;
@@ -397,6 +408,14 @@ public class GameScene extends PixelScene {
         } else {
             return Assets.TUNE;
         }
+    }
+
+    private int freeRespawnCell() {
+        int pos;
+        do {
+            pos = Dungeon.level.randomRespawnCell();
+        } while (Dungeon.level.heaps.get(pos) != null);
+        return pos;
     }
 
     public void destroy() {

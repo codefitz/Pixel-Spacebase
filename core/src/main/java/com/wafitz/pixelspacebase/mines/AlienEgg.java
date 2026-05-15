@@ -45,10 +45,20 @@ public class AlienEgg extends Mine {
 
     public static class Device extends Mine.Device {
         {
-            image = ItemSpriteSheet.ALIENPOD;
+            image = ItemSpriteSheet.BLACK_GOO;
 
             mineClass = AlienEgg.class;
             craftingClass = null;
+        }
+
+        @Override
+        public String desc() {
+            return com.wafitz.pixelspacebase.messages.Messages.get(this, "desc");
+        }
+
+        @Override
+        public String info() {
+            return com.wafitz.pixelspacebase.messages.Messages.get(this, "info", desc(), minename());
         }
 
     }

@@ -203,6 +203,7 @@ public class InterlevelScene extends PixelScene {
     private void descend() throws IOException {
 
         Actor.fixTime();
+        boolean nextLevelNeedsPit = levelHasWeakFloor(Dungeon.level);
         if (Dungeon.hero == null) {
             Dungeon.init();
             if (noStory) {
@@ -217,6 +218,7 @@ public class InterlevelScene extends PixelScene {
 
         Level level;
         if (Dungeon.depth >= Statistics.deepestFloor) {
+            RegularLevel.weakFloorCreated = nextLevelNeedsPit;
             level = Dungeon.newLevel();
         } else {
             Dungeon.depth++;
@@ -229,11 +231,13 @@ public class InterlevelScene extends PixelScene {
     private void fall() throws IOException {
 
         Actor.fixTime();
+        boolean nextLevelNeedsPit = fallIntoPit || levelHasWeakFloor(Dungeon.level);
         Workshop.carryStockFrom(Dungeon.level);
         Dungeon.saveAll();
 
         Level level;
         if (Dungeon.depth >= Statistics.deepestFloor) {
+            RegularLevel.weakFloorCreated = nextLevelNeedsPit;
             level = Dungeon.newLevel();
         } else {
             Dungeon.depth++;
@@ -302,10 +306,13 @@ public class InterlevelScene extends PixelScene {
         Actor.fixTime();
 
         Dungeon.depth--;
-        Level level = Dungeon.newLevel();
-        //FIXME this only partially addresses issues regarding weak floors.
         RegularLevel.weakFloorCreated = false;
+        Level level = Dungeon.newLevel();
         Dungeon.switchLevel(level, level.entrance);
+    }
+
+    private boolean levelHasWeakFloor(Level level) {
+        return level instanceof RegularLevel && ((RegularLevel) level).hasWeakFloor();
     }
 
     @Override

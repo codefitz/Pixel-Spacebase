@@ -31,9 +31,13 @@ import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.Tengu;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.YInterlude;
 import com.wafitz.pixelspacebase.effects.Speck;
+import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.blasters.Blaster;
+import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
+import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.levels.painters.MazePainter;
 import com.wafitz.pixelspacebase.levels.vents.SpearVent;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
@@ -42,6 +46,7 @@ import com.wafitz.pixelspacebase.mines.Mine;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.ui.CustomTileVisual;
 import com.wafitz.pixelspacebase.ui.HealthIndicator;
+import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
@@ -52,6 +57,10 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public class PrisonBossLevel extends Level {
+
+    private static final int ALL_Y_MAZE_INTERLUDES_FOUND = 0x7;
+    private static final int TENGU_DAMAGE_CAP = 20;
+    private static final int MIN_RANGED_USES = 3;
 
     {
         color1 = 0x6a723d;
@@ -68,6 +77,7 @@ public class PrisonBossLevel extends Level {
 
     private State state;
     private Tengu tengu;
+    private int yMazeFound;
 
     //keep track of that need to be removed as the level is changed. We dump 'em back into the level at the end.
     private ArrayList<Item> storedItems = new ArrayList<>();
@@ -84,6 +94,7 @@ public class PrisonBossLevel extends Level {
 
     private static final String STATE = "state";
     private static final String TENGU = "tengu";
+    private static final String Y_MAZE_FOUND = "yMazeFound";
     private static final String STORED_ITEMS = "storeditems";
 
     @Override
@@ -91,6 +102,7 @@ public class PrisonBossLevel extends Level {
         super.storeInBundle(bundle);
         bundle.put(STATE, state);
         bundle.put(TENGU, tengu);
+        bundle.put(Y_MAZE_FOUND, yMazeFound);
         bundle.put(STORED_ITEMS, storedItems);
     }
 
@@ -98,6 +110,7 @@ public class PrisonBossLevel extends Level {
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
         state = bundle.getEnum(STATE, State.class);
+        yMazeFound = bundle.getInt(Y_MAZE_FOUND);
 
         //in some states tengu won't be in the world, in others he will be.
         if (state == State.START || state == State.MAZE) {
@@ -126,6 +139,7 @@ public class PrisonBossLevel extends Level {
         cleanWalls();
 
         state = State.START;
+        yMazeFound = 0;
         entrance = 5 + 2 * 32;
         exit = 0;
 
@@ -311,6 +325,7 @@ public class PrisonBossLevel extends Level {
                 buildFlagMaps();
                 cleanWalls();
                 GameScene.resetMap();
+                summonMazeYInterludes(maze);
 
                 GameScene.flash(0xFFFFFF);
                 Sample.INSTANCE.play(Assets.SND_BLAST);
@@ -320,6 +335,8 @@ public class PrisonBossLevel extends Level {
 
             //maze beaten, moving to the arena
             case MAZE:
+                balanceTenguArenaIfYFound();
+
                 Dungeon.hero.interrupt();
                 Dungeon.hero.pos += 9 + 3 * 32;
                 Dungeon.hero.sprite.interruptMotion();
@@ -367,6 +384,132 @@ public class PrisonBossLevel extends Level {
                 state = State.WON;
                 break;
         }
+    }
+
+    public void recordMazeYFound(int appearance) {
+        if (appearance >= 1 && appearance <= 3) {
+            yMazeFound |= 1 << (appearance - 1);
+        }
+    }
+
+    private void balanceTenguArenaIfYFound() {
+        if ((yMazeFound & ALL_Y_MAZE_INTERLUDES_FOUND) != ALL_Y_MAZE_INTERLUDES_FOUND) {
+            return;
+        }
+
+        if (bestRangedUses() < MIN_RANGED_USES) {
+            MissileBlaster blaster = new MissileBlaster();
+            blaster.identify();
+            blaster.malfunctioning = blaster.malfunctioningKnown = false;
+            blaster.curCharges = Math.max(blaster.curCharges, MIN_RANGED_USES);
+            if (!blaster.collect(Dungeon.hero.belongings.backpack)) {
+                Dungeon.hero.belongings.backpack.items.add(blaster);
+            }
+            GLog.p(Messages.get(YInterlude.class, "balance_gift", blaster.name()));
+            return;
+        }
+
+        Item strongest = strongestUnequippedOffensiveItem();
+        if (strongest != null && offensiveScore(strongest) > TENGU_DAMAGE_CAP) {
+            Item removed = strongest.detachAll(Dungeon.hero.belongings.backpack);
+            if (removed != null) {
+                storedItems.add(removed);
+            }
+            GLog.w(Messages.get(YInterlude.class, "balance_remove", strongest.name()));
+        }
+    }
+
+    private int bestRangedUses() {
+        int best = 0;
+        for (Item item : Dungeon.hero.belongings) {
+            if (item instanceof Blaster) {
+                Blaster blaster = (Blaster) item;
+                if (!blaster.malfunctioning) {
+                    best = Math.max(best, blaster.curCharges);
+                }
+            } else if (item instanceof MissileWeapon) {
+                best = Math.max(best, item.quantity());
+            }
+        }
+        return best;
+    }
+
+    private Item strongestUnequippedOffensiveItem() {
+        Item strongest = null;
+        int bestScore = 0;
+
+        for (Item item : Dungeon.hero.belongings.backpack) {
+            int score = offensiveScore(item);
+            if (score > bestScore) {
+                bestScore = score;
+                strongest = item;
+            }
+        }
+
+        return strongest;
+    }
+
+    private int offensiveScore(Item item) {
+        if (item instanceof KindOfWeapon) {
+            return ((KindOfWeapon) item).max();
+        } else if (item instanceof MissileWeapon) {
+            return item.quantity() >= MIN_RANGED_USES ? ((MissileWeapon) item).max() + item.quantity() : 0;
+        } else if (item instanceof Blaster) {
+            Blaster blaster = (Blaster) item;
+            return blaster.curCharges >= MIN_RANGED_USES ? 8 + blaster.level() * 2 + blaster.curCharges : 0;
+        }
+        return 0;
+    }
+
+    private void summonMazeYInterludes(Room maze) {
+        int[] bands = new int[]{1, 2, 3};
+        for (int i = 0; i < bands.length; i++) {
+            int pos = randomMazeInterludeCell(maze, bands[i]);
+            if (pos == -1) {
+                continue;
+            }
+
+            YInterlude y = new YInterlude(-1, i + 1);
+            y.pos = pos;
+            GameScene.add(y);
+            if (y.sprite != null) {
+                y.sprite.emitter().burst(Speck.factory(Speck.WOOL), 10);
+            }
+        }
+    }
+
+    private int randomMazeInterludeCell(Room maze, int band) {
+        int top = maze.top + 1 + (maze.height() - 2) * (band - 1) / 3;
+        int bottom = maze.top + 1 + (maze.height() - 2) * band / 3;
+        int fallback = -1;
+
+        for (int tries = 0; tries < 80; tries++) {
+            int x = Random.IntRange(maze.left + 1, maze.right - 1);
+            int y = Random.IntRange(top, bottom);
+            int cell = x + y * width();
+            if (canHostMazeInterlude(cell)) {
+                return cell;
+            }
+        }
+
+        for (int y = top; y <= bottom; y++) {
+            for (int x = maze.left + 1; x < maze.right; x++) {
+                int cell = x + y * width();
+                if (canHostMazeInterlude(cell)) {
+                    fallback = cell;
+                }
+            }
+        }
+        return fallback;
+    }
+
+    private boolean canHostMazeInterlude(int cell) {
+        return insideMap(cell)
+                && passable[cell]
+                && Actor.findChar(cell) == null
+                && heaps.get(cell) == null
+                && distance(cell, entrance) > 5
+                && distance(cell, exit) > 5;
     }
 
     private void summonYInterlude() {

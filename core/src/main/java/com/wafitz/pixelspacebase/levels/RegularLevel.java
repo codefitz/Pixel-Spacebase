@@ -761,6 +761,15 @@ public abstract class RegularLevel extends Level {
         return super.pitCell();
     }
 
+    public boolean hasWeakFloor() {
+        for (Room room : rooms) {
+            if (room.type == Type.WEAK_FLOOR) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
@@ -774,10 +783,6 @@ public abstract class RegularLevel extends Level {
 
         rooms = new ArrayList<>((Collection<Room>) ((Collection<?>) bundle.getCollection("rooms")));
         for (Room r : rooms) {
-            if (r.type == Type.WEAK_FLOOR) {
-                weakFloorCreated = true;
-                break;
-            }
             if (r.type == Type.ENTRANCE) {
                 roomEntrance = r;
             } else if (r.type == Type.EXIT || r.type == Type.BOSS_EXIT) {

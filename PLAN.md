@@ -16,8 +16,14 @@
 - [x] Dialogue boxes could do  with a smaller border and make the background semi-transparent
 - [x] The pickaxe has generic text and NO TEXT FOUND. This should be replaced with some other sci-fi item.
 - [x] The surveyor module has NO TEXT FOUND for it's action button.
-- [ ] Backpack extensions should feature in every workshop, but only be available once the previous one has been built.
+- [x] Backpack extensions should feature in every workshop, but only be available once the previous one has been built.
 - [ ] Quaretermaster lazer quest tiles need to be switched to something like a holodeck backdrop. When the hero enters it should switch to a holodeck program like ancient rome or something.
+- [x] Tech Library and Icon need to be updated to 'Mods'
+- [x] Alien Egg item (pick up and plant) should be Black Goo.
+- [ ] Bionetics naming - rather than call the items 'Mods' they should be called 'Plasmids'
+- [ ] Mods naming - rather than call the items 'Tech' call them 'Upgrade'
+- [ ] Swap the Mods and Bionetics backpack extensions icons.
+- [ ] Vaccuum warning should be a popup, rather than log.
 
 ## Mechanic Changes
 
@@ -62,19 +68,24 @@
   - [ ] Define healing tank interaction behavior.
 - [x] Security levels should start with the piercing alarm sound from the trap.
 - [x] Positive-effect mines should become automatically applied stimulants.
-- [ ] Fix chest state after lower-level warp.
-  - [ ] Reproduce the case where being warped back down empties chests irrecoverably.
-  - [ ] Preserve unopened chest contents across lower-level warps.
-- [ ] Rework makerbot workshop progression.
-  - [ ] Limit early makerbot stock to essential items.
-  - [ ] Add makerbot upgrades that unlock better items over time.
-  - [ ] Increase basic item level by zone regardless of makerbot upgrade state.
-- [ ] Persist player-owned items across workshops in the same area.
+- [x] Fix chest state after lower-level warp.
+  - [x] Reproduce the case where being warped back down empties chests irrecoverably.
+  - [x] Preserve unopened chest contents across lower-level warps.
+- [x] Rework makerbot workshop progression.
+  - [x] Limit early makerbot stock to essential items.
+  - [x] Keep a small chance for rare or high-strength stock in lower-tier workshops.
+  - [x] Add makerbot upgrades that unlock better items over time.
+  - [x] Increase basic item level by zone regardless of makerbot upgrade state.
+- [x] Persist player-owned items across workshops in the same area.
 - [ ] Add alien egg step event.
   - [x] Fade the screen briefly to black when stepping on an alien egg.
   - [x] Show a "what happened" dialog when the screen returns.
-- [ ] Falling needs to be fixed so it falls to the level below - not up. The locked room needs to appear on the (next) level above.
-- [ ] Y should appear 3 times in the maze before Tengu main battle (hero to seek him out). If hero finds Y all 3 times, he will look in heros backpack and compare against Tengus stats. If the hero seems to be under equipped - Y even the odds and will provide an offensive ranged weapon with at least 3 charges. If the hero seems to be overequipped - Y will even the odds and remove one random weapon and place it to be found in one of the cells after the battle.
+- [x] Falling needs to be fixed so it falls to the level below - not up. The locked room needs to appear on the (next) level above.
+- [x] Y should appear 3 times in the maze before Tengu main battle (hero to seek him out). If hero finds Y all 3 times, he will look in heros backpack and compare against Tengus stats. If the hero seems to be under equipped - Y even the odds and will provide an offensive ranged weapon with at least 3 charges. If the hero seems to be overequipped - Y will even the odds and remove one random weapon and place it to be found in one of the cells after the battle.
+  - [x] Place three Y maze encounters with mischievous ambiguous dialogue.
+  - [x] Track whether the hero found all three encounters.
+  - [x] Compare the backpack against Tengu's stats before the arena.
+  - [x] Give or remove a ranged weapon based on that comparison.
 - [x] facehugger should die on infection. Also remove the sticky web effects.
 
 ## Refactorial Changes and Small Adjustments
@@ -91,7 +102,7 @@
   - [ ] Classify offensive tech/biogenetics as weapon/action items.
   - [ ] Convert offensive biogenetics such as fire into grenades.
 - [x] Rename Xeno-booster to align with the x-port concept.
-- [ ] Add an option to open and scroll the full log.
+- [x] Add an option to open and scroll the full log.
 - [ ] Floor lighting overhall
   - [ ] Lighting that contains a trap, should be invisible - so it's a real trap
   - [ ] Traps shouldn't ever look like a light - they should look like a blown panel after being set off.
@@ -105,7 +116,7 @@
 - [x] Remove the 3D effect/overlay from floor lights.
 - [x] Replace the chain graphic with a force-themed visual.
 - [x] Add a generic storage icon for unrevealed tech/biogenetics.
-- [ ] Add or update grenade icons for offensive biogenetics.
+- [x] Add or update grenade icons for offensive biogenetics.
 - [ ] Add healing tank booth tile/art.
 - [ ] Add cat sprite or reuse/update an existing follower sprite.
 - [ ] Add visual treatment for dark levels and breaker-restored lighting.
@@ -117,4 +128,7 @@
 
 - [x] Target sometimes doesn't dissapear after certain actions.
 - [x] Guardian Floor Lighting causes a game crash when walking over it.
-- [ ] One of the modules is just called 'Item 1'
+- [x] One of the modules is just called 'Item 1'
+- [ ] Fix the backpack tab icon (currenty is a battery)
+- [ ] Internal bridge (room filled with water) warns about the vacuum, this is not needed.
+- [ ] Stepping on a falling trap still sends me up, rather than down

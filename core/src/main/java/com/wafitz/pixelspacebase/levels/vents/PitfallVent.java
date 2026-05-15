@@ -43,12 +43,21 @@ public class PitfallVent extends Vent {
         Heap heap = Dungeon.level.heaps.get(pos);
 
         if (heap != null) {
-            for (Item item : heap.items) {
-                Dungeon.dropToChasm(item);
+            if (heap.type == Heap.Type.HEAP) {
+                for (Item item : heap.items) {
+                    Dungeon.dropToChasm(item);
+                }
+                heap.sprite.kill();
+                GameScene.discard(heap);
+                Dungeon.level.heaps.remove(pos);
+            } else {
+                Dungeon.dropHeapToDepth(heap, Dungeon.depth + 1);
+                if (heap.sprite != null) {
+                    heap.sprite.kill();
+                }
+                GameScene.discard(heap);
+                Dungeon.level.heaps.remove(pos);
             }
-            heap.sprite.kill();
-            GameScene.discard(heap);
-            Dungeon.level.heaps.remove(pos);
         }
 
         Char ch = Actor.findChar(pos);

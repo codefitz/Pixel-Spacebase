@@ -314,7 +314,18 @@ public class ExperimentalTech extends Item {
 
     @Override
     public int image() {
-        return isSealed() ? ItemSpriteSheet.SEALED_STORAGE : super.image();
+        if (isSealed()) {
+            return ItemSpriteSheet.SEALED_STORAGE;
+        } else if (isKnown()) {
+            if (this instanceof Firestarter) {
+                return ItemSpriteSheet.FIRE_GRENADE_GENE_MOD;
+            } else if (this instanceof ToxicAgent) {
+                return ItemSpriteSheet.TOXIC_GRENADE_GENE_MOD;
+            } else if (this instanceof ParalyzingAgent) {
+                return ItemSpriteSheet.PARALYSIS_GRENADE_GENE_MOD;
+            }
+        }
+        return super.image();
     }
 
     @Override

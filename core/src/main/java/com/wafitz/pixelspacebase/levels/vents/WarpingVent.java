@@ -32,6 +32,7 @@ import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
 import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
+import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -60,14 +61,23 @@ public class WarpingVent extends Vent {
 
             Heap heap = Dungeon.level.heaps.get(pos);
             if (heap != null) {
-                ArrayList<Item> dropped = Dungeon.droppedItems.get(depth);
-                if (dropped == null) {
-                    Dungeon.droppedItems.put(depth, dropped = new ArrayList<>());
+                if (heap.type == Heap.Type.HEAP) {
+                    ArrayList<Item> dropped = Dungeon.droppedItems.get(depth);
+                    if (dropped == null) {
+                        Dungeon.droppedItems.put(depth, dropped = new ArrayList<>());
+                    }
+                    for (Item item : heap.items) {
+                        dropped.add(item);
+                    }
+                    heap.destroy();
+                } else {
+                    Dungeon.dropHeapToDepth(heap, depth);
+                    if (heap.sprite != null) {
+                        heap.sprite.kill();
+                    }
+                    GameScene.discard(heap);
+                    Dungeon.level.heaps.remove(pos);
                 }
-                for (Item item : heap.items) {
-                    dropped.add(item);
-                }
-                heap.destroy();
             }
 
             Char ch = Actor.findChar(pos);

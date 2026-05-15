@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class ScriptLibrary extends Container {
 
     {
-        image = ItemSpriteSheet.LIBRARY;
+        image = ItemSpriteSheet.MODS;
 
         size = 12;
     }

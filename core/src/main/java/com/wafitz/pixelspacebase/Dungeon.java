@@ -35,6 +35,7 @@ import com.wafitz.pixelspacebase.actors.mobs.npcs.Leonard;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Generator;
+import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.scripts.Script;
@@ -135,6 +136,7 @@ public class Dungeon {
     public static boolean[] visible;
 
     public static SparseArray<ArrayList<Item>> droppedItems;
+    public static SparseArray<ArrayList<Heap>> droppedHeaps;
 
     public static int version;
 
@@ -172,6 +174,7 @@ public class Dungeon {
         parts = 0;
 
         droppedItems = new SparseArray<>();
+        droppedHeaps = new SparseArray<>();
 
         for (limitedDrops a : limitedDrops.values())
             a.count = 0;
@@ -345,6 +348,14 @@ public class Dungeon {
         dropped.add(item);
     }
 
+    public static void dropHeapToDepth(Heap heap, int depth) {
+        ArrayList<Heap> dropped = Dungeon.droppedHeaps.get(depth);
+        if (dropped == null) {
+            Dungeon.droppedHeaps.put(depth, dropped = new ArrayList<>());
+        }
+        dropped.add(heap);
+    }
+
     public static boolean posNeeded() {
         //2 POS each floor set
         int posLeftThisSet = 2 - (limitedDrops.strengthTech.count - (depth / 5) * 2);
@@ -399,6 +410,7 @@ public class Dungeon {
     private static final String PARTS = "parts";
     private static final String DEPTH = "depth";
     private static final String DROPPED = "dropped%d";
+    private static final String DROPPED_HEAPS = "droppedHeaps%d";
     private static final String LEVEL = "level";
     private static final String LIMDROPS = "limiteddrops";
     private static final String DV = "airTank";
@@ -447,6 +459,9 @@ public class Dungeon {
 
             for (int d : droppedItems.keyArray()) {
                 bundle.put(Messages.format(DROPPED, d), droppedItems.get(d));
+            }
+            for (int d : droppedHeaps.keyArray()) {
+                bundle.put(Messages.format(DROPPED_HEAPS, d), droppedHeaps.get(d));
             }
 
             quickslot.storePlaceholders(bundle);
@@ -609,6 +624,7 @@ public class Dungeon {
         Generator.restoreFromBundle(bundle);
 
         droppedItems = new SparseArray<>();
+        droppedHeaps = new SparseArray<>();
         for (int i = 2; i <= Statistics.deepestFloor + 1; i++) {
             ArrayList<Item> dropped = new ArrayList<>();
             if (bundle.contains(Messages.format(DROPPED, i)))
@@ -617,6 +633,15 @@ public class Dungeon {
                 }
             if (!dropped.isEmpty()) {
                 droppedItems.put(i, dropped);
+            }
+
+            ArrayList<Heap> heaps = new ArrayList<>();
+            if (bundle.contains(Messages.format(DROPPED_HEAPS, i)))
+                for (Bundlable b : bundle.getCollection(Messages.format(DROPPED_HEAPS, i))) {
+                    heaps.add((Heap) b);
+                }
+            if (!heaps.isEmpty()) {
+                droppedHeaps.put(i, heaps);
             }
         }
     }
