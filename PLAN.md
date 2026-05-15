@@ -16,6 +16,8 @@
 - [x] Dialogue boxes could do  with a smaller border and make the background semi-transparent
 - [x] The pickaxe has generic text and NO TEXT FOUND. This should be replaced with some other sci-fi item.
 - [x] The surveyor module has NO TEXT FOUND for it's action button.
+- [ ] Backpack extensions should feature in every workshop, but only be available once the previous one has been built.
+- [ ] Quaretermaster lazer quest tiles need to be switched to something like a holodeck backdrop. When the hero enters it should switch to a holodeck program like ancient rome or something.
 
 ## Mechanic Changes
 
@@ -115,3 +117,4 @@
 
 - [x] Target sometimes doesn't dissapear after certain actions.
 - [x] Guardian Floor Lighting causes a game crash when walking over it.
+- [ ] One of the modules is just called 'Item 1'
