@@ -87,7 +87,7 @@ public class Bestiary {
 
             case 5:
                 chances = new float[]{1};
-                classes = new Class<?>[]{FeralShapeshifter.class};
+                classes = new Class<?>[]{XenoQueen.class};
                 break;
 
             case 6:

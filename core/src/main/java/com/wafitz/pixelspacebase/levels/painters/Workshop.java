@@ -357,6 +357,7 @@ public class Workshop extends Painter {
 
         itemsToSpawn.add(new SynthesizedFood());
         itemsToSpawn.add(new SynthesizedFood());
+        itemsToSpawn.add(new Torch());
         itemsToSpawn.add(new TorchBattery());
 
         if (makerTier >= 1) {
@@ -418,7 +419,6 @@ public class Workshop extends Painter {
             itemsToSpawn.add(new Clone());
             itemsToSpawn.add(new WeaponTuner());
             itemsToSpawn.add(rareWorkshopItem(false));
-            itemsToSpawn.add(new Torch());
             itemsToSpawn.add(new TorchBattery().quantity(2));
         } else if (rareSurpriseChance(makerTier)) {
             itemsToSpawn.add(rareWorkshopItem(true));

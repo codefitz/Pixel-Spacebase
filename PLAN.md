@@ -41,20 +41,27 @@
   - [x] Give shapeshifter faster level progression.
   - [x] Let shapeshifter transform into items.
   - [x] Make item form apply camouflage-like concealment.
-  - [ ] Give item form a boosted surprise attack.
+  - [x] Give item form a boosted surprise attack.
 - [x] Rework shapeshifter healing.
   - [x] Debuff health pack effectiveness for shapeshifter.
   - [x] Add small shapeshifter recovery while standing in water.
-- [ ] Replace the shapeshifter mirror boss path.
-  - [ ] Prevent shapeshifter from battling himself at the first boss.
-  - [ ] Add Y encounter when shapeshifter reaches the first boss.
-  - [ ] Create arena challenge against 50 enemies.
+- [x] Replace the shapeshifter mirror boss path.
+  - [x] Replace the first boss with the Xeno Queen.
+  - [x] Add a nest arena loop with xenos emerging from wall cracks.
+  - [x] Seed the arena with alien eggs.
+  - [x] Drop the boss key when the queen dies.
 - [ ] Add room and breaker lighting mechanics.
-  - [ ] Light rooms on entry.
-  - [ ] Remove gameplay dependency on floor lights.
+  - [x] Light rooms on entry.
+  - [x] Remove gameplay dependency on floor lights.
   - [ ] Add random dark levels.
   - [ ] Place a breaker on dark levels that restores lights.
   - [ ] Place a breaker on every level so lights can be toggled off later.
+- [ ] Rework floor lights into dislodged/exposed floor tiles.
+  - [x] Rename floor-light terrain/messages to exposed or dislodged floor panels.
+  - [ ] Update floor-light art to damaged flooring or exposed wall/floor infrastructure.
+  - [ ] Convert floor-light gameplay from visibility support to loot/hazard discovery.
+  - [ ] Let exposed panels reveal hidden pickups or trigger electric/burn hazards.
+  - [x] Keep room lighting controlled by the floor breaker state instead of tile lights.
 - [x] Add generic storage/reveal behavior so the container opens before the tech/biogenetic item identity is known.
 - [ ] Add protectable NPC rescue flow.
   - [ ] Add NPCs that need protection.

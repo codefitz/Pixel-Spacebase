@@ -132,6 +132,7 @@ public abstract class Level implements Bundlable {
     public static boolean[] discoverable;
 
     public Feeling feeling = Feeling.NONE;
+    public boolean floorBreakerOn = true;
 
     public int entrance;
     public int exit;
@@ -172,6 +173,7 @@ public abstract class Level implements Bundlable {
     private static final String MOBS = "mobs";
     private static final String BLOBS = "blobs";
     private static final String FEELING = "feeling";
+    private static final String FLOOR_BREAKER_ON = "floorBreakerOn";
 
     public void create() {
 
@@ -279,6 +281,8 @@ public abstract class Level implements Bundlable {
             mines = new SparseArray<>();
             vents = new SparseArray<>();
             customTiles = new HashSet<>();
+
+        floorBreakerOn = feeling != Feeling.DARK;
 
         } while (!build());
         decorate();
@@ -407,6 +411,9 @@ public abstract class Level implements Bundlable {
         }
 
         feeling = bundle.getEnum(FEELING, Feeling.class);
+        floorBreakerOn = bundle.contains(FLOOR_BREAKER_ON)
+                ? bundle.getBoolean(FLOOR_BREAKER_ON)
+                : feeling != Feeling.DARK;
         if (feeling == Feeling.DARK)
             viewDistance = (int) Math.ceil(viewDistance / 3f);
 
@@ -433,6 +440,7 @@ public abstract class Level implements Bundlable {
         bundle.put(MOBS, mobs);
         bundle.put(BLOBS, blobs.values());
         bundle.put(FEELING, feeling);
+        bundle.put(FLOOR_BREAKER_ON, floorBreakerOn);
     }
 
     public int tunnelTile() {
@@ -1055,11 +1063,17 @@ public abstract class Level implements Bundlable {
         }
 
         if (c == Dungeon.hero) {
+            if (floorBreakerOn) {
+                lightCurrentRoom(c.pos, fieldOfView);
+            }
             for (Heap heap : heaps.values())
                 if (!heap.seen && fieldOfView[heap.pos])
                     heap.seen = true;
         }
 
+    }
+
+    protected void lightCurrentRoom(int cell, boolean[] fieldOfView) {
     }
 
     public int distance(int a, int b) {

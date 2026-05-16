@@ -85,7 +85,7 @@ public class Terrain {
         flags[WALL_DECO] = flags[WALL];
         flags[BARRICADE] = FLAMABLE | SOLID | LOS_BLOCKING;
         flags[EMPTY_SP] = flags[EMPTY];
-        flags[OFFVENT] = PASSABLE | LOS_BLOCKING | FLAMABLE;
+        flags[OFFVENT] = PASSABLE | FLAMABLE;
 
         flags[SECRET_DOOR] = flags[WALL] | SECRET;
         flags[HIDDEN_VENT] = flags[EMPTY] | SECRET;

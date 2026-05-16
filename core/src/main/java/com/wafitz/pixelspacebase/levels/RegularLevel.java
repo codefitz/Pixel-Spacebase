@@ -571,6 +571,10 @@ public abstract class RegularLevel extends Level {
 
     @Override
     public int nMobs() {
+        if (Dungeon.bossLevel()) {
+            return 1;
+        }
+
         switch (Dungeon.depth) {
             case 1:
                 //mobs are not randomly spawned on floor 1.
@@ -768,6 +772,29 @@ public abstract class RegularLevel extends Level {
             }
         }
         return false;
+    }
+
+    @Override
+    protected void lightCurrentRoom(int cell, boolean[] fieldOfView) {
+        if (rooms == null) {
+            return;
+        }
+
+        int x = cell % width();
+        int y = cell / width();
+        for (Room room : rooms) {
+            if (x > room.left && y > room.top && x < room.right && y < room.bottom) {
+                for (int row = room.top + 1; row < room.bottom; row++) {
+                    int pos = room.left + 1 + row * width();
+                    for (int col = room.left + 1; col < room.right; col++, pos++) {
+                        if (discoverable[pos]) {
+                            fieldOfView[pos] = true;
+                        }
+                    }
+                }
+                return;
+            }
+        }
     }
 
     @Override

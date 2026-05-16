@@ -987,6 +987,12 @@ public class Hero extends Char {
 
         if (wep != null) damage = wep.proc(this, enemy, damage);
 
+        if (buff(Shapeshifted.class) != null
+                && enemy instanceof Mob
+                && ((Mob) enemy).surprisedBy(this)) {
+            damage += Math.max(3, Math.round(damage * 0.5f));
+        }
+
         switch (subClass) {
             case SNIPER:
                 if (rangedWeapon != null) {
