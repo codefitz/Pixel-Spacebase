@@ -115,6 +115,8 @@ public class Assets {
     public static final String WEAK_FLOOR = "custom_tiles/weak_floor.png";
     public static final String PRISON_QUEST = "custom_tiles/prison_quests.png";
     public static final String PRISON_EXIT = "custom_tiles/prison_exit.png";
+    public static final String HOLODECK_HALLS = "custom_tiles/holodeck_halls.png";
+    public static final String ALIEN_PLANET_TILES = "custom_tiles/alien_planet_tiles.png";
 
     public static final String BUFFS_SMALL = "buffs.png";
     public static final String BUFFS_LARGE = "large_buffs.png";

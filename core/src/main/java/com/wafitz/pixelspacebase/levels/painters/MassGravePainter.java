@@ -33,6 +33,7 @@ import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.CustomTileVisual;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class MassGravePainter extends Painter {
         fill(level, room, Terrain.WALL);
         fill(level, room, 1, Terrain.EMPTY_SP);
 
-        level.customTiles.addAll(Bones.CustomTilesForRoom(room, Bones.class));
+        addHolodeckTiles(level, room, entrance);
 
         //50% 1 skeleton, 50% 2 skeletons
         for (int i = 0; i <= Random.Int(2); i++) {
@@ -82,13 +83,47 @@ public class MassGravePainter extends Painter {
         }
     }
 
-    public static class Bones extends CustomTileVisual {
+    private static void addHolodeckTiles(Level level, Room room, Point entrance) {
+        for (int x = room.left; x <= room.right; x++) {
+            for (int y = room.top; y <= room.bottom; y++) {
+                if (x == entrance.x && y == entrance.y) {
+                    continue;
+                }
+
+                HolodeckHalls vis = new HolodeckHalls();
+                int ofsX = 0;
+                int ofsY = 0;
+                if (x == room.right) {
+                    ofsX = 2;
+                } else if (x != room.left) {
+                    ofsX = 1;
+                }
+
+                if (y == room.bottom) {
+                    ofsY = 2;
+                } else if (y != room.top) {
+                    ofsY = 1;
+                }
+
+                vis.offset(ofsX, ofsY);
+                vis.pos(x, y);
+                level.customTiles.add(vis);
+            }
+        }
+    }
+
+    public static class HolodeckHalls extends CustomTileVisual {
         {
             name = Messages.get(this, "name");
 
-            tx = Assets.PRISON_QUEST;
-            txX = 3;
+            tx = Assets.HOLODECK_HALLS;
+            txX = 0;
             txY = 0;
+        }
+
+        void offset(int x, int y) {
+            ofsX = x;
+            ofsY = y;
         }
 
         @Override

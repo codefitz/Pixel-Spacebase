@@ -57,7 +57,7 @@ public class TechToolkit extends Artifact {
 
     private int devicesToTech = 0;
 
-    private String inventoryTitle = "Select gene mod";
+    private String inventoryTitle = "Select plasmid";
     protected WndContainer.Mode mode = WndContainer.Mode.EXPERIMENTALTECH;
 
     public TechToolkit() {
@@ -68,7 +68,7 @@ public class TechToolkit extends Artifact {
             String experimentaltech;
             do {
                 experimentaltech = convertName(cat.classes[Random.chances(cat.probs)].getSimpleName());
-                //forcing the player to use experience ExperimentalTech would be completely unfair.
+                //forcing the player to use experience plasmids would be completely unfair.
             }
             while (combination.contains(experimentaltech) || experimentaltech.equals("Experience"));
             combination.add(experimentaltech);
@@ -117,7 +117,7 @@ public class TechToolkit extends Artifact {
 
         if (score == 0) {
 
-            GLog.i("Your mixture is complete, but none of the gene mods you used seem to react well. " +
+            GLog.i("Your mixture is complete, but none of the plasmids you used seem to react well. " +
                     "The brew is useless, you throw it away.");
 
         } else if (score > level()) {
@@ -132,13 +132,13 @@ public class TechToolkit extends Artifact {
                 bstGuess = new ArrayList<>();
                 GLog.p("The mixture you've created seems perfect, you don't think there is any way to improve it!");
             } else {
-                GLog.w("you finish mixing gene mods, " + brewDesc(numWrongPlace, numRight) +
+                GLog.w("you finish mixing plasmids, " + brewDesc(numWrongPlace, numRight) +
                         ". This is your best brew yet!");
             }
 
         } else {
 
-            GLog.w("you finish mixing ExperimentalTech, " + brewDesc(numWrongPlace, numRight) +
+            GLog.w("you finish mixing plasmids, " + brewDesc(numWrongPlace, numRight) +
                     ". This brew isn't as good as the current one, you throw it away.");
         }
         curGuess = new ArrayList<>();
@@ -166,7 +166,7 @@ public class TechToolkit extends Artifact {
     @Override
     public String desc() {
         String result = "This toolkit contains reagents, catalysts, and sealed ampoules used to improve the process of " +
-                "making gene mods.\n\n";
+                "making plasmids.\n\n";
 
         if (isEquipped(Dungeon.hero))
             if (malfunctioning)
@@ -176,13 +176,13 @@ public class TechToolkit extends Artifact {
 
         if (level() == 0) {
             result += "The toolkit seems to be missing a key tool, a catalyst mixture. You'll have to make your own " +
-                    "out of three common ExperimentalTech to get the most out of the toolkit.";
+                    "out of three common plasmids to get the most out of the toolkit.";
         } else if (level() == 10) {
             result += "The mixture you have created seems perfect, and the toolkit is working at maximum efficiency.";
         } else if (!bstGuess.isEmpty()) {
             result += "Your current best mixture is made from: " + bstGuess.get(0) + ", " + bstGuess.get(1) + ", "
                     + bstGuess.get(2) + ", in that order.\n\n";
-            result += "Of the ExperimentalTech in that mix, " + brewDesc(numWrongPlace, numRight) + ".";
+            result += "Of the plasmids in that mix, " + brewDesc(numWrongPlace, numRight) + ".";
 
             //would only mines if an upgraded toolkit was gained through transmutation or bones.
         } else {
@@ -276,10 +276,10 @@ public class TechToolkit extends Artifact {
                         GLog.i("You mix the " + item.name() + " into your current brew.");
                     }
                 } else {
-                    GLog.w("Your current brew already contains that tech.");
+                    GLog.w("Your current brew already contains that plasmid.");
                 }
             } else if (item != null) {
-                GLog.w("You need to select an identified tech.");
+                GLog.w("You need to select an identified plasmid.");
             }
         }
     };

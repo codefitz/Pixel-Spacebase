@@ -17,13 +17,13 @@
 - [x] The pickaxe has generic text and NO TEXT FOUND. This should be replaced with some other sci-fi item.
 - [x] The surveyor module has NO TEXT FOUND for it's action button.
 - [x] Backpack extensions should feature in every workshop, but only be available once the previous one has been built.
-- [ ] Quaretermaster lazer quest tiles need to be switched to something like a holodeck backdrop. When the hero enters it should switch to a holodeck program like ancient rome or something.
+- [x] Quaretermaster lazer quest tiles need to be switched to something like a holodeck backdrop. When the hero enters it should switch to a holodeck program like ancient rome or something.
 - [x] Tech Library and Icon need to be updated to 'Mods'
 - [x] Alien Egg item (pick up and plant) should be Black Goo.
-- [ ] Bionetics naming - rather than call the items 'Mods' they should be called 'Plasmids'
-- [ ] Mods naming - rather than call the items 'Tech' call them 'Upgrade'
-- [ ] Swap the Mods and Bionetics backpack extensions icons.
-- [ ] Vaccuum warning should be a popup, rather than log.
+- [x] Bionetics naming - rather than call the items 'Mods' they should be called 'Plasmids'
+- [x] Mods naming - rather than call the items 'Tech' call them 'Upgrade'
+- [x] Swap the Mods and Bionetics backpack extensions icons.
+- [x] Vaccuum warning should be a popup, rather than log.
 
 ## Mechanic Changes
 
@@ -41,9 +41,9 @@
   - [ ] Let shapeshifter transform into items.
   - [ ] Make item form apply camouflage-like concealment.
   - [ ] Give item form a boosted surprise attack.
-- [ ] Rework shapeshifter healing.
-  - [ ] Debuff health pack effectiveness for shapeshifter.
-  - [ ] Add small shapeshifter recovery while standing in water.
+- [x] Rework shapeshifter healing.
+  - [x] Debuff health pack effectiveness for shapeshifter.
+  - [x] Add small shapeshifter recovery while standing in water.
 - [ ] Replace the shapeshifter mirror boss path.
   - [ ] Prevent shapeshifter from battling himself at the first boss.
   - [ ] Add Y encounter when shapeshifter reaches the first boss.
@@ -62,10 +62,10 @@
 - [ ] Add cat follower NPC.
   - [ ] Implement cat following behavior.
   - [ ] Decide whether petting is blocked, punished, or only warned against.
-- [ ] Replace garden with a one-square healing tank booth.
-  - [ ] Remove or disable garden room generation.
-  - [ ] Add one-square healing tank booth placement.
-  - [ ] Define healing tank interaction behavior.
+- [x] Replace garden with a one-square healing tank booth.
+  - [x] Remove or disable garden room generation.
+  - [x] Add one-square healing tank booth placement.
+  - [x] Define healing tank interaction behavior.
 - [x] Security levels should start with the piercing alarm sound from the trap.
 - [x] Positive-effect mines should become automatically applied stimulants.
 - [x] Fix chest state after lower-level warp.
@@ -121,7 +121,7 @@
 - [ ] Add cat sprite or reuse/update an existing follower sprite.
 - [ ] Add visual treatment for dark levels and breaker-restored lighting.
 - [x] Change Xeno-booster to an x-port icon.
-- [ ] Tengu battle arena needs to be more like an alien planet (think Star Trek TOS).
+- [x] Tengu battle arena needs to be more like an alien planet (think Star Trek TOS).
 - [ ] Siphon drone sprite needs updating.
 
 ## Bugs
@@ -129,6 +129,6 @@
 - [x] Target sometimes doesn't dissapear after certain actions.
 - [x] Guardian Floor Lighting causes a game crash when walking over it.
 - [x] One of the modules is just called 'Item 1'
-- [ ] Fix the backpack tab icon (currenty is a battery)
-- [ ] Internal bridge (room filled with water) warns about the vacuum, this is not needed.
-- [ ] Stepping on a falling trap still sends me up, rather than down
+- [x] Fix the backpack tab icon (currenty is a battery)
+- [x] Internal bridge (room filled with water) warns about the vacuum, this is not needed.
+- [x] Stepping on a falling trap still sends me up, rather than down

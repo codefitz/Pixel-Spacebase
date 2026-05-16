@@ -18,28 +18,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.items.containers;
+package com.wafitz.pixelspacebase.actors.blobs;
 
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
+import com.wafitz.pixelspacebase.messages.Messages;
 
-public class XPort extends Container {
-
-    {
-        image = ItemSpriteSheet.MODS;
-
-        size = 12;
-    }
+public class HealingTank extends MedicalTerminal {
 
     @Override
-    public boolean grab(Item item) {
-        return item instanceof ExperimentalTech;
+    public String tileDesc() {
+        return Messages.get(this, "desc");
     }
-
-    @Override
-    public int cost() {
-        return 40;
-    }
-
 }

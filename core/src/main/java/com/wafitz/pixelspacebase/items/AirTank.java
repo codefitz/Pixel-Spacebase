@@ -92,9 +92,8 @@ public class AirTank extends Item {
                 }
                 value *= volume;
                 value = (int) Math.max(volume * volume * .01 * hero.HT, value);
-                int effect = Math.min(hero.HT - hero.HP, value);
+                int effect = hero.medicalHealing(value);
                 if (effect > 0) {
-                    hero.HP += effect;
                     hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), volume > 5 ? 2 : 1);
                     hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "value", effect));
                 }

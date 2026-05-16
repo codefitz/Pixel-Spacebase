@@ -498,7 +498,7 @@ public abstract class Level implements Bundlable {
     }
 
     private boolean isVacuumBackedTerrain(int cell) {
-        return insideMap(cell) && (map[cell] == Terrain.WATER || map[cell] == Terrain.CHASM);
+        return insideMap(cell) && map[cell] == Terrain.CHASM;
     }
 
     private int exposedSideCount(boolean left, boolean right, boolean up, boolean down) {

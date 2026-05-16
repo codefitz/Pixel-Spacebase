@@ -127,6 +127,8 @@ public class PrisonBossLevel extends Level {
         for (Bundlable item : bundle.getCollection(STORED_ITEMS)) {
             storedItems.add((Item) item);
         }
+
+        updateArenaPlanetVisuals(state == State.FIGHT_ARENA);
     }
 
     @Override
@@ -248,6 +250,7 @@ public class PrisonBossLevel extends Level {
         this.map = map.clone();
         buildFlagMaps();
         cleanWalls();
+        updateArenaPlanetVisuals(map == MAP_ARENA);
 
         exit = entrance = 0;
         for (int i = 0; i < length(); i++)
@@ -265,7 +268,35 @@ public class PrisonBossLevel extends Level {
 
 
         GameScene.resetMap();
+        if (PixelSpacebase.scene() instanceof GameScene) {
+            ((GameScene) PixelSpacebase.scene()).resetCustomTiles();
+        }
         Dungeon.observe();
+    }
+
+    private void updateArenaPlanetVisuals(boolean arenaActive) {
+        ArrayList<CustomTileVisual> toRemove = new ArrayList<>();
+        for (CustomTileVisual visual : customTiles) {
+            if (visual instanceof AlienPlanetSurface) {
+                toRemove.add(visual);
+            }
+        }
+        customTiles.removeAll(toRemove);
+
+        if (!arenaActive) {
+            return;
+        }
+
+        for (int i = 0; i < map.length; i++) {
+            if (map[i] == Terrain.EMPTY) {
+                AlienPlanetSurface surface = new AlienPlanetSurface();
+                int x = i % width();
+                int y = i / width();
+                surface.pos(x, y);
+                surface.variant(Math.abs((x * 31 + y * 17) % 8));
+                customTiles.add(surface);
+            }
+        }
     }
 
     private void clearEntities(Room safeArea) {
@@ -715,6 +746,26 @@ public class PrisonBossLevel extends Level {
         @Override
         public String desc() {
             return super.desc();
+        }
+    }
+
+    public static class AlienPlanetSurface extends CustomTileVisual {
+
+        {
+            name = Messages.get(this, "name");
+
+            tx = Assets.ALIEN_PLANET_TILES;
+            txX = 0;
+            txY = 3;
+        }
+
+        void variant(int value) {
+            ofsX = value;
+        }
+
+        @Override
+        public String desc() {
+            return Messages.get(this, "desc");
         }
     }
 }

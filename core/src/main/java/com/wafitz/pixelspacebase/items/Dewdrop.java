@@ -51,9 +51,8 @@ public class Dewdrop extends Item {
                 value += 2;
             }
 
-            int effect = Math.min(hero.HT - hero.HP, value * quantity);
+            int effect = hero.medicalHealing(value * quantity);
             if (effect > 0) {
-                hero.HP += effect;
                 hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
                 hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "value", effect));
             } else {

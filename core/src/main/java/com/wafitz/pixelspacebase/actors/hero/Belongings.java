@@ -31,6 +31,7 @@ import com.wafitz.pixelspacebase.items.keys.IronKey;
 import com.wafitz.pixelspacebase.items.keys.Key;
 import com.wafitz.pixelspacebase.items.scripts.FixScript;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -57,6 +58,7 @@ public class Belongings implements Iterable<Item> {
 
         backpack = new Container() {{
             name = Messages.get(Container.class, "name");
+            image = ItemSpriteSheet.SEALED_STORAGE;
             size = BACKPACK_SIZE;
         }};
         backpack.owner = owner;

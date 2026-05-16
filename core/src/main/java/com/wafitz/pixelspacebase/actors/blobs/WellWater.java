@@ -139,7 +139,7 @@ public class WellWater extends Blob {
 
     public static void affectCell(int cell) {
 
-        Class<?>[] waters = {MedicalTerminal.class, KnowledgebaseTerminal.class, DiffusionalTerminal.class};
+        Class<?>[] waters = {MedicalTerminal.class, HealingTank.class, KnowledgebaseTerminal.class, DiffusionalTerminal.class};
 
         for (Class<?> waterClass : waters) {
             WellWater water = (WellWater) Dungeon.level.blobs.get(waterClass);

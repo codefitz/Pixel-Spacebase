@@ -145,6 +145,7 @@ public class Hero extends Char {
 
     private static final float TIME_TO_REST = 1f;
     private static final float TIME_TO_SEARCH = 2f;
+    private static final float SHAPESHIFTER_WATER_RECOVERY_DELAY = 3f;
 
     public HeroClass heroClass = HeroClass.SHAPESHIFTER;
     public HeroSubClass subClass = HeroSubClass.NONE;
@@ -211,6 +212,9 @@ public class Hero extends Char {
     private static final String EXPERIENCE = "exp";
     private static final String VACUUM_WARNING_ACTIVE = "vacuumWarningActive";
     private static final String VACUUM_RETURN_CELL = "vacuumReturnCell";
+    private static final String SHAPESHIFTER_WATER_RECOVERY = "shapeshifterWaterRecovery";
+
+    private float shapeshifterWaterRecovery;
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -229,6 +233,7 @@ public class Hero extends Char {
         bundle.put(EXPERIENCE, exp);
         bundle.put(VACUUM_WARNING_ACTIVE, vacuumWarningActive);
         bundle.put(VACUUM_RETURN_CELL, vacuumReturnCell);
+        bundle.put(SHAPESHIFTER_WATER_RECOVERY, shapeshifterWaterRecovery);
 
         belongings.storeInBundle(bundle);
     }
@@ -250,6 +255,7 @@ public class Hero extends Char {
         exp = bundle.getInt(EXPERIENCE);
         vacuumWarningActive = bundle.getBoolean(VACUUM_WARNING_ACTIVE);
         vacuumReturnCell = bundle.contains(VACUUM_RETURN_CELL) ? bundle.getInt(VACUUM_RETURN_CELL) : -1;
+        shapeshifterWaterRecovery = bundle.getFloat(SHAPESHIFTER_WATER_RECOVERY);
 
         belongings.restoreFromBundle(bundle);
     }
@@ -459,8 +465,48 @@ public class Hero extends Char {
     @Override
     public void spend(float time) {
         TimeFolder.timeFreeze buff = buff(TimeFolder.timeFreeze.class);
-        if (!(buff != null && buff.processTime(time)))
+        if (!(buff != null && buff.processTime(time))) {
             super.spend(time);
+            recoverShapeshifterInWater(time);
+        }
+    }
+
+    public int medicalHealing(int amount) {
+        if (amount <= 0 || HP >= HT) {
+            return 0;
+        }
+
+        int adjusted = amount;
+        if (heroClass == HeroClass.SHAPESHIFTER) {
+            adjusted = Math.max(1, adjusted / 2);
+        }
+
+        int effect = Math.min(HT - HP, adjusted);
+        HP += effect;
+        return effect;
+    }
+
+    private void recoverShapeshifterInWater(float time) {
+        if (time <= 0
+                || heroClass != HeroClass.SHAPESHIFTER
+                || flying
+                || HP >= HT
+                || isStarving()
+                || pos < 0
+                || !Level.water[pos]) {
+            shapeshifterWaterRecovery = 0;
+            return;
+        }
+
+        shapeshifterWaterRecovery += time;
+        while (shapeshifterWaterRecovery >= SHAPESHIFTER_WATER_RECOVERY_DELAY && HP < HT) {
+            shapeshifterWaterRecovery -= SHAPESHIFTER_WATER_RECOVERY_DELAY;
+            HP++;
+            if (sprite != null) {
+                sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+                sprite.showStatus(CharSprite.POSITIVE, "+1HP");
+            }
+        }
     }
 
     public void spendAndNext(float time) {
@@ -1162,7 +1208,7 @@ public class Hero extends Char {
                 vacuumWarningActive = true;
                 vacuumReturnCell = pos;
                 path = null;
-                GLog.w(Messages.get(this, "vacuum_warning"));
+                showVacuumWarning();
                 ready();
                 return false;
             }
@@ -1546,8 +1592,12 @@ public class Hero extends Char {
         } else if (!vacuumWarningActive) {
             vacuumWarningActive = true;
             vacuumReturnCell = previousPos;
-            GLog.w(Messages.get(this, "vacuum_warning"));
+            showVacuumWarning();
         }
+    }
+
+    private void showVacuumWarning() {
+        GameScene.show(new WndMessage(Messages.get(this, "vacuum_warning")));
     }
 
     private void killByVacuum() {

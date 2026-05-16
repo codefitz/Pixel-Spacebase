@@ -231,16 +231,17 @@ public class InterlevelScene extends PixelScene {
     private void fall() throws IOException {
 
         Actor.fixTime();
+        int targetDepth = Dungeon.depth + 1;
         boolean nextLevelNeedsPit = fallIntoPit || levelHasWeakFloor(Dungeon.level);
         Workshop.carryStockFrom(Dungeon.level);
         Dungeon.saveAll();
 
         Level level;
-        if (Dungeon.depth >= Statistics.deepestFloor) {
+        if (targetDepth > Statistics.deepestFloor) {
             RegularLevel.weakFloorCreated = nextLevelNeedsPit;
             level = Dungeon.newLevel();
         } else {
-            Dungeon.depth++;
+            Dungeon.depth = targetDepth;
             level = Dungeon.loadLevel(Dungeon.hero.heroClass);
             Workshop.deliverStorageTo(level);
         }

@@ -554,6 +554,13 @@ public class GameScene extends PixelScene {
         customTiles.add(visual.create());
     }
 
+    public void resetCustomTiles() {
+        customTiles.clear();
+        for (CustomTileVisual visual : Dungeon.level.customTiles) {
+            addCustomTile(visual);
+        }
+    }
+
     private void addHeapSprite(Heap heap) {
         ItemSprite sprite = heap.sprite = (ItemSprite) heaps.recycle(ItemSprite.class);
         sprite.revive();

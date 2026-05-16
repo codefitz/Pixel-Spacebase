@@ -40,6 +40,7 @@ public class ChangesScene extends PixelScene {
                     "_-_ Added the alien egg blackout and recovery message sequence.\n" +
                     "_-_ Made facehugger infection consume the attacker and made alien emergence more dangerous.\n" +
                     "_-_ Made exposed bridge sections require spacesuit protection, with DM-3000 and Shapeshifter exceptions.\n" +
+                    "_-_ Changed vacuum warnings from log text to a popup and stopped internal coolant bridges from triggering them.\n" +
                     "_-_ Added sealed capsules/caches for unrevealed gene mods and tech before their visible markers are exposed.\n" +
                     "_-_ Reworked torches into permanent equipable utility weapons with rechargeable battery cells.\n" +
                     "_-_ Added grenade-style icons for offensive gene mods and fixed a missing tenacity module name.\n" +
@@ -47,11 +48,17 @@ public class ChangesScene extends PixelScene {
                     "_-_ Prevented workshop trimming from removing required backpack extensions and spacesuits.\n" +
                     "_-_ Rebalanced makerbot workshops so stock unlocks by area while early shops stay mostly essential.\n" +
                     "_-_ Renamed the tech library container to Mods and refreshed its icons.\n" +
+                    "_-_ Renamed gene mods to Plasmids, field tech to upgrades, and swapped the related container icons.\n" +
                     "_-_ Renamed the plantable alien egg item to Black Goo and gave it new art.\n" +
+                    "_-_ Re-skinned the quartermaster lazer quest room as a demon-halls holodeck program.\n" +
                     "_-_ Preserved unopened chest contents when lower-level warp effects move heaps between floors.\n" +
                     "_-_ Fixed weak-floor falling so pit rooms are generated below the floor being left.\n" +
+                    "_-_ Fixed falling vents so they always send the hero to the level below.\n" +
                     "_-_ Added three optional Y encounters to the Tengu maze interlude.\n" +
                     "_-_ Let Y rebalance the Tengu arena if all three maze encounters are found.\n" +
+                    "_-_ Re-skinned Tengu's arena floor as an alien planet surface.\n" +
+                    "_-_ Reworked Shapeshifter healing so medical items heal less while water slowly restores health.\n" +
+                    "_-_ Replaced medical garden rooms with one-cell healing tank booths.\n" +
                     "_-_ Strengthened the Dark Lord of Yendor quest and victory text.\n" +
                     "_-_ Reworked chain-themed text and pull visuals toward force-themed effects.\n" +
                     "_-_ Renamed stimulants to Stims and refreshed related pickup behavior.\n" +
