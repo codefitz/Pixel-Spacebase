@@ -36,10 +36,11 @@
   - [x] Gate commander spacewalk access behind spacesuit ownership/equipment.
   - [x] Add failure messaging when the player tries to enter without a spacesuit.
 - [ ] Rework shapeshifter progression.
-  - [ ] Prevent shapeshifter from using blaster weapons.
-  - [ ] Scale shapeshifter strength as level depth increases.
-  - [ ] Let shapeshifter transform into items.
-  - [ ] Make item form apply camouflage-like concealment.
+  - [x] Prevent shapeshifter from using blaster weapons.
+  - [x] Scale shapeshifter strength as level depth increases.
+  - [x] Give shapeshifter faster level progression.
+  - [x] Let shapeshifter transform into items.
+  - [x] Make item form apply camouflage-like concealment.
   - [ ] Give item form a boosted surprise attack.
 - [x] Rework shapeshifter healing.
   - [x] Debuff health pack effectiveness for shapeshifter.
@@ -77,7 +78,7 @@
   - [x] Add makerbot upgrades that unlock better items over time.
   - [x] Increase basic item level by zone regardless of makerbot upgrade state.
 - [x] Persist player-owned items across workshops in the same area.
-- [ ] Add alien egg step event.
+- [x] Add alien egg step event.
   - [x] Fade the screen briefly to black when stepping on an alien egg.
   - [x] Show a "what happened" dialog when the screen returns.
 - [x] Falling needs to be fixed so it falls to the level below - not up. The locked room needs to appear on the (next) level above.
@@ -108,8 +109,9 @@
   - [ ] Traps shouldn't ever look like a light - they should look like a blown panel after being set off.
   - [ ] Adjust terrain features so that only one type appears on each zone/area
   - [ ] Adjust terrain features to look less 'dungeon' and more like different types of lighting.
-  - [ ] Set mines should look a bit more obvious
-  - [ ] Shuriken need to be updated to something suitably sci-fi 
+  - [ ] Set mines should look a bit more obvious like mines
+- [ ] Shuriken need to be updated to something suitably sci-fi 
+- [ ] Sealed Cache should automatically consume.
 
 ## Graphical Changes
 

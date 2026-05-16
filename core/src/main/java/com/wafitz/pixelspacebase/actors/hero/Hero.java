@@ -42,6 +42,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.actors.buffs.Regeneration;
 import com.wafitz.pixelspacebase.actors.buffs.Shielding;
+import com.wafitz.pixelspacebase.actors.buffs.Shapeshifted;
 import com.wafitz.pixelspacebase.actors.buffs.Targeted;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.buffs.Upgrade;
@@ -146,6 +147,9 @@ public class Hero extends Char {
     private static final float TIME_TO_REST = 1f;
     private static final float TIME_TO_SEARCH = 2f;
     private static final float SHAPESHIFTER_WATER_RECOVERY_DELAY = 3f;
+    private static final float SHAPESHIFTER_EXP_SCALE = 0.8f;
+    private static final int SHAPESHIFTER_FIRST_STRENGTH_LEVEL = 10;
+    private static final int SHAPESHIFTER_SECOND_STRENGTH_LEVEL = 20;
 
     public HeroClass heroClass = HeroClass.SHAPESHIFTER;
     public HeroSubClass subClass = HeroSubClass.NONE;
@@ -213,8 +217,10 @@ public class Hero extends Char {
     private static final String VACUUM_WARNING_ACTIVE = "vacuumWarningActive";
     private static final String VACUUM_RETURN_CELL = "vacuumReturnCell";
     private static final String SHAPESHIFTER_WATER_RECOVERY = "shapeshifterWaterRecovery";
+    private static final String SHAPESHIFTER_STRENGTH_PROGRESSION = "shapeshifterStrengthProgression";
 
     private float shapeshifterWaterRecovery;
+    private int shapeshifterStrengthProgression;
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -234,6 +240,7 @@ public class Hero extends Char {
         bundle.put(VACUUM_WARNING_ACTIVE, vacuumWarningActive);
         bundle.put(VACUUM_RETURN_CELL, vacuumReturnCell);
         bundle.put(SHAPESHIFTER_WATER_RECOVERY, shapeshifterWaterRecovery);
+        bundle.put(SHAPESHIFTER_STRENGTH_PROGRESSION, shapeshifterStrengthProgression);
 
         belongings.storeInBundle(bundle);
     }
@@ -256,6 +263,10 @@ public class Hero extends Char {
         vacuumWarningActive = bundle.getBoolean(VACUUM_WARNING_ACTIVE);
         vacuumReturnCell = bundle.contains(VACUUM_RETURN_CELL) ? bundle.getInt(VACUUM_RETURN_CELL) : -1;
         shapeshifterWaterRecovery = bundle.getFloat(SHAPESHIFTER_WATER_RECOVERY);
+        shapeshifterStrengthProgression = bundle.contains(SHAPESHIFTER_STRENGTH_PROGRESSION)
+                ? bundle.getInt(SHAPESHIFTER_STRENGTH_PROGRESSION)
+                : 0;
+        applyShapeshifterStrengthProgression(false);
 
         belongings.restoreFromBundle(bundle);
     }
@@ -286,6 +297,9 @@ public class Hero extends Char {
         rangedWeapon = wep;
         boolean result = attack(enemy);
         Camoflage.dispel();
+        if (result) {
+            Buff.detach(this, Shapeshifted.class);
+        }
         rangedWeapon = null;
 
         return result;
@@ -468,6 +482,11 @@ public class Hero extends Char {
         if (!(buff != null && buff.processTime(time))) {
             super.spend(time);
             recoverShapeshifterInWater(time);
+            if (time > 0
+                    && !(curAction instanceof HeroAction.Attack)
+                    && !(curAction instanceof HeroAction.Move)) {
+                Buff.detach(this, Shapeshifted.class);
+            }
         }
     }
 
@@ -1322,6 +1341,7 @@ public class Hero extends Char {
                 HP += 5;
                 attackSkill++;
                 defenseSkill++;
+                applyShapeshifterStrengthProgression(true);
 
             } else {
                 Buff.prolong(this, Upgrade.class, 30f);
@@ -1347,7 +1367,35 @@ public class Hero extends Char {
     }
 
     public int maxExp() {
-        return 5 + lvl * 5;
+        int maxExp = 5 + lvl * 5;
+        if (heroClass == HeroClass.SHAPESHIFTER) {
+            maxExp = Math.max(1, Math.round(maxExp * SHAPESHIFTER_EXP_SCALE));
+        }
+        return maxExp;
+    }
+
+    private void applyShapeshifterStrengthProgression(boolean announce) {
+        int target = shapeshifterStrengthProgressionForLevel();
+        while (shapeshifterStrengthProgression < target) {
+            shapeshifterStrengthProgression++;
+            STR++;
+            if (announce) {
+                GLog.p(Messages.get(this, "shapeshifter_strength"));
+                sprite.showStatus(CharSprite.POSITIVE, "+1STR");
+            }
+        }
+    }
+
+    private int shapeshifterStrengthProgressionForLevel() {
+        if (heroClass != HeroClass.SHAPESHIFTER) {
+            return 0;
+        } else if (lvl >= SHAPESHIFTER_SECOND_STRENGTH_LEVEL) {
+            return 2;
+        } else if (lvl >= SHAPESHIFTER_FIRST_STRENGTH_LEVEL) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     void updateAwareness() {
@@ -1636,6 +1684,7 @@ public class Hero extends Char {
         AttackIndicator.target(enemy);
 
         boolean hit = attack(enemy);
+        Buff.detach(this, Shapeshifted.class);
 
         if (subClass == HeroSubClass.GLADIATOR) {
             if (hit) {

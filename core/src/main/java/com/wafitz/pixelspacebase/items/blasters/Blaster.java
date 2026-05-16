@@ -79,7 +79,7 @@ public abstract class Blaster extends Item {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        if (curCharges > 0 || !curChargeKnown) {
+        if (hero.heroClass != HeroClass.SHAPESHIFTER && (curCharges > 0 || !curChargeKnown)) {
             actions.add(AC_SHOOT);
         }
 
@@ -92,6 +92,10 @@ public abstract class Blaster extends Item {
         super.execute(hero, action);
 
         if (action.equals(AC_SHOOT)) {
+            if (hero.heroClass == HeroClass.SHAPESHIFTER) {
+                GLog.w(Messages.get(this, "shapeshifter_no_blaster"));
+                return;
+            }
 
             curUser = hero;
             curItem = this;
