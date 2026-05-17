@@ -83,6 +83,12 @@ public class HeroAction {
         }
     }
 
+    public static class Operate extends HeroAction {
+        public Operate(int target) {
+            this.dst = target;
+        }
+    }
+
     public static class Attack extends HeroAction {
         public Char target;
 

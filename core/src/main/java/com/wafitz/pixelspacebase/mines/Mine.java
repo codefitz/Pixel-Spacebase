@@ -38,6 +38,7 @@ import com.wafitz.pixelspacebase.items.artifacts.GnollTechShield;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -68,6 +69,10 @@ public abstract class Mine implements Bundlable {
 
     public void wither() {
         Dungeon.level.uproot(pos);
+        if (Dungeon.level.map[pos] == Terrain.LIGHTEDVENT) {
+            Level.set(pos, Terrain.INACTIVE_VENT);
+            GameScene.updateMap(pos);
+        }
 
         if (Dungeon.visible[pos]) {
             CellEmitter.get(pos).burst(LeafParticle.GENERAL, 6);

@@ -65,6 +65,7 @@ import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.Door;
+import com.wafitz.pixelspacebase.levels.features.FloorBreaker;
 import com.wafitz.pixelspacebase.levels.features.OffVent;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
@@ -282,7 +283,7 @@ public abstract class Level implements Bundlable {
             vents = new SparseArray<>();
             customTiles = new HashSet<>();
 
-        floorBreakerOn = feeling != Feeling.DARK;
+            floorBreakerOn = feeling != Feeling.DARK;
 
         } while (!build());
         decorate();
@@ -840,11 +841,11 @@ public abstract class Level implements Bundlable {
         }
 
         if (map[pos] == Terrain.OFFVENT ||
+                map[pos] == Terrain.LIGHTEDVENT ||
                 map[pos] == Terrain.EMPTY ||
                 map[pos] == Terrain.EMBERS ||
                 map[pos] == Terrain.EMPTY_DECO) {
-            map[pos] = Terrain.LIGHTEDVENT;
-            flamable[pos] = true;
+            set(pos, Terrain.INACTIVE_VENT);
         }
 
         mine = device.couch(pos);
@@ -921,6 +922,12 @@ public abstract class Level implements Bundlable {
             case Terrain.CRAFTING:
                 if (ch == null) {
                     Craft.transmute(cell);
+                }
+                break;
+
+            case Terrain.BREAKER:
+                if (ch == Dungeon.hero) {
+                    FloorBreaker.operate(cell);
                 }
                 break;
 
@@ -1114,6 +1121,8 @@ public abstract class Level implements Bundlable {
             case Terrain.EMPTY_DECO:
             case Terrain.HIDDEN_VENT:
                 return Messages.get(Level.class, "floor_name");
+            case Terrain.BREAKER:
+                return Messages.get(Level.class, "breaker_name");
             case Terrain.LIGHTEDVENT:
                 return Messages.get(Level.class, "lightedvent_name");
             case Terrain.WATER:
@@ -1195,6 +1204,10 @@ public abstract class Level implements Bundlable {
                 return Messages.get(Level.class, "statue_desc");
             case Terrain.CRAFTING:
                 return Messages.get(Level.class, "crafting_desc");
+            case Terrain.BREAKER:
+                return Dungeon.level.floorBreakerOn
+                        ? Messages.get(Level.class, "breaker_desc_on")
+                        : Messages.get(Level.class, "breaker_desc_off");
             case Terrain.EMPTY_WELL:
                 return Messages.get(Level.class, "empty_well_desc");
             default:

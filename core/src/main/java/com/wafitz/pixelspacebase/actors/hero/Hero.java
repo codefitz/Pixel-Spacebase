@@ -101,6 +101,7 @@ import com.wafitz.pixelspacebase.levels.PrisonLevel;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.CraftingTerminal;
+import com.wafitz.pixelspacebase.levels.features.FloorBreaker;
 import com.wafitz.pixelspacebase.levels.features.Sign;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.mines.KoltoPod;
@@ -607,6 +608,10 @@ public class Hero extends Char {
 
                 return actMake((HeroAction.Make) curAction);
 
+            } else if (curAction instanceof HeroAction.Operate) {
+
+                return actOperate((HeroAction.Operate) curAction);
+
             }
         }
 
@@ -711,6 +716,27 @@ public class Hero extends Char {
 
             ready();
             CraftingTerminal.operate(this, dst);
+            return false;
+
+        } else if (getCloser(dst)) {
+
+            return true;
+
+        } else {
+            ready();
+            return false;
+        }
+    }
+
+    private boolean actOperate(HeroAction.Operate action) {
+        int dst = action.dst;
+        if (pos == dst || Dungeon.level.adjacent(pos, dst)) {
+
+            ready();
+            sprite.operate(dst);
+            if (Dungeon.level.map[dst] == Terrain.BREAKER) {
+                FloorBreaker.operate(dst);
+            }
             return false;
 
         } else if (getCloser(dst)) {
@@ -1273,6 +1299,10 @@ public class Hero extends Char {
         if (Dungeon.level.map[cell] == Terrain.CRAFTING && cell != pos) {
 
             curAction = new HeroAction.Make(cell);
+
+        } else if (Dungeon.level.map[cell] == Terrain.BREAKER) {
+
+            curAction = new HeroAction.Operate(cell);
 
         } else if (Level.fieldOfView[cell] && (ch = Actor.findChar(cell)) instanceof Mob) {
 

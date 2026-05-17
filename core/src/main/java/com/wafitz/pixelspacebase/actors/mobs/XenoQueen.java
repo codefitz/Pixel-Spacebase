@@ -35,7 +35,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.mines.AlienEgg;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
-import com.wafitz.pixelspacebase.sprites.XenomorphSprite;
+import com.wafitz.pixelspacebase.sprites.QueenXenoSprite;
 import com.wafitz.pixelspacebase.ui.BossHealthBar;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -45,20 +45,20 @@ import java.util.ArrayList;
 
 public class XenoQueen extends Mob {
 
-    private static final int EGG_COUNT = 24;
-    private static final int CRACK_COUNT = 12;
-    private static final int MAX_XENOS = 8;
-    private static final float SPAWN_DELAY = 4f;
+    private static final int EGG_COUNT = 32;
+    private static final int CRACK_COUNT = 16;
+    private static final int MAX_XENOS = 10;
+    private static final float SPAWN_DELAY = 3f;
 
     private boolean arenaPrepared;
     private float spawnCooldown;
 
     {
-        spriteClass = XenomorphSprite.class;
+        spriteClass = QueenXenoSprite.class;
 
-        HP = HT = 90;
-        EXP = 12;
-        defenseSkill = 8;
+        HP = HT = 130;
+        EXP = 14;
+        defenseSkill = 12;
 
         properties.add(Property.BOSS);
         properties.add(Property.DEMONIC);
@@ -66,12 +66,12 @@ public class XenoQueen extends Mob {
 
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange(4, 12);
+        return Random.NormalIntRange(6, 16);
     }
 
     @Override
     public int attackSkill(Char target) {
-        return 14;
+        return 18;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class XenoQueen extends Mob {
 
     @Override
     public int drRoll() {
-        return Random.NormalIntRange(0, 3);
+        return Random.NormalIntRange(1, 5);
     }
 
     @Override

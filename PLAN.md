@@ -50,17 +50,17 @@
   - [x] Add a nest arena loop with xenos emerging from wall cracks.
   - [x] Seed the arena with alien eggs.
   - [x] Drop the boss key when the queen dies.
-- [ ] Add room and breaker lighting mechanics.
+- [x] Add room and breaker lighting mechanics.
   - [x] Light rooms on entry.
   - [x] Remove gameplay dependency on floor lights.
-  - [ ] Add random dark levels.
-  - [ ] Place a breaker on dark levels that restores lights.
-  - [ ] Place a breaker on every level so lights can be toggled off later.
-- [ ] Rework floor lights into dislodged/exposed floor tiles.
+  - [x] Add random dark levels.
+  - [x] Place a breaker on dark levels that restores lights.
+  - [x] Place a breaker on every level so lights can be toggled off later.
+- [x] Rework floor lights into dislodged/exposed floor tiles.
   - [x] Rename floor-light terrain/messages to exposed or dislodged floor panels.
-  - [ ] Update floor-light art to damaged flooring or exposed wall/floor infrastructure.
-  - [ ] Convert floor-light gameplay from visibility support to loot/hazard discovery.
-  - [ ] Let exposed panels reveal hidden pickups or trigger electric/burn hazards.
+  - [x] Update floor-light art to damaged flooring or exposed wall/floor infrastructure.
+  - [x] Convert floor-light gameplay from visibility support to loot/hazard discovery.
+  - [x] Let exposed panels reveal hidden pickups or trigger electric/burn hazards.
   - [x] Keep room lighting controlled by the floor breaker state instead of tile lights.
 - [x] Add generic storage/reveal behavior so the container opens before the tech/biogenetic item identity is known.
 - [ ] Add protectable NPC rescue flow.
@@ -111,14 +111,18 @@
   - [ ] Convert offensive biogenetics such as fire into grenades.
 - [x] Rename Xeno-booster to align with the x-port concept.
 - [x] Add an option to open and scroll the full log.
-- [ ] Floor lighting overhall
-  - [ ] Lighting that contains a trap, should be invisible - so it's a real trap
-  - [ ] Traps shouldn't ever look like a light - they should look like a blown panel after being set off.
-  - [ ] Adjust terrain features so that only one type appears on each zone/area
-  - [ ] Adjust terrain features to look less 'dungeon' and more like different types of lighting.
-  - [ ] Set mines should look a bit more obvious like mines
-- [ ] Shuriken need to be updated to something suitably sci-fi 
-- [ ] Sealed Cache should automatically consume.
+- [x] Floor lighting overhall
+  - [x] Lighting that contains a trap, should be invisible - so it's a real trap
+  - [x] Traps shouldn't ever look like a light - they should look like a blown panel after being set off.
+  - [x] Adjust terrain features so that only one type appears on each zone/area
+  - [x] Adjust terrain features to look less 'dungeon' and more like different types of lighting.
+  - [x] Set mines should look a bit more obvious like mines
+- [x] Shuriken need to be updated to something suitably sci-fi 
+- [x] Sealed Cache should automatically consume.
+- [x] Level 5 boss - should be alien queen for shapeshifter, but everyone else gets the standard shapeshifter boss.
+- [x] Level 5 alien queen boss needs to be tougher and also use the alien queen (rat king) sprite.
+- [x] Level 5 alien queen boss should be in the dark (but not the shapeshifter boss)
+- [ ] Stims should not require the hero to stay fixed - they should offer a temporary boost.
 
 ## Graphical Changes
 
@@ -141,3 +145,4 @@
 - [x] Fix the backpack tab icon (currenty is a battery)
 - [x] Internal bridge (room filled with water) warns about the vacuum, this is not needed.
 - [x] Stepping on a falling trap still sends me up, rather than down
+- [ ] If an item appears over the breaker switch, it can't be picked up. Breaker switch could be incorporated into a wall.

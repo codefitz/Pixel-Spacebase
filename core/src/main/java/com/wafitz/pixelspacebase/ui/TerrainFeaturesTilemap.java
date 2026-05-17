@@ -44,6 +44,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
 
     private int[] map;
     private float[] tileVariance;
+    private int zoneFeatureVariant;
 
     private SparseArray<Mine> mines;
     private SparseArray<Vent> vents;
@@ -59,6 +60,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
         for (int i = 0; i < tileVariance.length; i++)
             tileVariance[i] = Random.Float();
         Random.seed();
+        zoneFeatureVariant = (int) Math.floorMod(Dungeon.seed + ((Dungeon.depth - 1) / 5) * 31L, 2L);
 
         map(Dungeon.level.map, Dungeon.level.width());
 
@@ -99,20 +101,21 @@ public class TerrainFeaturesTilemap extends Tilemap {
     private int getTileVisual(int pos, int tile) {
         if (vents.get(pos) != null) {
             Vent vent = vents.get(pos);
-            if (!vent.visible)
-                //return -1;
-                // wafitz.v4 All vents to be visible
-                return (Vent.BLACK) + (vent.shape * 16);
-            else
+            if (!vent.visible) {
+                return -1;
+            } else {
                 return (vent.active ? vent.color : Vent.BLACK) + (vent.shape * 16);
+            }
         }
 
         if (mines.get(pos) != null) {
             return mines.get(pos).image + 7 * 16;
         }
 
-        if (tile == Terrain.OFFVENT || tile == Terrain.INACTIVE_VENT) {
-            return 9 + 16 * ((Dungeon.depth - 1) / 5) + (tileVariance[pos] > 0.5f ? 1 : 0);
+        if (tile == Terrain.OFFVENT) {
+            return 13 + 16 * ((Dungeon.depth - 1) / 5) + zoneFeatureVariant;
+        } else if (tile == Terrain.INACTIVE_VENT) {
+            return 15 + 16 * ((Dungeon.depth - 1) / 5);
         } else if (tile == Terrain.LIGHTEDVENT) {
             return -1;
         } else if (tile == Terrain.EMBERS) {

@@ -189,11 +189,37 @@ public class ExperimentalTech extends Item {
         defaultAction = isSealed() ? AC_OPEN : AC_USE;
     }
 
-    private void openStorage() {
+    private boolean revealStorage() {
+        if (!isSealed()) {
+            return false;
+        }
         sealed = false;
         updateDefaultAction();
         updateQuickslot();
-        GLog.i(Messages.get(ExperimentalTech.class, "revealed", name()));
+        return true;
+    }
+
+    private void openStorage() {
+        if (revealStorage()) {
+            GLog.i(Messages.get(ExperimentalTech.class, "revealed", name()));
+        }
+    }
+
+    @Override
+    public boolean doPickUp(Hero hero) {
+        boolean revealed = revealStorage();
+        if (super.doPickUp(hero)) {
+            if (revealed) {
+                GLog.i(Messages.get(ExperimentalTech.class, "revealed", name()));
+            }
+            return true;
+        }
+        if (revealed) {
+            sealed = true;
+            updateDefaultAction();
+            updateQuickslot();
+        }
+        return false;
     }
 
     @Override

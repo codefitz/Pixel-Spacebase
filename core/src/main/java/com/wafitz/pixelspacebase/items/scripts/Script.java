@@ -170,11 +170,37 @@ public abstract class Script extends Item {
         defaultAction = isSealed() ? AC_OPEN : AC_RUN;
     }
 
-    private void openStorage() {
+    private boolean revealStorage() {
+        if (!isSealed()) {
+            return false;
+        }
         sealed = false;
         updateDefaultAction();
         updateQuickslot();
-        GLog.i(Messages.get(Script.class, "revealed", name()));
+        return true;
+    }
+
+    private void openStorage() {
+        if (revealStorage()) {
+            GLog.i(Messages.get(Script.class, "revealed", name()));
+        }
+    }
+
+    @Override
+    public boolean doPickUp(Hero hero) {
+        boolean revealed = revealStorage();
+        if (super.doPickUp(hero)) {
+            if (revealed) {
+                GLog.i(Messages.get(Script.class, "revealed", name()));
+            }
+            return true;
+        }
+        if (revealed) {
+            sealed = true;
+            updateDefaultAction();
+            updateQuickslot();
+        }
+        return false;
     }
 
     void readAnimation() {

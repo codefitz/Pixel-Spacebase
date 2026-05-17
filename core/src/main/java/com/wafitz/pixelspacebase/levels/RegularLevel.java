@@ -167,6 +167,8 @@ public abstract class RegularLevel extends Level {
         paintWater();
         paintLightedVents();
 
+        placeFloorBreaker();
+
         placeVents();
 
         return true;
@@ -179,6 +181,36 @@ public abstract class RegularLevel extends Level {
                 map[pos] = Terrain.SIGN;
                 break;
             }
+        }
+    }
+
+    void placeFloorBreaker() {
+        if (roomEntrance == null) {
+            return;
+        }
+
+        for (int tries = 0; tries < 80; tries++) {
+            Room room = Random.element(rooms);
+            if (room == null || room.type == Type.NULL || room.type == Type.PASSAGE || room.type == Type.TUNNEL) {
+                continue;
+            }
+
+            int pos = pointToCell(room.random());
+            if (pos != entrance
+                    && pos != exit
+                    && map[pos] == Terrain.EMPTY
+                    && vents.get(pos) == null
+                    && mines.get(pos) == null
+                    && heaps.get(pos) == null
+                    && findMob(pos) == null) {
+                map[pos] = Terrain.BREAKER;
+                return;
+            }
+        }
+
+        int pos = pointToCell(roomEntrance.random());
+        if (map[pos] == Terrain.EMPTY && pos != entrance) {
+            map[pos] = Terrain.BREAKER;
         }
     }
 
