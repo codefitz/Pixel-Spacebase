@@ -35,7 +35,7 @@ public class MedicalPainter extends Painter {
 
         Room.Door entrance = room.entrance();
         Point booth = boothCell(room, entrance);
-        set(level, booth.x, booth.y, Terrain.WELL);
+        set(level, booth.x, booth.y, Terrain.HEALING_TANK);
 
         WellWater terminal = (WellWater) level.blobs.get(HealingTank.class);
         if (terminal == null) {

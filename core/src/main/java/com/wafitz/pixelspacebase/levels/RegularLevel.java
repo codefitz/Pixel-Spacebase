@@ -26,6 +26,7 @@ import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Survivor;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
@@ -61,6 +62,8 @@ public abstract class RegularLevel extends Level {
     private ArrayList<Room.Type> specials;
 
     public int secretDoors;
+
+    private static final int[] SURVIVOR_DEPTHS = {2, 3, 4, 6, 7, 8, 9, 11, 12};
 
     @Override
     protected boolean build() {
@@ -651,6 +654,67 @@ public abstract class RegularLevel extends Level {
                 }
             }
         }
+
+        createSurvivor();
+    }
+
+    private void createSurvivor() {
+        if (!hasSurvivorForDepth()) {
+            return;
+        }
+
+        if (placeSurvivorInRoom(roomExit, 40)) {
+            return;
+        }
+
+        if (placeSurvivorInRoom(roomEntrance, 20)) {
+            return;
+        }
+
+        for (int tries = 0; tries < 40; tries++) {
+            Room room = randomRoom(Room.Type.STANDARD, 10);
+            if (placeSurvivorInRoom(room, 1)) {
+                return;
+            }
+        }
+    }
+
+    private boolean placeSurvivorInRoom(Room room, int tries) {
+        if (room == null) {
+            return false;
+        }
+
+        for (int i = 0; i < tries; i++) {
+            int cell = pointToCell(room.random());
+            if (canPlaceSurvivor(cell)) {
+                Survivor survivor = new Survivor();
+                survivor.pos = cell;
+                mobs.add(survivor);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean hasSurvivorForDepth() {
+        for (int depth : SURVIVOR_DEPTHS) {
+            if (Dungeon.depth == depth) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean canPlaceSurvivor(int cell) {
+        return cell != entrance
+                && cell != exit
+                && Level.passable[cell]
+                && (map[cell] == Terrain.EMPTY || map[cell] == Terrain.EMPTY_SP || map[cell] == Terrain.EMPTY_DECO)
+                && vents.get(cell) == null
+                && mines.get(cell) == null
+                && heaps.get(cell) == null
+                && Actor.findChar(cell) == null;
     }
 
     @Override

@@ -45,7 +45,7 @@ public class KoltoPod extends Mine {
         Char ch = Actor.findChar(pos);
 
         if (ch == Dungeon.hero) {
-            Buff.affect(ch, Health.class).boost(ch != null ? ch.HT : 0);
+            Buff.affect(ch, Health.class).boost(ch != null ? ch.HT : 0, !stimulant);
         }
 
         if (Dungeon.visible[pos]) {
@@ -72,6 +72,7 @@ public class KoltoPod extends Mine {
         private int healCurr = 1;
         private int count = 0;
         private int level;
+        private boolean stationary = true;
 
         {
             type = buffType.POSITIVE;
@@ -79,7 +80,7 @@ public class KoltoPod extends Mine {
 
         @Override
         public boolean act() {
-            if (target.pos != pos) {
+            if (stationary && target.pos != pos) {
                 detach();
             }
             if (count == 5) {
@@ -114,9 +115,14 @@ public class KoltoPod extends Mine {
             return damage;
         }
 
-        public void boost(int amount) {
+        public void boost(int amount, boolean stationary) {
             level += amount;
+            this.stationary = stationary;
             pos = target.pos;
+        }
+
+        public void boost(int amount) {
+            boost(amount, true);
         }
 
         @Override
@@ -131,13 +137,14 @@ public class KoltoPod extends Mine {
 
         @Override
         public String desc() {
-            return Messages.get(this, "desc", level);
+            return Messages.get(this, stationary ? "desc" : "mobile_desc", level);
         }
 
         private static final String POS = "pos";
         private static final String HEALCURR = "healCurr";
         private static final String COUNT = "count";
         private static final String LEVEL = "level";
+        private static final String STATIONARY = "stationary";
 
         @Override
         public void storeInBundle(Bundle bundle) {
@@ -146,6 +153,7 @@ public class KoltoPod extends Mine {
             bundle.put(HEALCURR, healCurr);
             bundle.put(COUNT, count);
             bundle.put(LEVEL, level);
+            bundle.put(STATIONARY, stationary);
         }
 
         @Override
@@ -155,6 +163,7 @@ public class KoltoPod extends Mine {
             healCurr = bundle.getInt(HEALCURR);
             count = bundle.getInt(COUNT);
             level = bundle.getInt(LEVEL);
+            stationary = !bundle.contains(STATIONARY) || bundle.getBoolean(STATIONARY);
 
         }
     }

@@ -916,6 +916,7 @@ public abstract class Level implements Bundlable {
                 break;
 
             case Terrain.WELL:
+            case Terrain.HEALING_TANK:
                 WellWater.affectCell(cell);
                 break;
 
@@ -1157,6 +1158,8 @@ public abstract class Level implements Bundlable {
                 return Messages.get(Level.class, "sign_name");
             case Terrain.WELL:
                 return Messages.get(Level.class, "well_name");
+            case Terrain.HEALING_TANK:
+                return Messages.get(Level.class, "healing_tank_name");
             case Terrain.EMPTY_WELL:
                 return Messages.get(Level.class, "empty_well_name");
             case Terrain.STATUE:
@@ -1208,6 +1211,8 @@ public abstract class Level implements Bundlable {
                 return Dungeon.level.floorBreakerOn
                         ? Messages.get(Level.class, "breaker_desc_on")
                         : Messages.get(Level.class, "breaker_desc_off");
+            case Terrain.HEALING_TANK:
+                return Messages.get(Level.class, "healing_tank_desc");
             case Terrain.EMPTY_WELL:
                 return Messages.get(Level.class, "empty_well_desc");
             default:

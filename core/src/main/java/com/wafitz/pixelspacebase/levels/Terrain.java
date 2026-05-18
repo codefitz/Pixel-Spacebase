@@ -54,6 +54,7 @@ public class Terrain {
     public static final int BOOKSHELF = 27;
     public static final int CRAFTING = 28;
     public static final int BREAKER = 29;
+    public static final int HEALING_TANK = 30;
 
     // wafitz.v4 Changed to default, doesn't affect game tiles though...
     public static final int WATER = 63;
@@ -103,6 +104,7 @@ public class Terrain {
         flags[BOOKSHELF] = flags[BARRICADE];
         flags[CRAFTING] = PASSABLE;
         flags[BREAKER] = PASSABLE;
+        flags[HEALING_TANK] = AVOID;
 
     }
 

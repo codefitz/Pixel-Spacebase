@@ -52,6 +52,7 @@ public abstract class Mine implements Bundlable {
 
     public int image;
     public int pos;
+    protected boolean stimulant;
 
     public void mine() {
 
@@ -237,6 +238,7 @@ public abstract class Mine implements Bundlable {
                 detach(hero.belongings.backpack);
                 Mine mine = couch(hero.pos);
                 if (mine != null) {
+                    mine.stimulant = true;
                     mine.activate();
                 }
 

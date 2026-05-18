@@ -64,12 +64,12 @@
   - [x] Keep room lighting controlled by the floor breaker state instead of tile lights.
 - [x] Add generic storage/reveal behavior so the container opens before the tech/biogenetic item identity is known.
 - [ ] Add protectable NPC rescue flow.
-  - [ ] Add NPCs that need protection.
+  - [x] Add ambient crew survivor NPCs.
   - [ ] Add escape pod ending where the player leaves.
   - [ ] Add return-to-stabilize ending where NPCs can be rescued.
-- [ ] Add cat follower NPC.
-  - [ ] Implement cat following behavior.
-  - [ ] Decide whether petting is blocked, punished, or only warned against.
+- [x] Add cat follower NPC.
+  - [x] Implement cat following behavior.
+  - [x] Decide whether petting is blocked, punished, or only warned against.
 - [x] Replace garden with a one-square healing tank booth.
   - [x] Remove or disable garden room generation.
   - [x] Add one-square healing tank booth placement.
@@ -122,7 +122,7 @@
 - [x] Level 5 boss - should be alien queen for shapeshifter, but everyone else gets the standard shapeshifter boss.
 - [x] Level 5 alien queen boss needs to be tougher and also use the alien queen (rat king) sprite.
 - [x] Level 5 alien queen boss should be in the dark (but not the shapeshifter boss)
-- [ ] Stims should not require the hero to stay fixed - they should offer a temporary boost.
+- [x] Stims should not require the hero to stay fixed - they should offer a temporary boost.
 
 ## Graphical Changes
 
@@ -130,12 +130,12 @@
 - [x] Replace the chain graphic with a force-themed visual.
 - [x] Add a generic storage icon for unrevealed tech/biogenetics.
 - [x] Add or update grenade icons for offensive biogenetics.
-- [ ] Add healing tank booth tile/art.
-- [ ] Add cat sprite or reuse/update an existing follower sprite.
-- [ ] Add visual treatment for dark levels and breaker-restored lighting.
+- [x] Add healing tank booth tile/art.
+- [x] Add cat sprite or reuse/update an existing follower sprite.
+- [x] Add visual treatment for dark levels and breaker-restored lighting.
 - [x] Change Xeno-booster to an x-port icon.
 - [x] Tengu battle arena needs to be more like an alien planet (think Star Trek TOS).
-- [ ] Siphon drone sprite needs updating.
+- [x] Siphon drone sprite needs updating.
 
 ## Bugs
 
@@ -145,4 +145,4 @@
 - [x] Fix the backpack tab icon (currenty is a battery)
 - [x] Internal bridge (room filled with water) warns about the vacuum, this is not needed.
 - [x] Stepping on a falling trap still sends me up, rather than down
-- [ ] If an item appears over the breaker switch, it can't be picked up. Breaker switch could be incorporated into a wall.
+- [x] If an item appears over the breaker switch, it can't be picked up. Breaker switch could be incorporated into a wall.

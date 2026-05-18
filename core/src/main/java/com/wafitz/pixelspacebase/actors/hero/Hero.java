@@ -1296,13 +1296,11 @@ public class Hero extends Char {
         Char ch;
         Heap heap;
 
+        heap = Dungeon.level.heaps.get(cell);
+
         if (Dungeon.level.map[cell] == Terrain.CRAFTING && cell != pos) {
 
             curAction = new HeroAction.Make(cell);
-
-        } else if (Dungeon.level.map[cell] == Terrain.BREAKER) {
-
-            curAction = new HeroAction.Operate(cell);
 
         } else if (Level.fieldOfView[cell] && (ch = Actor.findChar(cell)) instanceof Mob) {
 
@@ -1312,7 +1310,7 @@ public class Hero extends Char {
                 curAction = new HeroAction.Attack(ch);
             }
 
-        } else if ((heap = Dungeon.level.heaps.get(cell)) != null) {
+        } else if (heap != null) {
             // wafitz.v1: Auto pickup no matter what
 
             switch (heap.type) {
@@ -1327,6 +1325,10 @@ public class Hero extends Char {
                 default:
                     curAction = new HeroAction.OpenChest(cell);
             }
+
+        } else if (Dungeon.level.map[cell] == Terrain.BREAKER) {
+
+            curAction = new HeroAction.Operate(cell);
 
         } else if (Dungeon.level.map[cell] == Terrain.LOCKED_DOOR || Dungeon.level.map[cell] == Terrain.LOCKED_EXIT) {
 

@@ -23,7 +23,9 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Dungeon;
 import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.effects.Ripple;
 import com.wafitz.pixelspacebase.items.AirTank;
 import com.wafitz.pixelspacebase.items.Generator;
@@ -48,7 +50,9 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.ColorMath;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -158,6 +162,62 @@ public class OperationsLevel extends RegularLevel {
                     drop(new Wrench().identify(), pos);
                 }
         }
+    }
+
+    @Override
+    protected void createMobs() {
+        super.createMobs();
+        ensureStationCat();
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        ensureStationCat();
+    }
+
+    private void ensureStationCat() {
+        if (Dungeon.depth == 1 && roomEntrance != null) {
+            for (Mob mob : mobs) {
+                if (mob instanceof StationCat) {
+                    return;
+                }
+            }
+
+            int pos = stationCatCell();
+            if (pos != -1) {
+                StationCat cat = new StationCat();
+                cat.pos = pos;
+                mobs.add(cat);
+            }
+        }
+    }
+
+    private int stationCatCell() {
+        for (int offset : PathFinder.NEIGHBOURS8) {
+            int pos = entrance + offset;
+            if (canPlaceStationCat(pos)) {
+                return pos;
+            }
+        }
+
+        for (int tries = 0; tries < 30; tries++) {
+            int pos = pointToCell(roomEntrance.random());
+            if (canPlaceStationCat(pos)) {
+                return pos;
+            }
+        }
+
+        return -1;
+    }
+
+    private boolean canPlaceStationCat(int pos) {
+        return pos != entrance
+                && insideMap(pos)
+                && map[pos] != Terrain.SIGN
+                && findMob(pos) == null
+                && heaps.get(pos) == null
+                && Level.passable[pos];
     }
 
     @Override
