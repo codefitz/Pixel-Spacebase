@@ -154,15 +154,15 @@ public class LiveVentsPainter extends Painter {
 
     @SuppressWarnings("unchecked")
     private static Class<? extends Vent>[][] levelVents = new Class[][]{
-            //sewers
+            //maintenance
             {ToxicVent.class, TeleportationVent.class, FlockVent.class},
-            //prison
+            //security block
             {ConfusionVent.class, ExplosiveVent.class, ParalyticVent.class},
-            //caves
+            //lower engineering
             {BlazingVent.class, VenomVent.class, ExplosiveVent.class},
-            //city
+            //habitation/command
             {WarpingVent.class, VenomVent.class, DisintegrationVent.class},
-            //halls, muahahahaha
+            //deep containment
             {GrimVent.class}
     };
 }

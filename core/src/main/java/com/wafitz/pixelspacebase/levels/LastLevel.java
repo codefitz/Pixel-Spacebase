@@ -54,12 +54,12 @@ public class LastLevel extends Level {
 
     @Override
     public String tilesTex() {
-        return Assets.TILES_DEEP_CONTAINMENT;
+        return Assets.TILES_CONTAINMENT_DECK;
     }
 
     @Override
     public String waterTex() {
-        return Assets.WATER_DEEP_CONTAINMENT;
+        return Assets.WATER_CONTAINMENT_DECK;
     }
 
     @Override
@@ -152,9 +152,9 @@ public class LastLevel extends Level {
             case Terrain.WATER:
                 return Messages.get(LastLevel.class, "water_name");
             case Terrain.LIGHTEDVENT:
-                return Messages.get(DeepContainmentLevel.class, "lightedvent_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "lightedvent_name");
             case Terrain.OFFVENT:
-                return Messages.get(DeepContainmentLevel.class, "off_vent_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "off_vent_name");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
                 return Messages.get(LastLevel.class, "statue_name");
@@ -176,7 +176,7 @@ public class LastLevel extends Level {
             case Terrain.PEDESTAL:
                 return Messages.get(LastLevel.class, "pedestal_desc");
             case Terrain.BOOKSHELF:
-                return Messages.get(DeepContainmentLevel.class, "bookshelf_desc");
+                return Messages.get(DeepContainmentDeckLevel.class, "bookshelf_desc");
             default:
                 return super.tileDesc(tile);
         }
@@ -185,7 +185,7 @@ public class LastLevel extends Level {
     @Override
     public Group addVisuals() {
         super.addVisuals();
-        DeepContainmentLevel.addHallsVisuals(this, visuals);
+        DeepContainmentDeckLevel.addContainmentVisuals(this, visuals);
         return visuals;
     }
 

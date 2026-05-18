@@ -23,7 +23,7 @@ The run opens in the Maintenance decks. Existing signs establish immediate envir
 - Shapeshifter psychological check-ins became mandatory before the disaster.
 - Level 5 is sealed because of an unidentified hazard.
 
-The player is therefore not entering a clean dungeon equivalent; they are entering a station already in emergency mode, with the first arc centered on maintenance failure, xenomorph overbreeding, and shapeshifter collapse.
+The player is entering a station already in emergency mode, with the first arc centered on maintenance failure, xenomorph overbreeding, and shapeshifter collapse.
 
 ## Area Progression
 
@@ -34,7 +34,7 @@ Maintenance is the most converted area. It contains station infrastructure, floo
 Primary story function:
 
 - Establish Pixel Spacebase as breached and abandoned.
-- Introduce xenomorph infestation as a station-created problem, not an outside dungeon monster.
+- Introduce xenomorph infestation as a station-created problem, not an outside threat.
 - Seed shapeshifter instability through employee notices.
 - Teach that station systems themselves are dangerous.
 
@@ -174,7 +174,7 @@ Current beat:
 
 - The Containment Mass is an organism fused around the evacuation spine.
 - Its appendages and larvae defend the route to the escape pods.
-- It speaks as hunger and containment failure rather than inherited dungeon prophecy.
+- It speaks as hunger and containment failure rather than inherited prophecy.
 
 Resolved story note:
 

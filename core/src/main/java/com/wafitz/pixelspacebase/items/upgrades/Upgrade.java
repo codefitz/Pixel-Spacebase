@@ -84,7 +84,7 @@ public abstract class Upgrade extends Item {
 
     private boolean sealed = true;
 
-    public boolean ownedByBook = false;
+    public boolean ownedByCompiler = false;
 
     {
         stackable = true;
@@ -159,8 +159,8 @@ public abstract class Upgrade extends Item {
         if (hero.buff(Blindness.class) != null) {
             GLog.w(Messages.get(this, "blinded"));
             return false;
-        } else if (hero.buff(BuggyCompiler.bookRecharge.class) != null
-                && hero.buff(BuggyCompiler.bookRecharge.class).isMalfunctioning()
+        } else if (hero.buff(BuggyCompiler.compilerRecharge.class) != null
+                && hero.buff(BuggyCompiler.compilerRecharge.class).isMalfunctioning()
                 && !(this instanceof RepairUpgrade)) {
             GLog.n(Messages.get(this, "malfunctioning"));
             return false;
@@ -216,7 +216,7 @@ public abstract class Upgrade extends Item {
     }
 
     public void setKnown() {
-        if (!isKnown() && !ownedByBook) {
+        if (!isKnown() && !ownedByCompiler) {
             handler.know(this);
         }
 

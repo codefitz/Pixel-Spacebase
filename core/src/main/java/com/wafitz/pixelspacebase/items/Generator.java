@@ -353,7 +353,7 @@ public class Generator {
                 TimeFolder.class,
                 BuggyCompiler.class,
                 TechToolkit.class, //currently removed from drop tables, pending rework.
-                HoloPad.class, //starts with no chance of spawning, chance is set directly after beating ghost quest.
+                HoloPad.class, //starts with no chance of spawning, chance is set directly after the hologram quest.
                 PortableMaker.class,
                 GravityGun.class
         };
@@ -515,11 +515,11 @@ public class Generator {
         return false;
     }
 
-    //resets artifact probabilities, for new dungeons
+    //resets artifact probabilities for new runs
     public static void initArtifacts() {
         Category.EQUIPPABLE_MODULE.probs = INITIAL_ARTIFACT_PROBS.clone();
 
-        //checks for dried rose quest completion, adds the rose in accordingly.
+        //checks for hologram quest completion, adds the holopad accordingly.
         if (Hologram.Quest.completed()) Category.EQUIPPABLE_MODULE.probs[10] = 1;
 
         spawnedArtifacts = new ArrayList<>();

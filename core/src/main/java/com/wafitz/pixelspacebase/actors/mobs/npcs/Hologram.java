@@ -69,7 +69,7 @@ public class Hologram extends NPC {
     public Hologram() {
         super();
 
-        Sample.INSTANCE.load(Assets.SND_GHOST);
+        Sample.INSTANCE.load(Assets.SND_HOLOGRAM);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class Hologram extends NPC {
     public boolean interact() {
         sprite.turnTo(pos, SpacebaseRun.hero.pos);
 
-        Sample.INSTANCE.play(Assets.SND_GHOST);
+        Sample.INSTANCE.play(Assets.SND_HOLOGRAM);
 
         // wafitz.1 - Annoying popup relegated to log
         if (Quest.given) {
@@ -278,7 +278,7 @@ public class Hologram extends NPC {
                 level.mobs.add(hologram);
 
                 spawned = true;
-                //dungeon depth determines type of quest.
+                //deck depth determines type of quest.
                 //depth2=fetid rat, 3=gnoll trickster, 4=great crab
                 type = SpacebaseRun.depth - 1;
 
@@ -342,9 +342,9 @@ public class Hologram extends NPC {
         public static void process() {
             if (spawned && given && !processed && (depth == SpacebaseRun.depth)) {
                 GLog.n(Messages.get(Hologram.class, "find_me"));
-                Sample.INSTANCE.play(Assets.SND_GHOST);
+                Sample.INSTANCE.play(Assets.SND_HOLOGRAM);
                 processed = true;
-                Generator.Category.EQUIPPABLE_MODULE.probs[10] = 1; //flags the dried rose as spawnable.
+                Generator.Category.EQUIPPABLE_MODULE.probs[10] = 1; //flags the holopad as spawnable.
             }
         }
 

@@ -142,8 +142,8 @@ public class Hero extends Char {
 
     public static final int MAX_LEVEL = 30;
 
-    private static final int STARTING_STR = 100; // Was 10 - Super powered for testing
-    private static final boolean DEV_TEST_INVULNERABLE = true; // Dev/test only. Disable for release.
+    private static final int STARTING_STR = 10;
+    private static final boolean DEV_TEST_INVULNERABLE = false;
 
     private static final float TIME_TO_REST = 1f;
     private static final float TIME_TO_SEARCH = 2f;
@@ -1502,16 +1502,16 @@ public class Hero extends Char {
 
         Clone clone = null;
 
-        //look for ankhs in player inventory, prioritize ones which are blessed.
+        //look for revival items in player inventory, prioritize stabilized ones.
         for (Item item : belongings) {
             if (item instanceof Clone) {
-                if (clone == null || ((Clone) item).isBlessed()) {
+                if (clone == null || ((Clone) item).isStabilized()) {
                     clone = (Clone) item;
                 }
             }
         }
 
-        if (clone != null && clone.isBlessed()) {
+        if (clone != null && clone.isStabilized()) {
             this.HP = HT / 4;
 
             //ensures that you'll get to act first in almost any case, to prevent reviving and then instantly dieing again.

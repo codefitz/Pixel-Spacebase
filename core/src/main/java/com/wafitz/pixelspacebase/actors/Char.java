@@ -197,12 +197,12 @@ public abstract class Char extends Actor {
         }
     }
 
-    public static boolean hit(Char attacker, Char defender, boolean magic) {
+    public static boolean hit(Char attacker, Char defender, boolean specialAttack) {
         float acuRoll = Random.Float(attacker.attackSkill(defender));
         float defRoll = Random.Float(defender.defenseSkill(attacker));
         if (attacker.buff(CombatFocus.class) != null) acuRoll *= 1.20f;
         if (defender.buff(CombatFocus.class) != null) defRoll *= 1.20f;
-        return (magic ? acuRoll * 2 : acuRoll) >= defRoll;
+        return (specialAttack ? acuRoll * 2 : acuRoll) >= defRoll;
     }
 
     public int attackSkill(Char target) {

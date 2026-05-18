@@ -41,11 +41,11 @@ import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.levels.EngineeringBossLevel;
 import com.wafitz.pixelspacebase.levels.EngineeringLevel;
-import com.wafitz.pixelspacebase.levels.HabitationCommandBossLevel;
-import com.wafitz.pixelspacebase.levels.HabitationCommandLevel;
+import com.wafitz.pixelspacebase.levels.HolodeckBossLevel;
+import com.wafitz.pixelspacebase.levels.HabitationRingLevel;
 import com.wafitz.pixelspacebase.levels.DeadEndLevel;
-import com.wafitz.pixelspacebase.levels.DeepContainmentBossLevel;
-import com.wafitz.pixelspacebase.levels.DeepContainmentLevel;
+import com.wafitz.pixelspacebase.levels.DeepContainmentCoreLevel;
+import com.wafitz.pixelspacebase.levels.DeepContainmentDeckLevel;
 import com.wafitz.pixelspacebase.levels.LastLevel;
 import com.wafitz.pixelspacebase.levels.LastWorkshopLevel;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -88,8 +88,8 @@ public class SpacebaseRun {
         arcaneStyli,
 
         //all unlimited health potion sources (except guards, which are at the bottom.
-        squiddardHP,
-        batHP,
+        replicatorSwarmHP,
+        siphonDroneHP,
         warlockHP,
         scorpioHP,
         makingHP,
@@ -244,10 +244,10 @@ public class SpacebaseRun {
             case 17:
             case 18:
             case 19:
-                level = new HabitationCommandLevel();
+                level = new HabitationRingLevel();
                 break;
             case 20:
-                level = new HabitationCommandBossLevel();
+                level = new HolodeckBossLevel();
                 break;
             case 21:
                 level = new LastWorkshopLevel();
@@ -255,10 +255,10 @@ public class SpacebaseRun {
             case 22:
             case 23:
             case 24:
-                level = new DeepContainmentLevel();
+                level = new DeepContainmentDeckLevel();
                 break;
             case 25:
-                level = new DeepContainmentBossLevel();
+                level = new DeepContainmentCoreLevel();
                 break;
             case 26:
                 level = new LastLevel();

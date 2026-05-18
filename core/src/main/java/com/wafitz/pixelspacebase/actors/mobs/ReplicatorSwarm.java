@@ -34,16 +34,16 @@ import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.levels.features.Door;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.sprites.SquiddardSprite;
+import com.wafitz.pixelspacebase.sprites.ReplicatorSwarmSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-class Squiddard extends Mob {
+class ReplicatorSwarm extends Mob {
 
     {
-        spriteClass = SquiddardSprite.class;
+        spriteClass = ReplicatorSwarmSprite.class;
 
         HP = HT = 50;
         defenseSkill = 5;
@@ -98,7 +98,7 @@ class Squiddard extends Mob {
 
             if (candidates.size() > 0) {
 
-                Squiddard clone = split();
+                ReplicatorSwarm clone = split();
                 clone.HP = (HP - damage) / 2;
                 clone.pos = Random.element(candidates);
                 clone.state = clone.HUNTING;
@@ -122,8 +122,8 @@ class Squiddard extends Mob {
         return 10;
     }
 
-    private Squiddard split() {
-        Squiddard clone = new Squiddard();
+    private ReplicatorSwarm split() {
+        ReplicatorSwarm clone = new ReplicatorSwarm();
         clone.generation = generation + 1;
         clone.EXP = 0;
         if (buff(Burning.class) != null) {
@@ -141,13 +141,13 @@ class Squiddard extends Mob {
     @Override
     public void die(Object cause) {
         //sets drop chance
-        lootChance = 1f / ((6 + 2 * SpacebaseRun.limitedDrops.squiddardHP.count) * (generation + 1));
+        lootChance = 1f / ((6 + 2 * SpacebaseRun.limitedDrops.replicatorSwarmHP.count) * (generation + 1));
         super.die(cause);
     }
 
     @Override
     protected Item createLoot() {
-        SpacebaseRun.limitedDrops.squiddardHP.count++;
+        SpacebaseRun.limitedDrops.replicatorSwarmHP.count++;
         return super.createLoot();
     }
 }

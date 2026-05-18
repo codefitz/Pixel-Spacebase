@@ -55,7 +55,7 @@ import com.watabou.utils.Random;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class DeepContainmentLevel extends RegularLevel {
+public class DeepContainmentDeckLevel extends RegularLevel {
 
     {
         minRoomSize = 6;
@@ -74,12 +74,12 @@ public class DeepContainmentLevel extends RegularLevel {
 
     @Override
     public String tilesTex() {
-        return Assets.TILES_DEEP_CONTAINMENT;
+        return Assets.TILES_CONTAINMENT_DECK;
     }
 
     @Override
     public String waterTex() {
-        return Assets.WATER_DEEP_CONTAINMENT;
+        return Assets.WATER_CONTAINMENT_DECK;
     }
 
     protected boolean[] water() {
@@ -139,14 +139,14 @@ public class DeepContainmentLevel extends RegularLevel {
     public String tileName(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(DeepContainmentLevel.class, "water_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "water_name");
             case Terrain.LIGHTEDVENT:
-                return Messages.get(DeepContainmentLevel.class, "lighted_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "lighted_name");
             case Terrain.OFFVENT:
-                return Messages.get(DeepContainmentLevel.class, "off_vent_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "off_vent_name");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
-                return Messages.get(DeepContainmentLevel.class, "statue_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "statue_name");
             default:
                 return super.tileName(tile);
         }
@@ -156,12 +156,12 @@ public class DeepContainmentLevel extends RegularLevel {
     public String tileDesc(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(DeepContainmentLevel.class, "water_desc");
+                return Messages.get(DeepContainmentDeckLevel.class, "water_desc");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
-                return Messages.get(DeepContainmentLevel.class, "statue_desc");
+                return Messages.get(DeepContainmentDeckLevel.class, "statue_desc");
             case Terrain.BOOKSHELF:
-                return Messages.get(DeepContainmentLevel.class, "bookshelf_desc");
+                return Messages.get(DeepContainmentDeckLevel.class, "bookshelf_desc");
             default:
                 return super.tileDesc(tile);
         }
@@ -170,11 +170,11 @@ public class DeepContainmentLevel extends RegularLevel {
     @Override
     public Group addVisuals() {
         super.addVisuals();
-        addHallsVisuals(this, visuals);
+        addContainmentVisuals(this, visuals);
         return visuals;
     }
 
-    public static void addHallsVisuals(Level level, Group group) {
+    public static void addContainmentVisuals(Level level, Group group) {
         for (int i = 0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WATER) {
                 group.add(new Stream(i));

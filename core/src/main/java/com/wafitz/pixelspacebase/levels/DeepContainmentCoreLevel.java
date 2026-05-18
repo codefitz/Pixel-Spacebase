@@ -39,7 +39,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class DeepContainmentBossLevel extends Level {
+public class DeepContainmentCoreLevel extends Level {
 
     {
         color1 = 0x801500;
@@ -62,12 +62,12 @@ public class DeepContainmentBossLevel extends Level {
 
     @Override
     public String tilesTex() {
-        return Assets.TILES_DEEP_CONTAINMENT;
+        return Assets.TILES_CONTAINMENT_DECK;
     }
 
     @Override
     public String waterTex() {
-        return Assets.WATER_DEEP_CONTAINMENT;
+        return Assets.WATER_CONTAINMENT_DECK;
     }
 
     private static final String STAIRS = "stairs";
@@ -233,14 +233,14 @@ public class DeepContainmentBossLevel extends Level {
     public String tileName(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(DeepContainmentLevel.class, "water_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "water_name");
             case Terrain.LIGHTEDVENT:
-                return Messages.get(DeepContainmentLevel.class, "lightedvent_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "lightedvent_name");
             case Terrain.OFFVENT:
-                return Messages.get(DeepContainmentLevel.class, "off_vent_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "off_vent_name");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
-                return Messages.get(DeepContainmentLevel.class, "statue_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "statue_name");
             default:
                 return super.tileName(tile);
         }
@@ -250,12 +250,12 @@ public class DeepContainmentBossLevel extends Level {
     public String tileDesc(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(DeepContainmentLevel.class, "water_desc");
+                return Messages.get(DeepContainmentDeckLevel.class, "water_desc");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
-                return Messages.get(DeepContainmentLevel.class, "statue_desc");
+                return Messages.get(DeepContainmentDeckLevel.class, "statue_desc");
             case Terrain.BOOKSHELF:
-                return Messages.get(DeepContainmentLevel.class, "bookshelf_desc");
+                return Messages.get(DeepContainmentDeckLevel.class, "bookshelf_desc");
             default:
                 return super.tileDesc(tile);
         }
@@ -264,7 +264,7 @@ public class DeepContainmentBossLevel extends Level {
     @Override
     public Group addVisuals() {
         super.addVisuals();
-        DeepContainmentLevel.addHallsVisuals(this, visuals);
+        DeepContainmentDeckLevel.addContainmentVisuals(this, visuals);
         return visuals;
     }
 }

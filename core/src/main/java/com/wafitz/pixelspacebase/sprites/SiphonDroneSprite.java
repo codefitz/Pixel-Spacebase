@@ -23,32 +23,27 @@ package com.wafitz.pixelspacebase.sprites;
 import com.wafitz.pixelspacebase.Assets;
 import com.watabou.noosa.TextureFilm;
 
-public class SpinnerSprite extends MobSprite {
+public class SiphonDroneSprite extends MobSprite {
 
-    public SpinnerSprite() {
+    public SiphonDroneSprite() {
         super();
 
-        texture(Assets.SPINNER);
+        texture(Assets.SIPHON_DRONE);
 
-        TextureFilm frames = new TextureFilm(texture, 16, 16);
+        TextureFilm frames = new TextureFilm(texture, 15, 15);
 
-        idle = new Animation(10, true);
-        idle.frames(frames, 0, 0, 0, 0, 0, 1, 0, 1);
+        idle = new Animation(8, true);
+        idle.frames(frames, 0, 1);
 
-        run = new Animation(15, true);
-        run.frames(frames, 0, 2, 0, 3);
+        run = new Animation(12, true);
+        run.frames(frames, 0, 1);
 
         attack = new Animation(12, false);
-        attack.frames(frames, 0, 4, 5, 0);
+        attack.frames(frames, 2, 3, 0, 1);
 
         die = new Animation(12, false);
-        die.frames(frames, 6, 7, 8, 9);
+        die.frames(frames, 4, 5, 6);
 
         play(idle);
-    }
-
-    @Override
-    public int blood() {
-        return 0xFFBFE5B8;
     }
 }

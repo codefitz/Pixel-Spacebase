@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.quest.HardLightEmitter;
-import com.wafitz.pixelspacebase.levels.HabitationCommandLevel;
+import com.wafitz.pixelspacebase.levels.HabitationRingLevel;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ImpSprite;
@@ -138,7 +138,7 @@ public class Arp extends NPC {
             reward = null;
         }
 
-        private static final String NODE = "demon";
+        private static final String NODE = "anomaly";
 
         private static final String ALTERNATIVE = "alternative";
         private static final String SPAWNED = "spawned";
@@ -176,7 +176,7 @@ public class Arp extends NPC {
             }
         }
 
-        public static void spawn(HabitationCommandLevel level) {
+        public static void spawn(HabitationRingLevel level) {
             if (!spawned && SpacebaseRun.depth > 16 && Random.Int(20 - SpacebaseRun.depth) == 0) {
 
                 Arp npc = new Arp();

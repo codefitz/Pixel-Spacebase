@@ -68,7 +68,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
     }
 
     @Override
-    //we need to retain two arrays, map is the dungeon tilemap which we can reference.
+    //we need to retain two arrays, map is the level tilemap which we can reference.
     // Data is our own internal image representation of the tiles, which may differ.
     public void map(int[] data, int cols) {
         map = data;

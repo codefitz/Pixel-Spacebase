@@ -90,7 +90,7 @@ public class MassGravePainter extends Painter {
                     continue;
                 }
 
-                HolodeckHalls vis = new HolodeckHalls();
+                HolodeckRetainerTiles vis = new HolodeckRetainerTiles();
                 int ofsX = 0;
                 int ofsY = 0;
                 if (x == room.right) {
@@ -112,11 +112,11 @@ public class MassGravePainter extends Painter {
         }
     }
 
-    public static class HolodeckHalls extends CustomTileVisual {
+    public static class HolodeckRetainerTiles extends CustomTileVisual {
         {
             name = Messages.get(this, "name");
 
-            tx = Assets.HOLODECK_HALLS;
+            tx = Assets.HOLODECK_RETAINER_TILES;
             txX = 0;
             txY = 0;
         }

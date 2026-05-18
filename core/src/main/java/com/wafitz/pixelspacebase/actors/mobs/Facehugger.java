@@ -28,15 +28,15 @@ import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.buffs.XenoInfection;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
-import com.wafitz.pixelspacebase.sprites.SpinnerSprite;
+import com.wafitz.pixelspacebase.sprites.FacehuggerSprite;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-class Spinner extends Mob {
+class Facehugger extends Mob {
 
     {
-        spriteClass = SpinnerSprite.class;
+        spriteClass = FacehuggerSprite.class;
 
         HP = HT = 50;
         defenseSkill = 14;

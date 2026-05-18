@@ -23,27 +23,32 @@ package com.wafitz.pixelspacebase.sprites;
 import com.wafitz.pixelspacebase.Assets;
 import com.watabou.noosa.TextureFilm;
 
-public class BatSprite extends MobSprite {
+public class ReplicatorSwarmSprite extends MobSprite {
 
-    public BatSprite() {
+    public ReplicatorSwarmSprite() {
         super();
 
-        texture(Assets.BAT);
+        texture(Assets.REPLICATOR_SWARM);
 
-        TextureFilm frames = new TextureFilm(texture, 15, 15);
+        TextureFilm frames = new TextureFilm(texture, 16, 16);
 
-        idle = new Animation(8, true);
-        idle.frames(frames, 0, 1);
+        idle = new Animation(15, true);
+        idle.frames(frames, 0, 1, 2, 3, 4, 5);
 
-        run = new Animation(12, true);
-        run.frames(frames, 0, 1);
+        run = new Animation(15, true);
+        run.frames(frames, 0, 1, 2, 3, 4, 5);
 
-        attack = new Animation(12, false);
-        attack.frames(frames, 2, 3, 0, 1);
+        attack = new Animation(20, false);
+        attack.frames(frames, 6, 7, 8, 9);
 
-        die = new Animation(12, false);
-        die.frames(frames, 4, 5, 6);
+        die = new Animation(15, false);
+        die.frames(frames, 10, 11, 12, 13, 14);
 
         play(idle);
+    }
+
+    @Override
+    public int blood() {
+        return 0xFF8BA077;
     }
 }

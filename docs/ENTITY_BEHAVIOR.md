@@ -49,14 +49,14 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Shielded Shock Trooper | Shock trooper variant with added defensive behavior. |
 | Crab / Maintenance Crawler | Early station maintenance crawler enemy. Drops parts instead of meat. |
 | Great Crab / Armored Crawler | Shield-claw crawler. Blocks frontal attacks unless surprised. Drops a larger parts bundle instead of meat. |
-| Squiddard | Aquatic/alien-style enemy with movement and combat behavior around passable spaces. |
+| Replicator Swarm | Alien microform swarm with movement and combat behavior around passable spaces. |
 | Ruptured Crew Suit | Corrupted emergency suit/servo enemy that ruptures into shrapnel when damaged enough. |
 | Jawar (`Thief`) | Former thief. Steals an item and attempts to escape. |
 | Jawar Scavenger (`Bandit`) | Rare Jawar variant with enhanced stealing threat. |
-| Bith Acolyte (`Guard`) | Former prison guard. Security adept with a force-pull rig; mechanically still pulls or pressures the player in combat. |
+| Bith Acolyte (`Guard`) | Security adept with a force-pull rig; mechanically still pulls or pressures the player in combat. |
 | Siphon Drone | Flying medical-drain drone that replenishes health when attacking. |
 | Yendor Shock Trooper | Heavy melee enemy with low-health combat-rig overclock. |
-| Facehugger (`Spinner`) | Former cave spinner. Uses web behavior as adhesive biofilament. Successful latches infect the hero like an alien egg; if the infection runs its course it spawns a tougher xenomorph. |
+| Facehugger | Uses adhesive biofilament and direct latching behavior. Successful latches infect the hero like an alien egg; if the infection runs its course it spawns a tougher xenomorph. |
 | Plasma Anomaly (`Elemental`) | Former fire elemental. Reactor/containment leak enemy with special damage flavor. |
 | Plasma Spark (`Newborn Elemental`) | Quest-related discharge source for a faulty core module ejected by the restart sequence. |
 | Jeda Knight | Fast late-mid disciplined melee enemy. |
@@ -80,9 +80,9 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Item family | Current behavior |
 | --- | --- |
 | Food | Restores hunger for biological classes. Class-specific effects apply: Commander heals, DM-3000 can consume energy packs to recharge blasters without needing food, Shapeshifter/Captain get normal hunger value. Emergency auto-eat now triggers at 25% HP or below for non-DM-3000 heroes if valid food is in the backpack. |
-| Alien Egg / Dead Alien Bug (`AlienPod`) | Internal class remains `AlienPod` for the dropped bug. The alien egg device uses the alien pod/egg item icon, plants as an egg mine, briefly fades to black and shows the infection dialog when triggered by the hero, then drops a raw bug. Raw bug cannot be eaten. Can be combined in the Fabricator into xeno-booster/gene-mod outcomes; crafted xeno-boosters use the x-port/Bionetics icon. |
-| Gene Mods (`Plasmid`) | Former potion-like system. Single-use biological/tech effects such as healing, strength, invisibility, toxic payloads, security override, cryogenics, and other enhancements. Unknown gene mods start as sealed capsules; opening one reveals its visible color marker without identifying the effect. Regen Gene Mod cures alien egg infection. |
-| Tech (`Upgrade`) | Former scroll-like system. Single-use technology effects such as identify, mapping, upgrade, recharging, teleport, cloning, terror/pheromone, fix, and other utility effects. Unknown tech starts as sealed caches; opening one reveals its interface code without identifying the effect. |
+| Alien Egg / Dead Alien Bug (`AlienPod`) | Internal class remains `AlienPod` for the dropped bug. The alien egg device uses the alien pod/egg item icon, plants as an egg mine, briefly fades to black and shows the infection dialog when triggered by the hero, then drops a raw bug. Raw bug cannot be eaten. Can be combined in the Fabricator into xeno-booster/gene-mod outcomes; crafted xeno boosters use the Plasmid Kit icon. |
+| Gene Mods (`Plasmid`) | Former potion-like system. Single-use biological/tech effects such as healing, strength, invisibility, toxic payloads, security override, cryogenics, and other enhancements. Unknown gene mods start as sealed capsules in the main backpack; opening one reveals and immediately consumes it. Known future pickups sort into the Plasmid Kit unless they are offensive grenades. Regen Gene Mod cures alien egg infection. |
+| Tech (`Upgrade`) | Former scroll-like system. Single-use technology effects such as identify, mapping, upgrade, recharging, teleport, cloning, panic, repair, and other utility effects. Unknown tech starts as sealed caches in the main backpack; opening one reveals and immediately runs it. Known future pickups sort into Utility unless they are offensive upgrades. |
 | Blasters | Rechargeable ranged weapons with charge counts. Each blaster has a distinct projectile/effect and can be used by DM-3000 launcher mechanics. |
 | Floor lighting | Unpowered floor lighting activates when any non-flying character stands on it; it still uses normal press handling for traps and mines. Spent trap/floor-lighting tiles become inactive, stay off permanently, and remain visible as spent powered plates. |
 | Projectile pathing | Missiles and thrown items can cross unpowered floor lighting even though it still blocks sight until activated. |
@@ -92,12 +92,12 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Modules | Ring-like equipment that modifies combat or utility stats. Can malfunction. |
 | Equippable Modules | Unique charge/progression items with special mechanics, such as stealth, gravity control, time manipulation, alien DNA, recycling, and frontier-tech shield behavior. |
 | Workshops | Ordinary workshop stock is random per floor and stays on that floor. Special support items such as backpack-modifier containers and Time Folder batteries carry forward within the same area if left in the workshop. Player-dropped normal heaps inside the workshop room carry forward into reusable workshop storage chests instead of being left behind on the old floor. Generated workshop rooms paint a fixed interior template with a Maker Bench, storage chests, and a Chief Engineer-style upgrade bench for merging two compatible upgradeable items. Every workshop offers at least one spacesuit-type armor item. |
-| Containers | Inventory sub-containers such as backpack-style storage, Bionetics gene-mod storage, and blaster holster. |
+| Containers | Inventory sub-containers: backpack for general items, Ordnance for mines/grenades/offensive one-use effects, Utility for support tech, Plasmids for gene mods and stims, and blaster holster for blasters. |
 | Mines / Devices | Placeable or environmental charges. Can be triggered from floors, fabricated, combined, or cleared by drones. |
 | Parts | Currency/material used in workshops and Maker-Bot/recycling flows. |
 | Keys | Floor/depth access control for locked doors, chests, and boss exits. Security Block floors also place a reusable max-security override keycard in the entrance room; it opens normal locked detention doors on that floor without being consumed. |
 | Medigel Droplet | Small healing resource from station emergency systems. Can fill air tank-style storage. |
-| Air Tank | Stores medigel droplets and can heal; a full tank has stronger restorative/blessing utility. |
+| Air Tank | Stores medigel droplets and can heal; a full tank has stronger restorative/stabilizing utility. |
 | Escape Pod Override | Command override needed to access sealed evacuation systems. It can launch the final pod immediately, or justify returning to reopen sealed rescue cradles for survivors. |
 
 ## Notable Blasters
@@ -149,7 +149,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Hologram Emitter | Drops from the Holodeck Monarch's hard-light retainers after Y gives the objective, and can be traded back to Y for the quest reward. |
 | Darts / Hunter's Dart | Missile-weapon family still earmarked for stronger sci-fi naming/art in earlier conversion work. |
 | Bomb | Explosive utility item. |
-| Mobile Turret | Deployable/mobile weapon concept, now intended as station tech rather than spirit magic. |
+| Mobile Turret | Deployable/mobile weapon concept, now intended as station tech rather than fantasy tech. |
 
 ## Environmental Interactables
 

@@ -728,7 +728,7 @@ public class SecurityBossLevel extends Level {
     private static class exitVisual extends CustomTileVisual {
 
         {
-            name = "prison exit";
+            name = "security exit";
 
             tx = Assets.SECURITY_EXIT;
             txX = txY = 0;

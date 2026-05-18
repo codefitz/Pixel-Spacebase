@@ -23,32 +23,32 @@ package com.wafitz.pixelspacebase.sprites;
 import com.wafitz.pixelspacebase.Assets;
 import com.watabou.noosa.TextureFilm;
 
-public class SquiddardSprite extends MobSprite {
+public class FacehuggerSprite extends MobSprite {
 
-    public SquiddardSprite() {
+    public FacehuggerSprite() {
         super();
 
-        texture(Assets.SQUIDDARD);
+        texture(Assets.FACEHUGGER);
 
         TextureFilm frames = new TextureFilm(texture, 16, 16);
 
-        idle = new Animation(15, true);
-        idle.frames(frames, 0, 1, 2, 3, 4, 5);
+        idle = new Animation(10, true);
+        idle.frames(frames, 0, 0, 0, 0, 0, 1, 0, 1);
 
         run = new Animation(15, true);
-        run.frames(frames, 0, 1, 2, 3, 4, 5);
+        run.frames(frames, 0, 2, 0, 3);
 
-        attack = new Animation(20, false);
-        attack.frames(frames, 6, 7, 8, 9);
+        attack = new Animation(12, false);
+        attack.frames(frames, 0, 4, 5, 0);
 
-        die = new Animation(15, false);
-        die.frames(frames, 10, 11, 12, 13, 14);
+        die = new Animation(12, false);
+        die.frames(frames, 6, 7, 8, 9);
 
         play(idle);
     }
 
     @Override
     public int blood() {
-        return 0xFF8BA077;
+        return 0xFFBFE5B8;
     }
 }

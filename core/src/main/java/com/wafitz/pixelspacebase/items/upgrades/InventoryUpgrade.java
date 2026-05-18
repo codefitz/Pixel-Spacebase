@@ -83,11 +83,11 @@ abstract class InventoryUpgrade extends Upgrade {
                 Camoflage.dispel();
 
                 // wafitz.v1 - Lost count how many times I lost this script accidentally - no more!
-                //} else if (identifiedByUse && !((Upgrade) curItem).ownedByBook) {
+                //} else if (identifiedByUse && !((Upgrade) curItem).ownedByCompiler) {
 
                 //((InventoryUpgrade) curItem).confirmCancelation();
 
-            } else if (!((Upgrade) curItem).ownedByBook) {
+            } else if (!((Upgrade) curItem).ownedByCompiler) {
 
                 curItem.collect(curUser.belongings.backpack);
 

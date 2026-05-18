@@ -310,16 +310,16 @@ public class GameScene extends PixelScene {
                         WndStory.showChapter(WndStory.ID_OPERATIONS);
                         break;
                     case 6:
-                        WndStory.showChapter(WndStory.ID_PRISON);
+                        WndStory.showChapter(WndStory.ID_SECURITY_BLOCK);
                         break;
                     case 11:
-                        WndStory.showChapter(WndStory.ID_CAVES);
+                        WndStory.showChapter(WndStory.ID_LOWER_ENGINEERING);
                         break;
                     case 16:
-                        WndStory.showChapter(WndStory.ID_CITY);
+                        WndStory.showChapter(WndStory.ID_HABITATION_COMMAND);
                         break;
                     case 22:
-                        WndStory.showChapter(WndStory.ID_HALLS);
+                        WndStory.showChapter(WndStory.ID_DEEP_CONTAINMENT);
                         break;
                 }
                 if (SpacebaseRun.hero.isAlive() && SpacebaseRun.depth != 22) {

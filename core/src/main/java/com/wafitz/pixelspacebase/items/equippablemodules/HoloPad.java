@@ -122,7 +122,7 @@ public class HoloPad extends EquippableModule {
 
                     if (!firstSummon) {
                         hologram.yell(Messages.get(HologramHero.class, "hello", SpacebaseRun.hero.givenName()));
-                        Sample.INSTANCE.play(Assets.SND_GHOST);
+                        Sample.INSTANCE.play(Assets.SND_HOLOGRAM);
                         firstSummon = true;
                     } else
                         hologram.saySpawned();
@@ -308,29 +308,29 @@ public class HoloPad extends EquippableModule {
                 yell(Random.element(VOICE_AMBIENT[i]));
             else
                 yell(Random.element(VOICE_ENEMIES[i][SpacebaseRun.bossLevel() ? 1 : 0]));
-            Sample.INSTANCE.play(Assets.SND_GHOST);
+            Sample.INSTANCE.play(Assets.SND_HOLOGRAM);
         }
 
         public void sayClone() {
             yell(Random.element(VOICE_BLESSEDCLONE));
-            Sample.INSTANCE.play(Assets.SND_GHOST);
+            Sample.INSTANCE.play(Assets.SND_HOLOGRAM);
         }
 
         void sayDefeated() {
             if (Messages.lang() != Languages.ENGLISH) return; //don't say anything if not on english
             yell(Random.element(VOICE_DEFEATED[SpacebaseRun.bossLevel() ? 1 : 0]));
-            Sample.INSTANCE.play(Assets.SND_GHOST);
+            Sample.INSTANCE.play(Assets.SND_HOLOGRAM);
         }
 
         void sayHeroKilled() {
             if (Messages.lang() != Languages.ENGLISH) return; //don't say anything if not on english
             yell(Random.element(VOICE_HEROKILLED));
-            Sample.INSTANCE.play(Assets.SND_GHOST);
+            Sample.INSTANCE.play(Assets.SND_HOLOGRAM);
         }
 
         public void sayBossBeaten() {
             yell(Random.element(VOICE_BOSSBEATEN[SpacebaseRun.depth == 25 ? 1 : 0]));
-            Sample.INSTANCE.play(Assets.SND_GHOST);
+            Sample.INSTANCE.play(Assets.SND_HOLOGRAM);
         }
 
         @Override
@@ -383,7 +383,7 @@ public class HoloPad extends EquippableModule {
 
         @Override
         public int drRoll() {
-            //defence is equal to the level of rose.
+            //defence is equal to the holopad's level.
             return Random.NormalIntRange(0, (HT - 10) / 3);
         }
 
@@ -440,13 +440,13 @@ public class HoloPad extends EquippableModule {
         }
 
         //************************************************************************************
-        //This is a bunch strings & string arrays, used in all of the sad ghost's voice lines.
+        //Emergency hologram voice lines.
         //************************************************************************************
 
-        private static final String VOICE_INTRODUCE = "My spirit is bound to this rose, it was very precious to me, a " +
-                "gift from my love whom I left on the surface.\n\nI cannot return to him, but thanks to you I have a " +
-                "second chance to complete my journey. When I am able I will respond to your call and fight with you.\n\n" +
-                "hopefully you may succeed where I failed...";
+        private static final String VOICE_INTRODUCE = "My recording is anchored to this holopad. It was precious to me, a " +
+                "gift from someone I left planetside.\n\nI cannot reach them now, but thanks to you I have a " +
+                "second chance to finish the evacuation. When I can, I will answer your call and fight with you.\n\n" +
+                "Hopefully you succeed where I failed...";
 
         //1st index - depth type, 2nd index - specific line.
         static final String[][] VOICE_AMBIENT = {
@@ -455,21 +455,21 @@ public class HoloPad extends EquippableModule {
                         "Where is security?!",
                         "I have family back on earth, I hope they are safe..."
                 }, {
-                "I've heard stories about this place, nothing good...",
-                "This place was always more of a dungeon than a prison...",
+                "I've heard stories about this block, nothing good...",
+                "This place was always more of a containment wing than a detention block...",
                 "I can't imagine what went on when this place was abandoned..."
         }, {
-                "No human or dwarf has been here for a very long time...",
-                "Something must have gone very wrong, for the dwarves to abandon a parts mine...",
-                "I feel great evil lurking below..."
+                "No clean maintenance crew has been here for a very long time...",
+                "Something must have gone very wrong for Engineering to abandon these conduits...",
+                "I feel something dangerous working under the decks..."
         }, {
-                "The dwarves were industrious, but greedy...",
+                "Command was industrious, but careless...",
                 "I hope the surface never ends up like this place...",
-                "So the dwarvern metropolis really has fallen..."
+                "So the Habitation Ring really has fallen..."
         }, {
                 "What is this place?...",
-                "So the stories are true, we have to fight a demon god...",
-                "I feel a great evil in this place..."
+                "So the stories are true, we have to fight whatever escaped containment...",
+                "I feel something wrong pulsing through this place..."
         }, {
                 "... I don't like this place... We should leave as soon as possible..."
         }
@@ -483,13 +483,13 @@ public class HoloPad extends EquippableModule {
                                 "If the guards couldn't defeat them, perhaps we can...",
                                 "These maintenance crawlers are extremely annoying..."
                         }, {
-                        "Beware FeralShapeshifter!...",
+                        "Beware the feral shapeshifter!...",
                         "Many of my friends died to this thing, time for vengeance...",
                         "Such an abomination cannot be allowed to live..."
                 }
                 }, {
                 {
-                        "What dark magic happened here?...",
+                        "What emergency protocol did this?...",
                         "To think the captives of this place are now its guardians...",
                         "They were criminals before, now they are monsters..."
                 }, {
@@ -499,32 +499,32 @@ public class HoloPad extends EquippableModule {
         }
         }, {
                 {
-                        "The aliens here are aggressive, just like on the Maintenance decks... ",
+                        "The aliens here are aggressive, just like on the Maintenance decks...",
                         "More Yendor raiders. I hate Yendor raiders...",
-                        "Even the bats are bloodthirsty here..."
+                        "Even the siphon drones are predatory here..."
                 }, {
-                "Only dwarves would build a mining machine that kills looters...",
+                "Only Engineering would build a mining platform that kills looters...",
                 "That thing is huge...",
                 "How has it survived here for so long?..."
         }
         }, {
                 {
-                        "Dwarves aren't supposed to look that pale...",
-                        "I don't know what's worse, the dwarves, or their creations...",
-                        "They all obey their master without question, even now..."
+                        "Command staff shouldn't look that pale...",
+                        "I don't know what's worse, the raiders or the machines...",
+                        "They all obey the corrupted control stack without question, even now..."
                 }, {
                 "When people say power corrupts, this is what they mean...",
-                "He's more a Lich than a monarch now...",
-                "Looks like he's more demon than dwarf now..."
+                "He's more failed simulation than monarch now...",
+                "Looks like he's more hard-light error than person now..."
         }
         }, {
                 {
                         "What the heck is that thing?...",
                         "This place is terrifying...",
-                        "What were the dwarves thinking, toying with power like this?..."
+                        "What was Command thinking, containing power like this?..."
                 }, {
                 "Oh.... this doesn't look good...",
-                "So that's what a god looks like?...",
+                "So that's what a containment failure looks like?...",
                 "This is going to hurt..."
         }
         }, {

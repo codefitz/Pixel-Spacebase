@@ -43,19 +43,19 @@ public class WndStory extends Window {
     private static final float bgB = 0.62f;
 
     public static final int ID_OPERATIONS = 0;
-    public static final int ID_PRISON = 1;
-    public static final int ID_CAVES = 2;
-    public static final int ID_CITY = 3;
-    public static final int ID_HALLS = 4;
+    public static final int ID_SECURITY_BLOCK = 1;
+    public static final int ID_LOWER_ENGINEERING = 2;
+    public static final int ID_HABITATION_COMMAND = 3;
+    public static final int ID_DEEP_CONTAINMENT = 4;
 
     private static final SparseArray<String> CHAPTERS = new SparseArray<>();
 
     static {
         CHAPTERS.put(ID_OPERATIONS, "operations");
-        CHAPTERS.put(ID_PRISON, "prison");
-        CHAPTERS.put(ID_CAVES, "caves");
-        CHAPTERS.put(ID_CITY, "city");
-        CHAPTERS.put(ID_HALLS, "halls");
+        CHAPTERS.put(ID_SECURITY_BLOCK, "security_block");
+        CHAPTERS.put(ID_LOWER_ENGINEERING, "lower_engineering");
+        CHAPTERS.put(ID_HABITATION_COMMAND, "habitation_command");
+        CHAPTERS.put(ID_DEEP_CONTAINMENT, "deep_containment");
     }
 
     private RenderedTextMultiline tf;

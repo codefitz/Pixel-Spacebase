@@ -113,7 +113,7 @@ public class BuggyCompiler extends EquippableModule {
                                 upgrade instanceof RepairUpgrade ||
                                 upgrade instanceof MappingUpgrade) && Random.Int(2) == 0));
 
-                upgrade.ownedByBook = true;
+                upgrade.ownedByCompiler = true;
                 upgrade.execute(hero, AC_RUN);
             }
 
@@ -124,7 +124,7 @@ public class BuggyCompiler extends EquippableModule {
 
     @Override
     protected ModuleBuff passiveBuff() {
-        return new bookRecharge();
+        return new compilerRecharge();
     }
 
     @Override
@@ -170,14 +170,14 @@ public class BuggyCompiler extends EquippableModule {
         upgrades.clear();
         Collections.addAll(upgrades, bundle.getClassArray(UPGRADES));
         if (upgrades.contains(null)) {
-            //compatability with pre-0.3.4, just give them a maxed book.
+            //compatability with pre-0.3.4, just give them a maxed compiler.
             upgrades.clear();
             level(levelCap);
             chargeCap = 8;
         }
     }
 
-    public class bookRecharge extends ModuleBuff {
+    public class compilerRecharge extends ModuleBuff {
         @Override
         public boolean act() {
             LockedFloor lock = target.buff(LockedFloor.class);

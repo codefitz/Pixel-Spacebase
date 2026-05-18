@@ -42,7 +42,7 @@ public class SpacebaseTilemap extends Tilemap {
 
     private static SpacebaseTilemap instance;
 
-    //Used to map dungeon tiles to their default visual values
+    //Used to map level tiles to their default visual values
     public static SparseIntArray defaultVisuals = new SparseIntArray(32);
 
     static {
@@ -166,7 +166,7 @@ public class SpacebaseTilemap extends Tilemap {
     }
 
     @Override
-    //we need to retain two arrays, map is the dungeon tilemap which we can reference.
+    //we need to retain two arrays, map is the level tilemap which we can reference.
     // Data is our own internal image representation of the tiles, which may differ.
     public void map(int[] data, int cols) {
         map = data;

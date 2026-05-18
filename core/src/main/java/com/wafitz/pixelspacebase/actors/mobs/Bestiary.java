@@ -78,11 +78,11 @@ public class Bestiary {
                 break;
             case 3:
                 chances = new float[]{3, 0.01f, 4, 4, 0.1f};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, ReplicatorSwarm.class};
                 break;
             case 4:
                 chances = new float[]{3, 0.02f, 3, 4, 0.2f};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, ReplicatorSwarm.class};
                 break;
 
             case 5:
@@ -92,19 +92,19 @@ public class Bestiary {
 
             case 6:
                 chances = new float[]{2, 0.02f, 3, 3, 1, 4, 4, 4};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, Thief.class, OuterColonyPsion.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, ReplicatorSwarm.class, RupturedCrewSuit.class, Thief.class, OuterColonyPsion.class};
                 break;
             case 7:
                 chances = new float[]{2, 0.03f, 2, 3, 2, 4, 3, 4, 4};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, Thief.class, OuterColonyPsion.class, Guard.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, ReplicatorSwarm.class, RupturedCrewSuit.class, Thief.class, OuterColonyPsion.class, Guard.class};
                 break;
             case 8:
                 chances = new float[]{1, 0.03f, 2, 2, 3, 3, 2, 3, 3, 0.1f};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, Thief.class, OuterColonyPsion.class, Guard.class, Bat.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, ReplicatorSwarm.class, RupturedCrewSuit.class, Thief.class, OuterColonyPsion.class, Guard.class, SiphonDrone.class};
                 break;
             case 9:
                 chances = new float[]{1, 0.04f, 1, 2, 4, 3, 1, 3, 2, 0.2f, 0.1f};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, Thief.class, OuterColonyPsion.class, Guard.class, Bat.class, Brute.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, ReplicatorSwarm.class, RupturedCrewSuit.class, Thief.class, OuterColonyPsion.class, Guard.class, SiphonDrone.class, Brute.class};
                 break;
 
             case 10:
@@ -114,19 +114,19 @@ public class Bestiary {
 
             case 11:
                 chances = new float[]{0.2f, 0.04f, 1, 1, 4, 2, 2, 1, 1, 1};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, OuterColonyPsion.class, Guard.class, Bat.class, Brute.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, ReplicatorSwarm.class, RupturedCrewSuit.class, OuterColonyPsion.class, Guard.class, SiphonDrone.class, Brute.class};
                 break;
             case 12:
                 chances = new float[]{0.1f, 0.05f, 0.2f, 0.2f, 3, 2, 2, 0.2f, 2, 2, 4};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, OuterColonyPsion.class, Guard.class, Bat.class, Brute.class, Spinner.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, ReplicatorSwarm.class, RupturedCrewSuit.class, OuterColonyPsion.class, Guard.class, SiphonDrone.class, Brute.class, Facehugger.class};
                 break;
             case 13:
                 chances = new float[]{0.05f, 0.1f, 0.1f, 3, 1, 1, 0.1f, 3, 3, 3, 0.1f};
-                classes = new Class<?>[]{Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, OuterColonyPsion.class, Guard.class, Bat.class, Brute.class, Spinner.class, Elemental.class};
+                classes = new Class<?>[]{Eye.class, OuterColonyScout.class, Crab.class, ReplicatorSwarm.class, RupturedCrewSuit.class, OuterColonyPsion.class, Guard.class, SiphonDrone.class, Brute.class, Facehugger.class, Elemental.class};
                 break;
             case 14:
                 chances = new float[]{0.06f, 2, 1, 1, 4, 4, 2, 0.2f, 0.1f};
-                classes = new Class<?>[]{Eye.class, Squiddard.class, RupturedCrewSuit.class, OuterColonyPsion.class, Bat.class, Brute.class, Spinner.class, Elemental.class, JedaKnight.class};
+                classes = new Class<?>[]{Eye.class, ReplicatorSwarm.class, RupturedCrewSuit.class, OuterColonyPsion.class, SiphonDrone.class, Brute.class, Facehugger.class, Elemental.class, JedaKnight.class};
                 break;
 
             case 15:
@@ -136,19 +136,19 @@ public class Bestiary {
 
             case 16:
                 chances = new float[]{0.06f, 2, 0.2f, 0.2f, 4, 4, 1, 1, 1, 1};
-                classes = new Class<?>[]{Eye.class, Squiddard.class, RupturedCrewSuit.class, OuterColonyPsion.class, Bat.class, Brute.class, Spinner.class, Elemental.class, JedaKnight.class, SignalLeech.class,};
+                classes = new Class<?>[]{Eye.class, ReplicatorSwarm.class, RupturedCrewSuit.class, OuterColonyPsion.class, SiphonDrone.class, Brute.class, Facehugger.class, Elemental.class, JedaKnight.class, SignalLeech.class,};
                 break;
             case 17:
                 chances = new float[]{0.07f, 1, 0.1f, 0.1f, 3, 3, 2, 2, 2};
-                classes = new Class<?>[]{Eye.class, Squiddard.class, RupturedCrewSuit.class, OuterColonyPsion.class, Bat.class, Brute.class, Elemental.class, JedaKnight.class, SignalLeech.class,};
+                classes = new Class<?>[]{Eye.class, ReplicatorSwarm.class, RupturedCrewSuit.class, OuterColonyPsion.class, SiphonDrone.class, Brute.class, Elemental.class, JedaKnight.class, SignalLeech.class,};
                 break;
             case 18:
                 chances = new float[]{0.07f, 0.2f, 2, 2, 3, 3, 3, 4};
-                classes = new Class<?>[]{Eye.class, Squiddard.class, Bat.class, Brute.class, Elemental.class, JedaKnight.class, SignalLeech.class, WarMachine.class};
+                classes = new Class<?>[]{Eye.class, ReplicatorSwarm.class, SiphonDrone.class, Brute.class, Elemental.class, JedaKnight.class, SignalLeech.class, WarMachine.class};
                 break;
             case 19:
                 chances = new float[]{0.08f, 0.1f, 1, 1, 4, 4, 4, 3, 0.1f};
-                classes = new Class<?>[]{Eye.class, Squiddard.class, Bat.class, Brute.class, Elemental.class, JedaKnight.class, SignalLeech.class, WarMachine.class, SignalSiren.class};
+                classes = new Class<?>[]{Eye.class, ReplicatorSwarm.class, SiphonDrone.class, Brute.class, Elemental.class, JedaKnight.class, SignalLeech.class, WarMachine.class, SignalSiren.class};
                 break;
 
             case 20:

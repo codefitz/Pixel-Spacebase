@@ -59,16 +59,16 @@ public class Assets {
     public static final String OUTER_COLONY_SCOUT = "outer_colony_scout.png";
     public static final String CRAB = "crab.png";
     public static final String FERALSHAPESHIFTER = "feral_shapeshifter.png";
-    public static final String SQUIDDARD = "swarm.png";
+    public static final String REPLICATOR_SWARM = "swarm.png";
     public static final String RUPTURED_CREW_SUIT = "ruptured_crew_suit.png";
     public static final String OUTER_COLONY_PSION = "outer_colony_psion.png";
     public static final String THIEF = "thief.png";
     public static final String MASKED_PRISONER = "masked_prisoner.png";
     public static final String CONTAINMENT_ECHO = "containment_echo.png";
     public static final String MAKERBOT = "makerbot.png";
-    public static final String BAT = "bat.png";
+    public static final String SIPHON_DRONE = "bat.png";
     public static final String BRUTE = "brute.png";
-    public static final String SPINNER = "spinner.png";
+    public static final String FACEHUGGER = "spinner.png";
     public static final String DM300 = "dm300.png";
     public static final String TURRET = "wraith.png";
     public static final String ELEMENTAL = "elemental.png";
@@ -103,19 +103,19 @@ public class Assets {
     public static final String TILES_OPERATIONS = "tiles0.png";
     public static final String TILES_SECURITY_BLOCK = "tiles1.png";
     public static final String TILES_ENGINEERING = "tiles2.png";
-    public static final String TILES_HABITATION_COMMAND = "tiles3.png";
-    public static final String TILES_DEEP_CONTAINMENT = "tiles4.png";
+    public static final String TILES_HABITATION_RING = "tiles3.png";
+    public static final String TILES_CONTAINMENT_DECK = "tiles4.png";
 
     public static final String WATER_OPERATIONS = "water0.png";
     public static final String WATER_SECURITY_BLOCK = "water1.png";
     public static final String WATER_ENGINEERING = "water2.png";
-    public static final String WATER_HABITATION_COMMAND = "water3.png";
-    public static final String WATER_DEEP_CONTAINMENT = "water4.png";
+    public static final String WATER_HABITATION_RING = "water3.png";
+    public static final String WATER_CONTAINMENT_DECK = "water4.png";
 
     public static final String WEAK_FLOOR = "custom_tiles/weak_floor.png";
     public static final String SECURITY_QUEST = "custom_tiles/security_quests.png";
     public static final String SECURITY_EXIT = "custom_tiles/security_exit.png";
-    public static final String HOLODECK_HALLS = "custom_tiles/holodeck_halls.png";
+    public static final String HOLODECK_RETAINER_TILES = "custom_tiles/holodeck_halls.png";
     public static final String ALIEN_PLANET_TILES = "custom_tiles/alien_planet_tiles.png";
 
     public static final String BUFFS_SMALL = "buffs.png";
@@ -176,7 +176,7 @@ public class Assets {
     public static final String SND_ROCKS = "snd_rocks.mp3";
     public static final String SND_BURNING = "snd_burning.mp3";
     public static final String SND_FALLING = "snd_falling.mp3";
-    public static final String SND_GHOST = "snd_ghost.mp3";
+    public static final String SND_HOLOGRAM = "snd_ghost.mp3";
     public static final String SND_SECRET = "snd_secret.mp3";
     public static final String SND_BONES = "snd_bones.mp3";
     public static final String SND_BEE = "snd_bee.mp3";

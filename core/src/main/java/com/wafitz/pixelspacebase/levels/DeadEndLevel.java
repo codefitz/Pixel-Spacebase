@@ -42,7 +42,7 @@ public class DeadEndLevel extends Level {
 
     @Override
     public String waterTex() {
-        return Assets.WATER_DEEP_CONTAINMENT;
+        return Assets.WATER_CONTAINMENT_DECK;
     }
 
     @Override

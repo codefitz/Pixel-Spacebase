@@ -50,7 +50,7 @@ public class ChangesScene extends PixelScene {
                     "_-_ Renamed the tech library container to Mods and refreshed its icons.\n" +
                     "_-_ Renamed gene mods to Plasmids, field tech to upgrades, and swapped the related container icons.\n" +
                     "_-_ Renamed the plantable alien egg item to Black Goo and gave it new art.\n" +
-                    "_-_ Re-skinned the quartermaster lazer quest room as a demon-halls holodeck program.\n" +
+                    "_-_ Re-skinned the quartermaster lazer quest room as a holodeck containment program.\n" +
                     "_-_ Preserved unopened chest contents when lower-level warp effects move heaps between floors.\n" +
                     "_-_ Fixed weak-floor falling so pit rooms are generated below the floor being left.\n" +
                     "_-_ Fixed falling vents so they always send the hero to the level below.\n" +

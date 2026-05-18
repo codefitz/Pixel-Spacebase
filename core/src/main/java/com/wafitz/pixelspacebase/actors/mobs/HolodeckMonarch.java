@@ -40,7 +40,7 @@ import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
 import com.wafitz.pixelspacebase.items.upgrades.PsionicBlastUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
-import com.wafitz.pixelspacebase.levels.HabitationCommandBossLevel;
+import com.wafitz.pixelspacebase.levels.HolodeckBossLevel;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -106,20 +106,20 @@ public class HolodeckMonarch extends Mob {
     @Override
     protected boolean getCloser(int target) {
         return canTryToSummon() ?
-                super.getCloser(((HabitationCommandBossLevel) SpacebaseRun.level).pedestal(nextPedestal)) :
+                super.getCloser(((HolodeckBossLevel) SpacebaseRun.level).pedestal(nextPedestal)) :
                 super.getCloser(target);
     }
 
     @Override
     protected boolean canAttack(Char enemy) {
         return canTryToSummon() ?
-                pos == ((HabitationCommandBossLevel) SpacebaseRun.level).pedestal(nextPedestal) :
+                pos == ((HolodeckBossLevel) SpacebaseRun.level).pedestal(nextPedestal) :
                 SpacebaseRun.level.adjacent(pos, enemy.pos);
     }
 
     private boolean canTryToSummon() {
         if (Undead.count < maxArmySize()) {
-            Char ch = Actor.findChar(((HabitationCommandBossLevel) SpacebaseRun.level).pedestal(nextPedestal));
+            Char ch = Actor.findChar(((HolodeckBossLevel) SpacebaseRun.level).pedestal(nextPedestal));
             return ch == this || ch == null;
         } else {
             return false;
@@ -128,11 +128,11 @@ public class HolodeckMonarch extends Mob {
 
     @Override
     public boolean attack(Char enemy) {
-        if (canTryToSummon() && pos == ((HabitationCommandBossLevel) SpacebaseRun.level).pedestal(nextPedestal)) {
+        if (canTryToSummon() && pos == ((HolodeckBossLevel) SpacebaseRun.level).pedestal(nextPedestal)) {
             summon();
             return true;
         } else {
-            if (Actor.findChar(((HabitationCommandBossLevel) SpacebaseRun.level).pedestal(nextPedestal)) == enemy) {
+            if (Actor.findChar(((HolodeckBossLevel) SpacebaseRun.level).pedestal(nextPedestal)) == enemy) {
                 nextPedestal = !nextPedestal;
             }
             return super.attack(enemy);

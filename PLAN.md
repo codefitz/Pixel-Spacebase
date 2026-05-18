@@ -35,7 +35,7 @@
   - [x] Gate captain spacewalk access behind spacesuit ownership/equipment.
   - [x] Gate commander spacewalk access behind spacesuit ownership/equipment.
   - [x] Add failure messaging when the player tries to enter without a spacesuit.
-- [ ] Rework shapeshifter progression.
+- [x] Rework shapeshifter progression.
   - [x] Prevent shapeshifter from using blaster weapons.
   - [x] Scale shapeshifter strength as level depth increases.
   - [x] Give shapeshifter faster level progression.
@@ -92,6 +92,11 @@
   - [x] Compare the backpack against the masked prisoner's stats before the arena.
   - [x] Give or remove a ranged weapon based on that comparison.
 - [x] facehugger should die on infection. Also remove the sticky web effects.
+- [x] Restore release-mode hero start.
+  - [x] Return hero starting strength to normal.
+  - [x] Disable dev/test invulnerability.
+  - [x] Remove the depth-1 starter chest and injected test items.
+  - [x] Document the hero dev/test setup for next sprint.
 
 ## Refactorial Changes and Small Adjustments
 
@@ -101,10 +106,11 @@
   - [x] Clean low-priority visible fantasy labels and release-plan wording.
   - [x] Rename central run, tilemap, and seed internals to spacebase terms.
   - [x] Rename monarch, ruptured-suit, raider commander, Security Block, and Engineering internals.
-- [ ] Reorganize tech and biogenetics by use.
-  - [ ] Classify defensive tech/biogenetics as effects applied to the player.
-  - [ ] Classify offensive tech/biogenetics as weapon/action items.
-  - [ ] Convert offensive biogenetics such as fire into grenades.
+- [x] Reorganize tech and biogenetics by use.
+  - [x] Classify offensive pickups into Ordnance.
+  - [x] Classify defensive, repair, and shield pickups into Utility.
+  - [x] Keep genetic alterations in Plasmids and leave sealed capsules in the main backpack until opened.
+  - [x] Convert offensive biogenetics presentation toward grenade-style items.
 - [x] Rename Xeno-booster to align with the x-port concept.
 - [x] Add an option to open and scroll the full log.
 - [x] Floor lighting overhall

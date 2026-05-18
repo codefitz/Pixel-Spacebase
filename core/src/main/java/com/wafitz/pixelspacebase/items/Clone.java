@@ -40,8 +40,7 @@ public class Clone extends Item {
     {
         image = ItemSpriteSheet.CLONE;
 
-        //You tell the ankh no, don't revive me, and then it comes back to revive you again in another run.
-        //I'm not sure if that's enthusiasm or passive-aggression.
+        //Revival triggers can persist between runs as station-side emergency backups.
         bones = true;
     }
 
@@ -97,7 +96,7 @@ public class Clone extends Item {
             return super.desc();
     }
 
-    public Boolean isBlessed() {
+    public Boolean isStabilized() {
         return upgraded;
     }
 
@@ -105,7 +104,7 @@ public class Clone extends Item {
 
     @Override
     public Glowing glowing() {
-        return isBlessed() ? WHITE : null;
+        return isStabilized() ? WHITE : null;
     }
 
     private static final String UPGRADED = "upgraded";

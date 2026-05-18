@@ -28,14 +28,6 @@ import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.effects.Ripple;
 import com.wafitz.pixelspacebase.items.AirTank;
-import com.wafitz.pixelspacebase.items.Generator;
-import com.wafitz.pixelspacebase.items.Heap;
-import com.wafitz.pixelspacebase.items.WeakForcefield;
-import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
-import com.wafitz.pixelspacebase.items.armor.Uniform;
-import com.wafitz.pixelspacebase.items.food.Food;
-import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
-import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
 import com.wafitz.pixelspacebase.levels.vents.AlarmVent;
 import com.wafitz.pixelspacebase.levels.vents.ChillingVent;
 import com.wafitz.pixelspacebase.levels.vents.FlockVent;
@@ -145,23 +137,6 @@ public class OperationsLevel extends RegularLevel {
             }
 
         placeSign();
-
-        // wafitz.v1 - Hero belongings are now to be found in the entrance, later I will randomly place this somewhere on the level
-        if (SpacebaseRun.depth <= 1) {
-                int pos = pointToCell(roomEntrance.random());
-            if (pos != entrance && vents.get(pos) == null
-                        && findMob(pos) == null && pos != Terrain.SIGN) {
-                    drop(Generator.random(), pos).type = Heap.Type.CHEST;
-                    drop(new Uniform().identify(), pos);
-                    drop(new Food().identify(), pos);
-                    // TEST - Dev items
-                    drop(new MappingUpgrade().identify(), pos);
-                    drop(new WeakForcefield().identify(), pos);
-                    drop(new SpaceSuit().identify(), pos);
-                    drop(new Wrench().identify(), pos);
-                    drop(new Wrench().identify(), pos);
-                }
-        }
     }
 
     @Override

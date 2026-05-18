@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.actors.mobs.Bat;
+import com.wafitz.pixelspacebase.actors.mobs.SiphonDrone;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
@@ -154,7 +154,7 @@ public class ScrewDriver extends Weapon {
 
     @Override
     public int proc(Char attacker, Char defender, int damage) {
-        if (!bloodStained && defender instanceof Bat && (defender.HP <= damage)) {
+        if (!bloodStained && defender instanceof SiphonDrone && (defender.HP <= damage)) {
             bloodStained = true;
             updateQuickslot();
         }

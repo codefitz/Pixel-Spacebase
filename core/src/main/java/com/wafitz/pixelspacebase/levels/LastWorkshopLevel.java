@@ -44,12 +44,12 @@ public class LastWorkshopLevel extends RegularLevel {
 
     @Override
     public String tilesTex() {
-        return Assets.TILES_HABITATION_COMMAND;
+        return Assets.TILES_HABITATION_RING;
     }
 
     @Override
     public String waterTex() {
-        return Assets.WATER_HABITATION_COMMAND;
+        return Assets.WATER_HABITATION_RING;
     }
 
     @Override
@@ -184,9 +184,9 @@ public class LastWorkshopLevel extends RegularLevel {
     public String tileName(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(HabitationCommandLevel.class, "water_name");
+                return Messages.get(HabitationRingLevel.class, "water_name");
             case Terrain.OFFVENT:
-                return Messages.get(HabitationCommandLevel.class, "off_vent_name");
+                return Messages.get(HabitationRingLevel.class, "off_vent_name");
             default:
                 return super.tileName(tile);
         }
@@ -196,19 +196,19 @@ public class LastWorkshopLevel extends RegularLevel {
     public String tileDesc(int tile) {
         switch (tile) {
             case Terrain.ENTRANCE:
-                return Messages.get(HabitationCommandLevel.class, "entrance_desc");
+                return Messages.get(HabitationRingLevel.class, "entrance_desc");
             case Terrain.EXIT:
-                return Messages.get(HabitationCommandLevel.class, "exit_desc");
+                return Messages.get(HabitationRingLevel.class, "exit_desc");
             case Terrain.WALL_DECO:
             case Terrain.EMPTY_DECO:
-                return Messages.get(HabitationCommandLevel.class, "deco_desc");
+                return Messages.get(HabitationRingLevel.class, "deco_desc");
             case Terrain.EMPTY_SP:
-                return Messages.get(HabitationCommandLevel.class, "sp_desc");
+                return Messages.get(HabitationRingLevel.class, "sp_desc");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
-                return Messages.get(HabitationCommandLevel.class, "statue_desc");
+                return Messages.get(HabitationRingLevel.class, "statue_desc");
             case Terrain.BOOKSHELF:
-                return Messages.get(HabitationCommandLevel.class, "bookshelf_desc");
+                return Messages.get(HabitationRingLevel.class, "bookshelf_desc");
             default:
                 return super.tileDesc(tile);
         }
@@ -227,7 +227,7 @@ public class LastWorkshopLevel extends RegularLevel {
     @Override
     public Group addVisuals() {
         super.addVisuals();
-        HabitationCommandLevel.addCityVisuals(this, visuals);
+        HabitationRingLevel.addHabitationVisuals(this, visuals);
         return visuals;
     }
 }
