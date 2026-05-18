@@ -5,6 +5,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 ## Suggestions
 
 - [x] Cat follow-up idea for the next version.
+- [ ] Refactor code and suggest improvements.
+- [ ] What could replace Yog Duza? Maybe a giant angel.
 
 ## Mechanics
 
@@ -14,11 +16,15 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Endings:
     - [ ] Standard escape pod
     - [ ] Escape pod with cat
+    - [ ] Fix core (save NPCs, remain on station) - possible time-based challenge, work back through station levels - unstable shaking.
 
 ## Cosmetic / Narrative
 
 - [ ] Deep containment - change this to Bridge.
 - [ ] Should be made clear that Y is taking or giving something to hero for Tengu battle.
+- [ ] Fix ugly HP bar
+- [ ] Modal dialogs still need fixing (border size, transparent background)
+- [ ] Rot lasher/heart sci-fi rework
 
 ## Graphical Changes
 
@@ -27,7 +33,17 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [ ] Alien egg
     - [ ] Broken floor tiles
     - [ ] NPC appearances
+    - [ ] Terminals
+    - [ ] Breaker
+    - [ ] Jawar
+    - [ ] Music
+        - [ ] Engineering Boss
+        - [ ] Habitation
+        - [ ] Habitiation Boss
+        - [ ] Bridge
+        - [ ] Bridge Boss
 - [ ] Update Bridge levels tiles.
+- [ ] Replace leaf particles with sparks.
 
 ## Bugs
 
@@ -45,6 +61,18 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Chestburster should have a blood effect when appearing.
 - [ ] After alien infection hero should be caught in the sticky effect for 1 turn.
 - [ ] Workshop same size each level.
+- [ ] Renames (classes)
+    - [ ] crab
+    - [ ] bat
+    - [ ] brute
+    - [ ] guard
+    - [ ] gunsmith
+    - [ ] thief
+    - [ ] arp
+    - [ ] Operations Level = Maintenance
+    - [ ] Wraith
+- [ ] Stims, plasmids - should stay in effect whilst hero moving.
+- [ ] Lights breaker turns lights on and off for any level.
 
 ## Release Prep
 
