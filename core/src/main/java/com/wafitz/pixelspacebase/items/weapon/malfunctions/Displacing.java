@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.weapon.malfunctions;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
@@ -39,21 +39,21 @@ public class Displacing extends Weapon.Enhancement {
             int count = 10;
             int newPos;
             do {
-                newPos = Dungeon.level.randomRespawnCell();
+                newPos = SpacebaseRun.level.randomRespawnCell();
                 if (count-- <= 0) {
                     break;
                 }
             } while (newPos == -1);
 
-            if (newPos != -1 && !Dungeon.bossLevel()) {
+            if (newPos != -1 && !SpacebaseRun.bossLevel()) {
 
-                if (Dungeon.visible[defender.pos]) {
+                if (SpacebaseRun.visible[defender.pos]) {
                     CellEmitter.get(defender.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
                 }
 
                 defender.pos = newPos;
                 defender.sprite.place(defender.pos);
-                defender.sprite.visible = Dungeon.visible[defender.pos];
+                defender.sprite.visible = SpacebaseRun.visible[defender.pos];
 
                 return 0;
 

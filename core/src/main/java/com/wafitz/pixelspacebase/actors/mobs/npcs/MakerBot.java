@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
@@ -61,7 +61,7 @@ public class MakerBot extends NPC {
     }
 
     public void flee() {
-        for (Heap heap : Dungeon.level.heaps.values()) {
+        for (Heap heap : SpacebaseRun.level.heaps.values()) {
             if (heap.type == Heap.Type.TO_MAKE) {
                 CellEmitter.get(heap.pos).burst(ElmoParticle.FACTORY, 4);
                 heap.destroy();

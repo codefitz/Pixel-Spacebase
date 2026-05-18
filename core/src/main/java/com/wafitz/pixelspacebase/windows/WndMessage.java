@@ -20,6 +20,7 @@
  */
 package com.wafitz.pixelspacebase.windows;
 
+import com.wafitz.pixelspacebase.Chrome;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
@@ -33,7 +34,8 @@ public class WndMessage extends Window {
 
     public WndMessage(String text) {
 
-        super();
+        super(0, 0, Chrome.get(Chrome.Type.DIALOG));
+        chrome.alpha(0.88f);
 
         RenderedTextMultiline info = PixelScene.renderMultiline(text, 6);
         info.maxWidth((PixelSpacebase.landscape() ? WIDTH_L : WIDTH_P) - MARGIN * 2);

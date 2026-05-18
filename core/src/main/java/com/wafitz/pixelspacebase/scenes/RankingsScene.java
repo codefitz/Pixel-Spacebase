@@ -196,7 +196,7 @@ public class RankingsScene extends PixelScene {
             int odd = pos % 2;
 
             if (rec.win) {
-                shield.view(ItemSpriteSheet.AMULET, null);
+                shield.view(ItemSpriteSheet.ESCAPE_POD_OVERRIDE, null);
                 position.hardlight(TEXT_WIN[odd]);
                 desc.hardlight(TEXT_WIN[odd]);
                 depth.hardlight(TEXT_WIN[odd]);

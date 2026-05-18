@@ -20,56 +20,44 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Challenges;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.actors.blobs.Medical;
+import com.wafitz.pixelspacebase.actors.blobs.HealingTank;
+import com.wafitz.pixelspacebase.actors.blobs.WellWater;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.mines.AlienEgg;
-import com.wafitz.pixelspacebase.mines.KoltoPod;
-import com.watabou.utils.Random;
+import com.watabou.utils.Point;
 
 public class MedicalPainter extends Painter {
 
     public static void paint(Level level, Room room) {
 
         fill(level, room, Terrain.WALL);
-        fill(level, room, 1, Terrain.OFFVENT);
-        fill(level, room, 2, Terrain.LIGHTEDVENT);
 
-        room.entrance().set(Room.Door.Type.REGULAR);
+        Room.Door entrance = room.entrance();
+        Point booth = boothCell(room, entrance);
+        set(level, booth.x, booth.y, Terrain.HEALING_TANK);
 
-        if (Dungeon.isChallenged(Challenges.NO_FOOD)) {
-            if (Random.Int(2) == 0) {
-                level.mine(new KoltoPod.Device(), level.pointToCell(room.random()));
-            }
-        } else {
-            int bushes = Random.Int(3);
-            if (bushes == 0) {
-                level.mine(new KoltoPod.Device(), level.pointToCell(room.random()));
-            } else if (bushes == 1) {
-                level.mine(new AlienEgg.Device(), level.pointToCell(room.random()));
-            } else if (Random.Int(5) == 0) {
-                int mine1, mine2;
-                mine1 = level.pointToCell(room.random());
-                level.mine(new KoltoPod.Device(), mine1);
-                do {
-                    mine2 = level.pointToCell(room.random());
-                } while (mine2 == mine1);
-                level.mine(new AlienEgg.Device(), mine2);
-            }
+        WellWater terminal = (WellWater) level.blobs.get(HealingTank.class);
+        if (terminal == null) {
+            terminal = new HealingTank();
+        }
+        terminal.device(level, level.pointToCell(booth), 1);
+        level.blobs.put(HealingTank.class, terminal);
+
+        entrance.set(Room.Door.Type.REGULAR);
+    }
+
+    private static Point boothCell(Room room, Room.Door entrance) {
+        if (entrance.x == room.left) {
+            return new Point(room.left + 1, entrance.y);
+        } else if (entrance.x == room.right) {
+            return new Point(room.right - 1, entrance.y);
+        } else if (entrance.y == room.top) {
+            return new Point(entrance.x, room.top + 1);
+        } else if (entrance.y == room.bottom) {
+            return new Point(entrance.x, room.bottom - 1);
         }
 
-        Medical light = (Medical) level.blobs.get(Medical.class);
-        if (light == null) {
-            light = new Medical();
-        }
-        for (int i = room.top + 1; i < room.bottom; i++) {
-            for (int j = room.left + 1; j < room.right; j++) {
-                light.device(level, j + level.width() * i, 1);
-            }
-        }
-        level.blobs.put(Medical.class, light);
+        return room.center();
     }
 }

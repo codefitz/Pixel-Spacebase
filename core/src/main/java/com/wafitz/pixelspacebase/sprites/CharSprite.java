@@ -21,8 +21,8 @@
 package com.wafitz.pixelspacebase.sprites;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.DarkBlock;
 import com.wafitz.pixelspacebase.effects.EmoIcon;
@@ -112,18 +112,18 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
         ch.sprite = this;
 
         place(ch.pos);
-        turnTo(ch.pos, Random.Int(Dungeon.level.length()));
+        turnTo(ch.pos, Random.Int(SpacebaseRun.level.length()));
 
         ch.updateSpriteState();
     }
 
     public PointF worldToCamera(int cell) {
 
-        final int csize = DungeonTilemap.SIZE;
+        final int csize = SpacebaseTilemap.SIZE;
 
         return new PointF(
-                PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) + 0.5f) * csize - width * 0.5f),
-                PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height)
+                PixelScene.align(Camera.main, ((cell % SpacebaseRun.level.width()) + 0.5f) * csize - width * 0.5f),
+                PixelScene.align(Camera.main, ((cell / SpacebaseRun.level.width()) + 1.0f) * csize - height)
         );
     }
 
@@ -137,7 +137,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
                 text = Messages.format(text, args);
             }
             if (ch != null) {
-                PointF tile = DungeonTilemap.tileCenterToWorld(ch.pos);
+                PointF tile = SpacebaseTilemap.tileCenterToWorld(ch.pos);
                 FloatingText.show(tile.x, tile.y - (width * 0.5f), ch.pos, text, color);
             } else {
                 FloatingText.show(x + width * 0.5f, y, text, color);
@@ -194,8 +194,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
     }
 
     public void turnTo(int from, int to) {
-        int fx = from % Dungeon.level.width();
-        int tx = to % Dungeon.level.width();
+        int fx = from % SpacebaseRun.level.width();
+        int tx = to % SpacebaseRun.level.width();
         if (tx > fx) {
             flipHorizontal = false;
         } else if (tx < fx) {
@@ -206,7 +206,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
     public void jump(int from, int to, Callback callback) {
         jumpCallback = callback;
 
-        int distance = Dungeon.level.distance(from, to);
+        int distance = SpacebaseRun.level.distance(from, to);
         jumpTweener = new JumpTweener(this, worldToCamera(to), distance * 4, distance * 0.1f);
         jumpTweener.listener = this;
         parent.add(jumpTweener);

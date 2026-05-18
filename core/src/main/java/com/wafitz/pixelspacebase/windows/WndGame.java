@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.windows;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -55,12 +55,12 @@ public class WndGame extends Window {
         });
 
         // Challenges window
-        if (Dungeon.challenges > 0) {
+        if (SpacebaseRun.challenges > 0) {
             addButton(new RedButton(Messages.get(this, "challenges")) {
                 @Override
                 protected void onClick() {
                     hide();
-                    GameScene.show(new WndChallenges(Dungeon.challenges, false));
+                    GameScene.show(new WndChallenges(SpacebaseRun.challenges, false));
                 }
             });
         }
@@ -74,20 +74,20 @@ public class WndGame extends Window {
         });
 
         // Restart
-        if (!Dungeon.hero.isAlive()) {
+        if (!SpacebaseRun.hero.isAlive()) {
 
             RedButton btnStart;
             addButton(btnStart = new RedButton(Messages.get(this, "start")) {
                 @Override
                 protected void onClick() {
-                    Dungeon.hero = null;
-                    PixelSpacebase.challenges(Dungeon.challenges);
+                    SpacebaseRun.hero = null;
+                    PixelSpacebase.challenges(SpacebaseRun.challenges);
                     InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
                     InterlevelScene.noStory = true;
                     Game.switchScene(InterlevelScene.class);
                 }
             });
-            btnStart.icon(Icons.get(Dungeon.hero.heroClass));
+            btnStart.icon(Icons.get(SpacebaseRun.hero.heroClass));
 
             addButton(new RedButton(Messages.get(this, "rankings")) {
                 @Override
@@ -104,7 +104,7 @@ public class WndGame extends Window {
                     @Override
                     protected void onClick() {
                         try {
-                            Dungeon.saveAll();
+                            SpacebaseRun.saveAll();
                         } catch (IOException e) {
                             PixelSpacebase.reportException(e);
                         }

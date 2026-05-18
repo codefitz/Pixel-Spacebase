@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.ArpTrader;
@@ -29,47 +29,49 @@ import com.wafitz.pixelspacebase.items.Bomb;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.DroneController;
 import com.wafitz.pixelspacebase.items.EnhancementChip;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.PortableRender;
 import com.wafitz.pixelspacebase.items.Torch;
+import com.wafitz.pixelspacebase.items.TorchBattery;
 import com.wafitz.pixelspacebase.items.WeaponTuner;
+import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
-import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
+import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
-import com.wafitz.pixelspacebase.items.containers.DeviceCase;
-import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
-import com.wafitz.pixelspacebase.items.containers.XPort;
+import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
+import com.wafitz.pixelspacebase.items.containers.UtilityKit;
+import com.wafitz.pixelspacebase.items.containers.PlasmidKit;
 import com.wafitz.pixelspacebase.items.food.SynthesizedFood;
-import com.wafitz.pixelspacebase.items.scripts.FixScript;
-import com.wafitz.pixelspacebase.items.scripts.IdentifyScript;
-import com.wafitz.pixelspacebase.items.scripts.MappingScript;
-import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.upgrades.RepairUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.DiagnosticScanUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.melee.BrightHammer;
 import com.wafitz.pixelspacebase.items.weapon.melee.DualBlade;
-import com.wafitz.pixelspacebase.items.weapon.melee.GnollSword;
+import com.wafitz.pixelspacebase.items.weapon.melee.RaiderBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.HoloAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.LazerSword;
 import com.wafitz.pixelspacebase.items.weapon.melee.MCPickAxe;
+import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.Spade;
 import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
 import com.wafitz.pixelspacebase.items.weapon.missiles.CurareDart;
 import com.wafitz.pixelspacebase.items.weapon.missiles.HunterJavelin;
 import com.wafitz.pixelspacebase.items.weapon.missiles.IncendiaryDart;
+import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Nanobots;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Shuriken;
 import com.wafitz.pixelspacebase.levels.LastWorkshopLevel;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
-import com.wafitz.pixelspacebase.mines.Mine;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -132,12 +134,12 @@ public class Workshop extends Painter {
     }
 
     public static void carryStockFrom(Level level) {
-        if (level == null || level.heaps == null || !Dungeon.workshopOnLevel()) {
+        if (level == null || level.heaps == null || !SpacebaseRun.workshopOnLevel()) {
             return;
         }
 
-        prepareCarriedStock(Dungeon.depth);
-        int area = areaForDepth(Dungeon.depth);
+        prepareCarriedStock(SpacebaseRun.depth);
+        int area = areaForDepth(SpacebaseRun.depth);
 
         if (area != storedArea) {
             storedItems = new ArrayList<>();
@@ -185,7 +187,7 @@ public class Workshop extends Painter {
         if (level == null || level.heaps == null || storedItems == null || storedItems.isEmpty()) {
             return;
         }
-        if (storedArea != areaForDepth(Dungeon.depth)) {
+        if (storedArea != areaForDepth(SpacebaseRun.depth)) {
             storedItems.clear();
             return;
         }
@@ -203,7 +205,7 @@ public class Workshop extends Painter {
             for (int cell = 0; cell < storageCells.length; cell++) {
                 if (storageCells[cell]) {
                     Heap heap = new Heap();
-                    heap.seen = Dungeon.visible[cell];
+                    heap.seen = SpacebaseRun.visible[cell];
                     heap.pos = cell;
                     heap.type = Heap.Type.WORKSHOP_STORAGE;
                     level.heaps.put(cell, heap);
@@ -293,11 +295,11 @@ public class Workshop extends Painter {
     }
 
     private static ArrayList<Item> stockForCurrentDepth() {
-        if (stockDepth != Dungeon.depth) {
-            prepareCarriedStock(Dungeon.depth);
+        if (stockDepth != SpacebaseRun.depth) {
+            prepareCarriedStock(SpacebaseRun.depth);
             generateItems();
             itemsToSpawn.addAll(0, carriedStock);
-            stockDepth = Dungeon.depth;
+            stockDepth = SpacebaseRun.depth;
         }
         return itemsToSpawn;
     }
@@ -311,8 +313,8 @@ public class Workshop extends Painter {
     }
 
     private static ArrayList<Item> storageForCurrentDepth() {
-        int area = areaForDepth(Dungeon.depth);
-        if (storedItems == null || storedArea != area || areaStart(Dungeon.depth) && stockDepth != Dungeon.depth) {
+        int area = areaForDepth(SpacebaseRun.depth);
+        if (storedItems == null || storedArea != area || areaStart(SpacebaseRun.depth) && stockDepth != SpacebaseRun.depth) {
             storedItems = new ArrayList<>();
             storedArea = area;
         }
@@ -328,9 +330,9 @@ public class Workshop extends Painter {
     }
 
     private static boolean carriesToNextWorkshop(Item item) {
-        return item instanceof DeviceCase
-                || item instanceof ScriptLibrary
-                || item instanceof XPort
+        return item instanceof OrdnanceKit
+                || item instanceof UtilityKit
+                || item instanceof PlasmidKit
                 || item instanceof BlasterHolster
                 || item instanceof TimeFolder.TimeBattery;
     }
@@ -338,90 +340,61 @@ public class Workshop extends Painter {
     private static void generateItems() {
 
         itemsToSpawn = new ArrayList<>();
+        int makerTier = makerBotTier();
 
-        switch (Dungeon.depth) {
-            case 6:
-                itemsToSpawn.add((Random.Int(2) == 0 ? new Wrench().identify() : new MCPickAxe()).identify());
-                itemsToSpawn.add(Random.Int(2) == 0 ?
-                        new IncendiaryDart().quantity(Random.NormalIntRange(2, 4)) :
-                        new CurareDart().quantity(Random.NormalIntRange(1, 3)));
-                itemsToSpawn.add(new SpaceSuit().identify());
-                break;
-
-            case 11:
-                itemsToSpawn.add((Random.Int(2) == 0 ? new LazerSword().identify() : new Spade()).identify());
-                itemsToSpawn.add(Random.Int(2) == 0 ?
-                        new CurareDart().quantity(Random.NormalIntRange(2, 5)) :
-                        new Shuriken().quantity(Random.NormalIntRange(3, 6)));
-                itemsToSpawn.add(new HunterSpaceSuit().identify());
-                break;
-
-            case 16:
-                itemsToSpawn.add((Random.Int(2) == 0 ? new GnollSword().identify() : new HoloAxe()).identify());
-                itemsToSpawn.add(Random.Int(2) == 0 ?
-                        new Shuriken().quantity(Random.NormalIntRange(4, 7)) :
-                        new HunterJavelin().quantity(Random.NormalIntRange(3, 6)));
-                itemsToSpawn.add(new HoverPod().identify());
-                break;
-
-            case 21:
-                itemsToSpawn.add(Random.Int(2) == 0 ? new DualBlade().identify() : new BrightHammer().identify());
-                itemsToSpawn.add(Random.Int(2) == 0 ?
-                        new HunterJavelin().quantity(Random.NormalIntRange(4, 7)) :
-                        new Nanobots().quantity(Random.NormalIntRange(4, 7)));
-                itemsToSpawn.add(new Loader().identify());
-                itemsToSpawn.add(new Torch());
-                itemsToSpawn.add(new Torch());
-                break;
+        if (makerTier >= 1) {
+            addZoneGear();
         }
 
         itemsToSpawn.add(new PortableRender());
+        ensureSpaceSuitStock();
 
+        ensureBackpackExtensionStock(SpacebaseRun.hero.belongings);
 
-        ChooseContainer(Dungeon.hero.belongings);
+        itemsToSpawn.add(new HealingPlasmid());
 
-
-        itemsToSpawn.add(new HealingTech());
-        for (int i = 0; i < 2; i++)
-            itemsToSpawn.add(Generator.random(Generator.Category.EXPERIMENTALTECH));
-
-        itemsToSpawn.add(new IdentifyScript());
-        itemsToSpawn.add(new FixScript());
-        itemsToSpawn.add(new MappingScript());
-        itemsToSpawn.add(Generator.random(Generator.Category.SCRIPT));
+        itemsToSpawn.add(new DiagnosticScanUpgrade());
 
         itemsToSpawn.add(new SynthesizedFood());
         itemsToSpawn.add(new SynthesizedFood());
+        itemsToSpawn.add(new Torch());
+        itemsToSpawn.add(new TorchBattery());
 
-        itemsToSpawn.add(new Bomb().random());
-        switch (Random.Int(5)) {
-            case 1:
-                itemsToSpawn.add(new Bomb());
-                break;
-            case 2:
-                itemsToSpawn.add(new Bomb().random());
-                break;
-            case 3:
-            case 4:
-                itemsToSpawn.add(new DroneController());
-                break;
+        if (makerTier >= 1) {
+            itemsToSpawn.add(new RepairUpgrade());
+            itemsToSpawn.add(new MappingUpgrade());
+            itemsToSpawn.add(Generator.random(Generator.Category.PLASMID));
         }
 
-
-        if (Dungeon.depth == 6) {
-            itemsToSpawn.add(new Clone());
-            itemsToSpawn.add(new WeaponTuner());
-        } else {
+        if (makerTier >= 2) {
+            itemsToSpawn.add(new Bomb().random());
+            switch (Random.Int(5)) {
+                case 1:
+                    itemsToSpawn.add(new Bomb());
+                    break;
+                case 2:
+                    itemsToSpawn.add(new Bomb().random());
+                    break;
+                case 3:
+                case 4:
+                    itemsToSpawn.add(new DroneController());
+                    break;
+            }
             itemsToSpawn.add(Random.Int(2) == 0 ? new Clone() : new WeaponTuner());
         }
 
+        if (makerTier >= 3) {
+            itemsToSpawn.add(Generator.random(Generator.Category.UPGRADE));
+            itemsToSpawn.add(Generator.random(Generator.Category.PLASMID));
+            itemsToSpawn.add(rareWorkshopItem(false));
+        }
 
-        TimeFolder hourglass = Dungeon.hero.belongings.getItem(TimeFolder.class);
+        TimeFolder hourglass = SpacebaseRun.hero.belongings.getItem(TimeFolder.class);
         if (hourglass != null) {
             int containers = 0;
             //creates the given float percent of the remaining containers to be dropped.
             //this way players who get the hourglass late can still max it, usually.
-            switch (Dungeon.depth) {
+            switch (SpacebaseRun.depth) {
                 case 6:
                     containers = (int) Math.ceil((5 - hourglass.TimeBatteries) * 0.20f);
                     break;
@@ -442,24 +415,14 @@ public class Workshop extends Painter {
             }
         }
 
-        Item rare;
-        switch (Random.Int(10)) {
-            case 0:
-                rare = Generator.random(Generator.Category.BLASTER);
-                rare.level(0);
-                break;
-            case 1:
-                rare = Generator.random(Generator.Category.MODULE);
-                rare.level(1);
-                break;
-            case 2:
-                rare = Generator.random(Generator.Category.ARTIFACT).identify();
-                break;
-            default:
-                rare = new EnhancementChip();
+        if (makerTier >= 4) {
+            itemsToSpawn.add(new Clone());
+            itemsToSpawn.add(new WeaponTuner());
+            itemsToSpawn.add(rareWorkshopItem(false));
+            itemsToSpawn.add(new TorchBattery().quantity(2));
+        } else if (rareSurpriseChance(makerTier)) {
+            itemsToSpawn.add(rareWorkshopItem(true));
         }
-        rare.malfunctioning = rare.malfunctioningKnown = false;
-        itemsToSpawn.add(rare);
 
         //this is a hard limit, level gen allows for at most an 8x5 room, can't fit more than 39 items + 1 shopkeeper.
         if (itemsToSpawn.size() > 39)
@@ -468,40 +431,154 @@ public class Workshop extends Painter {
         Collections.shuffle(itemsToSpawn);
     }
 
-    private static void ChooseContainer(Belongings pack) {
+    private static int makerBotTier() {
+        return Math.min(4, areaForDepth(SpacebaseRun.depth));
+    }
 
-        int devices = 0, scripts = 0, experimentaltech = 0, blasters = 0;
+    private static int zoneItemLevel() {
+        return Math.max(0, areaForDepth(SpacebaseRun.depth) - 1);
+    }
 
-        //count up items in the main bag, for containers which haven't yet been dropped.
-        for (Item item : pack.backpack.items) {
-            if (!Dungeon.limitedDrops.deviceCase.dropped() && item instanceof Mine.Device)
-                devices++;
-            else if (!Dungeon.limitedDrops.scriptContainer.dropped() && item instanceof Script)
-                scripts++;
-            else if (!Dungeon.limitedDrops.xPort.dropped() && item instanceof ExperimentalTech)
-                experimentaltech++;
-            else if (!Dungeon.limitedDrops.blasterHolster.dropped() && item instanceof Blaster)
-                blasters++;
+    private static void addZoneGear() {
+        switch (areaForDepth(SpacebaseRun.depth)) {
+            case 1:
+                itemsToSpawn.add(scaleZoneItem(Random.Int(2) == 0 ? new Wrench().identify() : new MCPickAxe().identify()));
+                itemsToSpawn.add(Random.Int(2) == 0 ?
+                        new IncendiaryDart().quantity(Random.NormalIntRange(2, 4)) :
+                        new CurareDart().quantity(Random.NormalIntRange(1, 3)));
+                break;
+            case 2:
+                itemsToSpawn.add(scaleZoneItem(Random.Int(2) == 0 ? new LazerSword().identify() : new Spade().identify()));
+                itemsToSpawn.add(Random.Int(2) == 0 ?
+                        new CurareDart().quantity(Random.NormalIntRange(2, 5)) :
+                        new Shuriken().quantity(Random.NormalIntRange(3, 6)));
+                break;
+            case 3:
+                itemsToSpawn.add(scaleZoneItem(Random.Int(2) == 0 ? new RaiderBlade().identify() : new HoloAxe().identify()));
+                itemsToSpawn.add(Random.Int(2) == 0 ?
+                        new Shuriken().quantity(Random.NormalIntRange(4, 7)) :
+                        new HunterJavelin().quantity(Random.NormalIntRange(3, 6)));
+                itemsToSpawn.add(scaleZoneItem(new HoverPod().identify()));
+                break;
+            default:
+                itemsToSpawn.add(scaleZoneItem(Random.Int(2) == 0 ? new DualBlade().identify() : new BrightHammer().identify()));
+                itemsToSpawn.add(Random.Int(2) == 0 ?
+                        new HunterJavelin().quantity(Random.NormalIntRange(4, 7)) :
+                        new Nanobots().quantity(Random.NormalIntRange(4, 7)));
+                itemsToSpawn.add(scaleZoneItem(new Loader().identify()));
+                break;
+        }
+    }
+
+    private static boolean rareSurpriseChance(int makerTier) {
+        switch (makerTier) {
+            case 0:
+                return Random.Int(12) == 0;
+            case 1:
+                return Random.Int(8) == 0;
+            case 2:
+                return Random.Int(6) == 0;
+            default:
+                return false;
+        }
+    }
+
+    private static Item rareWorkshopItem(boolean highStrength) {
+        Item rare;
+        switch (Random.Int(10)) {
+            case 0:
+                rare = Generator.random(Generator.Category.BLASTER);
+                break;
+            case 1:
+                rare = Generator.random(Generator.Category.MODULE);
+                break;
+            case 2:
+                rare = Generator.random(Generator.Category.EQUIPPABLE_MODULE).identify();
+                break;
+            default:
+                rare = new EnhancementChip();
+        }
+        rare.malfunctioning = rare.malfunctioningKnown = false;
+        return highStrength ? scaleZoneItem(rare, zoneItemLevel() + 1) : scaleZoneItem(rare);
+    }
+
+    private static Item scaleZoneItem(Item item) {
+        return scaleZoneItem(item, zoneItemLevel());
+    }
+
+    private static Item scaleZoneItem(Item item, int level) {
+        if (level > 0 && scalesWithZone(item)) {
+            item.level(Math.max(item.level(), level));
+        }
+        item.malfunctioning = item.malfunctioningKnown = false;
+        return item;
+    }
+
+    private static boolean scalesWithZone(Item item) {
+        return item instanceof Armor
+                || item instanceof Blaster
+                || item instanceof MeleeWeapon
+                || item instanceof MissileWeapon
+                || item instanceof EquippableModule;
+    }
+
+    private static void ensureSpaceSuitStock() {
+        for (Item item : itemsToSpawn) {
+            if (item instanceof SpaceSuit || item instanceof HunterSpaceSuit) {
+                return;
+            }
         }
 
-        //then pick whichever valid bag has the most items available to put into it.
-        //note that the order here gives a perference if counts are otherwise equal
-        if (devices >= scripts && devices >= experimentaltech && devices >= blasters && !Dungeon.limitedDrops.deviceCase.dropped()) {
-            Dungeon.limitedDrops.deviceCase.drop();
-            itemsToSpawn.add(new DeviceCase());
+        if (SpacebaseRun.depth >= 11) {
+            itemsToSpawn.add(new HunterSpaceSuit().identify());
+        } else {
+            itemsToSpawn.add(new SpaceSuit().identify());
+        }
+    }
 
-        } else if (scripts >= experimentaltech && scripts >= blasters && !Dungeon.limitedDrops.scriptContainer.dropped()) {
-            Dungeon.limitedDrops.scriptContainer.drop();
-            itemsToSpawn.add(new ScriptLibrary());
+    private static void ensureBackpackExtensionStock(Belongings belongings) {
+        if (hasPendingBackpackExtension()) {
+            return;
+        }
 
-        } else if (experimentaltech >= blasters && !Dungeon.limitedDrops.xPort.dropped()) {
-            Dungeon.limitedDrops.xPort.drop();
-            itemsToSpawn.add(new XPort());
-
-        } else if (!Dungeon.limitedDrops.blasterHolster.dropped()) {
-            Dungeon.limitedDrops.blasterHolster.drop();
+        if (!hasBackpackExtension(belongings, OrdnanceKit.class)) {
+            SpacebaseRun.limitedDrops.ordnanceKit.drop();
+            itemsToSpawn.add(new OrdnanceKit());
+        } else if (!hasBackpackExtension(belongings, UtilityKit.class)) {
+            SpacebaseRun.limitedDrops.utilityKit.drop();
+            itemsToSpawn.add(new UtilityKit());
+        } else if (!hasBackpackExtension(belongings, PlasmidKit.class)) {
+            SpacebaseRun.limitedDrops.plasmidKit.drop();
+            itemsToSpawn.add(new PlasmidKit());
+        } else if (!hasBackpackExtension(belongings, BlasterHolster.class)) {
+            SpacebaseRun.limitedDrops.blasterHolster.drop();
             itemsToSpawn.add(new BlasterHolster());
         }
+    }
+
+    private static boolean hasPendingBackpackExtension() {
+        if (carriedStock == null) {
+            return false;
+        }
+
+        for (Item item : carriedStock) {
+            if (isBackpackExtension(item)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean isBackpackExtension(Item item) {
+        return item instanceof OrdnanceKit
+                || item instanceof UtilityKit
+                || item instanceof PlasmidKit
+                || item instanceof BlasterHolster;
+    }
+
+    private static boolean hasBackpackExtension(Belongings belongings, Class<? extends Item> type) {
+        return belongings.getItem(type) != null;
     }
 
     public static int spaceNeeded() {
@@ -603,7 +680,7 @@ public class Workshop extends Painter {
             Heap heap = level.heaps.get(cell);
             if (heap == null) {
                 heap = new Heap();
-                heap.seen = Dungeon.visible[cell];
+                heap.seen = SpacebaseRun.visible[cell];
                 heap.pos = cell;
                 heap.type = Heap.Type.WORKSHOP_STORAGE;
                 level.heaps.put(cell, heap);
@@ -624,7 +701,7 @@ public class Workshop extends Painter {
         Heap heap = level.heaps.get(cell);
         if (heap == null) {
             heap = new Heap();
-            heap.seen = Dungeon.visible[cell];
+            heap.seen = SpacebaseRun.visible[cell];
             heap.pos = cell;
             heap.type = Heap.Type.WORKSHOP_UPGRADE;
             level.heaps.put(cell, heap);
@@ -636,8 +713,27 @@ public class Workshop extends Painter {
 
     private static void trimStockToFit(int maxItems) {
         while (itemsToSpawn.size() > maxItems) {
-            itemsToSpawn.remove(itemsToSpawn.size() - 1);
+            int index = lastNonEssentialStockIndex();
+            if (index == -1) {
+                index = itemsToSpawn.size() - 1;
+            }
+            itemsToSpawn.remove(index);
         }
+    }
+
+    private static int lastNonEssentialStockIndex() {
+        for (int i = itemsToSpawn.size() - 1; i >= 0; i--) {
+            if (!isEssentialStock(itemsToSpawn.get(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static boolean isEssentialStock(Item item) {
+        return isBackpackExtension(item)
+                || item instanceof SpaceSuit
+                || item instanceof HunterSpaceSuit;
     }
 
     private static boolean contains(int[] cells, int cell) {

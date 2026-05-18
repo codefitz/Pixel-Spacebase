@@ -21,8 +21,8 @@ package com.wafitz.pixelspacebase.levels;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Challenges;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
@@ -41,29 +41,31 @@ import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.particles.FlowParticle;
 import com.wafitz.pixelspacebase.effects.particles.WindParticle;
-import com.wafitz.pixelspacebase.items.Dewdrop;
+import com.wafitz.pixelspacebase.items.MedigelDroplet;
 import com.wafitz.pixelspacebase.items.EnhancementChip;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.TitanPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Torch;
+import com.wafitz.pixelspacebase.items.TorchBattery;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.TechToolkit;
-import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
-import com.wafitz.pixelspacebase.items.containers.DeviceCase;
-import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
+import com.wafitz.pixelspacebase.items.equippablemodules.HoloPad;
+import com.wafitz.pixelspacebase.items.equippablemodules.TechToolkit;
+import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
+import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
+import com.wafitz.pixelspacebase.items.containers.UtilityKit;
 import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
-import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
-import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
+import com.wafitz.pixelspacebase.items.upgrades.EnhancementUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
+import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.Door;
+import com.wafitz.pixelspacebase.levels.features.FloorBreaker;
 import com.wafitz.pixelspacebase.levels.features.OffVent;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
@@ -112,8 +114,9 @@ public abstract class Level implements Bundlable {
     public int[] map;
     public boolean[] visited;
     public boolean[] mapped;
+    public boolean[] vacuum;
 
-    public int viewDistance = Dungeon.isChallenged(Challenges.DARKNESS) ? 3 : 8;
+    public int viewDistance = SpacebaseRun.isChallenged(Challenges.DARKNESS) ? 3 : 8;
 
     //FIXME should not be static!
     public static boolean[] fieldOfView;
@@ -130,6 +133,7 @@ public abstract class Level implements Bundlable {
     public static boolean[] discoverable;
 
     public Feeling feeling = Feeling.NONE;
+    public boolean floorBreakerOn = true;
 
     public int entrance;
     public int exit;
@@ -159,6 +163,7 @@ public abstract class Level implements Bundlable {
     private static final String MAP = "map";
     private static final String VISITED = "visited";
     private static final String MAPPED = "mapped";
+    private static final String VACUUM = "vacuum";
     private static final String ENTRANCE = "entrance";
     private static final String EXIT = "exit";
     private static final String LOCKED = "locked";
@@ -169,10 +174,11 @@ public abstract class Level implements Bundlable {
     private static final String MOBS = "mobs";
     private static final String BLOBS = "blobs";
     private static final String FEELING = "feeling";
+    private static final String FLOOR_BREAKER_ON = "floorBreakerOn";
 
     public void create() {
 
-        Random.seed(Dungeon.seedCurDepth());
+        Random.seed(SpacebaseRun.seedCurDepth());
 
         setupSize();
         PathFinder.setMapSize(width(), height());
@@ -190,37 +196,39 @@ public abstract class Level implements Bundlable {
         Arrays.fill(visited, false);
         mapped = new boolean[length()];
         Arrays.fill(mapped, false);
+        vacuum = new boolean[length()];
+        Arrays.fill(vacuum, false);
 
-        if (!(Dungeon.bossLevel() || Dungeon.depth == 21) /*final shop floor*/) {
+        if (!(SpacebaseRun.bossLevel() || SpacebaseRun.depth == 21) /*final shop floor*/) {
             addItemToSpawn(Generator.random(Generator.Category.FOOD));
 
-            int bonus = TechModule.getBonus(Dungeon.hero, TechModule.Wealth.class);
+            int bonus = TechModule.getBonus(SpacebaseRun.hero, TechModule.Wealth.class);
 
-            if (Dungeon.posNeeded()) {
+            if (SpacebaseRun.posNeeded()) {
                 if (Random.Float() > Math.pow(0.925, bonus))
-                    addItemToSpawn(new PowerUpgrade());
+                    addItemToSpawn(new TitanPlasmid());
                 else
-                    addItemToSpawn(new StrengthUpgrade());
-                Dungeon.limitedDrops.strengthTech.count++;
+                    addItemToSpawn(new MyoFiberPlasmid());
+                SpacebaseRun.limitedDrops.strengthTech.count++;
             }
-            if (Dungeon.souNeeded()) {
+            if (SpacebaseRun.souNeeded()) {
                 if (Random.Float() > Math.pow(0.925, bonus))
-                    addItemToSpawn(new EnhancementScript());
+                    addItemToSpawn(new EnhancementUpgrade());
                 else
-                    addItemToSpawn(new UpgradeScript());
-                Dungeon.limitedDrops.upgradeScripts.count++;
+                    addItemToSpawn(new UpgradePatch());
+                SpacebaseRun.limitedDrops.upgradeDrops.count++;
             }
-            if (Dungeon.asNeeded()) {
+            if (SpacebaseRun.asNeeded()) {
                 if (Random.Float() > Math.pow(0.925, bonus))
                     addItemToSpawn(new EnhancementChip());
                 addItemToSpawn(new EnhancementChip());
-                Dungeon.limitedDrops.arcaneStyli.count++;
+                SpacebaseRun.limitedDrops.arcaneStyli.count++;
             }
 
-            HoloPad holopad = Dungeon.hero.belongings.getItem(HoloPad.class);
+            HoloPad holopad = SpacebaseRun.hero.belongings.getItem(HoloPad.class);
             if (holopad != null && !holopad.malfunctioning) {
                 //this way if a holopad is dropped later in the game, player still has a chance to max it out.
-                int holoBatteriesNeeded = (int) Math.ceil((float) ((Dungeon.depth / 2) - holopad.droppedHoloBatteries) / 3);
+                int holoBatteriesNeeded = (int) Math.ceil((float) ((SpacebaseRun.depth / 2) - holopad.droppedHoloBatteries) / 3);
 
                 for (int i = 1; i <= holoBatteriesNeeded; i++) {
                     //the player may miss a single petal and still max their holopad.
@@ -231,10 +239,14 @@ public abstract class Level implements Bundlable {
                 }
             }
 
-            if (Dungeon.depth > 1) {
+            if (SpacebaseRun.depth > 1) {
+                if (Random.Int(4) == 0) {
+                    addItemToSpawn(new TorchBattery());
+                }
+
                 switch (Random.Int(10)) {
                     case 0:
-                        if (!Dungeon.bossLevel(Dungeon.depth + 1)) {
+                        if (!SpacebaseRun.bossLevel(SpacebaseRun.depth + 1)) {
                             feeling = Feeling.CHASM;
                         }
                         break;
@@ -246,14 +258,17 @@ public abstract class Level implements Bundlable {
                         break;
                     case 3:
                         feeling = Feeling.DARK;
-                        addItemToSpawn(new Torch());
+                        if (SpacebaseRun.hero.belongings.getItem(Torch.class) == null) {
+                            addItemToSpawn(new Torch());
+                        }
+                        addItemToSpawn(new TorchBattery());
                         viewDistance = (int) Math.ceil(viewDistance / 3f);
                         break;
                 }
             }
         }
 
-        boolean pitNeeded = Dungeon.depth > 1 && weakFloorCreated;
+        boolean pitNeeded = SpacebaseRun.depth > 1 && weakFloorCreated;
 
         do {
             Arrays.fill(map, feeling == Feeling.CHASM ? Terrain.CHASM : Terrain.WALL);
@@ -267,6 +282,8 @@ public abstract class Level implements Bundlable {
             mines = new SparseArray<>();
             vents = new SparseArray<>();
             customTiles = new HashSet<>();
+
+            floorBreakerOn = feeling != Feeling.DARK;
 
         } while (!build());
         decorate();
@@ -283,7 +300,7 @@ public abstract class Level implements Bundlable {
     // Randomised Level Sizing
     protected void setupSize() {
         if (width == 0 || height == 0) {
-            if (Dungeon.bossLevel()) {
+            if (SpacebaseRun.bossLevel()) {
                 width = height = 32; // Default
             } else {
                 width = Random.Int(16, 52);
@@ -328,6 +345,15 @@ public abstract class Level implements Bundlable {
 
         visited = bundle.getBooleanArray(VISITED);
         mapped = bundle.getBooleanArray(MAPPED);
+        boolean hasStoredVacuum = bundle.contains(VACUUM);
+        vacuum = hasStoredVacuum ? bundle.getBooleanArray(VACUUM) : new boolean[length()];
+        if (vacuum == null || vacuum.length != length()) {
+            vacuum = new boolean[length()];
+            hasStoredVacuum = false;
+        }
+        if (!hasStoredVacuum || !hasAnyVacuum()) {
+            rebuildVacuumFromTerrain();
+        }
 
         entrance = bundle.getInt(ENTRANCE);
         exit = bundle.getInt(EXIT);
@@ -386,6 +412,9 @@ public abstract class Level implements Bundlable {
         }
 
         feeling = bundle.getEnum(FEELING, Feeling.class);
+        floorBreakerOn = bundle.contains(FLOOR_BREAKER_ON)
+                ? bundle.getBoolean(FLOOR_BREAKER_ON)
+                : feeling != Feeling.DARK;
         if (feeling == Feeling.DARK)
             viewDistance = (int) Math.ceil(viewDistance / 3f);
 
@@ -401,6 +430,7 @@ public abstract class Level implements Bundlable {
         bundle.put(MAP, map);
         bundle.put(VISITED, visited);
         bundle.put(MAPPED, mapped);
+        bundle.put(VACUUM, vacuum);
         bundle.put(ENTRANCE, entrance);
         bundle.put(EXIT, exit);
         bundle.put(LOCKED, locked);
@@ -411,10 +441,82 @@ public abstract class Level implements Bundlable {
         bundle.put(MOBS, mobs);
         bundle.put(BLOBS, blobs.values());
         bundle.put(FEELING, feeling);
+        bundle.put(FLOOR_BREAKER_ON, floorBreakerOn);
     }
 
     public int tunnelTile() {
         return feeling == Feeling.CHASM ? Terrain.EMPTY_SP : Terrain.EMPTY;
+    }
+
+    public void setVacuum(int cell) {
+        if (vacuum != null && insideMap(cell)) {
+            vacuum[cell] = true;
+        }
+    }
+
+    public boolean isVacuum(int cell) {
+        if (vacuum == null || !insideMap(cell)) {
+            return false;
+        }
+        if (!vacuum[cell] && isExposedBridgeCell(cell)) {
+            vacuum[cell] = true;
+        }
+        return vacuum[cell];
+    }
+
+    private boolean hasAnyVacuum() {
+        if (vacuum == null) {
+            return false;
+        }
+        for (boolean cell : vacuum) {
+            if (cell) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void rebuildVacuumFromTerrain() {
+        if (vacuum == null || map == null) {
+            return;
+        }
+        for (int cell = 0; cell < map.length; cell++) {
+            if (isExposedBridgeCell(cell)) {
+                vacuum[cell] = true;
+            }
+        }
+    }
+
+    private boolean isExposedBridgeCell(int cell) {
+        if (map[cell] != Terrain.EMPTY_SP) {
+            return false;
+        }
+
+        int x = cell % width();
+        int y = cell / width();
+        if (x <= 0 || y <= 0 || x >= width() - 1 || y >= height() - 1) {
+            return false;
+        }
+
+        boolean left = isVacuumBackedTerrain(cell - 1);
+        boolean right = isVacuumBackedTerrain(cell + 1);
+        boolean up = isVacuumBackedTerrain(cell - width());
+        boolean down = isVacuumBackedTerrain(cell + width());
+
+        return left && right || up && down || exposedSideCount(left, right, up, down) >= 2;
+    }
+
+    private boolean isVacuumBackedTerrain(int cell) {
+        return insideMap(cell) && map[cell] == Terrain.CHASM;
+    }
+
+    private int exposedSideCount(boolean left, boolean right, boolean up, boolean down) {
+        int count = 0;
+        if (left) count++;
+        if (right) count++;
+        if (up) count++;
+        if (down) count++;
+        return count;
     }
 
     public int width() {
@@ -454,7 +556,7 @@ public abstract class Level implements Bundlable {
     public void seal() {
         if (!locked) {
             locked = true;
-            Buff.affect(Dungeon.hero, LockedFloor.class);
+            Buff.affect(SpacebaseRun.hero, LockedFloor.class);
         }
     }
 
@@ -505,19 +607,19 @@ public abstract class Level implements Bundlable {
             protected boolean act() {
                 if (mobs.size() < nMobs()) {
 
-                    Mob mob = Bestiary.mutable(Dungeon.depth);
+                    Mob mob = Bestiary.mutable(SpacebaseRun.depth);
                     if (mob != null) {
                         mob.state = mob.WANDERING;
                     }
                     mob.pos = randomRespawnCell();
-                    if (Dungeon.hero.isAlive() && mob.pos != -1 && distance(Dungeon.hero.pos, mob.pos) >= 4) {
+                    if (SpacebaseRun.hero.isAlive() && mob.pos != -1 && distance(SpacebaseRun.hero.pos, mob.pos) >= 4) {
                         GameScene.add(mob);
                         if (Statistics.amuletObtained) {
-                            mob.beckon(Dungeon.hero.pos);
+                            mob.beckon(SpacebaseRun.hero.pos);
                         }
                     }
                 }
-                spend(Dungeon.level.feeling == Feeling.DARK || Statistics.amuletObtained ? TIME_TO_RESPAWN / 2 : TIME_TO_RESPAWN);
+                spend(SpacebaseRun.level.feeling == Feeling.DARK || Statistics.amuletObtained ? TIME_TO_RESPAWN / 2 : TIME_TO_RESPAWN);
                 return true;
             }
         };
@@ -527,7 +629,7 @@ public abstract class Level implements Bundlable {
         int cell;
         do {
             cell = Random.Int(length());
-        } while (!passable[cell] || Dungeon.visible[cell] || Actor.findChar(cell) != null);
+        } while (!passable[cell] || SpacebaseRun.visible[cell] || Actor.findChar(cell) != null);
         return cell;
     }
 
@@ -607,7 +709,7 @@ public abstract class Level implements Bundlable {
 
     public void destroy(int pos) {
 
-        if (!DungeonTilemap.waterStitcheable.contains(map[pos])) {
+        if (!SpacebaseTilemap.waterStitcheable.contains(map[pos])) {
             for (int j = 0; j < PathFinder.NEIGHBOURS4.length; j++) {
                 if (water[pos + PathFinder.NEIGHBOURS4[j]]) {
                     set(pos, Terrain.WATER);
@@ -651,10 +753,10 @@ public abstract class Level implements Bundlable {
     }
 
     public static void set(int cell, int terrain) {
-        Painter.set(Dungeon.level, cell, terrain);
+        Painter.set(SpacebaseRun.level, cell, terrain);
 
         if (terrain != Terrain.VENT && terrain != Terrain.HIDDEN_VENT && terrain != Terrain.INACTIVE_VENT) {
-            Dungeon.level.vents.remove(cell);
+            SpacebaseRun.level.vents.remove(cell);
         }
 
         int flags = Terrain.flags[terrain];
@@ -671,11 +773,11 @@ public abstract class Level implements Bundlable {
     public Heap drop(Item item, int cell) {
 
         //This messy if statement deals will items which should not drop in challenges primarily.
-        if ((Dungeon.isChallenged(Challenges.NO_FOOD) && (item instanceof Food || item instanceof AlienEgg.Device)) ||
-                (Dungeon.isChallenged(Challenges.NO_ARMOR) && item instanceof Armor) ||
-                (Dungeon.isChallenged(Challenges.NO_HEALING) && item instanceof HealingTech) ||
-                (Dungeon.isChallenged(Challenges.NO_HERBALISM) && (item instanceof Mine.Device || item instanceof Dewdrop || item instanceof DeviceCase)) ||
-                (Dungeon.isChallenged(Challenges.NO_SCRIPTS) && ((item instanceof Script && !(item instanceof UpgradeScript || item instanceof EnhancementScript)) || item instanceof ScriptLibrary)) ||
+        if ((SpacebaseRun.isChallenged(Challenges.NO_FOOD) && (item instanceof Food || item instanceof AlienEgg.Device)) ||
+                (SpacebaseRun.isChallenged(Challenges.NO_ARMOR) && item instanceof Armor) ||
+                (SpacebaseRun.isChallenged(Challenges.NO_HEALING) && item instanceof HealingPlasmid) ||
+                (SpacebaseRun.isChallenged(Challenges.NO_HERBALISM) && (item instanceof Mine.Device || item instanceof MedigelDroplet || item instanceof OrdnanceKit)) ||
+                (SpacebaseRun.isChallenged(Challenges.NO_UPGRADES) && ((item instanceof Upgrade && !(item instanceof UpgradePatch || item instanceof EnhancementUpgrade)) || item instanceof UtilityKit)) ||
                 item == null) {
 
             //create a dummy heap, give it a dummy sprite, don't add it to the game, and return it.
@@ -690,8 +792,8 @@ public abstract class Level implements Bundlable {
         if ((map[cell] == Terrain.CRAFTING) && (
                 !(item instanceof Mine.Device || item instanceof AlienPod) ||
                         item instanceof AlienEgg.Device ||
-                        (item instanceof AlienPod && (((AlienPod) item).experimentalTechAttrib != null || heaps.get(cell) != null)) ||
-                        Dungeon.hero.buff(TechToolkit.crafting.class) != null && Dungeon.hero.buff(TechToolkit.crafting.class).isMalfunctioning())) {
+                        (item instanceof AlienPod && (((AlienPod) item).plasmidAttrib != null || heaps.get(cell) != null)) ||
+                        SpacebaseRun.hero.buff(TechToolkit.crafting.class) != null && SpacebaseRun.hero.buff(TechToolkit.crafting.class).isMalfunctioning())) {
             int n;
             do {
                 n = cell + PathFinder.NEIGHBOURS8[Random.Int(8)];
@@ -703,10 +805,10 @@ public abstract class Level implements Bundlable {
         if (heap == null) {
 
             heap = new Heap();
-            heap.seen = Dungeon.visible[cell];
+            heap.seen = SpacebaseRun.visible[cell];
             heap.pos = cell;
-            if (map[cell] == Terrain.CHASM || (Dungeon.level != null && pit[cell])) {
-                Dungeon.dropToChasm(item);
+            if (map[cell] == Terrain.CHASM || (SpacebaseRun.level != null && pit[cell])) {
+                SpacebaseRun.dropToChasm(item);
                 GameScene.discard(heap);
             } else {
                 heaps.put(cell, heap);
@@ -724,7 +826,7 @@ public abstract class Level implements Bundlable {
         }
         heap.drop(item);
 
-        if (Dungeon.level != null) {
+        if (SpacebaseRun.level != null) {
             press(cell, null);
         }
 
@@ -739,11 +841,11 @@ public abstract class Level implements Bundlable {
         }
 
         if (map[pos] == Terrain.OFFVENT ||
+                map[pos] == Terrain.LIGHTEDVENT ||
                 map[pos] == Terrain.EMPTY ||
                 map[pos] == Terrain.EMBERS ||
                 map[pos] == Terrain.EMPTY_DECO) {
-            map[pos] = Terrain.LIGHTEDVENT;
-            flamable[pos] = true;
+            set(pos, Terrain.INACTIVE_VENT);
         }
 
         mine = device.couch(pos);
@@ -791,7 +893,7 @@ public abstract class Level implements Bundlable {
     public void press(int cell, Char ch) {
 
         if (ch != null && pit[cell] && !ch.flying) {
-            if (ch == Dungeon.hero) {
+            if (ch == SpacebaseRun.hero) {
                 Chasm.heroFall(cell);
             } else if (ch instanceof Mob) {
                 Chasm.mobFall((Mob) ch);
@@ -814,6 +916,7 @@ public abstract class Level implements Bundlable {
                 break;
 
             case Terrain.WELL:
+            case Terrain.HEALING_TANK:
                 WellWater.affectCell(cell);
                 break;
 
@@ -823,18 +926,24 @@ public abstract class Level implements Bundlable {
                 }
                 break;
 
+            case Terrain.BREAKER:
+                if (ch == SpacebaseRun.hero) {
+                    FloorBreaker.operate(cell);
+                }
+                break;
+
             case Terrain.DOOR:
                 Door.enter(cell);
                 break;
         }
 
-        TimeFolder.timeFreeze timeFreeze = Dungeon.hero.buff(TimeFolder.timeFreeze.class);
+        TimeFolder.timeFreeze timeFreeze = SpacebaseRun.hero.buff(TimeFolder.timeFreeze.class);
 
         if (vent != null) {
             if (timeFreeze == null) {
 
-                if (ch == Dungeon.hero)
-                    Dungeon.hero.interrupt();
+                if (ch == SpacebaseRun.hero)
+                    SpacebaseRun.hero.interrupt();
 
                 vent.mine();
 
@@ -905,7 +1014,7 @@ public abstract class Level implements Bundlable {
 
         int sense = 1;
         //Currently only the hero can get mind vision
-        if (c.isAlive() && c == Dungeon.hero) {
+        if (c.isAlive() && c == SpacebaseRun.hero) {
             for (Buff b : c.buffs(IntruderAlert.class)) {
                 sense = Math.max(((IntruderAlert) b).distance, sense);
             }
@@ -926,14 +1035,14 @@ public abstract class Level implements Bundlable {
         }
 
         //Currently only the hero can get mind vision or awareness
-        if (c.isAlive() && c == Dungeon.hero) {
-            Dungeon.hero.mindVisionEnemies.clear();
+        if (c.isAlive() && c == SpacebaseRun.hero) {
+            SpacebaseRun.hero.mindVisionEnemies.clear();
             if (c.buff(IntruderAlert.class) != null) {
                 for (Mob mob : mobs) {
                     int p = mob.pos;
 
                     if (!fieldOfView[p]) {
-                        Dungeon.hero.mindVisionEnemies.add(mob);
+                        SpacebaseRun.hero.mindVisionEnemies.add(mob);
                     }
                     for (int i : PathFinder.NEIGHBOURS9)
                         fieldOfView[p + i] = true;
@@ -945,7 +1054,7 @@ public abstract class Level implements Bundlable {
                     if (distance(c.pos, p) == 2) {
 
                         if (!fieldOfView[p]) {
-                            Dungeon.hero.mindVisionEnemies.add(mob);
+                            SpacebaseRun.hero.mindVisionEnemies.add(mob);
                         }
                         for (int i : PathFinder.NEIGHBOURS9)
                             fieldOfView[p + i] = true;
@@ -961,12 +1070,18 @@ public abstract class Level implements Bundlable {
             }
         }
 
-        if (c == Dungeon.hero) {
+        if (c == SpacebaseRun.hero) {
+            if (floorBreakerOn) {
+                lightCurrentRoom(c.pos, fieldOfView);
+            }
             for (Heap heap : heaps.values())
                 if (!heap.seen && fieldOfView[heap.pos])
                     heap.seen = true;
         }
 
+    }
+
+    protected void lightCurrentRoom(int cell, boolean[] fieldOfView) {
     }
 
     public int distance(int a, int b) {
@@ -1007,6 +1122,8 @@ public abstract class Level implements Bundlable {
             case Terrain.EMPTY_DECO:
             case Terrain.HIDDEN_VENT:
                 return Messages.get(Level.class, "floor_name");
+            case Terrain.BREAKER:
+                return Messages.get(Level.class, "breaker_name");
             case Terrain.LIGHTEDVENT:
                 return Messages.get(Level.class, "lightedvent_name");
             case Terrain.WATER:
@@ -1041,6 +1158,8 @@ public abstract class Level implements Bundlable {
                 return Messages.get(Level.class, "sign_name");
             case Terrain.WELL:
                 return Messages.get(Level.class, "well_name");
+            case Terrain.HEALING_TANK:
+                return Messages.get(Level.class, "healing_tank_name");
             case Terrain.EMPTY_WELL:
                 return Messages.get(Level.class, "empty_well_name");
             case Terrain.STATUE:
@@ -1088,6 +1207,12 @@ public abstract class Level implements Bundlable {
                 return Messages.get(Level.class, "statue_desc");
             case Terrain.CRAFTING:
                 return Messages.get(Level.class, "crafting_desc");
+            case Terrain.BREAKER:
+                return SpacebaseRun.level.floorBreakerOn
+                        ? Messages.get(Level.class, "breaker_desc_on")
+                        : Messages.get(Level.class, "breaker_desc_off");
+            case Terrain.HEALING_TANK:
+                return Messages.get(Level.class, "healing_tank_desc");
             case Terrain.EMPTY_WELL:
                 return Messages.get(Level.class, "empty_well_desc");
             default:

@@ -20,12 +20,12 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Upgrade;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceBooster;
+import com.wafitz.pixelspacebase.actors.buffs.CombatFocus;
+import com.wafitz.pixelspacebase.items.plasmids.ExperiencePlasmid;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
@@ -39,20 +39,20 @@ public class AdrenalBoost extends Mine {
     public void activate() {
         Char ch = Actor.findChar(pos);
 
-        if (ch != null) Buff.prolong(ch, Upgrade.class, 30f);
+        if (ch != null) Buff.prolong(ch, CombatFocus.class, 30f);
 
         if (Random.Int(5) == 0) {
-            Dungeon.level.drop(new Device(), pos).sprite.drop();
+            SpacebaseRun.level.drop(new Device(), pos).sprite.drop();
         }
     }
 
-    public static class Device extends Mine.Device {
+    public static class Device extends Mine.StimulantDevice {
 
         {
             image = ItemSpriteSheet.ADRENAL_BOOST;
 
             mineClass = AdrenalBoost.class;
-            craftingClass = ExperienceBooster.class;
+            craftingClass = ExperiencePlasmid.class;
         }
     }
 }

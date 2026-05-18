@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.effects;
 import android.opengl.GLES20;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
@@ -106,8 +106,8 @@ public class Lightning extends Group {
         private PointF start, end;
 
         public Arc(int from, int to) {
-            start = DungeonTilemap.tileCenterToWorld(from);
-            end = DungeonTilemap.tileCenterToWorld(to);
+            start = SpacebaseTilemap.tileCenterToWorld(from);
+            end = SpacebaseTilemap.tileCenterToWorld(to);
 
             arc1 = new Image(Effects.get(Effects.Type.LIGHTNING));
             arc1.x = start.x - arc1.origin.x;

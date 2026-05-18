@@ -28,7 +28,7 @@ public class Statistics {
     public static int deepestFloor;
     public static int enemiesSlain;
     public static int foodEaten;
-    public static int experimentalTechMade;
+    public static int plasmidsMade;
     public static int waterThings;
     public static int nightHunt;
     public static int clonesSpent;
@@ -47,7 +47,7 @@ public class Statistics {
         deepestFloor = 0;
         enemiesSlain = 0;
         foodEaten = 0;
-        experimentalTechMade = 0;
+        plasmidsMade = 0;
         waterThings = 0;
         nightHunt = 0;
         clonesSpent = 0;
@@ -65,12 +65,12 @@ public class Statistics {
     private static final String DEEPEST = "maxDepth";
     private static final String SLAIN = "enemiesSlain";
     private static final String FOOD = "foodEaten";
-    private static final String CRAFTING = "experimentalTechMade";
+    private static final String CRAFTING = "plasmidsMade";
     private static final String WATERTHINGS = "priranhas";
     private static final String NIGHT = "nightHunt";
     private static final String CLONES = "clonesSpent";
     private static final String DURATION = "duration";
-    private static final String AMULET = "amuletObtained";
+    private static final String ESCAPE_POD_OVERRIDE = "amuletObtained";
     private static final String RESCUE_CRADLES = "rescueCradleDepths";
 
     public static void storeInBundle(Bundle bundle) {
@@ -78,12 +78,12 @@ public class Statistics {
         bundle.put(DEEPEST, deepestFloor);
         bundle.put(SLAIN, enemiesSlain);
         bundle.put(FOOD, foodEaten);
-        bundle.put(CRAFTING, experimentalTechMade);
+        bundle.put(CRAFTING, plasmidsMade);
         bundle.put(WATERTHINGS, waterThings);
         bundle.put(NIGHT, nightHunt);
         bundle.put(CLONES, clonesSpent);
         bundle.put(DURATION, duration);
-        bundle.put(AMULET, amuletObtained);
+        bundle.put(ESCAPE_POD_OVERRIDE, amuletObtained);
         bundle.put(RESCUE_CRADLES, rescueCradleDepths);
     }
 
@@ -92,12 +92,12 @@ public class Statistics {
         deepestFloor = bundle.getInt(DEEPEST);
         enemiesSlain = bundle.getInt(SLAIN);
         foodEaten = bundle.getInt(FOOD);
-        experimentalTechMade = bundle.getInt(CRAFTING);
+        plasmidsMade = bundle.getInt(CRAFTING);
         waterThings = bundle.getInt(WATERTHINGS);
         nightHunt = bundle.getInt(NIGHT);
         clonesSpent = bundle.getInt(CLONES);
         duration = bundle.getFloat(DURATION);
-        amuletObtained = bundle.getBoolean(AMULET);
+        amuletObtained = bundle.getBoolean(ESCAPE_POD_OVERRIDE);
         rescueCradleDepths = bundle.getInt(RESCUE_CRADLES);
     }
 

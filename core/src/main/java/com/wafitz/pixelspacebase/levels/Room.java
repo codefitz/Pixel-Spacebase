@@ -97,7 +97,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
         PIT(PitPainter.class),
         ALTAR(AltarPainter.class),
 
-        //prison quests
+        //security block quests
         MASS_GRAVE(MassGravePainter.class),
         ROT_GARDEN(RotGardenPainter.class),
         RITUAL_SITE(RitualSitePainter.class);

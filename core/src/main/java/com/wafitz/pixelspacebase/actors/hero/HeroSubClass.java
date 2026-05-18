@@ -30,7 +30,7 @@ public enum HeroSubClass {
     GLADIATOR("gladiator"),
     BERSERKER("berserker"),
 
-    WARLOCK("warlock"),
+    SIGNAL_LEECH("warlock"),
     BATTLEMAGE("battlemage"),
 
     ASSASSIN("assassin"),

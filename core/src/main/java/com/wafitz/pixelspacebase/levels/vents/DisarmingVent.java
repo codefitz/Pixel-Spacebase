@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
@@ -44,16 +44,16 @@ public class DisarmingVent extends Vent {
 
     @Override
     public void activate() {
-        Heap heap = Dungeon.level.heaps.get(pos);
+        Heap heap = SpacebaseRun.level.heaps.get(pos);
 
         if (heap != null) {
-            int cell = Dungeon.level.randomRespawnCell();
+            int cell = SpacebaseRun.level.randomRespawnCell();
 
             if (cell != -1) {
                 Item item = heap.pickUp();
-                Dungeon.level.drop(item, cell).seen = true;
+                SpacebaseRun.level.drop(item, cell).seen = true;
                 for (int i : PathFinder.NEIGHBOURS9)
-                    Dungeon.level.visited[cell + i] = true;
+                    SpacebaseRun.level.visited[cell + i] = true;
                 GameScene.updateFog();
 
                 Sample.INSTANCE.play(Assets.SND_TELEPORT);
@@ -61,21 +61,21 @@ public class DisarmingVent extends Vent {
             }
         }
 
-        if (Dungeon.hero.pos == pos) {
-            Hero hero = Dungeon.hero;
+        if (SpacebaseRun.hero.pos == pos) {
+            Hero hero = SpacebaseRun.hero;
             KindOfWeapon weapon = hero.belongings.weapon;
 
             if (weapon != null && !(weapon instanceof Knuckles) && !weapon.malfunctioning) {
 
-                int cell = Dungeon.level.randomRespawnCell();
+                int cell = SpacebaseRun.level.randomRespawnCell();
                 if (cell != -1) {
                     hero.belongings.weapon = null;
-                    Dungeon.quickslot.clearItem(weapon);
+                    SpacebaseRun.quickslot.clearItem(weapon);
                     weapon.updateQuickslot();
 
-                    Dungeon.level.drop(weapon, cell).seen = true;
+                    SpacebaseRun.level.drop(weapon, cell).seen = true;
                     for (int i : PathFinder.NEIGHBOURS9)
-                        Dungeon.level.visited[cell + i] = true;
+                        SpacebaseRun.level.visited[cell + i] = true;
                     GameScene.updateFog();
 
                     GLog.w(Messages.get(this, "disarm"));

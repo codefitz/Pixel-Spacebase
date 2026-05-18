@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -95,7 +95,7 @@ public class Bomb extends Item {
                 if (Level.passable[cell + i])
                     candidates.add(cell + i);
             int newCell = candidates.isEmpty() ? cell : Random.element(candidates);
-            Dungeon.level.drop(this, newCell).sprite.drop(cell);
+            SpacebaseRun.level.drop(this, newCell).sprite.drop(cell);
         } else
             super.onThrow(cell);
     }
@@ -115,48 +115,48 @@ public class Bomb extends Item {
 
         Sample.INSTANCE.play(Assets.SND_BLAST);
 
-        if (Dungeon.visible[cell]) {
+        if (SpacebaseRun.visible[cell]) {
             CellEmitter.center(cell).burst(BlastParticle.FACTORY, 30);
         }
 
         boolean terrainAffected = false;
         for (int n : PathFinder.NEIGHBOURS9) {
             int c = cell + n;
-            if (c >= 0 && c < Dungeon.level.length()) {
-                if (Dungeon.visible[c]) {
+            if (c >= 0 && c < SpacebaseRun.level.length()) {
+                if (SpacebaseRun.visible[c]) {
                     CellEmitter.get(c).burst(SmokeParticle.FACTORY, 4);
                 }
 
                 if (Level.flamable[c]) {
-                    Dungeon.level.destroy(c);
+                    SpacebaseRun.level.destroy(c);
                     GameScene.updateMap(c);
                     terrainAffected = true;
                 }
 
                 //destroys items / mines bombs caught in the blast.
-                Heap heap = Dungeon.level.heaps.get(c);
+                Heap heap = SpacebaseRun.level.heaps.get(c);
                 if (heap != null)
                     heap.explode();
 
                 Char ch = Actor.findChar(c);
                 if (ch != null) {
                     //those not at the center of the blast take damage less consistently.
-                    int minDamage = c == cell ? Dungeon.depth + 5 : 1;
-                    int maxDamage = 10 + Dungeon.depth * 2;
+                    int minDamage = c == cell ? SpacebaseRun.depth + 5 : 1;
+                    int maxDamage = 10 + SpacebaseRun.depth * 2;
 
                     int dmg = Random.NormalIntRange(minDamage, maxDamage) - ch.drRoll();
                     if (dmg > 0) {
                         ch.damage(dmg, this);
                     }
 
-                    if (ch == Dungeon.hero && !ch.isAlive())
-                        Dungeon.fail(getClass());
+                    if (ch == SpacebaseRun.hero && !ch.isAlive())
+                        SpacebaseRun.fail(getClass());
                 }
             }
         }
 
         if (terrainAffected) {
-            Dungeon.observe();
+            SpacebaseRun.observe();
         }
     }
 
@@ -238,7 +238,7 @@ public class Bomb extends Item {
             }
 
             //look for our bomb, remove it from its heap, and blow it up.
-            for (Heap heap : Dungeon.level.heaps.values()) {
+            for (Heap heap : SpacebaseRun.level.heaps.values()) {
                 if (heap.items.contains(bomb)) {
                     heap.items.remove(bomb);
 

@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.blasters;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
@@ -38,20 +38,20 @@ import com.wafitz.pixelspacebase.actors.buffs.Recharging;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.ConfusedShapeshifter;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.YogSheep;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.ContainmentEcho;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Flare;
-import com.wafitz.pixelspacebase.effects.MagicMissile;
+import com.wafitz.pixelspacebase.effects.EnergyBeam;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.effects.SpellSprite;
+import com.wafitz.pixelspacebase.effects.EffectSprite;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.items.Bomb;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
-import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
-import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
+import com.wafitz.pixelspacebase.items.equippablemodules.HoloPad;
+import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
+import com.wafitz.pixelspacebase.items.upgrades.RechargeUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.levels.vents.LightningVent;
@@ -129,7 +129,7 @@ class MalfunctioningBlaster {
             case 1:
                 malfunctioningFX(user, bolt, new Callback() {
                     public void call() {
-                        int c = Dungeon.level.map[bolt.collisionPos];
+                        int c = SpacebaseRun.level.map[bolt.collisionPos];
                         if (c == Terrain.EMPTY ||
                                 c == Terrain.EMBERS ||
                                 c == Terrain.EMPTY_DECO ||
@@ -146,7 +146,7 @@ class MalfunctioningBlaster {
             case 2:
                 switch (Random.Int(2)) {
                     case 0:
-                        TeleportationScript.teleportHero(user);
+                        PhaseShiftUpgrade.teleportHero(user);
                         blaster.blasterUsed();
                         break;
                     case 1:
@@ -157,17 +157,17 @@ class MalfunctioningBlaster {
                                     int count = 10;
                                     int pos;
                                     do {
-                                        pos = Dungeon.level.randomRespawnCell();
+                                        pos = SpacebaseRun.level.randomRespawnCell();
                                         if (count-- <= 0) {
                                             break;
                                         }
                                     } while (pos == -1);
-                                    if (pos == -1 || Dungeon.bossLevel()) {
-                                        GLog.w(Messages.get(TeleportationScript.class, "no_tele"));
+                                    if (pos == -1 || SpacebaseRun.bossLevel()) {
+                                        GLog.w(Messages.get(PhaseShiftUpgrade.class, "no_tele"));
                                     } else {
                                         ch.pos = pos;
                                         ch.sprite.place(ch.pos);
-                                        ch.sprite.visible = Dungeon.visible[pos];
+                                        ch.sprite.visible = SpacebaseRun.visible[pos];
                                     }
                                 }
                                 blaster.blasterUsed();
@@ -218,7 +218,7 @@ class MalfunctioningBlaster {
                                 pos == Terrain.EMPTY_DECO ||
                                 pos == Terrain.LIGHTEDVENT ||
                                 pos == Terrain.OFFVENT) {
-                            Dungeon.level.mine((Mine.Device) Generator.random(Generator.Category.DEVICE), pos);
+                            SpacebaseRun.level.mine((Mine.Device) Generator.random(Generator.Category.DEVICE), pos);
                         }
                         blaster.blasterUsed();
                     }
@@ -246,7 +246,7 @@ class MalfunctioningBlaster {
                                     target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
                                     Sample.INSTANCE.play(Assets.SND_CURSED);
                                     if (!user.isAlive()) {
-                                        Dungeon.fail(blaster.getClass());
+                                        SpacebaseRun.fail(blaster.getClass());
                                         GLog.n(Messages.get(MalfunctioningBlaster.class, "ondeath", blaster.name()));
                                     }
                                     break;
@@ -274,8 +274,8 @@ class MalfunctioningBlaster {
             case 3:
                 new LightningVent().set(user.pos).activate();
                 Buff.prolong(user, Recharging.class, 20f);
-                RechargingScript.charge(user);
-                SpellSprite.show(user, SpellSprite.CHARGE);
+                RechargeUpgrade.charge(user);
+                EffectSprite.show(user, EffectSprite.CHARGE);
                 blaster.blasterUsed();
                 break;
         }
@@ -294,12 +294,12 @@ class MalfunctioningBlaster {
                         if (ch != null && ch != user
                                 && !ch.properties().contains(Char.Property.BOSS)
                                 && !ch.properties().contains(Char.Property.MINIBOSS)) {
-                            YogSheep yogSheep = new YogSheep();
+                            ContainmentEcho yogSheep = new ContainmentEcho();
                             yogSheep.lifespan = 10;
                             yogSheep.pos = ch.pos;
                             ch.destroy();
                             ch.sprite.killAndErase();
-                            Dungeon.level.mobs.remove(ch);
+                            SpacebaseRun.level.mobs.remove(ch);
                             HealthIndicator.instance.target(null);
                             GameScene.add(yogSheep);
                             CellEmitter.get(yogSheep.pos).burst(Speck.factory(Speck.WOOL), 4);
@@ -319,17 +319,17 @@ class MalfunctioningBlaster {
 
             //inter-level teleportation
             case 2:
-                if (Dungeon.depth > 1 && !Dungeon.bossLevel()) {
+                if (SpacebaseRun.depth > 1 && !SpacebaseRun.bossLevel()) {
 
                     //each depth has 1 more weight than the previous depth.
-                    float[] depths = new float[Dungeon.depth - 1];
-                    for (int i = 1; i < Dungeon.depth; i++) depths[i - 1] = i;
+                    float[] depths = new float[SpacebaseRun.depth - 1];
+                    for (int i = 1; i < SpacebaseRun.depth; i++) depths[i - 1] = i;
                     int depth = 1 + Random.chances(depths);
 
-                    Buff buff = Dungeon.hero.buff(TimeFolder.timeFreeze.class);
+                    Buff buff = SpacebaseRun.hero.buff(TimeFolder.timeFreeze.class);
                     if (buff != null) buff.detach();
 
-                    for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
+                    for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
                         if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
                     InterlevelScene.mode = InterlevelScene.Mode.RETURN;
@@ -338,7 +338,7 @@ class MalfunctioningBlaster {
                     Game.switchScene(InterlevelScene.class);
 
                 } else {
-                    TeleportationScript.teleportHero(user);
+                    PhaseShiftUpgrade.teleportHero(user);
                     blaster.blasterUsed();
                 }
                 break;
@@ -356,8 +356,8 @@ class MalfunctioningBlaster {
 
             //great forest fire!
             case 0:
-                for (int i = 0; i < Dungeon.level.length(); i++) {
-                    int c = Dungeon.level.map[i];
+                for (int i = 0; i < SpacebaseRun.level.length(); i++) {
+                    int c = SpacebaseRun.level.map[i];
                     if (c == Terrain.EMPTY ||
                             c == Terrain.EMBERS ||
                             c == Terrain.EMPTY_DECO ||
@@ -367,7 +367,7 @@ class MalfunctioningBlaster {
                     }
                 }
                 do {
-                    GameScene.add(Blob.device(Dungeon.level.randomDestination(), 10, Fire.class));
+                    GameScene.add(Blob.device(SpacebaseRun.level.randomDestination(), 10, Fire.class));
                 } while (Random.Int(5) != 0);
                 new Flare(8, 32).color(0xFFFF66, true).show(user.sprite, 2f);
                 Sample.INSTANCE.play(Assets.SND_TELEPORT);
@@ -381,7 +381,7 @@ class MalfunctioningBlaster {
                 malfunctioningFX(user, bolt, new Callback() {
                     public void call() {
                         ConfusedShapeshifter confusedShapeshifter = ConfusedShapeshifter.spawnAt(bolt.collisionPos, new ArrayList<Item>());
-                        confusedShapeshifter.adjustStats(Dungeon.depth + 10);
+                        confusedShapeshifter.adjustStats(SpacebaseRun.depth + 10);
                         confusedShapeshifter.HP = confusedShapeshifter.HT;
                         Item reward;
                         do {
@@ -400,7 +400,7 @@ class MalfunctioningBlaster {
             //crashes the game, yes, really.
             case 2:
                 try {
-                    Dungeon.saveAll();
+                    SpacebaseRun.saveAll();
                     if (Messages.lang() != Languages.ENGLISH) {
                         //Don't bother doing this joke to none-english speakers, I doubt it would translate.
                         GLog.i(Messages.get(MalfunctioningBlaster.class, "nothing"));
@@ -430,19 +430,19 @@ class MalfunctioningBlaster {
                 Item result;
                 do {
                     result = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
-                            Generator.Category.MODULE, Generator.Category.ARTIFACT));
+                            Generator.Category.MODULE, Generator.Category.EQUIPPABLE_MODULE));
                 } while (result.level() < 0 && !(result instanceof MissileWeapon));
                 if (result.isUpgradable()) result.upgrade();
                 result.malfunctioning = result.malfunctioningKnown = true;
                 GLog.w(Messages.get(MalfunctioningBlaster.class, "transmogrify"));
-                Dungeon.level.drop(result, user.pos).sprite.drop();
+                SpacebaseRun.level.drop(result, user.pos).sprite.drop();
                 blaster.blasterUsed();
                 break;
         }
     }
 
     private static void malfunctioningFX(final Hero user, final Ballistica bolt, final Callback callback) {
-        MagicMissile.rainbow(user.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
+        EnergyBeam.rainbow(user.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
         Sample.INSTANCE.play(Assets.SND_ZAP);
     }
 

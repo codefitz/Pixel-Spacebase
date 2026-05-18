@@ -21,12 +21,12 @@
 package com.wafitz.pixelspacebase.items.blasters;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.effects.MagicMissile;
+import com.wafitz.pixelspacebase.effects.EnergyBeam;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -67,7 +67,7 @@ public class EMP extends Blaster {
 
         for (int i : affectedCells) {
             repaired |= repairTerrain(i);
-            repaired |= repairHeap(Dungeon.level.heaps.get(i));
+            repaired |= repairHeap(SpacebaseRun.level.heaps.get(i));
             repaired |= repairMachine(Actor.findChar(i));
         }
 
@@ -77,7 +77,7 @@ public class EMP extends Blaster {
     }
 
     private boolean repairTerrain(int cell) {
-        switch (Dungeon.level.map[cell]) {
+        switch (SpacebaseRun.level.map[cell]) {
             case Terrain.VENT:
             case Terrain.HIDDEN_VENT:
                 Level.set(cell, Terrain.LIGHTEDVENT);
@@ -95,10 +95,10 @@ public class EMP extends Blaster {
     }
 
     private boolean isRepairableTerrain(int cell) {
-        if (!Dungeon.level.insideMap(cell)) {
+        if (!SpacebaseRun.level.insideMap(cell)) {
             return false;
         }
-        switch (Dungeon.level.map[cell]) {
+        switch (SpacebaseRun.level.map[cell]) {
             case Terrain.VENT:
             case Terrain.HIDDEN_VENT:
             case Terrain.OFFVENT:
@@ -188,15 +188,14 @@ public class EMP extends Blaster {
         for (int c : bolt.subPath(1, dist)) {
             affectedCells.add(c);
         }
-        affectedCells.add(bolt.collisionPos);
-        if (bolt.dist + 1 < bolt.path.size()) {
+        if (bolt.dist < maxDist && bolt.dist + 1 < bolt.path.size()) {
             int blockedCell = bolt.path.get(bolt.dist + 1);
             if (isRepairableTerrain(blockedCell)) {
                 affectedCells.add(blockedCell);
             }
         }
 
-        MagicMissile.whiteLight(curUser.sprite.parent, bolt.sourcePos, bolt.path.get(dist), callback);
+        EnergyBeam.whiteLight(curUser.sprite.parent, bolt.sourcePos, bolt.path.get(dist), callback);
 
         Sample.INSTANCE.play(Assets.SND_ZAP);
     }

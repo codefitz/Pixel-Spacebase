@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
@@ -79,7 +79,7 @@ public abstract class Vent implements Bundlable {
 
     public void mine() {
         if (active) {
-            if (Dungeon.visible[pos]) {
+            if (SpacebaseRun.visible[pos]) {
                 Sample.INSTANCE.play(Assets.SND_TRAP);
             }
             disarm();
@@ -91,7 +91,7 @@ public abstract class Vent implements Bundlable {
     public abstract void activate();
 
     protected void disarm() {
-        Dungeon.level.disarmVent(pos);
+        SpacebaseRun.level.disarmVent(pos);
         active = false;
     }
 

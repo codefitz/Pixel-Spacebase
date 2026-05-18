@@ -20,13 +20,13 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Thief;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
+import com.wafitz.pixelspacebase.items.plasmids.TitanPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.food.FrozenCarpaccio;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
@@ -57,19 +57,19 @@ public class Chill extends FlavourBuff {
 
                 Hero hero = (Hero) target;
                 Item item = hero.belongings.randomUnequipped();
-                if (item instanceof ExperimentalTech
-                        && !(item instanceof StrengthUpgrade || item instanceof PowerUpgrade)) {
+                if (item instanceof Plasmid
+                        && !(item instanceof MyoFiberPlasmid || item instanceof TitanPlasmid)) {
 
                     item = item.detach(hero.belongings.backpack);
                     GLog.w(Messages.get(this, "freezes", item.toString()));
-                    ((ExperimentalTech) item).shatter(hero.pos);
+                    ((Plasmid) item).shatter(hero.pos);
 
                 } else if (item instanceof MysteryMeat) {
 
                     item = item.detach(hero.belongings.backpack);
                     FrozenCarpaccio carpaccio = new FrozenCarpaccio();
                     if (!carpaccio.collect(hero.belongings.backpack)) {
-                        Dungeon.level.drop(carpaccio, target.pos).sprite.drop();
+                        SpacebaseRun.level.drop(carpaccio, target.pos).sprite.drop();
                     }
                     GLog.w(Messages.get(this, "freezes", item.toString()));
 
@@ -78,8 +78,8 @@ public class Chill extends FlavourBuff {
 
                 Item item = ((Thief) target).item;
 
-                if (item instanceof ExperimentalTech && !(item instanceof StrengthUpgrade || item instanceof PowerUpgrade)) {
-                    ((ExperimentalTech) ((Thief) target).item).shatter(target.pos);
+                if (item instanceof Plasmid && !(item instanceof MyoFiberPlasmid || item instanceof TitanPlasmid)) {
+                    ((Plasmid) ((Thief) target).item).shatter(target.pos);
                     ((Thief) target).item = null;
                 }
 

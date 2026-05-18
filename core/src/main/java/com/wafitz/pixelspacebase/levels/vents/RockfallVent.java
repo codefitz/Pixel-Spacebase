@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -53,8 +53,8 @@ public class RockfallVent extends Vent {
             if (Level.solid[pos + i])
                 continue;
 
-            if (Dungeon.visible[pos + i]) {
-                CellEmitter.get(pos + i - Dungeon.level.width()).start(Speck.factory(Speck.ROCK), 0.07f, 10);
+            if (SpacebaseRun.visible[pos + i]) {
+                CellEmitter.get(pos + i - SpacebaseRun.level.width()).start(Speck.factory(Speck.ROCK), 0.07f, 10);
                 if (!seen) {
                     Camera.main.shake(3, 0.7f);
                     Sample.INSTANCE.play(Assets.SND_ROCKS);
@@ -65,14 +65,14 @@ public class RockfallVent extends Vent {
             Char ch = Actor.findChar(pos + i);
 
             if (ch != null) {
-                int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth * 2);
+                int damage = Random.NormalIntRange(SpacebaseRun.depth, SpacebaseRun.depth * 2);
                 damage -= ch.drRoll();
                 ch.damage(Math.max(damage, 0), this);
 
                 Buff.prolong(ch, Paralysis.class, Paralysis.duration(ch) / 2);
 
-                if (!ch.isAlive() && ch == Dungeon.hero) {
-                    Dungeon.fail(getClass());
+                if (!ch.isAlive() && ch == SpacebaseRun.hero) {
+                    SpacebaseRun.fail(getClass());
                     GLog.n(Messages.get(this, "ondeath"));
                 }
             }

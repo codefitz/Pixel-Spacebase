@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.items.weapon.missiles;
 
 import android.util.Log;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -59,7 +59,7 @@ abstract public class MissileWeapon extends Weapon {
     @Override
     public int throwPos(Hero user, int dst) {
         if (hasEnhance(Projecting.class)
-                && !Level.solid[dst] && Dungeon.level.distance(user.pos, dst) <= 4) {
+                && !Level.solid[dst] && SpacebaseRun.level.distance(user.pos, dst) <= 4) {
             return dst;
         } else {
             return super.throwPos(user, dst);
@@ -88,7 +88,7 @@ abstract public class MissileWeapon extends Weapon {
                     if (enemy.isAlive())
                         Buff.affect(enemy, PinCushion.class).stick(this);
                     else
-                        Dungeon.level.drop(this, enemy.pos).sprite.drop();
+                        SpacebaseRun.level.drop(this, enemy.pos).sprite.drop();
                 }
 
             }
@@ -141,11 +141,11 @@ abstract public class MissileWeapon extends Weapon {
 
         info += "\n\n" + Messages.get(MissileWeapon.class, "stats", convert.damageFactor(min()), convert.damageFactor(max()), STRReq(), name());
 
-        if (STRReq() > Dungeon.hero.STR()) {
+        if (STRReq() > SpacebaseRun.hero.STR()) {
             info += " " + Messages.get(Weapon.class, "too_heavy");
-        } else if (Dungeon.hero.heroClass == HeroClass.CAPTAIN && Dungeon.hero.STR() > STRReq()) {
-            Log.d("wafitz.v6: ", "Info = " + info + ", " + Dungeon.hero.STR() + ", " + STRReq() + ", " + name());
-            info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq(), name());
+        } else if (SpacebaseRun.hero.heroClass == HeroClass.CAPTAIN && SpacebaseRun.hero.STR() > STRReq()) {
+            Log.d("wafitz.v6: ", "Info = " + info + ", " + SpacebaseRun.hero.STR() + ", " + STRReq() + ", " + name());
+            info += " " + Messages.get(Weapon.class, "excess_str", SpacebaseRun.hero.STR() - STRReq(), name());
         }
 
         if (enhancement != null && (malfunctioningKnown || !enhancement.malfunction())) {
@@ -153,7 +153,7 @@ abstract public class MissileWeapon extends Weapon {
             info += " " + Messages.get(enhancement, "desc");
         }
 
-        if (malfunctioning && isEquipped(Dungeon.hero)) {
+        if (malfunctioning && isEquipped(SpacebaseRun.hero)) {
             info += "\n\n" + Messages.get(Weapon.class, "malfunctioning_worn");
         } else if (malfunctioningKnown && malfunctioning) {
             info += "\n\n" + Messages.get(Weapon.class, "malfunctioning");

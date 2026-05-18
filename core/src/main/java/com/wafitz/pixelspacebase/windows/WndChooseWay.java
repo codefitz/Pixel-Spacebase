@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.windows;
 
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
-import com.wafitz.pixelspacebase.items.TomeOfMastery;
+import com.wafitz.pixelspacebase.items.TrainingManual;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
@@ -35,7 +35,7 @@ public class WndChooseWay extends Window {
     private static final int BTN_HEIGHT = 18;
     private static final float GAP = 2;
 
-    public WndChooseWay(final TomeOfMastery tome, final HeroSubClass way1, final HeroSubClass way2) {
+    public WndChooseWay(final TrainingManual tome, final HeroSubClass way1, final HeroSubClass way2) {
 
         super();
 

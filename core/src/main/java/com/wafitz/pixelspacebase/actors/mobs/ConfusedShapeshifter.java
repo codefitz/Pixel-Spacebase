@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
-import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
+import com.wafitz.pixelspacebase.items.upgrades.PsionicBlastUpgrade;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ConfusedShapeshifterSprite;
@@ -101,7 +101,7 @@ public class ConfusedShapeshifter extends Mob {
 
         if (items != null) {
             for (Item item : items) {
-                Dungeon.level.drop(item, pos).sprite.drop();
+                SpacebaseRun.level.drop(item, pos).sprite.drop();
             }
         }
     }
@@ -129,9 +129,9 @@ public class ConfusedShapeshifter extends Mob {
                 ch.pos = newPos;
                 // trigger traps, doors, vents, etc. for the displaced character
                 if (ch instanceof Mob) {
-                    Dungeon.level.mobPress((Mob) ch);
+                    SpacebaseRun.level.mobPress((Mob) ch);
                 } else {
-                    Dungeon.level.press(newPos, ch);
+                    SpacebaseRun.level.press(newPos, ch);
                 }
             } else {
                 return null;
@@ -140,14 +140,14 @@ public class ConfusedShapeshifter extends Mob {
 
         ConfusedShapeshifter m = new ConfusedShapeshifter();
         m.items = new ArrayList<>(items);
-        m.adjustStats(Dungeon.depth);
+        m.adjustStats(SpacebaseRun.depth);
         m.pos = pos;
         m.state = m.HUNTING;
         GameScene.add(m, 1);
 
-        m.sprite.turnTo(pos, Dungeon.hero.pos);
+        m.sprite.turnTo(pos, SpacebaseRun.hero.pos);
 
-        if (Dungeon.visible[m.pos]) {
+        if (SpacebaseRun.visible[m.pos]) {
             CellEmitter.get(pos).burst(Speck.factory(Speck.STAR), 10);
             Sample.INSTANCE.play(Assets.SND_MIMIC);
         }
@@ -175,7 +175,7 @@ public class ConfusedShapeshifter extends Mob {
     private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 
     static {
-        IMMUNITIES.add(PsionicBlastScript.class);
+        IMMUNITIES.add(PsionicBlastUpgrade.class);
     }
 
     @Override

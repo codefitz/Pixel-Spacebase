@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 
 public class Awareness extends FlavourBuff {
@@ -30,7 +30,7 @@ public class Awareness extends FlavourBuff {
     @Override
     public void detach() {
         super.detach();
-        Dungeon.observe();
+        SpacebaseRun.observe();
         GameScene.updateFog();
     }
 }

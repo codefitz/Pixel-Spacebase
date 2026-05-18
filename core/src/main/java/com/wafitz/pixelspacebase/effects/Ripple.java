@@ -20,8 +20,8 @@
  */
 package com.wafitz.pixelspacebase.effects;
 
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 
@@ -38,8 +38,8 @@ public class Ripple extends Image {
     public void reset(int p) {
         revive();
 
-        x = (p % Dungeon.level.width()) * DungeonTilemap.SIZE;
-        y = (p / Dungeon.level.width()) * DungeonTilemap.SIZE;
+        x = (p % SpacebaseRun.level.width()) * SpacebaseTilemap.SIZE;
+        y = (p / SpacebaseRun.level.width()) * SpacebaseTilemap.SIZE;
 
         origin.set(width / 2, height / 2);
         scale.set(0);

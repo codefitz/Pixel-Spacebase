@@ -20,42 +20,42 @@
  */
 package com.wafitz.pixelspacebase.items;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.Cryongenics;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceBooster;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalRockets;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.Firestarter;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.InvisibilityEnhancement;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ParalyzingAgent;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PolymerMembrane;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityOverride;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ToxicAgent;
+import com.wafitz.pixelspacebase.items.plasmids.CryoGrenade;
+import com.wafitz.pixelspacebase.items.plasmids.ExperiencePlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.GravLiftPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
+import com.wafitz.pixelspacebase.items.plasmids.FireGrenade;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.CloakPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.ParalysisGrenade;
+import com.wafitz.pixelspacebase.items.plasmids.PolymerPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.TitanPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.SecurityPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.ToxicGrenade;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Uniform;
-import com.wafitz.pixelspacebase.items.artifacts.AlienDNA;
-import com.wafitz.pixelspacebase.items.artifacts.Artifact;
-import com.wafitz.pixelspacebase.items.artifacts.BuggyCompiler;
-import com.wafitz.pixelspacebase.items.artifacts.GnollTechShield;
-import com.wafitz.pixelspacebase.items.artifacts.GravityGun;
-import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.McGyvrModule;
-import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
-import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
-import com.wafitz.pixelspacebase.items.artifacts.StrongForcefield;
-import com.wafitz.pixelspacebase.items.artifacts.SurveyorModule;
-import com.wafitz.pixelspacebase.items.artifacts.SurvivalModule;
-import com.wafitz.pixelspacebase.items.artifacts.TechToolkit;
-import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
+import com.wafitz.pixelspacebase.items.equippablemodules.AlienDNA;
+import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.BuggyCompiler;
+import com.wafitz.pixelspacebase.items.equippablemodules.FrontierTechShield;
+import com.wafitz.pixelspacebase.items.equippablemodules.GravityGun;
+import com.wafitz.pixelspacebase.items.equippablemodules.HoloPad;
+import com.wafitz.pixelspacebase.items.equippablemodules.McGyvrModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.PortableMaker;
+import com.wafitz.pixelspacebase.items.equippablemodules.StealthModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.StrongForcefield;
+import com.wafitz.pixelspacebase.items.equippablemodules.SurveyorModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.SurvivalModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.TechToolkit;
+import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.blasters.Disintegrator;
 import com.wafitz.pixelspacebase.items.blasters.DominationBlaster;
@@ -84,19 +84,19 @@ import com.wafitz.pixelspacebase.items.modules.SpeedModule;
 import com.wafitz.pixelspacebase.items.modules.SteelModule;
 import com.wafitz.pixelspacebase.items.modules.TargetingModule;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
-import com.wafitz.pixelspacebase.items.scripts.EchoLocationScript;
-import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
-import com.wafitz.pixelspacebase.items.scripts.FixScript;
-import com.wafitz.pixelspacebase.items.scripts.IdentifyScript;
-import com.wafitz.pixelspacebase.items.scripts.KnockoutScript;
-import com.wafitz.pixelspacebase.items.scripts.MappingScript;
-import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
-import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
-import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
-import com.wafitz.pixelspacebase.items.scripts.TerrorScript;
-import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
-import com.wafitz.pixelspacebase.items.scripts.WeakCloneScript;
+import com.wafitz.pixelspacebase.items.upgrades.EchoLocationUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.EnhancementUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.RepairUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.DiagnosticScanUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.KnockoutUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.PsionicBlastUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.RechargeUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
+import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.PanicUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
+import com.wafitz.pixelspacebase.items.upgrades.WeakCloneUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.BrightHammer;
 import com.wafitz.pixelspacebase.items.weapon.melee.BrightSaber;
@@ -107,7 +107,7 @@ import com.wafitz.pixelspacebase.items.weapon.melee.Dirk;
 import com.wafitz.pixelspacebase.items.weapon.melee.Drill;
 import com.wafitz.pixelspacebase.items.weapon.melee.DualBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
-import com.wafitz.pixelspacebase.items.weapon.melee.GnollSword;
+import com.wafitz.pixelspacebase.items.weapon.melee.RaiderBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.HoloAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.HoloScimitar;
 import com.wafitz.pixelspacebase.items.weapon.melee.ImperialShield;
@@ -161,11 +161,11 @@ public class Generator {
         WEP_T4(0, Weapon.class),
         WEP_T5(0, Weapon.class),
         ARMOR(60, Armor.class),
-        EXPERIMENTALTECH(500, ExperimentalTech.class),
-        SCRIPT(400, Script.class),
+        PLASMID(500, Plasmid.class),
+        UPGRADE(400, Upgrade.class),
         BLASTER(40, Blaster.class),
         MODULE(15, Module.class),
-        ARTIFACT(15, Artifact.class),
+        EQUIPPABLE_MODULE(15, EquippableModule.class),
         DEVICE(50, Mine.Device.class),
         FOOD(0, Food.class),
         PARTS(500, Parts.class);
@@ -210,35 +210,35 @@ public class Generator {
                 Parts.class};
         Category.PARTS.probs = new float[]{1};
 
-        Category.SCRIPT.classes = new Class<?>[]{
-                IdentifyScript.class,
-                TeleportationScript.class,
-                FixScript.class,
-                UpgradeScript.class,
-                RechargingScript.class,
-                MappingScript.class,
-                EchoLocationScript.class,
-                TerrorScript.class,
-                KnockoutScript.class,
-                EnhancementScript.class,
-                PsionicBlastScript.class,
-                WeakCloneScript.class};
-        Category.SCRIPT.probs = new float[]{30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 4, 10};
+        Category.UPGRADE.classes = new Class<?>[]{
+                DiagnosticScanUpgrade.class,
+                PhaseShiftUpgrade.class,
+                RepairUpgrade.class,
+                UpgradePatch.class,
+                RechargeUpgrade.class,
+                MappingUpgrade.class,
+                EchoLocationUpgrade.class,
+                PanicUpgrade.class,
+                KnockoutUpgrade.class,
+                EnhancementUpgrade.class,
+                PsionicBlastUpgrade.class,
+                WeakCloneUpgrade.class};
+        Category.UPGRADE.probs = new float[]{30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 4, 10};
 
-        Category.EXPERIMENTALTECH.classes = new Class<?>[]{
-                HealingTech.class,
-                ExperienceBooster.class,
-                ToxicAgent.class,
-                ParalyzingAgent.class,
-                Firestarter.class,
-                ExperimentalRockets.class,
-                StrengthUpgrade.class,
-                SecurityOverride.class,
-                PolymerMembrane.class,
-                InvisibilityEnhancement.class,
-                PowerUpgrade.class,
-                Cryongenics.class};
-        Category.EXPERIMENTALTECH.probs = new float[]{45, 4, 15, 10, 15, 10, 0, 20, 12, 10, 0, 10};
+        Category.PLASMID.classes = new Class<?>[]{
+                HealingPlasmid.class,
+                ExperiencePlasmid.class,
+                ToxicGrenade.class,
+                ParalysisGrenade.class,
+                FireGrenade.class,
+                GravLiftPlasmid.class,
+                MyoFiberPlasmid.class,
+                SecurityPlasmid.class,
+                PolymerPlasmid.class,
+                CloakPlasmid.class,
+                TitanPlasmid.class,
+                CryoGrenade.class};
+        Category.PLASMID.probs = new float[]{45, 4, 15, 10, 15, 10, 0, 20, 12, 10, 0, 10};
 
         //TODO: add last ones when implemented
         Category.BLASTER.classes = new Class<?>[]{
@@ -294,7 +294,7 @@ public class Generator {
         Category.WEP_T3.probs = new float[]{6, 5, 5, 4, 4, 4, 6, 6};
 
         Category.WEP_T4.classes = new Class<?>[]{
-                GnollSword.class,
+                RaiderBlade.class,
                 HoloAxe.class,
                 Flail.class,
                 DarkSaber.class,
@@ -342,22 +342,22 @@ public class Generator {
                 TechModule.class};
         Category.MODULE.probs = new float[]{1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1};
 
-        Category.ARTIFACT.classes = new Class<?>[]{
+        Category.EQUIPPABLE_MODULE.classes = new Class<?>[]{
                 StrongForcefield.class,
                 AlienDNA.class,
                 StealthModule.class,
                 SurvivalModule.class,
                 McGyvrModule.class,
-                GnollTechShield.class,
+                FrontierTechShield.class,
                 SurveyorModule.class,
                 TimeFolder.class,
                 BuggyCompiler.class,
                 TechToolkit.class, //currently removed from drop tables, pending rework.
-                HoloPad.class, //starts with no chance of spawning, chance is set directly after beating ghost quest.
+                HoloPad.class, //starts with no chance of spawning, chance is set directly after the hologram quest.
                 PortableMaker.class,
                 GravityGun.class
         };
-        Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
+        Category.EQUIPPABLE_MODULE.probs = INITIAL_ARTIFACT_PROBS.clone();
 
         Category.DEVICE.classes = new Class<?>[]{
                 FireMine.Device.class,
@@ -395,8 +395,8 @@ public class Generator {
                     return randomArmor();
                 case WEAPON:
                     return randomWeapon();
-                case ARTIFACT:
-                    Item item = randomArtifact();
+                case EQUIPPABLE_MODULE:
+                    Item item = randomEquippableModule();
                     //if we're out of artifacts, return a ring instead.
                     return item != null ? item : random(Category.MODULE);
                 default:
@@ -425,7 +425,7 @@ public class Generator {
     }
 
     public static Armor randomArmor() {
-        return randomArmor(Dungeon.depth / 5);
+        return randomArmor(SpacebaseRun.depth / 5);
     }
 
     public static Armor randomArmor(int floorSet) {
@@ -451,7 +451,7 @@ public class Generator {
     };
 
     public static Weapon randomWeapon() {
-        return randomWeapon(Dungeon.depth / 5);
+        return randomWeapon(SpacebaseRun.depth / 5);
     }
 
     public static Weapon randomWeapon(int floorSet) {
@@ -470,10 +470,10 @@ public class Generator {
     }
 
     //enforces uniqueness of artifacts throughout a run.
-    public static Artifact randomArtifact() {
+    public static EquippableModule randomEquippableModule() {
 
         try {
-            Category cat = Category.ARTIFACT;
+            Category cat = Category.EQUIPPABLE_MODULE;
             int i = Random.chances(cat.probs);
 
             //if no artifacts are left, return null
@@ -481,7 +481,7 @@ public class Generator {
                 return null;
             }
 
-            Artifact artifact = (Artifact) cat.classes[i].newInstance();
+            EquippableModule artifact = (EquippableModule) cat.classes[i].newInstance();
 
             //remove the chance of spawning this artifact.
             cat.probs[i] = 0;
@@ -497,11 +497,11 @@ public class Generator {
         }
     }
 
-    public static boolean removeArtifact(Artifact artifact) {
+    public static boolean removeEquippableModule(EquippableModule artifact) {
         if (spawnedArtifacts.contains(artifact.getClass().getSimpleName()))
             return false;
 
-        Category cat = Category.ARTIFACT;
+        Category cat = Category.EQUIPPABLE_MODULE;
         for (int i = 0; i < cat.classes.length; i++)
             if (cat.classes[i].equals(artifact.getClass())) {
                 if (cat.probs[i] == 1) {
@@ -515,12 +515,12 @@ public class Generator {
         return false;
     }
 
-    //resets artifact probabilities, for new dungeons
+    //resets artifact probabilities for new runs
     public static void initArtifacts() {
-        Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
+        Category.EQUIPPABLE_MODULE.probs = INITIAL_ARTIFACT_PROBS.clone();
 
-        //checks for dried rose quest completion, adds the rose in accordingly.
-        if (Hologram.Quest.completed()) Category.ARTIFACT.probs[10] = 1;
+        //checks for hologram quest completion, adds the holopad accordingly.
+        if (Hologram.Quest.completed()) Category.EQUIPPABLE_MODULE.probs[10] = 1;
 
         spawnedArtifacts = new ArrayList<>();
     }
@@ -539,7 +539,7 @@ public class Generator {
 
         if (bundle.contains(ARTIFACTS)) {
             Collections.addAll(spawnedArtifacts, bundle.getStringArray(ARTIFACTS));
-            Category cat = Category.ARTIFACT;
+            Category cat = Category.EQUIPPABLE_MODULE;
 
             for (String artifact : spawnedArtifacts)
                 for (int i = 0; i < cat.classes.length; i++)

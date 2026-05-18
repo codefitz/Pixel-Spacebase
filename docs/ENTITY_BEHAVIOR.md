@@ -1,6 +1,6 @@
 # Pixel Spacebase Entity and Item Behavior Catalogue
 
-This catalogue summarizes the current player-facing behavior of NPCs, enemies, bosses, and item families. Class names remain useful because many internals still preserve Shattered Pixel Dungeon compatibility.
+This catalogue summarizes the current player-facing behavior of NPCs, enemies, bosses, and item families. Class names are noted only where inherited internals still remain.
 
 ## Playable Hero Classes
 
@@ -19,21 +19,21 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Hologram Distress Call | Princess Pixel of Yendor projection. Gives one of several optional hunt quests: evolved xenomorph, Dark Lord of Yendor, or armored maintenance crawler. Rewards the player after completion. |
 | Quartermaster | Formerly Old Gunsmith internally. Requests a specific material or quest item, then offers blaster rewards. Reinforces the station reclamation/resistance theme. |
 | Maker Bench | Wall-mounted workshop matter-recycling station. Can break items down into parts. Internally still uses the MakerBot interaction flow. |
-| Y | Optional meta/anomaly quest NPC. Formerly Arp internally. Addresses the player directly, references game systems, asks the player to recover hologram emitters from the Holodeck Monarch's hard-light retainers, and trades them for a reward. Also appears as a brief floor 10 interlude after Tengu is defeated, then vanishes once the hero moves. |
+| Y | Optional meta/anomaly quest NPC. Formerly Arp internally. Addresses the player directly, references game systems, asks the player to recover hologram emitters from the Holodeck Monarch's hard-light retainers, and trades them for a reward. Also appears as a brief floor 10 interlude after the Masked Prisoner is defeated, then vanishes once the hero moves. |
 | Y Trader | Follow-up/trader variant of Y. Formerly Arp Trader internally. Acknowledges survival with the same game-aware tone. |
 | Queen Xenomorph | Nonstandard xenomorph personality/encounter. Implied cause of excessive xenomorph breeding on Pixel Spacebase. |
 | Weak Clone | Temporary allied clone created by tech. Distracts and attacks enemies but is fragile. |
-| Yog Sheep | Joke/summoned neutral creature from flock-style effects. |
+| Containment Echo | Joke/summoned neutral creature from flock-style effects. |
 
 ## Bosses
 
 | Boss | Floor | Current behavior |
 | --- | --- | --- |
 | Feral Shapeshifter | 5 | Shapeshifter crew colleague destabilized by repeated emergency shifts. Signals attack buildup, enrages, and thanks the player when restored/defeated. Unlocks Shapeshifter progression. |
-| Tengu | 10 | Mobile assassin boss. Uses floor lighting systems, deception, repositioning, and precise attacks. Represents prison/security containment failure. |
+| Masked Prisoner | 10 | Mobile assassin boss. Uses floor lighting systems, deception, repositioning, and precise attacks. Represents security containment failure. |
 | DM-300 | 15 | Heavy station defense/construction platform with an emotionally unstable command module. Detects unauthorized personnel, babbles about protection and anger, repairs itself, and drops the boss key. Unlocks DM-3000 class progression. |
-| Holodeck Monarch (`King`) | 20 | Rogue hard-light training sim. Summons hologram retainers, parries, and speaks as a corrupted monarch program. |
-| Yog-Dzewa | 25 | Final major boss. Bio-containment parasite fused around the evacuation spine, with appendages and larvae defending the escape route. |
+| Holodeck Monarch | 20 | Rogue hard-light training sim. Summons hologram retainers, parries, and speaks as a corrupted monarch program. |
+| Containment Mass | 25 | Final major boss. Bio-containment parasite fused around the evacuation spine, with appendages and larvae defending the escape route. |
 
 ## Standard Enemies
 
@@ -42,28 +42,28 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Xenomorph | Early hostile creature. Also spawned by alien egg infection. Current lore: imported pet species breeding violently due to a queen. |
 | Albino | Rare xenomorph variant. Stronger/special mutation of the base xenomorph. |
 | Tough Xeno | Tougher xenomorph variant with stench/ooze flavor. |
-| Yendor Scout (`Gnoll`) | Fast light raider from Yendor. |
+| Outer Colony Scout | Fast light raider from the outer colonies. |
 | Dark Lord of Yendor | Miniboss/quest enemy. Uses toxin and incendiary flechettes. |
-| Yendor Shaman | Ranged/caster Yendor enemy with battle spells. |
+| Outer Colony Psion | Ranged enemy with psionic/telemetry attacks. |
 | Yendor Shock Trooper | Large heavy raider with a combat rig that becomes more dangerous when wounded. |
 | Shielded Shock Trooper | Shock trooper variant with added defensive behavior. |
 | Crab / Maintenance Crawler | Early station maintenance crawler enemy. Drops parts instead of meat. |
 | Great Crab / Armored Crawler | Shield-claw crawler. Blocks frontal attacks unless surprised. Drops a larger parts bundle instead of meat. |
-| Squiddard | Aquatic/alien-style enemy with movement and combat behavior around passable spaces. |
-| Ruptured Crew Suit (`Skeleton`) | Former skeleton. Corrupted emergency suit/servo enemy that ruptures into shrapnel when damaged enough. |
+| Replicator Swarm | Alien microform swarm with movement and combat behavior around passable spaces. |
+| Ruptured Crew Suit | Corrupted emergency suit/servo enemy that ruptures into shrapnel when damaged enough. |
 | Jawar (`Thief`) | Former thief. Steals an item and attempts to escape. |
 | Jawar Scavenger (`Bandit`) | Rare Jawar variant with enhanced stealing threat. |
-| Bith Acolyte (`Guard`) | Former prison guard. Security adept with a force-pull rig; mechanically still pulls or pressures the player in combat. Sprite/chain visual still needs a later pass. |
+| Bith Acolyte (`Guard`) | Security adept with a force-pull rig; mechanically still pulls or pressures the player in combat. |
 | Siphon Drone | Flying medical-drain drone that replenishes health when attacking. |
 | Yendor Shock Trooper | Heavy melee enemy with low-health combat-rig overclock. |
-| Facehugger (`Spinner`) | Former cave spinner. Uses web behavior as adhesive biofilament. Successful latches infect the hero like an alien egg; if the infection runs its course it spawns a tougher xenomorph. |
+| Facehugger | Uses adhesive biofilament and direct latching behavior. Successful latches infect the hero like an alien egg; if the infection runs its course it spawns a tougher xenomorph. |
 | Plasma Anomaly (`Elemental`) | Former fire elemental. Reactor/containment leak enemy with special damage flavor. |
 | Plasma Spark (`Newborn Elemental`) | Quest-related discharge source for a faulty core module ejected by the restart sequence. |
-| Jeda Knight (`Monk`) | Fast late-mid disciplined melee enemy. Text conversion is done; sprite remains future work. |
+| Jeda Knight | Fast late-mid disciplined melee enemy. |
 | Jeda Master (`Senior`) | Rare Jeda Knight variant with stronger strikes and brief paralysis. Text conversion is done; sprite remains future work. |
-| Signal Witch (`Warlock`) | Caster enemy that weaponizes corrupted telemetry and neural feedback. |
-| War Machine (`Golem`) | Heavy corridor-suppression machine from command-sector defense systems. |
-| Signal Siren (`Succubus`) | Charm/hypnotise-style intrusion organism that interferes with the player's target choices. |
+| Signal Leech | Caster enemy that weaponizes corrupted telemetry and neural feedback. |
+| War Machine | Heavy corridor-suppression machine from command-sector defense systems. |
+| Signal Siren | Charm/hypnotise-style intrusion organism that interferes with the player's target choices. |
 | Observer Horror (`Eye`) | Sci-fi horror ranged enemy with a charged focused beam. |
 | Skitter Cannon (`Scorpio`) | Late containment predator with long-range crippling projectiles. |
 | Acid-spitter Cannon | Rare skitter-cannon variant with acid blood and corrosive spines. |
@@ -80,24 +80,25 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Item family | Current behavior |
 | --- | --- |
 | Food | Restores hunger for biological classes. Class-specific effects apply: Commander heals, DM-3000 can consume energy packs to recharge blasters without needing food, Shapeshifter/Captain get normal hunger value. Emergency auto-eat now triggers at 25% HP or below for non-DM-3000 heroes if valid food is in the backpack. |
-| Alien Egg / Dead Alien Bug (`AlienPod`) | Internal class remains `AlienPod` for the dropped bug. The alien egg device uses the alien pod/egg item icon, plants as an egg mine, briefly fades to black and shows the infection dialog when triggered by the hero, then drops a raw bug. Raw bug cannot be eaten. Can be combined in the Fabricator into xeno-booster/gene-mod outcomes; crafted xeno-boosters use the x-port/Bionetics icon. |
-| Gene Mods (`ExperimentalTech`) | Former potion-like system. Single-use biological/tech effects such as healing, strength, invisibility, toxic payloads, security override, cryogenics, and other enhancements. Regen Gene Mod cures alien egg infection. |
-| Tech (`Script`) | Former scroll-like system. Single-use technology effects such as identify, mapping, upgrade, recharging, teleport, cloning, terror/pheromone, fix, and other utility effects. |
+| Alien Egg / Dead Alien Bug (`AlienPod`) | Internal class remains `AlienPod` for the dropped bug. The alien egg device uses the alien pod/egg item icon, plants as an egg mine, briefly fades to black and shows the infection dialog when triggered by the hero, then drops a raw bug. Raw bug cannot be eaten. Can be combined in the Fabricator into xeno-booster/gene-mod outcomes; crafted xeno boosters use the Plasmid Kit icon. |
+| Gene Mods (`Plasmid`) | Former potion-like system. Single-use biological/tech effects such as healing, strength, invisibility, toxic payloads, security override, cryogenics, and other enhancements. Unknown gene mods start as sealed capsules in the main backpack; opening one reveals and immediately consumes it. Known future pickups sort into the Plasmid Kit unless they are offensive grenades. Regen Gene Mod cures alien egg infection. |
+| Tech (`Upgrade`) | Former scroll-like system. Single-use technology effects such as identify, mapping, upgrade, recharging, teleport, cloning, panic, repair, and other utility effects. Unknown tech starts as sealed caches in the main backpack; opening one reveals and immediately runs it. Known future pickups sort into Utility unless they are offensive upgrades. |
 | Blasters | Rechargeable ranged weapons with charge counts. Each blaster has a distinct projectile/effect and can be used by DM-3000 launcher mechanics. |
 | Floor lighting | Unpowered floor lighting activates when any non-flying character stands on it; it still uses normal press handling for traps and mines. Spent trap/floor-lighting tiles become inactive, stay off permanently, and remain visible as spent powered plates. |
 | Projectile pathing | Missiles and thrown items can cross unpowered floor lighting even though it still blocks sight until activated. |
 | Weapons | Melee and missile weapons with tiers, upgrades, malfunctions, and enhancements. |
-| Armor | Defensive equipment with strength requirements, upgrades, malfunctions, and enhancements. |
+| Utility Torch | Permanent tier-1 melee weapon that must be equipped before it can be switched on. Each activation consumes one torch charge and applies the existing light effect. Torch batteries refill the torch and can appear in workshops, on dark levels, and as occasional station supplies. |
+| Armor | Defensive equipment with strength requirements, upgrades, malfunctions, and enhancements. Space suits and hunter suits protect biological heroes on exposed bridge walks outside the station. |
 | Modules | Ring-like equipment that modifies combat or utility stats. Can malfunction. |
-| Artifacts | Unique charge/progression items with special mechanics, such as stealth, gravity control, time manipulation, alien DNA, recycling, and YendorTech shield behavior. |
-| Workshops | Ordinary workshop stock is random per floor and stays on that floor. Special support items such as backpack-modifier containers and Time Folder batteries carry forward within the same area if left in the workshop. Player-dropped normal heaps inside the workshop room carry forward into reusable workshop storage chests instead of being left behind on the old floor. Generated workshop rooms paint a fixed interior template with a Maker Bench, storage chests, and a Chief Engineer-style upgrade bench for merging two compatible upgradeable items. |
-| Containers | Inventory sub-containers such as backpack-style storage, Bionetics gene-mod storage, and blaster holster. |
+| Equippable Modules | Unique charge/progression items with special mechanics, such as stealth, gravity control, time manipulation, alien DNA, recycling, and frontier-tech shield behavior. |
+| Workshops | Ordinary workshop stock is random per floor and stays on that floor. Special support items such as backpack-modifier containers and Time Folder batteries carry forward within the same area if left in the workshop. Player-dropped normal heaps inside the workshop room carry forward into reusable workshop storage chests instead of being left behind on the old floor. Generated workshop rooms paint a fixed interior template with a Maker Bench, storage chests, and a Chief Engineer-style upgrade bench for merging two compatible upgradeable items. Every workshop offers at least one spacesuit-type armor item. |
+| Containers | Inventory sub-containers: backpack for general items, Ordnance for mines/grenades/offensive one-use effects, Utility for support tech, Plasmids for gene mods and stims, and blaster holster for blasters. |
 | Mines / Devices | Placeable or environmental charges. Can be triggered from floors, fabricated, combined, or cleared by drones. |
 | Parts | Currency/material used in workshops and Maker-Bot/recycling flows. |
 | Keys | Floor/depth access control for locked doors, chests, and boss exits. Security Block floors also place a reusable max-security override keycard in the entrance room; it opens normal locked detention doors on that floor without being consumed. |
-| Dewdrop / Medigel | Small healing resource from station emergency systems. Can fill air tank-style storage. |
-| Air Tank | Stores medigel droplets and can heal; a full tank has stronger restorative/blessing utility. |
-| Escape Pod Override (`Amulet`) | Internal class remains `Amulet`, but player-facing text now frames the winning artifact as the command override needed to access sealed evacuation systems. It can launch the final pod immediately, or justify returning to reopen sealed rescue cradles for survivors. |
+| Medigel Droplet | Small healing resource from station emergency systems. Can fill air tank-style storage. |
+| Air Tank | Stores medigel droplets and can heal; a full tank has stronger restorative/stabilizing utility. |
+| Escape Pod Override | Command override needed to access sealed evacuation systems. It can launch the final pod immediately, or justify returning to reopen sealed rescue cradles for survivors. |
 
 ## Notable Blasters
 
@@ -109,7 +110,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Disintegrator | Piercing beam that damages multiple targets and burns through terrain. |
 | Flamethrower | Cone fire attack, consuming charge for area damage. |
 | Freezethrower | Cold damage and chill/freeze behavior. |
-| Shock Blaster | Electrical chain/bounce damage, stronger around water but risky at close range. |
+| Shock Blaster | Electrical arc/bounce damage, stronger around water but risky at close range. |
 | Dominator | Attempts to permanently dominate enemies; stronger against weakened targets and ineffective against bosses. |
 | Bio-Siphon Blaster (`VampiricBlaster`) | Former vampiric/hypnotise blaster. Now steals life from hostile living targets, healing the hero from actual HP removed. Still transfers hero life into allies or support effects, and disrupts unliving or projected targets without healing. |
 | Venom Blaster | Creates venom/toxic gas cloud at target area. |
@@ -128,11 +129,11 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Portable Maker / Portal Tunneler | Stores a coordinate and returns/relocates using spacetime tunneling behavior. |
 | Matter Recycler (`PortableRender`) | One-time compact reclamation rig for breaking selected items into parts. |
 | YendorTech Shield | Absorbs mine charges/devices to improve protection; Yendor-compatible tech artifact. |
-| Buggy Compiler | Bug-themed artifact that consumes tech/scripts for unusual utility and dependency flavor. |
+| Buggy Compiler | Bug-themed artifact that consumes tech upgrades for unusual utility and dependency flavor. |
 | Tech Toolkit | Item-improvement/crafting support artifact. |
 | Survival Module | Survival-oriented artifact tied to hunger/food/resource behavior. |
 | Impact Gauntlet | Former Knuckleduster. Fast melee weapon presented as a powered maintenance impact tool. |
-| Mastery Datacore (`TomeOfMastery`) | Former Tome of Mastery. Player-facing text now presents subclass selection as synchronizing with an advanced combat protocol. |
+| Training Manual | Player-facing text presents subclass selection as synchronizing with an advanced combat protocol. |
 
 ## Quest and Special Items
 
@@ -145,10 +146,10 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Containment Ash (`CorpseDust`) | Sealed hostile residue quest item with residual anomaly flavor. |
 | Bio-Charge Core / Rotberry Mine Charge | Organic/device quest ingredient tied to the Quartermaster and Fabricator systems. |
 | Hunter Disc | Captain starter/ranged identity weapon. |
-| Hologram Emitter (`DwarfToken`) | Internal class remains `DwarfToken` for save compatibility. Drops from the Holodeck Monarch's hard-light retainers after Y gives the objective, and can be traded back to Y for the quest reward. |
+| Hologram Emitter | Drops from the Holodeck Monarch's hard-light retainers after Y gives the objective, and can be traded back to Y for the quest reward. |
 | Darts / Hunter's Dart | Missile-weapon family still earmarked for stronger sci-fi naming/art in earlier conversion work. |
 | Bomb | Explosive utility item. |
-| Mobile Turret | Deployable/mobile weapon concept, now intended as station tech rather than spirit magic. |
+| Mobile Turret | Deployable/mobile weapon concept, now intended as station tech rather than fantasy tech. |
 
 ## Environmental Interactables
 

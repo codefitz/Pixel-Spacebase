@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.sprites;
 
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.noosa.tweeners.ScaleTweener;
@@ -56,7 +56,7 @@ public class MobSprite extends CharSprite {
 
     public void fall() {
 
-        origin.set(width / 2, height - DungeonTilemap.SIZE / 2);
+        origin.set(width / 2, height - SpacebaseTilemap.SIZE / 2);
         angularSpeed = Random.Int(2) == 0 ? -720 : 720;
 
         parent.add(new ScaleTweener(this, new PointF(0, 0), FALL_TIME) {

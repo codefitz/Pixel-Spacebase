@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.containers;
 
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.Item;
@@ -90,7 +90,7 @@ public class Container extends Item implements Iterable<Item> {
     public void onDetach() {
         this.owner = null;
         for (Item item : items)
-            Dungeon.quickslot.clearItem(item);
+            SpacebaseRun.quickslot.clearItem(item);
         updateQuickslot();
     }
 

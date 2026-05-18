@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -38,13 +38,13 @@ public abstract class NPC extends Mob {
     }
 
     protected void throwItem() {
-        Heap heap = Dungeon.level.heaps.get(pos);
+        Heap heap = SpacebaseRun.level.heaps.get(pos);
         if (heap != null) {
             int n;
             do {
                 n = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
             } while (!Level.passable[n] && !Level.avoid[n]);
-            Dungeon.level.drop(heap.pickUp(), n).sprite.drop(pos);
+            SpacebaseRun.level.drop(heap.pickUp(), n).sprite.drop(pos);
         }
     }
 

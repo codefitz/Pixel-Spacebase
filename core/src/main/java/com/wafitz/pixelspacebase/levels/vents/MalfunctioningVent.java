@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
@@ -29,9 +29,8 @@ import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
-import com.wafitz.pixelspacebase.items.KindofMisc;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.artifacts.Artifact;
+import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.missiles.HunterDisc;
@@ -52,12 +51,12 @@ public class MalfunctioningVent extends Vent {
 
     @Override
     public void activate() {
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             CellEmitter.get(pos).burst(ShadowParticle.UP, 5);
             Sample.INSTANCE.play(Assets.SND_CURSED);
         }
 
-        Heap heap = Dungeon.level.heaps.get(pos);
+        Heap heap = SpacebaseRun.level.heaps.get(pos);
         if (heap != null) {
             for (Item item : heap.items) {
                 if (item.isUpgradable())
@@ -65,8 +64,8 @@ public class MalfunctioningVent extends Vent {
             }
         }
 
-        if (Dungeon.hero.pos == pos) {
-            malfunction(Dungeon.hero);
+        if (SpacebaseRun.hero.pos == pos) {
+            malfunction(SpacebaseRun.hero);
         }
     }
 
@@ -92,15 +91,15 @@ public class MalfunctioningVent extends Vent {
                 canMalfunction.add(armor);
         }
 
-        KindofMisc misc1 = hero.belongings.misc1;
-        if (misc1 instanceof Artifact) {
+        EquipableItem misc1 = hero.belongings.misc1;
+        if (misc1 instanceof EquippableModule) {
             priorityMalfunction.add(misc1);
         } else if (misc1 instanceof Module) {
             canMalfunction.add(misc1);
         }
 
-        KindofMisc misc2 = hero.belongings.misc2;
-        if (misc2 instanceof Artifact) {
+        EquipableItem misc2 = hero.belongings.misc2;
+        if (misc2 instanceof EquippableModule) {
             priorityMalfunction.add(misc2);
         } else if (misc2 instanceof Module) {
             canMalfunction.add(misc2);

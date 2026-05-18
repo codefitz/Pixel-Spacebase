@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ShaftParticle;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -44,21 +44,21 @@ public class KoltoPod extends Mine {
     public void activate() {
         Char ch = Actor.findChar(pos);
 
-        if (ch == Dungeon.hero) {
-            Buff.affect(ch, Health.class).boost(ch != null ? ch.HT : 0);
+        if (ch == SpacebaseRun.hero) {
+            Buff.affect(ch, Health.class).boost(ch != null ? ch.HT : 0, !stimulant);
         }
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             CellEmitter.get(pos).start(ShaftParticle.FACTORY, 0.2f, 3);
         }
     }
 
-    public static class Device extends Mine.Device {
+    public static class Device extends Mine.StimulantDevice {
         {
             image = ItemSpriteSheet.HEALING_DEVICE;
 
             mineClass = KoltoPod.class;
-            craftingClass = HealingTech.class;
+            craftingClass = HealingPlasmid.class;
 
             bones = true;
         }
@@ -72,6 +72,7 @@ public class KoltoPod extends Mine {
         private int healCurr = 1;
         private int count = 0;
         private int level;
+        private boolean stationary = true;
 
         {
             type = buffType.POSITIVE;
@@ -79,7 +80,7 @@ public class KoltoPod extends Mine {
 
         @Override
         public boolean act() {
-            if (target.pos != pos) {
+            if (stationary && target.pos != pos) {
                 detach();
             }
             if (count == 5) {
@@ -114,9 +115,14 @@ public class KoltoPod extends Mine {
             return damage;
         }
 
-        public void boost(int amount) {
+        public void boost(int amount, boolean stationary) {
             level += amount;
+            this.stationary = stationary;
             pos = target.pos;
+        }
+
+        public void boost(int amount) {
+            boost(amount, true);
         }
 
         @Override
@@ -131,13 +137,14 @@ public class KoltoPod extends Mine {
 
         @Override
         public String desc() {
-            return Messages.get(this, "desc", level);
+            return Messages.get(this, stationary ? "desc" : "mobile_desc", level);
         }
 
         private static final String POS = "pos";
         private static final String HEALCURR = "healCurr";
         private static final String COUNT = "count";
         private static final String LEVEL = "level";
+        private static final String STATIONARY = "stationary";
 
         @Override
         public void storeInBundle(Bundle bundle) {
@@ -146,6 +153,7 @@ public class KoltoPod extends Mine {
             bundle.put(HEALCURR, healCurr);
             bundle.put(COUNT, count);
             bundle.put(LEVEL, level);
+            bundle.put(STATIONARY, stationary);
         }
 
         @Override
@@ -155,6 +163,7 @@ public class KoltoPod extends Mine {
             healCurr = bundle.getInt(HEALCURR);
             count = bundle.getInt(COUNT);
             level = bundle.getInt(LEVEL);
+            stationary = !bundle.contains(STATIONARY) || bundle.getBoolean(STATIONARY);
 
         }
     }

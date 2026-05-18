@@ -1,6 +1,6 @@
 # Pixel Spacebase Tile Map Reference
 
-This reference maps the current terrain IDs to plain-text descriptions for graphics planning. It is based on `Terrain.java`, `DungeonTilemap.java`, and the current tile names/descriptions in `levels.properties`.
+This reference maps the current terrain IDs to plain-text descriptions for graphics planning. It is based on `Terrain.java`, `SpacebaseTilemap.java`, and the current tile names/descriptions in `levels.properties`.
 
 For a visual grid with frame numbers and labels, see [TILE_SHEET_LAYOUT.md](TILE_SHEET_LAYOUT.md).
 
@@ -44,7 +44,7 @@ For a visual grid with frame numbers and labels, see [TILE_SHEET_LAYOUT.md](TILE
 | Area | Tile variations currently named in resources |
 | --- | --- |
 | Maintenance / Operations | Water is maintenance coolant. Decorative floors are dark stains and scrape marks. Shelves are technical binders and maintenance logs. |
-| Security Block | Water is security runoff from detention washdown systems. Decorative floors have old blood and scuffed restraint marks. Shelves are security binders, intake records, and confiscation logs. |
+| Security Block | Water is security runoff from detention washdown systems. Decorative floors have old blood and scuffed drag marks. Shelves are security binders, intake records, and confiscation logs. |
 | Lower Engineering | Tiles use a colder steel/teal palette with amber service markings. Floor lighting can still appear as fluorescent conduit growth. Off floor lighting becomes dormant conduit growth. Water is freezing coolant. Wall deco can be ore/parts. |
 | Habitation / Command Sector | Water is recycled civic fountain water. Off floor lighting becomes dormant atrium planters. Special floor is command-suite carpet. Statues depict old war bots and training-sim figures. |
 | Deep Containment | Water is containment fluid. Floor lighting can appear as bioluminescent growth. Off floor lighting becomes dormant spore columns. Statues become sealed specimen pillars. |
@@ -111,7 +111,7 @@ Interpretation:
 ## Visual Notes for Future Tile Art
 
 - The same terrain IDs are reused across areas, so new art should support palette/tileset swaps rather than new gameplay constants wherever possible.
-- `SECRET_DOOR`, `HIDDEN_VENT`, `VENT`, and `INACTIVE_VENT` reuse ordinary floor/wall frames in `DungeonTilemap`; their visible state depends on discovery and overlay logic.
+- `SECRET_DOOR`, `HIDDEN_VENT`, `VENT`, and `INACTIVE_VENT` reuse ordinary floor/wall frames in `SpacebaseTilemap`; their visible state depends on discovery and overlay logic.
 - Chasm and water have stitch behavior around neighboring tiles, so their edge frames need clean transitions.
 - `EMPTY`, `EMPTY_SP`, and `EMPTY_DECO` should be visually distinct but low-noise, because they make up most walkable space.
 - `OFFVENT` blocks line of sight despite being passable, so it should read as tall equipment, dense growth, or unpowered floor-light columns rather than flat floor.

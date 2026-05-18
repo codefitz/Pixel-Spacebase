@@ -23,8 +23,8 @@ package com.wafitz.pixelspacebase.sprites;
 import android.graphics.Bitmap;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Heap;
@@ -123,16 +123,16 @@ public class ItemSprite extends MovieClip {
     }
 
     private PointF worldToCamera(int cell) {
-        final int csize = DungeonTilemap.SIZE;
+        final int csize = SpacebaseTilemap.SIZE;
 
         return new PointF(
-                cell % Dungeon.level.width() * csize + (csize - SIZE) * 0.5f,
-                cell / Dungeon.level.width() * csize + (csize - SIZE) * 0.5f
+                cell % SpacebaseRun.level.width() * csize + (csize - SIZE) * 0.5f,
+                cell / SpacebaseRun.level.width() * csize + (csize - SIZE) * 0.5f
         );
     }
 
     public void place(int p) {
-        if (Dungeon.level != null)
+        if (SpacebaseRun.level != null)
             point(worldToCamera(p));
     }
 
@@ -224,7 +224,7 @@ public class ItemSprite extends MovieClip {
                 if (water) {
                     GameScene.ripple(heap.pos);
                 } else {
-                    int cell = Dungeon.level.map[heap.pos];
+                    int cell = SpacebaseRun.level.map[heap.pos];
                     water = (cell == Terrain.WELL || cell == Terrain.CRAFTING);
                 }
 

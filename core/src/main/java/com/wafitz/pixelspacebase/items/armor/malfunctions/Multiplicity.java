@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.armor.malfunctions;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.WeakClone;
 import com.wafitz.pixelspacebase.items.armor.Armor;
-import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
+import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
@@ -65,7 +65,7 @@ public class Multiplicity extends Armor.Enhancement {
 
                 } else {
                     if (attacker.properties().contains(Char.Property.BOSS) || attacker.properties().contains(Char.Property.MINIBOSS)) {
-                        m = Bestiary.mutable(Dungeon.depth % 5 == 0 ? Dungeon.depth - 1 : Dungeon.depth);
+                        m = Bestiary.mutable(SpacebaseRun.depth % 5 == 0 ? SpacebaseRun.depth - 1 : SpacebaseRun.depth);
                     } else {
                         try {
                             m = (Mob) attacker.getClass().newInstance();
@@ -83,7 +83,7 @@ public class Multiplicity extends Armor.Enhancement {
 
                 if (m != null) {
                     GameScene.add(m);
-                    TeleportationScript.appear(m, Random.element(spawnPoints));
+                    PhaseShiftUpgrade.appear(m, Random.element(spawnPoints));
                 }
 
             }

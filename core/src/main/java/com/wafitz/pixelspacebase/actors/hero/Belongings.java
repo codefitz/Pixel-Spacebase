@@ -21,16 +21,17 @@
 package com.wafitz.pixelspacebase.actors.hero;
 
 import com.wafitz.pixelspacebase.Badges;
+import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
-import com.wafitz.pixelspacebase.items.KindofMisc;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
 import com.wafitz.pixelspacebase.items.keys.Key;
-import com.wafitz.pixelspacebase.items.scripts.FixScript;
+import com.wafitz.pixelspacebase.items.upgrades.RepairUpgrade;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -46,8 +47,8 @@ public class Belongings implements Iterable<Item> {
 
     public KindOfWeapon weapon = null;
     public Armor armor = null;
-    public KindofMisc misc1 = null;
-    public KindofMisc misc2 = null;
+    public EquipableItem misc1 = null;
+    public EquipableItem misc2 = null;
 
     public int[] ironKeys = new int[26];
     public int[] specialKeys = new int[26]; //golden or boss keys
@@ -57,6 +58,7 @@ public class Belongings implements Iterable<Item> {
 
         backpack = new Container() {{
             name = Messages.get(Container.class, "name");
+            image = ItemSpriteSheet.SEALED_STORAGE;
             size = BACKPACK_SIZE;
         }};
         backpack.owner = owner;
@@ -122,12 +124,12 @@ public class Belongings implements Iterable<Item> {
             armor.activate(owner);
         }
 
-        misc1 = (KindofMisc) bundle.get(MISC1);
+        misc1 = (EquipableItem) bundle.get(MISC1);
         if (misc1 != null) {
             misc1.activate(owner);
         }
 
-        misc2 = (KindofMisc) bundle.get(MISC2);
+        misc2 = (EquipableItem) bundle.get(MISC2);
         if (misc2 != null) {
             misc2.activate(owner);
         }
@@ -174,7 +176,7 @@ public class Belongings implements Iterable<Item> {
     }
 
     public void fixEquipped() {
-        FixScript.fix(owner, armor, weapon, misc1, misc2);
+        RepairUpgrade.fix(owner, armor, weapon, misc1, misc2);
     }
 
     public Item randomUnequipped() {

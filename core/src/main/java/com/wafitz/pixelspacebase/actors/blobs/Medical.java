@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.blobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflaged;
@@ -36,14 +36,14 @@ public class Medical extends Blob {
     @Override
     protected void evolve() {
 
-        int[] map = Dungeon.level.map;
+        int[] map = SpacebaseRun.level.map;
 
         boolean visible = false;
 
         int cell;
         for (int i = area.left; i < area.right; i++) {
             for (int j = area.top; j < area.bottom; j++) {
-                cell = i + j * Dungeon.level.width();
+                cell = i + j * SpacebaseRun.level.width();
                 if (cur[cell] > 0) {
 
                     off[cell] = cur[cell];
@@ -54,7 +54,7 @@ public class Medical extends Blob {
                         GameScene.updateMap(cell);
                     }
 
-                    visible = visible || Dungeon.visible[cell];
+                    visible = visible || SpacebaseRun.visible[cell];
 
                 } else {
                     off[cell] = 0;
@@ -62,7 +62,7 @@ public class Medical extends Blob {
             }
         }
 
-        Hero hero = Dungeon.hero;
+        Hero hero = SpacebaseRun.hero;
         if (hero.isAlive() && hero.visibleEnemies() == 0 && cur[hero.pos] > 0) {
             Buff.affect(hero, Camoflaged.class).prolong();
         }

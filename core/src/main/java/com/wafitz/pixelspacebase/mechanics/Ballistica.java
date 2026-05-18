@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.mechanics;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -60,7 +60,7 @@ public class Ballistica {
     }
 
     private void build(int from, int to, boolean stopTarget, boolean stopChars, boolean stopTerrain) {
-        int w = Dungeon.level.width();
+        int w = SpacebaseRun.level.width();
 
         int x0 = from % w;
         int x1 = to % w;
@@ -100,7 +100,7 @@ public class Ballistica {
         int cell = from;
 
         int err = dA / 2;
-        while (Dungeon.level.insideMap(cell)) {
+        while (SpacebaseRun.level.insideMap(cell)) {
 
             //if we're in a wall, collide with the previous cell along the path.
             if (stopTerrain && cell != sourcePos && !Level.passable[cell] && !Level.avoid[cell]) {
@@ -109,7 +109,7 @@ public class Ballistica {
 
             path.add(cell);
 
-            if ((stopTerrain && cell != sourcePos && Level.losBlocking[cell] && Dungeon.level.map[cell] != Terrain.OFFVENT)
+            if ((stopTerrain && cell != sourcePos && Level.losBlocking[cell] && SpacebaseRun.level.map[cell] != Terrain.OFFVENT)
                     || (cell != sourcePos && stopChars && Actor.findChar(cell) != null)
                     || (cell == to && stopTarget)) {
                 collide(cell);

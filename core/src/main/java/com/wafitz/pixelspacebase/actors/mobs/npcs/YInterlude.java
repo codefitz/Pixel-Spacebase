@@ -20,19 +20,24 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.effects.Speck;
+import com.wafitz.pixelspacebase.levels.SecurityBossLevel;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ImpSprite;
+import com.wafitz.pixelspacebase.windows.WndQuest;
 import com.watabou.utils.Bundle;
 
 public class YInterlude extends NPC {
 
     private static final String START_HERO_POS = "start_hero_pos";
+    private static final String MAZE_APPEARANCE = "maze_appearance";
 
     private int startHeroPos = -1;
+    private int mazeAppearance = 0;
 
     {
         spriteClass = ImpSprite.class;
@@ -46,14 +51,25 @@ public class YInterlude extends NPC {
         this.startHeroPos = startHeroPos;
     }
 
+    public YInterlude(int startHeroPos, int mazeAppearance) {
+        this.startHeroPos = startHeroPos;
+        this.mazeAppearance = mazeAppearance;
+    }
+
     @Override
     protected boolean act() {
-        if (startHeroPos == -1) {
-            startHeroPos = Dungeon.hero.pos;
+        if (mazeAppearance > 0) {
+            throwItem();
+            spend(TICK);
+            return true;
         }
 
-        if (Dungeon.hero.pos != startHeroPos) {
-            yell(Messages.get(Arp.class, "tengu_cameo"));
+        if (startHeroPos == -1) {
+            startHeroPos = SpacebaseRun.hero.pos;
+        }
+
+        if (SpacebaseRun.hero.pos != startHeroPos) {
+            yell(Messages.get(Arp.class, "masked_prisoner_cameo"));
             destroy();
             sprite.emitter().burst(Speck.factory(Speck.WOOL), 15);
             sprite.killAndErase();
@@ -85,6 +101,16 @@ public class YInterlude extends NPC {
 
     @Override
     public boolean interact() {
+        if (mazeAppearance > 0) {
+            sprite.turnTo(pos, SpacebaseRun.hero.pos);
+            if (SpacebaseRun.level instanceof SecurityBossLevel) {
+                ((SecurityBossLevel) SpacebaseRun.level).recordMazeYFound(mazeAppearance);
+            }
+            GameScene.show(new WndQuest(this, Messages.get(this, "maze_" + mazeAppearance)));
+            destroy();
+            sprite.emitter().burst(Speck.factory(Speck.WOOL), 15);
+            sprite.killAndErase();
+        }
         return false;
     }
 
@@ -92,11 +118,13 @@ public class YInterlude extends NPC {
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
         bundle.put(START_HERO_POS, startHeroPos);
+        bundle.put(MAZE_APPEARANCE, mazeAppearance);
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
         startHeroPos = bundle.getInt(START_HERO_POS);
+        mazeAppearance = bundle.getInt(MAZE_APPEARANCE);
     }
 }

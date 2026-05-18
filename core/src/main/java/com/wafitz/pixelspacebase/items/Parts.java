@@ -22,10 +22,10 @@ package com.wafitz.pixelspacebase.items;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.items.artifacts.McGyvrModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.McGyvrModule;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -60,7 +60,7 @@ public class Parts extends Item {
     @Override
     public boolean doPickUp(Hero hero) {
 
-        Dungeon.parts += quantity;
+        SpacebaseRun.parts += quantity;
         Statistics.partsCollected += quantity;
         Badges.validatePartsCollected();
 
@@ -89,7 +89,7 @@ public class Parts extends Item {
 
     @Override
     public Item random() {
-        quantity = Random.Int(30 + Dungeon.depth * 10, 60 + Dungeon.depth * 20);
+        quantity = Random.Int(30 + SpacebaseRun.depth * 10, 60 + SpacebaseRun.depth * 20);
         return this;
     }
 

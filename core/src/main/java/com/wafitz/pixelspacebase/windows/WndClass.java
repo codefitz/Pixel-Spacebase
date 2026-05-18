@@ -154,7 +154,7 @@ public class WndClass extends WndTabbed {
                     message = HeroSubClass.GLADIATOR.desc() + "\n\n" + HeroSubClass.BERSERKER.desc();
                     break;
                 case DM3000:
-                    message = HeroSubClass.BATTLEMAGE.desc() + "\n\n" + HeroSubClass.WARLOCK.desc();
+                    message = HeroSubClass.BATTLEMAGE.desc() + "\n\n" + HeroSubClass.SIGNAL_LEECH.desc();
                     break;
                 case SHAPESHIFTER:
                     message = HeroSubClass.FREERUNNER.desc() + "\n\n" + HeroSubClass.ASSASSIN.desc();

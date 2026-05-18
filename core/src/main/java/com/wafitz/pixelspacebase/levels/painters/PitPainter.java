@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
@@ -58,12 +58,12 @@ public class PitPainter extends Painter {
             remains = level.pointToCell(room.random());
         }
 
-        level.drop(new IronKey(Dungeon.depth), remains).type = Type.EMPTY_SPACESUIT;
+        level.drop(new IronKey(SpacebaseRun.depth), remains).type = Type.EMPTY_SPACESUIT;
         int loot = Random.Int(3);
         if (loot == 0) {
             level.drop(Generator.random(Generator.Category.MODULE), remains);
         } else if (loot == 1) {
-            level.drop(Generator.random(Generator.Category.ARTIFACT), remains);
+            level.drop(Generator.random(Generator.Category.EQUIPPABLE_MODULE), remains);
         } else {
             level.drop(Generator.random(Random.oneOf(
                     Generator.Category.WEAPON,
@@ -86,8 +86,8 @@ public class PitPainter extends Painter {
         }
 
         return Generator.random(Random.oneOf(
-                Generator.Category.EXPERIMENTALTECH,
-                Generator.Category.SCRIPT,
+                Generator.Category.PLASMID,
+                Generator.Category.UPGRADE,
                 Generator.Category.FOOD,
                 Generator.Category.PARTS
         ));

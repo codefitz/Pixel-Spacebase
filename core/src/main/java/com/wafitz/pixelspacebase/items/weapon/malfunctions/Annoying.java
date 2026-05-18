@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.weapon.malfunctions;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
@@ -41,7 +41,7 @@ public class Annoying extends Weapon.Enhancement {
     public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
 
         if (Random.Int(20) == 0) {
-            for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+            for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0])) {
                 mob.beckon(attacker.pos);
             }
             attacker.sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.3f, 3);

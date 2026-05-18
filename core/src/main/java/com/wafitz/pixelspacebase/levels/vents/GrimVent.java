@@ -21,11 +21,11 @@
 package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
-import com.wafitz.pixelspacebase.effects.MagicMissile;
+import com.wafitz.pixelspacebase.effects.EnergyBeam;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -55,7 +55,7 @@ public class GrimVent extends Vent {
             for (Char ch : Actor.chars()) {
                 Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
                 if (bolt.collisionPos == ch.pos &&
-                        (target == null || Dungeon.level.distance(pos, ch.pos) < Dungeon.level.distance(pos, target.pos))) {
+                        (target == null || SpacebaseRun.level.distance(pos, ch.pos) < SpacebaseRun.level.distance(pos, target.pos))) {
                     target = ch;
                 }
             }
@@ -64,11 +64,11 @@ public class GrimVent extends Vent {
         if (target != null) {
             final Char finalTarget = target;
             final GrimVent vent = this;
-            MagicMissile.shadow(target.sprite.parent, pos, target.pos, new Callback() {
+            EnergyBeam.shadow(target.sprite.parent, pos, target.pos, new Callback() {
                 @Override
                 public void call() {
                     if (!finalTarget.isAlive()) return;
-                    if (finalTarget == Dungeon.hero) {
+                    if (finalTarget == SpacebaseRun.hero) {
                         //almost kill the player
                         if (((float) finalTarget.HP / finalTarget.HT) >= 0.9f) {
                             finalTarget.damage((finalTarget.HP - 1), vent);
@@ -78,7 +78,7 @@ public class GrimVent extends Vent {
                         }
                         Sample.INSTANCE.play(Assets.SND_CURSED);
                         if (!finalTarget.isAlive()) {
-                            Dungeon.fail(GrimVent.class);
+                            SpacebaseRun.fail(GrimVent.class);
                             GLog.n(Messages.get(GrimVent.class, "ondeath"));
                         }
                     } else {

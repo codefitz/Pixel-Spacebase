@@ -22,8 +22,8 @@ package com.wafitz.pixelspacebase.actors.blobs;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.Journal.Feature;
 import com.wafitz.pixelspacebase.actors.buffs.Awareness;
@@ -45,27 +45,27 @@ public class KnowledgebaseTerminal extends WellWater {
     protected boolean affectHero(Hero hero) {
 
         Sample.INSTANCE.play(Assets.SND_DRINK);
-        emitter.parent.add(new Identification(DungeonTilemap.tileCenterToWorld(pos)));
+        emitter.parent.add(new Identification(SpacebaseTilemap.tileCenterToWorld(pos)));
 
         hero.belongings.observe();
 
-        for (int i = 0; i < Dungeon.level.length(); i++) {
+        for (int i = 0; i < SpacebaseRun.level.length(); i++) {
 
-            int terr = Dungeon.level.map[i];
+            int terr = SpacebaseRun.level.map[i];
             if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
 
-                Dungeon.level.discover(i);
+                SpacebaseRun.level.discover(i);
 
-                if (Dungeon.visible[i]) {
+                if (SpacebaseRun.visible[i]) {
                     GameScene.discoverTile(i, terr);
                 }
             }
         }
 
         Buff.affect(hero, Awareness.class, Awareness.DURATION);
-        Dungeon.observe();
+        SpacebaseRun.observe();
 
-        Dungeon.hero.interrupt();
+        SpacebaseRun.hero.interrupt();
 
         GLog.p(Messages.get(this, "procced"));
 
@@ -82,7 +82,7 @@ public class KnowledgebaseTerminal extends WellWater {
             item.identify();
             Badges.validateItemLevelAquired(item);
 
-            emitter.parent.add(new Identification(DungeonTilemap.tileCenterToWorld(pos)));
+            emitter.parent.add(new Identification(SpacebaseTilemap.tileCenterToWorld(pos)));
 
             Journal.remove(Feature.KNOWLEDGE_TERMINAL);
 

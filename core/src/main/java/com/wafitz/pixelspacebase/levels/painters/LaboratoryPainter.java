@@ -20,9 +20,9 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.blobs.Craft;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
@@ -69,14 +69,14 @@ public class LaboratoryPainter extends Painter {
         }
 
         entrance.set(Room.Door.Type.LOCKED);
-        level.addItemToSpawn(new IronKey(Dungeon.depth));
+        level.addItemToSpawn(new IronKey(SpacebaseRun.depth));
     }
 
     private static Item prize(Level level) {
 
-        Item prize = level.findPrizeItem(ExperimentalTech.class);
+        Item prize = level.findPrizeItem(Plasmid.class);
         if (prize == null)
-            prize = Generator.random(Generator.Category.EXPERIMENTALTECH);
+            prize = Generator.random(Generator.Category.PLASMID);
 
         return prize;
     }

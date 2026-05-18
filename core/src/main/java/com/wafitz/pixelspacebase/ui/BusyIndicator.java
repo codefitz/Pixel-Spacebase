@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.ui;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.watabou.noosa.Image;
 
 public class BusyIndicator extends Image {
@@ -36,6 +36,6 @@ public class BusyIndicator extends Image {
     @Override
     public void update() {
         super.update();
-        visible = Dungeon.hero.isAlive() && !Dungeon.hero.ready;
+        visible = SpacebaseRun.hero.isAlive() && !SpacebaseRun.hero.ready;
     }
 }

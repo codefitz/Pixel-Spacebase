@@ -22,10 +22,12 @@ package com.wafitz.pixelspacebase.levels;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Bones;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
-import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
+import com.wafitz.pixelspacebase.actors.mobs.FeralShapeshifter;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.actors.mobs.XenoQueen;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.levels.Room.Type;
@@ -61,6 +63,12 @@ public class OperationsBossLevel extends RegularLevel {
 
     @Override
     protected boolean build() {
+
+        if (isShapeshifterQueenFight()) {
+            feeling = Feeling.DARK;
+            viewDistance = Math.max(2, (int) Math.ceil(viewDistance / 3f));
+            floorBreakerOn = false;
+        }
 
         initRooms();
 
@@ -215,13 +223,19 @@ public class OperationsBossLevel extends RegularLevel {
 
     @Override
     protected void createMobs() {
-        Mob mob = Bestiary.mob(Dungeon.depth);
+        Mob mob = isShapeshifterQueenFight()
+                ? new XenoQueen()
+                : new FeralShapeshifter();
         Room room;
         do {
             room = Random.element(rooms);
         } while (room.type != Type.STANDARD);
         mob.pos = pointToCell(room.random());
         mobs.add(mob);
+    }
+
+    private boolean isShapeshifterQueenFight() {
+        return SpacebaseRun.hero != null && SpacebaseRun.hero.heroClass == HeroClass.SHAPESHIFTER;
     }
 
     public Actor respawner() {

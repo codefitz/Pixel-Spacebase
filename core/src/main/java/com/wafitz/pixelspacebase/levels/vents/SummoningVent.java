@@ -20,11 +20,11 @@
  */
 package com.wafitz.pixelspacebase.levels.vents;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
+import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.utils.PathFinder;
@@ -44,7 +44,7 @@ public class SummoningVent extends Vent {
     @Override
     public void activate() {
 
-        if (Dungeon.bossLevel()) {
+        if (SpacebaseRun.bossLevel()) {
             return;
         }
 
@@ -77,7 +77,7 @@ public class SummoningVent extends Vent {
         ArrayList<Mob> mobs = new ArrayList<>();
 
         for (Integer point : respawnPoints) {
-            Mob mob = Bestiary.mob(Dungeon.depth);
+            Mob mob = Bestiary.mob(SpacebaseRun.depth);
             mob.state = mob.WANDERING;
             mob.pos = point;
             GameScene.add(mob, DELAY);
@@ -86,7 +86,7 @@ public class SummoningVent extends Vent {
 
         //important to process the visuals and pressing of cells last, so spawned mobs have a chance to occupy cells first
         for (Mob mob : mobs) {
-            TeleportationScript.appear(mob, mob.pos);
+            PhaseShiftUpgrade.appear(mob, mob.pos);
         }
 
     }

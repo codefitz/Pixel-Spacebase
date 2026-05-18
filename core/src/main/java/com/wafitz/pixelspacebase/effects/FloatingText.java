@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.effects;
 
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.watabou.noosa.Camera;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class FloatingText extends RenderedText {
 
     private static final float LIFESPAN = 1f;
-    private static final float DISTANCE = DungeonTilemap.SIZE;
+    private static final float DISTANCE = SpacebaseTilemap.SIZE;
 
     private float timeLeft;
 

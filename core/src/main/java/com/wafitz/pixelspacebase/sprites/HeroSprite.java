@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.sprites;
 import android.graphics.RectF;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.watabou.gltextures.SmartTexture;
@@ -45,13 +45,14 @@ public class HeroSprite extends CharSprite {
 
     private Animation fly;
     private Animation read;
+    private boolean itemForm;
 
     public HeroSprite() {
         super();
 
-        link(Dungeon.hero);
+        link(SpacebaseRun.hero);
 
-        texture(Dungeon.hero.heroClass.spritesheet());
+        texture(SpacebaseRun.hero.heroClass.spritesheet());
         updateArmor();
 
         if (ch.isAlive())
@@ -61,6 +62,7 @@ public class HeroSprite extends CharSprite {
     }
 
     public void updateArmor() {
+        itemForm = false;
 
         TextureFilm film = new TextureFilm(tiers(), ((Hero) ch).tier(), FRAME_WIDTH, FRAME_HEIGHT);
 
@@ -86,6 +88,34 @@ public class HeroSprite extends CharSprite {
 
         read = new Animation(20, false);
         read.frames(film, 19, 20, 20, 20, 20, 20, 20, 20, 20, 19);
+    }
+
+    public void shapeshiftToItem(int itemImage) {
+        itemForm = true;
+
+        texture(Assets.ITEMS);
+        TextureFilm film = new TextureFilm(texture, ItemSprite.SIZE, ItemSprite.SIZE);
+
+        idle = new Animation(1, true);
+        idle.frames(film, itemImage);
+
+        run = idle.clone();
+        die = idle.clone();
+        attack = idle.clone();
+        zap = idle.clone();
+        operate = idle.clone();
+        fly = idle.clone();
+        read = idle.clone();
+
+        idle();
+    }
+
+    public void restoreHeroForm() {
+        if (itemForm) {
+            texture(SpacebaseRun.hero.heroClass.spritesheet());
+            updateArmor();
+            idle();
+        }
     }
 
     @Override

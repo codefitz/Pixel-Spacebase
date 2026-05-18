@@ -20,14 +20,14 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.PoisonParticle;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ToxicAgent;
+import com.wafitz.pixelspacebase.items.plasmids.ToxicGrenade;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
 public class VenomMine extends Mine {
@@ -41,10 +41,10 @@ public class VenomMine extends Mine {
         Char ch = Actor.findChar(pos);
 
         if (ch != null) {
-            Buff.affect(ch, Poison.class).set(Poison.durationFactor(ch) * (4 + Dungeon.depth / 2));
+            Buff.affect(ch, Poison.class).set(Poison.durationFactor(ch) * (4 + SpacebaseRun.depth / 2));
         }
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             CellEmitter.center(pos).burst(PoisonParticle.SPLASH, 3);
         }
     }
@@ -54,7 +54,7 @@ public class VenomMine extends Mine {
             image = ItemSpriteSheet.SNAKE_HEAD;
 
             mineClass = VenomMine.class;
-            craftingClass = ToxicAgent.class;
+            craftingClass = ToxicGrenade.class;
         }
     }
 }

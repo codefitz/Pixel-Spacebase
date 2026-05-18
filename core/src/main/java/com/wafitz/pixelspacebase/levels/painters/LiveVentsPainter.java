@@ -20,9 +20,9 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalRockets;
+import com.wafitz.pixelspacebase.items.plasmids.GravLiftPlasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -59,12 +59,12 @@ public class LiveVentsPainter extends Painter {
                 ventClass = SpearVent.class;
                 break;
             case 1:
-                ventClass = !Dungeon.bossLevel(Dungeon.depth + 1) ? null : SummoningVent.class;
+                ventClass = !SpacebaseRun.bossLevel(SpacebaseRun.depth + 1) ? null : SummoningVent.class;
                 break;
             case 2:
             case 3:
             case 4:
-                ventClass = Random.oneOf(levelVents[Dungeon.depth / 5]);
+                ventClass = Random.oneOf(levelVents[SpacebaseRun.depth / 5]);
                 break;
         }
 
@@ -121,7 +121,7 @@ public class LiveVentsPainter extends Painter {
             level.drop(prize(level), pos);
         }
 
-        level.addItemToSpawn(new ExperimentalRockets());
+        level.addItemToSpawn(new GravLiftPlasmid());
     }
 
     private static Item prize(Level level) {
@@ -154,15 +154,15 @@ public class LiveVentsPainter extends Painter {
 
     @SuppressWarnings("unchecked")
     private static Class<? extends Vent>[][] levelVents = new Class[][]{
-            //sewers
+            //maintenance
             {ToxicVent.class, TeleportationVent.class, FlockVent.class},
-            //prison
+            //security block
             {ConfusionVent.class, ExplosiveVent.class, ParalyticVent.class},
-            //caves
+            //lower engineering
             {BlazingVent.class, VenomVent.class, ExplosiveVent.class},
-            //city
+            //habitation/command
             {WarpingVent.class, VenomVent.class, DisintegrationVent.class},
-            //halls, muahahahaha
+            //deep containment
             {GrimVent.class}
     };
 }

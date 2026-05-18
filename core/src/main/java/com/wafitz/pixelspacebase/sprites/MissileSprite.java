@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.sprites;
 
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.watabou.noosa.tweeners.PosTweener;
 import com.watabou.noosa.tweeners.Tweener;
@@ -53,8 +53,8 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 
         this.callback = listener;
 
-        point(DungeonTilemap.tileToWorld(from));
-        PointF dest = DungeonTilemap.tileToWorld(to);
+        point(SpacebaseTilemap.tileToWorld(from));
+        PointF dest = SpacebaseTilemap.tileToWorld(to);
 
         PointF d = PointF.diff(dest, point());
         speed.set(d).normalize().scale(SPEED);

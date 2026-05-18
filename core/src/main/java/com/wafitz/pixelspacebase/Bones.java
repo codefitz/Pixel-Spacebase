@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
-import com.wafitz.pixelspacebase.items.artifacts.Artifact;
+import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
@@ -48,15 +48,15 @@ public class Bones {
 
     public static void leave() {
 
-        depth = Dungeon.depth;
+        depth = SpacebaseRun.depth;
 
         //heroes which have won the game, who die far above their farthest depth, or who are challenged drop no bones.
-        if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth || Dungeon.challenges > 0) {
+        if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth || SpacebaseRun.challenges > 0) {
             depth = -1;
             return;
         }
 
-        item = pickItem(Dungeon.hero);
+        item = pickItem(SpacebaseRun.hero);
 
         Bundle bundle = new Bundle();
         bundle.put(LEVEL, depth);
@@ -88,7 +88,7 @@ public class Bones {
                     item = hero.belongings.misc2;
                     break;
                 case 4:
-                    item = Dungeon.quickslot.randomNonePlaceholder();
+                    item = SpacebaseRun.quickslot.randomNonePlaceholder();
                     break;
             }
             if (item != null && !item.bones)
@@ -116,8 +116,8 @@ public class Bones {
             }
         }
         if (item == null) {
-            if (Dungeon.parts > 50) {
-                item = new Parts(Random.NormalIntRange(50, Dungeon.parts));
+            if (SpacebaseRun.parts > 50) {
+                item = new Parts(Random.NormalIntRange(50, SpacebaseRun.parts));
             } else {
                 item = new Parts(50);
             }
@@ -144,18 +144,18 @@ public class Bones {
 
         } else {
             //heroes who are challenged cannot find bones
-            if (depth == Dungeon.depth && Dungeon.challenges == 0) {
+            if (depth == SpacebaseRun.depth && SpacebaseRun.challenges == 0) {
                 Game.instance.deleteFile(BONES_FILE);
                 depth = 0;
 
-                if (item instanceof Artifact) {
-                    if (Generator.removeArtifact((Artifact) item)) {
+                if (item instanceof EquippableModule) {
+                    if (Generator.removeEquippableModule((EquippableModule) item)) {
                         try {
-                            Artifact artifact = (Artifact) item.getClass().newInstance();
+                            EquippableModule artifact = (EquippableModule) item.getClass().newInstance();
                             //caps displayed artifact level
                             artifact.transferUpgrade(Math.min(
                                     item.visiblyUpgraded(),
-                                    1 + ((Dungeon.depth * 3) / 10)));
+                                    1 + ((SpacebaseRun.depth * 3) / 10)));
 
                             artifact.malfunctioning = true;
                             artifact.malfunctioningKnown = true;
@@ -175,7 +175,7 @@ public class Bones {
                     item.malfunctioningKnown = true;
                     if (item.isUpgradable()) {
                         //gain 1 level every 3.333 floors down plus one additional level.
-                        int lvl = 1 + ((Dungeon.depth * 3) / 10);
+                        int lvl = 1 + ((SpacebaseRun.depth * 3) / 10);
                         if (lvl < item.level()) {
                             item.degrade(item.level() - lvl);
                         }

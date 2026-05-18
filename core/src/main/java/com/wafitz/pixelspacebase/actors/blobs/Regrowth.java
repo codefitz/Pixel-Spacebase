@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.blobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -41,13 +41,13 @@ public class Regrowth extends Blob {
             int cell;
             for (int i = area.left; i < area.right; i++) {
                 for (int j = area.top; j < area.bottom; j++) {
-                    cell = i + j * Dungeon.level.width();
+                    cell = i + j * SpacebaseRun.level.width();
                     if (off[cell] > 0) {
-                        int c = Dungeon.level.map[cell];
+                        int c = SpacebaseRun.level.map[cell];
                         int c1 = c;
                         if (c == Terrain.EMPTY || c == Terrain.EMBERS || c == Terrain.EMPTY_DECO) {
                             c1 = cur[cell] > 9 ? Terrain.OFFVENT : Terrain.LIGHTEDVENT;
-                        } else if (c == Terrain.LIGHTEDVENT && cur[cell] > 9 && Dungeon.level.mines.get(cell) == null) {
+                        } else if (c == Terrain.LIGHTEDVENT && cur[cell] > 9 && SpacebaseRun.level.mines.get(cell) == null) {
                             c1 = Terrain.OFFVENT;
                         }
 
@@ -63,7 +63,7 @@ public class Regrowth extends Blob {
                     }
                 }
             }
-            Dungeon.observe();
+            SpacebaseRun.observe();
         }
     }
 

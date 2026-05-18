@@ -21,8 +21,8 @@
 package com.wafitz.pixelspacebase.actors.buffs;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.effects.SpellSprite;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.effects.EffectSprite;
 import com.wafitz.pixelspacebase.items.WeakForcefield.CommanderShield;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -73,7 +73,7 @@ public class Berserk extends Buff {
                 target.SHLD -= Math.min(target.SHLD, 2);
                 if (target.SHLD == 0) {
                     target.die(this);
-                    if (!target.isAlive()) Dungeon.fail(this.getClass());
+                    if (!target.isAlive()) SpacebaseRun.fail(this.getClass());
                 }
             } else {
                 state = State.EXHAUSTED;
@@ -115,7 +115,7 @@ public class Berserk extends Buff {
                 BuffIndicator.refreshHero();
                 target.SHLD = shield.maxShield() * 5;
 
-                SpellSprite.show(target, SpellSprite.BERSERK);
+                EffectSprite.show(target, EffectSprite.BERSERK);
                 Sample.INSTANCE.play(Assets.SND_CHALLENGE);
                 GameScene.flash(0xFF0000);
             }

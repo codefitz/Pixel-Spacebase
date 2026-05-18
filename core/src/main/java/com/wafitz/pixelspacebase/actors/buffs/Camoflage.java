@@ -20,10 +20,10 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
-import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
+import com.wafitz.pixelspacebase.items.equippablemodules.StealthModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -75,16 +75,16 @@ public class Camoflage extends FlavourBuff {
     }
 
     public static void dispel() {
-        Camoflage buff = Dungeon.hero.buff(Camoflage.class);
+        Camoflage buff = SpacebaseRun.hero.buff(Camoflage.class);
         if (buff != null) {
             buff.detach();
         }
-        StealthModule.stealthModule cloakBuff = Dungeon.hero.buff(StealthModule.stealthModule.class);
+        StealthModule.stealthModule cloakBuff = SpacebaseRun.hero.buff(StealthModule.stealthModule.class);
         if (cloakBuff != null) {
             cloakBuff.dispel();
         }
         //this isn't a form of invisibilty, but it is meant to dispel at the same time as it.
-        TimeFolder.timeFreeze timeFreeze = Dungeon.hero.buff(TimeFolder.timeFreeze.class);
+        TimeFolder.timeFreeze timeFreeze = SpacebaseRun.hero.buff(TimeFolder.timeFreeze.class);
         if (timeFreeze != null) {
             timeFreeze.detach();
         }

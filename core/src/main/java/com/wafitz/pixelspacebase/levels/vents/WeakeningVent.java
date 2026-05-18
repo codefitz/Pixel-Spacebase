@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.vents;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -38,12 +38,12 @@ public class WeakeningVent extends Vent {
 
     @Override
     public void activate() {
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             CellEmitter.get(pos).burst(ShadowParticle.UP, 5);
         }
 
         Char ch = Actor.findChar(pos);
-        if (ch == Dungeon.hero) {
+        if (ch == SpacebaseRun.hero) {
             Buff.prolong(ch, Weakness.class, Weakness.duration(ch) * 2f);
         } else if (ch != null) {
             Buff.prolong(ch, TimeSink.class, TimeSink.duration(ch));

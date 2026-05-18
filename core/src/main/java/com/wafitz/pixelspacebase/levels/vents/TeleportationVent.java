@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
+import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -49,39 +49,39 @@ public class TeleportationVent extends Vent {
 
         Char ch = Actor.findChar(pos);
         if (ch instanceof Hero) {
-            TeleportationScript.teleportHero((Hero) ch);
+            PhaseShiftUpgrade.teleportHero((Hero) ch);
         } else if (ch != null) {
             int count = 10;
             int pos;
             do {
-                pos = Dungeon.level.randomRespawnCell();
+                pos = SpacebaseRun.level.randomRespawnCell();
                 if (count-- <= 0) {
                     break;
                 }
             } while (pos == -1);
 
-            if (pos == -1 || Dungeon.bossLevel()) {
+            if (pos == -1 || SpacebaseRun.bossLevel()) {
 
-                GLog.w(Messages.get(TeleportationScript.class, "no_tele"));
+                GLog.w(Messages.get(PhaseShiftUpgrade.class, "no_tele"));
 
             } else {
 
                 ch.pos = pos;
                 ch.sprite.place(ch.pos);
-                ch.sprite.visible = Dungeon.visible[pos];
+                ch.sprite.visible = SpacebaseRun.visible[pos];
 
             }
         }
 
-        Heap heap = Dungeon.level.heaps.get(pos);
+        Heap heap = SpacebaseRun.level.heaps.get(pos);
 
         if (heap != null) {
-            int cell = Dungeon.level.randomRespawnCell();
+            int cell = SpacebaseRun.level.randomRespawnCell();
 
             Item item = heap.pickUp();
 
             if (cell != -1) {
-                Dungeon.level.drop(item, cell);
+                SpacebaseRun.level.drop(item, cell);
             }
         }
     }

@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.watabou.utils.Bundle;
@@ -45,7 +45,7 @@ public class PinCushion extends Buff {
     @Override
     public void detach() {
         for (Item item : items)
-            Dungeon.level.drop(item, target.pos).sprite.drop();
+            SpacebaseRun.level.drop(item, target.pos).sprite.drop();
         super.detach();
     }
 

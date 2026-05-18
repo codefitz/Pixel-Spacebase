@@ -20,16 +20,16 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.mobs.King;
+import com.wafitz.pixelspacebase.actors.mobs.HolodeckMonarch;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.modules.Module;
-import com.wafitz.pixelspacebase.items.quest.DwarfToken;
-import com.wafitz.pixelspacebase.levels.CityLevel;
+import com.wafitz.pixelspacebase.items.quest.HardLightEmitter;
+import com.wafitz.pixelspacebase.levels.HabitationRingLevel;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ImpSprite;
@@ -53,9 +53,9 @@ public class Arp extends NPC {
     @Override
     protected boolean act() {
 
-        if (!Quest.given && Dungeon.visible[pos]) {
+        if (!Quest.given && SpacebaseRun.visible[pos]) {
             if (!seenBefore) {
-                yell(Messages.get(this, "hey", Dungeon.hero.givenName()));
+                yell(Messages.get(this, "hey", SpacebaseRun.hero.givenName()));
             }
             seenBefore = true;
         } else {
@@ -88,18 +88,18 @@ public class Arp extends NPC {
     @Override
     public boolean interact() {
 
-        sprite.turnTo(pos, Dungeon.hero.pos);
+        sprite.turnTo(pos, SpacebaseRun.hero.pos);
         if (Quest.given) {
 
-            DwarfToken tokens = Dungeon.hero.belongings.getItem(DwarfToken.class);
+            HardLightEmitter tokens = SpacebaseRun.hero.belongings.getItem(HardLightEmitter.class);
             if (tokens != null && tokens.quantity() >= REQUIRED_EMITTERS) {
                 GameScene.show(new WndArp(this, tokens));
             } else {
-                tell(Messages.get(this, "golems_2", Dungeon.hero.givenName()));
+                tell(Messages.get(this, "golems_2", SpacebaseRun.hero.givenName()));
             }
 
         } else {
-            tell(Messages.get(this, "golems_1", Dungeon.hero.givenName()));
+            tell(Messages.get(this, "golems_1", SpacebaseRun.hero.givenName()));
             Quest.given = true;
             Quest.completed = false;
 
@@ -116,7 +116,7 @@ public class Arp extends NPC {
 
     public void flee() {
 
-        yell(Messages.get(this, "cya", Dungeon.hero.givenName()));
+        yell(Messages.get(this, "cya", SpacebaseRun.hero.givenName()));
 
         destroy();
         sprite.die();
@@ -138,7 +138,7 @@ public class Arp extends NPC {
             reward = null;
         }
 
-        private static final String NODE = "demon";
+        private static final String NODE = "anomaly";
 
         private static final String ALTERNATIVE = "alternative";
         private static final String SPAWNED = "spawned";
@@ -176,8 +176,8 @@ public class Arp extends NPC {
             }
         }
 
-        public static void spawn(CityLevel level) {
-            if (!spawned && Dungeon.depth > 16 && Random.Int(20 - Dungeon.depth) == 0) {
+        public static void spawn(HabitationRingLevel level) {
+            if (!spawned && SpacebaseRun.depth > 16 && Random.Int(20 - SpacebaseRun.depth) == 0) {
 
                 Arp npc = new Arp();
                 do {
@@ -200,8 +200,8 @@ public class Arp extends NPC {
 
         public static void process(Mob mob) {
             if (spawned && given && !completed) {
-                if (mob instanceof King.Undead) {
-                    Dungeon.level.drop(new DwarfToken(), mob.pos).sprite.drop();
+                if (mob instanceof HolodeckMonarch.Undead) {
+                    SpacebaseRun.level.drop(new HardLightEmitter(), mob.pos).sprite.drop();
                 }
             }
         }
@@ -209,12 +209,12 @@ public class Arp extends NPC {
         public static void processMonarchDefeat(int pos) {
             if (spawned && given && !completed) {
                 int missing = REQUIRED_EMITTERS;
-                DwarfToken tokens = Dungeon.hero.belongings.getItem(DwarfToken.class);
+                HardLightEmitter tokens = SpacebaseRun.hero.belongings.getItem(HardLightEmitter.class);
                 if (tokens != null) {
                     missing -= tokens.quantity();
                 }
                 if (missing > 0) {
-                    Dungeon.level.drop(new DwarfToken().quantity(missing), pos).sprite.drop();
+                    SpacebaseRun.level.drop(new HardLightEmitter().quantity(missing), pos).sprite.drop();
                 }
             }
         }

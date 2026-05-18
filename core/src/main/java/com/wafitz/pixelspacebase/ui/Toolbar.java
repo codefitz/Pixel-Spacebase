@@ -21,8 +21,8 @@
 package com.wafitz.pixelspacebase.ui;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.scenes.CellSelector;
@@ -71,12 +71,12 @@ public class Toolbar extends Component {
             @Override
             protected void onClick() {
                 examining = false;
-                Dungeon.hero.rest(false);
+                SpacebaseRun.hero.rest(false);
             }
 
             protected boolean onLongClick() {
                 examining = false;
-                Dungeon.hero.rest(true);
+                SpacebaseRun.hero.rest(true);
                 return true;
             }
 
@@ -115,7 +115,7 @@ public class Toolbar extends Component {
 
             @Override
             protected void onClick() {
-                GameScene.show(new WndContainer(Dungeon.hero.belongings.backpack, null, WndContainer.Mode.ALL, null));
+                GameScene.show(new WndContainer(SpacebaseRun.hero.belongings.backpack, null, WndContainer.Mode.ALL, null));
             }
 
             protected boolean onLongClick() {
@@ -241,8 +241,8 @@ public class Toolbar extends Component {
     public void update() {
         super.update();
 
-        if (lastEnabled != (Dungeon.hero.ready && Dungeon.hero.isAlive())) {
-            lastEnabled = (Dungeon.hero.ready && Dungeon.hero.isAlive());
+        if (lastEnabled != (SpacebaseRun.hero.ready && SpacebaseRun.hero.isAlive())) {
+            lastEnabled = (SpacebaseRun.hero.ready && SpacebaseRun.hero.isAlive());
 
             for (Gizmo tool : members) {
                 if (tool instanceof Tool) {
@@ -251,7 +251,7 @@ public class Toolbar extends Component {
             }
         }
 
-        if (!Dungeon.hero.isAlive()) {
+        if (!SpacebaseRun.hero.isAlive()) {
             btnInventory.enable(true);
         }
     }
@@ -372,7 +372,7 @@ public class Toolbar extends Component {
 
     static class PickedUpItem extends ItemSprite {
 
-        private static final float DISTANCE = DungeonTilemap.SIZE;
+        private static final float DISTANCE = SpacebaseTilemap.SIZE;
         private static final float DURATION = 0.2f;
 
         private float dstX;

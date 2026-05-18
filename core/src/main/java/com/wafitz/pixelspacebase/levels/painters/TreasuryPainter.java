@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
@@ -60,6 +60,6 @@ public class TreasuryPainter extends Painter {
         }
 
         room.entrance().set(Room.Door.Type.LOCKED);
-        level.addItemToSpawn(new IronKey(Dungeon.depth));
+        level.addItemToSpawn(new IronKey(SpacebaseRun.depth));
     }
 }

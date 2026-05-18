@@ -33,7 +33,7 @@ public class QueenXenoSprite extends MobSprite {
         super();
 
         final Calendar calendar = Calendar.getInstance();
-        //once a year the rat king feels a bit festive!
+        // Once a year the xeno queen feels a bit festive.
         // This reports an error on commit - Issue #230099 Android Studio, IDEA-127764 IntelliJ
         festive = (calendar.get(Calendar.MONTH) == 11 && calendar.get(Calendar.WEEK_OF_MONTH) > 2);
 

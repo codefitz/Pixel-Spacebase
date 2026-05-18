@@ -36,8 +36,8 @@ public abstract class KindofMisc extends EquipableItem {
 
         if (hero.belongings.misc1 != null && hero.belongings.misc2 != null) {
 
-            final KindofMisc m1 = hero.belongings.misc1;
-            final KindofMisc m2 = hero.belongings.misc2;
+            final EquipableItem m1 = hero.belongings.misc1;
+            final EquipableItem m2 = hero.belongings.misc2;
 
             GameScene.show(
                     new WndOptions(Messages.get(KindofMisc.class, "unequip_title"),
@@ -48,7 +48,7 @@ public abstract class KindofMisc extends EquipableItem {
                         @Override
                         protected void onSelect(int index) {
 
-                            KindofMisc equipped = (index == 0 ? m1 : m2);
+                            EquipableItem equipped = (index == 0 ? m1 : m2);
                             detach(hero.belongings.backpack);
                             if (equipped.doUnequip(hero, true, false)) {
                                 execute(hero, AC_EQUIP);

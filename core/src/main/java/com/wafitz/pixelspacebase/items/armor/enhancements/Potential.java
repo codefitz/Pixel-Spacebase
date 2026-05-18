@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.armor.enhancements;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.Lightning;
 import com.wafitz.pixelspacebase.items.armor.Armor;
@@ -49,8 +49,8 @@ public class Potential extends Enhancement {
             defender.damage(shockDmg, LightningVent.LIGHTNING);
 
             checkOwner(defender);
-            if (defender == Dungeon.hero) {
-                Dungeon.hero.belongings.charge(1f);
+            if (defender == SpacebaseRun.hero) {
+                SpacebaseRun.hero.belongings.charge(1f);
                 Camera.main.shake(2, 0.3f);
             }
 

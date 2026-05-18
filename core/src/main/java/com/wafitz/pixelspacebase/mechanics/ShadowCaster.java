@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.mechanics;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.utils.BArray;
 
@@ -46,7 +46,7 @@ public final class ShadowCaster {
 
         BArray.setFalse(fieldOfView);
 
-        fieldOfView[y * Dungeon.level.width() + x] = true;
+        fieldOfView[y * SpacebaseRun.level.width() + x] = true;
 
         boolean[] losBlocking = Level.losBlocking;
         Obstacles obs = new Obstacles();
@@ -67,8 +67,8 @@ public final class ShadowCaster {
 
         obs.reset();
 
-        final int width = Dungeon.level.width();
-        final int height = Dungeon.level.height();
+        final int width = SpacebaseRun.level.width();
+        final int height = SpacebaseRun.level.height();
         final int[] roundingDistance = rounding[distance];
         final int stepPos = m4 * width + m1;
 

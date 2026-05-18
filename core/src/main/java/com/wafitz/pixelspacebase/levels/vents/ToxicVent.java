@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.vents;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -35,7 +35,7 @@ public class ToxicVent extends Vent {
     @Override
     public void activate() {
 
-        GameScene.add(Blob.device(pos, 300 + 20 * Dungeon.depth, ToxicGas.class));
+        GameScene.add(Blob.device(pos, 300 + 20 * SpacebaseRun.depth, ToxicGas.class));
 
     }
 }

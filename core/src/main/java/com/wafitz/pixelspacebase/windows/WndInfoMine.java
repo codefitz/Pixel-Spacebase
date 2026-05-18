@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.windows;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.mines.Mine;
 import com.wafitz.pixelspacebase.ui.TerrainFeaturesTilemap;
 
@@ -28,7 +28,7 @@ public class WndInfoMine extends WndTitledMessage {
 
     public WndInfoMine(Mine mine) {
 
-        super(TerrainFeaturesTilemap.tile(mine.pos, Dungeon.level.map[mine.pos]),
+        super(TerrainFeaturesTilemap.tile(mine.pos, SpacebaseRun.level.map[mine.pos]),
                 mine.mineName, mine.desc());
 
     }

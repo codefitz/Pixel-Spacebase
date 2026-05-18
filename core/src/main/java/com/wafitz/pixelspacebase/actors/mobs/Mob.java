@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.Challenges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
@@ -41,7 +41,7 @@ import com.wafitz.pixelspacebase.effects.Surprise;
 import com.wafitz.pixelspacebase.effects.Wound;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
+import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.items.modules.AccuracyModule;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -199,10 +199,10 @@ public abstract class Mob extends Char {
         if (enemy == null || !enemy.isAlive() || state == WANDERING)
             newEnemy = true;
             //We are corrupted, and current enemy is either the hero or another corrupted character.
-        else if (buff(Domination.class) != null && (enemy == Dungeon.hero || enemy.buff(Domination.class) != null))
+        else if (buff(Domination.class) != null && (enemy == SpacebaseRun.hero || enemy.buff(Domination.class) != null))
             newEnemy = true;
             //We are amoked and current enemy is the hero
-        else if (buff(Paranoid.class) != null && enemy == Dungeon.hero)
+        else if (buff(Paranoid.class) != null && enemy == SpacebaseRun.hero)
             newEnemy = true;
 
         if (newEnemy) {
@@ -213,7 +213,7 @@ public abstract class Mob extends Char {
             if (buff(Domination.class) != null) {
 
                 //look for enemy mobs to attack, which are also not corrupted
-                for (Mob mob : Dungeon.level.mobs)
+                for (Mob mob : SpacebaseRun.level.mobs)
                     if (mob != this && Level.fieldOfView[mob.pos] && mob.hostile && mob.buff(Domination.class) == null)
                         enemies.add(mob);
                 if (enemies.size() > 0) return Random.element(enemies);
@@ -225,29 +225,29 @@ public abstract class Mob extends Char {
             } else if (buff(Paranoid.class) != null) {
 
                 //try to find an enemy mob to attack first.
-                for (Mob mob : Dungeon.level.mobs)
+                for (Mob mob : SpacebaseRun.level.mobs)
                     if (mob != this && Level.fieldOfView[mob.pos] && mob.hostile)
                         enemies.add(mob);
                 if (enemies.size() > 0) return Random.element(enemies);
 
                 //try to find ally mobs to attack second.
-                for (Mob mob : Dungeon.level.mobs)
+                for (Mob mob : SpacebaseRun.level.mobs)
                     if (mob != this && Level.fieldOfView[mob.pos] && mob.ally)
                         enemies.add(mob);
                 if (enemies.size() > 0) return Random.element(enemies);
 
                     //if there is nothing, go for the hero
-                else return Dungeon.hero;
+                else return SpacebaseRun.hero;
 
             } else {
 
                 //try to find ally mobs to attack.
-                for (Mob mob : Dungeon.level.mobs)
+                for (Mob mob : SpacebaseRun.level.mobs)
                     if (mob != this && Level.fieldOfView[mob.pos] && mob.ally)
                         enemies.add(mob);
 
                 //and add the hero to the list of targets.
-                enemies.add(Dungeon.hero);
+                enemies.add(SpacebaseRun.hero);
 
                 //target one at random.
                 return Random.element(enemies);
@@ -260,7 +260,7 @@ public abstract class Mob extends Char {
 
     protected boolean moveSprite(int from, int to) {
 
-        if (sprite.isVisible() && (Dungeon.visible[from] || Dungeon.visible[to])) {
+        if (sprite.isVisible() && (SpacebaseRun.visible[from] || SpacebaseRun.visible[to])) {
             sprite.move(from, to);
             return true;
         } else {
@@ -296,7 +296,7 @@ public abstract class Mob extends Char {
     }
 
     protected boolean canAttack(Char enemy) {
-        return Dungeon.level.adjacent(pos, enemy.pos);
+        return SpacebaseRun.level.adjacent(pos, enemy.pos);
     }
 
     protected boolean getCloser(int target) {
@@ -307,7 +307,7 @@ public abstract class Mob extends Char {
 
         int step = -1;
 
-        if (Dungeon.level.adjacent(pos, target)) {
+        if (SpacebaseRun.level.adjacent(pos, target)) {
 
             path = null;
 
@@ -318,19 +318,19 @@ public abstract class Mob extends Char {
         } else {
 
             boolean newPath = false;
-            if (path == null || path.isEmpty() || !Dungeon.level.adjacent(pos, path.getFirst()))
+            if (path == null || path.isEmpty() || !SpacebaseRun.level.adjacent(pos, path.getFirst()))
                 newPath = true;
             else if (path.getLast() != target) {
                 //if the new target is adjacent to the end of the path, adjust for that
                 //rather than scrapping the whole path. Unless the path is too long,
                 //in which case re-checking will likely result in a better path
-                if (Dungeon.level.adjacent(target, path.getLast()) && path.size() < Dungeon.level.distance(pos, target)) {
+                if (SpacebaseRun.level.adjacent(target, path.getLast()) && path.size() < SpacebaseRun.level.distance(pos, target)) {
                     int last = path.removeLast();
 
                     if (path.isEmpty()) {
 
                         //shorten for a closer one
-                        if (Dungeon.level.adjacent(target, pos)) {
+                        if (SpacebaseRun.level.adjacent(target, pos)) {
                             path.add(target);
                             //extend the path for a further target
                         } else {
@@ -343,7 +343,7 @@ public abstract class Mob extends Char {
                         if (path.getLast() == target) {
 
                             //if the new target is closer/same, need to modify end of path
-                        } else if (Dungeon.level.adjacent(target, path.getLast())) {
+                        } else if (SpacebaseRun.level.adjacent(target, path.getLast())) {
                             path.add(target);
 
                             //if the new target is further away, need to extend the path
@@ -365,7 +365,7 @@ public abstract class Mob extends Char {
                 int lookAhead = (int) GameMath.gate(1, path.size() - 1, 4);
                 for (int i = 0; i < lookAhead; i++) {
                     int cell = path.get(i);
-                    if (!Level.passable[cell] || (Dungeon.visible[cell] && Actor.findChar(cell) != null)) {
+                    if (!Level.passable[cell] || (SpacebaseRun.visible[cell] && Actor.findChar(cell) != null)) {
                         newPath = true;
                         break;
                     }
@@ -373,7 +373,7 @@ public abstract class Mob extends Char {
             }
 
             if (newPath) {
-                path = Dungeon.findPath(this, pos, target,
+                path = SpacebaseRun.findPath(this, pos, target,
                         Level.passable,
                         Level.fieldOfView);
             }
@@ -392,7 +392,7 @@ public abstract class Mob extends Char {
     }
 
     protected boolean getFurther(int target) {
-        int step = Dungeon.flee(this, pos, target,
+        int step = SpacebaseRun.flee(this, pos, target,
                 Level.passable,
                 Level.fieldOfView);
         if (step != -1) {
@@ -406,7 +406,7 @@ public abstract class Mob extends Char {
     @Override
     public void updateSpriteState() {
         super.updateSpriteState();
-        if (Dungeon.hero.buff(TimeFolder.timeFreeze.class) != null)
+        if (SpacebaseRun.hero.buff(TimeFolder.timeFreeze.class) != null)
             sprite.add(CharSprite.State.PARALYSED);
     }
 
@@ -415,7 +415,7 @@ public abstract class Mob extends Char {
         super.move(step);
 
         if (!flying) {
-            Dungeon.level.mobPress(this);
+            SpacebaseRun.level.mobPress(this);
         }
     }
 
@@ -425,7 +425,7 @@ public abstract class Mob extends Char {
 
     protected boolean doAttack(Char enemy) {
 
-        boolean visible = Dungeon.visible[pos];
+        boolean visible = SpacebaseRun.visible[pos];
 
         if (visible) {
             sprite.attack(enemy.pos);
@@ -446,11 +446,11 @@ public abstract class Mob extends Char {
 
     @Override
     public int defenseSkill(Char enemy) {
-        boolean seen = enemySeen || (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack());
+        boolean seen = enemySeen || (enemy == SpacebaseRun.hero && !SpacebaseRun.hero.canSurpriseAttack());
         if (seen && paralysed == 0) {
             int defenseSkill = this.defenseSkill;
             int penalty = AccuracyModule.getBonus(enemy, AccuracyModule.Accuracy.class);
-            if (penalty != 0 && enemy == Dungeon.hero)
+            if (penalty != 0 && enemy == SpacebaseRun.hero)
                 defenseSkill *= Math.pow(0.75, penalty);
             return defenseSkill;
         } else {
@@ -460,7 +460,7 @@ public abstract class Mob extends Char {
 
     @Override
     public int defenseProc(Char enemy, int damage) {
-        if (!enemySeen && enemy == Dungeon.hero && Dungeon.hero.canSurpriseAttack()) {
+        if (!enemySeen && enemy == SpacebaseRun.hero && SpacebaseRun.hero.canSurpriseAttack()) {
             if (((Hero) enemy).subClass == HeroSubClass.ASSASSIN) {
                 damage *= 1.25f;
                 Wound.hit(this);
@@ -479,16 +479,16 @@ public abstract class Mob extends Char {
 
         if (buff(SoulMark.class) != null) {
             int restoration = Math.min(damage, HP);
-            Dungeon.hero.buff(Hunger.class).satisfy(restoration * 0.5f);
-            Dungeon.hero.HP = (int) Math.ceil(Math.min(Dungeon.hero.HT, Dungeon.hero.HP + (restoration * 0.25f)));
-            Dungeon.hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+            SpacebaseRun.hero.buff(Hunger.class).satisfy(restoration * 0.5f);
+            SpacebaseRun.hero.HP = (int) Math.ceil(Math.min(SpacebaseRun.hero.HT, SpacebaseRun.hero.HP + (restoration * 0.25f)));
+            SpacebaseRun.hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
         }
 
         return damage;
     }
 
     public boolean surprisedBy(Char enemy) {
-        return !enemySeen && enemy == Dungeon.hero;
+        return !enemySeen && enemy == SpacebaseRun.hero;
     }
 
     public void aggro(Char ch) {
@@ -517,16 +517,16 @@ public abstract class Mob extends Char {
 
         super.destroy();
 
-        Dungeon.level.mobs.remove(this);
+        SpacebaseRun.level.mobs.remove(this);
 
-        if (Dungeon.hero.isAlive()) {
+        if (SpacebaseRun.hero.isAlive()) {
 
             if (hostile) {
                 Statistics.enemiesSlain++;
                 Badges.validateMonstersSlain();
                 Statistics.qualifiedForNoKilling = false;
 
-                if (Dungeon.level.feeling == Feeling.DARK) {
+                if (SpacebaseRun.level.feeling == Feeling.DARK) {
                     Statistics.nightHunt++;
                 } else {
                     Statistics.nightHunt = 0;
@@ -536,14 +536,14 @@ public abstract class Mob extends Char {
 
             int exp = exp();
             if (exp > 0) {
-                Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "exp", exp));
-                Dungeon.hero.earnExp(exp);
+                SpacebaseRun.hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "exp", exp));
+                SpacebaseRun.hero.earnExp(exp);
             }
         }
     }
 
     public int exp() {
-        return Dungeon.hero.lvl <= maxLvl ? EXP : 0;
+        return SpacebaseRun.hero.lvl <= maxLvl ? EXP : 0;
     }
 
     @Override
@@ -552,16 +552,16 @@ public abstract class Mob extends Char {
         super.die(cause);
 
         float lootChance = this.lootChance;
-        int bonus = TechModule.getBonus(Dungeon.hero, TechModule.Wealth.class);
+        int bonus = TechModule.getBonus(SpacebaseRun.hero, TechModule.Wealth.class);
         lootChance *= Math.pow(1.15, bonus);
 
-        if (Random.Float() < lootChance && Dungeon.hero.lvl <= maxLvl + 2) {
+        if (Random.Float() < lootChance && SpacebaseRun.hero.lvl <= maxLvl + 2) {
             Item loot = createLoot();
             if (loot != null)
-                Dungeon.level.drop(loot, pos).sprite.drop();
+                SpacebaseRun.level.drop(loot, pos).sprite.drop();
         }
 
-        if (Dungeon.hero.isAlive() && !Dungeon.visible[pos]) {
+        if (SpacebaseRun.hero.isAlive() && !SpacebaseRun.visible[pos]) {
             GLog.i(Messages.get(this, "died"));
         }
     }
@@ -616,7 +616,7 @@ public abstract class Mob extends Char {
 
     //returns true when a mob sees the hero, and is currently targeting them.
     public boolean focusingHero() {
-        return enemySeen && (target == Dungeon.hero.pos);
+        return enemySeen && (target == SpacebaseRun.hero.pos);
     }
 
     public interface AiState {
@@ -639,8 +639,8 @@ public abstract class Mob extends Char {
                 state = HUNTING;
                 target = enemy.pos;
 
-                if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
-                    for (Mob mob : Dungeon.level.mobs) {
+                if (SpacebaseRun.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
+                    for (Mob mob : SpacebaseRun.level.mobs) {
                         if (mob != Mob.this) {
                             mob.beckon(target);
                         }
@@ -688,7 +688,7 @@ public abstract class Mob extends Char {
                     spend(1 / speed());
                     return moveSprite(oldPos, pos);
                 } else {
-                    target = Dungeon.level.randomDestination();
+                    target = SpacebaseRun.level.randomDestination();
                     spend(TICK);
                 }
 
@@ -729,7 +729,7 @@ public abstract class Mob extends Char {
 
                     spend(TICK);
                     state = WANDERING;
-                    target = Dungeon.level.randomDestination();
+                    target = SpacebaseRun.level.randomDestination();
                     return true;
                 }
             }
@@ -749,7 +749,7 @@ public abstract class Mob extends Char {
         public boolean act(boolean enemyInFOV, boolean justAlerted) {
             enemySeen = enemyInFOV;
             //loses target when 0-dist rolls a 6 or greater.
-            if (enemy == null || !enemyInFOV && 1 + Random.Int(Dungeon.level.distance(pos, target)) >= 6) {
+            if (enemy == null || !enemyInFOV && 1 + Random.Int(SpacebaseRun.level.distance(pos, target)) >= 6) {
                 target = -1;
             } else {
                 target = enemy.pos;

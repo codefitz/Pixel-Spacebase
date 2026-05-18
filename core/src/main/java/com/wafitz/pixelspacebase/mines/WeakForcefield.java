@@ -20,13 +20,13 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.EarthParticle;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ParalyzingAgent;
+import com.wafitz.pixelspacebase.items.plasmids.ParalysisGrenade;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -43,22 +43,22 @@ public class WeakForcefield extends Mine {
     public void activate() {
         Char ch = Actor.findChar(pos);
 
-        if (ch == Dungeon.hero) {
-            Buff.affect(ch, Armor.class).level(ch != null ? ch.HT : 0);
+        if (ch == SpacebaseRun.hero) {
+            Buff.affect(ch, Armor.class).level(ch != null ? ch.HT : 0, !stimulant);
         }
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             CellEmitter.bottom(pos).start(EarthParticle.FACTORY, 0.05f, 8);
             Camera.main.shake(1, 0.4f);
         }
     }
 
-    public static class Device extends Mine.Device {
+    public static class Device extends Mine.StimulantDevice {
         {
             image = ItemSpriteSheet.FORCEFIELD_TECH;
 
             mineClass = WeakForcefield.class;
-            craftingClass = ParalyzingAgent.class;
+            craftingClass = ParalysisGrenade.class;
 
             bones = true;
         }
@@ -70,6 +70,7 @@ public class WeakForcefield extends Mine {
 
         private int pos;
         private int level;
+        private boolean stationary = true;
 
         {
             type = buffType.POSITIVE;
@@ -83,7 +84,7 @@ public class WeakForcefield extends Mine {
 
         @Override
         public boolean act() {
-            if (target.pos != pos) {
+            if (stationary && target.pos != pos) {
                 detach();
             }
             spend(STEP);
@@ -100,11 +101,16 @@ public class WeakForcefield extends Mine {
             }
         }
 
-        public void level(int value) {
+        public void level(int value, boolean stationary) {
             if (level < value) {
                 level = value;
             }
+            this.stationary = stationary;
             pos = target.pos;
+        }
+
+        public void level(int value) {
+            level(value, true);
         }
 
         @Override
@@ -119,17 +125,19 @@ public class WeakForcefield extends Mine {
 
         @Override
         public String desc() {
-            return Messages.get(this, "desc", level);
+            return Messages.get(this, stationary ? "desc" : "mobile_desc", level);
         }
 
         private static final String POS = "pos";
         private static final String LEVEL = "level";
+        private static final String STATIONARY = "stationary";
 
         @Override
         public void storeInBundle(Bundle bundle) {
             super.storeInBundle(bundle);
             bundle.put(POS, pos);
             bundle.put(LEVEL, level);
+            bundle.put(STATIONARY, stationary);
         }
 
         @Override
@@ -137,6 +145,7 @@ public class WeakForcefield extends Mine {
             super.restoreFromBundle(bundle);
             pos = bundle.getInt(POS);
             level = bundle.getInt(LEVEL);
+            stationary = !bundle.contains(STATIONARY) || bundle.getBoolean(STATIONARY);
         }
     }
 }

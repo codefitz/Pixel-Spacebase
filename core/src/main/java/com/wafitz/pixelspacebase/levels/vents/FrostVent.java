@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Chill;
@@ -43,20 +43,20 @@ public class FrostVent extends Vent {
     @Override
     public void activate() {
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             Splash.at(pos, 0xFFB2D6FF, 10);
             Sample.INSTANCE.play(Assets.SND_SHATTER);
         }
 
-        Heap heap = Dungeon.level.heaps.get(pos);
+        Heap heap = SpacebaseRun.level.heaps.get(pos);
         if (heap != null) heap.freeze();
 
         Char ch = Actor.findChar(pos);
         if (ch != null) {
-            ch.damage(Random.NormalIntRange(1, Dungeon.depth), this);
-            Chill.prolong(ch, Frost.class, 10f + Random.Int(Dungeon.depth));
-            if (!ch.isAlive() && ch == Dungeon.hero) {
-                Dungeon.fail(getClass());
+            ch.damage(Random.NormalIntRange(1, SpacebaseRun.depth), this);
+            Chill.prolong(ch, Frost.class, 10f + Random.Int(SpacebaseRun.depth));
+            if (!ch.isAlive() && ch == SpacebaseRun.hero) {
+                SpacebaseRun.fail(getClass());
                 GLog.n(Messages.get(this, "ondeath"));
             }
         }

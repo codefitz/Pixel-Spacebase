@@ -26,15 +26,15 @@ import com.wafitz.pixelspacebase.actors.mobs.Bandit;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.Senior;
 import com.wafitz.pixelspacebase.actors.mobs.Shielded;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.Artifact;
+import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
-import com.wafitz.pixelspacebase.items.containers.DeviceCase;
-import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
-import com.wafitz.pixelspacebase.items.containers.XPort;
+import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
+import com.wafitz.pixelspacebase.items.containers.UtilityKit;
+import com.wafitz.pixelspacebase.items.containers.PlasmidKit;
 import com.wafitz.pixelspacebase.items.modules.Module;
-import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -66,14 +66,14 @@ public class Badges {
         LEVEL_REACHED_2(9),
         LEVEL_REACHED_3(10),
         LEVEL_REACHED_4(11),
-        ALL_EXPERIMENTAL_TECH_IDENTIFIED(16),
-        ALL_SCRIPTS_IDENTIFIED(17),
+        ALL_PLASMIDS_IDENTIFIED(16),
+        ALL_UPGRADES_IDENTIFIED(17),
         ALL_MODULES_IDENTIFIED(18),
         ALL_BLASTERS_IDENTIFIED(19),
         ALL_ITEMS_IDENTIFIED(35, true),
-        DEVICE_CONTAINER_MADE,
-        SCRIPT_LIBRARY_MADE,
-        XPORT_MADE,
+        ORDNANCE_KIT_MADE,
+        UTILITY_KIT_MADE,
+        PLASMID_KIT_MADE,
         BLASTER_HOLSTER_MADE,
         ALL_CONTAINERS_MADE(23),
         DEATH_FROM_FIRE(24),
@@ -134,10 +134,10 @@ public class Badges {
         VICTORY(22),
         VICTORY_ALL_CLASSES(36, true),
         MASTERY_COMBO(56),
-        EXPERIMENTAL_TECH_MADE_1(52),
-        EXPERIMENTAL_TECH_MADE_2(53),
-        EXPERIMENTAL_TECH_MADE_3(54),
-        EXPERIMENTAL_TECH_MADE_4(55),
+        PLASMIDS_MADE_1(52),
+        PLASMIDS_MADE_2(53),
+        PLASMIDS_MADE_3(54),
+        PLASMIDS_MADE_4(55),
         NO_MONSTERS_SLAIN(28),
         GRIM_WEAPON(29),
         WATERTHINGS(30),
@@ -302,19 +302,19 @@ public class Badges {
     public static void validateLevelReached() {
         Badge badge = null;
 
-        if (!local.contains(Badge.LEVEL_REACHED_1) && Dungeon.hero.lvl >= 6) {
+        if (!local.contains(Badge.LEVEL_REACHED_1) && SpacebaseRun.hero.lvl >= 6) {
             badge = Badge.LEVEL_REACHED_1;
             local.add(badge);
         }
-        if (!local.contains(Badge.LEVEL_REACHED_2) && Dungeon.hero.lvl >= 12) {
+        if (!local.contains(Badge.LEVEL_REACHED_2) && SpacebaseRun.hero.lvl >= 12) {
             badge = Badge.LEVEL_REACHED_2;
             local.add(badge);
         }
-        if (!local.contains(Badge.LEVEL_REACHED_3) && Dungeon.hero.lvl >= 18) {
+        if (!local.contains(Badge.LEVEL_REACHED_3) && SpacebaseRun.hero.lvl >= 18) {
             badge = Badge.LEVEL_REACHED_3;
             local.add(badge);
         }
-        if (!local.contains(Badge.LEVEL_REACHED_4) && Dungeon.hero.lvl >= 24) {
+        if (!local.contains(Badge.LEVEL_REACHED_4) && SpacebaseRun.hero.lvl >= 24) {
             badge = Badge.LEVEL_REACHED_4;
             local.add(badge);
         }
@@ -325,19 +325,19 @@ public class Badges {
     public static void validateStrengthAttained() {
         Badge badge = null;
 
-        if (!local.contains(Badge.STRENGTH_ATTAINED_1) && Dungeon.hero.STR >= 13) {
+        if (!local.contains(Badge.STRENGTH_ATTAINED_1) && SpacebaseRun.hero.STR >= 13) {
             badge = Badge.STRENGTH_ATTAINED_1;
             local.add(badge);
         }
-        if (!local.contains(Badge.STRENGTH_ATTAINED_2) && Dungeon.hero.STR >= 15) {
+        if (!local.contains(Badge.STRENGTH_ATTAINED_2) && SpacebaseRun.hero.STR >= 15) {
             badge = Badge.STRENGTH_ATTAINED_2;
             local.add(badge);
         }
-        if (!local.contains(Badge.STRENGTH_ATTAINED_3) && Dungeon.hero.STR >= 17) {
+        if (!local.contains(Badge.STRENGTH_ATTAINED_3) && SpacebaseRun.hero.STR >= 17) {
             badge = Badge.STRENGTH_ATTAINED_3;
             local.add(badge);
         }
-        if (!local.contains(Badge.STRENGTH_ATTAINED_4) && Dungeon.hero.STR >= 19) {
+        if (!local.contains(Badge.STRENGTH_ATTAINED_4) && SpacebaseRun.hero.STR >= 19) {
             badge = Badge.STRENGTH_ATTAINED_4;
             local.add(badge);
         }
@@ -368,23 +368,23 @@ public class Badges {
         displayBadge(badge);
     }
 
-    public static void validateExperimentalTechMade() {
+    public static void validatePlasmidMade() {
         Badge badge = null;
 
-        if (!local.contains(Badge.EXPERIMENTAL_TECH_MADE_1) && Statistics.experimentalTechMade >= 3) {
-            badge = Badge.EXPERIMENTAL_TECH_MADE_1;
+        if (!local.contains(Badge.PLASMIDS_MADE_1) && Statistics.plasmidsMade >= 3) {
+            badge = Badge.PLASMIDS_MADE_1;
             local.add(badge);
         }
-        if (!local.contains(Badge.EXPERIMENTAL_TECH_MADE_2) && Statistics.experimentalTechMade >= 6) {
-            badge = Badge.EXPERIMENTAL_TECH_MADE_2;
+        if (!local.contains(Badge.PLASMIDS_MADE_2) && Statistics.plasmidsMade >= 6) {
+            badge = Badge.PLASMIDS_MADE_2;
             local.add(badge);
         }
-        if (!local.contains(Badge.EXPERIMENTAL_TECH_MADE_3) && Statistics.experimentalTechMade >= 9) {
-            badge = Badge.EXPERIMENTAL_TECH_MADE_3;
+        if (!local.contains(Badge.PLASMIDS_MADE_3) && Statistics.plasmidsMade >= 9) {
+            badge = Badge.PLASMIDS_MADE_3;
             local.add(badge);
         }
-        if (!local.contains(Badge.EXPERIMENTAL_TECH_MADE_4) && Statistics.experimentalTechMade >= 12) {
-            badge = Badge.EXPERIMENTAL_TECH_MADE_4;
+        if (!local.contains(Badge.PLASMIDS_MADE_4) && Statistics.plasmidsMade >= 12) {
+            badge = Badge.PLASMIDS_MADE_4;
             local.add(badge);
         }
 
@@ -406,11 +406,11 @@ public class Badges {
 
         // This method should be called:
         // 1) When an item is obtained (Item.collect)
-        // 2) When an item is upgraded (UpgradeScript, WeaponUpgradeScript, ShortSword, MissileBlaster)
+        // 2) When an item is upgraded (UpgradePatch, WeaponUpgradePatch, ShortSword, MissileBlaster)
         // 3) When an item is identified
 
         // Note that artifacts should never mines this badge as they are alternatively upgraded
-        if (!item.levelKnown || item instanceof Artifact) {
+        if (!item.levelKnown || item instanceof EquippableModule) {
             return;
         }
 
@@ -435,11 +435,11 @@ public class Badges {
         displayBadge(badge);
     }
 
-    public static void validateAllExperimentalTechIdentified() {
-        if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
-                !local.contains(Badge.ALL_EXPERIMENTAL_TECH_IDENTIFIED) && ExperimentalTech.allKnown()) {
+    public static void validateAllPlasmidIdentified() {
+        if (SpacebaseRun.hero != null && SpacebaseRun.hero.isAlive() &&
+                !local.contains(Badge.ALL_PLASMIDS_IDENTIFIED) && Plasmid.allKnown()) {
 
-            Badge badge = Badge.ALL_EXPERIMENTAL_TECH_IDENTIFIED;
+            Badge badge = Badge.ALL_PLASMIDS_IDENTIFIED;
             local.add(badge);
             displayBadge(badge);
 
@@ -447,11 +447,11 @@ public class Badges {
         }
     }
 
-    public static void validateAllScriptsIdentified() {
-        if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
-                !local.contains(Badge.ALL_SCRIPTS_IDENTIFIED) && Script.allKnown()) {
+    public static void validateAllUpgradesIdentified() {
+        if (SpacebaseRun.hero != null && SpacebaseRun.hero.isAlive() &&
+                !local.contains(Badge.ALL_UPGRADES_IDENTIFIED) && Upgrade.allKnown()) {
 
-            Badge badge = Badge.ALL_SCRIPTS_IDENTIFIED;
+            Badge badge = Badge.ALL_UPGRADES_IDENTIFIED;
             local.add(badge);
             displayBadge(badge);
 
@@ -460,7 +460,7 @@ public class Badges {
     }
 
     public static void validateAllModulesIdentified() {
-        if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
+        if (SpacebaseRun.hero != null && SpacebaseRun.hero.isAlive() &&
                 !local.contains(Badge.ALL_MODULES_IDENTIFIED) && Module.allKnown()) {
 
             Badge badge = Badge.ALL_MODULES_IDENTIFIED;
@@ -475,7 +475,7 @@ public class Badges {
 
     /**
      * public static void validateAllWandsIdentified() {
-     * if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
+     * if (SpacebaseRun.hero != null && SpacebaseRun.hero.isAlive() &&
      * !local.contains( Badge.ALL_BLASTERS_IDENTIFIED ) && Blaster.allKnown()) {
      * <p>
      * Badge badge = Badge.ALL_BLASTERS_IDENTIFIED;
@@ -490,12 +490,12 @@ public class Badges {
     public static void validateAllContainersMade(Item container) {
 
         Badge badge = null;
-        if (container instanceof DeviceCase) {
-            badge = Badge.DEVICE_CONTAINER_MADE;
-        } else if (container instanceof ScriptLibrary) {
-            badge = Badge.SCRIPT_LIBRARY_MADE;
-        } else if (container instanceof XPort) {
-            badge = Badge.XPORT_MADE;
+        if (container instanceof OrdnanceKit) {
+            badge = Badge.ORDNANCE_KIT_MADE;
+        } else if (container instanceof UtilityKit) {
+            badge = Badge.UTILITY_KIT_MADE;
+        } else if (container instanceof PlasmidKit) {
+            badge = Badge.PLASMID_KIT_MADE;
         } else if (container instanceof BlasterHolster) {
             badge = Badge.BLASTER_HOLSTER_MADE;
         }
@@ -505,9 +505,9 @@ public class Badges {
             local.add(badge);
 
             if (!local.contains(Badge.ALL_CONTAINERS_MADE) &&
-                    local.contains(Badge.DEVICE_CONTAINER_MADE) &&
-                    local.contains(Badge.SCRIPT_LIBRARY_MADE) &&
-                    local.contains(Badge.XPORT_MADE) &&
+                    local.contains(Badge.ORDNANCE_KIT_MADE) &&
+                    local.contains(Badge.UTILITY_KIT_MADE) &&
+                    local.contains(Badge.PLASMID_KIT_MADE) &&
                     local.contains(Badge.BLASTER_HOLSTER_MADE)) {
 
                 badge = Badge.ALL_CONTAINERS_MADE;
@@ -519,8 +519,8 @@ public class Badges {
 
     private static void validateAllItemsIdentified() {
         if (!global.contains(Badge.ALL_ITEMS_IDENTIFIED) &&
-                global.contains(Badge.ALL_EXPERIMENTAL_TECH_IDENTIFIED) &&
-                global.contains(Badge.ALL_SCRIPTS_IDENTIFIED) &&
+                global.contains(Badge.ALL_PLASMIDS_IDENTIFIED) &&
+                global.contains(Badge.ALL_UPGRADES_IDENTIFIED) &&
                 global.contains(Badge.ALL_MODULES_IDENTIFIED)) {
             //global.contains( Badge.ALL_BLASTERS_IDENTIFIED )) {
 
@@ -587,7 +587,7 @@ public class Badges {
 
     public static void validateBossSlain() {
         Badge badge = null;
-        switch (Dungeon.depth) {
+        switch (SpacebaseRun.depth) {
             case 5:
                 badge = Badge.BOSS_SLAIN_1;
                 break;
@@ -607,7 +607,7 @@ public class Badges {
             displayBadge(badge);
 
             if (badge == Badge.BOSS_SLAIN_1) {
-                switch (Dungeon.hero.heroClass) {
+                switch (SpacebaseRun.hero.heroClass) {
                     case COMMANDER:
                         badge = Badge.BOSS_SLAIN_1_COMMANDER;
                         break;
@@ -640,14 +640,14 @@ public class Badges {
                     }
                 }
             } else if (badge == Badge.BOSS_SLAIN_3) {
-                switch (Dungeon.hero.subClass) {
+                switch (SpacebaseRun.hero.subClass) {
                     case GLADIATOR:
                         badge = Badge.BOSS_SLAIN_3_GLADIATOR;
                         break;
                     case BERSERKER:
                         badge = Badge.BOSS_SLAIN_3_BERSERKER;
                         break;
-                    case WARLOCK:
+                    case SIGNAL_LEECH:
                         badge = Badge.BOSS_SLAIN_3_WARLOCK;
                         break;
                     case BATTLEMAGE:
@@ -697,7 +697,7 @@ public class Badges {
     public static void validateMastery() {
 
         Badge badge = null;
-        switch (Dungeon.hero.heroClass) {
+        switch (SpacebaseRun.hero.heroClass) {
             case COMMANDER:
                 badge = Badge.MASTERY_COMMANDER;
                 break;
@@ -779,7 +779,7 @@ public class Badges {
         Badge badge = Badge.VICTORY;
         displayBadge(badge);
 
-        switch (Dungeon.hero.heroClass) {
+        switch (SpacebaseRun.hero.heroClass) {
             case COMMANDER:
                 badge = Badge.VICTORY_COMMANDER;
                 break;
@@ -811,7 +811,7 @@ public class Badges {
 
     public static void validateTutorial() {
         Badge badge = null;
-        switch (Dungeon.hero.heroClass) {
+        switch (SpacebaseRun.hero.heroClass) {
             case COMMANDER:
                 badge = Badge.TUTORIAL_COMMANDER;
                 break;
@@ -944,14 +944,14 @@ public class Badges {
         leaveBest(filtered, Badge.STRENGTH_ATTAINED_1, Badge.STRENGTH_ATTAINED_2, Badge.STRENGTH_ATTAINED_3, Badge.STRENGTH_ATTAINED_4);
         leaveBest(filtered, Badge.FOOD_EATEN_1, Badge.FOOD_EATEN_2, Badge.FOOD_EATEN_3, Badge.FOOD_EATEN_4);
         leaveBest(filtered, Badge.ITEM_LEVEL_1, Badge.ITEM_LEVEL_2, Badge.ITEM_LEVEL_3, Badge.ITEM_LEVEL_4);
-        leaveBest(filtered, Badge.EXPERIMENTAL_TECH_MADE_1, Badge.EXPERIMENTAL_TECH_MADE_2, Badge.EXPERIMENTAL_TECH_MADE_3, Badge.EXPERIMENTAL_TECH_MADE_4);
+        leaveBest(filtered, Badge.PLASMIDS_MADE_1, Badge.PLASMIDS_MADE_2, Badge.PLASMIDS_MADE_3, Badge.PLASMIDS_MADE_4);
         leaveBest(filtered, Badge.BOSS_SLAIN_1_ALL_CLASSES, Badge.BOSS_SLAIN_3_ALL_SUBCLASSES);
         leaveBest(filtered, Badge.DEATH_FROM_FIRE, Badge.YASD);
         leaveBest(filtered, Badge.DEATH_FROM_GAS, Badge.YASD);
         leaveBest(filtered, Badge.DEATH_FROM_HUNGER, Badge.YASD);
         leaveBest(filtered, Badge.DEATH_FROM_POISON, Badge.YASD);
-        leaveBest(filtered, Badge.ALL_EXPERIMENTAL_TECH_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
-        leaveBest(filtered, Badge.ALL_SCRIPTS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
+        leaveBest(filtered, Badge.ALL_PLASMIDS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
+        leaveBest(filtered, Badge.ALL_UPGRADES_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
         leaveBest(filtered, Badge.ALL_MODULES_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
         leaveBest(filtered, Badge.ALL_BLASTERS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED);
         leaveBest(filtered, Badge.VICTORY, Badge.VICTORY_ALL_CLASSES);

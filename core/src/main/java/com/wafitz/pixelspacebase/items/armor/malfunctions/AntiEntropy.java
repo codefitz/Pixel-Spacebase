@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.armor.malfunctions;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
@@ -43,7 +43,7 @@ public class AntiEntropy extends Enhancement {
 
         if (Random.Int(8) == 0) {
 
-            if (Dungeon.level.adjacent(attacker.pos, defender.pos)) {
+            if (SpacebaseRun.level.adjacent(attacker.pos, defender.pos)) {
                 Buff.prolong(attacker, Frost.class, Frost.duration(attacker) * Random.Float(0.5f, 1f));
                 CellEmitter.get(attacker.pos).start(SnowParticle.FACTORY, 0.2f, 6);
             }

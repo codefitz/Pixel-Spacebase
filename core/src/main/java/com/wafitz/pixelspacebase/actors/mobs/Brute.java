@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.items.Parts;
@@ -80,7 +80,7 @@ class Brute extends Mob {
         if (isAlive() && !enraged && HP < HT / 4) {
             enraged = true;
             spend(TICK);
-            if (Dungeon.visible[pos]) {
+            if (SpacebaseRun.visible[pos]) {
                 GLog.w(Messages.get(this, "enraged_text"));
                 sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
             }

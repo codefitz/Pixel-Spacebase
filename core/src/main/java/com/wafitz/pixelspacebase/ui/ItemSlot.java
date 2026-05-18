@@ -21,13 +21,13 @@
 package com.wafitz.pixelspacebase.ui;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.keys.Key;
-import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
-import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -202,7 +202,7 @@ public class ItemSlot extends Button {
 
                 int str = isArmor ? ((Armor) item).STRReq() : ((Weapon) item).STRReq();
                 topRight.text(Messages.format(TXT_STRENGTH, str));
-                if (str > Dungeon.hero.STR()) {
+                if (str > SpacebaseRun.hero.STR()) {
                     topRight.hardlight(DEGRADED);
                 } else {
                     topRight.resetColor();
@@ -218,7 +218,7 @@ public class ItemSlot extends Button {
             }
             topRight.measure();
 
-        } else if (item instanceof Key && !(item instanceof SkeletonKey)) {
+        } else if (item instanceof Key && !(item instanceof MasterKeycard)) {
             topRight.text(Messages.format(TXT_KEY_DEPTH, ((Key) item).depth));
             topRight.measure();
         } else {
@@ -233,19 +233,19 @@ public class ItemSlot extends Button {
             bottomRight.text(item.levelKnown ? Messages.format(TXT_LEVEL, level) : TXT_MALFUNCTIONING);
             bottomRight.measure();
             bottomRight.hardlight(level > 0 ? UPGRADED : DEGRADED);
-        } else if (item instanceof Script || item instanceof ExperimentalTech) {
+        } else if (item instanceof Upgrade || item instanceof Plasmid) {
             bottomRight.text(null);
 
             Integer iconInt;
-            if (item instanceof Script) {
-                iconInt = ((Script) item).initials();
+            if (item instanceof Upgrade) {
+                iconInt = ((Upgrade) item).initials();
             } else {
-                iconInt = ((ExperimentalTech) item).initials();
+                iconInt = ((Plasmid) item).initials();
             }
             if (iconInt != null && iconVisible) {
                 bottomRightIcon = new Image(Assets.CONS_ICONS);
                 int left = iconInt * 7;
-                int top = item instanceof ExperimentalTech ? 0 : 8;
+                int top = item instanceof Plasmid ? 0 : 8;
                 bottomRightIcon.frame(left, top, 7, 8);
                 add(bottomRightIcon);
             }

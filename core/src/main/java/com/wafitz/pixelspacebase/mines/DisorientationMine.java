@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalRockets;
+import com.wafitz.pixelspacebase.items.plasmids.GravLiftPlasmid;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
 public class DisorientationMine extends Mine {
@@ -47,7 +47,7 @@ public class DisorientationMine extends Mine {
             image = ItemSpriteSheet.VERTIGO_COMPOUND;
 
             mineClass = DisorientationMine.class;
-            craftingClass = ExperimentalRockets.class;
+            craftingClass = GravLiftPlasmid.class;
         }
     }
 }

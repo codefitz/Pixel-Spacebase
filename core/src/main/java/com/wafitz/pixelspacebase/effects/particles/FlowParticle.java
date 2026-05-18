@@ -20,8 +20,8 @@
  */
 package com.wafitz.pixelspacebase.effects.particles;
 
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
@@ -85,9 +85,9 @@ public class FlowParticle extends PixelParticle {
 
             this.pos = pos;
 
-            PointF p = DungeonTilemap.tileToWorld(pos);
+            PointF p = SpacebaseTilemap.tileToWorld(pos);
             x = p.x;
-            y = p.y + DungeonTilemap.SIZE - 1;
+            y = p.y + SpacebaseTilemap.SIZE - 1;
 
             delay = Random.Float(DELAY);
         }
@@ -95,7 +95,7 @@ public class FlowParticle extends PixelParticle {
         @Override
         public void update() {
 
-            if (visible = Dungeon.visible[pos]) {
+            if (visible = SpacebaseRun.visible[pos]) {
 
                 super.update();
 
@@ -104,7 +104,7 @@ public class FlowParticle extends PixelParticle {
                     delay = Random.Float(DELAY);
 
                     ((FlowParticle) recycle(FlowParticle.class)).reset(
-                            x + Random.Float(DungeonTilemap.SIZE), y);
+                            x + Random.Float(SpacebaseTilemap.SIZE), y);
                 }
             }
         }

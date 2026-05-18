@@ -20,14 +20,14 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.PurpleParticle;
-import com.wafitz.pixelspacebase.items.Dewdrop;
+import com.wafitz.pixelspacebase.items.MedigelDroplet;
 import com.wafitz.pixelspacebase.items.blasters.Disintegrator;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Vampiric;
@@ -49,8 +49,8 @@ public class Eye extends Mob {
         spriteClass = EyeSprite.class;
 
         // wafitz.v1 - Nerf him for the lower levels, might make him neutral later
-        HP = HT = Dungeon.depth * 4;
-        defenseSkill = Dungeon.depth;
+        HP = HT = SpacebaseRun.depth * 4;
+        defenseSkill = SpacebaseRun.depth;
         viewDistance = Light.DISTANCE;
 
         EXP = 13;
@@ -60,7 +60,7 @@ public class Eye extends Mob {
 
         HUNTING = new Hunting();
 
-        loot = new Dewdrop();
+        loot = new MedigelDroplet();
         lootChance = 0.5f;
 
         properties.add(Property.DEMONIC);
@@ -68,12 +68,12 @@ public class Eye extends Mob {
 
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange(Dungeon.depth, Dungeon.depth + 4);
+        return Random.NormalIntRange(SpacebaseRun.depth, SpacebaseRun.depth + 4);
     }
 
     @Override
     public int attackSkill(Char target) {
-        return Dungeon.depth + 4;
+        return SpacebaseRun.depth + 4;
     }
 
     @Override
@@ -134,7 +134,7 @@ public class Eye extends Mob {
 
             spend(attackDelay());
 
-            if (Dungeon.visible[pos]) {
+            if (SpacebaseRun.visible[pos]) {
                 sprite.zap(beam.collisionPos);
                 return false;
             } else {
@@ -164,7 +164,7 @@ public class Eye extends Mob {
 
             if (Level.flamable[pos]) {
 
-                Dungeon.level.destroy(pos);
+                SpacebaseRun.level.destroy(pos);
                 GameScene.updateMap(pos);
                 terrainAffected = true;
 
@@ -176,15 +176,15 @@ public class Eye extends Mob {
             }
 
             if (hit(this, ch, true)) {
-                ch.damage(Random.NormalIntRange(Dungeon.depth, Dungeon.depth + 6), this);
+                ch.damage(Random.NormalIntRange(SpacebaseRun.depth, SpacebaseRun.depth + 6), this);
 
-                if (Dungeon.visible[pos]) {
+                if (SpacebaseRun.visible[pos]) {
                     ch.sprite.flash();
                     CellEmitter.center(pos).burst(PurpleParticle.BURST, Random.IntRange(1, 2));
                 }
 
-                if (!ch.isAlive() && ch == Dungeon.hero) {
-                    Dungeon.fail(getClass());
+                if (!ch.isAlive() && ch == SpacebaseRun.hero) {
+                    SpacebaseRun.fail(getClass());
                     GLog.n(Messages.get(this, "deathgaze_kill"));
                 }
             } else {
@@ -193,7 +193,7 @@ public class Eye extends Mob {
         }
 
         if (terrainAffected) {
-            Dungeon.observe();
+            SpacebaseRun.observe();
         }
 
         beam = null;

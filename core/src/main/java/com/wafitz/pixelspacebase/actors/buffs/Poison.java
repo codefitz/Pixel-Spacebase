@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.actors.buffs;
 
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
@@ -121,7 +121,7 @@ public class Poison extends Buff implements Hero.Doom {
     public void onDeath() {
         Badges.validateDeathFromPoison();
 
-        Dungeon.fail(getClass());
+        SpacebaseRun.fail(getClass());
         GLog.n(Messages.get(this, "ondeath"));
     }
 }

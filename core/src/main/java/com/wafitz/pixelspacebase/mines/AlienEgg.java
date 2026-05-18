@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.XenoInfection;
@@ -40,15 +40,25 @@ public class AlienEgg extends Mine {
         if (ch instanceof Hero) {
             XenoInfection.infect((Hero) ch);
         }
-        Dungeon.level.drop(new AlienPod(), pos).sprite.drop();
+        SpacebaseRun.level.drop(new AlienPod(), pos).sprite.drop();
     }
 
     public static class Device extends Mine.Device {
         {
-            image = ItemSpriteSheet.ALIENPOD;
+            image = ItemSpriteSheet.BLACK_GOO;
 
             mineClass = AlienEgg.class;
             craftingClass = null;
+        }
+
+        @Override
+        public String desc() {
+            return com.wafitz.pixelspacebase.messages.Messages.get(this, "desc");
+        }
+
+        @Override
+        public String info() {
+            return com.wafitz.pixelspacebase.messages.Messages.get(this, "info", desc(), minename());
         }
 
     }

@@ -20,8 +20,8 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
 public class HunterTrapper extends Mine {
@@ -32,7 +32,7 @@ public class HunterTrapper extends Mine {
 
     @Override
     public void activate() {
-        Dungeon.level.drop(new Device(), pos).sprite.drop();
+        SpacebaseRun.level.drop(new Device(), pos).sprite.drop();
     }
 
     public static class Device extends Mine.Device {
@@ -40,7 +40,7 @@ public class HunterTrapper extends Mine {
             image = ItemSpriteSheet.HUNTER_TRAPPER;
 
             mineClass = HunterTrapper.class;
-            craftingClass = StrengthUpgrade.class;
+            craftingClass = MyoFiberPlasmid.class;
         }
     }
 }

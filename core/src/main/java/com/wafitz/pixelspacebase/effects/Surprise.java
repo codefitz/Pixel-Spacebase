@@ -20,8 +20,8 @@
  */
 package com.wafitz.pixelspacebase.effects;
 
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -41,8 +41,8 @@ public class Surprise extends Image {
     public void reset(int p) {
         revive();
 
-        x = (p % Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - width) / 2;
-        y = (p / Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - height) / 2;
+        x = (p % SpacebaseRun.level.width()) * SpacebaseTilemap.SIZE + (SpacebaseTilemap.SIZE - width) / 2;
+        y = (p / SpacebaseRun.level.width()) * SpacebaseTilemap.SIZE + (SpacebaseTilemap.SIZE - height) / 2;
 
         time = TIME_TO_FADE;
     }
@@ -78,7 +78,7 @@ public class Surprise extends Image {
     }
 
     public static void hit(int pos, float angle) {
-        Group parent = Dungeon.hero.sprite.parent;
+        Group parent = SpacebaseRun.hero.sprite.parent;
         Wound w = (Wound) parent.recycle(Wound.class);
         parent.bringToFront(w);
         w.reset(pos);

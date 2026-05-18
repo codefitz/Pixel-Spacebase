@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.actors.buffs;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -141,7 +141,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
     public Image getIcon() {
         Image icon;
         if (((Hero) target).belongings.weapon != null) {
-            icon = new ItemSprite(Dungeon.hero.belongings.weapon.image, null);
+            icon = new ItemSprite(SpacebaseRun.hero.belongings.weapon.image, null);
         } else {
             icon = new ItemSprite(new Item() {
                 {
@@ -247,9 +247,9 @@ public class Combo extends Buff implements ActionIndicator.Action {
                                         enemy.pos = newPos;
                                         // FIXME
                                         if (enemy instanceof Mob) {
-                                            Dungeon.level.mobPress((Mob) enemy);
+                                            SpacebaseRun.level.mobPress((Mob) enemy);
                                         } else {
-                                            Dungeon.level.press(newPos, enemy);
+                                            SpacebaseRun.level.press(newPos, enemy);
                                         }
 
                                     }

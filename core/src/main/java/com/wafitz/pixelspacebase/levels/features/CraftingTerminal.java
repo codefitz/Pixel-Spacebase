@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.features;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -47,17 +47,17 @@ public class CraftingTerminal {
 
         Iterator<Item> items = hero.belongings.iterator();
         foundFruit = false;
-        Heap heap = Dungeon.level.heaps.get(pos);
+        Heap heap = SpacebaseRun.level.heaps.get(pos);
 
         if (heap == null)
             while (items.hasNext() && !foundFruit) {
                 curItem = items.next();
-                if (curItem instanceof AlienPod && ((AlienPod) curItem).experimentalTechAttrib == null) {
+                if (curItem instanceof AlienPod && ((AlienPod) curItem).plasmidAttrib == null) {
                     GameScene.show(
                             new WndOptions(Messages.get(CraftingTerminal.class, "pot"),
                                     Messages.get(CraftingTerminal.class, "options"),
                                     Messages.get(CraftingTerminal.class, "fruit"),
-                                    Messages.get(CraftingTerminal.class, "experimentaltech")) {
+                                    Messages.get(CraftingTerminal.class, "plasmid")) {
                                 @Override
                                 protected void onSelect(int index) {
                                     if (index == 0) {

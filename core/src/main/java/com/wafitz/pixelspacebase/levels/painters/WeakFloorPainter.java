@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -80,7 +80,7 @@ public class WeakFloorPainter extends Painter {
             name = Messages.get(this, "name");
 
             tx = Assets.WEAK_FLOOR;
-            txX = Dungeon.depth / 5;
+            txX = SpacebaseRun.depth / 5;
             txY = 0;
         }
 

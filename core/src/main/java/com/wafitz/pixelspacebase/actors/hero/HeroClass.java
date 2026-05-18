@@ -22,13 +22,13 @@ package com.wafitz.pixelspacebase.actors.hero;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityOverride;
-import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.SecurityPlasmid;
+import com.wafitz.pixelspacebase.items.equippablemodules.StealthModule;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
-import com.wafitz.pixelspacebase.items.scripts.MappingScript;
-import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
+import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dagger;
 import com.wafitz.pixelspacebase.items.weapon.melee.Knuckles;
@@ -81,10 +81,10 @@ public enum HeroClass {
     private static void initCommon(Hero hero) {
         // wafitz.v1 - Hero has just woken up - should be naked I reckon - go hunt for clothes and weapons.
 
-        //if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
+        //if (!SpacebaseRun.isChallenged(Challenges.NO_ARMOR))
         //    (hero.belongings.armor = new Uniform()).identify();
 
-        //if (!Dungeon.isChallenged(Challenges.NO_FOOD))
+        //if (!SpacebaseRun.isChallenged(Challenges.NO_FOOD))
         //    new Food().identify().collect();
 
     }
@@ -110,19 +110,19 @@ public enum HeroClass {
 
         // wafitz.v1 - Breaks naked plot
         /*if (Badges.isUnlocked(Badges.Badge.TUTORIAL_COMMANDER)) {
-            if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
+            if (!SpacebaseRun.isChallenged(Challenges.NO_ARMOR))
                 hero.belongings.armor.applyForcefield(new WeakForcefield());
-            Dungeon.quickslot.setSlot(0, darts);
+            SpacebaseRun.quickslot.setSlot(0, darts);
         } else {
-            if (!Dungeon.isChallenged(Challenges.NO_ARMOR)) {
+            if (!SpacebaseRun.isChallenged(Challenges.NO_ARMOR)) {
                 WeakForcefield forcefield = new WeakForcefield();
                 forcefield.collect();
-                Dungeon.quickslot.setSlot(0, forcefield);
+                SpacebaseRun.quickslot.setSlot(0, forcefield);
             }
-            Dungeon.quickslot.setSlot(1, darts);
+            SpacebaseRun.quickslot.setSlot(1, darts);
         }*/
 
-        new HealingTech().setKnown();
+        new HealingPlasmid().setKnown();
     }
 
     private static void initDM3000(Hero hero) {
@@ -138,9 +138,9 @@ public enum HeroClass {
         (hero.belongings.weapon = launcher).identify();
         hero.belongings.weapon.activate(hero);
 
-        Dungeon.quickslot.setSlot(0, launcher);
+        SpacebaseRun.quickslot.setSlot(0, launcher);
 
-        new UpgradeScript().setKnown();
+        new UpgradePatch().setKnown();
     }
 
     private static void initShapeshifter(Hero hero) {
@@ -153,10 +153,10 @@ public enum HeroClass {
         Dart darts = new Dart(8);
         darts.identify().collect();
 
-        Dungeon.quickslot.setSlot(0, cloak);
-        Dungeon.quickslot.setSlot(1, darts);
+        SpacebaseRun.quickslot.setSlot(0, cloak);
+        SpacebaseRun.quickslot.setSlot(1, darts);
 
-        new MappingScript().setKnown();
+        new MappingUpgrade().setKnown();
     }
 
     private static void initCaptain(Hero hero) {
@@ -165,9 +165,9 @@ public enum HeroClass {
         HunterDisc hunterDisc = new HunterDisc();
         hunterDisc.identify().collect();
 
-        Dungeon.quickslot.setSlot(0, hunterDisc);
+        SpacebaseRun.quickslot.setSlot(0, hunterDisc);
 
-        new SecurityOverride().setKnown();
+        new SecurityPlasmid().setKnown();
     }
 
     public String title() {

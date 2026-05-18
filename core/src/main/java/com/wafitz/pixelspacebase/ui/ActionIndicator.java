@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.ui;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.watabou.noosa.Image;
 
@@ -64,7 +64,7 @@ public class ActionIndicator extends Tag {
     public void update() {
         super.update();
 
-        if (!Dungeon.hero.ready) {
+        if (!SpacebaseRun.hero.ready) {
             if (icon != null) icon.alpha(0.5f);
         } else {
             if (icon != null) icon.alpha(1f);
@@ -81,7 +81,7 @@ public class ActionIndicator extends Tag {
 
     @Override
     protected void onClick() {
-        if (action != null && Dungeon.hero.ready)
+        if (action != null && SpacebaseRun.hero.ready)
             action.doAction();
     }
 

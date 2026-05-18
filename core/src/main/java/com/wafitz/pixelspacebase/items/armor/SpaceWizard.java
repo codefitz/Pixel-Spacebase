@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.armor;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -72,8 +72,8 @@ class SpaceWizard extends ClassArmor {
                     @Override
                     public void call() {
                         curUser.move(dest);
-                        Dungeon.level.press(dest, curUser);
-                        Dungeon.observe();
+                        SpacebaseRun.level.press(dest, curUser);
+                        SpacebaseRun.observe();
                         GameScene.updateFog();
 
                         for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {

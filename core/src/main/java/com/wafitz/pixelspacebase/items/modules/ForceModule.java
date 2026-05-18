@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.modules;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.watabou.utils.Random;
@@ -66,7 +66,7 @@ public class ForceModule extends Module {
     @Override
     public String desc() {
         String desc = super.desc();
-        float tier = tier(Dungeon.hero.STR());
+        float tier = tier(SpacebaseRun.hero.STR());
         if (levelKnown) {
             desc += "\n\n" + Messages.get(this, "avg_dmg", min(level(), tier), max(level(), tier));
         } else {

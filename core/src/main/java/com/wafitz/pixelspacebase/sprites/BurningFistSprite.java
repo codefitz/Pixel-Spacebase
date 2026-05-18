@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.sprites;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.effects.MagicMissile;
+import com.wafitz.pixelspacebase.effects.EnergyBeam;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -63,7 +63,7 @@ public class BurningFistSprite extends MobSprite {
         if (anim == attack) {
 
             Sample.INSTANCE.play(Assets.SND_ZAP);
-            MagicMissile.shadow(parent, ch.pos, posToShoot,
+            EnergyBeam.shadow(parent, ch.pos, posToShoot,
                     new Callback() {
                         @Override
                         public void call() {

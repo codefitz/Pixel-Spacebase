@@ -20,11 +20,11 @@
  */
 package com.wafitz.pixelspacebase.windows;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.items.keys.GoldenKey;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
-import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
+import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
@@ -81,16 +81,16 @@ public class WndJournal extends Window {
         float pos = 0;
 
         //Keys
-        for (int i = Dungeon.hero.belongings.ironKeys.length - 1; i > 0; i--) {
-            if (Dungeon.hero.belongings.specialKeys[i] > 0) {
+        for (int i = SpacebaseRun.hero.belongings.ironKeys.length - 1; i > 0; i--) {
+            if (SpacebaseRun.hero.belongings.specialKeys[i] > 0) {
                 String text;
                 if (i % 5 == 0)
-                    text = Messages.capitalize(Messages.get(SkeletonKey.class, "name"));
+                    text = Messages.capitalize(Messages.get(MasterKeycard.class, "name"));
                 else
                     text = Messages.capitalize(Messages.get(GoldenKey.class, "name"));
 
-                if (Dungeon.hero.belongings.specialKeys[i] > 1) {
-                    text += " x" + Dungeon.hero.belongings.specialKeys[i];
+                if (SpacebaseRun.hero.belongings.specialKeys[i] > 1) {
+                    text += " x" + SpacebaseRun.hero.belongings.specialKeys[i];
                 }
                 ListItem item = new ListItem(Messages.titleCase(text), i);
                 item.setRect(0, pos, WIDTH, ITEM_HEIGHT);
@@ -98,11 +98,11 @@ public class WndJournal extends Window {
 
                 pos += item.height();
             }
-            if (Dungeon.hero.belongings.ironKeys[i] > 0) {
+            if (SpacebaseRun.hero.belongings.ironKeys[i] > 0) {
                 String text = Messages.titleCase(Messages.get(IronKey.class, "name"));
 
-                if (Dungeon.hero.belongings.ironKeys[i] > 1) {
-                    text += " x" + Dungeon.hero.belongings.ironKeys[i];
+                if (SpacebaseRun.hero.belongings.ironKeys[i] > 1) {
+                    text += " x" + SpacebaseRun.hero.belongings.ironKeys[i];
                 }
 
                 ListItem item = new ListItem(text, i);
@@ -146,7 +146,7 @@ public class WndJournal extends Window {
             depth.text(Integer.toString(d));
             depth.measure();
 
-            if (d == Dungeon.depth) {
+            if (d == SpacebaseRun.depth) {
                 feature.hardlight(TITLE_COLOR);
                 depth.hardlight(TITLE_COLOR);
             }

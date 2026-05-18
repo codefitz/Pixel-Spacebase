@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
@@ -34,9 +34,9 @@ public class Light extends FlavourBuff {
     @Override
     public boolean attachTo(Char target) {
         if (super.attachTo(target)) {
-            if (Dungeon.level != null) {
-                target.viewDistance = target == Dungeon.hero ? Dungeon.heroViewDistance() : Math.max(Dungeon.level.viewDistance, DISTANCE);
-                Dungeon.observe();
+            if (SpacebaseRun.level != null) {
+                target.viewDistance = target == SpacebaseRun.hero ? SpacebaseRun.heroViewDistance() : Math.max(SpacebaseRun.level.viewDistance, DISTANCE);
+                SpacebaseRun.observe();
             }
             return true;
         } else {
@@ -46,8 +46,8 @@ public class Light extends FlavourBuff {
 
     @Override
     public void detach() {
-        target.viewDistance = target == Dungeon.hero ? Dungeon.heroViewDistance() : Dungeon.level.viewDistance;
-        Dungeon.observe(DISTANCE + 1);
+        target.viewDistance = target == SpacebaseRun.hero ? SpacebaseRun.heroViewDistance() : SpacebaseRun.level.viewDistance;
+        SpacebaseRun.observe(DISTANCE + 1);
         super.detach();
     }
 

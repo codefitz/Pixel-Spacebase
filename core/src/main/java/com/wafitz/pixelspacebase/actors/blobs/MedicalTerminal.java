@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.actors.blobs;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.Journal.Feature;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
@@ -31,7 +31,7 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ShaftParticle;
 import com.wafitz.pixelspacebase.items.AirTank;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -44,13 +44,13 @@ public class MedicalTerminal extends WellWater {
 
         Sample.INSTANCE.play(Assets.SND_DRINK);
 
-        HealingTech.heal(hero);
+        HealingPlasmid.heal(hero);
         hero.belongings.fixEquipped();
         hero.buff(Hunger.class).satisfy(Hunger.STARVING);
 
         CellEmitter.get(pos).start(ShaftParticle.FACTORY, 0.2f, 3);
 
-        Dungeon.hero.interrupt();
+        SpacebaseRun.hero.interrupt();
 
         GLog.p(Messages.get(this, "procced"));
 

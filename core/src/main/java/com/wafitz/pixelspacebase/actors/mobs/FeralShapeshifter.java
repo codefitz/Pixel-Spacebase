@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.ShapeshifterWarn;
@@ -34,10 +34,10 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
-import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
+import com.wafitz.pixelspacebase.items.equippablemodules.PortableMaker;
+import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
-import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
+import com.wafitz.pixelspacebase.items.upgrades.PsionicBlastUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -159,7 +159,7 @@ public class FeralShapeshifter extends Mob {
             return true;
         } else if (pumpedUp >= 2 || Random.Int((HP * 2 <= HT) ? 2 : 5) > 0) {
 
-            boolean visible = Dungeon.visible[pos];
+            boolean visible = SpacebaseRun.visible[pos];
 
             if (visible) {
                 if (pumpedUp >= 2) {
@@ -187,7 +187,7 @@ public class FeralShapeshifter extends Mob {
                 }
             }
 
-            if (Dungeon.visible[pos]) {
+            if (SpacebaseRun.visible[pos]) {
                 sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "!!!"));
                 GLog.n(Messages.get(this, "pumpup"));
             }
@@ -213,7 +213,7 @@ public class FeralShapeshifter extends Mob {
 
     @Override
     public void move(int step) {
-        Dungeon.level.seal();
+        SpacebaseRun.level.seal();
         super.move(step);
     }
 
@@ -228,7 +228,7 @@ public class FeralShapeshifter extends Mob {
             ((FeralShapeshifterSprite) sprite).spray(true);
             yell(Messages.get(this, "gluuurp"));
         }
-        LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+        LockedFloor lock = SpacebaseRun.hero.buff(LockedFloor.class);
         if (lock != null) lock.addTime(dmg * 2);
     }
 
@@ -242,10 +242,10 @@ public class FeralShapeshifter extends Mob {
 
         resolveBossFight();
 
-        Dungeon.level.unseal();
+        SpacebaseRun.level.unseal();
 
         GameScene.bossSlain();
-        Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).sprite.drop();
+        SpacebaseRun.level.drop(new MasterKeycard(SpacebaseRun.depth), pos).sprite.drop();
 
         Badges.validateBossSlain();
     }
@@ -264,12 +264,12 @@ public class FeralShapeshifter extends Mob {
         RestoredShapeshifterSprite.show(pos);
 
         float lootChance = this.lootChance;
-        int bonus = TechModule.getBonus(Dungeon.hero, TechModule.Wealth.class);
+        int bonus = TechModule.getBonus(SpacebaseRun.hero, TechModule.Wealth.class);
         lootChance *= Math.pow(1.15, bonus);
 
-        if (Random.Float() < lootChance && Dungeon.hero.lvl <= maxLvl + 2) {
+        if (Random.Float() < lootChance && SpacebaseRun.hero.lvl <= maxLvl + 2) {
             Item loot = createLoot();
-            if (loot != null) Dungeon.level.drop(loot, pos).sprite.drop();
+            if (loot != null) SpacebaseRun.level.drop(loot, pos).sprite.drop();
         }
     }
 
@@ -306,7 +306,7 @@ public class FeralShapeshifter extends Mob {
     static {
         RESISTANCES.add(ToxicGas.class);
         RESISTANCES.add(Grim.class);
-        RESISTANCES.add(PsionicBlastScript.class);
+        RESISTANCES.add(PsionicBlastUpgrade.class);
     }
 
     @Override

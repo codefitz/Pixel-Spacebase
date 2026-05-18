@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.ui;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 
@@ -45,8 +45,8 @@ public class LootIndicator extends Tag {
 
         slot = new ItemSlot() {
             protected void onClick() {
-                if (Dungeon.hero.handle(Dungeon.hero.pos)) {
-                    Dungeon.hero.next();
+                if (SpacebaseRun.hero.handle(SpacebaseRun.hero.pos)) {
+                    SpacebaseRun.hero.next();
                 }
 
             }
@@ -65,13 +65,13 @@ public class LootIndicator extends Tag {
     @Override
     public void update() {
 
-        if (Dungeon.hero.ready) {
-            Heap heap = Dungeon.level.heaps.get(Dungeon.hero.pos);
+        if (SpacebaseRun.hero.ready) {
+            Heap heap = SpacebaseRun.level.heaps.get(SpacebaseRun.hero.pos);
             if (heap != null) {
 
                 Item item =
                         heap.type == Heap.Type.CHEST || heap.type == Heap.Type.WORKSHOP_STORAGE || heap.type == Heap.Type.CONFUSEDSHAPESHIFTER ? ItemSlot.CHEST :
-                                heap.type == Heap.Type.LOCKED_CHEST ? ItemSlot.LOCKED_CHEST :
+                                heap.type == Heap.Type.LOCKED_CHEST || heap.type == Heap.Type.JAMMED_CHEST ? ItemSlot.LOCKED_CHEST :
                                         heap.type == Heap.Type.CRYSTAL_CHEST ? ItemSlot.CRYSTAL_CHEST :
                                                 heap.type == Heap.Type.WORKSHOP_UPGRADE || heap.type == Heap.Type.CMD_TERMINAL ? ItemSlot.CMD_TERMINAL :
                                                         heap.type == Heap.Type.EMPTY_SPACESUIT ? ItemSlot.EMPTY_SPACESUIT :
@@ -94,7 +94,7 @@ public class LootIndicator extends Tag {
             }
         }
 
-        slot.enable(visible && Dungeon.hero.ready);
+        slot.enable(visible && SpacebaseRun.hero.ready);
 
         super.update();
     }

@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
@@ -138,9 +138,9 @@ public class Drone extends Mob {
         else {
 
             //if already targeting something, and that thing is still alive and near the pot, keeping targeting it.
-            if (enemy != null && enemy.isAlive() && Dungeon.level.mobs.contains(enemy)
+            if (enemy != null && enemy.isAlive() && SpacebaseRun.level.mobs.contains(enemy)
                     && Level.fieldOfView[enemy.pos] && enemy.invisible == 0
-                    && Dungeon.level.distance(enemy.pos, potPos) <= 3)
+                    && SpacebaseRun.level.distance(enemy.pos, potPos) <= 3)
                 return enemy;
 
             //pick one, if there are none, clear nearby mines or idle.
@@ -159,12 +159,12 @@ public class Drone extends Mob {
         return enemy != null
                 && enemy.isAlive()
                 && enemy.invisible <= 0
-                && Dungeon.level.distance(pos, enemy.pos) <= viewDistance;
+                && SpacebaseRun.level.distance(pos, enemy.pos) <= viewDistance;
     }
 
     @Override
     protected boolean getCloser(int target) {
-        if (Dungeon.level.mines.get(target) != null) {
+        if (SpacebaseRun.level.mines.get(target) != null) {
             return super.getCloser(target);
         }
 
@@ -176,9 +176,9 @@ public class Drone extends Mob {
         if (enemy != null && holder == enemy) {
             target = enemy.pos;
         } else if (potPos != -1 && state == WANDERING) {
-            if (Dungeon.level.distance(pos, potPos) > 2) {
+            if (SpacebaseRun.level.distance(pos, potPos) > 2) {
                 this.target = target = potPos;
-            } else if (target == -1 || target == pos || Dungeon.level.distance(target, potPos) > 4) {
+            } else if (target == -1 || target == pos || SpacebaseRun.level.distance(target, potPos) > 4) {
                 this.target = target = patrolDestination(potPos);
             }
         }
@@ -188,16 +188,16 @@ public class Drone extends Mob {
     @Override
     public void move(int step) {
         super.move(step);
-        if (Dungeon.level.mines.get(pos) != null) {
-            Dungeon.level.mines.get(pos).wither();
+        if (SpacebaseRun.level.mines.get(pos) != null) {
+            SpacebaseRun.level.mines.get(pos).wither();
         }
     }
 
     private int findMineTarget(int origin) {
         int best = -1;
         int bestDistance = Integer.MAX_VALUE;
-        for (int key : Dungeon.level.mines.keyArray()) {
-            int distance = Dungeon.level.distance(origin, key);
+        for (int key : SpacebaseRun.level.mines.keyArray()) {
+            int distance = SpacebaseRun.level.distance(origin, key);
             if (distance < bestDistance) {
                 best = key;
                 bestDistance = distance;
@@ -208,10 +208,10 @@ public class Drone extends Mob {
 
     private Char findHostileTarget(int origin) {
         HashSet<Char> enemies = new HashSet<>();
-        for (Mob mob : Dungeon.level.mobs) {
+        for (Mob mob : SpacebaseRun.level.mobs) {
             if (!(mob instanceof Drone) && mob.hostile && mob.invisible <= 0
-                    && (Dungeon.level.distance(mob.pos, pos) <= viewDistance
-                    || origin != -1 && Dungeon.level.distance(mob.pos, origin) <= viewDistance)) {
+                    && (SpacebaseRun.level.distance(mob.pos, pos) <= viewDistance
+                    || origin != -1 && SpacebaseRun.level.distance(mob.pos, origin) <= viewDistance)) {
                 enemies.add(mob);
             }
         }
@@ -221,7 +221,7 @@ public class Drone extends Mob {
     private int patrolDestination(int origin) {
         HashSet<Integer> candidates = new HashSet<>();
         for (int i = 0; i < Level.passable.length; i++) {
-            if (Level.passable[i] && Actor.findChar(i) == null && Dungeon.level.distance(i, origin) <= 3) {
+            if (Level.passable[i] && Actor.findChar(i) == null && SpacebaseRun.level.distance(i, origin) <= 3) {
                 candidates.add(i);
             }
         }

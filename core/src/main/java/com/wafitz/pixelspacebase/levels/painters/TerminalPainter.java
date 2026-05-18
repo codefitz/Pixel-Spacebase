@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.blobs.DiffusionalTerminal;
 import com.wafitz.pixelspacebase.actors.blobs.KnowledgebaseTerminal;
@@ -47,12 +47,12 @@ public class TerminalPainter extends Painter {
 
         @SuppressWarnings("unchecked")
         Class<? extends WellWater> waterClass =
-                Dungeon.depth >= Dungeon.transmutation ?
+                SpacebaseRun.depth >= SpacebaseRun.transmutation ?
                         DiffusionalTerminal.class :
                         (Class<? extends WellWater>) Random.element(WATERS);
 
         if (waterClass == DiffusionalTerminal.class) {
-            Dungeon.transmutation = Integer.MAX_VALUE;
+            SpacebaseRun.transmutation = Integer.MAX_VALUE;
         }
 
         WellWater water = (WellWater) level.blobs.get(waterClass);

@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.ui;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.particles.BloodParticle;
 import com.watabou.noosa.Image;
@@ -87,7 +87,7 @@ public class BossHealthBar extends Component {
     public void update() {
         super.update();
         if (boss != null) {
-            if (!boss.isAlive() || !Dungeon.level.mobs.contains(boss)) {
+            if (!boss.isAlive() || !SpacebaseRun.level.mobs.contains(boss)) {
                 boss = null;
                 visible = active = false;
             } else {

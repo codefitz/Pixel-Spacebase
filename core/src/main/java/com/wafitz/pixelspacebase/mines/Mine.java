@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.mines;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
@@ -31,13 +31,14 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.LeafParticle;
-import com.wafitz.pixelspacebase.items.Dewdrop;
+import com.wafitz.pixelspacebase.items.MedigelDroplet;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.GnollTechShield;
+import com.wafitz.pixelspacebase.items.equippablemodules.FrontierTechShield;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -51,6 +52,7 @@ public abstract class Mine implements Bundlable {
 
     public int image;
     public int pos;
+    protected boolean stimulant;
 
     public void mine() {
 
@@ -67,16 +69,20 @@ public abstract class Mine implements Bundlable {
     public abstract void activate();
 
     public void wither() {
-        Dungeon.level.uproot(pos);
+        SpacebaseRun.level.uproot(pos);
+        if (SpacebaseRun.level.map[pos] == Terrain.LIGHTEDVENT) {
+            Level.set(pos, Terrain.INACTIVE_VENT);
+            GameScene.updateMap(pos);
+        }
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             CellEmitter.get(pos).burst(LeafParticle.GENERAL, 6);
         }
 
-        if (Dungeon.hero.subClass == HeroSubClass.WARDEN) {
+        if (SpacebaseRun.hero.subClass == HeroSubClass.WARDEN) {
 
             int naturalismLevel = 0;
-            GnollTechShield.Naturalism naturalism = Dungeon.hero.buff(GnollTechShield.Naturalism.class);
+            FrontierTechShield.Naturalism naturalism = SpacebaseRun.hero.buff(FrontierTechShield.Naturalism.class);
             if (naturalism != null) {
                 naturalismLevel = naturalism.itemLevel() + 1;
             }
@@ -85,15 +91,15 @@ public abstract class Mine implements Bundlable {
                 Item device = Generator.random(Generator.Category.DEVICE);
 
                 if (device instanceof AlienEgg.Device) {
-                    if (Random.Int(15) - Dungeon.limitedDrops.alienTechDevice.count >= 0) {
-                        Dungeon.level.drop(device, pos).sprite.drop();
-                        Dungeon.limitedDrops.alienTechDevice.count++;
+                    if (Random.Int(15) - SpacebaseRun.limitedDrops.alienTechDevice.count >= 0) {
+                        SpacebaseRun.level.drop(device, pos).sprite.drop();
+                        SpacebaseRun.limitedDrops.alienTechDevice.count++;
                     }
                 } else
-                    Dungeon.level.drop(device, pos).sprite.drop();
+                    SpacebaseRun.level.drop(device, pos).sprite.drop();
             }
             if (Random.Int(5 - naturalismLevel) == 0) {
-                Dungeon.level.drop(new Dewdrop(), pos).sprite.drop();
+                SpacebaseRun.level.drop(new MedigelDroplet(), pos).sprite.drop();
             }
         }
     }
@@ -117,8 +123,9 @@ public abstract class Mine implements Bundlable {
     public static class Device extends Item {
 
         static final String AC_SET = "SET";
+        static final String AC_USE = "USE";
 
-        private static final float TIME_TO_SET_MINE = 1f;
+        protected static final float TIME_TO_SET_MINE = 1f;
 
         {
             stackable = true;
@@ -138,10 +145,10 @@ public abstract class Mine implements Bundlable {
 
         @Override
         protected void onThrow(int cell) {
-            if (Dungeon.level.map[cell] == Terrain.CRAFTING || Level.pit[cell] || Dungeon.level.vents.get(cell) != null) {
+            if (SpacebaseRun.level.map[cell] == Terrain.CRAFTING || Level.pit[cell] || SpacebaseRun.level.vents.get(cell) != null) {
                 super.onThrow(cell);
             } else {
-                Dungeon.level.mine(this, cell);
+                SpacebaseRun.level.mine(this, cell);
             }
         }
 
@@ -163,7 +170,7 @@ public abstract class Mine implements Bundlable {
 
         public Mine couch(int pos) {
             try {
-                if (Dungeon.visible[pos]) {
+                if (SpacebaseRun.visible[pos]) {
                     Sample.INSTANCE.play(Assets.SND_PLANT);
                 }
                 Mine mine = mineClass.newInstance();
@@ -202,6 +209,66 @@ public abstract class Mine implements Bundlable {
         @Override
         public String info() {
             return Messages.get(Device.class, "info", name(), desc(), minename());
+        }
+
+        @Override
+        public boolean goesInOrdnanceKit() {
+            return true;
+        }
+    }
+
+    public static class StimulantDevice extends Device {
+
+        {
+            defaultAction = AC_USE;
+        }
+
+        @Override
+        public ArrayList<String> actions(Hero hero) {
+            ArrayList<String> actions = super.actions(hero);
+            actions.remove(AC_THROW);
+            actions.remove(AC_SET);
+            actions.add(AC_USE);
+            return actions;
+        }
+
+        @Override
+        public void execute(Hero hero, String action) {
+            super.execute(hero, action);
+
+            if (action.equals(AC_USE)) {
+                hero.spend(TIME_TO_SET_MINE);
+                hero.busy();
+
+                detach(hero.belongings.backpack);
+                Mine mine = couch(hero.pos);
+                if (mine != null) {
+                    mine.stimulant = true;
+                    mine.activate();
+                }
+
+                hero.sprite.operate(hero.pos);
+            }
+        }
+
+        @Override
+        public String desc() {
+            return Messages.get(this, "desc");
+        }
+
+        @Override
+        public String info() {
+            return Messages.get(StimulantDevice.class, "info", name(), desc());
+        }
+
+        @Override
+        public boolean goesInOrdnanceKit() {
+            return false;
+        }
+
+        @Override
+        public boolean goesInPlasmidKit() {
+            return true;
         }
     }
 }

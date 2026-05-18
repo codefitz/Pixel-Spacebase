@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.RotHeart;
 import com.wafitz.pixelspacebase.actors.mobs.RotLasher;
@@ -37,7 +37,7 @@ public class RotGardenPainter extends Painter {
 
         Room.Door entrance = room.entrance();
         entrance.set(Room.Door.Type.LOCKED);
-        level.addItemToSpawn(new IronKey(Dungeon.depth));
+        level.addItemToSpawn(new IronKey(SpacebaseRun.depth));
 
         fill(level, room, Terrain.WALL);
         fill(level, room, 1, Terrain.LIGHTEDVENT);

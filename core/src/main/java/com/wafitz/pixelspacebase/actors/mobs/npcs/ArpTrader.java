@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
@@ -39,8 +39,8 @@ public class ArpTrader extends MakerBot {
     @Override
     protected boolean act() {
 
-        if (!seenBefore && Dungeon.visible[pos]) {
-            yell(Messages.get(this, "greetings", Dungeon.hero.givenName()));
+        if (!seenBefore && SpacebaseRun.visible[pos]) {
+            yell(Messages.get(this, "greetings", SpacebaseRun.hero.givenName()));
             seenBefore = true;
         }
 
@@ -49,7 +49,7 @@ public class ArpTrader extends MakerBot {
 
     @Override
     public void flee() {
-        for (Heap heap : Dungeon.level.heaps.values()) {
+        for (Heap heap : SpacebaseRun.level.heaps.values()) {
             if (heap.type == Heap.Type.TO_MAKE) {
                 CellEmitter.get(heap.pos).burst(ElmoParticle.FACTORY, 4);
                 heap.destroy();

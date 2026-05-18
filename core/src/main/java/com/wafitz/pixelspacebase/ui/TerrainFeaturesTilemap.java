@@ -21,8 +21,8 @@
 package com.wafitz.pixelspacebase.ui;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
 import com.wafitz.pixelspacebase.mines.Mine;
@@ -44,6 +44,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
 
     private int[] map;
     private float[] tileVariance;
+    private int zoneFeatureVariant;
 
     private SparseArray<Mine> mines;
     private SparseArray<Vent> vents;
@@ -54,19 +55,20 @@ public class TerrainFeaturesTilemap extends Tilemap {
         this.mines = mines;
         this.vents = vents;
 
-        Random.seed(Dungeon.seedCurDepth());
-        tileVariance = new float[Dungeon.level.map.length];
+        Random.seed(SpacebaseRun.seedCurDepth());
+        tileVariance = new float[SpacebaseRun.level.map.length];
         for (int i = 0; i < tileVariance.length; i++)
             tileVariance[i] = Random.Float();
         Random.seed();
+        zoneFeatureVariant = (int) Math.floorMod(SpacebaseRun.seed + ((SpacebaseRun.depth - 1) / 5) * 31L, 2L);
 
-        map(Dungeon.level.map, Dungeon.level.width());
+        map(SpacebaseRun.level.map, SpacebaseRun.level.width());
 
         instance = this;
     }
 
     @Override
-    //we need to retain two arrays, map is the dungeon tilemap which we can reference.
+    //we need to retain two arrays, map is the level tilemap which we can reference.
     // Data is our own internal image representation of the tiles, which may differ.
     public void map(int[] data, int cols) {
         map = data;
@@ -83,7 +85,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
     @Override
     public synchronized void updateMapCell(int cell) {
         //update in a 3x3 grid to account for neighbours which might also be affected
-        if (Dungeon.level.insideMap(cell)) {
+        if (SpacebaseRun.level.insideMap(cell)) {
             super.updateMapCell(cell - mapWidth - 1);
             super.updateMapCell(cell + mapWidth + 1);
             for (int i : PathFinder.NEIGHBOURS9)
@@ -99,22 +101,23 @@ public class TerrainFeaturesTilemap extends Tilemap {
     private int getTileVisual(int pos, int tile) {
         if (vents.get(pos) != null) {
             Vent vent = vents.get(pos);
-            if (!vent.visible)
-                //return -1;
-                // wafitz.v4 All vents to be visible
-                return (Vent.BLACK) + (vent.shape * 16);
-            else
+            if (!vent.visible) {
+                return -1;
+            } else {
                 return (vent.active ? vent.color : Vent.BLACK) + (vent.shape * 16);
+            }
         }
 
         if (mines.get(pos) != null) {
             return mines.get(pos).image + 7 * 16;
         }
 
-        if (tile == Terrain.OFFVENT || tile == Terrain.INACTIVE_VENT) {
-            return 9 + 16 * ((Dungeon.depth - 1) / 5) + (tileVariance[pos] > 0.5f ? 1 : 0);
+        if (tile == Terrain.OFFVENT) {
+            return 13 + 16 * ((SpacebaseRun.depth - 1) / 5) + zoneFeatureVariant;
+        } else if (tile == Terrain.INACTIVE_VENT) {
+            return 15 + 16 * ((SpacebaseRun.depth - 1) / 5);
         } else if (tile == Terrain.LIGHTEDVENT) {
-            return 11 + 16 * ((Dungeon.depth - 1) / 5) + (tileVariance[pos] > 0.5f ? 1 : 0);
+            return -1;
         } else if (tile == Terrain.EMBERS) {
             return 13 + (tileVariance[pos] > 0.5f ? 1 : 0);
         }
@@ -132,7 +135,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
         final Image mine = tile(pos, map[pos]);
         mine.origin.set(8, 12);
         mine.scale.set(0);
-        mine.point(DungeonTilemap.tileToWorld(pos));
+        mine.point(SpacebaseTilemap.tileToWorld(pos));
 
         parent.add(mine);
 

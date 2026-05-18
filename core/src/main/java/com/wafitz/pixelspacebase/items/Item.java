@@ -22,13 +22,16 @@ package com.wafitz.pixelspacebase.items;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Combo;
+import com.wafitz.pixelspacebase.actors.buffs.Shapeshifted;
 import com.wafitz.pixelspacebase.actors.buffs.Targeted;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.weapon.missiles.HunterDisc;
@@ -37,6 +40,7 @@ import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.CellSelector;
 import com.wafitz.pixelspacebase.scenes.GameScene;
+import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.MissileSprite;
 import com.wafitz.pixelspacebase.ui.QuickSlotButton;
@@ -46,6 +50,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,6 +67,7 @@ public class Item implements Bundlable {
 
     private static final String AC_DROP = "DROP";
     protected static final String AC_THROW = "THROW";
+    private static final String AC_SHIFT = "SHIFT";
 
     public String defaultAction;
     public boolean usesTargeting;
@@ -96,6 +102,9 @@ public class Item implements Bundlable {
         ArrayList<String> actions = new ArrayList<>();
         actions.add(AC_DROP);
         actions.add(AC_THROW);
+        if (hero.heroClass == HeroClass.SHAPESHIFTER && !isEquipped(hero)) {
+            actions.add(AC_SHIFT);
+        }
         return actions;
     }
 
@@ -114,7 +123,7 @@ public class Item implements Bundlable {
 
     public void doDrop(Hero hero) {
         hero.spendAndNext(TIME_TO_DROP);
-        Dungeon.level.drop(detachAll(hero.belongings.backpack), hero.pos).sprite.drop(hero.pos);
+        SpacebaseRun.level.drop(detachAll(hero.belongings.backpack), hero.pos).sprite.drop(hero.pos);
     }
 
     //resets an item's properties, to ensure consistency between runs
@@ -143,6 +152,10 @@ public class Item implements Bundlable {
 
             doThrow(hero);
 
+        } else if (action.equals(AC_SHIFT)) {
+
+            doShapeshift(hero);
+
         }
     }
 
@@ -151,10 +164,42 @@ public class Item implements Bundlable {
     }
 
     protected void onThrow(int cell) {
-        Heap heap = Dungeon.level.drop(this, cell);
+        Char enemy = Actor.findChar(cell);
+        if (curUser.heroClass == HeroClass.SHAPESHIFTER && enemy != null && enemy != curUser) {
+            if (Char.hit(curUser, enemy, false)) {
+                int damage = Random.NormalIntRange(1, 3);
+                damage = Math.max(damage - enemy.drRoll(), 0);
+
+                Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
+                enemy.damage(damage, this);
+                enemy.sprite.bloodBurstA(curUser.sprite.center(), damage);
+                enemy.sprite.flash();
+                enemy.sprite.showStatus(CharSprite.NEGATIVE, "%d", damage);
+                Buff.detach(curUser, Shapeshifted.class);
+            } else {
+                enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
+            }
+            return;
+        }
+
+        Heap heap = SpacebaseRun.level.drop(this, cell);
         if (!heap.isEmpty()) {
             heap.sprite.drop(cell);
         }
+    }
+
+    private void doShapeshift(Hero hero) {
+        Buff.detach(hero, Shapeshifted.class);
+
+        Item item = detach(hero.belongings.backpack);
+        if (item == null) {
+            return;
+        }
+
+        SpacebaseRun.level.drop(item, hero.pos).sprite.drop(hero.pos);
+        hero.spendAndNext(TIME_TO_PICK_UP);
+        Buff.affect(hero, Shapeshifted.class).setItemImage(item.image());
+        GLog.i(Messages.get(Item.class, "shapeshift", item.name()));
     }
 
     public boolean collect(Container container) {
@@ -183,12 +228,12 @@ public class Item implements Bundlable {
 
         if (items.size() < container.size) {
 
-            if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
+            if (SpacebaseRun.hero != null && SpacebaseRun.hero.isAlive()) {
                 Badges.validateItemLevelAquired(this);
             }
 
             items.add(this);
-            if (stackable || this instanceof HunterDisc) Dungeon.quickslot.replaceSimilar(this);
+            if (stackable || this instanceof HunterDisc) SpacebaseRun.quickslot.replaceSimilar(this);
             updateQuickslot();
             Collections.sort(items, itemComparator);
             return true;
@@ -202,7 +247,19 @@ public class Item implements Bundlable {
     }
 
     public boolean collect() {
-        return collect(Dungeon.hero.belongings.backpack);
+        return collect(SpacebaseRun.hero.belongings.backpack);
+    }
+
+    public boolean goesInOrdnanceKit() {
+        return false;
+    }
+
+    public boolean goesInUtilityKit() {
+        return false;
+    }
+
+    public boolean goesInPlasmidKit() {
+        return false;
     }
 
     public final Item detach(Container container) {
@@ -214,7 +271,7 @@ public class Item implements Bundlable {
         } else if (quantity == 1) {
 
             if (stackable || this instanceof HunterDisc) {
-                Dungeon.quickslot.convertToPlaceholder(this);
+                SpacebaseRun.quickslot.convertToPlaceholder(this);
             }
 
             return detachAll(container);
@@ -243,7 +300,7 @@ public class Item implements Bundlable {
     }
 
     public final Item detachAll(Container container) {
-        Dungeon.quickslot.clearItem(this);
+        SpacebaseRun.quickslot.clearItem(this);
         updateQuickslot();
 
         for (Item item : container.items) {
@@ -440,8 +497,8 @@ public class Item implements Bundlable {
         bundle.put(LEVEL_KNOWN, levelKnown);
         bundle.put(MALFUNCTIONING, malfunctioning);
         bundle.put(MALFUNCTIONING_KNOWN, malfunctioningKnown);
-        if (Dungeon.quickslot.contains(this)) {
-            bundle.put(QUICKSLOT, Dungeon.quickslot.getSlot(this));
+        if (SpacebaseRun.quickslot.contains(this)) {
+            bundle.put(QUICKSLOT, SpacebaseRun.quickslot.getSlot(this));
         }
     }
 
@@ -461,12 +518,12 @@ public class Item implements Bundlable {
         malfunctioning = bundle.getBoolean(MALFUNCTIONING);
 
         //only want to populate slot on first load.
-        if (Dungeon.hero == null) {
+        if (SpacebaseRun.hero == null) {
             //support for pre-0.2.3 saves and rankings
             if (bundle.contains(OLDSLOT)) {
-                Dungeon.quickslot.setSlot(0, this);
+                SpacebaseRun.quickslot.setSlot(0, this);
             } else if (bundle.contains(QUICKSLOT)) {
-                Dungeon.quickslot.setSlot(bundle.getInt(QUICKSLOT), this);
+                SpacebaseRun.quickslot.setSlot(bundle.getInt(QUICKSLOT), this);
             }
         }
     }

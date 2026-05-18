@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.scenes;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -128,7 +128,7 @@ public class SurfaceScene extends PixelScene {
             window.add(patch);
         }
 
-        Avatar a = new Avatar(Dungeon.hero.heroClass);
+        Avatar a = new Avatar(SpacebaseRun.hero.heroClass);
         // Removing semitransparent contour
         a.am = 2;
         a.aa = -1;

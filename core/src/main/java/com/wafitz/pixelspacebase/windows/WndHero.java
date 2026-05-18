@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.windows;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -92,7 +92,7 @@ public class WndHero extends WndTabbed {
 
         StatsTab() {
 
-            Hero hero = Dungeon.hero;
+            Hero hero = SpacebaseRun.hero;
 
             IconTitle title = new IconTitle();
             title.icon(HeroSprite.avatar(hero.heroClass, hero.tier()));
@@ -151,7 +151,7 @@ public class WndHero extends WndTabbed {
         private float pos;
 
         BuffsTab() {
-            for (Buff buff : Dungeon.hero.buffs()) {
+            for (Buff buff : SpacebaseRun.hero.buffs()) {
                 if (buff.icon() != BuffIndicator.NONE) {
                     BuffSlot slot = new BuffSlot(buff);
                     slot.setRect(0, pos, WIDTH, slot.icon.height());

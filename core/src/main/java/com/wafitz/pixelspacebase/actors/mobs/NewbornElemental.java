@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Chill;
 import com.wafitz.pixelspacebase.actors.buffs.Frost;
@@ -54,6 +54,6 @@ public class NewbornElemental extends Elemental {
     @Override
     public void die(Object cause) {
         super.die(cause);
-        Dungeon.level.drop(new Embers(), pos).sprite.drop();
+        SpacebaseRun.level.drop(new Embers(), pos).sprite.drop();
     }
 }

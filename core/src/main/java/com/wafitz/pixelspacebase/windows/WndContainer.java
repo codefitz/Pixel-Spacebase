@@ -23,23 +23,23 @@ package com.wafitz.pixelspacebase.windows;
 import android.graphics.RectF;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.EquipableItem;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
 import com.wafitz.pixelspacebase.items.containers.Container;
-import com.wafitz.pixelspacebase.items.containers.DeviceCase;
-import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
-import com.wafitz.pixelspacebase.items.containers.XPort;
+import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
+import com.wafitz.pixelspacebase.items.containers.UtilityKit;
+import com.wafitz.pixelspacebase.items.containers.PlasmidKit;
 import com.wafitz.pixelspacebase.items.food.Food;
-import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.items.weapon.missiles.HunterDisc;
@@ -72,8 +72,8 @@ public class WndContainer extends WndTabbed {
         BLASTER,
         DEVICE,
         FOOD,
-        EXPERIMENTALTECH,
-        SCRIPT,
+        PLASMID,
+        UPGRADE,
         EQUIPMENT
     }
 
@@ -126,12 +126,12 @@ public class WndContainer extends WndTabbed {
 
         resize(slotsWidth, slotsHeight + TITLE_HEIGHT);
 
-        Belongings stuff = Dungeon.hero.belongings;
+        Belongings stuff = SpacebaseRun.hero.belongings;
         Container[] containers = {
                 stuff.backpack,
-                stuff.getItem(DeviceCase.class),
-                stuff.getItem(ScriptLibrary.class),
-                stuff.getItem(XPort.class),
+                stuff.getItem(OrdnanceKit.class),
+                stuff.getItem(UtilityKit.class),
+                stuff.getItem(PlasmidKit.class),
                 stuff.getItem(BlasterHolster.class)};
 
         for (Container b : containers) {
@@ -148,19 +148,19 @@ public class WndContainer extends WndTabbed {
     public static WndContainer lastContainer(Listener listener, Mode mode, String title) {
 
         if (mode == lastMode && lastContainer != null &&
-                Dungeon.hero.belongings.backpack.contains(lastContainer)) {
+                SpacebaseRun.hero.belongings.backpack.contains(lastContainer)) {
 
             return new WndContainer(lastContainer, listener, mode, title);
 
         } else {
 
-            return new WndContainer(Dungeon.hero.belongings.backpack, listener, mode, title);
+            return new WndContainer(SpacebaseRun.hero.belongings.backpack, listener, mode, title);
 
         }
     }
 
     public static WndContainer getContainer(Class<? extends Container> containerClass, Listener listener, Mode mode, String title) {
-        Container container = Dungeon.hero.belongings.getItem(containerClass);
+        Container container = SpacebaseRun.hero.belongings.getItem(containerClass);
         return container != null ?
                 new WndContainer(container, listener, mode, title) :
                 lastContainer(listener, mode, title);
@@ -169,13 +169,13 @@ public class WndContainer extends WndTabbed {
     protected void placeItems(Container container) {
 
         // Equipped items
-        Belongings stuff = Dungeon.hero.belongings;
+        Belongings stuff = SpacebaseRun.hero.belongings;
         placeItem(stuff.weapon != null ? stuff.weapon : new Placeholder(ItemSpriteSheet.WEAPON_HOLDER));
         placeItem(stuff.armor != null ? stuff.armor : new Placeholder(ItemSpriteSheet.ARMOR_HOLDER));
         placeItem(stuff.misc1 != null ? stuff.misc1 : new Placeholder(ItemSpriteSheet.MODULE_HOLDER));
         placeItem(stuff.misc2 != null ? stuff.misc2 : new Placeholder(ItemSpriteSheet.MODULE_HOLDER));
 
-        boolean backpack = (container == Dungeon.hero.belongings.backpack);
+        boolean backpack = (container == SpacebaseRun.hero.belongings.backpack);
         if (!backpack) {
             count = nCols;
             col = 0;
@@ -193,10 +193,10 @@ public class WndContainer extends WndTabbed {
         }
 
         // Parts
-        if (container == Dungeon.hero.belongings.backpack) {
+        if (container == SpacebaseRun.hero.belongings.backpack) {
             row = nRows - 1;
             col = nCols - 1;
-            placeItem(new Parts(Dungeon.parts));
+            placeItem(new Parts(SpacebaseRun.parts));
         }
     }
 
@@ -344,7 +344,7 @@ public class WndContainer extends WndTabbed {
             super.item(item);
             if (item != null) {
 
-                bg.texture(TextureCache.createSolid(item.isEquipped(Dungeon.hero) ? EQUIPPED : NORMAL));
+                bg.texture(TextureCache.createSolid(item.isEquipped(SpacebaseRun.hero) ? EQUIPPED : NORMAL));
                 if (item.malfunctioning && item.malfunctioningKnown) {
                     bg.ra = +0.3f;
                     bg.ga = -0.15f;
@@ -357,7 +357,7 @@ public class WndContainer extends WndTabbed {
                     enable(false);
                 } else {
                     enable(
-                            mode == Mode.TO_MAKE && (item.cost() > 0) && (!item.isEquipped(Dungeon.hero) || !item.malfunctioning) ||
+                            mode == Mode.TO_MAKE && (item.cost() > 0) && (!item.isEquipped(SpacebaseRun.hero) || !item.malfunctioning) ||
                                     mode == Mode.UPGRADEABLE && item.isUpgradable() ||
                                     mode == Mode.UNIDENTIFED && !item.isIdentified() ||
                                     mode == Mode.UNIDED_OR_MALFUNCTIONING && ((item instanceof EquipableItem || item instanceof Blaster) && (!item.isIdentified() || item.malfunctioning)) ||
@@ -368,8 +368,8 @@ public class WndContainer extends WndTabbed {
                                     mode == Mode.BLASTER && (item instanceof Blaster) ||
                                     mode == Mode.DEVICE && (item instanceof Device) ||
                                     mode == Mode.FOOD && (item instanceof Food) ||
-                                    mode == Mode.EXPERIMENTALTECH && (item instanceof ExperimentalTech) ||
-                                    mode == Mode.SCRIPT && (item instanceof Script) ||
+                                    mode == Mode.PLASMID && (item instanceof Plasmid) ||
+                                    mode == Mode.UPGRADE && (item instanceof Upgrade) ||
                                     mode == Mode.EQUIPMENT && (item instanceof EquipableItem) ||
                                     mode == Mode.ALL
                     );
@@ -402,7 +402,7 @@ public class WndContainer extends WndTabbed {
 
         @Override
         protected void onClick() {
-            if (!lastContainer.contains(item) && !item.isEquipped(Dungeon.hero)) {
+            if (!lastContainer.contains(item) && !item.isEquipped(SpacebaseRun.hero)) {
 
                 hide();
 
@@ -422,7 +422,7 @@ public class WndContainer extends WndTabbed {
         protected boolean onLongClick() {
             if (listener == null && item.defaultAction != null) {
                 hide();
-                Dungeon.quickslot.setSlot(0, item);
+                SpacebaseRun.quickslot.setSlot(0, item);
                 QuickSlotButton.refresh();
                 return true;
             } else {

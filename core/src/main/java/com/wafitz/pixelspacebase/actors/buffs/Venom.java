@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -73,7 +73,7 @@ public class Venom extends Poison implements Hero.Doom {
     public boolean act() {
         if (target.isAlive()) {
             target.damage(damage, this);
-            if (damage < ((Dungeon.depth + 1) / 2) + 1)
+            if (damage < ((SpacebaseRun.depth + 1) / 2) + 1)
                 damage++;
 
             //want it to act after the cloud of venom it came from.

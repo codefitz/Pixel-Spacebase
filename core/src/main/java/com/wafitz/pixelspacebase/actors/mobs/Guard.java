@@ -20,13 +20,13 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
-import com.wafitz.pixelspacebase.effects.Chains;
+import com.wafitz.pixelspacebase.effects.ForcePull;
 import com.wafitz.pixelspacebase.effects.Pushing;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.Armor;
@@ -41,8 +41,8 @@ import com.watabou.utils.Random;
 
 class Guard extends Mob {
 
-    //they can only use their chains once
-    private boolean chainsUsed = false;
+    //they can only use their force-pull rig once
+    private boolean forcePullUsed = false;
 
     {
         spriteClass = GuardSprite.class;
@@ -66,18 +66,18 @@ class Guard extends Mob {
 
     @Override
     protected boolean act() {
-        Dungeon.level.updateFieldOfView(this, Level.fieldOfView);
+        SpacebaseRun.level.updateFieldOfView(this, Level.fieldOfView);
 
         if (state == HUNTING &&
                 paralysed <= 0 &&
                 enemy != null &&
                 enemy.invisible == 0 &&
                 Level.fieldOfView[enemy.pos] &&
-                Dungeon.level.distance(pos, enemy.pos) < 5 &&
-                !Dungeon.level.adjacent(pos, enemy.pos) &&
+                SpacebaseRun.level.distance(pos, enemy.pos) < 5 &&
+                !SpacebaseRun.level.adjacent(pos, enemy.pos) &&
                 Random.Int(3) == 0 &&
 
-                chain(enemy.pos)) {
+                forcePull(enemy.pos)) {
 
             return false;
 
@@ -86,17 +86,17 @@ class Guard extends Mob {
         }
     }
 
-    private boolean chain(int target) {
-        if (chainsUsed || enemy.properties().contains(Property.IMMOVABLE))
+    private boolean forcePull(int target) {
+        if (forcePullUsed || enemy.properties().contains(Property.IMMOVABLE))
             return false;
 
-        Ballistica chain = new Ballistica(pos, target, Ballistica.PROJECTILE);
+        Ballistica pull = new Ballistica(pos, target, Ballistica.PROJECTILE);
 
-        if (chain.collisionPos != enemy.pos || chain.path.size() < 2 || Level.pit[chain.path.get(1)])
+        if (pull.collisionPos != enemy.pos || pull.path.size() < 2 || Level.pit[pull.path.get(1)])
             return false;
         else {
             int newPos = -1;
-            for (int i : chain.subPath(1, chain.dist)) {
+            for (int i : pull.subPath(1, pull.dist)) {
                 if (!Level.solid[i] && Actor.findChar(i) == null) {
                     newPos = i;
                     break;
@@ -108,16 +108,16 @@ class Guard extends Mob {
             } else {
                 final int newPosFinal = newPos;
                 yell(Messages.get(this, "scorpion"));
-                sprite.parent.add(new Chains(pos, enemy.pos, new Callback() {
+                sprite.parent.add(new ForcePull(pos, enemy.pos, new Callback() {
                     public void call() {
                         Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new Callback() {
                             public void call() {
                                 enemy.pos = newPosFinal;
-                                Dungeon.level.press(newPosFinal, enemy);
+                                SpacebaseRun.level.press(newPosFinal, enemy);
                                 Cripple.prolong(enemy, Cripple.class, 4f);
-                                if (enemy == Dungeon.hero) {
-                                    Dungeon.hero.interrupt();
-                                    Dungeon.observe();
+                                if (enemy == SpacebaseRun.hero) {
+                                    SpacebaseRun.hero.interrupt();
+                                    SpacebaseRun.observe();
                                     GameScene.updateFog();
                                 }
                             }
@@ -127,7 +127,7 @@ class Guard extends Mob {
                 }));
             }
         }
-        chainsUsed = true;
+        forcePullUsed = true;
         return true;
     }
 
@@ -152,29 +152,29 @@ class Guard extends Mob {
             } while (loot.tier >= 4 && Random.Int(2) == 0);
             loot.level(0);
             return loot;
-            //otherwise, we may drop a health potion. overall chance is 7/(8 * (7 + ExperimentalTech dropped))
-            //with 0 ExperimentalTech dropped that simplifies to 1/8
+            //otherwise, we may drop a health potion. overall chance is 7/(8 * (7 + Plasmid dropped))
+            //with 0 Plasmid dropped that simplifies to 1/8
         } else {
-            if (Random.Int(7 + Dungeon.limitedDrops.guardHP.count) < 7) {
-                Dungeon.limitedDrops.guardHP.drop();
-                return new HealingTech();
+            if (Random.Int(7 + SpacebaseRun.limitedDrops.guardHP.count) < 7) {
+                SpacebaseRun.limitedDrops.guardHP.drop();
+                return new HealingPlasmid();
             }
         }
 
         return null;
     }
 
-    private final String CHAINSUSED = "chainsused";
+    private final String FORCE_PULL_USED = "chainsused";
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
-        bundle.put(CHAINSUSED, chainsUsed);
+        bundle.put(FORCE_PULL_USED, forcePullUsed);
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        chainsUsed = bundle.getBoolean(CHAINSUSED);
+        forcePullUsed = bundle.getBoolean(FORCE_PULL_USED);
     }
 }

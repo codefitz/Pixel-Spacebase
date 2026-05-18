@@ -20,8 +20,8 @@
  */
 package com.wafitz.pixelspacebase.items.blasters;
 
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.Beam;
@@ -81,7 +81,7 @@ public class Disintegrator extends DamageBlaster {
 
             if (Level.flamable[c]) {
 
-                Dungeon.level.destroy(c);
+                SpacebaseRun.level.destroy(c);
                 GameScene.updateMap(c);
                 terrainAffected = true;
 
@@ -94,7 +94,7 @@ public class Disintegrator extends DamageBlaster {
         }
 
         if (terrainAffected) {
-            Dungeon.observe();
+            SpacebaseRun.observe();
         }
 
         int lvl = level + (chars.size() - 1) + terrainBonus;
@@ -119,7 +119,7 @@ public class Disintegrator extends DamageBlaster {
     protected void fx(Ballistica beam, Callback callback) {
 
         int cell = beam.path.get(Math.min(beam.dist, distance()));
-        curUser.sprite.parent.add(new Beam.DeathRay(curUser.sprite.center(), DungeonTilemap.tileCenterToWorld(cell)));
+        curUser.sprite.parent.add(new Beam.DeathRay(curUser.sprite.center(), SpacebaseTilemap.tileCenterToWorld(cell)));
         callback.call();
     }
 

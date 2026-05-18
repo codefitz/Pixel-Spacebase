@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -82,13 +82,13 @@ public class DroneController extends Item {
         if (Level.pit[cell]) {
             super.onThrow(cell);
         } else {
-            Dungeon.level.drop(shatter(null, cell), cell);
+            SpacebaseRun.level.drop(shatter(null, cell), cell);
         }
     }
 
     public Item shatter(Char owner, int pos) {
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             Sample.INSTANCE.play(Assets.SND_SHATTER);
             Splash.at(pos, 0xffd500, 5);
         }
@@ -110,7 +110,7 @@ public class DroneController extends Item {
 
         if (newPos != -1) {
             Drone drone = new Drone();
-            drone.spawn(Dungeon.depth);
+            drone.spawn(SpacebaseRun.depth);
             drone.setPotInfo(pos, owner);
             drone.HP = drone.HT;
             drone.pos = newPos;
@@ -156,7 +156,7 @@ public class DroneController extends Item {
 
         Item setDrone(Char drone) {
             myDrone = drone.id();
-            droneDepth = Dungeon.depth;
+            droneDepth = SpacebaseRun.depth;
             return this;
         }
 
@@ -191,7 +191,7 @@ public class DroneController extends Item {
 
         private void updateDrone(int cell, Char holder) {
             //important, as ids are not unique between depths.
-            if (Dungeon.depth != droneDepth)
+            if (SpacebaseRun.depth != droneDepth)
                 return;
 
             Drone drone = (Drone) Actor.findById(myDrone);

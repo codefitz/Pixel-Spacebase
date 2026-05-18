@@ -1,165 +1,150 @@
-## Mechanics
+# Targeted Release: v1.0.2
 
-- [x] Security Block levels should use mostly locked doors, with one super key on each level.
-- [x] Y should send the player to take down rogue holograms from the holodeck, with hologram emitters as drops.
-- [x] After the floor 10 boss is defeated, Y should pop in, trigger the level change, tease the player, then disappear after the hero moves with: "We shall meet again if you survive".
-- [x] Player-dropped items in workshop rooms now carry forward with workshop stock inside the same area.
+## Cosmetic Changes
+
+- [x] Update build number to v1.0.2
+- [x] Update about (give credit to Codex), recent changes
+- [x] Update the hooded raider commander theme to have stronger "Darth Sidious" vibes.
+  - [x] Review actor and item message strings for tone.
+  - [x] Review encounter presentation and boss text.
+- [x] Replace the chain/restraint theme with "the force".
+  - [x] Rename the Bith pull effect and descriptions so it reads as being pulled by the force.
+  - [x] Remove or replace text that refers to chains.
+- [x] Add "Do not pet the cat" warning sign text.
+- [x] Alien egg - screen still needs to fade to black and return before "Ugh what happened".
+- [x] Stimulantts need to be updated to a stimulant type of sprite. Also should be renamed "Stims".
+- [x] Dialogue boxes could do  with a smaller border and make the background semi-transparent
+- [x] The pickaxe has generic text and NO TEXT FOUND. This should be replaced with some other sci-fi item.
+- [x] The surveyor module has NO TEXT FOUND for it's action button.
+- [x] Backpack extensions should feature in every workshop, but only be available once the previous one has been built.
+- [x] Quaretermaster lazer quest tiles need to be switched to something like a holodeck backdrop. When the hero enters it should switch to a holodeck program like ancient rome or something.
+- [x] Tech Library and Icon need to be updated to 'Mods'
+- [x] Alien Egg item (pick up and plant) should be Black Goo.
+- [x] Bionetics naming - rather than call the items 'Mods' they should be called 'Plasmids'
+- [x] Mods naming - rather than call the items 'Tech' call them 'Upgrade'
+- [x] Swap the Mods and Bionetics backpack extensions icons.
+- [x] Vaccuum warning should be a popup, rather than log.
+
+## Mechanic Changes
+
+- [x] Torch becomes a permanent item with battery pickups.
+  - [x] Add permanent torch item behavior.
+  - [x] Add battery pickup generation and recharge behavior.
+  - [x] Balance torch charge use against dark-level encounters.
+- [x] Spacesuit is required for spacewalk areas.
+  - [x] Gate captain spacewalk access behind spacesuit ownership/equipment.
+  - [x] Gate commander spacewalk access behind spacesuit ownership/equipment.
+  - [x] Add failure messaging when the player tries to enter without a spacesuit.
+- [x] Rework shapeshifter progression.
+  - [x] Prevent shapeshifter from using blaster weapons.
+  - [x] Scale shapeshifter strength as level depth increases.
+  - [x] Give shapeshifter faster level progression.
+  - [x] Let shapeshifter transform into items.
+  - [x] Make item form apply camouflage-like concealment.
+  - [x] Give item form a boosted surprise attack.
+- [x] Rework shapeshifter healing.
+  - [x] Debuff health pack effectiveness for shapeshifter.
+  - [x] Add small shapeshifter recovery while standing in water.
+- [x] Replace the shapeshifter mirror boss path.
+  - [x] Replace the first boss with the Xeno Queen.
+  - [x] Add a nest arena loop with xenos emerging from wall cracks.
+  - [x] Seed the arena with alien eggs.
+  - [x] Drop the boss key when the queen dies.
+- [x] Add room and breaker lighting mechanics.
+  - [x] Light rooms on entry.
+  - [x] Remove gameplay dependency on floor lights.
+  - [x] Add random dark levels.
+  - [x] Place a breaker on dark levels that restores lights.
+  - [x] Place a breaker on every level so lights can be toggled off later.
+- [x] Rework floor lights into dislodged/exposed floor tiles.
+  - [x] Rename floor-light terrain/messages to exposed or dislodged floor panels.
+  - [x] Update floor-light art to damaged flooring or exposed wall/floor infrastructure.
+  - [x] Convert floor-light gameplay from visibility support to loot/hazard discovery.
+  - [x] Let exposed panels reveal hidden pickups or trigger electric/burn hazards.
+  - [x] Keep room lighting controlled by the floor breaker state instead of tile lights.
+- [x] Add generic storage/reveal behavior so the container opens before the tech/biogenetic item identity is known.
+- [x] Add ambient crew survivor NPCs.
+- [x] Add cat follower NPC.
+  - [x] Implement cat following behavior.
+  - [x] Decide whether petting is blocked, punished, or only warned against.
+- [x] Replace garden with a one-square healing tank booth.
+  - [x] Remove or disable garden room generation.
+  - [x] Add one-square healing tank booth placement.
+  - [x] Define healing tank interaction behavior.
+- [x] Security levels should start with the piercing alarm sound from the trap.
+- [x] Positive-effect mines should become automatically applied stimulants.
+- [x] Fix chest state after lower-level warp.
+  - [x] Reproduce the case where being warped back down empties chests irrecoverably.
+  - [x] Preserve unopened chest contents across lower-level warps.
+- [x] Rework makerbot workshop progression.
+  - [x] Limit early makerbot stock to essential items.
+  - [x] Keep a small chance for rare or high-strength stock in lower-tier workshops.
+  - [x] Add makerbot upgrades that unlock better items over time.
+  - [x] Increase basic item level by zone regardless of makerbot upgrade state.
+- [x] Persist player-owned items across workshops in the same area.
+- [x] Add alien egg step event.
+  - [x] Fade the screen briefly to black when stepping on an alien egg.
+  - [x] Show a "what happened" dialog when the screen returns.
+- [x] Falling needs to be fixed so it falls to the level below - not up. The locked room needs to appear on the (next) level above.
+- [x] Y should appear 3 times in the maze before the masked prisoner battle (hero to seek him out). If hero finds Y all 3 times, he will look in heros backpack and compare against the prisoner's stats. If the hero seems to be under equipped - Y even the odds and will provide an offensive ranged weapon with at least 3 charges. If the hero seems to be overequipped - Y will even the odds and remove one random weapon and place it to be found in one of the cells after the battle.
+  - [x] Place three Y maze encounters with mischievous ambiguous dialogue.
+  - [x] Track whether the hero found all three encounters.
+  - [x] Compare the backpack against the masked prisoner's stats before the arena.
+  - [x] Give or remove a ranged weapon based on that comparison.
+- [x] facehugger should die on infection. Also remove the sticky web effects.
+- [x] Restore release-mode hero start.
+  - [x] Return hero starting strength to normal.
+  - [x] Disable dev/test invulnerability.
+  - [x] Remove the depth-1 starter chest and injected test items.
+  - [x] Document the hero dev/test setup for next sprint.
+
+## Refactorial Changes and Small Adjustments
+
+- [x] Rename legacy fantasy concepts to spacebase equivalents.
+  - [x] Clean high-priority player-visible fantasy labels in item/enhancement/subclass text.
+  - [x] Clean medium-priority player-visible fantasy labels in signs, windows, quests, and enemy text.
+  - [x] Clean low-priority visible fantasy labels and release-plan wording.
+  - [x] Rename central run, tilemap, and seed internals to spacebase terms.
+  - [x] Rename monarch, ruptured-suit, raider commander, Security Block, and Engineering internals.
+- [x] Reorganize tech and biogenetics by use.
+  - [x] Classify offensive pickups into Ordnance.
+  - [x] Classify defensive, repair, and shield pickups into Utility.
+  - [x] Keep genetic alterations in Plasmids and leave sealed capsules in the main backpack until opened.
+  - [x] Convert offensive biogenetics presentation toward grenade-style items.
+- [x] Rename Xeno-booster to align with the x-port concept.
 - [x] Add an option to open and scroll the full log.
-- [x] Stepping on an alien egg now briefly fades to black and shows the "what happened" infection dialog.
-- [x] Xeno-booster now uses the x-port/Bionetics icon after crafting.
-- [x] Floor lighting now lights up when non-flying characters stand on it, while trap/floor-lighting activation still runs through normal press handling.
-- [x] Missiles and thrown items can cross unpowered floor lighting without treating it as projectile-blocking terrain.
-- [x] Turn the Maker-Bot into a workbench and anchor it to a wall.
-- [x] Make the workshop the same size and layout for each area.
-- [x] Add reusable storage chests to the fixed workshop layout.
-- [x] Add another workshop bench inspired by the Chief Engineer that lets the player combine items to upgrade.
-- [x] Spinner / facehugger should latch like the alien egg and spawn a stronger xeno if it succeeds.
-- [x] Search options include a 'search' button, so if you're near something of interest but are checking walls, you can still just check the wall.
-- [x] McGyver should just break the item if it fails, not dissapear everything in the workshop.
-- [x] Replace EMP blaster with a repair blaster, the repair blaster can transform traps to light, fix broken doors/blocked doors, has high hit points on robots and machines but does nothing to beings.
-- [x] Repair blaster has a chance to unlock chests and doors, but also has a chance to break the lock permenantly (warn player with % chance - higher skill greater chance).
-- [x] Loader armor should be fireproof
-- [x] Repair blaster attempts door locks with a warned percent chance to open or jam them.
-- [x] Repair blaster works on siphon drones.
-- [x] Repair blaster works on replicator swarms.
-- [x] Golden drone uses its own short-range sensor instead of hero field-of-view when pursuing targets.
-- [x] Alien facehugger latch no longer applies the old poison/paralysis-style effect.
+- [x] Floor lighting overhall
+  - [x] Lighting that contains a trap, should be invisible - so it's a real trap
+  - [x] Traps shouldn't ever look like a light - they should look like a blown panel after being set off.
+  - [x] Adjust terrain features so that only one type appears on each zone/area
+  - [x] Adjust terrain features to look less like ruins and more like different types of lighting.
+  - [x] Set mines should look a bit more obvious like mines
+- [x] Shuriken need to be updated to something suitably sci-fi 
+- [x] Sealed Cache should automatically consume.
+- [x] Level 5 boss - should be alien queen for shapeshifter, but everyone else gets the standard shapeshifter boss.
+- [x] Level 5 alien queen boss needs to be tougher and also use the alien queen sprite.
+- [x] Level 5 alien queen boss should be in the dark (but not the shapeshifter boss)
+- [x] Stims should not require the hero to stay fixed - they should offer a temporary boost.
 
-## Cosmetic / Narrative
+## Graphical Changes
 
-- [x] All defined signs/terminals updated with sci-fi story/hint elements.
-- [x] Floor 5 boss framed as a shapeshifter crew colleague, driven unstable by identity loss from repeated emergency shifting.
-- [x] Floors 6-9 reframed as a futuristic spaceship prisoner detention / security area.
-- [x] Floor 10 boss death line now implies death rather than escape.
-- [x] Floors 16-19 clarified as habitation and command-sector decks leading toward the holodeck.
-- [x] Floor 20 boss room is Holodeck Control, with the fantasy figure kept as an intentional hard-light scenario.
-- [x] Floors 22-24 shifted from Demon Halls wording to Deep Containment space-horror text.
-- [x] Floor 25 boss now guards the route to the escape pods.
-- [x] Floor 25 boss now evokes a sealed bio-containment parasite rather than the alien queen.
-- [x] Floor 26 finale is the route to the escape pod.
-- [x] Floor 26 may need a twist that gives the player a reason to go back.
-- [x] Arp / Arp Trader player-facing name updated to Y.
-- [x] Y now addresses the player directly and references inventory, badges, rankings, and quest tracking.
-- [x] Old Gunsmith updated to a more futuristic quest character.
-- [x] Ceremonial candle and ceremony text reframed as reactivating the core.
-- [x] The target for blasters is in the shape of a gun, it should just be a crosshair.
-- [x] Text slightly overlaps dialogue boxes; quick layout padding added while a future graphic pass can make the frame look like futuristic floating touchscreen glass.
-- [x] Maker Bench is wall-anchored and uses static bench behavior/sprite animation instead of NPC-facing idle motion.
-- [x] Add track lockdown.mp4 to security levels.
-- [x] Where tengu says let's make this interesting - change this to the disembodied voice of Y.
-- [x] "We shall meet again..." should be Y, not alien.
-- [x] After DM300 (why did they may me so angry), hero can say "We can rebuild him, we have the technology..."
-- [x] Have DM300 spout cliche LLM lines e.g. "You are absolutely right..." etc...
+- [x] Remove the 3D effect/overlay from floor lights.
+- [x] Replace the chain graphic with a force-themed visual.
+- [x] Add a generic storage icon for unrevealed tech/biogenetics.
+- [x] Add or update grenade icons for offensive biogenetics.
+- [x] Add healing tank booth tile/art.
+- [x] Add cat sprite or reuse/update an existing follower sprite.
+- [x] Add visual treatment for dark levels and breaker-restored lighting.
+- [x] Change Xeno-booster to an x-port icon.
+- [x] Masked prisoner battle arena needs to be more like an alien planet (think Star Trek TOS).
+- [x] Siphon drone sprite needs updating.
 
-## Completed Conversion Notes
+## Bugs
 
-- [x] Shapeshifter boss says thank you when defeated/restored.
-- [x] Alien egg inventory/device icon now uses the alien pod/egg icon so it resembles the planted egg outcome.
-- [x] X-Port renamed to Bionetics in player-facing text.
-- [x] Knuckleduster updated to something suitably sci-fi.
-- [x] Tome of mastery updated to sci-fi wording and effects as a mastery datacore/protocol sync.
-- [x] Rather than "descending", the hero is ascending.
-- [x] Maintenance crawlers now drop parts instead of meat.
-- [x] Rename visible vent text to floor lighting.
-- [x] After DM-300 is beaten, the hero says a "we can rebuild him" style line.
-- [x] Skeleton description updated to ruptured crew suit.
-- [x] Thief renamed/described as Jawar.
-- [x] Bandit renamed/described as Jawar scavenger.
-- [x] Guard text frames them as Bith acolytes with a force-pull rig; sprite/graphic pass remains.
-- [x] Bat updated to siphon drone text.
-- [x] Brute updated to Yendor shock trooper text.
-- [x] Spinner text names/describes facehugger; mechanic/sprite remain.
-- [x] Elemental updated to sci-fi text.
-- [x] Newborn Elemental updated to sci-fi text.
-- [x] Monk text renamed to Jeda Knight; sprite remains.
-- [x] Senior text renamed to Jeda Master; sprite remains.
-- [x] Warlock updated to sci-fi text.
-- [x] Golem updated to a large war machine.
-- [x] Succubus updated to sci-fi text.
-- [x] Eye updated to sci-fi horror text.
-- [x] Scorpio updated to sci-fi horror text.
-- [x] Acidic updated to acid-spitter cannon text.
-- [x] WaterThing updated to sci-fi text.
-- [x] Rot Heart updated to sci-fi text.
-- [x] Rot Lasher updated to sci-fi text.
-- [x] Amulet of Yendor player-facing item, badge, and victory scene text updated to escape pod override.
-- [x] Embers updated to sci-fi text.
-- [x] Pickaxe updated to sci-fi text.
-- [x] Corpse Dust updated to sci-fi text.
-- [x] Rotberry / Rotberry Mine Charge updated to sci-fi text.
-- [x] Prison, caves, city, and halls chapter text updated to sci-fi framing.
-- [x] DM-300 lore updated to station defense / war-bot framing.
-- [x] DM-300/DM-3000 naming split cleaned up in player-facing text and docs.
-
-## Bug Fixes
-
-- [x] Hologram quest highlight markup showed `_evolved xenomorph_` as plain text because punctuation sat outside the closing underscore.
-- [x] The drone does not wander; it moves like the clones.
-- [x] Wave blaster crash at maximum length fixed.
-- [x] WaveBlaster immediate crash note captured in `docs/BUG_NOTES.md`; `BlastWave` must stay public for reflective effect recycling.
-- [x] Entrance/exit ladder visual frames swapped and documented for the station's upward progression.
-- [x] Tengu's defeat line clarified: "Free at last" is death as release from confinement.
-- [x] Floor 6-9 signs and prison-level tile text reframed around the Security Block detention sector.
-- [x] Floor 16-19 signs and city-level tile text reframed around habitation, command offices, civic decks, and the holodeck approach.
-- [x] Floor 20 terminal reframed the boss room as Holodeck Control with a failed monarch hard-light scenario.
-- [x] Remaining lower-engineering and final-workshop terminal tips converted from inherited dungeon hints into station notices.
-- [x] Floor 26 evacuation cradle, escape pod override action, and victory scene now frame the finale as launching the last working escape pod.
-- [x] Siphon drones and replicator swarms tagged as machine enemies for repair blaster damage.
-- [x] Facehugger attacks now use the xeno infection latch without applying the old poison effect.
-- [x] Repair blaster includes repairable blocked terrain just beyond the beam collision point, so locked doors receive the override roll.
-- [x] Golden drone targeting no longer depends on whether the hero can see the drone's target.
-- [x] Naming audit added; stale player-facing blacksmith/bookshelf/stairs/caves/oldWarBot wording cleaned up where safe.
-- [x] Legacy compatibility comments added for `EMP`, `ExperimentalTech`, and `Script`; no wrapper/package migration for now.
-- [x] DM-3000 no longer accrues hunger or auto-eats, while manual food use still recharges blasters.
-- [x] DM-3000 keeps at least the utility-light view radius, including after temporary light buffs end.
-- [x] Security Block floors now convert most ordinary doors into locked detention doors and place a reusable max-security override keycard near the entrance.
-- [x] Maker Bench no longer turns to face the hero and its sprite animation is static.
-- [x] Floor 10 boss victory now summons a brief Y interlude that vanishes after the hero moves and delivers the survival tease.
-- [x] Tengu's phase-change tease is now attributed to Y, the Y interlude has a Y name key, and DM-300 has expanded corrupted assistant-style combat barks.
-- [x] Message, quest, and story windows now use slightly safer text padding to reduce border overlap.
-- [x] Badge message aliases added for current gene-mod badge enum names, preventing "No Text Found" when gene-mod badges unlock.
-- [x] DM-3000 now has class-level resistance to fire/toxic/poison sources and immunity to poison, fear, paralysis, and vertigo without changing armor strength.
-- [x] Floor 26 escape pod override text now explains that staying behind could reopen sealed rescue cradles and evacuation routes for survivors.
-- [x] Floor 20 boss player-facing text reframed as a rogue holodeck monarch with hologram retainers.
-- [x] Deep Containment terrain descriptions converted from lava/skulls/books to containment fluid, growths, specimen pillars, and experiment logs.
-- [x] Yog-Dzewa player-facing text reframed as a bio-containment parasite blocking the evacuation spine.
-- [x] Feral Shapeshifter player-facing text reframed as a restored crew colleague suffering shapeshifter identity collapse.
-- [x] Full message log can be opened from the game menu and scrolled.
-- [x] Journal showing 'No Text Found'
-- [x] Just went to step on vent and the game crashed.
-- [x] Journal feature enum names now have matching message keys.
-- [x] Vent stepping crash hardened by making log history merging tolerant of old HUD entries and clearing disarmed vent objects from the active vent map.
-- [x] Nearby scanner results now include Search as an option instead of forcing examine over wall checks.
-- [x] Stepping on the egg doesn't black out before "ugh, what happened"
-- [x] One of the badges comes up "No Text Found" after applying a gene mod
-
-# v1.0.2 Ideas (not to implement yet)
-
-- [ ] Torch - permanent item with battery pickups
-- [ ] Spacesuit needed for spacewalk (captain, commander)
-- [ ] Shapeshifter doesn't use blaster weapons, but gets stronger as levels increase, can shapeshift into items, which has same effect as camoflage and gives boosted suprise attack.
-- [ ] Shapeshifter health packs are debuffed, don't work as well, but standing in water give small recovery.
-- [x] DM3000 resistant to most elements and traps but no improvement in armor strength - increases slowly with level increase but weaker than other characters
-- [x] DM3000 has permanent light
-- [x] DM3000 doesn't require food
-- [ ] Rooms light up on entry, do away with floor lights. Some levels need to reset the breaker to activate lights
-- [x] Workshop has reusable chests where items can be stored.
-- [ ] Tech and biogenetics reorganised to defensive (apply to player) vs offensive (used as weapon/action) - have generic storage icon that is opened up and then reveals what it is.
-- [ ] Add NPCs that need protection. End game player leaves on escape pod or goes back to stablise ship so NPCs can be rescued
-- [ ] A cat that will follow the adventurer. Sign warning "Do not pet the cat".
-- [ ] Renaming plan: Dungeon, King, Skeleton, DarkLordGnoll, PrisonLevel, CavesLevel etc...
-- [ ] Replace garden with one-square booth - healing tank sort of thing.
-- [ ] Security levels should start with the 'piercing sound' from the trap (it sounds like an alarm).
-- [ ] Mines with a positive effect should become stimulants (automatic apply).
-- [ ] Remove the '3d' effect/overlay from floor lights.
-- [ ] Bionetics with an offensive nature (i.e. fire) should become grenades.
-- [ ] Remove chains graphic, change name to 'the force' and make it seem like being pulled by the force.
-- [ ] Shapeshifter shouldn't battle himself, so if shapeshifter gets to to the first boss, he should meet Y who pits him to the test of a battle against 50 enemies in an arena.
-- [ ] Bug: Getting warped back down to an area in lower levels causes the chests to empty irrecoverably.
-- [ ] New mechanic - random levels set to dark, hero can find a breaker that switches the lights back on. Breaker also exists on every level (so can turn lights off - maybe future enemy mechanic.)
-- [ ] Workshop idea - makerbot only provides essential items in the beginning - upgrade makerbot to unlock better items as you go. Basic items level goes up per zone regardless.
-- [ ] Dark Lord of Yendor to have more 'darth sidius' vibes.
-- [ ] Players own items don't persist across workshops in the same area.
-- [ ] Add an option to open and scroll the full log.
-- [ ] When stepping on the alien egg, have the screen fade to black briefly before coming back - what happened dialog.
-- [ ] Xeno-booster should change to an x-port icon.
+- [x] Target sometimes doesn't dissapear after certain actions.
+- [x] Guardian Floor Lighting causes a game crash when walking over it.
+- [x] One of the modules is just called 'Item 1'
+- [x] Fix the backpack tab icon (currenty is a battery)
+- [x] Internal bridge (room filled with water) warns about the vacuum, this is not needed.
+- [x] Stepping on a falling trap still sends me up, rather than down
+- [x] If an item appears over the breaker switch, it can't be picked up. Breaker switch could be incorporated into a wall.

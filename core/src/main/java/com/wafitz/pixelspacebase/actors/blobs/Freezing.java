@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.blobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -49,12 +49,12 @@ public class Freezing {
             fire.clear(cell);
         }
 
-        Heap heap = Dungeon.level.heaps.get(cell);
+        Heap heap = SpacebaseRun.level.heaps.get(cell);
         if (heap != null) {
             heap.freeze();
         }
 
-        if (Dungeon.visible[cell]) {
+        if (SpacebaseRun.visible[cell]) {
             CellEmitter.get(cell).start(SnowParticle.FACTORY, 0.2f, 6);
             return true;
         } else {

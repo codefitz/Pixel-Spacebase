@@ -28,17 +28,17 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
-import com.wafitz.pixelspacebase.actors.mobs.DarkLordGnoll;
+import com.wafitz.pixelspacebase.actors.mobs.HoodedRaiderCommander;
 import com.wafitz.pixelspacebase.actors.mobs.ToughXeno;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Lockdown;
-import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
+import com.wafitz.pixelspacebase.items.equippablemodules.PortableMaker;
 import com.wafitz.pixelspacebase.items.blasters.DominationBlaster;
 import com.wafitz.pixelspacebase.items.blasters.FlameThrower;
 import com.wafitz.pixelspacebase.items.blasters.FreezeThrower;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
 import com.wafitz.pixelspacebase.items.blasters.VenomBlaster;
 import com.wafitz.pixelspacebase.items.blasters.WaveBlaster;
-import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
+import com.wafitz.pixelspacebase.items.upgrades.EnhancementUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Buggy;
 import com.wafitz.pixelspacebase.items.weapon.melee.Spanner;
 import com.wafitz.pixelspacebase.messages.Languages;
@@ -69,8 +69,8 @@ public class PixelSpacebase extends Game {
                 "com.wafitz.pixelspacebase.items.weapon.enhancements.Swing");
 
         com.watabou.utils.Bundle.addAlias(
-                EnhancementScript.class,
-                "com.wafitz.pixelspacebase.items.scripts.WeaponUpgradeScript");
+                EnhancementUpgrade.class,
+                "com.wafitz.pixelspacebase.items.upgrades.WeaponUpgradePatch");
 
         // 0.2.4d
         com.watabou.utils.Bundle.addAlias(
@@ -111,8 +111,8 @@ public class PixelSpacebase extends Game {
                 ToughXeno.class,
                 "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$ToughXeno");
         com.watabou.utils.Bundle.addAlias(
-                DarkLordGnoll.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$DarkLordGnoll");
+                HoodedRaiderCommander.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$HoodedRaiderCommander");
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.actors.mobs.GreatCrab.class,
                 "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$GreatCrab");
@@ -224,7 +224,7 @@ public class PixelSpacebase extends Game {
                 Assets.SND_OPEN,
                 Assets.SND_UNLOCK,
                 Assets.SND_ITEM,
-                Assets.SND_DEWDROP,
+                Assets.SND_MEDIGEL,
                 Assets.SND_HIT,
                 Assets.SND_MISS,
 
@@ -257,7 +257,7 @@ public class PixelSpacebase extends Game {
                 Assets.SND_ROCKS,
                 Assets.SND_BURNING,
                 Assets.SND_FALLING,
-                Assets.SND_GHOST,
+                Assets.SND_HOLOGRAM,
                 Assets.SND_SECRET,
                 Assets.SND_BONES,
                 Assets.SND_BEE,

@@ -25,18 +25,18 @@ import com.wafitz.pixelspacebase.Journal.Feature;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.effects.BlobEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
+import com.wafitz.pixelspacebase.items.plasmids.TitanPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Generator.Category;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.Artifact;
+import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.modules.Module;
-import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
-import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
+import com.wafitz.pixelspacebase.items.upgrades.EnhancementUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
+import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
@@ -53,18 +53,18 @@ public class DiffusionalTerminal extends WellWater {
             item = changeLauncher((DM3000Launcher) item);
         } else if (item instanceof MeleeWeapon) {
             item = changeWeapon((MeleeWeapon) item);
-        } else if (item instanceof Script) {
-            item = changeScript((Script) item);
-        } else if (item instanceof ExperimentalTech) {
-            item = changeExperimentalTech((ExperimentalTech) item);
+        } else if (item instanceof Upgrade) {
+            item = changeScript((Upgrade) item);
+        } else if (item instanceof Plasmid) {
+            item = changePlasmid((Plasmid) item);
         } else if (item instanceof Module) {
             item = changeModule((Module) item);
         } else if (item instanceof Blaster) {
             item = changeBlaster((Blaster) item);
         } else if (item instanceof Mine.Device) {
             item = changeDevice((Mine.Device) item);
-        } else if (item instanceof Artifact) {
-            item = changeArtifact((Artifact) item);
+        } else if (item instanceof EquippableModule) {
+            item = changeArtifact((EquippableModule) item);
         } else {
             item = null;
         }
@@ -153,8 +153,8 @@ public class DiffusionalTerminal extends WellWater {
         return n;
     }
 
-    private Artifact changeArtifact(Artifact a) {
-        Artifact n = Generator.randomArtifact();
+    private EquippableModule changeArtifact(EquippableModule a) {
+        EquippableModule n = Generator.randomEquippableModule();
 
         if (n != null) {
             n.malfunctioningKnown = a.malfunctioningKnown;
@@ -194,39 +194,39 @@ public class DiffusionalTerminal extends WellWater {
         return n;
     }
 
-    private Script changeScript(Script s) {
-        if (s instanceof UpgradeScript) {
+    private Upgrade changeScript(Upgrade s) {
+        if (s instanceof UpgradePatch) {
 
-            return new EnhancementScript();
+            return new EnhancementUpgrade();
 
-        } else if (s instanceof EnhancementScript) {
+        } else if (s instanceof EnhancementUpgrade) {
 
-            return new UpgradeScript();
+            return new UpgradePatch();
 
         } else {
 
-            Script n;
+            Upgrade n;
             do {
-                n = (Script) Generator.random(Category.SCRIPT);
+                n = (Upgrade) Generator.random(Category.UPGRADE);
             } while (n.getClass() == s.getClass());
             return n;
         }
     }
 
-    private ExperimentalTech changeExperimentalTech(ExperimentalTech p) {
-        if (p instanceof StrengthUpgrade) {
+    private Plasmid changePlasmid(Plasmid p) {
+        if (p instanceof MyoFiberPlasmid) {
 
-            return new PowerUpgrade();
+            return new TitanPlasmid();
 
-        } else if (p instanceof PowerUpgrade) {
+        } else if (p instanceof TitanPlasmid) {
 
-            return new StrengthUpgrade();
+            return new MyoFiberPlasmid();
 
         } else {
 
-            ExperimentalTech n;
+            Plasmid n;
             do {
-                n = (ExperimentalTech) Generator.random(Category.EXPERIMENTALTECH);
+                n = (Plasmid) Generator.random(Category.PLASMID);
             } while (n.getClass() == p.getClass());
             return n;
         }

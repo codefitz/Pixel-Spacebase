@@ -21,14 +21,14 @@
 package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
-import com.wafitz.pixelspacebase.actors.mobs.DarkLordGnoll;
+import com.wafitz.pixelspacebase.actors.mobs.HoodedRaiderCommander;
 import com.wafitz.pixelspacebase.actors.mobs.GreatCrab;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.ToughXeno;
@@ -69,13 +69,13 @@ public class Hologram extends NPC {
     public Hologram() {
         super();
 
-        Sample.INSTANCE.load(Assets.SND_GHOST);
+        Sample.INSTANCE.load(Assets.SND_HOLOGRAM);
     }
 
     @Override
     protected boolean act() {
         if (Quest.completed())
-            target = Dungeon.hero.pos;
+            target = SpacebaseRun.hero.pos;
         return super.act();
     }
 
@@ -109,9 +109,9 @@ public class Hologram extends NPC {
 
     @Override
     public boolean interact() {
-        sprite.turnTo(pos, Dungeon.hero.pos);
+        sprite.turnTo(pos, SpacebaseRun.hero.pos);
 
-        Sample.INSTANCE.play(Assets.SND_GHOST);
+        Sample.INSTANCE.play(Assets.SND_HOLOGRAM);
 
         // wafitz.1 - Annoying popup relegated to log
         if (Quest.given) {
@@ -123,21 +123,21 @@ public class Hologram extends NPC {
                         case 1:
                         default:
                             //GameScene.show(new WndQuest(this, Messages.get(this, "rat_2")));
-                            GLog.w(Messages.get(this, "xeno_2", Dungeon.hero.givenName()));
+                            GLog.w(Messages.get(this, "xeno_2", SpacebaseRun.hero.givenName()));
                             break;
                         case 2:
                             //GameScene.show(new WndQuest(this, Messages.get(this, "gnoll_2")));
-                            GLog.w(Messages.get(this, "gnoll_2", Dungeon.hero.givenName()));
+                            GLog.w(Messages.get(this, "gnoll_2", SpacebaseRun.hero.givenName()));
                             break;
                         case 3:
                             //GameScene.show(new WndQuest(this, Messages.get(this, "crab_2")));
-                            GLog.w(Messages.get(this, "crab_2", Dungeon.hero.givenName()));
+                            GLog.w(Messages.get(this, "crab_2", SpacebaseRun.hero.givenName()));
                             break;
                     }
 
                     int newPos = -1;
                     for (int i = 0; i < 10; i++) {
-                        newPos = Dungeon.level.randomRespawnCell();
+                        newPos = SpacebaseRun.level.randomRespawnCell();
                         if (newPos != -1) {
                             break;
                         }
@@ -147,7 +147,7 @@ public class Hologram extends NPC {
                         CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
                         pos = newPos;
                         sprite.place(pos);
-                        sprite.visible = Dungeon.visible[pos];
+                        sprite.visible = SpacebaseRun.visible[pos];
                     }
                 }
             }
@@ -159,19 +159,19 @@ public class Hologram extends NPC {
                 case 1:
                 default:
                     questBoss = new ToughXeno();
-                    txt_quest = Messages.get(this, "xeno_1", Dungeon.hero.givenName());
+                    txt_quest = Messages.get(this, "xeno_1", SpacebaseRun.hero.givenName());
                     break;
                 case 2:
-                    questBoss = new DarkLordGnoll();
-                    txt_quest = Messages.get(this, "gnoll_1", Dungeon.hero.givenName());
+                    questBoss = new HoodedRaiderCommander();
+                    txt_quest = Messages.get(this, "gnoll_1", SpacebaseRun.hero.givenName());
                     break;
                 case 3:
                     questBoss = new GreatCrab();
-                    txt_quest = Messages.get(this, "crab_1", Dungeon.hero.givenName());
+                    txt_quest = Messages.get(this, "crab_1", SpacebaseRun.hero.givenName());
                     break;
             }
 
-            questBoss.pos = Dungeon.level.randomRespawnCell();
+            questBoss.pos = SpacebaseRun.level.randomRespawnCell();
 
             if (questBoss.pos != -1) {
                 GameScene.add(questBoss);
@@ -269,7 +269,7 @@ public class Hologram extends NPC {
         }
 
         public static void spawn(OperationsLevel level) {
-            if (!spawned && Dungeon.depth > 1 && Random.Int(5 - Dungeon.depth) == 0) {
+            if (!spawned && SpacebaseRun.depth > 1 && Random.Int(5 - SpacebaseRun.depth) == 0) {
 
                 Hologram hologram = new Hologram();
                 do {
@@ -278,13 +278,13 @@ public class Hologram extends NPC {
                 level.mobs.add(hologram);
 
                 spawned = true;
-                //dungeon depth determines type of quest.
+                //deck depth determines type of quest.
                 //depth2=fetid rat, 3=gnoll trickster, 4=great crab
-                type = Dungeon.depth - 1;
+                type = SpacebaseRun.depth - 1;
 
                 given = false;
                 processed = false;
-                depth = Dungeon.depth;
+                depth = SpacebaseRun.depth;
 
                 //50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
                 float itemTierRoll = Random.Float();
@@ -340,11 +340,11 @@ public class Hologram extends NPC {
         }
 
         public static void process() {
-            if (spawned && given && !processed && (depth == Dungeon.depth)) {
+            if (spawned && given && !processed && (depth == SpacebaseRun.depth)) {
                 GLog.n(Messages.get(Hologram.class, "find_me"));
-                Sample.INSTANCE.play(Assets.SND_GHOST);
+                Sample.INSTANCE.play(Assets.SND_HOLOGRAM);
                 processed = true;
-                Generator.Category.ARTIFACT.probs[10] = 1; //flags the dried rose as spawnable.
+                Generator.Category.EQUIPPABLE_MODULE.probs[10] = 1; //flags the holopad as spawnable.
             }
         }
 

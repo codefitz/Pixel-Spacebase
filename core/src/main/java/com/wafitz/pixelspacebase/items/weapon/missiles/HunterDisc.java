@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.weapon.missiles;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.Item;
@@ -113,10 +113,10 @@ public class HunterDisc extends MissileWeapon {
         if (throwEquiped) {
             owner.belongings.weapon = this;
             owner.spend(-TIME_TO_EQUIP);
-            Dungeon.quickslot.replaceSimilar(this);
+            SpacebaseRun.quickslot.replaceSimilar(this);
             updateQuickslot();
         } else if (!collect(curUser.belongings.backpack)) {
-            Dungeon.level.drop(this, owner.pos).sprite.drop();
+            SpacebaseRun.level.drop(this, owner.pos).sprite.drop();
         }
     }
 
@@ -125,7 +125,7 @@ public class HunterDisc extends MissileWeapon {
     @Override
     public void cast(Hero user, int dst) {
         throwEquiped = isEquipped(user) && !malfunctioning;
-        if (throwEquiped) Dungeon.quickslot.convertToPlaceholder(this);
+        if (throwEquiped) SpacebaseRun.quickslot.convertToPlaceholder(this);
         super.cast(user, dst);
     }
 

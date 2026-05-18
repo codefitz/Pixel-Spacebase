@@ -20,8 +20,8 @@
  */
 package com.wafitz.pixelspacebase.effects.particles;
 
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
@@ -88,7 +88,7 @@ public class WindParticle extends PixelParticle {
             super();
 
             this.pos = pos;
-            PointF p = DungeonTilemap.tileToWorld(pos);
+            PointF p = SpacebaseTilemap.tileToWorld(pos);
             x = p.x;
             y = p.y;
 
@@ -98,7 +98,7 @@ public class WindParticle extends PixelParticle {
         @Override
         public void update() {
 
-            if (visible = Dungeon.visible[pos]) {
+            if (visible = SpacebaseRun.visible[pos]) {
 
                 super.update();
 
@@ -107,8 +107,8 @@ public class WindParticle extends PixelParticle {
                     delay = Random.Float(5);
 
                     ((WindParticle) recycle(WindParticle.class)).reset(
-                            x + Random.Float(DungeonTilemap.SIZE),
-                            y + Random.Float(DungeonTilemap.SIZE));
+                            x + Random.Float(SpacebaseTilemap.SIZE),
+                            y + Random.Float(SpacebaseTilemap.SIZE));
                 }
             }
         }

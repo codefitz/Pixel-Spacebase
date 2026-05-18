@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.actors.hero;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.Bones;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.GamesInProgress;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
@@ -42,9 +42,10 @@ import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.actors.buffs.Regeneration;
 import com.wafitz.pixelspacebase.actors.buffs.Shielding;
+import com.wafitz.pixelspacebase.actors.buffs.Shapeshifted;
 import com.wafitz.pixelspacebase.actors.buffs.Targeted;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
-import com.wafitz.pixelspacebase.actors.buffs.Upgrade;
+import com.wafitz.pixelspacebase.actors.buffs.CombatFocus;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.NPC;
@@ -52,30 +53,32 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.CheckedCell;
 import com.wafitz.pixelspacebase.effects.Flare;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.Amulet;
+import com.wafitz.pixelspacebase.items.EscapePodOverride;
 import com.wafitz.pixelspacebase.items.Clone;
-import com.wafitz.pixelspacebase.items.Dewdrop;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
+import com.wafitz.pixelspacebase.items.MedigelDroplet;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
+import com.wafitz.pixelspacebase.items.plasmids.TitanPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.armor.Armor;
+import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
+import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.enhancements.EMP;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Flow;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Forcefield;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Obfuscation;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Speed;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Viscosity;
-import com.wafitz.pixelspacebase.items.artifacts.GravityGun;
-import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.StrongForcefield;
-import com.wafitz.pixelspacebase.items.artifacts.SurveyorModule;
-import com.wafitz.pixelspacebase.items.artifacts.SurvivalModule;
-import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
+import com.wafitz.pixelspacebase.items.equippablemodules.GravityGun;
+import com.wafitz.pixelspacebase.items.equippablemodules.HoloPad;
+import com.wafitz.pixelspacebase.items.equippablemodules.StrongForcefield;
+import com.wafitz.pixelspacebase.items.equippablemodules.SurveyorModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.SurvivalModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.keys.Key;
@@ -86,18 +89,19 @@ import com.wafitz.pixelspacebase.items.modules.ForceModule;
 import com.wafitz.pixelspacebase.items.modules.PowerModule;
 import com.wafitz.pixelspacebase.items.modules.SpeedModule;
 import com.wafitz.pixelspacebase.items.modules.SteelModule;
-import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
-import com.wafitz.pixelspacebase.items.scripts.MappingScript;
-import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
+import com.wafitz.pixelspacebase.items.upgrades.EnhancementUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
+import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.levels.Level;
-import com.wafitz.pixelspacebase.levels.PrisonLevel;
+import com.wafitz.pixelspacebase.levels.SecurityBlockLevel;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.CraftingTerminal;
+import com.wafitz.pixelspacebase.levels.features.FloorBreaker;
 import com.wafitz.pixelspacebase.levels.features.Sign;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.mines.KoltoPod;
@@ -128,7 +132,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-import static com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech.heal;
+import static com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid.heal;
 
 public class Hero extends Char {
 
@@ -139,9 +143,14 @@ public class Hero extends Char {
     public static final int MAX_LEVEL = 30;
 
     private static final int STARTING_STR = 10;
+    private static final boolean DEV_TEST_INVULNERABLE = false;
 
     private static final float TIME_TO_REST = 1f;
     private static final float TIME_TO_SEARCH = 2f;
+    private static final float SHAPESHIFTER_WATER_RECOVERY_DELAY = 3f;
+    private static final float SHAPESHIFTER_EXP_SCALE = 0.8f;
+    private static final int SHAPESHIFTER_FIRST_STRENGTH_LEVEL = 10;
+    private static final int SHAPESHIFTER_SECOND_STRENGTH_LEVEL = 20;
 
     public HeroClass heroClass = HeroClass.SHAPESHIFTER;
     public HeroSubClass subClass = HeroSubClass.NONE;
@@ -160,6 +169,8 @@ public class Hero extends Char {
     private Item theKey;
 
     public boolean resting = false;
+    private boolean vacuumWarningActive = false;
+    private int vacuumReturnCell = -1;
 
     public MissileWeapon rangedWeapon = null;
     public Belongings belongings;
@@ -204,6 +215,13 @@ public class Hero extends Char {
     private static final String STRENGTH = "STR";
     private static final String LEVEL = "lvl";
     private static final String EXPERIENCE = "exp";
+    private static final String VACUUM_WARNING_ACTIVE = "vacuumWarningActive";
+    private static final String VACUUM_RETURN_CELL = "vacuumReturnCell";
+    private static final String SHAPESHIFTER_WATER_RECOVERY = "shapeshifterWaterRecovery";
+    private static final String SHAPESHIFTER_STRENGTH_PROGRESSION = "shapeshifterStrengthProgression";
+
+    private float shapeshifterWaterRecovery;
+    private int shapeshifterStrengthProgression;
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -220,6 +238,10 @@ public class Hero extends Char {
 
         bundle.put(LEVEL, lvl);
         bundle.put(EXPERIENCE, exp);
+        bundle.put(VACUUM_WARNING_ACTIVE, vacuumWarningActive);
+        bundle.put(VACUUM_RETURN_CELL, vacuumReturnCell);
+        bundle.put(SHAPESHIFTER_WATER_RECOVERY, shapeshifterWaterRecovery);
+        bundle.put(SHAPESHIFTER_STRENGTH_PROGRESSION, shapeshifterStrengthProgression);
 
         belongings.storeInBundle(bundle);
     }
@@ -239,6 +261,13 @@ public class Hero extends Char {
 
         lvl = bundle.getInt(LEVEL);
         exp = bundle.getInt(EXPERIENCE);
+        vacuumWarningActive = bundle.getBoolean(VACUUM_WARNING_ACTIVE);
+        vacuumReturnCell = bundle.contains(VACUUM_RETURN_CELL) ? bundle.getInt(VACUUM_RETURN_CELL) : -1;
+        shapeshifterWaterRecovery = bundle.getFloat(SHAPESHIFTER_WATER_RECOVERY);
+        shapeshifterStrengthProgression = bundle.contains(SHAPESHIFTER_STRENGTH_PROGRESSION)
+                ? bundle.getInt(SHAPESHIFTER_STRENGTH_PROGRESSION)
+                : 0;
+        applyShapeshifterStrengthProgression(false);
 
         belongings.restoreFromBundle(bundle);
     }
@@ -269,6 +298,9 @@ public class Hero extends Char {
         rangedWeapon = wep;
         boolean result = attack(enemy);
         Camoflage.dispel();
+        if (result) {
+            Buff.detach(this, Shapeshifted.class);
+        }
         rangedWeapon = null;
 
         return result;
@@ -277,7 +309,7 @@ public class Hero extends Char {
     @Override
     public int attackSkill(Char target) {
         float accuracy = 1;
-        if (rangedWeapon != null && Dungeon.level.distance(pos, target.pos) == 1) {
+        if (rangedWeapon != null && SpacebaseRun.level.distance(pos, target.pos) == 1) {
             accuracy *= 0.5f;
         }
 
@@ -410,15 +442,15 @@ public class Hero extends Char {
             return false;
 
         //can always attack adjacent enemies
-        if (Dungeon.level.adjacent(pos, enemy.pos))
+        if (SpacebaseRun.level.adjacent(pos, enemy.pos))
             return true;
 
-        KindOfWeapon wep = Dungeon.hero.belongings.weapon;
+        KindOfWeapon wep = SpacebaseRun.hero.belongings.weapon;
 
-        if (wep != null && Dungeon.level.distance(pos, enemy.pos) <= wep.reachFactor(this)) {
+        if (wep != null && SpacebaseRun.level.distance(pos, enemy.pos) <= wep.reachFactor(this)) {
 
             boolean[] passable = BArray.not(Level.solid, null);
-            for (Mob m : Dungeon.level.mobs)
+            for (Mob m : SpacebaseRun.level.mobs)
                 passable[m.pos] = false;
 
             PathFinder.buildDistanceMap(enemy.pos, passable, wep.reachFactor(this));
@@ -448,8 +480,53 @@ public class Hero extends Char {
     @Override
     public void spend(float time) {
         TimeFolder.timeFreeze buff = buff(TimeFolder.timeFreeze.class);
-        if (!(buff != null && buff.processTime(time)))
+        if (!(buff != null && buff.processTime(time))) {
             super.spend(time);
+            recoverShapeshifterInWater(time);
+            if (time > 0
+                    && !(curAction instanceof HeroAction.Attack)
+                    && !(curAction instanceof HeroAction.Move)) {
+                Buff.detach(this, Shapeshifted.class);
+            }
+        }
+    }
+
+    public int medicalHealing(int amount) {
+        if (amount <= 0 || HP >= HT) {
+            return 0;
+        }
+
+        int adjusted = amount;
+        if (heroClass == HeroClass.SHAPESHIFTER) {
+            adjusted = Math.max(1, adjusted / 2);
+        }
+
+        int effect = Math.min(HT - HP, adjusted);
+        HP += effect;
+        return effect;
+    }
+
+    private void recoverShapeshifterInWater(float time) {
+        if (time <= 0
+                || heroClass != HeroClass.SHAPESHIFTER
+                || flying
+                || HP >= HT
+                || isStarving()
+                || pos < 0
+                || !Level.water[pos]) {
+            shapeshifterWaterRecovery = 0;
+            return;
+        }
+
+        shapeshifterWaterRecovery += time;
+        while (shapeshifterWaterRecovery >= SHAPESHIFTER_WATER_RECOVERY_DELAY && HP < HT) {
+            shapeshifterWaterRecovery -= SHAPESHIFTER_WATER_RECOVERY_DELAY;
+            HP++;
+            if (sprite != null) {
+                sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+                sprite.showStatus(CharSprite.POSITIVE, "+1HP");
+            }
+        }
     }
 
     public void spendAndNext(float time) {
@@ -531,6 +608,10 @@ public class Hero extends Char {
 
                 return actMake((HeroAction.Make) curAction);
 
+            } else if (curAction instanceof HeroAction.Operate) {
+
+                return actOperate((HeroAction.Operate) curAction);
+
             }
         }
 
@@ -573,7 +654,7 @@ public class Hero extends Char {
             return true;
 
         } else {
-            if (Dungeon.level.map[pos] == Terrain.SIGN) {
+            if (SpacebaseRun.level.map[pos] == Terrain.SIGN) {
                 Sign.read(pos);
             }
             ready();
@@ -586,7 +667,7 @@ public class Hero extends Char {
 
         NPC npc = action.npc;
 
-        if (Dungeon.level.adjacent(pos, npc.pos)) {
+        if (SpacebaseRun.level.adjacent(pos, npc.pos)) {
 
             ready();
             sprite.turnTo(pos, npc.pos);
@@ -608,11 +689,11 @@ public class Hero extends Char {
 
     private boolean actMake(HeroAction.WorkshopMake action) {
         int dst = action.dst;
-        if (pos == dst || Dungeon.level.adjacent(pos, dst)) {
+        if (pos == dst || SpacebaseRun.level.adjacent(pos, dst)) {
 
             ready();
 
-            Heap heap = Dungeon.level.heaps.get(dst);
+            Heap heap = SpacebaseRun.level.heaps.get(dst);
             if (heap != null && heap.type == Type.TO_MAKE && heap.size() == 1) {
                 GameScene.show(new WndBotMake(heap, true));
             }
@@ -631,10 +712,31 @@ public class Hero extends Char {
 
     private boolean actMake(HeroAction.Make action) {
         int dst = action.dst;
-        if (Dungeon.visible[dst]) {
+        if (SpacebaseRun.visible[dst]) {
 
             ready();
             CraftingTerminal.operate(this, dst);
+            return false;
+
+        } else if (getCloser(dst)) {
+
+            return true;
+
+        } else {
+            ready();
+            return false;
+        }
+    }
+
+    private boolean actOperate(HeroAction.Operate action) {
+        int dst = action.dst;
+        if (pos == dst || SpacebaseRun.level.adjacent(pos, dst)) {
+
+            ready();
+            sprite.operate(dst);
+            if (SpacebaseRun.level.map[dst] == Terrain.BREAKER) {
+                FloorBreaker.operate(dst);
+            }
             return false;
 
         } else if (getCloser(dst)) {
@@ -651,13 +753,13 @@ public class Hero extends Char {
         int dst = action.dst;
         if (pos == dst) {
 
-            Heap heap = Dungeon.level.heaps.get(pos);
+            Heap heap = SpacebaseRun.level.heaps.get(pos);
             if (heap != null) {
                 Item item = heap.peek();
                 if (item.doPickUp(this)) {
                     heap.pickUp();
 
-                    if (item instanceof Dewdrop
+                    if (item instanceof MedigelDroplet
                             || item instanceof TimeFolder.TimeBattery
                             || item instanceof HoloPad.HoloBattery
                             || item instanceof Key) {
@@ -665,8 +767,8 @@ public class Hero extends Char {
                     } else {
 
                         boolean important =
-                                ((item instanceof UpgradeScript || item instanceof EnhancementScript) && ((Script) item).isKnown()) ||
-                                        ((item instanceof StrengthUpgrade || item instanceof PowerUpgrade) && ((ExperimentalTech) item).isKnown());
+                                ((item instanceof UpgradePatch || item instanceof EnhancementUpgrade) && ((Upgrade) item).isKnown()) ||
+                                        ((item instanceof MyoFiberPlasmid || item instanceof TitanPlasmid) && ((Plasmid) item).isKnown());
                         if (important) {
                             GLog.p(Messages.get(this, "you_now_have", item.name()));
                         } else {
@@ -700,13 +802,13 @@ public class Hero extends Char {
 
     private boolean actOpenChest(HeroAction.OpenChest action) {
         int dst = action.dst;
-        if (Dungeon.level.adjacent(pos, dst) || pos == dst) {
+        if (SpacebaseRun.level.adjacent(pos, dst) || pos == dst) {
 
-            Heap heap = Dungeon.level.heaps.get(dst);
+            Heap heap = SpacebaseRun.level.heaps.get(dst);
             if (heap != null && (heap.type != Type.HEAP && heap.type != Type.TO_MAKE)) {
 
                 if ((heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST)
-                        && belongings.specialKeys[Dungeon.depth] < 1) {
+                        && belongings.specialKeys[SpacebaseRun.depth] < 1) {
 
                     GLog.w(Messages.get(this, "locked_chest"));
                     ready();
@@ -753,18 +855,18 @@ public class Hero extends Char {
 
     private boolean actUnlock(HeroAction.Unlock action) {
         int doorCell = action.dst;
-        if (Dungeon.level.adjacent(pos, doorCell)) {
+        if (SpacebaseRun.level.adjacent(pos, doorCell)) {
 
             boolean hasKey = false;
-            int door = Dungeon.level.map[doorCell];
+            int door = SpacebaseRun.level.map[doorCell];
 
             if (door == Terrain.LOCKED_DOOR
-                    && belongings.ironKeys[Dungeon.depth] > 0) {
+                    && belongings.ironKeys[SpacebaseRun.depth] > 0) {
 
                 hasKey = true;
 
             } else if (door == Terrain.LOCKED_EXIT
-                    && belongings.specialKeys[Dungeon.depth] > 0) {
+                    && belongings.specialKeys[SpacebaseRun.depth] > 0) {
 
                 hasKey = true;
 
@@ -796,14 +898,14 @@ public class Hero extends Char {
 
     private boolean actDescend(HeroAction.Descend action) {
         int stairs = action.dst;
-        if (pos == stairs && pos == Dungeon.level.exit) {
+        if (pos == stairs && pos == SpacebaseRun.level.exit) {
 
             curAction = null;
 
             Buff buff = buff(TimeFolder.timeFreeze.class);
             if (buff != null) buff.detach();
 
-            for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
+            for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
                 if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
             InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
@@ -823,16 +925,16 @@ public class Hero extends Char {
 
     private boolean actAscend(HeroAction.Ascend action) {
         int stairs = action.dst;
-        if (pos == stairs && pos == Dungeon.level.entrance) {
+        if (pos == stairs && pos == SpacebaseRun.level.entrance) {
 
-            if (Dungeon.depth == 1) {
+            if (SpacebaseRun.depth == 1) {
 
-                if (belongings.getItem(Amulet.class) == null) {
+                if (belongings.getItem(EscapePodOverride.class) == null) {
                     GameScene.show(new WndMessage(Messages.get(this, "leave")));
                     ready();
                 } else {
-                    Dungeon.win(Amulet.class);
-                    Dungeon.deleteGame(Dungeon.hero.heroClass, true);
+                    SpacebaseRun.win(EscapePodOverride.class);
+                    SpacebaseRun.deleteGame(SpacebaseRun.hero.heroClass, true);
                     Game.switchScene(SurfaceScene.class);
                 }
 
@@ -848,7 +950,7 @@ public class Hero extends Char {
                 Buff buff = buff(TimeFolder.timeFreeze.class);
                 if (buff != null) buff.detach();
 
-                for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
+                for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
                     if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
                 InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
@@ -911,6 +1013,12 @@ public class Hero extends Char {
 
         if (wep != null) damage = wep.proc(this, enemy, damage);
 
+        if (buff(Shapeshifted.class) != null
+                && enemy instanceof Mob
+                && ((Mob) enemy).surprisedBy(this)) {
+            damage += Math.max(3, Math.round(damage * 0.5f));
+        }
+
         switch (subClass) {
             case SNIPER:
                 if (rangedWeapon != null) {
@@ -926,6 +1034,10 @@ public class Hero extends Char {
 
     @Override
     public int defenseProc(Char enemy, int damage) {
+        if (DEV_TEST_INVULNERABLE) {
+            restoreDevTestHealth();
+            return 0;
+        }
 
         WeakForcefield.Armor armor = buff(WeakForcefield.Armor.class);
         if (armor != null) {
@@ -957,6 +1069,11 @@ public class Hero extends Char {
         if (this.buff(Knockout.class) != null) {
             Buff.detach(this, Knockout.class);
             GLog.w(Messages.get(this, "pain_resist"));
+        }
+
+        if (DEV_TEST_INVULNERABLE) {
+            restoreDevTestHealth();
+            return;
         }
 
         StrongForcefield.Shield shield = buff(StrongForcefield.Shield.class);
@@ -1006,7 +1123,7 @@ public class Hero extends Char {
                 continue;
             }
 
-            if (item instanceof AlienPod && ((AlienPod) item).experimentalTechAttrib == null) {
+            if (item instanceof AlienPod && ((AlienPod) item).plasmidAttrib == null) {
                 continue;
             }
 
@@ -1023,7 +1140,7 @@ public class Hero extends Char {
         boolean newMob = false;
 
         Mob target = null;
-        for (Mob m : Dungeon.level.mobs) {
+        for (Mob m : SpacebaseRun.level.mobs) {
             if (Level.fieldOfView[m.pos] && m.hostile) {
                 visible.add(m);
                 if (!visibleEnemies.contains(m)) {
@@ -1042,7 +1159,7 @@ public class Hero extends Char {
 
         if (target != null && (QuickSlotButton.lastTarget == null ||
                 !QuickSlotButton.lastTarget.isAlive() ||
-                !Dungeon.visible[QuickSlotButton.lastTarget.pos])) {
+                !SpacebaseRun.visible[QuickSlotButton.lastTarget.pos])) {
             QuickSlotButton.target(target);
         }
 
@@ -1074,7 +1191,7 @@ public class Hero extends Char {
 
         int step = -1;
 
-        if (Dungeon.level.adjacent(pos, target)) {
+        if (SpacebaseRun.level.adjacent(pos, target)) {
 
             path = null;
 
@@ -1096,7 +1213,7 @@ public class Hero extends Char {
         } else {
 
             boolean newPath = false;
-            if (path == null || path.isEmpty() || !Dungeon.level.adjacent(pos, path.getFirst()))
+            if (path == null || path.isEmpty() || !SpacebaseRun.level.adjacent(pos, path.getFirst()))
                 newPath = true;
             else if (path.getLast() != target)
                 newPath = true;
@@ -1106,7 +1223,7 @@ public class Hero extends Char {
                 int lookAhead = (int) GameMath.gate(0, path.size() - 1, 2);
                 for (int i = 0; i < lookAhead; i++) {
                     int cell = path.get(i);
-                    if (!Level.passable[cell] || (Dungeon.visible[cell] && Actor.findChar(cell) != null)) {
+                    if (!Level.passable[cell] || (SpacebaseRun.visible[cell] && Actor.findChar(cell) != null)) {
                         newPath = true;
                         break;
                     }
@@ -1115,16 +1232,16 @@ public class Hero extends Char {
 
             if (newPath) {
 
-                int len = Dungeon.level.length();
+                int len = SpacebaseRun.level.length();
                 boolean[] p = Level.passable;
-                boolean[] v = Dungeon.level.visited;
-                boolean[] m = Dungeon.level.mapped;
+                boolean[] v = SpacebaseRun.level.visited;
+                boolean[] m = SpacebaseRun.level.mapped;
                 boolean[] passable = new boolean[len];
                 for (int i = 0; i < len; i++) {
                     passable[i] = p[i] && (v[i] || m[i]);
                 }
 
-                path = Dungeon.findPath(this, pos, target, passable, Level.fieldOfView);
+                path = SpacebaseRun.findPath(this, pos, target, passable, Level.fieldOfView);
             }
 
             if (path == null) return false;
@@ -1133,13 +1250,26 @@ public class Hero extends Char {
         }
 
         if (step != -1) {
+            if (!SpacebaseRun.level.isVacuum(pos) && !SpacebaseRun.level.isVacuum(step)) {
+                vacuumWarningActive = false;
+                vacuumReturnCell = -1;
+            }
+
+            if (needsVacuumWarningBeforeStep(step)) {
+                vacuumWarningActive = true;
+                vacuumReturnCell = pos;
+                path = null;
+                showVacuumWarning();
+                ready();
+                return false;
+            }
 
             int moveTime = 1;
             if (belongings.armor != null && belongings.armor.hasEnhancement(Forcefield.class) &&
-                    (Dungeon.level.map[pos] == Terrain.DOOR
-                            || Dungeon.level.map[pos] == Terrain.OPEN_DOOR
-                            || Dungeon.level.map[step] == Terrain.DOOR
-                            || Dungeon.level.map[step] == Terrain.OPEN_DOOR)) {
+                    (SpacebaseRun.level.map[pos] == Terrain.DOOR
+                            || SpacebaseRun.level.map[pos] == Terrain.OPEN_DOOR
+                            || SpacebaseRun.level.map[step] == Terrain.DOOR
+                            || SpacebaseRun.level.map[step] == Terrain.OPEN_DOOR)) {
                 moveTime *= 2;
             }
             sprite.move(pos, step);
@@ -1166,7 +1296,9 @@ public class Hero extends Char {
         Char ch;
         Heap heap;
 
-        if (Dungeon.level.map[cell] == Terrain.CRAFTING && cell != pos) {
+        heap = SpacebaseRun.level.heaps.get(cell);
+
+        if (SpacebaseRun.level.map[cell] == Terrain.CRAFTING && cell != pos) {
 
             curAction = new HeroAction.Make(cell);
 
@@ -1178,7 +1310,7 @@ public class Hero extends Char {
                 curAction = new HeroAction.Attack(ch);
             }
 
-        } else if ((heap = Dungeon.level.heaps.get(cell)) != null) {
+        } else if (heap != null) {
             // wafitz.v1: Auto pickup no matter what
 
             switch (heap.type) {
@@ -1194,15 +1326,19 @@ public class Hero extends Char {
                     curAction = new HeroAction.OpenChest(cell);
             }
 
-        } else if (Dungeon.level.map[cell] == Terrain.LOCKED_DOOR || Dungeon.level.map[cell] == Terrain.LOCKED_EXIT) {
+        } else if (SpacebaseRun.level.map[cell] == Terrain.BREAKER) {
+
+            curAction = new HeroAction.Operate(cell);
+
+        } else if (SpacebaseRun.level.map[cell] == Terrain.LOCKED_DOOR || SpacebaseRun.level.map[cell] == Terrain.LOCKED_EXIT) {
 
             curAction = new HeroAction.Unlock(cell);
 
-        } else if (cell == Dungeon.level.exit && Dungeon.depth < 26) {
+        } else if (cell == SpacebaseRun.level.exit && SpacebaseRun.depth < 26) {
 
             curAction = new HeroAction.Descend(cell);
 
-        } else if (cell == Dungeon.level.entrance) {
+        } else if (cell == SpacebaseRun.level.entrance) {
 
             curAction = new HeroAction.Ascend(cell);
 
@@ -1221,8 +1357,8 @@ public class Hero extends Char {
         this.exp += exp;
         float percent = exp / (float) maxExp();
 
-        GravityGun.gravityRecharge chains = buff(GravityGun.gravityRecharge.class);
-        if (chains != null) chains.gainExp(percent);
+        GravityGun.gravityRecharge gravityRecharge = buff(GravityGun.gravityRecharge.class);
+        if (gravityRecharge != null) gravityRecharge.gainExp(percent);
 
         SurvivalModule.hornRecharge horn = buff(SurvivalModule.hornRecharge.class);
         if (horn != null) horn.gainCharge(percent);
@@ -1243,9 +1379,10 @@ public class Hero extends Char {
                 HP += 5;
                 attackSkill++;
                 defenseSkill++;
+                applyShapeshifterStrengthProgression(true);
 
             } else {
-                Buff.prolong(this, Upgrade.class, 30f);
+                Buff.prolong(this, CombatFocus.class, 30f);
                 this.exp = 0;
 
                 GLog.p(Messages.get(this, "level_cap"));
@@ -1268,7 +1405,35 @@ public class Hero extends Char {
     }
 
     public int maxExp() {
-        return 5 + lvl * 5;
+        int maxExp = 5 + lvl * 5;
+        if (heroClass == HeroClass.SHAPESHIFTER) {
+            maxExp = Math.max(1, Math.round(maxExp * SHAPESHIFTER_EXP_SCALE));
+        }
+        return maxExp;
+    }
+
+    private void applyShapeshifterStrengthProgression(boolean announce) {
+        int target = shapeshifterStrengthProgressionForLevel();
+        while (shapeshifterStrengthProgression < target) {
+            shapeshifterStrengthProgression++;
+            STR++;
+            if (announce) {
+                GLog.p(Messages.get(this, "shapeshifter_strength"));
+                sprite.showStatus(CharSprite.POSITIVE, "+1STR");
+            }
+        }
+    }
+
+    private int shapeshifterStrengthProgressionForLevel() {
+        if (heroClass != HeroClass.SHAPESHIFTER) {
+            return 0;
+        } else if (lvl >= SHAPESHIFTER_SECOND_STRENGTH_LEVEL) {
+            return 2;
+        } else if (lvl >= SHAPESHIFTER_FIRST_STRENGTH_LEVEL) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     void updateAwareness() {
@@ -1329,18 +1494,24 @@ public class Hero extends Char {
 
         curAction = null;
 
+        if (DEV_TEST_INVULNERABLE) {
+            restoreDevTestHealth();
+            new Flare(8, 32).color(0xFFFF66, true).show(sprite, 2f);
+            return;
+        }
+
         Clone clone = null;
 
-        //look for ankhs in player inventory, prioritize ones which are blessed.
+        //look for revival items in player inventory, prioritize stabilized ones.
         for (Item item : belongings) {
             if (item instanceof Clone) {
-                if (clone == null || ((Clone) item).isBlessed()) {
+                if (clone == null || ((Clone) item).isStabilized()) {
                     clone = (Clone) item;
                 }
             }
         }
 
-        if (clone != null && clone.isBlessed()) {
+        if (clone != null && clone.isStabilized()) {
             this.HP = HT / 4;
 
             //ensures that you'll get to act first in almost any case, to prevent reviving and then instantly dieing again.
@@ -1368,7 +1539,7 @@ public class Hero extends Char {
 
         } else {
 
-            Dungeon.deleteGame(Dungeon.hero.heroClass, false);
+            SpacebaseRun.deleteGame(SpacebaseRun.hero.heroClass, false);
             GameScene.show(new WndResurrect(clone, cause));
 
         }
@@ -1376,9 +1547,9 @@ public class Hero extends Char {
 
     public static void reallyDie(Object cause) {
 
-        int length = Dungeon.level.length();
-        int[] map = Dungeon.level.map;
-        boolean[] visited = Dungeon.level.visited;
+        int length = SpacebaseRun.level.length();
+        int[] map = SpacebaseRun.level.map;
+        boolean[] visited = SpacebaseRun.level.visited;
         boolean[] discoverable = Level.discoverable;
 
         for (int i = 0; i < length; i++) {
@@ -1389,37 +1560,37 @@ public class Hero extends Char {
 
                 visited[i] = true;
                 if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
-                    Dungeon.level.discover(i);
+                    SpacebaseRun.level.discover(i);
                 }
             }
         }
 
         Bones.leave();
 
-        Dungeon.observe();
+        SpacebaseRun.observe();
         GameScene.updateFog();
 
-        Dungeon.hero.belongings.identify();
+        SpacebaseRun.hero.belongings.identify();
 
-        int pos = Dungeon.hero.pos;
+        int pos = SpacebaseRun.hero.pos;
 
         ArrayList<Integer> passable = new ArrayList<>();
         for (Integer ofs : PathFinder.NEIGHBOURS8) {
             int cell = pos + ofs;
-            if ((Level.passable[cell] || Level.avoid[cell]) && Dungeon.level.heaps.get(cell) == null) {
+            if ((Level.passable[cell] || Level.avoid[cell]) && SpacebaseRun.level.heaps.get(cell) == null) {
                 passable.add(cell);
             }
         }
         Collections.shuffle(passable);
 
-        ArrayList<Item> items = new ArrayList<>(Dungeon.hero.belongings.backpack.items);
+        ArrayList<Item> items = new ArrayList<>(SpacebaseRun.hero.belongings.backpack.items);
         for (Integer cell : passable) {
             if (items.isEmpty()) {
                 break;
             }
 
             Item item = Random.element(items);
-            Dungeon.level.drop(item, cell).sprite.drop(pos);
+            SpacebaseRun.level.drop(item, cell).sprite.drop(pos);
             items.remove(item);
         }
 
@@ -1429,7 +1600,7 @@ public class Hero extends Char {
             ((Hero.Doom) cause).onDeath();
         }
 
-        Dungeon.deleteGame(Dungeon.hero.heroClass, true);
+        SpacebaseRun.deleteGame(SpacebaseRun.hero.heroClass, true);
     }
 
     //effectively cache this buff to prevent having to call buff(Berserk.class) a bunch.
@@ -1439,6 +1610,12 @@ public class Hero extends Char {
 
     @Override
     public boolean isAlive() {
+        if (DEV_TEST_INVULNERABLE) {
+            if (HP <= 0) {
+                restoreDevTestHealth();
+            }
+            return true;
+        }
         if (subClass == HeroSubClass.BERSERKER
                 && berserk != null
                 && berserk.berserking()) {
@@ -1447,8 +1624,21 @@ public class Hero extends Char {
         return super.isAlive();
     }
 
+    public static boolean devTestInvulnerable() {
+        return DEV_TEST_INVULNERABLE;
+    }
+
+    public void restoreDevTestHealth() {
+        if (sprite != null && HP < HT) {
+            heal(this);
+        } else {
+            HP = HT;
+        }
+    }
+
     @Override
     public void move(int step) {
+        int previousPos = pos;
         super.move(step);
 
         if (!flying) {
@@ -1458,13 +1648,71 @@ public class Hero extends Char {
             } else {
                 Sample.INSTANCE.play(Assets.SND_STEP);
             }
-            Dungeon.level.press(pos, this);
+            SpacebaseRun.level.press(pos, this);
         }
+        checkVacuumExposure(previousPos);
+    }
+
+    private void checkVacuumExposure(int previousPos) {
+        if (canSurviveVacuum()) {
+            vacuumWarningActive = false;
+            vacuumReturnCell = -1;
+            return;
+        }
+
+        boolean wasInVacuum = SpacebaseRun.level.isVacuum(previousPos);
+        boolean isInVacuum = SpacebaseRun.level.isVacuum(pos);
+
+        if (!isInVacuum) {
+            if (wasInVacuum && vacuumWarningActive && pos != vacuumReturnCell) {
+                killByVacuum();
+                return;
+            }
+            vacuumWarningActive = false;
+            vacuumReturnCell = -1;
+            return;
+        }
+
+        if (vacuumWarningActive && wasInVacuum) {
+            killByVacuum();
+        } else if (!vacuumWarningActive) {
+            vacuumWarningActive = true;
+            vacuumReturnCell = previousPos;
+            showVacuumWarning();
+        }
+    }
+
+    private void showVacuumWarning() {
+        GameScene.show(new WndMessage(Messages.get(this, "vacuum_warning")));
+    }
+
+    private void killByVacuum() {
+        damage(HP + HT, new Doom() {
+            @Override
+            public void onDeath() {
+                SpacebaseRun.fail(getClass());
+                GLog.n(Messages.get(Hero.class, "vacuum_death"));
+            }
+        });
+    }
+
+    private boolean needsVacuumWarningBeforeStep(int step) {
+        return !vacuumWarningActive
+                && !SpacebaseRun.level.isVacuum(pos)
+                && SpacebaseRun.level.isVacuum(step)
+                && !canSurviveVacuum();
+    }
+
+    private boolean canSurviveVacuum() {
+        return heroClass == HeroClass.DM3000
+                || heroClass == HeroClass.SHAPESHIFTER
+                || belongings.armor instanceof SpaceSuit
+                || belongings.armor instanceof HunterSpaceSuit;
     }
 
     @Override
     public void onMotionComplete() {
-        Dungeon.observe();
+        SpacebaseRun.observe();
         search(false);
     }
 
@@ -1474,6 +1722,7 @@ public class Hero extends Char {
         AttackIndicator.target(enemy);
 
         boolean hit = attack(enemy);
+        Buff.detach(this, Shapeshifted.class);
 
         if (subClass == HeroSubClass.GLADIATOR) {
             if (hit) {
@@ -1495,15 +1744,15 @@ public class Hero extends Char {
         if (curAction instanceof HeroAction.Unlock) {
 
             int doorCell = ((HeroAction.Unlock) curAction).dst;
-            int door = Dungeon.level.map[doorCell];
+            int door = SpacebaseRun.level.map[doorCell];
 
             if (door == Terrain.LOCKED_DOOR) {
-                if (!(Dungeon.level instanceof PrisonLevel)) {
-                    belongings.ironKeys[Dungeon.depth]--;
+                if (!(SpacebaseRun.level instanceof SecurityBlockLevel)) {
+                    belongings.ironKeys[SpacebaseRun.depth]--;
                 }
                 Level.set(doorCell, Terrain.DOOR);
             } else {
-                belongings.specialKeys[Dungeon.depth]--;
+                belongings.specialKeys[SpacebaseRun.depth]--;
                 Level.set(doorCell, Terrain.UNLOCKED_EXIT);
             }
             StatusPane.needsKeyUpdate = true;
@@ -1513,11 +1762,11 @@ public class Hero extends Char {
 
         } else if (curAction instanceof HeroAction.OpenChest) {
 
-            Heap heap = Dungeon.level.heaps.get(((HeroAction.OpenChest) curAction).dst);
+            Heap heap = SpacebaseRun.level.heaps.get(((HeroAction.OpenChest) curAction).dst);
             if (heap.type == Type.EMPTY_SPACESUIT || heap.type == Type.REMAINS) {
                 Sample.INSTANCE.play(Assets.SND_BONES);
             } else if (heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST) {
-                belongings.specialKeys[Dungeon.depth]--;
+                belongings.specialKeys[SpacebaseRun.depth]--;
             }
             StatusPane.needsKeyUpdate = true;
             heap.open(this);
@@ -1554,23 +1803,23 @@ public class Hero extends Char {
             distance = 1;
         }
 
-        int cx = pos % Dungeon.level.width();
-        int cy = pos / Dungeon.level.width();
+        int cx = pos % SpacebaseRun.level.width();
+        int cy = pos / SpacebaseRun.level.width();
         int ax = cx - distance;
         if (ax < 0) {
             ax = 0;
         }
         int bx = cx + distance;
-        if (bx >= Dungeon.level.width()) {
-            bx = Dungeon.level.width() - 1;
+        if (bx >= SpacebaseRun.level.width()) {
+            bx = SpacebaseRun.level.width() - 1;
         }
         int ay = cy - distance;
         if (ay < 0) {
             ay = 0;
         }
         int by = cy + distance;
-        if (by >= Dungeon.level.height()) {
-            by = Dungeon.level.height() - 1;
+        if (by >= SpacebaseRun.level.height()) {
+            by = SpacebaseRun.level.height() - 1;
         }
 
         SurveyorModule.Survey survey = buff(SurveyorModule.Survey.class);
@@ -1581,9 +1830,9 @@ public class Hero extends Char {
         }
 
         for (int y = ay; y <= by; y++) {
-            for (int x = ax, p = ax + y * Dungeon.level.width(); x <= bx; x++, p++) {
+            for (int x = ax, p = ax + y * SpacebaseRun.level.width(); x <= bx; x++, p++) {
 
-                if (Dungeon.visible[p]) {
+                if (SpacebaseRun.visible[p]) {
 
                     if (intentional) {
                         sprite.parent.addToBack(new CheckedCell(p));
@@ -1591,13 +1840,13 @@ public class Hero extends Char {
 
                     if (Level.secret[p] && (intentional || Random.Float() < level)) {
 
-                        int oldValue = Dungeon.level.map[p];
+                        int oldValue = SpacebaseRun.level.map[p];
 
                         GameScene.discoverTile(p, oldValue);
 
-                        Dungeon.level.discover(p);
+                        SpacebaseRun.level.discover(p);
 
-                        MappingScript.discover(p);
+                        MappingUpgrade.discover(p);
 
                         smthFound = true;
                         //informer.onSelect(null);
@@ -1636,7 +1885,7 @@ public class Hero extends Char {
     public void resurrect(int resetLevel) {
 
         HP = HT;
-        Dungeon.parts = 0;
+        SpacebaseRun.parts = 0;
         exp = 0;
 
         belongings.resurrect(resetLevel);

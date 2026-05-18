@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.blobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -46,7 +46,7 @@ public class Fire extends Blob {
 
         for (int i = area.left - 1; i <= area.right; i++) {
             for (int j = area.top - 1; j <= area.bottom; j++) {
-                cell = i + j * Dungeon.level.width();
+                cell = i + j * SpacebaseRun.level.width();
                 if (cur[cell] > 0) {
 
                     burn(cell);
@@ -54,7 +54,7 @@ public class Fire extends Blob {
                     fire = cur[cell] - 1;
                     if (fire <= 0 && flamable[cell]) {
 
-                        Dungeon.level.destroy(cell);
+                        SpacebaseRun.level.destroy(cell);
 
                         observe = true;
                         GameScene.updateMap(cell);
@@ -66,8 +66,8 @@ public class Fire extends Blob {
                     if (flamable[cell]
                             && (cur[cell - 1] > 0
                             || cur[cell + 1] > 0
-                            || cur[cell - Dungeon.level.width()] > 0
-                            || cur[cell + Dungeon.level.width()] > 0)) {
+                            || cur[cell - SpacebaseRun.level.width()] > 0
+                            || cur[cell + SpacebaseRun.level.width()] > 0)) {
                         fire = 4;
                         burn(cell);
                         area.union(i, j);
@@ -82,7 +82,7 @@ public class Fire extends Blob {
         }
 
         if (observe) {
-            Dungeon.observe();
+            SpacebaseRun.observe();
         }
     }
 
@@ -92,12 +92,12 @@ public class Fire extends Blob {
             Buff.affect(ch, Burning.class).reignite(ch);
         }
 
-        Heap heap = Dungeon.level.heaps.get(pos);
+        Heap heap = SpacebaseRun.level.heaps.get(pos);
         if (heap != null) {
             heap.burn();
         }
 
-        Mine mine = Dungeon.level.mines.get(pos);
+        Mine mine = SpacebaseRun.level.mines.get(pos);
         if (mine != null) {
             mine.wither();
         }

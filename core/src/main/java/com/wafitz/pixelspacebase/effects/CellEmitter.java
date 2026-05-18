@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.effects;
 
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.PointF;
@@ -29,30 +29,30 @@ public class CellEmitter {
 
     public static Emitter get(int cell) {
 
-        PointF p = DungeonTilemap.tileToWorld(cell);
+        PointF p = SpacebaseTilemap.tileToWorld(cell);
 
         Emitter emitter = GameScene.emitter();
-        emitter.pos(p.x, p.y, DungeonTilemap.SIZE, DungeonTilemap.SIZE);
+        emitter.pos(p.x, p.y, SpacebaseTilemap.SIZE, SpacebaseTilemap.SIZE);
 
         return emitter;
     }
 
     public static Emitter center(int cell) {
 
-        PointF p = DungeonTilemap.tileToWorld(cell);
+        PointF p = SpacebaseTilemap.tileToWorld(cell);
 
         Emitter emitter = GameScene.emitter();
-        emitter.pos(p.x + DungeonTilemap.SIZE / 2, p.y + DungeonTilemap.SIZE / 2);
+        emitter.pos(p.x + SpacebaseTilemap.SIZE / 2, p.y + SpacebaseTilemap.SIZE / 2);
 
         return emitter;
     }
 
     public static Emitter bottom(int cell) {
 
-        PointF p = DungeonTilemap.tileToWorld(cell);
+        PointF p = SpacebaseTilemap.tileToWorld(cell);
 
         Emitter emitter = GameScene.emitter();
-        emitter.pos(p.x, p.y + DungeonTilemap.SIZE, DungeonTilemap.SIZE, 0);
+        emitter.pos(p.x, p.y + SpacebaseTilemap.SIZE, SpacebaseTilemap.SIZE, 0);
 
         return emitter;
     }

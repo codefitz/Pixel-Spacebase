@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.vents;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
@@ -40,20 +40,29 @@ public class PitfallVent extends Vent {
 
     @Override
     public void activate() {
-        Heap heap = Dungeon.level.heaps.get(pos);
+        Heap heap = SpacebaseRun.level.heaps.get(pos);
 
         if (heap != null) {
-            for (Item item : heap.items) {
-                Dungeon.dropToChasm(item);
+            if (heap.type == Heap.Type.HEAP) {
+                for (Item item : heap.items) {
+                    SpacebaseRun.dropToChasm(item);
+                }
+                heap.sprite.kill();
+                GameScene.discard(heap);
+                SpacebaseRun.level.heaps.remove(pos);
+            } else {
+                SpacebaseRun.dropHeapToDepth(heap, SpacebaseRun.depth + 1);
+                if (heap.sprite != null) {
+                    heap.sprite.kill();
+                }
+                GameScene.discard(heap);
+                SpacebaseRun.level.heaps.remove(pos);
             }
-            heap.sprite.kill();
-            GameScene.discard(heap);
-            Dungeon.level.heaps.remove(pos);
         }
 
         Char ch = Actor.findChar(pos);
 
-        if (ch == Dungeon.hero) {
+        if (ch == SpacebaseRun.hero) {
             Chasm.heroFall(pos);
         } else if (ch != null) {
             Chasm.mobFall((Mob) ch);
@@ -65,7 +74,7 @@ public class PitfallVent extends Vent {
         super.disarm();
 
         //if making a pit here wouldn't block any paths, make a pit tile instead of a disarmed trap tile.
-        if (!(Level.solid[pos - Dungeon.level.width()] && Level.solid[pos + Dungeon.level.width()])
+        if (!(Level.solid[pos - SpacebaseRun.level.width()] && Level.solid[pos + SpacebaseRun.level.width()])
                 && !(Level.solid[pos - 1] && Level.solid[pos + 1])) {
 
             Level.set(pos, Terrain.CHASM);

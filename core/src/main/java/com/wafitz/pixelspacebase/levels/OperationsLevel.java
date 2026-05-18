@@ -21,19 +21,13 @@
 package com.wafitz.pixelspacebase.levels;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
+import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.effects.Ripple;
 import com.wafitz.pixelspacebase.items.AirTank;
-import com.wafitz.pixelspacebase.items.Generator;
-import com.wafitz.pixelspacebase.items.Heap;
-import com.wafitz.pixelspacebase.items.WeakForcefield;
-import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
-import com.wafitz.pixelspacebase.items.armor.Uniform;
-import com.wafitz.pixelspacebase.items.food.Food;
-import com.wafitz.pixelspacebase.items.scripts.MappingScript;
-import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
 import com.wafitz.pixelspacebase.levels.vents.AlarmVent;
 import com.wafitz.pixelspacebase.levels.vents.ChillingVent;
 import com.wafitz.pixelspacebase.levels.vents.FlockVent;
@@ -48,7 +42,9 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.ColorMath;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -79,7 +75,7 @@ public class OperationsLevel extends RegularLevel {
 
     @Override
     protected Class<?>[] ventClasses() {
-        return Dungeon.depth == 1 ?
+        return SpacebaseRun.depth == 1 ?
                 new Class<?>[]{WornVent.class} :
                 new Class<?>[]{ChillingVent.class, ToxicVent.class, WornVent.class,
                         AlarmVent.class, OozeVent.class,
@@ -88,7 +84,7 @@ public class OperationsLevel extends RegularLevel {
 
     @Override
     protected float[] ventChances() {
-        return Dungeon.depth == 1 ?
+        return SpacebaseRun.depth == 1 ?
                 new float[]{1} :
                 new float[]{4, 4, 4,
                         2, 2,
@@ -133,7 +129,7 @@ public class OperationsLevel extends RegularLevel {
         }
 
         //hides all doors in the entrance room on floor 2, teaches the player to search.
-        if (Dungeon.depth == 2)
+        if (SpacebaseRun.depth == 2)
             for (Room r : roomEntrance.connected.keySet()) {
                 Room.Door d = roomEntrance.connected.get(r);
                 if (d.type == Room.Door.Type.REGULAR)
@@ -141,30 +137,69 @@ public class OperationsLevel extends RegularLevel {
             }
 
         placeSign();
+    }
 
-        // wafitz.v1 - Hero belongings are now to be found in the entrance, later I will randomly place this somewhere on the level
-        if (Dungeon.depth <= 1) {
-                int pos = pointToCell(roomEntrance.random());
-            if (pos != entrance && vents.get(pos) == null
-                        && findMob(pos) == null && pos != Terrain.SIGN) {
-                    drop(Generator.random(), pos).type = Heap.Type.CHEST;
-                    drop(new Uniform().identify(), pos);
-                    drop(new Food().identify(), pos);
-                    // TEST - Dev items
-                    drop(new MappingScript().identify(), pos);
-                    drop(new WeakForcefield().identify(), pos);
-                    drop(new SpaceSuit().identify(), pos);
-                    drop(new Wrench().identify(), pos);
-                    drop(new Wrench().identify(), pos);
+    @Override
+    protected void createMobs() {
+        super.createMobs();
+        ensureStationCat();
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        ensureStationCat();
+    }
+
+    private void ensureStationCat() {
+        if (SpacebaseRun.depth == 1 && roomEntrance != null) {
+            for (Mob mob : mobs) {
+                if (mob instanceof StationCat) {
+                    return;
                 }
+            }
+
+            int pos = stationCatCell();
+            if (pos != -1) {
+                StationCat cat = new StationCat();
+                cat.pos = pos;
+                mobs.add(cat);
+            }
         }
+    }
+
+    private int stationCatCell() {
+        for (int offset : PathFinder.NEIGHBOURS8) {
+            int pos = entrance + offset;
+            if (canPlaceStationCat(pos)) {
+                return pos;
+            }
+        }
+
+        for (int tries = 0; tries < 30; tries++) {
+            int pos = pointToCell(roomEntrance.random());
+            if (canPlaceStationCat(pos)) {
+                return pos;
+            }
+        }
+
+        return -1;
+    }
+
+    private boolean canPlaceStationCat(int pos) {
+        return pos != entrance
+                && insideMap(pos)
+                && map[pos] != Terrain.SIGN
+                && findMob(pos) == null
+                && heaps.get(pos) == null
+                && Level.passable[pos];
     }
 
     @Override
     protected void createItems() {
-        if (!Dungeon.limitedDrops.airTank.dropped() && Random.Int(4 - Dungeon.depth) == 0) {
+        if (!SpacebaseRun.limitedDrops.airTank.dropped() && Random.Int(4 - SpacebaseRun.depth) == 0) {
             addItemToSpawn(new AirTank());
-            Dungeon.limitedDrops.airTank.drop();
+            SpacebaseRun.limitedDrops.airTank.drop();
         }
 
         Hologram.Quest.spawn(this);
@@ -231,7 +266,7 @@ public class OperationsLevel extends RegularLevel {
 
             this.pos = pos;
 
-            PointF p = DungeonTilemap.tileCenterToWorld(pos);
+            PointF p = SpacebaseTilemap.tileCenterToWorld(pos);
             pos(p.x - 2, p.y + 1, 4, 0);
 
             pour(factory, 0.1f);
@@ -239,14 +274,14 @@ public class OperationsLevel extends RegularLevel {
 
         @Override
         public void update() {
-            if (visible = Dungeon.visible[pos]) {
+            if (visible = SpacebaseRun.visible[pos]) {
 
                 super.update();
 
                 if ((rippleDelay -= Game.elapsed) <= 0) {
-                    Ripple ripple = GameScene.ripple(pos + Dungeon.level.width());
+                    Ripple ripple = GameScene.ripple(pos + SpacebaseRun.level.width());
                     if (ripple != null) {
-                        ripple.y -= DungeonTilemap.SIZE / 2;
+                        ripple.y -= SpacebaseTilemap.SIZE / 2;
                         rippleDelay = Random.Float(0.4f, 0.6f);
                     }
                 }

@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.modules;
 
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -153,7 +153,7 @@ public class Module extends KindofMisc {
 
         String desc = isKnown() ? desc() : Messages.get(this, "unknown_desc");
 
-        if (malfunctioning && isEquipped(Dungeon.hero)) {
+        if (malfunctioning && isEquipped(SpacebaseRun.hero)) {
 
             desc += "\n\n" + Messages.get(Module.class, "malfunctioning_worn");
 

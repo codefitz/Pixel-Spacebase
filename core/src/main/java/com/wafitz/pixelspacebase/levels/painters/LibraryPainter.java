@@ -20,13 +20,13 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
-import com.wafitz.pixelspacebase.items.scripts.FixScript;
-import com.wafitz.pixelspacebase.items.scripts.IdentifyScript;
-import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.upgrades.RepairUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.DiagnosticScanUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -76,21 +76,21 @@ public class LibraryPainter extends Painter {
             } while (level.map[pos] != Terrain.EMPTY || level.heaps.get(pos) != null);
             Item item;
             if (i == 0)
-                item = Random.Int(2) == 0 ? new IdentifyScript() : new FixScript();
+                item = Random.Int(2) == 0 ? new DiagnosticScanUpgrade() : new RepairUpgrade();
             else
                 item = prize(level);
             level.drop(item, pos);
         }
 
         entrance.set(Room.Door.Type.LOCKED);
-        level.addItemToSpawn(new IronKey(Dungeon.depth));
+        level.addItemToSpawn(new IronKey(SpacebaseRun.depth));
     }
 
     private static Item prize(Level level) {
 
-        Item prize = level.findPrizeItem(Script.class);
+        Item prize = level.findPrizeItem(Upgrade.class);
         if (prize == null)
-            prize = Generator.random(Generator.Category.SCRIPT);
+            prize = Generator.random(Generator.Category.UPGRADE);
 
         return prize;
     }

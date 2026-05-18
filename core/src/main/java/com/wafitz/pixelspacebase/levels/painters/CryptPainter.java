@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
@@ -45,7 +45,7 @@ public class CryptPainter extends Painter {
         Room.Door entrance = room.entrance();
 
         entrance.set(Room.Door.Type.LOCKED);
-        level.addItemToSpawn(new IronKey(Dungeon.depth));
+        level.addItemToSpawn(new IronKey(SpacebaseRun.depth));
 
         if (entrance.x == room.left) {
             set(level, new Point(room.right - 1, room.top + 1), Terrain.STATUE);
@@ -71,7 +71,7 @@ public class CryptPainter extends Painter {
     private static Item prize(Level level) {
 
         //1 floor set higher than normal
-        Armor prize = Generator.randomArmor((Dungeon.depth / 5) + 1);
+        Armor prize = Generator.randomArmor((SpacebaseRun.depth / 5) + 1);
 
         //if it isn't already malfunctioning, give it a free upgrade
         if (!prize.malfunctioning) {
