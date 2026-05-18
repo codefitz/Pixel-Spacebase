@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.items.Bomb;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.DroneController;
 import com.wafitz.pixelspacebase.items.EnhancementChip;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -46,13 +46,13 @@ import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
-import com.wafitz.pixelspacebase.items.containers.DeviceCase;
-import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
-import com.wafitz.pixelspacebase.items.containers.XPort;
+import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
+import com.wafitz.pixelspacebase.items.containers.UtilityKit;
+import com.wafitz.pixelspacebase.items.containers.PlasmidKit;
 import com.wafitz.pixelspacebase.items.food.SynthesizedFood;
-import com.wafitz.pixelspacebase.items.scripts.FixScript;
-import com.wafitz.pixelspacebase.items.scripts.IdentifyScript;
-import com.wafitz.pixelspacebase.items.scripts.MappingScript;
+import com.wafitz.pixelspacebase.items.upgrades.RepairUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.DiagnosticScanUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.melee.BrightHammer;
 import com.wafitz.pixelspacebase.items.weapon.melee.DualBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.RaiderBlade;
@@ -330,9 +330,9 @@ public class Workshop extends Painter {
     }
 
     private static boolean carriesToNextWorkshop(Item item) {
-        return item instanceof DeviceCase
-                || item instanceof ScriptLibrary
-                || item instanceof XPort
+        return item instanceof OrdnanceKit
+                || item instanceof UtilityKit
+                || item instanceof PlasmidKit
                 || item instanceof BlasterHolster
                 || item instanceof TimeFolder.TimeBattery;
     }
@@ -351,9 +351,9 @@ public class Workshop extends Painter {
 
         ensureBackpackExtensionStock(SpacebaseRun.hero.belongings);
 
-        itemsToSpawn.add(new HealingTech());
+        itemsToSpawn.add(new HealingPlasmid());
 
-        itemsToSpawn.add(new IdentifyScript());
+        itemsToSpawn.add(new DiagnosticScanUpgrade());
 
         itemsToSpawn.add(new SynthesizedFood());
         itemsToSpawn.add(new SynthesizedFood());
@@ -361,9 +361,9 @@ public class Workshop extends Painter {
         itemsToSpawn.add(new TorchBattery());
 
         if (makerTier >= 1) {
-            itemsToSpawn.add(new FixScript());
-            itemsToSpawn.add(new MappingScript());
-            itemsToSpawn.add(Generator.random(Generator.Category.EXPERIMENTALTECH));
+            itemsToSpawn.add(new RepairUpgrade());
+            itemsToSpawn.add(new MappingUpgrade());
+            itemsToSpawn.add(Generator.random(Generator.Category.PLASMID));
         }
 
         if (makerTier >= 2) {
@@ -384,8 +384,8 @@ public class Workshop extends Painter {
         }
 
         if (makerTier >= 3) {
-            itemsToSpawn.add(Generator.random(Generator.Category.SCRIPT));
-            itemsToSpawn.add(Generator.random(Generator.Category.EXPERIMENTALTECH));
+            itemsToSpawn.add(Generator.random(Generator.Category.UPGRADE));
+            itemsToSpawn.add(Generator.random(Generator.Category.PLASMID));
             itemsToSpawn.add(rareWorkshopItem(false));
         }
 
@@ -541,15 +541,15 @@ public class Workshop extends Painter {
             return;
         }
 
-        if (!hasBackpackExtension(belongings, DeviceCase.class)) {
-            SpacebaseRun.limitedDrops.deviceCase.drop();
-            itemsToSpawn.add(new DeviceCase());
-        } else if (!hasBackpackExtension(belongings, ScriptLibrary.class)) {
-            SpacebaseRun.limitedDrops.scriptContainer.drop();
-            itemsToSpawn.add(new ScriptLibrary());
-        } else if (!hasBackpackExtension(belongings, XPort.class)) {
-            SpacebaseRun.limitedDrops.xPort.drop();
-            itemsToSpawn.add(new XPort());
+        if (!hasBackpackExtension(belongings, OrdnanceKit.class)) {
+            SpacebaseRun.limitedDrops.ordnanceKit.drop();
+            itemsToSpawn.add(new OrdnanceKit());
+        } else if (!hasBackpackExtension(belongings, UtilityKit.class)) {
+            SpacebaseRun.limitedDrops.utilityKit.drop();
+            itemsToSpawn.add(new UtilityKit());
+        } else if (!hasBackpackExtension(belongings, PlasmidKit.class)) {
+            SpacebaseRun.limitedDrops.plasmidKit.drop();
+            itemsToSpawn.add(new PlasmidKit());
         } else if (!hasBackpackExtension(belongings, BlasterHolster.class)) {
             SpacebaseRun.limitedDrops.blasterHolster.drop();
             itemsToSpawn.add(new BlasterHolster());
@@ -571,9 +571,9 @@ public class Workshop extends Painter {
     }
 
     private static boolean isBackpackExtension(Item item) {
-        return item instanceof DeviceCase
-                || item instanceof ScriptLibrary
-                || item instanceof XPort
+        return item instanceof OrdnanceKit
+                || item instanceof UtilityKit
+                || item instanceof PlasmidKit
                 || item instanceof BlasterHolster;
     }
 

@@ -210,6 +210,11 @@ public abstract class Mine implements Bundlable {
         public String info() {
             return Messages.get(Device.class, "info", name(), desc(), minename());
         }
+
+        @Override
+        public boolean goesInOrdnanceKit() {
+            return true;
+        }
     }
 
     public static class StimulantDevice extends Device {
@@ -254,6 +259,16 @@ public abstract class Mine implements Bundlable {
         @Override
         public String info() {
             return Messages.get(StimulantDevice.class, "info", name(), desc());
+        }
+
+        @Override
+        public boolean goesInOrdnanceKit() {
+            return false;
+        }
+
+        @Override
+        public boolean goesInPlasmidKit() {
+            return true;
         }
     }
 }

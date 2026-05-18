@@ -34,7 +34,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.actors.buffs.Speed;
 import com.wafitz.pixelspacebase.actors.buffs.TimeSink;
 import com.wafitz.pixelspacebase.actors.buffs.Tired;
-import com.wafitz.pixelspacebase.actors.buffs.Upgrade;
+import com.wafitz.pixelspacebase.actors.buffs.CombatFocus;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
@@ -200,8 +200,8 @@ public abstract class Char extends Actor {
     public static boolean hit(Char attacker, Char defender, boolean magic) {
         float acuRoll = Random.Float(attacker.attackSkill(defender));
         float defRoll = Random.Float(defender.defenseSkill(attacker));
-        if (attacker.buff(Upgrade.class) != null) acuRoll *= 1.20f;
-        if (defender.buff(Upgrade.class) != null) defRoll *= 1.20f;
+        if (attacker.buff(CombatFocus.class) != null) acuRoll *= 1.20f;
+        if (defender.buff(CombatFocus.class) != null) defRoll *= 1.20f;
         return (magic ? acuRoll * 2 : acuRoll) >= defRoll;
     }
 

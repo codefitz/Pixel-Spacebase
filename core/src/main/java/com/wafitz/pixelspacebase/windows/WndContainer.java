@@ -28,18 +28,18 @@ import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.EquipableItem;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
 import com.wafitz.pixelspacebase.items.containers.Container;
-import com.wafitz.pixelspacebase.items.containers.DeviceCase;
-import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
-import com.wafitz.pixelspacebase.items.containers.XPort;
+import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
+import com.wafitz.pixelspacebase.items.containers.UtilityKit;
+import com.wafitz.pixelspacebase.items.containers.PlasmidKit;
 import com.wafitz.pixelspacebase.items.food.Food;
-import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.items.weapon.missiles.HunterDisc;
@@ -72,8 +72,8 @@ public class WndContainer extends WndTabbed {
         BLASTER,
         DEVICE,
         FOOD,
-        EXPERIMENTALTECH,
-        SCRIPT,
+        PLASMID,
+        UPGRADE,
         EQUIPMENT
     }
 
@@ -129,9 +129,9 @@ public class WndContainer extends WndTabbed {
         Belongings stuff = SpacebaseRun.hero.belongings;
         Container[] containers = {
                 stuff.backpack,
-                stuff.getItem(DeviceCase.class),
-                stuff.getItem(ScriptLibrary.class),
-                stuff.getItem(XPort.class),
+                stuff.getItem(OrdnanceKit.class),
+                stuff.getItem(UtilityKit.class),
+                stuff.getItem(PlasmidKit.class),
                 stuff.getItem(BlasterHolster.class)};
 
         for (Container b : containers) {
@@ -368,8 +368,8 @@ public class WndContainer extends WndTabbed {
                                     mode == Mode.BLASTER && (item instanceof Blaster) ||
                                     mode == Mode.DEVICE && (item instanceof Device) ||
                                     mode == Mode.FOOD && (item instanceof Food) ||
-                                    mode == Mode.EXPERIMENTALTECH && (item instanceof ExperimentalTech) ||
-                                    mode == Mode.SCRIPT && (item instanceof Script) ||
+                                    mode == Mode.PLASMID && (item instanceof Plasmid) ||
+                                    mode == Mode.UPGRADE && (item instanceof Upgrade) ||
                                     mode == Mode.EQUIPMENT && (item instanceof EquipableItem) ||
                                     mode == Mode.ALL
                     );

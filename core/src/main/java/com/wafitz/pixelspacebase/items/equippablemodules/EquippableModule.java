@@ -161,7 +161,7 @@ public class EquippableModule extends KindofMisc {
     //converts class names to be more concise and readable.
     String convertName(String className) {
         //removes known redundant parts of names.
-        className = className.replaceFirst("Script|Tech", "");
+        className = className.replaceFirst("Upgrade|Tech", "");
 
         //inserts a space infront of every uppercase character
         className = className.replaceAll("(\\p{Ll})(\\p{Lu})", "$1 $2");

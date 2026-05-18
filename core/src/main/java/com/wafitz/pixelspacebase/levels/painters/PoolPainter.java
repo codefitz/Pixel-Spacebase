@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.mobs.WaterThing;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.InvisibilityEnhancement;
+import com.wafitz.pixelspacebase.items.plasmids.CloakPlasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -73,7 +73,7 @@ public class PoolPainter extends Painter {
                 Random.Int(3) == 0 ? Heap.Type.CHEST : Heap.Type.HEAP;
         set(level, pos, Terrain.PEDESTAL);
 
-        level.addItemToSpawn(new InvisibilityEnhancement());
+        level.addItemToSpawn(new CloakPlasmid());
 
         for (int i = 0; i < NWATERTHINGS; i++) {
             WaterThing waterThing = new WaterThing();

@@ -27,18 +27,18 @@ import com.wafitz.pixelspacebase.actors.buffs.Hunger;
 import com.wafitz.pixelspacebase.actors.buffs.Lockdown;
 import com.wafitz.pixelspacebase.actors.buffs.Toxic;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.Cryongenics;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceBooster;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalRockets;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.Firestarter;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.InvisibilityEnhancement;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ParalyzingAgent;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PolymerMembrane;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityOverride;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ToxicAgent;
+import com.wafitz.pixelspacebase.items.plasmids.CryoGrenade;
+import com.wafitz.pixelspacebase.items.plasmids.ExperiencePlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.GravLiftPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
+import com.wafitz.pixelspacebase.items.plasmids.FireGrenade;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.CloakPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.ParalysisGrenade;
+import com.wafitz.pixelspacebase.items.plasmids.PolymerPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.SecurityPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.ToxicGrenade;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.mines.Mine;
@@ -49,8 +49,8 @@ import com.watabou.utils.Bundle;
 
 public class AlienPod extends Food {
 
-    public ExperimentalTech experimentalTechAttrib = null;
-    private ItemSprite.Glowing experimentalTechGlow = null;
+    public Plasmid plasmidAttrib = null;
+    private ItemSprite.Glowing plasmidGlow = null;
 
     {
         stackable = true;
@@ -66,11 +66,11 @@ public class AlienPod extends Food {
     @Override
     public boolean isSimilar(Item item) {
         if (item instanceof AlienPod) {
-            if (experimentalTechAttrib == null) {
-                if (((AlienPod) item).experimentalTechAttrib == null)
+            if (plasmidAttrib == null) {
+                if (((AlienPod) item).plasmidAttrib == null)
                     return true;
-            } else if (((AlienPod) item).experimentalTechAttrib != null) {
-                if (((AlienPod) item).experimentalTechAttrib.getClass() == experimentalTechAttrib.getClass())
+            } else if (((AlienPod) item).plasmidAttrib != null) {
+                if (((AlienPod) item).plasmidAttrib.getClass() == plasmidAttrib.getClass())
                     return true;
             }
         }
@@ -80,7 +80,7 @@ public class AlienPod extends Food {
     @Override
     public void execute(Hero hero, String action) {
 
-        if (action.equals(AC_USE) && experimentalTechAttrib == null) {
+        if (action.equals(AC_USE) && plasmidAttrib == null) {
 
             GLog.w(Messages.get(this, "raw"));
             return;
@@ -89,22 +89,22 @@ public class AlienPod extends Food {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_USE) && experimentalTechAttrib != null) {
+        if (action.equals(AC_USE) && plasmidAttrib != null) {
 
-            if (experimentalTechAttrib instanceof Cryongenics) {
+            if (plasmidAttrib instanceof CryoGrenade) {
                 GLog.i(Messages.get(this, "ice_msg"));
                 FrozenCarpaccio.effect(hero);
-            } else if (experimentalTechAttrib instanceof Firestarter) {
+            } else if (plasmidAttrib instanceof FireGrenade) {
                 GLog.i(Messages.get(this, "fire_msg"));
                 Buff.affect(hero, FlameOn.class).set(FlameOn.DURATION);
-            } else if (experimentalTechAttrib instanceof ToxicAgent) {
+            } else if (plasmidAttrib instanceof ToxicGrenade) {
                 GLog.i(Messages.get(this, "toxic_msg"));
                 Buff.affect(hero, Toxic.class).set(Toxic.DURATION);
-            } else if (experimentalTechAttrib instanceof ParalyzingAgent) {
+            } else if (plasmidAttrib instanceof ParalysisGrenade) {
                 GLog.i(Messages.get(this, "para_msg"));
                 Buff.affect(hero, Lockdown.class, Lockdown.DURATION);
             } else {
-                experimentalTechAttrib.apply(hero);
+                plasmidAttrib.apply(hero);
             }
 
         }
@@ -112,7 +112,7 @@ public class AlienPod extends Food {
 
     @Override
     public String desc() {
-        if (experimentalTechAttrib == null) return super.desc();
+        if (plasmidAttrib == null) return super.desc();
         else return Messages.get(this, "desc_made");
     }
 
@@ -124,7 +124,7 @@ public class AlienPod extends Food {
     public Item make(Mine.Device device) {
 
         try {
-            return convertExperimentalTech((ExperimentalTech) device.craftingClass.newInstance());
+            return convertPlasmid((Plasmid) device.craftingClass.newInstance());
         } catch (Exception e) {
             PixelSpacebase.reportException(e);
             return null;
@@ -132,63 +132,63 @@ public class AlienPod extends Food {
 
     }
 
-    private Item convertExperimentalTech(ExperimentalTech experimentalTech) {
+    private Item convertPlasmid(Plasmid plasmid) {
 
-        experimentalTechAttrib = experimentalTech;
-        experimentalTechAttrib.ownedByFruit = true;
+        plasmidAttrib = plasmid;
+        plasmidAttrib.ownedByFruit = true;
 
-        image = ItemSpriteSheet.XPORT;
-        experimentalTechAttrib.image = ItemSpriteSheet.XPORT;
+        image = ItemSpriteSheet.PLASMID_KIT;
+        plasmidAttrib.image = ItemSpriteSheet.PLASMID_KIT;
 
-        if (experimentalTechAttrib instanceof HealingTech) {
+        if (plasmidAttrib instanceof HealingPlasmid) {
             name = Messages.get(this, "suntech");
-            experimentalTechGlow = new ItemSprite.Glowing(0x2EE62E);
-        } else if (experimentalTechAttrib instanceof StrengthUpgrade) {
+            plasmidGlow = new ItemSprite.Glowing(0x2EE62E);
+        } else if (plasmidAttrib instanceof MyoFiberPlasmid) {
             name = Messages.get(this, "rottech");
-            experimentalTechGlow = new ItemSprite.Glowing(0xCC0022);
-        } else if (experimentalTechAttrib instanceof ParalyzingAgent) {
+            plasmidGlow = new ItemSprite.Glowing(0xCC0022);
+        } else if (plasmidAttrib instanceof ParalysisGrenade) {
             name = Messages.get(this, "earthtech");
-            experimentalTechGlow = new ItemSprite.Glowing(0x67583D);
-        } else if (experimentalTechAttrib instanceof InvisibilityEnhancement) {
+            plasmidGlow = new ItemSprite.Glowing(0x67583D);
+        } else if (plasmidAttrib instanceof CloakPlasmid) {
             name = Messages.get(this, "blindtech");
-            experimentalTechGlow = new ItemSprite.Glowing(0xE5D273);
-        } else if (experimentalTechAttrib instanceof Firestarter) {
+            plasmidGlow = new ItemSprite.Glowing(0xE5D273);
+        } else if (plasmidAttrib instanceof FireGrenade) {
             name = Messages.get(this, "firetech");
-            experimentalTechGlow = new ItemSprite.Glowing(0xFF7F00);
-        } else if (experimentalTechAttrib instanceof Cryongenics) {
+            plasmidGlow = new ItemSprite.Glowing(0xFF7F00);
+        } else if (plasmidAttrib instanceof CryoGrenade) {
             name = Messages.get(this, "icetech");
-            experimentalTechGlow = new ItemSprite.Glowing(0x66B3FF);
-        } else if (experimentalTechAttrib instanceof SecurityOverride) {
+            plasmidGlow = new ItemSprite.Glowing(0x66B3FF);
+        } else if (plasmidAttrib instanceof SecurityPlasmid) {
             name = Messages.get(this, "fadetech");
-            experimentalTechGlow = new ItemSprite.Glowing(0xB8E6CF);
-        } else if (experimentalTechAttrib instanceof ToxicAgent) {
+            plasmidGlow = new ItemSprite.Glowing(0xB8E6CF);
+        } else if (plasmidAttrib instanceof ToxicGrenade) {
             name = Messages.get(this, "sorrowtech");
-            experimentalTechGlow = new ItemSprite.Glowing(0xA15CE5);
-        } else if (experimentalTechAttrib instanceof ExperimentalRockets) {
+            plasmidGlow = new ItemSprite.Glowing(0xA15CE5);
+        } else if (plasmidAttrib instanceof GravLiftPlasmid) {
             name = Messages.get(this, "stormtech");
-            experimentalTechGlow = new ItemSprite.Glowing(0x1C3A57);
-        } else if (experimentalTechAttrib instanceof PolymerMembrane) {
+            plasmidGlow = new ItemSprite.Glowing(0x1C3A57);
+        } else if (plasmidAttrib instanceof PolymerPlasmid) {
             name = Messages.get(this, "dreamtech");
-            experimentalTechGlow = new ItemSprite.Glowing(0x8E2975);
-        } else if (experimentalTechAttrib instanceof ExperienceBooster) {
+            plasmidGlow = new ItemSprite.Glowing(0x8E2975);
+        } else if (plasmidAttrib instanceof ExperiencePlasmid) {
             name = Messages.get(this, "startech");
-            experimentalTechGlow = new ItemSprite.Glowing(0xA79400);
+            plasmidGlow = new ItemSprite.Glowing(0xA79400);
         }
 
         return this;
     }
 
-    private static final String EXPERIMENTAILTECHATTRIB = "experimentaltechattrib";
+    private static final String PLASMID_ATTRIB = "plasmidattrib";
 
     @Override
     public void cast(final Hero user, int dst) {
-        if (experimentalTechAttrib instanceof Firestarter ||
-                experimentalTechAttrib instanceof ToxicAgent ||
-                experimentalTechAttrib instanceof ParalyzingAgent ||
-                experimentalTechAttrib instanceof Cryongenics ||
-                experimentalTechAttrib instanceof ExperimentalRockets ||
-                experimentalTechAttrib instanceof PolymerMembrane) {
-            experimentalTechAttrib.cast(user, dst);
+        if (plasmidAttrib instanceof FireGrenade ||
+                plasmidAttrib instanceof ToxicGrenade ||
+                plasmidAttrib instanceof ParalysisGrenade ||
+                plasmidAttrib instanceof CryoGrenade ||
+                plasmidAttrib instanceof GravLiftPlasmid ||
+                plasmidAttrib instanceof PolymerPlasmid) {
+            plasmidAttrib.cast(user, dst);
             detach(user.belongings.backpack);
         } else {
             super.cast(user, dst);
@@ -199,20 +199,20 @@ public class AlienPod extends Food {
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
-        bundle.put(EXPERIMENTAILTECHATTRIB, experimentalTechAttrib);
+        bundle.put(PLASMID_ATTRIB, plasmidAttrib);
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        if (bundle.contains(EXPERIMENTAILTECHATTRIB)) {
-            convertExperimentalTech((ExperimentalTech) bundle.get(EXPERIMENTAILTECHATTRIB));
+        if (bundle.contains(PLASMID_ATTRIB)) {
+            convertPlasmid((Plasmid) bundle.get(PLASMID_ATTRIB));
         }
     }
 
     @Override
     public ItemSprite.Glowing glowing() {
-        return experimentalTechGlow;
+        return plasmidGlow;
     }
 
 }

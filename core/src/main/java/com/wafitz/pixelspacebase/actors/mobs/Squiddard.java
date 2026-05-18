@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Domination;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.effects.Pushing;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -54,7 +54,7 @@ class Squiddard extends Mob {
         flying = true;
         properties.add(Property.MACHINE);
 
-        loot = new HealingTech();
+        loot = new HealingPlasmid();
         lootChance = 0.1667f; //by default, see die()
     }
 

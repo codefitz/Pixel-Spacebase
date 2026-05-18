@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Weakness;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
@@ -52,7 +52,7 @@ public class SignalLeech extends Mob implements Callback {
         EXP = 11;
         maxLvl = 21;
 
-        loot = Generator.Category.EXPERIMENTALTECH;
+        loot = Generator.Category.PLASMID;
         lootChance = 0.83f;
 
         properties.add(Property.UNDEAD);
@@ -131,7 +131,7 @@ public class SignalLeech extends Mob implements Callback {
     public Item createLoot() {
         Item loot = super.createLoot();
 
-        if (loot instanceof HealingTech) {
+        if (loot instanceof HealingPlasmid) {
 
             //count/10 chance of not dropping potion
             if (Random.Int(10) - SpacebaseRun.limitedDrops.warlockHP.count < 0) {

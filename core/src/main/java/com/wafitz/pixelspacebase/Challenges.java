@@ -28,7 +28,7 @@ public class Challenges {
     public static final int NO_HERBALISM = 8;
     public static final int SWARM_INTELLIGENCE = 16;
     public static final int DARKNESS = 32;
-    public static final int NO_SCRIPTS = 64;
+    public static final int NO_UPGRADES = 64;
 
     public static final int MAX_VALUE = 127;
 
@@ -39,11 +39,11 @@ public class Challenges {
             "no_herbalism",
             "swarm_intelligence",
             "darkness",
-            "no_scripts"
+            "no_upgrades"
     };
 
     public static final int[] MASKS = {
-            NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCRIPTS
+            NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_UPGRADES
     };
 
 }

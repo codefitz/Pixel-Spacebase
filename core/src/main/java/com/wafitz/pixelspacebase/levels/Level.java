@@ -43,9 +43,9 @@ import com.wafitz.pixelspacebase.effects.particles.FlowParticle;
 import com.wafitz.pixelspacebase.effects.particles.WindParticle;
 import com.wafitz.pixelspacebase.items.MedigelDroplet;
 import com.wafitz.pixelspacebase.items.EnhancementChip;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.TitanPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -55,14 +55,14 @@ import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.equippablemodules.HoloPad;
 import com.wafitz.pixelspacebase.items.equippablemodules.TechToolkit;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
-import com.wafitz.pixelspacebase.items.containers.DeviceCase;
-import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
+import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
+import com.wafitz.pixelspacebase.items.containers.UtilityKit;
 import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
-import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
-import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
+import com.wafitz.pixelspacebase.items.upgrades.EnhancementUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
+import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.Door;
 import com.wafitz.pixelspacebase.levels.features.FloorBreaker;
@@ -206,17 +206,17 @@ public abstract class Level implements Bundlable {
 
             if (SpacebaseRun.posNeeded()) {
                 if (Random.Float() > Math.pow(0.925, bonus))
-                    addItemToSpawn(new PowerUpgrade());
+                    addItemToSpawn(new TitanPlasmid());
                 else
-                    addItemToSpawn(new StrengthUpgrade());
+                    addItemToSpawn(new MyoFiberPlasmid());
                 SpacebaseRun.limitedDrops.strengthTech.count++;
             }
             if (SpacebaseRun.souNeeded()) {
                 if (Random.Float() > Math.pow(0.925, bonus))
-                    addItemToSpawn(new EnhancementScript());
+                    addItemToSpawn(new EnhancementUpgrade());
                 else
-                    addItemToSpawn(new UpgradeScript());
-                SpacebaseRun.limitedDrops.upgradeScripts.count++;
+                    addItemToSpawn(new UpgradePatch());
+                SpacebaseRun.limitedDrops.upgradeDrops.count++;
             }
             if (SpacebaseRun.asNeeded()) {
                 if (Random.Float() > Math.pow(0.925, bonus))
@@ -775,9 +775,9 @@ public abstract class Level implements Bundlable {
         //This messy if statement deals will items which should not drop in challenges primarily.
         if ((SpacebaseRun.isChallenged(Challenges.NO_FOOD) && (item instanceof Food || item instanceof AlienEgg.Device)) ||
                 (SpacebaseRun.isChallenged(Challenges.NO_ARMOR) && item instanceof Armor) ||
-                (SpacebaseRun.isChallenged(Challenges.NO_HEALING) && item instanceof HealingTech) ||
-                (SpacebaseRun.isChallenged(Challenges.NO_HERBALISM) && (item instanceof Mine.Device || item instanceof MedigelDroplet || item instanceof DeviceCase)) ||
-                (SpacebaseRun.isChallenged(Challenges.NO_SCRIPTS) && ((item instanceof Script && !(item instanceof UpgradeScript || item instanceof EnhancementScript)) || item instanceof ScriptLibrary)) ||
+                (SpacebaseRun.isChallenged(Challenges.NO_HEALING) && item instanceof HealingPlasmid) ||
+                (SpacebaseRun.isChallenged(Challenges.NO_HERBALISM) && (item instanceof Mine.Device || item instanceof MedigelDroplet || item instanceof OrdnanceKit)) ||
+                (SpacebaseRun.isChallenged(Challenges.NO_UPGRADES) && ((item instanceof Upgrade && !(item instanceof UpgradePatch || item instanceof EnhancementUpgrade)) || item instanceof UtilityKit)) ||
                 item == null) {
 
             //create a dummy heap, give it a dummy sprite, don't add it to the game, and return it.
@@ -792,7 +792,7 @@ public abstract class Level implements Bundlable {
         if ((map[cell] == Terrain.CRAFTING) && (
                 !(item instanceof Mine.Device || item instanceof AlienPod) ||
                         item instanceof AlienEgg.Device ||
-                        (item instanceof AlienPod && (((AlienPod) item).experimentalTechAttrib != null || heaps.get(cell) != null)) ||
+                        (item instanceof AlienPod && (((AlienPod) item).plasmidAttrib != null || heaps.get(cell) != null)) ||
                         SpacebaseRun.hero.buff(TechToolkit.crafting.class) != null && SpacebaseRun.hero.buff(TechToolkit.crafting.class).isMalfunctioning())) {
             int n;
             do {

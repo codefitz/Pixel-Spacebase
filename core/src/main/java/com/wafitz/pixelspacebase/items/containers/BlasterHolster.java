@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class BlasterHolster extends Container {
 
     {
-        image = ItemSpriteSheet.HOLSTER;
+        image = ItemSpriteSheet.BLASTER_HOLSTER;
 
         size = 12;
     }

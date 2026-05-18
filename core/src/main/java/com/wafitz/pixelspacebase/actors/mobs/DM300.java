@@ -37,7 +37,7 @@ import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.equippablemodules.PortableMaker;
 import com.wafitz.pixelspacebase.items.equippablemodules.StrongForcefield;
 import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
-import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
+import com.wafitz.pixelspacebase.items.upgrades.PsionicBlastUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -175,7 +175,7 @@ public class DM300 extends Mob {
 
     static {
         RESISTANCES.add(Grim.class);
-        RESISTANCES.add(PsionicBlastScript.class);
+        RESISTANCES.add(PsionicBlastUpgrade.class);
     }
 
     @Override

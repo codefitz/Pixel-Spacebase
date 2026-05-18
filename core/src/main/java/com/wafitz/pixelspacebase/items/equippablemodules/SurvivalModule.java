@@ -33,7 +33,7 @@ import com.wafitz.pixelspacebase.effects.EffectSprite;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.items.food.Food;
-import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
+import com.wafitz.pixelspacebase.items.upgrades.RechargeUpgrade;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -102,7 +102,7 @@ public class SurvivalModule extends EquippableModule {
                     case DM3000:
                         //1 charge
                         Buff.affect(hero, Recharging.class, 4f);
-                        RechargingScript.charge(hero);
+                        RechargeUpgrade.charge(hero);
                         break;
                     case SHAPESHIFTER:
                     case CAPTAIN:
@@ -216,7 +216,7 @@ public class SurvivalModule extends EquippableModule {
         @Override
         public void onSelect(Item item) {
             if (item != null && item instanceof Food) {
-                if (item instanceof AlienPod && ((AlienPod) item).experimentalTechAttrib == null) {
+                if (item instanceof AlienPod && ((AlienPod) item).plasmidAttrib == null) {
                     GLog.w(Messages.get(SurvivalModule.class, "reject"));
                 } else {
                     Hero hero = SpacebaseRun.hero;

@@ -37,7 +37,7 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.equippablemodules.PortableMaker;
 import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
-import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
+import com.wafitz.pixelspacebase.items.upgrades.PsionicBlastUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -306,7 +306,7 @@ public class FeralShapeshifter extends Mob {
     static {
         RESISTANCES.add(ToxicGas.class);
         RESISTANCES.add(Grim.class);
-        RESISTANCES.add(PsionicBlastScript.class);
+        RESISTANCES.add(PsionicBlastUpgrade.class);
     }
 
     @Override

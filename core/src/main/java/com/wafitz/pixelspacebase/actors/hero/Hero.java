@@ -45,7 +45,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Shielding;
 import com.wafitz.pixelspacebase.actors.buffs.Shapeshifted;
 import com.wafitz.pixelspacebase.actors.buffs.Targeted;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
-import com.wafitz.pixelspacebase.actors.buffs.Upgrade;
+import com.wafitz.pixelspacebase.actors.buffs.CombatFocus;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.NPC;
@@ -56,9 +56,9 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.EscapePodOverride;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.MedigelDroplet;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
+import com.wafitz.pixelspacebase.items.plasmids.TitanPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
@@ -89,10 +89,10 @@ import com.wafitz.pixelspacebase.items.modules.ForceModule;
 import com.wafitz.pixelspacebase.items.modules.PowerModule;
 import com.wafitz.pixelspacebase.items.modules.SpeedModule;
 import com.wafitz.pixelspacebase.items.modules.SteelModule;
-import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
-import com.wafitz.pixelspacebase.items.scripts.MappingScript;
-import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
+import com.wafitz.pixelspacebase.items.upgrades.EnhancementUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
+import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
@@ -132,7 +132,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-import static com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech.heal;
+import static com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid.heal;
 
 public class Hero extends Char {
 
@@ -767,8 +767,8 @@ public class Hero extends Char {
                     } else {
 
                         boolean important =
-                                ((item instanceof UpgradeScript || item instanceof EnhancementScript) && ((Script) item).isKnown()) ||
-                                        ((item instanceof StrengthUpgrade || item instanceof PowerUpgrade) && ((ExperimentalTech) item).isKnown());
+                                ((item instanceof UpgradePatch || item instanceof EnhancementUpgrade) && ((Upgrade) item).isKnown()) ||
+                                        ((item instanceof MyoFiberPlasmid || item instanceof TitanPlasmid) && ((Plasmid) item).isKnown());
                         if (important) {
                             GLog.p(Messages.get(this, "you_now_have", item.name()));
                         } else {
@@ -1123,7 +1123,7 @@ public class Hero extends Char {
                 continue;
             }
 
-            if (item instanceof AlienPod && ((AlienPod) item).experimentalTechAttrib == null) {
+            if (item instanceof AlienPod && ((AlienPod) item).plasmidAttrib == null) {
                 continue;
             }
 
@@ -1382,7 +1382,7 @@ public class Hero extends Char {
                 applyShapeshifterStrengthProgression(true);
 
             } else {
-                Buff.prolong(this, Upgrade.class, 30f);
+                Buff.prolong(this, CombatFocus.class, 30f);
                 this.exp = 0;
 
                 GLog.p(Messages.get(this, "level_cap"));
@@ -1846,7 +1846,7 @@ public class Hero extends Char {
 
                         SpacebaseRun.level.discover(p);
 
-                        MappingScript.discover(p);
+                        MappingUpgrade.discover(p);
 
                         smthFound = true;
                         //informer.onSelect(null);

@@ -23,12 +23,12 @@ package com.wafitz.pixelspacebase.actors.hero;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.SpacebaseRun;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityOverride;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.SecurityPlasmid;
 import com.wafitz.pixelspacebase.items.equippablemodules.StealthModule;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
-import com.wafitz.pixelspacebase.items.scripts.MappingScript;
-import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
+import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dagger;
 import com.wafitz.pixelspacebase.items.weapon.melee.Knuckles;
@@ -122,7 +122,7 @@ public enum HeroClass {
             SpacebaseRun.quickslot.setSlot(1, darts);
         }*/
 
-        new HealingTech().setKnown();
+        new HealingPlasmid().setKnown();
     }
 
     private static void initDM3000(Hero hero) {
@@ -140,7 +140,7 @@ public enum HeroClass {
 
         SpacebaseRun.quickslot.setSlot(0, launcher);
 
-        new UpgradeScript().setKnown();
+        new UpgradePatch().setKnown();
     }
 
     private static void initShapeshifter(Hero hero) {
@@ -156,7 +156,7 @@ public enum HeroClass {
         SpacebaseRun.quickslot.setSlot(0, cloak);
         SpacebaseRun.quickslot.setSlot(1, darts);
 
-        new MappingScript().setKnown();
+        new MappingUpgrade().setKnown();
     }
 
     private static void initCaptain(Hero hero) {
@@ -167,7 +167,7 @@ public enum HeroClass {
 
         SpacebaseRun.quickslot.setSlot(0, hunterDisc);
 
-        new SecurityOverride().setKnown();
+        new SecurityPlasmid().setKnown();
     }
 
     public String title() {

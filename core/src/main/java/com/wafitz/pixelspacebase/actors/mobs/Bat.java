@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.actors.mobs;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Vampiric;
 import com.wafitz.pixelspacebase.sprites.BatSprite;
@@ -46,7 +46,7 @@ public class Bat extends Mob {
         flying = true;
         properties.add(Property.MACHINE);
 
-        loot = new HealingTech();
+        loot = new HealingPlasmid();
         lootChance = 0.1667f; //by default, see die()
     }
 

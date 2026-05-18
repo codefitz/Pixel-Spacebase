@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.EarthParticle;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ParalyzingAgent;
+import com.wafitz.pixelspacebase.items.plasmids.ParalysisGrenade;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -58,7 +58,7 @@ public class WeakForcefield extends Mine {
             image = ItemSpriteSheet.FORCEFIELD_TECH;
 
             mineClass = WeakForcefield.class;
-            craftingClass = ParalyzingAgent.class;
+            craftingClass = ParalysisGrenade.class;
 
             bones = true;
         }

@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.items.equippablemodules;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -58,20 +58,20 @@ public class TechToolkit extends EquippableModule {
     private int devicesToTech = 0;
 
     private String inventoryTitle = "Select plasmid";
-    protected WndContainer.Mode mode = WndContainer.Mode.EXPERIMENTALTECH;
+    protected WndContainer.Mode mode = WndContainer.Mode.PLASMID;
 
     public TechToolkit() {
         super();
 
-        Generator.Category cat = Generator.Category.EXPERIMENTALTECH;
+        Generator.Category cat = Generator.Category.PLASMID;
         for (int i = 1; i <= 3; i++) {
-            String experimentaltech;
+            String plasmid;
             do {
-                experimentaltech = convertName(cat.classes[Random.chances(cat.probs)].getSimpleName());
+                plasmid = convertName(cat.classes[Random.chances(cat.probs)].getSimpleName());
                 //forcing the player to use experience plasmids would be completely unfair.
             }
-            while (combination.contains(experimentaltech) || experimentaltech.equals("Experience"));
-            combination.add(experimentaltech);
+            while (combination.contains(plasmid) || plasmid.equals("Experience"));
+            combination.add(plasmid);
         }
     }
 
@@ -100,9 +100,9 @@ public class TechToolkit extends EquippableModule {
         int numWrongPlace = 0;
         int numRight = 0;
 
-        for (String experimentaltech : curGuess) {
-            if (combination.contains(experimentaltech)) {
-                if (curGuess.indexOf(experimentaltech) == combination.indexOf(experimentaltech)) {
+        for (String plasmid : curGuess) {
+            if (combination.contains(plasmid)) {
+                if (curGuess.indexOf(plasmid) == combination.indexOf(plasmid)) {
                     numRight++;
                 } else {
                     numWrongPlace++;
@@ -258,7 +258,7 @@ public class TechToolkit extends EquippableModule {
     protected WndContainer.Listener itemSelector = new WndContainer.Listener() {
         @Override
         public void onSelect(Item item) {
-            if (item != null && item instanceof ExperimentalTech && item.isIdentified()) {
+            if (item != null && item instanceof Plasmid && item.isIdentified()) {
                 if (!curGuess.contains(convertName(item.getClass().getSimpleName()))) {
 
                     Hero hero = SpacebaseRun.hero;

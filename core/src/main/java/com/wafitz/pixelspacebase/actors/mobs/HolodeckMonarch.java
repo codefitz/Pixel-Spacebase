@@ -37,8 +37,8 @@ import com.wafitz.pixelspacebase.items.ArmorKit;
 import com.wafitz.pixelspacebase.items.equippablemodules.PortableMaker;
 import com.wafitz.pixelspacebase.items.blasters.Disintegrator;
 import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
-import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
-import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
+import com.wafitz.pixelspacebase.items.upgrades.PsionicBlastUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.levels.HabitationCommandBossLevel;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -208,7 +208,7 @@ public class HolodeckMonarch extends Mob {
                         undead.pos = j;
                         GameScene.add(undead);
 
-                        TeleportationScript.appear(undead, j);
+                        PhaseShiftUpgrade.appear(undead, j);
                         new Flare(3, 32).color(0x000000, false).show(undead.sprite, 2f);
 
                         PathFinder.distance[j] = Integer.MAX_VALUE;
@@ -235,7 +235,7 @@ public class HolodeckMonarch extends Mob {
     static {
         RESISTANCES.add(ToxicGas.class);
         RESISTANCES.add(Grim.class);
-        RESISTANCES.add(PsionicBlastScript.class);
+        RESISTANCES.add(PsionicBlastUpgrade.class);
         RESISTANCES.add(Disintegrator.class);
     }
 

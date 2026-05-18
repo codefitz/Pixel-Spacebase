@@ -37,7 +37,7 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ShaftParticle;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
+import com.wafitz.pixelspacebase.items.upgrades.PsionicBlastUpgrade;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Languages;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -431,7 +431,7 @@ public class HoloPad extends EquippableModule {
             IMMUNITIES.add(ToxicGas.class);
             IMMUNITIES.add(VenomGas.class);
             IMMUNITIES.add(Burning.class);
-            IMMUNITIES.add(PsionicBlastScript.class);
+            IMMUNITIES.add(PsionicBlastUpgrade.class);
         }
 
         @Override

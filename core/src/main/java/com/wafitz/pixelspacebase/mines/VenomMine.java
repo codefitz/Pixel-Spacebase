@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.PoisonParticle;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ToxicAgent;
+import com.wafitz.pixelspacebase.items.plasmids.ToxicGrenade;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
 public class VenomMine extends Mine {
@@ -54,7 +54,7 @@ public class VenomMine extends Mine {
             image = ItemSpriteSheet.SNAKE_HEAD;
 
             mineClass = VenomMine.class;
-            craftingClass = ToxicAgent.class;
+            craftingClass = ToxicGrenade.class;
         }
     }
 }

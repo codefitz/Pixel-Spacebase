@@ -86,8 +86,8 @@ public class PitPainter extends Painter {
         }
 
         return Generator.random(Random.oneOf(
-                Generator.Category.EXPERIMENTALTECH,
-                Generator.Category.SCRIPT,
+                Generator.Category.PLASMID,
+                Generator.Category.UPGRADE,
                 Generator.Category.FOOD,
                 Generator.Category.PARTS
         ));

@@ -39,7 +39,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.effects.Pushing;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
-import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
+import com.wafitz.pixelspacebase.items.upgrades.PsionicBlastUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -193,7 +193,7 @@ public class ContainmentMass extends Mob {
         IMMUNITIES.add(Sleep.class);
         IMMUNITIES.add(Burning.class);
         IMMUNITIES.add(ToxicGas.class);
-        IMMUNITIES.add(PsionicBlastScript.class);
+        IMMUNITIES.add(PsionicBlastUpgrade.class);
         IMMUNITIES.add(Vertigo.class);
     }
 
@@ -274,7 +274,7 @@ public class ContainmentMass extends Mob {
         static {
             RESISTANCES.add(ToxicGas.class);
             RESISTANCES.add(Grim.class);
-            RESISTANCES.add(PsionicBlastScript.class);
+            RESISTANCES.add(PsionicBlastUpgrade.class);
         }
 
         @Override
@@ -401,7 +401,7 @@ public class ContainmentMass extends Mob {
             IMMUNITIES.add(Sleep.class);
             IMMUNITIES.add(Terror.class);
             IMMUNITIES.add(Burning.class);
-            IMMUNITIES.add(PsionicBlastScript.class);
+            IMMUNITIES.add(PsionicBlastUpgrade.class);
             IMMUNITIES.add(Vertigo.class);
         }
 

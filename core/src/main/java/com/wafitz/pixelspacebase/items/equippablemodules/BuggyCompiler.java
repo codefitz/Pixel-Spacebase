@@ -28,10 +28,10 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.scripts.FixScript;
-import com.wafitz.pixelspacebase.items.scripts.IdentifyScript;
-import com.wafitz.pixelspacebase.items.scripts.MappingScript;
-import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.upgrades.RepairUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.DiagnosticScanUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -61,19 +61,19 @@ public class BuggyCompiler extends EquippableModule {
     private static final String AC_RUN = "RUN";
     private static final String AC_ADD = "ADD";
 
-    private final ArrayList<Class> scripts = new ArrayList<>();
+    private final ArrayList<Class> upgrades = new ArrayList<>();
 
-    protected WndContainer.Mode mode = WndContainer.Mode.SCRIPT;
+    protected WndContainer.Mode mode = WndContainer.Mode.UPGRADE;
 
     public BuggyCompiler() {
         super();
 
-        Class<?>[] scriptClasses = Generator.Category.SCRIPT.classes;
-        float[] probs = Generator.Category.SCRIPT.probs.clone(); //array of primitives, clone gives deep copy.
+        Class<?>[] upgradeClasses = Generator.Category.UPGRADE.classes;
+        float[] probs = Generator.Category.UPGRADE.probs.clone(); //array of primitives, clone gives deep copy.
         int i = Random.chances(probs);
 
         while (i != -1) {
-            scripts.add(scriptClasses[i]);
+            upgrades.add(upgradeClasses[i]);
             probs[i] = 0;
 
             i = Random.chances(probs);
@@ -104,17 +104,17 @@ public class BuggyCompiler extends EquippableModule {
             else {
                 charge--;
 
-                Script script;
+                Upgrade upgrade;
                 do {
-                    script = (Script) Generator.random(Generator.Category.SCRIPT);
-                } while (script == null ||
-                        //gotta reduce the rate on these scripts or that'll be all the item does.
-                        ((script instanceof IdentifyScript ||
-                                script instanceof FixScript ||
-                                script instanceof MappingScript) && Random.Int(2) == 0));
+                    upgrade = (Upgrade) Generator.random(Generator.Category.UPGRADE);
+                } while (upgrade == null ||
+                        //gotta reduce the rate on these upgrades or that'll be all the item does.
+                        ((upgrade instanceof DiagnosticScanUpgrade ||
+                                upgrade instanceof RepairUpgrade ||
+                                upgrade instanceof MappingUpgrade) && Random.Int(2) == 0));
 
-                script.ownedByBook = true;
-                script.execute(hero, AC_RUN);
+                upgrade.ownedByBook = true;
+                upgrade.execute(hero, AC_RUN);
             }
 
         } else if (action.equals(AC_ADD)) {
@@ -132,8 +132,8 @@ public class BuggyCompiler extends EquippableModule {
         chargeCap = (((level() + 1) / 2) + 3);
 
         //for artifact transmutation.
-        while (scripts.size() > (levelCap - 1 - level()))
-            scripts.remove(0);
+        while (upgrades.size() > (levelCap - 1 - level()))
+            upgrades.remove(0);
 
         return super.upgrade();
     }
@@ -147,31 +147,31 @@ public class BuggyCompiler extends EquippableModule {
         }
 
         if (level() < levelCap)
-            if (scripts.size() > 0) {
+            if (upgrades.size() > 0) {
                 desc += "\n\n" + Messages.get(this, "desc_index");
-                desc += "\n" + Messages.get(scripts.get(0), "name");
-                if (scripts.size() > 1) desc += "\n" + Messages.get(scripts.get(1), "name");
+                desc += "\n" + Messages.get(upgrades.get(0), "name");
+                if (upgrades.size() > 1) desc += "\n" + Messages.get(upgrades.get(1), "name");
             }
 
         return desc;
     }
 
-    private static final String SCRIPTS = "scripts";
+    private static final String UPGRADES = "upgrades";
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
-        bundle.put(SCRIPTS, scripts.toArray(new Class[scripts.size()]));
+        bundle.put(UPGRADES, upgrades.toArray(new Class[upgrades.size()]));
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        scripts.clear();
-        Collections.addAll(scripts, bundle.getClassArray(SCRIPTS));
-        if (scripts.contains(null)) {
+        upgrades.clear();
+        Collections.addAll(upgrades, bundle.getClassArray(UPGRADES));
+        if (upgrades.contains(null)) {
             //compatability with pre-0.3.4, just give them a maxed book.
-            scripts.clear();
+            upgrades.clear();
             level(levelCap);
             chargeCap = 8;
         }
@@ -205,27 +205,27 @@ public class BuggyCompiler extends EquippableModule {
     protected WndContainer.Listener itemSelector = new WndContainer.Listener() {
         @Override
         public void onSelect(Item item) {
-            if (item != null && item instanceof Script && item.isIdentified()) {
+            if (item != null && item instanceof Upgrade && item.isIdentified()) {
                 Hero hero = SpacebaseRun.hero;
-                for (int i = 0; (i <= 1 && i < scripts.size()); i++) {
-                    if (scripts.get(i).equals(item.getClass())) {
+                for (int i = 0; (i <= 1 && i < upgrades.size()); i++) {
+                    if (upgrades.get(i).equals(item.getClass())) {
                         hero.sprite.operate(hero.pos);
                         hero.busy();
                         hero.spend(2f);
                         Sample.INSTANCE.play(Assets.SND_BURNING);
                         hero.sprite.emitter().burst(ElmoParticle.FACTORY, 12);
 
-                        scripts.remove(i);
+                        upgrades.remove(i);
                         item.detach(hero.belongings.backpack);
 
                         upgrade();
-                        GLog.i(Messages.get(BuggyCompiler.class, "merge_script"));
+                        GLog.i(Messages.get(BuggyCompiler.class, "merge_upgrade"));
                         return;
                     }
                 }
-                GLog.w(Messages.get(BuggyCompiler.class, "buggy_script"));
-            } else if (item instanceof Script && !item.isIdentified())
-                GLog.w(Messages.get(BuggyCompiler.class, "unknown_script"));
+                GLog.w(Messages.get(BuggyCompiler.class, "buggy_upgrade"));
+            } else if (item instanceof Upgrade && !item.isIdentified())
+                GLog.w(Messages.get(BuggyCompiler.class, "unknown_upgrade"));
         }
     };
 }

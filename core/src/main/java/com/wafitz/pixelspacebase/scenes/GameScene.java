@@ -40,14 +40,14 @@ import com.wafitz.pixelspacebase.effects.FloatingText;
 import com.wafitz.pixelspacebase.effects.Ripple;
 import com.wafitz.pixelspacebase.effects.EffectSprite;
 import com.wafitz.pixelspacebase.items.DroneController;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
-import com.wafitz.pixelspacebase.items.containers.DeviceCase;
-import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
-import com.wafitz.pixelspacebase.items.containers.XPort;
-import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
+import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
+import com.wafitz.pixelspacebase.items.containers.UtilityKit;
+import com.wafitz.pixelspacebase.items.containers.PlasmidKit;
+import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
 import com.wafitz.pixelspacebase.levels.SecurityBlockLevel;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
@@ -295,11 +295,11 @@ public class GameScene extends PixelScene {
 
         switch (InterlevelScene.mode) {
             case RESURRECT:
-                TeleportationScript.appear(SpacebaseRun.hero, SpacebaseRun.level.entrance);
+                PhaseShiftUpgrade.appear(SpacebaseRun.hero, SpacebaseRun.level.entrance);
                 new Flare(8, 32).color(0xFFFF66, true).show(hero, 2f);
                 break;
             case RETURN:
-                TeleportationScript.appear(SpacebaseRun.hero, SpacebaseRun.hero.pos);
+                PhaseShiftUpgrade.appear(SpacebaseRun.hero, SpacebaseRun.hero.pos);
                 break;
             case FALL:
                 Chasm.heroLand();
@@ -333,8 +333,8 @@ public class GameScene extends PixelScene {
         if (dropped != null) {
             for (Item item : dropped) {
                 int pos = SpacebaseRun.level.randomRespawnCell();
-                if (item instanceof ExperimentalTech) {
-                    ((ExperimentalTech) item).shatter(pos);
+                if (item instanceof Plasmid) {
+                    ((Plasmid) item).shatter(pos);
                 } else if (item instanceof Mine.Device) {
                     SpacebaseRun.level.mine((Mine.Device) item, pos);
                 } else if (item instanceof DroneController) {
@@ -876,11 +876,11 @@ public class GameScene extends PixelScene {
 
         WndContainer wnd =
                 mode == Mode.DEVICE ?
-                        WndContainer.getContainer(DeviceCase.class, listener, mode, title) :
-                        mode == Mode.SCRIPT ?
-                                WndContainer.getContainer(ScriptLibrary.class, listener, mode, title) :
-                                mode == Mode.EXPERIMENTALTECH ?
-                                        WndContainer.getContainer(XPort.class, listener, mode, title) :
+                        WndContainer.getContainer(OrdnanceKit.class, listener, mode, title) :
+                        mode == Mode.UPGRADE ?
+                                WndContainer.getContainer(UtilityKit.class, listener, mode, title) :
+                                mode == Mode.PLASMID ?
+                                        WndContainer.getContainer(PlasmidKit.class, listener, mode, title) :
                                         mode == Mode.BLASTER ?
                                                 WndContainer.getContainer(BlasterHolster.class, listener, mode, title) :
                                                 WndContainer.lastContainer(listener, mode, title);

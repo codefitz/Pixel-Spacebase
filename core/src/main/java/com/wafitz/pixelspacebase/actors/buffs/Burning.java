@@ -33,9 +33,9 @@ import com.wafitz.pixelspacebase.items.armor.enhancements.Fire;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.items.modules.ElementsModule.Resistance;
-import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
-import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
+import com.wafitz.pixelspacebase.items.upgrades.EnhancementUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
+import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -91,8 +91,8 @@ public class Burning extends Buff implements Hero.Doom {
 
                     hero.damage(damage, this);
                     Item item = hero.belongings.randomUnequipped();
-                    if (item instanceof Script
-                            && !(item instanceof UpgradeScript || item instanceof EnhancementScript)) {
+                    if (item instanceof Upgrade
+                            && !(item instanceof UpgradePatch || item instanceof EnhancementUpgrade)) {
 
                         item = item.detach(hero.belongings.backpack);
                         GLog.w(Messages.get(this, "burnsup", Messages.capitalize(item.toString())));
@@ -122,8 +122,8 @@ public class Burning extends Buff implements Hero.Doom {
 
                 Item item = ((Thief) target).item;
 
-                if (item instanceof Script &&
-                        !(item instanceof UpgradeScript || item instanceof EnhancementScript)) {
+                if (item instanceof Upgrade &&
+                        !(item instanceof UpgradePatch || item instanceof EnhancementUpgrade)) {
                     target.sprite.emitter().burst(ElmoParticle.FACTORY, 6);
                     ((Thief) target).item = null;
                 }

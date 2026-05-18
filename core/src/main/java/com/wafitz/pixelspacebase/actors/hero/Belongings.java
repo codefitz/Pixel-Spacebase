@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
 import com.wafitz.pixelspacebase.items.keys.Key;
-import com.wafitz.pixelspacebase.items.scripts.FixScript;
+import com.wafitz.pixelspacebase.items.upgrades.RepairUpgrade;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.utils.Bundle;
@@ -176,7 +176,7 @@ public class Belongings implements Iterable<Item> {
     }
 
     public void fixEquipped() {
-        FixScript.fix(owner, armor, weapon, misc1, misc2);
+        RepairUpgrade.fix(owner, armor, weapon, misc1, misc2);
     }
 
     public Item randomUnequipped() {

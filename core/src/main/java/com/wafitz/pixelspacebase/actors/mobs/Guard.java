@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.effects.ForcePull;
 import com.wafitz.pixelspacebase.effects.Pushing;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.Armor;
@@ -152,12 +152,12 @@ class Guard extends Mob {
             } while (loot.tier >= 4 && Random.Int(2) == 0);
             loot.level(0);
             return loot;
-            //otherwise, we may drop a health potion. overall chance is 7/(8 * (7 + ExperimentalTech dropped))
-            //with 0 ExperimentalTech dropped that simplifies to 1/8
+            //otherwise, we may drop a health potion. overall chance is 7/(8 * (7 + Plasmid dropped))
+            //with 0 Plasmid dropped that simplifies to 1/8
         } else {
             if (Random.Int(7 + SpacebaseRun.limitedDrops.guardHP.count) < 7) {
                 SpacebaseRun.limitedDrops.guardHP.drop();
-                return new HealingTech();
+                return new HealingPlasmid();
             }
         }
 

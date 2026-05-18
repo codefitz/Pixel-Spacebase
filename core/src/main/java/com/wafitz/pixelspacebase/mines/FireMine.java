@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.Firestarter;
+import com.wafitz.pixelspacebase.items.plasmids.FireGrenade;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
@@ -49,7 +49,7 @@ public class FireMine extends Mine {
             image = ItemSpriteSheet.EXPLOSIVE_COMPOUND;
 
             mineClass = FireMine.class;
-            craftingClass = Firestarter.class;
+            craftingClass = FireGrenade.class;
         }
     }
 }

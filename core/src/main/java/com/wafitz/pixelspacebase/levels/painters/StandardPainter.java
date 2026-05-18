@@ -182,8 +182,8 @@ public class StandardPainter extends Painter {
         }
 
         level.drop(Generator.random(Random.oneOf(
-                Generator.Category.EXPERIMENTALTECH,
-                Generator.Category.SCRIPT)), (room.center().x + center.y * level.width()));
+                Generator.Category.PLASMID,
+                Generator.Category.UPGRADE)), (room.center().x + center.y * level.width()));
     }
 
     private static void paintBridge(Level level, Room room) {

@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.InvisibilityEnhancement;
+import com.wafitz.pixelspacebase.items.plasmids.CloakPlasmid;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
@@ -63,7 +63,7 @@ public class FlashMine extends Mine {
             image = ItemSpriteSheet.FLASH_MINE_DEVICE;
 
             mineClass = FlashMine.class;
-            craftingClass = InvisibilityEnhancement.class;
+            craftingClass = CloakPlasmid.class;
         }
     }
 }

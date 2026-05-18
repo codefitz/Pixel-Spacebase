@@ -32,7 +32,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.buffs.Weakness;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PolymerMembrane;
+import com.wafitz.pixelspacebase.items.plasmids.PolymerPlasmid;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -68,7 +68,7 @@ public class KnockoutMine extends Mine {
             image = ItemSpriteSheet.KNOCKOUT_DEVICE;
 
             mineClass = KnockoutMine.class;
-            craftingClass = PolymerMembrane.class;
+            craftingClass = PolymerPlasmid.class;
         }
     }
 }

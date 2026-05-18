@@ -33,7 +33,7 @@ import com.wafitz.pixelspacebase.items.blasters.Disintegrator;
 import com.wafitz.pixelspacebase.items.blasters.DominationBlaster;
 import com.wafitz.pixelspacebase.items.blasters.EMP;
 import com.wafitz.pixelspacebase.items.containers.Container;
-import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
+import com.wafitz.pixelspacebase.items.upgrades.RechargeUpgrade;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -130,7 +130,7 @@ public class DM3000Launcher extends MeleeWeapon {
     public int proc(Char attacker, Char defender, int damage) {
         if (blaster != null && SpacebaseRun.hero.subClass == HeroSubClass.BATTLEMAGE) {
             if (blaster.curCharges < blaster.maxCharges) blaster.partialCharge += 0.33f;
-            RechargingScript.charge((Hero) attacker);
+            RechargeUpgrade.charge((Hero) attacker);
             blaster.onHit(this, attacker, defender, damage);
         }
         return super.proc(attacker, defender, damage);

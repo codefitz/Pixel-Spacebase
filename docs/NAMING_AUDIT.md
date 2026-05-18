@@ -18,8 +18,8 @@ This audit separates player-facing cleanup from internal compatibility names. Th
 | `Spinner` | Facehugger | Mechanics have been converted to xeno infection latch. Sprite/class can be renamed later. |
 | `Bat` | Siphon Drone | Player-facing text is converted; repair blaster machine behavior now matches. |
 | `Squiddard` | Replicator Swarm | Player-facing naming exists, but class/sprite need later cleanup. |
-| `ExperimentalTech` | Gene Mods | Package name is awkward but mechanically broad. Keep as an internal compatibility name; add local comments instead of migration now. |
-| `Script` | Tech | Same as above; many generators, containers, and UI paths use this package. Keep as an internal compatibility name for now. |
+| `Plasmid` | Gene Mods | Package name is awkward but mechanically broad. Keep as an internal compatibility name; add local comments instead of migration now. |
+| `Upgrade` | Tech | Same as above; many generators, containers, and UI paths use this package. Keep as an internal compatibility name for now. |
 | `EMP` | Repair Blaster | Startup and player-facing text are repair-themed. Keep internal name; a wrapper would split save/message identities without enough benefit right now. |
 | `Torch` | Future permanent light/battery item | Current inherited item still exists and is on the plan for redesign. Mark as legacy until the new mechanic is built. |
 
@@ -39,8 +39,8 @@ These should be done one at a time with a build after each:
 
 - Rename `EMP` to a repair-blaster class only if a future blaster package cleanup includes save and message-key migration. Do not add a wrapper in the current codebase.
 - Rename mob classes such as `Spinner`, `Bat`, and `Squiddard` after checking bundle serialization and resource key lookup.
-- Rename package `items.ExperimentalTech` to `items.genemods`; the uppercase package name is nonstandard Java style but widely referenced. Current decision: leave as internal compatibility naming.
-- Rename package `items.scripts` to `items.tech`; broad but conceptually clean. Current decision: leave as internal compatibility naming.
+- Rename package `items.plasmids` to `items.genemods`; the uppercase package name is nonstandard Java style but widely referenced. Current decision: leave as internal compatibility naming.
+- Rename package `items.upgrades` to `items.tech`; broad but conceptually clean. Current decision: leave as internal compatibility naming.
 - Rename tileset asset constants from `PRISON/CAVES/CITY/HALLS` to current area names. This touches assets, level classes, and docs.
 
 ## Unused Or Legacy Mechanics To Mark Before Removing
@@ -53,4 +53,4 @@ These should be done one at a time with a build after each:
 
 ## Immediate Audit Result
 
-The biggest remaining naming debt is now the long-tail inherited systems: broad package names such as `ExperimentalTech` and `items.scripts`, legacy enemy classes such as `Spinner`, `Bat`, and `Squiddard`, and area classes/assets for `HabitationCommandLevel` and `DeepContainmentLevel`. The central run class, tilemap, seed helper, Security/Engineering level classes, major bosses, several enemies, the escape-pod override, medigel droplet, training manual, hologram emitter, master keycard, and equippable-module package have been renamed.
+The biggest remaining naming debt is now the long-tail inherited systems: broad package names such as `Plasmid` and `items.upgrades`, legacy enemy classes such as `Spinner`, `Bat`, and `Squiddard`, and area classes/assets for `HabitationCommandLevel` and `DeepContainmentLevel`. The central run class, tilemap, seed helper, Security/Engineering level classes, major bosses, several enemies, the escape-pod override, medigel droplet, training manual, hologram emitter, master keycard, and equippable-module package have been renamed.

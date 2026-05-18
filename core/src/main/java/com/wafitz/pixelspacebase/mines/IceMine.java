@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.mines;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.blobs.Fire;
 import com.wafitz.pixelspacebase.actors.blobs.Freezing;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.Cryongenics;
+import com.wafitz.pixelspacebase.items.plasmids.CryoGrenade;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.BArray;
@@ -54,7 +54,7 @@ public class IceMine extends Mine {
             image = ItemSpriteSheet.ICE;
 
             mineClass = IceMine.class;
-            craftingClass = Cryongenics.class;
+            craftingClass = CryoGrenade.class;
         }
     }
 }

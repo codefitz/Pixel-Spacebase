@@ -250,6 +250,18 @@ public class Item implements Bundlable {
         return collect(SpacebaseRun.hero.belongings.backpack);
     }
 
+    public boolean goesInOrdnanceKit() {
+        return false;
+    }
+
+    public boolean goesInUtilityKit() {
+        return false;
+    }
+
+    public boolean goesInPlasmidKit() {
+        return false;
+    }
+
     public final Item detach(Container container) {
 
         if (quantity <= 0) {

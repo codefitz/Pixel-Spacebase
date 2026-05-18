@@ -38,7 +38,7 @@ import com.wafitz.pixelspacebase.items.blasters.FreezeThrower;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
 import com.wafitz.pixelspacebase.items.blasters.VenomBlaster;
 import com.wafitz.pixelspacebase.items.blasters.WaveBlaster;
-import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
+import com.wafitz.pixelspacebase.items.upgrades.EnhancementUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Buggy;
 import com.wafitz.pixelspacebase.items.weapon.melee.Spanner;
 import com.wafitz.pixelspacebase.messages.Languages;
@@ -69,8 +69,8 @@ public class PixelSpacebase extends Game {
                 "com.wafitz.pixelspacebase.items.weapon.enhancements.Swing");
 
         com.watabou.utils.Bundle.addAlias(
-                EnhancementScript.class,
-                "com.wafitz.pixelspacebase.items.scripts.WeaponUpgradeScript");
+                EnhancementUpgrade.class,
+                "com.wafitz.pixelspacebase.items.upgrades.WeaponUpgradePatch");
 
         // 0.2.4d
         com.watabou.utils.Bundle.addAlias(

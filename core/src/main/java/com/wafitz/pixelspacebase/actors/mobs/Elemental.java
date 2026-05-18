@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Chill;
 import com.wafitz.pixelspacebase.actors.buffs.Frost;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.Firestarter;
+import com.wafitz.pixelspacebase.items.plasmids.FireGrenade;
 import com.wafitz.pixelspacebase.items.blasters.FlameThrower;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Blazing;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -48,7 +48,7 @@ class Elemental extends Mob {
 
         flying = true;
 
-        loot = new Firestarter();
+        loot = new FireGrenade();
         lootChance = 0.1f;
 
         properties.add(Property.DEMONIC);

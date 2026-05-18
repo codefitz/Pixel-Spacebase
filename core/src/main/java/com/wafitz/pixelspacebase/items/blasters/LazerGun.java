@@ -34,7 +34,7 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.RainbowParticle;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
-import com.wafitz.pixelspacebase.items.scripts.MappingScript;
+import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -113,7 +113,7 @@ public class LazerGun extends DamageBlaster {
                     SpacebaseRun.level.discover(cell);
 
                     GameScene.discoverTile(cell, terr);
-                    MappingScript.discover(cell);
+                    MappingUpgrade.discover(cell);
 
                     noticed = true;
                 }

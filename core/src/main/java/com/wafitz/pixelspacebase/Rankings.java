@@ -35,12 +35,12 @@ import com.wafitz.pixelspacebase.actors.mobs.HolodeckMonarch;
 import com.wafitz.pixelspacebase.actors.mobs.MaskedPrisoner;
 import com.wafitz.pixelspacebase.actors.mobs.ContainmentMass;
 import com.wafitz.pixelspacebase.items.EscapePodOverride;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.modules.Module;
-import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.messages.Languages;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -158,8 +158,8 @@ public enum Rankings {
 
         //save handler information
         Bundle handler = new Bundle();
-        Script.saveSelectively(handler, belongings.backpack.items);
-        ExperimentalTech.saveSelectively(handler, belongings.backpack.items);
+        Upgrade.saveSelectively(handler, belongings.backpack.items);
+        Plasmid.saveSelectively(handler, belongings.backpack.items);
         //include worn rings
         if (belongings.misc1 != null) belongings.backpack.items.add(belongings.misc1);
         if (belongings.misc2 != null) belongings.backpack.items.add(belongings.misc2);
@@ -180,8 +180,8 @@ public enum Rankings {
         QuickSlotButton.reset();
 
         Bundle handler = data.getBundle(HANDLERS);
-        Script.restore(handler);
-        ExperimentalTech.restore(handler);
+        Upgrade.restore(handler);
+        Plasmid.restore(handler);
         Module.restore(handler);
 
         Badges.loadLocal(data.getBundle(BADGES));

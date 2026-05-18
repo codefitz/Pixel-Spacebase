@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.actors.mobs.RupturedCrewSuit;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.Firestarter;
+import com.wafitz.pixelspacebase.items.plasmids.FireGrenade;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -44,7 +44,7 @@ public class MassGravePainter extends Painter {
 
         Room.Door entrance = room.entrance();
         entrance.set(Room.Door.Type.BARRICADE);
-        level.addItemToSpawn(new Firestarter());
+        level.addItemToSpawn(new FireGrenade());
 
         fill(level, room, Terrain.WALL);
         fill(level, room, 1, Terrain.EMPTY_SP);

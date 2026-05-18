@@ -21,9 +21,9 @@
 package com.wafitz.pixelspacebase.windows;
 
 import com.wafitz.pixelspacebase.PixelSpacebase;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
@@ -51,7 +51,7 @@ public class WndCatalogs extends WndTabbed {
 
     private ArrayList<ListItem> items = new ArrayList<>();
 
-    private static boolean showExperimentalTech = true;
+    private static boolean showPlasmid = true;
 
     public WndCatalogs() {
 
@@ -91,19 +91,19 @@ public class WndCatalogs extends WndTabbed {
         add(list);
         list.setRect(0, btnTitle.height() + 1, width, height - btnTitle.height() - 1);
 
-        boolean showExperimentalTech = WndCatalogs.showExperimentalTech;
+        boolean showPlasmid = WndCatalogs.showPlasmid;
         Tab[] tabs = {
-                new LabeledTab(Messages.get(this, "ExperimentalTech")) {
+                new LabeledTab(Messages.get(this, "plasmids")) {
                     protected void select(boolean value) {
                         super.select(value);
-                        WndCatalogs.showExperimentalTech = value;
+                        WndCatalogs.showPlasmid = value;
                         updateList();
                     }
                 },
-                new LabeledTab(Messages.get(this, "scripts")) {
+                new LabeledTab(Messages.get(this, "upgrades")) {
                     protected void select(boolean value) {
                         super.select(value);
-                        WndCatalogs.showExperimentalTech = !value;
+                        WndCatalogs.showPlasmid = !value;
                         updateList();
                     }
                 }
@@ -114,7 +114,7 @@ public class WndCatalogs extends WndTabbed {
 
         layoutTabs();
 
-        select(showExperimentalTech ? 0 : 1);
+        select(showPlasmid ? 0 : 1);
     }
 
     private void updateList() {
@@ -126,7 +126,7 @@ public class WndCatalogs extends WndTabbed {
         list.scriptTo(0, 0);
 
         float pos = 0;
-        for (Class<? extends Item> itemClass : showExperimentalTech ? ExperimentalTech.getKnown() : Script.getKnown()) {
+        for (Class<? extends Item> itemClass : showPlasmid ? Plasmid.getKnown() : Upgrade.getKnown()) {
             ListItem item = new ListItem(itemClass);
             item.setRect(0, pos, width, ITEM_HEIGHT);
             content.add(item);
@@ -135,7 +135,7 @@ public class WndCatalogs extends WndTabbed {
             pos += item.height();
         }
 
-        for (Class<? extends Item> itemClass : showExperimentalTech ? ExperimentalTech.getUnknown() : Script.getUnknown()) {
+        for (Class<? extends Item> itemClass : showPlasmid ? Plasmid.getUnknown() : Upgrade.getUnknown()) {
             ListItem item = new ListItem(itemClass);
             item.setRect(0, pos, width, ITEM_HEIGHT);
             content.add(item);

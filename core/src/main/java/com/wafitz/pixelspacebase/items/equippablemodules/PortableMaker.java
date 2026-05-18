@@ -31,7 +31,7 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.EnergyBeam;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
+import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.CellSelector;
@@ -156,7 +156,7 @@ public class PortableMaker extends EquippableModule {
         } else if (action == AC_RETURN) {
 
             if (returnDepth == SpacebaseRun.depth) {
-                TeleportationScript.appear(hero, returnPos);
+                PhaseShiftUpgrade.appear(hero, returnPos);
                 SpacebaseRun.level.press(returnPos, hero);
                 SpacebaseRun.observe();
                 GameScene.updateFog();
@@ -190,14 +190,14 @@ public class PortableMaker extends EquippableModule {
             updateQuickslot();
 
             if (Actor.findChar(target) == curUser) {
-                TeleportationScript.teleportHero(curUser);
+                PhaseShiftUpgrade.teleportHero(curUser);
                 curUser.spendAndNext(1f);
             } else {
                 final Ballistica bolt = new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT);
                 final Char ch = Actor.findChar(bolt.collisionPos);
 
                 if (ch == curUser) {
-                    TeleportationScript.teleportHero(curUser);
+                    PhaseShiftUpgrade.teleportHero(curUser);
                     curUser.spendAndNext(1f);
                 } else {
                     Sample.INSTANCE.play(Assets.SND_ZAP);
@@ -221,7 +221,7 @@ public class PortableMaker extends EquippableModule {
 
                                 if (pos == -1 || SpacebaseRun.bossLevel()) {
 
-                                    GLog.w(Messages.get(TeleportationScript.class, "no_tele"));
+                                    GLog.w(Messages.get(PhaseShiftUpgrade.class, "no_tele"));
 
                                 } else if (ch.properties().contains(Char.Property.IMMOVABLE)) {
 

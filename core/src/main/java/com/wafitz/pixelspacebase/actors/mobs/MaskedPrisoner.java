@@ -34,8 +34,8 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.TrainingManual;
 import com.wafitz.pixelspacebase.items.equippablemodules.PortableMaker;
-import com.wafitz.pixelspacebase.items.scripts.MappingScript;
-import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
+import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.PsionicBlastUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.SecurityBossLevel;
@@ -177,7 +177,7 @@ public class MaskedPrisoner extends Mob {
             if (SpacebaseRun.level.map[ventPos] == Terrain.INACTIVE_VENT) {
                 SpacebaseRun.level.setVent(new SpearVent().reveal(), ventPos);
                 Level.set(ventPos, Terrain.VENT);
-                MappingScript.discover(ventPos);
+                MappingUpgrade.discover(ventPos);
             }
         }
 
@@ -234,7 +234,7 @@ public class MaskedPrisoner extends Mob {
         RESISTANCES.add(ToxicGas.class);
         RESISTANCES.add(Poison.class);
         RESISTANCES.add(Grim.class);
-        RESISTANCES.add(PsionicBlastScript.class);
+        RESISTANCES.add(PsionicBlastUpgrade.class);
     }
 
     @Override

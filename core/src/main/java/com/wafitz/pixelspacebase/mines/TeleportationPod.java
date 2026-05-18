@@ -27,8 +27,8 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.SecurityOverride;
-import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
+import com.wafitz.pixelspacebase.items.plasmids.SecurityPlasmid;
+import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
 public class TeleportationPod extends Mine {
@@ -43,7 +43,7 @@ public class TeleportationPod extends Mine {
 
         if (ch instanceof Hero) {
 
-            TeleportationScript.teleportHero((Hero) ch);
+            PhaseShiftUpgrade.teleportHero((Hero) ch);
             ((Hero) ch).curAction = null;
 
         } else if (ch instanceof Mob && !ch.properties().contains(Char.Property.IMMOVABLE)) {
@@ -77,7 +77,7 @@ public class TeleportationPod extends Mine {
             image = ItemSpriteSheet.TELEPORT_TECH;
 
             mineClass = TeleportationPod.class;
-            craftingClass = SecurityOverride.class;
+            craftingClass = SecurityPlasmid.class;
         }
     }
 }

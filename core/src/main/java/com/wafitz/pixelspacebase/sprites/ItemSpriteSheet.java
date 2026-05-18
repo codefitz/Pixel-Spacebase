@@ -192,36 +192,36 @@ public class ItemSpriteSheet {
 
     //32 free slots
 
-    private static final int SCRIPTS = xy(1, 20);  //16 slots
-    public static final int KAUNAN_SCRIPT = SCRIPTS;
-    public static final int SOWILO_SCRIPT = SCRIPTS + 1;
-    public static final int LAGUZ_SCRIPT = SCRIPTS + 2;
-    public static final int YNGVI_SCRIPT = SCRIPTS + 3;
-    public static final int GYFU_SCRIPT = SCRIPTS + 4;
-    public static final int RAIDO_SCRIPT = SCRIPTS + 5;
-    public static final int ISAZ_SCRIPT = SCRIPTS + 6;
-    public static final int MANNAZ_SCRIPT = SCRIPTS + 7;
-    public static final int NAUDIZ_SCRIPT = SCRIPTS + 8;
-    public static final int BERKANAN_SCRIPT = SCRIPTS + 9;
-    public static final int ODAL_SCRIPT = SCRIPTS + 10;
-    public static final int TIWAZ_SCRIPT = SCRIPTS + 11;
+    private static final int UPGRADES = xy(1, 20);  //16 slots
+    public static final int KAUNAN_UPGRADE = UPGRADES;
+    public static final int SOWILO_UPGRADE = UPGRADES + 1;
+    public static final int LAGUZ_UPGRADE = UPGRADES + 2;
+    public static final int YNGVI_UPGRADE = UPGRADES + 3;
+    public static final int GYFU_UPGRADE = UPGRADES + 4;
+    public static final int RAIDO_UPGRADE = UPGRADES + 5;
+    public static final int ISAZ_UPGRADE = UPGRADES + 6;
+    public static final int MANNAZ_UPGRADE = UPGRADES + 7;
+    public static final int NAUDIZ_UPGRADE = UPGRADES + 8;
+    public static final int BERKANAN_UPGRADE = UPGRADES + 9;
+    public static final int ODAL_UPGRADE = UPGRADES + 10;
+    public static final int TIWAZ_UPGRADE = UPGRADES + 11;
 
-    private static final int EXPERIMENTALTECH = xy(1, 21);  //16 slots
-    public static final int CRIMSON_EXPERIMENTAL_TECH = EXPERIMENTALTECH;
-    public static final int AMBER_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 1;
-    public static final int GOLDEN_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 2;
-    public static final int JADE_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 3;
-    public static final int TURQUOISE_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 4;
-    public static final int AZURE_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 5;
-    public static final int INDIGO_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 6;
-    public static final int MAGENTA_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 7;
-    public static final int BISTRE_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 8;
-    public static final int CHARCOAL_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 9;
-    public static final int SILVER_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 10;
-    public static final int IVORY_EXPERIMENTAL_TECH = EXPERIMENTALTECH + 11;
-    public static final int FIRE_GRENADE_GENE_MOD = EXPERIMENTALTECH + 12;
-    public static final int TOXIC_GRENADE_GENE_MOD = EXPERIMENTALTECH + 13;
-    public static final int PARALYSIS_GRENADE_GENE_MOD = EXPERIMENTALTECH + 14;
+    private static final int PLASMID = xy(1, 21);  //16 slots
+    public static final int CRIMSON_PLASMID = PLASMID;
+    public static final int AMBER_PLASMID = PLASMID + 1;
+    public static final int GOLDEN_PLASMID = PLASMID + 2;
+    public static final int JADE_PLASMID = PLASMID + 3;
+    public static final int TURQUOISE_PLASMID = PLASMID + 4;
+    public static final int AZURE_PLASMID = PLASMID + 5;
+    public static final int INDIGO_PLASMID = PLASMID + 6;
+    public static final int MAGENTA_PLASMID = PLASMID + 7;
+    public static final int BISTRE_PLASMID = PLASMID + 8;
+    public static final int CHARCOAL_PLASMID = PLASMID + 9;
+    public static final int SILVER_PLASMID = PLASMID + 10;
+    public static final int IVORY_PLASMID = PLASMID + 11;
+    public static final int FIRE_GRENADE_GENE_MOD = PLASMID + 12;
+    public static final int TOXIC_GRENADE_GENE_MOD = PLASMID + 13;
+    public static final int PARALYSIS_GRENADE_GENE_MOD = PLASMID + 14;
 
     private static final int DEVICES = xy(1, 22);  //16 slots
     public static final int HUNTER_TRAPPER = DEVICES;
@@ -262,11 +262,10 @@ public class ItemSpriteSheet {
 
     private static final int BAGS = xy(1, 28);  //16 slots
     public static final int AIRTANK = BAGS;
-    public static final int CASE = BAGS + 1;
-    public static final int MODS = BAGS + 2;
-    public static final int LIBRARY = MODS;
-    public static final int XPORT = BAGS + 3;
-    public static final int HOLSTER = BAGS + 4;
+    public static final int ORDNANCE_KIT = BAGS + 1;
+    public static final int PLASMID_KIT = BAGS + 2;
+    public static final int UTILITY_KIT = BAGS + 3;
+    public static final int BLASTER_HOLSTER = BAGS + 4;
     public static final int SEALED_STORAGE = BAGS + 5;
 
     //64 free slots

@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.items.DroneController;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.Firestarter;
+import com.wafitz.pixelspacebase.items.plasmids.FireGrenade;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -54,7 +54,7 @@ public class StoragePainter extends Painter {
         }
 
         room.entrance().set(Room.Door.Type.BARRICADE);
-        level.addItemToSpawn(new Firestarter());
+        level.addItemToSpawn(new FireGrenade());
     }
 
     private static Item prize(Level level) {
@@ -66,8 +66,8 @@ public class StoragePainter extends Painter {
         }
 
         return Generator.random(Random.oneOf(
-                Generator.Category.EXPERIMENTALTECH,
-                Generator.Category.SCRIPT,
+                Generator.Category.PLASMID,
+                Generator.Category.UPGRADE,
                 Generator.Category.FOOD,
                 Generator.Category.PARTS
         ));

@@ -37,11 +37,11 @@ import com.wafitz.pixelspacebase.effects.Splash;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperienceBooster;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
+import com.wafitz.pixelspacebase.items.plasmids.ExperiencePlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.TitanPlasmid;
+import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
 import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
 import com.wafitz.pixelspacebase.items.equippablemodules.TechToolkit;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
@@ -50,9 +50,9 @@ import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.FrozenCarpaccio;
 import com.wafitz.pixelspacebase.items.food.MysteryMeat;
-import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
-import com.wafitz.pixelspacebase.items.scripts.Script;
-import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
+import com.wafitz.pixelspacebase.items.upgrades.EnhancementUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
+import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.mines.Mine;
 import com.wafitz.pixelspacebase.mines.Mine.Device;
@@ -345,8 +345,8 @@ public class Heap implements Bundlable {
         boolean evaporated = false;
 
         for (Item item : items.toArray(new Item[0])) {
-            if (item instanceof Script
-                    && !(item instanceof UpgradeScript || item instanceof EnhancementScript)) {
+            if (item instanceof Upgrade
+                    && !(item instanceof UpgradePatch || item instanceof EnhancementUpgrade)) {
                 items.remove(item);
                 burnt = true;
             } else if (item instanceof MedigelDroplet) {
@@ -399,9 +399,9 @@ public class Heap implements Bundlable {
 
             for (Item item : items.toArray(new Item[0])) {
 
-                if (item instanceof ExperimentalTech) {
+                if (item instanceof Plasmid) {
                     items.remove(item);
-                    ((ExperimentalTech) item).shatter(pos);
+                    ((Plasmid) item).shatter(pos);
 
                 } else if (item instanceof Bomb) {
                     items.remove(item);
@@ -442,10 +442,10 @@ public class Heap implements Bundlable {
             if (item instanceof MysteryMeat) {
                 replace(item, FrozenCarpaccio.make((MysteryMeat) item));
                 frozen = true;
-            } else if (item instanceof ExperimentalTech
-                    && !(item instanceof StrengthUpgrade || item instanceof PowerUpgrade)) {
+            } else if (item instanceof Plasmid
+                    && !(item instanceof MyoFiberPlasmid || item instanceof TitanPlasmid)) {
                 items.remove(item);
-                ((ExperimentalTech) item).shatter(pos);
+                ((Plasmid) item).shatter(pos);
                 frozen = true;
             } else if (item instanceof Bomb) {
                 ((Bomb) item).fuse = null;
@@ -505,7 +505,7 @@ public class Heap implements Bundlable {
             CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
             Sample.INSTANCE.play(Assets.SND_PUFF);
 
-            Item experimentaltech;
+            Item plasmid;
 
             if (Random.Int(count + bonus) == 0) {
 
@@ -513,10 +513,10 @@ public class Heap implements Bundlable {
 
                 destroy();
 
-                Statistics.experimentalTechMade++;
-                Badges.validateExperimentalTechMade();
+                Statistics.plasmidsMade++;
+                Badges.validatePlasmidMade();
 
-                experimentaltech = Generator.random(Generator.Category.EXPERIMENTALTECH);
+                plasmid = Generator.random(Generator.Category.PLASMID);
 
             } else {
 
@@ -525,14 +525,14 @@ public class Heap implements Bundlable {
 
                 destroy();
 
-                Statistics.experimentalTechMade++;
-                Badges.validateExperimentalTechMade();
+                Statistics.plasmidsMade++;
+                Badges.validatePlasmidMade();
 
                 if (itemClass == null) {
-                    experimentaltech = Generator.random(Generator.Category.EXPERIMENTALTECH);
+                    plasmid = Generator.random(Generator.Category.PLASMID);
                 } else {
                     try {
-                        experimentaltech = itemClass.newInstance();
+                        plasmid = itemClass.newInstance();
                     } catch (Exception e) {
                         PixelSpacebase.reportException(e);
                         return null;
@@ -540,18 +540,18 @@ public class Heap implements Bundlable {
                 }
             }
 
-            //not a buff per-se, meant to cancel out higher experimentaltech accuracy when ppl are farming for ExperimentalTech of exp.
+            //not a buff per-se, meant to cancel out higher plasmid accuracy when ppl are farming for Plasmid of exp.
             if (bonus > 0)
                 if (Random.Int(1000 / bonus) == 0)
-                    return new ExperienceBooster();
+                    return new ExperiencePlasmid();
 
-            while (experimentaltech instanceof HealingTech && Random.Int(10) < SpacebaseRun.limitedDrops.makingHP.count)
-                experimentaltech = Generator.random(Generator.Category.EXPERIMENTALTECH);
+            while (plasmid instanceof HealingPlasmid && Random.Int(10) < SpacebaseRun.limitedDrops.makingHP.count)
+                plasmid = Generator.random(Generator.Category.PLASMID);
 
-            if (experimentaltech instanceof HealingTech)
+            if (plasmid instanceof HealingPlasmid)
                 SpacebaseRun.limitedDrops.makingHP.count++;
 
-            return experimentaltech;
+            return plasmid;
 
         } else {
             return null;

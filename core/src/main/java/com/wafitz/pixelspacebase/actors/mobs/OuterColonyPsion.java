@@ -50,7 +50,7 @@ public class OuterColonyPsion extends Mob implements Callback {
         EXP = 6;
         maxLvl = 14;
 
-        loot = Generator.Category.SCRIPT;
+        loot = Generator.Category.UPGRADE;
         lootChance = 0.33f;
     }
 

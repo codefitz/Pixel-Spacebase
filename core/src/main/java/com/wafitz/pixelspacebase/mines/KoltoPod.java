@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ShaftParticle;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
+import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -58,7 +58,7 @@ public class KoltoPod extends Mine {
             image = ItemSpriteSheet.HEALING_DEVICE;
 
             mineClass = KoltoPod.class;
-            craftingClass = HealingTech.class;
+            craftingClass = HealingPlasmid.class;
 
             bones = true;
         }

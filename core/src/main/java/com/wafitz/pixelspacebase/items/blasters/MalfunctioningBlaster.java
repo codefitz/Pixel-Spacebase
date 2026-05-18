@@ -50,8 +50,8 @@ import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.equippablemodules.HoloPad;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
-import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
-import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
+import com.wafitz.pixelspacebase.items.upgrades.RechargeUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.levels.vents.LightningVent;
@@ -146,7 +146,7 @@ class MalfunctioningBlaster {
             case 2:
                 switch (Random.Int(2)) {
                     case 0:
-                        TeleportationScript.teleportHero(user);
+                        PhaseShiftUpgrade.teleportHero(user);
                         blaster.blasterUsed();
                         break;
                     case 1:
@@ -163,7 +163,7 @@ class MalfunctioningBlaster {
                                         }
                                     } while (pos == -1);
                                     if (pos == -1 || SpacebaseRun.bossLevel()) {
-                                        GLog.w(Messages.get(TeleportationScript.class, "no_tele"));
+                                        GLog.w(Messages.get(PhaseShiftUpgrade.class, "no_tele"));
                                     } else {
                                         ch.pos = pos;
                                         ch.sprite.place(ch.pos);
@@ -274,7 +274,7 @@ class MalfunctioningBlaster {
             case 3:
                 new LightningVent().set(user.pos).activate();
                 Buff.prolong(user, Recharging.class, 20f);
-                RechargingScript.charge(user);
+                RechargeUpgrade.charge(user);
                 EffectSprite.show(user, EffectSprite.CHARGE);
                 blaster.blasterUsed();
                 break;
@@ -338,7 +338,7 @@ class MalfunctioningBlaster {
                     Game.switchScene(InterlevelScene.class);
 
                 } else {
-                    TeleportationScript.teleportHero(user);
+                    PhaseShiftUpgrade.teleportHero(user);
                     blaster.blasterUsed();
                 }
                 break;

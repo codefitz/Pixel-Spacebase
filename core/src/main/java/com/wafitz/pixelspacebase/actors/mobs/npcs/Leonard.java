@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.quest.ScrewDriver;
 import com.wafitz.pixelspacebase.items.quest.SpareBaseParts;
-import com.wafitz.pixelspacebase.items.scripts.UpgradeScript;
+import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Room.Type;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -189,7 +189,7 @@ public class Leonard extends NPC {
         }
 
         Sample.INSTANCE.play(Assets.SND_EVOKE);
-        UpgradeScript.upgrade(SpacebaseRun.hero);
+        UpgradePatch.upgrade(SpacebaseRun.hero);
         Item.evoke(SpacebaseRun.hero);
 
         if (first.isEquipped(SpacebaseRun.hero)) {

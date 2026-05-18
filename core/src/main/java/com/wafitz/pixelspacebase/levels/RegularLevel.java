@@ -27,12 +27,12 @@ import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Survivor;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
-import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.levels.Room.Type;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.levels.painters.Workshop;
@@ -798,12 +798,12 @@ public abstract class RegularLevel extends Level {
             int cell;
             do {
                 cell = randomDropCell();
-                if (item instanceof Script) {
+                if (item instanceof Upgrade) {
                     while (vents.get(cell) instanceof FireVent) {
                         cell = randomDropCell();
                     }
 
-                } else if (item instanceof ExperimentalTech) {
+                } else if (item instanceof Plasmid) {
                     while (vents.get(cell) instanceof ChillingVent) {
                         cell = randomDropCell();
                     }

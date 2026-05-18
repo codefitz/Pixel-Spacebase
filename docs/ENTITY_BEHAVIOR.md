@@ -81,8 +81,8 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | --- | --- |
 | Food | Restores hunger for biological classes. Class-specific effects apply: Commander heals, DM-3000 can consume energy packs to recharge blasters without needing food, Shapeshifter/Captain get normal hunger value. Emergency auto-eat now triggers at 25% HP or below for non-DM-3000 heroes if valid food is in the backpack. |
 | Alien Egg / Dead Alien Bug (`AlienPod`) | Internal class remains `AlienPod` for the dropped bug. The alien egg device uses the alien pod/egg item icon, plants as an egg mine, briefly fades to black and shows the infection dialog when triggered by the hero, then drops a raw bug. Raw bug cannot be eaten. Can be combined in the Fabricator into xeno-booster/gene-mod outcomes; crafted xeno-boosters use the x-port/Bionetics icon. |
-| Gene Mods (`ExperimentalTech`) | Former potion-like system. Single-use biological/tech effects such as healing, strength, invisibility, toxic payloads, security override, cryogenics, and other enhancements. Unknown gene mods start as sealed capsules; opening one reveals its visible color marker without identifying the effect. Regen Gene Mod cures alien egg infection. |
-| Tech (`Script`) | Former scroll-like system. Single-use technology effects such as identify, mapping, upgrade, recharging, teleport, cloning, terror/pheromone, fix, and other utility effects. Unknown tech starts as sealed caches; opening one reveals its interface code without identifying the effect. |
+| Gene Mods (`Plasmid`) | Former potion-like system. Single-use biological/tech effects such as healing, strength, invisibility, toxic payloads, security override, cryogenics, and other enhancements. Unknown gene mods start as sealed capsules; opening one reveals its visible color marker without identifying the effect. Regen Gene Mod cures alien egg infection. |
+| Tech (`Upgrade`) | Former scroll-like system. Single-use technology effects such as identify, mapping, upgrade, recharging, teleport, cloning, terror/pheromone, fix, and other utility effects. Unknown tech starts as sealed caches; opening one reveals its interface code without identifying the effect. |
 | Blasters | Rechargeable ranged weapons with charge counts. Each blaster has a distinct projectile/effect and can be used by DM-3000 launcher mechanics. |
 | Floor lighting | Unpowered floor lighting activates when any non-flying character stands on it; it still uses normal press handling for traps and mines. Spent trap/floor-lighting tiles become inactive, stay off permanently, and remain visible as spent powered plates. |
 | Projectile pathing | Missiles and thrown items can cross unpowered floor lighting even though it still blocks sight until activated. |
@@ -129,7 +129,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Portable Maker / Portal Tunneler | Stores a coordinate and returns/relocates using spacetime tunneling behavior. |
 | Matter Recycler (`PortableRender`) | One-time compact reclamation rig for breaking selected items into parts. |
 | YendorTech Shield | Absorbs mine charges/devices to improve protection; Yendor-compatible tech artifact. |
-| Buggy Compiler | Bug-themed artifact that consumes tech/scripts for unusual utility and dependency flavor. |
+| Buggy Compiler | Bug-themed artifact that consumes tech upgrades for unusual utility and dependency flavor. |
 | Tech Toolkit | Item-improvement/crafting support artifact. |
 | Survival Module | Survival-oriented artifact tied to hunger/food/resource behavior. |
 | Impact Gauntlet | Former Knuckleduster. Fast melee weapon presented as a powered maintenance impact tool. |

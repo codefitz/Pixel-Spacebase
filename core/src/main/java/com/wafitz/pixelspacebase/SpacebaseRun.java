@@ -33,12 +33,12 @@ import com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Leonard;
 import com.wafitz.pixelspacebase.items.Clone;
-import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
+import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.modules.Module;
-import com.wafitz.pixelspacebase.items.scripts.Script;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.levels.EngineeringBossLevel;
 import com.wafitz.pixelspacebase.levels.EngineeringLevel;
 import com.wafitz.pixelspacebase.levels.HabitationCommandBossLevel;
@@ -84,7 +84,7 @@ public class SpacebaseRun {
     public enum limitedDrops {
         //limited world drops
         strengthTech,
-        upgradeScripts,
+        upgradeDrops,
         arcaneStyli,
 
         //all unlimited health potion sources (except guards, which are at the bottom.
@@ -101,9 +101,9 @@ public class SpacebaseRun {
 
         //containers
         airTank,
-        deviceCase,
-        scriptContainer,
-        xPort,
+        ordnanceKit,
+        utilityKit,
+        plasmidKit,
         blasterHolster,
 
         guardHP;
@@ -154,8 +154,8 @@ public class SpacebaseRun {
 
         Random.seed(seed);
 
-        Script.initLabels();
-        ExperimentalTech.initColors();
+        Upgrade.initLabels();
+        Plasmid.initColors();
         Module.initGems();
 
         transmutation = Random.IntRange(6, 14);
@@ -373,11 +373,11 @@ public class SpacebaseRun {
 
     public static boolean souNeeded() {
         //3 SOU each floor set
-        int souLeftThisSet = 3 - (limitedDrops.upgradeScripts.count - (depth / 5) * 3);
+        int souLeftThisSet = 3 - (limitedDrops.upgradeDrops.count - (depth / 5) * 3);
         if (souLeftThisSet <= 0) return false;
 
         int floorThisSet = (depth % 5);
-        //chance is floors left / scripts left
+        //chance is floors left / upgrades left
         return Random.Int(5 - floorThisSet) < souLeftThisSet;
     }
 
@@ -387,7 +387,7 @@ public class SpacebaseRun {
         if (asLeftThisSet <= 0) return false;
 
         int floorThisSet = (depth % 5);
-        //chance is floors left / scripts left
+        //chance is floors left / upgrades left
         return Random.Int(5 - floorThisSet) < asLeftThisSet;
     }
 
@@ -493,8 +493,8 @@ public class SpacebaseRun {
             Journal.storeInBundle(bundle);
             Generator.storeInBundle(bundle);
 
-            Script.save(bundle);
-            ExperimentalTech.save(bundle);
+            Upgrade.save(bundle);
+            Plasmid.save(bundle);
             Module.save(bundle);
 
             Actor.storeNextID(bundle);
@@ -568,8 +568,8 @@ public class SpacebaseRun {
         SpacebaseRun.level = null;
         SpacebaseRun.depth = -1;
 
-        Script.restore(bundle);
-        ExperimentalTech.restore(bundle);
+        Upgrade.restore(bundle);
+        Plasmid.restore(bundle);
         Module.restore(bundle);
 
         quickslot.restorePlaceholders(bundle);
