@@ -1,150 +1,33 @@
-# Targeted Release: v1.0.2
+# Targeted Release: v1.0.3
 
-## Cosmetic Changes
+Use this as the working backlog for the next sprint. Put rough ideas in Suggestions first, then move them into the relevant section once the direction is clear enough to implement and test.
 
-- [x] Update build number to v1.0.2
-- [x] Update about (give credit to Codex), recent changes
-- [x] Update the hooded raider commander theme to have stronger "Darth Sidious" vibes.
-  - [x] Review actor and item message strings for tone.
-  - [x] Review encounter presentation and boss text.
-- [x] Replace the chain/restraint theme with "the force".
-  - [x] Rename the Bith pull effect and descriptions so it reads as being pulled by the force.
-  - [x] Remove or replace text that refers to chains.
-- [x] Add "Do not pet the cat" warning sign text.
-- [x] Alien egg - screen still needs to fade to black and return before "Ugh what happened".
-- [x] Stimulantts need to be updated to a stimulant type of sprite. Also should be renamed "Stims".
-- [x] Dialogue boxes could do  with a smaller border and make the background semi-transparent
-- [x] The pickaxe has generic text and NO TEXT FOUND. This should be replaced with some other sci-fi item.
-- [x] The surveyor module has NO TEXT FOUND for it's action button.
-- [x] Backpack extensions should feature in every workshop, but only be available once the previous one has been built.
-- [x] Quaretermaster lazer quest tiles need to be switched to something like a holodeck backdrop. When the hero enters it should switch to a holodeck program like ancient rome or something.
-- [x] Tech Library and Icon need to be updated to 'Mods'
-- [x] Alien Egg item (pick up and plant) should be Black Goo.
-- [x] Bionetics naming - rather than call the items 'Mods' they should be called 'Plasmids'
-- [x] Mods naming - rather than call the items 'Tech' call them 'Upgrade'
-- [x] Swap the Mods and Bionetics backpack extensions icons.
-- [x] Vaccuum warning should be a popup, rather than log.
+## Suggestions
 
-## Mechanic Changes
+- [ ] Cat follow-up idea for the next version.
 
-- [x] Torch becomes a permanent item with battery pickups.
-  - [x] Add permanent torch item behavior.
-  - [x] Add battery pickup generation and recharge behavior.
-  - [x] Balance torch charge use against dark-level encounters.
-- [x] Spacesuit is required for spacewalk areas.
-  - [x] Gate captain spacewalk access behind spacesuit ownership/equipment.
-  - [x] Gate commander spacewalk access behind spacesuit ownership/equipment.
-  - [x] Add failure messaging when the player tries to enter without a spacesuit.
-- [x] Rework shapeshifter progression.
-  - [x] Prevent shapeshifter from using blaster weapons.
-  - [x] Scale shapeshifter strength as level depth increases.
-  - [x] Give shapeshifter faster level progression.
-  - [x] Let shapeshifter transform into items.
-  - [x] Make item form apply camouflage-like concealment.
-  - [x] Give item form a boosted surprise attack.
-- [x] Rework shapeshifter healing.
-  - [x] Debuff health pack effectiveness for shapeshifter.
-  - [x] Add small shapeshifter recovery while standing in water.
-- [x] Replace the shapeshifter mirror boss path.
-  - [x] Replace the first boss with the Xeno Queen.
-  - [x] Add a nest arena loop with xenos emerging from wall cracks.
-  - [x] Seed the arena with alien eggs.
-  - [x] Drop the boss key when the queen dies.
-- [x] Add room and breaker lighting mechanics.
-  - [x] Light rooms on entry.
-  - [x] Remove gameplay dependency on floor lights.
-  - [x] Add random dark levels.
-  - [x] Place a breaker on dark levels that restores lights.
-  - [x] Place a breaker on every level so lights can be toggled off later.
-- [x] Rework floor lights into dislodged/exposed floor tiles.
-  - [x] Rename floor-light terrain/messages to exposed or dislodged floor panels.
-  - [x] Update floor-light art to damaged flooring or exposed wall/floor infrastructure.
-  - [x] Convert floor-light gameplay from visibility support to loot/hazard discovery.
-  - [x] Let exposed panels reveal hidden pickups or trigger electric/burn hazards.
-  - [x] Keep room lighting controlled by the floor breaker state instead of tile lights.
-- [x] Add generic storage/reveal behavior so the container opens before the tech/biogenetic item identity is known.
-- [x] Add ambient crew survivor NPCs.
-- [x] Add cat follower NPC.
-  - [x] Implement cat following behavior.
-  - [x] Decide whether petting is blocked, punished, or only warned against.
-- [x] Replace garden with a one-square healing tank booth.
-  - [x] Remove or disable garden room generation.
-  - [x] Add one-square healing tank booth placement.
-  - [x] Define healing tank interaction behavior.
-- [x] Security levels should start with the piercing alarm sound from the trap.
-- [x] Positive-effect mines should become automatically applied stimulants.
-- [x] Fix chest state after lower-level warp.
-  - [x] Reproduce the case where being warped back down empties chests irrecoverably.
-  - [x] Preserve unopened chest contents across lower-level warps.
-- [x] Rework makerbot workshop progression.
-  - [x] Limit early makerbot stock to essential items.
-  - [x] Keep a small chance for rare or high-strength stock in lower-tier workshops.
-  - [x] Add makerbot upgrades that unlock better items over time.
-  - [x] Increase basic item level by zone regardless of makerbot upgrade state.
-- [x] Persist player-owned items across workshops in the same area.
-- [x] Add alien egg step event.
-  - [x] Fade the screen briefly to black when stepping on an alien egg.
-  - [x] Show a "what happened" dialog when the screen returns.
-- [x] Falling needs to be fixed so it falls to the level below - not up. The locked room needs to appear on the (next) level above.
-- [x] Y should appear 3 times in the maze before the masked prisoner battle (hero to seek him out). If hero finds Y all 3 times, he will look in heros backpack and compare against the prisoner's stats. If the hero seems to be under equipped - Y even the odds and will provide an offensive ranged weapon with at least 3 charges. If the hero seems to be overequipped - Y will even the odds and remove one random weapon and place it to be found in one of the cells after the battle.
-  - [x] Place three Y maze encounters with mischievous ambiguous dialogue.
-  - [x] Track whether the hero found all three encounters.
-  - [x] Compare the backpack against the masked prisoner's stats before the arena.
-  - [x] Give or remove a ranged weapon based on that comparison.
-- [x] facehugger should die on infection. Also remove the sticky web effects.
-- [x] Restore release-mode hero start.
-  - [x] Return hero starting strength to normal.
-  - [x] Disable dev/test invulnerability.
-  - [x] Remove the depth-1 starter chest and injected test items.
-  - [x] Document the hero dev/test setup for next sprint.
+## Mechanics
 
-## Refactorial Changes and Small Adjustments
+- [ ] Placeholder.
 
-- [x] Rename legacy fantasy concepts to spacebase equivalents.
-  - [x] Clean high-priority player-visible fantasy labels in item/enhancement/subclass text.
-  - [x] Clean medium-priority player-visible fantasy labels in signs, windows, quests, and enemy text.
-  - [x] Clean low-priority visible fantasy labels and release-plan wording.
-  - [x] Rename central run, tilemap, and seed internals to spacebase terms.
-  - [x] Rename monarch, ruptured-suit, raider commander, Security Block, and Engineering internals.
-- [x] Reorganize tech and biogenetics by use.
-  - [x] Classify offensive pickups into Ordnance.
-  - [x] Classify defensive, repair, and shield pickups into Utility.
-  - [x] Keep genetic alterations in Plasmids and leave sealed capsules in the main backpack until opened.
-  - [x] Convert offensive biogenetics presentation toward grenade-style items.
-- [x] Rename Xeno-booster to align with the x-port concept.
-- [x] Add an option to open and scroll the full log.
-- [x] Floor lighting overhall
-  - [x] Lighting that contains a trap, should be invisible - so it's a real trap
-  - [x] Traps shouldn't ever look like a light - they should look like a blown panel after being set off.
-  - [x] Adjust terrain features so that only one type appears on each zone/area
-  - [x] Adjust terrain features to look less like ruins and more like different types of lighting.
-  - [x] Set mines should look a bit more obvious like mines
-- [x] Shuriken need to be updated to something suitably sci-fi 
-- [x] Sealed Cache should automatically consume.
-- [x] Level 5 boss - should be alien queen for shapeshifter, but everyone else gets the standard shapeshifter boss.
-- [x] Level 5 alien queen boss needs to be tougher and also use the alien queen sprite.
-- [x] Level 5 alien queen boss should be in the dark (but not the shapeshifter boss)
-- [x] Stims should not require the hero to stay fixed - they should offer a temporary boost.
+## Cosmetic / Narrative
+
+- [ ] Placeholder.
 
 ## Graphical Changes
 
-- [x] Remove the 3D effect/overlay from floor lights.
-- [x] Replace the chain graphic with a force-themed visual.
-- [x] Add a generic storage icon for unrevealed tech/biogenetics.
-- [x] Add or update grenade icons for offensive biogenetics.
-- [x] Add healing tank booth tile/art.
-- [x] Add cat sprite or reuse/update an existing follower sprite.
-- [x] Add visual treatment for dark levels and breaker-restored lighting.
-- [x] Change Xeno-booster to an x-port icon.
-- [x] Masked prisoner battle arena needs to be more like an alien planet (think Star Trek TOS).
-- [x] Siphon drone sprite needs updating.
+- [ ] Placeholder.
 
 ## Bugs
 
-- [x] Target sometimes doesn't dissapear after certain actions.
-- [x] Guardian Floor Lighting causes a game crash when walking over it.
-- [x] One of the modules is just called 'Item 1'
-- [x] Fix the backpack tab icon (currenty is a battery)
-- [x] Internal bridge (room filled with water) warns about the vacuum, this is not needed.
-- [x] Stepping on a falling trap still sends me up, rather than down
-- [x] If an item appears over the breaker switch, it can't be picked up. Breaker switch could be incorporated into a wall.
+- [ ] Placeholder.
+
+## Refactorial Changes and Small Adjustments
+
+- [ ] Placeholder.
+
+## Release Prep
+
+- [ ] Re-enable any needed dev/test helpers deliberately behind a clear flag.
+- [ ] Run `./gradlew :core:testDebugUnitTest`.
+- [ ] Run `./gradlew :core:assembleDebug`.
