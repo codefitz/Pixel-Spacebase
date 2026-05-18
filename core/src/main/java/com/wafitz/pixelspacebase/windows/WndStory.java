@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.windows;
 
 import com.wafitz.pixelspacebase.Chrome;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
@@ -94,7 +94,7 @@ public class WndStory extends Window {
 
     public static void showChapter(int id) {
 
-        if (Dungeon.chapters.contains(id)) {
+        if (SpacebaseRun.chapters.contains(id)) {
             return;
         }
 
@@ -107,7 +107,7 @@ public class WndStory extends Window {
 
             Game.scene().add(wnd);
 
-            Dungeon.chapters.add(id);
+            SpacebaseRun.chapters.add(id);
         }
     }
 }

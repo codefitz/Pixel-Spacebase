@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.ArpTrader;
@@ -42,8 +42,8 @@ import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
-import com.wafitz.pixelspacebase.items.artifacts.Artifact;
-import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
+import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
 import com.wafitz.pixelspacebase.items.containers.DeviceCase;
@@ -55,7 +55,7 @@ import com.wafitz.pixelspacebase.items.scripts.IdentifyScript;
 import com.wafitz.pixelspacebase.items.scripts.MappingScript;
 import com.wafitz.pixelspacebase.items.weapon.melee.BrightHammer;
 import com.wafitz.pixelspacebase.items.weapon.melee.DualBlade;
-import com.wafitz.pixelspacebase.items.weapon.melee.GnollSword;
+import com.wafitz.pixelspacebase.items.weapon.melee.RaiderBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.HoloAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.LazerSword;
 import com.wafitz.pixelspacebase.items.weapon.melee.MCPickAxe;
@@ -134,12 +134,12 @@ public class Workshop extends Painter {
     }
 
     public static void carryStockFrom(Level level) {
-        if (level == null || level.heaps == null || !Dungeon.workshopOnLevel()) {
+        if (level == null || level.heaps == null || !SpacebaseRun.workshopOnLevel()) {
             return;
         }
 
-        prepareCarriedStock(Dungeon.depth);
-        int area = areaForDepth(Dungeon.depth);
+        prepareCarriedStock(SpacebaseRun.depth);
+        int area = areaForDepth(SpacebaseRun.depth);
 
         if (area != storedArea) {
             storedItems = new ArrayList<>();
@@ -187,7 +187,7 @@ public class Workshop extends Painter {
         if (level == null || level.heaps == null || storedItems == null || storedItems.isEmpty()) {
             return;
         }
-        if (storedArea != areaForDepth(Dungeon.depth)) {
+        if (storedArea != areaForDepth(SpacebaseRun.depth)) {
             storedItems.clear();
             return;
         }
@@ -205,7 +205,7 @@ public class Workshop extends Painter {
             for (int cell = 0; cell < storageCells.length; cell++) {
                 if (storageCells[cell]) {
                     Heap heap = new Heap();
-                    heap.seen = Dungeon.visible[cell];
+                    heap.seen = SpacebaseRun.visible[cell];
                     heap.pos = cell;
                     heap.type = Heap.Type.WORKSHOP_STORAGE;
                     level.heaps.put(cell, heap);
@@ -295,11 +295,11 @@ public class Workshop extends Painter {
     }
 
     private static ArrayList<Item> stockForCurrentDepth() {
-        if (stockDepth != Dungeon.depth) {
-            prepareCarriedStock(Dungeon.depth);
+        if (stockDepth != SpacebaseRun.depth) {
+            prepareCarriedStock(SpacebaseRun.depth);
             generateItems();
             itemsToSpawn.addAll(0, carriedStock);
-            stockDepth = Dungeon.depth;
+            stockDepth = SpacebaseRun.depth;
         }
         return itemsToSpawn;
     }
@@ -313,8 +313,8 @@ public class Workshop extends Painter {
     }
 
     private static ArrayList<Item> storageForCurrentDepth() {
-        int area = areaForDepth(Dungeon.depth);
-        if (storedItems == null || storedArea != area || areaStart(Dungeon.depth) && stockDepth != Dungeon.depth) {
+        int area = areaForDepth(SpacebaseRun.depth);
+        if (storedItems == null || storedArea != area || areaStart(SpacebaseRun.depth) && stockDepth != SpacebaseRun.depth) {
             storedItems = new ArrayList<>();
             storedArea = area;
         }
@@ -349,7 +349,7 @@ public class Workshop extends Painter {
         itemsToSpawn.add(new PortableRender());
         ensureSpaceSuitStock();
 
-        ensureBackpackExtensionStock(Dungeon.hero.belongings);
+        ensureBackpackExtensionStock(SpacebaseRun.hero.belongings);
 
         itemsToSpawn.add(new HealingTech());
 
@@ -389,12 +389,12 @@ public class Workshop extends Painter {
             itemsToSpawn.add(rareWorkshopItem(false));
         }
 
-        TimeFolder hourglass = Dungeon.hero.belongings.getItem(TimeFolder.class);
+        TimeFolder hourglass = SpacebaseRun.hero.belongings.getItem(TimeFolder.class);
         if (hourglass != null) {
             int containers = 0;
             //creates the given float percent of the remaining containers to be dropped.
             //this way players who get the hourglass late can still max it, usually.
-            switch (Dungeon.depth) {
+            switch (SpacebaseRun.depth) {
                 case 6:
                     containers = (int) Math.ceil((5 - hourglass.TimeBatteries) * 0.20f);
                     break;
@@ -432,15 +432,15 @@ public class Workshop extends Painter {
     }
 
     private static int makerBotTier() {
-        return Math.min(4, areaForDepth(Dungeon.depth));
+        return Math.min(4, areaForDepth(SpacebaseRun.depth));
     }
 
     private static int zoneItemLevel() {
-        return Math.max(0, areaForDepth(Dungeon.depth) - 1);
+        return Math.max(0, areaForDepth(SpacebaseRun.depth) - 1);
     }
 
     private static void addZoneGear() {
-        switch (areaForDepth(Dungeon.depth)) {
+        switch (areaForDepth(SpacebaseRun.depth)) {
             case 1:
                 itemsToSpawn.add(scaleZoneItem(Random.Int(2) == 0 ? new Wrench().identify() : new MCPickAxe().identify()));
                 itemsToSpawn.add(Random.Int(2) == 0 ?
@@ -454,7 +454,7 @@ public class Workshop extends Painter {
                         new Shuriken().quantity(Random.NormalIntRange(3, 6)));
                 break;
             case 3:
-                itemsToSpawn.add(scaleZoneItem(Random.Int(2) == 0 ? new GnollSword().identify() : new HoloAxe().identify()));
+                itemsToSpawn.add(scaleZoneItem(Random.Int(2) == 0 ? new RaiderBlade().identify() : new HoloAxe().identify()));
                 itemsToSpawn.add(Random.Int(2) == 0 ?
                         new Shuriken().quantity(Random.NormalIntRange(4, 7)) :
                         new HunterJavelin().quantity(Random.NormalIntRange(3, 6)));
@@ -493,7 +493,7 @@ public class Workshop extends Painter {
                 rare = Generator.random(Generator.Category.MODULE);
                 break;
             case 2:
-                rare = Generator.random(Generator.Category.ARTIFACT).identify();
+                rare = Generator.random(Generator.Category.EQUIPPABLE_MODULE).identify();
                 break;
             default:
                 rare = new EnhancementChip();
@@ -519,7 +519,7 @@ public class Workshop extends Painter {
                 || item instanceof Blaster
                 || item instanceof MeleeWeapon
                 || item instanceof MissileWeapon
-                || item instanceof Artifact;
+                || item instanceof EquippableModule;
     }
 
     private static void ensureSpaceSuitStock() {
@@ -529,7 +529,7 @@ public class Workshop extends Painter {
             }
         }
 
-        if (Dungeon.depth >= 11) {
+        if (SpacebaseRun.depth >= 11) {
             itemsToSpawn.add(new HunterSpaceSuit().identify());
         } else {
             itemsToSpawn.add(new SpaceSuit().identify());
@@ -542,16 +542,16 @@ public class Workshop extends Painter {
         }
 
         if (!hasBackpackExtension(belongings, DeviceCase.class)) {
-            Dungeon.limitedDrops.deviceCase.drop();
+            SpacebaseRun.limitedDrops.deviceCase.drop();
             itemsToSpawn.add(new DeviceCase());
         } else if (!hasBackpackExtension(belongings, ScriptLibrary.class)) {
-            Dungeon.limitedDrops.scriptContainer.drop();
+            SpacebaseRun.limitedDrops.scriptContainer.drop();
             itemsToSpawn.add(new ScriptLibrary());
         } else if (!hasBackpackExtension(belongings, XPort.class)) {
-            Dungeon.limitedDrops.xPort.drop();
+            SpacebaseRun.limitedDrops.xPort.drop();
             itemsToSpawn.add(new XPort());
         } else if (!hasBackpackExtension(belongings, BlasterHolster.class)) {
-            Dungeon.limitedDrops.blasterHolster.drop();
+            SpacebaseRun.limitedDrops.blasterHolster.drop();
             itemsToSpawn.add(new BlasterHolster());
         }
     }
@@ -680,7 +680,7 @@ public class Workshop extends Painter {
             Heap heap = level.heaps.get(cell);
             if (heap == null) {
                 heap = new Heap();
-                heap.seen = Dungeon.visible[cell];
+                heap.seen = SpacebaseRun.visible[cell];
                 heap.pos = cell;
                 heap.type = Heap.Type.WORKSHOP_STORAGE;
                 level.heaps.put(cell, heap);
@@ -701,7 +701,7 @@ public class Workshop extends Painter {
         Heap heap = level.heaps.get(cell);
         if (heap == null) {
             heap = new Heap();
-            heap.seen = Dungeon.visible[cell];
+            heap.seen = SpacebaseRun.visible[cell];
             heap.pos = cell;
             heap.type = Heap.Type.WORKSHOP_UPGRADE;
             level.heaps.put(cell, heap);

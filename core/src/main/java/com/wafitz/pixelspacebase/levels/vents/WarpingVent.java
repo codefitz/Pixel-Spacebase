@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -30,8 +30,8 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
+import com.wafitz.pixelspacebase.items.equippablemodules.HoloPad;
+import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.watabou.noosa.Game;
@@ -52,40 +52,40 @@ public class WarpingVent extends Vent {
         CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
         Sample.INSTANCE.play(Assets.SND_TELEPORT);
 
-        if (Dungeon.depth > 1 && !Dungeon.bossLevel()) {
+        if (SpacebaseRun.depth > 1 && !SpacebaseRun.bossLevel()) {
 
             //each depth has 1 more weight than the previous depth.
-            float[] depths = new float[Dungeon.depth - 1];
-            for (int i = 1; i < Dungeon.depth; i++) depths[i - 1] = i;
+            float[] depths = new float[SpacebaseRun.depth - 1];
+            for (int i = 1; i < SpacebaseRun.depth; i++) depths[i - 1] = i;
             int depth = 1 + Random.chances(depths);
 
-            Heap heap = Dungeon.level.heaps.get(pos);
+            Heap heap = SpacebaseRun.level.heaps.get(pos);
             if (heap != null) {
                 if (heap.type == Heap.Type.HEAP) {
-                    ArrayList<Item> dropped = Dungeon.droppedItems.get(depth);
+                    ArrayList<Item> dropped = SpacebaseRun.droppedItems.get(depth);
                     if (dropped == null) {
-                        Dungeon.droppedItems.put(depth, dropped = new ArrayList<>());
+                        SpacebaseRun.droppedItems.put(depth, dropped = new ArrayList<>());
                     }
                     for (Item item : heap.items) {
                         dropped.add(item);
                     }
                     heap.destroy();
                 } else {
-                    Dungeon.dropHeapToDepth(heap, depth);
+                    SpacebaseRun.dropHeapToDepth(heap, depth);
                     if (heap.sprite != null) {
                         heap.sprite.kill();
                     }
                     GameScene.discard(heap);
-                    Dungeon.level.heaps.remove(pos);
+                    SpacebaseRun.level.heaps.remove(pos);
                 }
             }
 
             Char ch = Actor.findChar(pos);
-            if (ch == Dungeon.hero) {
-                Buff buff = Dungeon.hero.buff(TimeFolder.timeFreeze.class);
+            if (ch == SpacebaseRun.hero) {
+                Buff buff = SpacebaseRun.hero.buff(TimeFolder.timeFreeze.class);
                 if (buff != null) buff.detach();
 
-                for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
+                for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
                     if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
                 InterlevelScene.mode = InterlevelScene.Mode.RETURN;
@@ -95,7 +95,7 @@ public class WarpingVent extends Vent {
             } else if (ch != null) {
                 ch.destroy();
                 ch.sprite.killAndErase();
-                Dungeon.level.mobs.remove(ch);
+                SpacebaseRun.level.mobs.remove(ch);
             }
 
         }

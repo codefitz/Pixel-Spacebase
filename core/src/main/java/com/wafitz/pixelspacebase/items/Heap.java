@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.items;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -42,8 +42,8 @@ import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.HealingTech;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.PowerUpgrade;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
-import com.wafitz.pixelspacebase.items.artifacts.Artifact;
-import com.wafitz.pixelspacebase.items.artifacts.TechToolkit;
+import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.TechToolkit;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.food.AlienPod;
@@ -304,7 +304,7 @@ public class Heap implements Bundlable {
 
         }
 
-        if (item instanceof Dewdrop && type != Type.TO_MAKE) {
+        if (item instanceof MedigelDroplet && type != Type.TO_MAKE) {
             items.add(item);
         } else {
             items.addFirst(item);
@@ -349,7 +349,7 @@ public class Heap implements Bundlable {
                     && !(item instanceof UpgradeScript || item instanceof EnhancementScript)) {
                 items.remove(item);
                 burnt = true;
-            } else if (item instanceof Dewdrop) {
+            } else if (item instanceof MedigelDroplet) {
                 items.remove(item);
                 evaporated = true;
             } else if (item instanceof MysteryMeat) {
@@ -365,7 +365,7 @@ public class Heap implements Bundlable {
 
         if (burnt || evaporated) {
 
-            if (Dungeon.visible[pos]) {
+            if (SpacebaseRun.visible[pos]) {
                 if (burnt) {
                     burnFX(pos);
                 } else {
@@ -497,7 +497,7 @@ public class Heap implements Bundlable {
         }
 
         //makers toolkit gives a chance to make a potion in two or even one devices
-        TechToolkit.crafting crafting = Dungeon.hero.buff(TechToolkit.crafting.class);
+        TechToolkit.crafting crafting = SpacebaseRun.hero.buff(TechToolkit.crafting.class);
         int bonus = crafting != null ? crafting.itemLevel() : -1;
 
         if (bonus != -1 ? crafting.tryMake(count) : count >= DEVICES_TO_TECH) {
@@ -545,11 +545,11 @@ public class Heap implements Bundlable {
                 if (Random.Int(1000 / bonus) == 0)
                     return new ExperienceBooster();
 
-            while (experimentaltech instanceof HealingTech && Random.Int(10) < Dungeon.limitedDrops.makingHP.count)
+            while (experimentaltech instanceof HealingTech && Random.Int(10) < SpacebaseRun.limitedDrops.makingHP.count)
                 experimentaltech = Generator.random(Generator.Category.EXPERIMENTALTECH);
 
             if (experimentaltech instanceof HealingTech)
-                Dungeon.limitedDrops.makingHP.count++;
+                SpacebaseRun.limitedDrops.makingHP.count++;
 
             return experimentaltech;
 
@@ -572,7 +572,7 @@ public class Heap implements Bundlable {
     }
 
     public void destroy() {
-        Dungeon.level.heaps.remove(this.pos);
+        SpacebaseRun.level.heaps.remove(this.pos);
         if (sprite != null) {
             sprite.kill();
         }
@@ -621,7 +621,7 @@ public class Heap implements Bundlable {
             case JAMMED_CHEST:
                 return Messages.get(this, "jammed_chest_desc");
             case CRYSTAL_CHEST:
-                if (peek() instanceof Artifact)
+                if (peek() instanceof EquippableModule)
                     return Messages.get(this, "crystal_chest_desc", Messages.get(this, "artifact"));
                 else if (peek() instanceof Blaster)
                     return Messages.get(this, "crystal_chest_desc", Messages.get(this, "blaster"));

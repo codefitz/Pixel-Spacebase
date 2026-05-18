@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.armor.malfunctions;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
@@ -34,8 +34,8 @@ public class Displacement extends Armor.Enhancement {
     @Override
     public int proc(Armor armor, Char attacker, Char defender, int damage) {
 
-        if (defender == Dungeon.hero && Random.Int(20) == 0) {
-            TeleportationScript.teleportHero(Dungeon.hero);
+        if (defender == SpacebaseRun.hero && Random.Int(20) == 0) {
+            TeleportationScript.teleportHero(SpacebaseRun.hero);
             return 0;
         }
 

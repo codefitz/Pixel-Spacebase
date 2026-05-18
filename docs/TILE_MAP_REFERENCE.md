@@ -1,6 +1,6 @@
 # Pixel Spacebase Tile Map Reference
 
-This reference maps the current terrain IDs to plain-text descriptions for graphics planning. It is based on `Terrain.java`, `DungeonTilemap.java`, and the current tile names/descriptions in `levels.properties`.
+This reference maps the current terrain IDs to plain-text descriptions for graphics planning. It is based on `Terrain.java`, `SpacebaseTilemap.java`, and the current tile names/descriptions in `levels.properties`.
 
 For a visual grid with frame numbers and labels, see [TILE_SHEET_LAYOUT.md](TILE_SHEET_LAYOUT.md).
 
@@ -111,7 +111,7 @@ Interpretation:
 ## Visual Notes for Future Tile Art
 
 - The same terrain IDs are reused across areas, so new art should support palette/tileset swaps rather than new gameplay constants wherever possible.
-- `SECRET_DOOR`, `HIDDEN_VENT`, `VENT`, and `INACTIVE_VENT` reuse ordinary floor/wall frames in `DungeonTilemap`; their visible state depends on discovery and overlay logic.
+- `SECRET_DOOR`, `HIDDEN_VENT`, `VENT`, and `INACTIVE_VENT` reuse ordinary floor/wall frames in `SpacebaseTilemap`; their visible state depends on discovery and overlay logic.
 - Chasm and water have stitch behavior around neighboring tiles, so their edge frames need clean transitions.
 - `EMPTY`, `EMPTY_SP`, and `EMPTY_DECO` should be visually distinct but low-noise, because they make up most walkable space.
 - `OFFVENT` blocks line of sight despite being passable, so it should read as tall equipment, dense growth, or unpowered floor-light columns rather than flat floor.

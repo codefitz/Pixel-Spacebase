@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.quest;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -76,7 +76,7 @@ public class Lazer extends Item {
 
     @Override
     protected void onDetach() {
-        DustGhostSpawner spawner = Dungeon.hero.buff(DustGhostSpawner.class);
+        DustGhostSpawner spawner = SpacebaseRun.hero.buff(DustGhostSpawner.class);
         if (spawner != null) {
             spawner.dispel();
         }
@@ -90,7 +90,7 @@ public class Lazer extends Item {
         public boolean act() {
             spawnPower++;
             int turrets = 1; //we include the wraith we're trying to spawn
-            for (Mob mob : Dungeon.level.mobs) {
+            for (Mob mob : SpacebaseRun.level.mobs) {
                 if (mob instanceof Turret) {
                     turrets++;
                 }
@@ -102,9 +102,9 @@ public class Lazer extends Item {
                 spawnPower -= powerNeeded;
                 int pos;
                 do {
-                    pos = Random.Int(Dungeon.level.length());
+                    pos = Random.Int(SpacebaseRun.level.length());
                 }
-                while (!Dungeon.visible[pos] || !Level.passable[pos] || Actor.findChar(pos) != null);
+                while (!SpacebaseRun.visible[pos] || !Level.passable[pos] || Actor.findChar(pos) != null);
                 Turret.spawnAt(pos);
                 Sample.INSTANCE.play(Assets.SND_CURSED);
             }
@@ -115,7 +115,7 @@ public class Lazer extends Item {
 
         public void dispel() {
             detach();
-            for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+            for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0])) {
                 if (mob instanceof Turret) {
                     mob.die(null);
                 }

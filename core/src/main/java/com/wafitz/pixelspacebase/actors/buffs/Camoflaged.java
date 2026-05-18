@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.actors.buffs;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -55,8 +55,8 @@ public class Camoflaged extends Camoflage {
     public boolean attachTo(Char target) {
         if (super.attachTo(target)) {
             Sample.INSTANCE.play(Assets.SND_MELD);
-            if (Dungeon.level != null)
-                Dungeon.observe();
+            if (SpacebaseRun.level != null)
+                SpacebaseRun.observe();
             return true;
         } else {
             return false;
@@ -66,7 +66,7 @@ public class Camoflaged extends Camoflage {
     @Override
     public void detach() {
         super.detach();
-        Dungeon.observe();
+        SpacebaseRun.observe();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class Camoflaged extends Camoflage {
 
             spend(TICK * 2);
 
-            if (--left <= 0 || Dungeon.hero.visibleEnemies() > 0) {
+            if (--left <= 0 || SpacebaseRun.hero.visibleEnemies() > 0) {
                 detach();
             }
 

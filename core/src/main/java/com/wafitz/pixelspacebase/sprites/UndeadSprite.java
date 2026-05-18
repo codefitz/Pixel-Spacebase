@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.sprites;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.watabou.noosa.TextureFilm;
 
@@ -52,7 +52,7 @@ public class UndeadSprite extends MobSprite {
     @Override
     public void die() {
         super.die();
-        if (Dungeon.visible[ch.pos]) {
+        if (SpacebaseRun.visible[ch.pos]) {
             emitter().burst(Speck.factory(Speck.BONE), 3);
         }
     }

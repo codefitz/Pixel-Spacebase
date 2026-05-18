@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.blasters;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
-import com.wafitz.pixelspacebase.effects.MagicMissile;
+import com.wafitz.pixelspacebase.effects.EnergyBeam;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Blazing;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -73,7 +73,7 @@ public class FlameThrower extends DamageBlaster {
 
         for (int cell : affectedCells) {
 
-            if (Level.flamable[cell] || !Dungeon.level.adjacent(bolt.sourcePos, cell))
+            if (Level.flamable[cell] || !SpacebaseRun.level.adjacent(bolt.sourcePos, cell))
                 GameScene.add(Blob.device(cell, 1 + chargesPerCast(), Fire.class));
             Char ch = Actor.findChar(cell);
             if (ch != null) {
@@ -161,9 +161,9 @@ public class FlameThrower extends DamageBlaster {
 
         for (int cell : visualCells) {
             //this way we only get the cells at the tip, much better performance.
-            MagicMissile.fire(curUser.sprite.parent, bolt.sourcePos, cell, null);
+            EnergyBeam.fire(curUser.sprite.parent, bolt.sourcePos, cell, null);
         }
-        MagicMissile.fire(curUser.sprite.parent, bolt.sourcePos, bolt.path.get(dist), callback);
+        EnergyBeam.fire(curUser.sprite.parent, bolt.sourcePos, bolt.path.get(dist), callback);
         Sample.INSTANCE.play(Assets.SND_ZAP);
     }
 

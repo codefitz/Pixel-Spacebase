@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.windows;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.MakerBot;
@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
-import com.wafitz.pixelspacebase.items.artifacts.McGyvrModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.McGyvrModule;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
@@ -126,7 +126,7 @@ public class WndBotMake extends Window {
                 }
             };
             btnBuild.setRect(0, pos + GAP, WIDTH, BTN_HEIGHT);
-            btnBuild.enable(price <= Dungeon.parts);
+            btnBuild.enable(price <= SpacebaseRun.parts);
             add(btnBuild);
 
             RedButton btnCancel = new RedButton(Messages.get(this, "cancel")) {
@@ -136,22 +136,22 @@ public class WndBotMake extends Window {
                 }
             };
 
-            final McGyvrModule.Thievery thievery = Dungeon.hero.buff(McGyvrModule.Thievery.class);
+            final McGyvrModule.Thievery thievery = SpacebaseRun.hero.buff(McGyvrModule.Thievery.class);
             if (thievery != null) {
                 final float chance = thievery.stealChance(price);
                 RedButton btnMcgyvr = new RedButton(Messages.get(this, "mcgyvr", Math.min(100, (int) (chance * 100)))) {
                     @Override
                     protected void onClick() {
                         if (thievery.steal(price)) {
-                            Hero hero = Dungeon.hero;
+                            Hero hero = SpacebaseRun.hero;
                             Item item = heap.pickUp();
                             hide();
 
                             if (!item.doPickUp(hero)) {
-                                Dungeon.level.drop(item, heap.pos).sprite.drop();
+                                SpacebaseRun.level.drop(item, heap.pos).sprite.drop();
                             }
                         } else {
-                            for (Mob mob : Dungeon.level.mobs) {
+                            for (Mob mob : SpacebaseRun.level.mobs) {
                                 if (mob instanceof MakerBot) {
                                     mob.yell(Messages.get(mob, "thief"));
                                     break;
@@ -222,7 +222,7 @@ public class WndBotMake extends Window {
 
     private void render(Item item) {
 
-        Hero hero = Dungeon.hero;
+        Hero hero = SpacebaseRun.hero;
 
         if (item.isEquipped(hero) && !((EquipableItem) item).doUnequip(hero, false)) {
             return;
@@ -240,7 +240,7 @@ public class WndBotMake extends Window {
             render(item);
         } else {
 
-            Hero hero = Dungeon.hero;
+            Hero hero = SpacebaseRun.hero;
 
             item = item.detach(hero.belongings.backpack);
             int price = item.cost();
@@ -250,20 +250,20 @@ public class WndBotMake extends Window {
     }
 
     private int cost(Item item) {
-        int cost = item.cost() * 5 * (Dungeon.depth / 5 + 1);
+        int cost = item.cost() * 5 * (SpacebaseRun.depth / 5 + 1);
         return cost;
     }
 
     private void build(Heap heap) {
 
-        Hero hero = Dungeon.hero;
+        Hero hero = SpacebaseRun.hero;
         Item item = heap.pickUp();
 
         int price = cost(item);
-        Dungeon.parts -= price;
+        SpacebaseRun.parts -= price;
 
         if (!item.doPickUp(hero)) {
-            Dungeon.level.drop(item, heap.pos).sprite.drop();
+            SpacebaseRun.level.drop(item, heap.pos).sprite.drop();
         }
     }
 

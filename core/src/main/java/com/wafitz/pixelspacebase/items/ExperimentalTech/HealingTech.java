@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.ExperimentalTech;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Bleeding;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
@@ -45,7 +45,7 @@ public class HealingTech extends ExperimentalTech {
     public void apply(Hero hero) {
         setKnown();
         Buff.detach(hero, XenoInfection.class);
-        heal(Dungeon.hero);
+        heal(SpacebaseRun.hero);
         GLog.p(Messages.get(this, hero.heroClass == HeroClass.SHAPESHIFTER ? "heal_shapeshifter" : "heal"));
     }
 

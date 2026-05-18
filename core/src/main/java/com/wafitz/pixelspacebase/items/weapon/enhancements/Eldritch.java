@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.weapon.enhancements;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
@@ -43,7 +43,7 @@ public class Eldritch extends Weapon.Enhancement {
 
         if (Random.Int(level + 5) >= 4) {
 
-            if (defender == Dungeon.hero) {
+            if (defender == SpacebaseRun.hero) {
                 Buff.affect(defender, Vertigo.class, Vertigo.duration(defender));
             } else {
                 Buff.affect(defender, Terror.class, Terror.DURATION).object = attacker.id();

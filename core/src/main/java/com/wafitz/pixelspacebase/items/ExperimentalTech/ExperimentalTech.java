@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.items.ExperimentalTech;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Fire;
@@ -266,13 +266,13 @@ public class ExperimentalTech extends Item {
 
     @Override
     protected void onThrow(int cell) {
-        if (Dungeon.level.map[cell] == Terrain.WELL || Level.pit[cell]) {
+        if (SpacebaseRun.level.map[cell] == Terrain.WELL || Level.pit[cell]) {
 
             super.onThrow(cell);
 
         } else {
 
-            Dungeon.level.press(cell, null);
+            SpacebaseRun.level.press(cell, null);
             shatter(cell);
 
         }
@@ -283,7 +283,7 @@ public class ExperimentalTech extends Item {
     }
 
     public void shatter(int cell) {
-        if (Dungeon.visible[cell]) {
+        if (SpacebaseRun.visible[cell]) {
             GLog.i(Messages.get(ExperimentalTech.class, "shatter"));
             Sample.INSTANCE.play(Assets.SND_SHATTER);
             splash(cell);
@@ -398,7 +398,7 @@ public class ExperimentalTech extends Item {
         final int color = ItemSprite.pick(image, 8, 10);
         Splash.at(cell, color, 5);
 
-        Fire fire = (Fire) Dungeon.level.blobs.get(Fire.class);
+        Fire fire = (Fire) SpacebaseRun.level.blobs.get(Fire.class);
         if (fire != null)
             fire.clear(cell);
 

@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Blindness;
@@ -46,19 +46,19 @@ public class FlashingVent extends Vent {
         Char ch = Actor.findChar(pos);
 
         if (ch != null) {
-            int len = Random.Int(5, 10) + Dungeon.depth;
+            int len = Random.Int(5, 10) + SpacebaseRun.depth;
             Buff.prolong(ch, Blindness.class, len);
             Buff.prolong(ch, Cripple.class, len);
             if (ch instanceof Mob) {
                 if (((Mob) ch).state == ((Mob) ch).HUNTING) ((Mob) ch).state = ((Mob) ch).WANDERING;
-                ((Mob) ch).beckon(Dungeon.level.randomDestination());
+                ((Mob) ch).beckon(SpacebaseRun.level.randomDestination());
             }
-            if (ch == Dungeon.hero) {
+            if (ch == SpacebaseRun.hero) {
                 Sample.INSTANCE.play(Assets.SND_BLAST);
             }
         }
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             GameScene.flash(0xFFFFFF);
             CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
         }

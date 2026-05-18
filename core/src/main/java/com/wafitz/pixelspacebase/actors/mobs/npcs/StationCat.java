@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -77,19 +77,19 @@ public class StationCat extends NPC {
     }
 
     private int followTarget() {
-        if (Dungeon.level.distance(pos, Dungeon.hero.pos) <= 2) {
+        if (SpacebaseRun.level.distance(pos, SpacebaseRun.hero.pos) <= 2) {
             return -1;
         }
 
         int best = -1;
         int bestDistance = Integer.MAX_VALUE;
         for (int offset : PathFinder.NEIGHBOURS8) {
-            int cell = Dungeon.hero.pos + offset;
+            int cell = SpacebaseRun.hero.pos + offset;
             if (cell == pos) {
                 return -1;
             }
             if (Level.passable[cell] && Actor.findChar(cell) == null) {
-                int distance = Dungeon.level.distance(pos, cell);
+                int distance = SpacebaseRun.level.distance(pos, cell);
                 if (distance < bestDistance) {
                     best = cell;
                     bestDistance = distance;
@@ -111,7 +111,7 @@ public class StationCat extends NPC {
 
     @Override
     public void die(Object src) {
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             GLog.w(Messages.get(this, "dies"));
         }
         super.die(src);
@@ -125,14 +125,14 @@ public class StationCat extends NPC {
             yell(Messages.get(this, "petted"));
         } else {
             int oldPos = pos;
-            move(Dungeon.hero.pos);
-            Dungeon.hero.move(oldPos);
+            move(SpacebaseRun.hero.pos);
+            SpacebaseRun.hero.move(oldPos);
 
             moveSprite(oldPos, pos);
-            Dungeon.hero.sprite.move(Dungeon.hero.pos, oldPos);
+            SpacebaseRun.hero.sprite.move(SpacebaseRun.hero.pos, oldPos);
 
-            Dungeon.hero.spend(1 / Dungeon.hero.speed());
-            Dungeon.hero.busy();
+            SpacebaseRun.hero.spend(1 / SpacebaseRun.hero.speed());
+            SpacebaseRun.hero.busy();
         }
 
         return true;

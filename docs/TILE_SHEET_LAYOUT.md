@@ -18,6 +18,6 @@ The image is generated from the canonical Maintenance / Operations sheet, `core/
 - `ENTRANCE` and `EXIT` are visually swapped in the sheet mapping:
   - Frame `7` is `EXIT`, the next-deck route.
   - Frame `8` is `ENTRANCE`, the previous-deck route.
-- `SECRET_DOOR`, `HIDDEN_VENT`, `VENT`, and `INACTIVE_VENT` do not have unique base frames in `DungeonTilemap`; they reuse wall/floor frames plus discovery or overlay behavior.
-- `WATER` uses the separate `water*.png` animated texture in gameplay. Frame `63` is still listed because `DungeonTilemap` maps water there for stitching/reference behavior.
+- `SECRET_DOOR`, `HIDDEN_VENT`, `VENT`, and `INACTIVE_VENT` do not have unique base frames in `SpacebaseTilemap`; they reuse wall/floor frames plus discovery or overlay behavior.
+- `WATER` uses the separate `water*.png` animated texture in gameplay. Frame `63` is still listed because `SpacebaseTilemap` maps water there for stitching/reference behavior.
 - Frames `38-47` are alternate variants used by the tile renderer for visual variety.

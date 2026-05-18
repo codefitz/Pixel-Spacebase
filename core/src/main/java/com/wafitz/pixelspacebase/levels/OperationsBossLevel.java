@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.levels;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Bones;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.FeralShapeshifter;
@@ -235,7 +235,7 @@ public class OperationsBossLevel extends RegularLevel {
     }
 
     private boolean isShapeshifterQueenFight() {
-        return Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.SHAPESHIFTER;
+        return SpacebaseRun.hero != null && SpacebaseRun.hero.heroClass == HeroClass.SHAPESHIFTER;
     }
 
     public Actor respawner() {

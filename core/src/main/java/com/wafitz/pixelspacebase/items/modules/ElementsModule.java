@@ -25,8 +25,8 @@ import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.actors.buffs.Venom;
 import com.wafitz.pixelspacebase.actors.mobs.Eye;
-import com.wafitz.pixelspacebase.actors.mobs.Warlock;
-import com.wafitz.pixelspacebase.actors.mobs.Yog;
+import com.wafitz.pixelspacebase.actors.mobs.SignalLeech;
+import com.wafitz.pixelspacebase.actors.mobs.ContainmentMass;
 import com.wafitz.pixelspacebase.levels.vents.LightningVent;
 import com.watabou.utils.Random;
 
@@ -49,9 +49,9 @@ public class ElementsModule extends Module {
         FULL.add(Poison.class);
         FULL.add(Venom.class);
         FULL.add(LightningVent.Electricity.class);
-        FULL.add(Warlock.class);
+        FULL.add(SignalLeech.class);
         FULL.add(Eye.class);
-        FULL.add(Yog.BurningFist.class);
+        FULL.add(ContainmentMass.BurningFist.class);
     }
 
     public class Resistance extends ModuleBuff {

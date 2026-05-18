@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.blasters;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -32,7 +32,7 @@ import com.wafitz.pixelspacebase.actors.buffs.SoulMark;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
-import com.wafitz.pixelspacebase.effects.MagicMissile;
+import com.wafitz.pixelspacebase.effects.EnergyBeam;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
 import com.wafitz.pixelspacebase.items.containers.Container;
@@ -138,8 +138,8 @@ public abstract class Blaster extends Item {
     }
 
     protected void processSoulMark(Char target, int chargesUsed) {
-        if (target != Dungeon.hero &&
-                Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
+        if (target != SpacebaseRun.hero &&
+                SpacebaseRun.hero.subClass == HeroSubClass.SIGNAL_LEECH &&
                 Random.Float() < .15f + (level() * chargesUsed * 0.03f)) {
             SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION + level());
         }
@@ -242,7 +242,7 @@ public abstract class Blaster extends Item {
     }
 
     protected void fx(Ballistica bolt, Callback callback) {
-        MagicMissile.whiteLight(curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
+        EnergyBeam.whiteLight(curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
         Sample.INSTANCE.play(Assets.SND_ZAP);
     }
 

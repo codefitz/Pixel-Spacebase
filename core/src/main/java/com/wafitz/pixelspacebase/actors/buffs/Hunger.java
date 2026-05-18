@@ -22,11 +22,11 @@ package com.wafitz.pixelspacebase.actors.buffs;
 
 import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.Challenges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
-import com.wafitz.pixelspacebase.items.artifacts.Artifact;
-import com.wafitz.pixelspacebase.items.artifacts.SurvivalModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.SurvivalModule;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -62,7 +62,7 @@ public class Hunger extends Buff implements Hero.Doom {
     @Override
     public boolean act() {
 
-        if (Dungeon.level.locked) {
+        if (SpacebaseRun.level.locked) {
             spend(STEP);
             return true;
         }
@@ -129,13 +129,13 @@ public class Hunger extends Buff implements Hero.Doom {
 
     public void satisfy(float energy) {
 
-        Artifact.ArtifactBuff buff = target.buff(SurvivalModule.hornRecharge.class);
+        EquippableModule.ModuleBuff buff = target.buff(SurvivalModule.hornRecharge.class);
         if (buff != null && buff.isMalfunctioning()) {
             energy *= 0.67f;
             GLog.n(Messages.get(this, "malfunctioninghorn"));
         }
 
-        if (!Dungeon.isChallenged(Challenges.NO_FOOD))
+        if (!SpacebaseRun.isChallenged(Challenges.NO_FOOD))
             reduceHunger(energy);
     }
 
@@ -199,7 +199,7 @@ public class Hunger extends Buff implements Hero.Doom {
 
         Badges.validateDeathFromHunger();
 
-        Dungeon.fail(getClass());
+        SpacebaseRun.fail(getClass());
         GLog.n(Messages.get(this, "ondeath"));
     }
 }

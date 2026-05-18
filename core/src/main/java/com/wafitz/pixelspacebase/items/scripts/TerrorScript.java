@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.scripts;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
@@ -47,7 +47,7 @@ public class TerrorScript extends Script {
 
         int count = 0;
         Mob affected = null;
-        for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+        for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0])) {
             if (Level.fieldOfView[mob.pos]) {
                 Buff.affect(mob, Terror.class, Terror.DURATION).object = curUser.id();
 

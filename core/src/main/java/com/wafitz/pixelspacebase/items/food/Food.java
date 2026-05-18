@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Hunger;
 import com.wafitz.pixelspacebase.actors.buffs.Recharging;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.effects.SpellSprite;
+import com.wafitz.pixelspacebase.effects.EffectSprite;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.scripts.RechargingScript;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -96,7 +96,7 @@ public class Food extends Item {
 
             hero.sprite.operate(hero.pos);
             hero.busy();
-            SpellSprite.show(hero, SpellSprite.FOOD);
+            EffectSprite.show(hero, EffectSprite.FOOD);
             Sample.INSTANCE.play(Assets.SND_EAT);
 
             hero.spend(eatTimeOverride == null ? TIME_TO_EAT : eatTimeOverride);

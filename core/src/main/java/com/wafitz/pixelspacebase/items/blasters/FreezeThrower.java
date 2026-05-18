@@ -21,14 +21,14 @@
 package com.wafitz.pixelspacebase.items.blasters;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Chill;
 import com.wafitz.pixelspacebase.actors.buffs.FlavourBuff;
 import com.wafitz.pixelspacebase.actors.buffs.Frost;
-import com.wafitz.pixelspacebase.effects.MagicMissile;
+import com.wafitz.pixelspacebase.effects.EnergyBeam;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -56,7 +56,7 @@ public class FreezeThrower extends DamageBlaster {
     @Override
     protected void onZap(Ballistica bolt) {
 
-        Heap heap = Dungeon.level.heaps.get(bolt.collisionPos);
+        Heap heap = SpacebaseRun.level.heaps.get(bolt.collisionPos);
         if (heap != null) {
             heap.freeze();
         }
@@ -91,7 +91,7 @@ public class FreezeThrower extends DamageBlaster {
 
     @Override
     protected void fx(Ballistica bolt, Callback callback) {
-        MagicMissile.blueLight(curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
+        EnergyBeam.blueLight(curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
         Sample.INSTANCE.play(Assets.SND_ZAP);
     }
 

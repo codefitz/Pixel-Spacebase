@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.ui;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
@@ -84,9 +84,9 @@ public class AttackIndicator extends Tag {
             delay = 0.75f;
             active = true;
 
-            if (Dungeon.hero.isAlive()) {
+            if (SpacebaseRun.hero.isAlive()) {
 
-                enable(Dungeon.hero.ready);
+                enable(SpacebaseRun.hero.ready);
 
             } else {
                 visible(false);
@@ -98,10 +98,10 @@ public class AttackIndicator extends Tag {
     private synchronized void checkEnemies() {
 
         candidates.clear();
-        int v = Dungeon.hero.visibleEnemies();
+        int v = SpacebaseRun.hero.visibleEnemies();
         for (int i = 0; i < v; i++) {
-            Mob mob = Dungeon.hero.visibleEnemy(i);
-            if (Dungeon.hero.canAttack(mob)) {
+            Mob mob = SpacebaseRun.hero.visibleEnemy(i);
+            if (SpacebaseRun.hero.canAttack(mob)) {
                 candidates.add(mob);
             }
         }
@@ -168,8 +168,8 @@ public class AttackIndicator extends Tag {
     @Override
     protected void onClick() {
         if (enabled) {
-            if (Dungeon.hero.handle(lastTarget.pos)) {
-                Dungeon.hero.next();
+            if (SpacebaseRun.hero.handle(lastTarget.pos)) {
+                SpacebaseRun.hero.next();
             }
         }
     }

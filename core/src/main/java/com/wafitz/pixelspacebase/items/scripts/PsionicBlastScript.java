@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.scripts;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Blindness;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
@@ -50,7 +50,7 @@ public class PsionicBlastScript extends Script {
         Sample.INSTANCE.play(Assets.SND_BLAST);
         Camoflage.dispel();
 
-        for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+        for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0])) {
             if (Level.fieldOfView[mob.pos]) {
                 mob.damage(mob.HT, this);
             }
@@ -59,14 +59,14 @@ public class PsionicBlastScript extends Script {
         curUser.damage(Math.max(curUser.HT / 5, curUser.HP / 2), this);
         Buff.prolong(curUser, Paralysis.class, Random.Int(4, 6));
         Buff.prolong(curUser, Blindness.class, Random.Int(6, 9));
-        Dungeon.observe();
+        SpacebaseRun.observe();
 
         setKnown();
 
         curUser.spendAndNext(TIME_TO_READ); //no animation here, the flash interrupts it anyway.
 
         if (!curUser.isAlive()) {
-            Dungeon.fail(getClass());
+            SpacebaseRun.fail(getClass());
             GLog.n(Messages.get(this, "ondeath"));
         }
     }

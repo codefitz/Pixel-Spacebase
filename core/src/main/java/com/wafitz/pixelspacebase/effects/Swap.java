@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.effects;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
@@ -47,7 +47,7 @@ public class Swap extends Actor {
         this.ch1 = ch1;
         this.ch2 = ch2;
 
-        delay = Dungeon.level.distance(ch1.pos, ch2.pos) * 0.1f;
+        delay = SpacebaseRun.level.distance(ch1.pos, ch2.pos) * 0.1f;
 
         eff1 = new Effect(ch1.sprite, ch1.pos, ch2.pos);
         eff2 = new Effect(ch2.sprite, ch2.pos, ch1.pos);
@@ -77,21 +77,21 @@ public class Swap extends Actor {
 
             if (!ch1.flying) {
                 if (ch1 instanceof Mob) {
-                    Dungeon.level.mobPress((Mob) ch1);
+                    SpacebaseRun.level.mobPress((Mob) ch1);
                 } else {
-                    Dungeon.level.press(ch1.pos, ch1);
+                    SpacebaseRun.level.press(ch1.pos, ch1);
                 }
             }
             if (!ch2.flying) {
                 if (ch2 instanceof Mob) {
-                    Dungeon.level.mobPress((Mob) ch2);
+                    SpacebaseRun.level.mobPress((Mob) ch2);
                 } else {
-                    Dungeon.level.press(ch2.pos, ch2);
+                    SpacebaseRun.level.press(ch2.pos, ch2);
                 }
             }
 
-            if (ch1 == Dungeon.hero || ch2 == Dungeon.hero) {
-                Dungeon.observe();
+            if (ch1 == SpacebaseRun.hero || ch2 == SpacebaseRun.hero) {
+                SpacebaseRun.observe();
                 GameScene.updateFog();
             }
         }

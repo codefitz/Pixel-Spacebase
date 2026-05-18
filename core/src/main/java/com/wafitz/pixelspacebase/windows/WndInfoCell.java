@@ -20,8 +20,8 @@
  */
 package com.wafitz.pixelspacebase.windows;
 
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -41,7 +41,7 @@ public class WndInfoCell extends Window {
 
         super();
 
-        int tile = Dungeon.level.map[cell];
+        int tile = SpacebaseRun.level.map[cell];
         if (Level.water[cell]) {
             tile = Terrain.WATER;
         } else if (Level.pit[cell]) {
@@ -49,9 +49,9 @@ public class WndInfoCell extends Window {
         }
 
         CustomTileVisual vis = null;
-        int x = cell % Dungeon.level.width();
-        int y = cell / Dungeon.level.width();
-        for (CustomTileVisual i : Dungeon.level.customTiles) {
+        int x = cell % SpacebaseRun.level.width();
+        int y = cell / SpacebaseRun.level.width();
+        for (CustomTileVisual i : SpacebaseRun.level.customTiles) {
             if ((x >= i.tileX && x < i.tileX + i.tileW) &&
                     (y >= i.tileY && y < i.tileY + i.tileH)) {
                 if (i.desc() != null) {
@@ -74,14 +74,14 @@ public class WndInfoCell extends Window {
             // wafitz.v4: We want it to display custom wet tile
 
             /*if (tile == Terrain.WATER) {
-                Image water = new Image(Dungeon.level.waterTex());
-                water.frame(0, 0, DungeonTilemap.SIZE, DungeonTilemap.SIZE);
+                Image water = new Image(SpacebaseRun.level.waterTex());
+                water.frame(0, 0, SpacebaseTilemap.SIZE, SpacebaseTilemap.SIZE);
                 titlebar.icon(water);
             } else {*/
-                titlebar.icon(DungeonTilemap.tile(cell, tile));
+                titlebar.icon(SpacebaseTilemap.tile(cell, tile));
             //}
-            titlebar.label(Dungeon.level.tileName(tile));
-            desc += Dungeon.level.tileDesc(tile);
+            titlebar.label(SpacebaseRun.level.tileName(tile));
+            desc += SpacebaseRun.level.tileDesc(tile);
 
         }
         titlebar.setRect(0, 0, WIDTH, 0);
@@ -90,7 +90,7 @@ public class WndInfoCell extends Window {
         RenderedTextMultiline info = PixelScene.renderMultiline(6);
         add(info);
 
-        for (Blob blob : Dungeon.level.blobs.values()) {
+        for (Blob blob : SpacebaseRun.level.blobs.values()) {
             if (blob.volume > 0 && blob.cur[cell] > 0 && blob.tileDesc() != null) {
                 if (desc.length() > 0) {
                     desc += "\n\n";

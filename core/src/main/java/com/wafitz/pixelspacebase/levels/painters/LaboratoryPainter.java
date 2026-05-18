@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.blobs.Craft;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Generator;
@@ -69,7 +69,7 @@ public class LaboratoryPainter extends Painter {
         }
 
         entrance.set(Room.Door.Type.LOCKED);
-        level.addItemToSpawn(new IronKey(Dungeon.depth));
+        level.addItemToSpawn(new IronKey(SpacebaseRun.depth));
     }
 
     private static Item prize(Level level) {

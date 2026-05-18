@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
 import com.wafitz.pixelspacebase.actors.blobs.VenomGas;
@@ -98,7 +98,7 @@ public class WeakClone extends NPC {
 
         if (enemy == null || !enemy.isAlive()) {
             HashSet<Mob> enemies = new HashSet<>();
-            for (Mob mob : Dungeon.level.mobs) {
+            for (Mob mob : SpacebaseRun.level.mobs) {
                 if (mob.hostile && Level.fieldOfView[mob.pos]) {
                     enemies.add(mob);
                 }
@@ -122,14 +122,14 @@ public class WeakClone extends NPC {
 
         int curPos = pos;
 
-        moveSprite(pos, Dungeon.hero.pos);
-        move(Dungeon.hero.pos);
+        moveSprite(pos, SpacebaseRun.hero.pos);
+        move(SpacebaseRun.hero.pos);
 
-        Dungeon.hero.sprite.move(Dungeon.hero.pos, curPos);
-        Dungeon.hero.move(curPos);
+        SpacebaseRun.hero.sprite.move(SpacebaseRun.hero.pos, curPos);
+        SpacebaseRun.hero.move(curPos);
 
-        Dungeon.hero.spend(1 / Dungeon.hero.speed());
-        Dungeon.hero.busy();
+        SpacebaseRun.hero.spend(1 / SpacebaseRun.hero.speed());
+        SpacebaseRun.hero.busy();
 
         return true;
     }

@@ -20,9 +20,9 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.items.artifacts.AlienDNA;
+import com.wafitz.pixelspacebase.items.equippablemodules.AlienDNA;
 
 public class Regeneration extends Buff {
 
@@ -42,7 +42,7 @@ public class Regeneration extends Buff {
                 }
             }
 
-            AlienDNA.chaliceRegen regenBuff = Dungeon.hero.buff(AlienDNA.chaliceRegen.class);
+            AlienDNA.chaliceRegen regenBuff = SpacebaseRun.hero.buff(AlienDNA.chaliceRegen.class);
 
             if (regenBuff != null)
                 if (regenBuff.isMalfunctioning())

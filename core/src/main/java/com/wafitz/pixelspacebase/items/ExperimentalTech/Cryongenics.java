@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.ExperimentalTech;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.blobs.Fire;
 import com.wafitz.pixelspacebase.actors.blobs.Freezing;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -42,10 +42,10 @@ public class Cryongenics extends ExperimentalTech {
 
         PathFinder.buildDistanceMap(cell, BArray.not(Level.losBlocking, null), DISTANCE);
 
-        Fire fire = (Fire) Dungeon.level.blobs.get(Fire.class);
+        Fire fire = (Fire) SpacebaseRun.level.blobs.get(Fire.class);
 
         boolean visible = false;
-        for (int i = 0; i < Dungeon.level.length(); i++) {
+        for (int i = 0; i < SpacebaseRun.level.length(); i++) {
             if (PathFinder.distance[i] < Integer.MAX_VALUE) {
                 visible = Freezing.affect(i, fire) || visible;
             }

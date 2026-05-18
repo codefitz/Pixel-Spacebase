@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.effects;
 
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
@@ -30,7 +30,7 @@ import com.watabou.utils.Random;
 public class Splash {
 
     public static void at(int cell, final int color, int n) {
-        at(DungeonTilemap.tileCenterToWorld(cell), color, n);
+        at(SpacebaseTilemap.tileCenterToWorld(cell), color, n);
     }
 
     public static void at(PointF p, final int color, int n) {

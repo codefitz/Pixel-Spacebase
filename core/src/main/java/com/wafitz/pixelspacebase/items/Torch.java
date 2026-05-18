@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -167,10 +167,10 @@ public class Torch extends MeleeWeapon {
 
             if (!collect || !collect(hero.belongings.backpack)) {
                 onDetach();
-                Dungeon.quickslot.clearItem(this);
+                SpacebaseRun.quickslot.clearItem(this);
                 updateQuickslot();
                 if (collect) {
-                    Dungeon.level.drop(this, hero.pos);
+                    SpacebaseRun.level.drop(this, hero.pos);
                 }
             }
 

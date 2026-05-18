@@ -31,7 +31,7 @@ public class SeniorSprite extends MobSprite {
     public SeniorSprite() {
         super();
 
-        texture(Assets.MONK);
+        texture(Assets.JEDA_KNIGHT);
 
         TextureFilm frames = new TextureFilm(texture, 15, 14);
 

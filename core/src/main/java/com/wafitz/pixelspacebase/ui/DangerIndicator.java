@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.ui;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.watabou.noosa.BitmapText;
@@ -76,8 +76,8 @@ public class DangerIndicator extends Tag {
     @Override
     public void update() {
 
-        if (Dungeon.hero.isAlive()) {
-            int v = Dungeon.hero.visibleEnemies();
+        if (SpacebaseRun.hero.isAlive()) {
+            int v = SpacebaseRun.hero.visibleEnemies();
             if (v != lastNumber) {
                 lastNumber = v;
                 if (visible = lastNumber > 0) {
@@ -97,13 +97,13 @@ public class DangerIndicator extends Tag {
 
     @Override
     protected void onClick() {
-        if (Dungeon.hero.visibleEnemies() > 0) {
+        if (SpacebaseRun.hero.visibleEnemies() > 0) {
 
-            Mob target = Dungeon.hero.visibleEnemy(enemyIndex++);
+            Mob target = SpacebaseRun.hero.visibleEnemy(enemyIndex++);
 
             HealthIndicator.instance.target(target == HealthIndicator.instance.target() ? null : target);
 
-            if (Dungeon.hero.curAction == null) {
+            if (SpacebaseRun.hero.curAction == null) {
                 Camera.main.target = null;
                 Camera.main.focusOn(target.sprite);
             }

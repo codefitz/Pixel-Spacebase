@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -42,7 +42,7 @@ public class AdrenalBoost extends Mine {
         if (ch != null) Buff.prolong(ch, Upgrade.class, 30f);
 
         if (Random.Int(5) == 0) {
-            Dungeon.level.drop(new Device(), pos).sprite.drop();
+            SpacebaseRun.level.drop(new Device(), pos).sprite.drop();
         }
     }
 

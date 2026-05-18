@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Thief;
@@ -69,7 +69,7 @@ public class Frost extends FlavourBuff {
                     item = item.detach(hero.belongings.backpack);
                     FrozenCarpaccio carpaccio = new FrozenCarpaccio();
                     if (!carpaccio.collect(hero.belongings.backpack)) {
-                        Dungeon.level.drop(carpaccio, target.pos).sprite.drop();
+                        SpacebaseRun.level.drop(carpaccio, target.pos).sprite.drop();
                     }
                     GLog.w(Messages.get(this, "freezes", item.toString()));
 

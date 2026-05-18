@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.Cryongenics;
@@ -42,20 +42,20 @@ import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Uniform;
-import com.wafitz.pixelspacebase.items.artifacts.AlienDNA;
-import com.wafitz.pixelspacebase.items.artifacts.Artifact;
-import com.wafitz.pixelspacebase.items.artifacts.BuggyCompiler;
-import com.wafitz.pixelspacebase.items.artifacts.GnollTechShield;
-import com.wafitz.pixelspacebase.items.artifacts.GravityGun;
-import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.McGyvrModule;
-import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
-import com.wafitz.pixelspacebase.items.artifacts.StealthModule;
-import com.wafitz.pixelspacebase.items.artifacts.StrongForcefield;
-import com.wafitz.pixelspacebase.items.artifacts.SurveyorModule;
-import com.wafitz.pixelspacebase.items.artifacts.SurvivalModule;
-import com.wafitz.pixelspacebase.items.artifacts.TechToolkit;
-import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
+import com.wafitz.pixelspacebase.items.equippablemodules.AlienDNA;
+import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.BuggyCompiler;
+import com.wafitz.pixelspacebase.items.equippablemodules.FrontierTechShield;
+import com.wafitz.pixelspacebase.items.equippablemodules.GravityGun;
+import com.wafitz.pixelspacebase.items.equippablemodules.HoloPad;
+import com.wafitz.pixelspacebase.items.equippablemodules.McGyvrModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.PortableMaker;
+import com.wafitz.pixelspacebase.items.equippablemodules.StealthModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.StrongForcefield;
+import com.wafitz.pixelspacebase.items.equippablemodules.SurveyorModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.SurvivalModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.TechToolkit;
+import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.blasters.Disintegrator;
 import com.wafitz.pixelspacebase.items.blasters.DominationBlaster;
@@ -107,7 +107,7 @@ import com.wafitz.pixelspacebase.items.weapon.melee.Dirk;
 import com.wafitz.pixelspacebase.items.weapon.melee.Drill;
 import com.wafitz.pixelspacebase.items.weapon.melee.DualBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
-import com.wafitz.pixelspacebase.items.weapon.melee.GnollSword;
+import com.wafitz.pixelspacebase.items.weapon.melee.RaiderBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.HoloAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.HoloScimitar;
 import com.wafitz.pixelspacebase.items.weapon.melee.ImperialShield;
@@ -165,7 +165,7 @@ public class Generator {
         SCRIPT(400, Script.class),
         BLASTER(40, Blaster.class),
         MODULE(15, Module.class),
-        ARTIFACT(15, Artifact.class),
+        EQUIPPABLE_MODULE(15, EquippableModule.class),
         DEVICE(50, Mine.Device.class),
         FOOD(0, Food.class),
         PARTS(500, Parts.class);
@@ -294,7 +294,7 @@ public class Generator {
         Category.WEP_T3.probs = new float[]{6, 5, 5, 4, 4, 4, 6, 6};
 
         Category.WEP_T4.classes = new Class<?>[]{
-                GnollSword.class,
+                RaiderBlade.class,
                 HoloAxe.class,
                 Flail.class,
                 DarkSaber.class,
@@ -342,13 +342,13 @@ public class Generator {
                 TechModule.class};
         Category.MODULE.probs = new float[]{1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1};
 
-        Category.ARTIFACT.classes = new Class<?>[]{
+        Category.EQUIPPABLE_MODULE.classes = new Class<?>[]{
                 StrongForcefield.class,
                 AlienDNA.class,
                 StealthModule.class,
                 SurvivalModule.class,
                 McGyvrModule.class,
-                GnollTechShield.class,
+                FrontierTechShield.class,
                 SurveyorModule.class,
                 TimeFolder.class,
                 BuggyCompiler.class,
@@ -357,7 +357,7 @@ public class Generator {
                 PortableMaker.class,
                 GravityGun.class
         };
-        Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
+        Category.EQUIPPABLE_MODULE.probs = INITIAL_ARTIFACT_PROBS.clone();
 
         Category.DEVICE.classes = new Class<?>[]{
                 FireMine.Device.class,
@@ -395,8 +395,8 @@ public class Generator {
                     return randomArmor();
                 case WEAPON:
                     return randomWeapon();
-                case ARTIFACT:
-                    Item item = randomArtifact();
+                case EQUIPPABLE_MODULE:
+                    Item item = randomEquippableModule();
                     //if we're out of artifacts, return a ring instead.
                     return item != null ? item : random(Category.MODULE);
                 default:
@@ -425,7 +425,7 @@ public class Generator {
     }
 
     public static Armor randomArmor() {
-        return randomArmor(Dungeon.depth / 5);
+        return randomArmor(SpacebaseRun.depth / 5);
     }
 
     public static Armor randomArmor(int floorSet) {
@@ -451,7 +451,7 @@ public class Generator {
     };
 
     public static Weapon randomWeapon() {
-        return randomWeapon(Dungeon.depth / 5);
+        return randomWeapon(SpacebaseRun.depth / 5);
     }
 
     public static Weapon randomWeapon(int floorSet) {
@@ -470,10 +470,10 @@ public class Generator {
     }
 
     //enforces uniqueness of artifacts throughout a run.
-    public static Artifact randomArtifact() {
+    public static EquippableModule randomEquippableModule() {
 
         try {
-            Category cat = Category.ARTIFACT;
+            Category cat = Category.EQUIPPABLE_MODULE;
             int i = Random.chances(cat.probs);
 
             //if no artifacts are left, return null
@@ -481,7 +481,7 @@ public class Generator {
                 return null;
             }
 
-            Artifact artifact = (Artifact) cat.classes[i].newInstance();
+            EquippableModule artifact = (EquippableModule) cat.classes[i].newInstance();
 
             //remove the chance of spawning this artifact.
             cat.probs[i] = 0;
@@ -497,11 +497,11 @@ public class Generator {
         }
     }
 
-    public static boolean removeArtifact(Artifact artifact) {
+    public static boolean removeEquippableModule(EquippableModule artifact) {
         if (spawnedArtifacts.contains(artifact.getClass().getSimpleName()))
             return false;
 
-        Category cat = Category.ARTIFACT;
+        Category cat = Category.EQUIPPABLE_MODULE;
         for (int i = 0; i < cat.classes.length; i++)
             if (cat.classes[i].equals(artifact.getClass())) {
                 if (cat.probs[i] == 1) {
@@ -517,10 +517,10 @@ public class Generator {
 
     //resets artifact probabilities, for new dungeons
     public static void initArtifacts() {
-        Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
+        Category.EQUIPPABLE_MODULE.probs = INITIAL_ARTIFACT_PROBS.clone();
 
         //checks for dried rose quest completion, adds the rose in accordingly.
-        if (Hologram.Quest.completed()) Category.ARTIFACT.probs[10] = 1;
+        if (Hologram.Quest.completed()) Category.EQUIPPABLE_MODULE.probs[10] = 1;
 
         spawnedArtifacts = new ArrayList<>();
     }
@@ -539,7 +539,7 @@ public class Generator {
 
         if (bundle.contains(ARTIFACTS)) {
             Collections.addAll(spawnedArtifacts, bundle.getStringArray(ARTIFACTS));
-            Category cat = Category.ARTIFACT;
+            Category cat = Category.EQUIPPABLE_MODULE;
 
             for (String artifact : spawnedArtifacts)
                 for (int i = 0; i < cat.classes.length; i++)

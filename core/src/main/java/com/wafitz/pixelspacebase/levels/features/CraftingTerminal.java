@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.features;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -47,7 +47,7 @@ public class CraftingTerminal {
 
         Iterator<Item> items = hero.belongings.iterator();
         foundFruit = false;
-        Heap heap = Dungeon.level.heaps.get(pos);
+        Heap heap = SpacebaseRun.level.heaps.get(pos);
 
         if (heap == null)
             while (items.hasNext() && !foundFruit) {

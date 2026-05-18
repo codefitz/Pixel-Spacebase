@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.actors;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Chill;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
@@ -80,7 +80,7 @@ public abstract class Char extends Actor {
 
     @Override
     protected boolean act() {
-        Dungeon.level.updateFieldOfView(this, Level.fieldOfView);
+        SpacebaseRun.level.updateFieldOfView(this, Level.fieldOfView);
         return false;
     }
 
@@ -123,7 +123,7 @@ public abstract class Char extends Actor {
 
         if (enemy == null || !enemy.isAlive()) return false;
 
-        boolean visibleFight = Dungeon.visible[pos] || Dungeon.visible[enemy.pos];
+        boolean visibleFight = SpacebaseRun.visible[pos] || SpacebaseRun.visible[enemy.pos];
 
         if (hit(this, enemy, false)) {
 
@@ -154,7 +154,7 @@ public abstract class Char extends Actor {
 
             //TODO: consider revisiting this and shaking in more cases.
             float shake = 0f;
-            if (enemy == Dungeon.hero)
+            if (enemy == SpacebaseRun.hero)
                 shake = effectiveDamage / (enemy.HT / 4);
 
             if (shake > 1f)
@@ -171,12 +171,12 @@ public abstract class Char extends Actor {
             enemy.sprite.flash();
 
             if (!enemy.isAlive() && visibleFight) {
-                if (enemy == Dungeon.hero) {
+                if (enemy == SpacebaseRun.hero) {
 
-                    Dungeon.fail(getClass());
+                    SpacebaseRun.fail(getClass());
                     GLog.n(Messages.capitalize(Messages.get(Char.class, "kill", name)));
 
-                } else if (this == Dungeon.hero) {
+                } else if (this == SpacebaseRun.hero) {
                     GLog.i(Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name)));
                 }
             }
@@ -259,7 +259,7 @@ public abstract class Char extends Actor {
         if (buff(Paralysis.class) != null) {
             if (Random.Int(dmg) >= Random.Int(HP)) {
                 Buff.detach(this, Paralysis.class);
-                if (Dungeon.visible[pos]) {
+                if (SpacebaseRun.visible[pos]) {
                     GLog.i(Messages.get(Char.class, "out_of_paralysis", name));
                 }
             }
@@ -410,7 +410,7 @@ public abstract class Char extends Actor {
 
     public void move(int step) {
 
-        if (Dungeon.level.adjacent(step, pos) && buff(Vertigo.class) != null) {
+        if (SpacebaseRun.level.adjacent(step, pos) && buff(Vertigo.class) != null) {
             sprite.interruptMotion();
             int newPos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
             if (!(Level.passable[newPos] || Level.avoid[newPos]) || Actor.findChar(newPos) != null)
@@ -421,23 +421,23 @@ public abstract class Char extends Actor {
             }
         }
 
-        if (Dungeon.level.map[pos] == Terrain.OPEN_DOOR) {
+        if (SpacebaseRun.level.map[pos] == Terrain.OPEN_DOOR) {
             Door.leave(pos);
         }
 
         pos = step;
 
-        if (flying && Dungeon.level.map[pos] == Terrain.DOOR) {
+        if (flying && SpacebaseRun.level.map[pos] == Terrain.DOOR) {
             Door.enter(pos);
         }
 
-        if (this != Dungeon.hero) {
-            sprite.visible = Dungeon.visible[pos];
+        if (this != SpacebaseRun.hero) {
+            sprite.visible = SpacebaseRun.visible[pos];
         }
     }
 
     public int distance(Char other) {
-        return Dungeon.level.distance(pos, other.pos);
+        return SpacebaseRun.level.distance(pos, other.pos);
     }
 
     public void onMotionComplete() {

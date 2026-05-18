@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
@@ -66,15 +66,15 @@ class Guard extends Mob {
 
     @Override
     protected boolean act() {
-        Dungeon.level.updateFieldOfView(this, Level.fieldOfView);
+        SpacebaseRun.level.updateFieldOfView(this, Level.fieldOfView);
 
         if (state == HUNTING &&
                 paralysed <= 0 &&
                 enemy != null &&
                 enemy.invisible == 0 &&
                 Level.fieldOfView[enemy.pos] &&
-                Dungeon.level.distance(pos, enemy.pos) < 5 &&
-                !Dungeon.level.adjacent(pos, enemy.pos) &&
+                SpacebaseRun.level.distance(pos, enemy.pos) < 5 &&
+                !SpacebaseRun.level.adjacent(pos, enemy.pos) &&
                 Random.Int(3) == 0 &&
 
                 forcePull(enemy.pos)) {
@@ -113,11 +113,11 @@ class Guard extends Mob {
                         Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new Callback() {
                             public void call() {
                                 enemy.pos = newPosFinal;
-                                Dungeon.level.press(newPosFinal, enemy);
+                                SpacebaseRun.level.press(newPosFinal, enemy);
                                 Cripple.prolong(enemy, Cripple.class, 4f);
-                                if (enemy == Dungeon.hero) {
-                                    Dungeon.hero.interrupt();
-                                    Dungeon.observe();
+                                if (enemy == SpacebaseRun.hero) {
+                                    SpacebaseRun.hero.interrupt();
+                                    SpacebaseRun.observe();
                                     GameScene.updateFog();
                                 }
                             }
@@ -155,8 +155,8 @@ class Guard extends Mob {
             //otherwise, we may drop a health potion. overall chance is 7/(8 * (7 + ExperimentalTech dropped))
             //with 0 ExperimentalTech dropped that simplifies to 1/8
         } else {
-            if (Random.Int(7 + Dungeon.limitedDrops.guardHP.count) < 7) {
-                Dungeon.limitedDrops.guardHP.drop();
+            if (Random.Int(7 + SpacebaseRun.limitedDrops.guardHP.count) < 7) {
+                SpacebaseRun.limitedDrops.guardHP.drop();
                 return new HealingTech();
             }
         }

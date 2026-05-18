@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
@@ -50,8 +50,8 @@ public class WaterThing extends Mob {
     public WaterThing() {
         super();
 
-        HP = HT = 10 + Dungeon.depth * 5;
-        defenseSkill = 10 + Dungeon.depth * 2;
+        HP = HT = 10 + SpacebaseRun.depth * 5;
+        defenseSkill = 10 + SpacebaseRun.depth * 2;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class WaterThing extends Mob {
             return true;
         } else {
             //this causes pirahna to move away when a door is closed on them.
-            Dungeon.level.updateFieldOfView(this, Level.fieldOfView);
+            SpacebaseRun.level.updateFieldOfView(this, Level.fieldOfView);
             enemy = chooseEnemy();
             if (state == this.HUNTING &&
                     !(enemy != null && enemy.isAlive() && Level.fieldOfView[enemy.pos] && enemy.invisible <= 0)) {
@@ -71,7 +71,7 @@ public class WaterThing extends Mob {
                 int i = 0;
                 do {
                     i++;
-                    target = Dungeon.level.randomDestination();
+                    target = SpacebaseRun.level.randomDestination();
                     if (i == 100) return true;
                 } while (!getCloser(target));
                 moveSprite(oldPos, pos);
@@ -84,22 +84,22 @@ public class WaterThing extends Mob {
 
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange(Dungeon.depth, 4 + Dungeon.depth * 2);
+        return Random.NormalIntRange(SpacebaseRun.depth, 4 + SpacebaseRun.depth * 2);
     }
 
     @Override
     public int attackSkill(Char target) {
-        return 20 + Dungeon.depth * 2;
+        return 20 + SpacebaseRun.depth * 2;
     }
 
     @Override
     public int drRoll() {
-        return Random.NormalIntRange(0, Dungeon.depth);
+        return Random.NormalIntRange(0, SpacebaseRun.depth);
     }
 
     @Override
     public void die(Object cause) {
-        Dungeon.level.drop(new MysteryMeat(), pos).sprite.drop();
+        SpacebaseRun.level.drop(new MysteryMeat(), pos).sprite.drop();
         super.die(cause);
 
         Statistics.waterThings++;
@@ -118,7 +118,7 @@ public class WaterThing extends Mob {
             return false;
         }
 
-        int step = Dungeon.findStep(this, pos, target,
+        int step = SpacebaseRun.findStep(this, pos, target,
                 Level.water,
                 Level.fieldOfView);
         if (step != -1) {
@@ -131,7 +131,7 @@ public class WaterThing extends Mob {
 
     @Override
     protected boolean getFurther(int target) {
-        int step = Dungeon.flee(this, pos, target,
+        int step = SpacebaseRun.flee(this, pos, target,
                 Level.water,
                 Level.fieldOfView);
         if (step != -1) {

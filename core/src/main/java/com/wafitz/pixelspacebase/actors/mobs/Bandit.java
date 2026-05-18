@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Blindness;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
@@ -49,7 +49,7 @@ public class Bandit extends Thief {
             Buff.prolong(hero, Blindness.class, Random.Int(2, 5));
             Buff.affect(hero, Poison.class).set(Random.Int(5, 7) * Poison.durationFactor(enemy));
             Buff.prolong(hero, Cripple.class, Random.Int(3, 8));
-            Dungeon.observe();
+            SpacebaseRun.observe();
 
             return true;
         } else {

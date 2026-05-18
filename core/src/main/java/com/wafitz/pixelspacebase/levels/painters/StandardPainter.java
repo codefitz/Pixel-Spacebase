@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -41,7 +41,7 @@ public class StandardPainter extends Painter {
             door.set(Room.Door.Type.REGULAR);
         }
 
-        if (!Dungeon.bossLevel() && Random.Int(5) == 0) {
+        if (!SpacebaseRun.bossLevel() && Random.Int(5) == 0) {
             switch (Random.Int(6)) {
                 case 0:
                     if (level.feeling != Level.Feeling.LIGHTEDVENT) {
@@ -54,7 +54,7 @@ public class StandardPainter extends Painter {
                         // Burned room
                     }
                 case 1:
-                    if (Dungeon.depth > 1) {
+                    if (SpacebaseRun.depth > 1) {
                         paintBurned(level, room);
                         return;
                     }
@@ -82,7 +82,7 @@ public class StandardPainter extends Painter {
                         // Fissure
                     }
                 case 5:
-                    if (!Dungeon.bossLevel() && !Dungeon.bossLevel(Dungeon.depth + 1) &&
+                    if (!SpacebaseRun.bossLevel() && !SpacebaseRun.bossLevel(SpacebaseRun.depth + 1) &&
                             Math.min(room.width(), room.height()) >= 5) {
                         paintFissure(level, room);
                         return;
@@ -189,7 +189,7 @@ public class StandardPainter extends Painter {
     private static void paintBridge(Level level, Room room) {
 
         fill(level, room.left + 1, room.top + 1, room.width() - 1, room.height() - 1,
-                !Dungeon.bossLevel() && !Dungeon.bossLevel(Dungeon.depth + 1) && Random.Int(3) == 0 ?
+                !SpacebaseRun.bossLevel() && !SpacebaseRun.bossLevel(SpacebaseRun.depth + 1) && Random.Int(3) == 0 ?
                         Terrain.CHASM :
                         Terrain.WATER);
 

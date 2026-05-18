@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.vents;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.VenomGas;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -35,9 +35,9 @@ public class VenomVent extends Vent {
     @Override
     public void activate() {
 
-        VenomGas venomGas = Blob.device(pos, 80 + 5 * Dungeon.depth, VenomGas.class);
+        VenomGas venomGas = Blob.device(pos, 80 + 5 * SpacebaseRun.depth, VenomGas.class);
 
-        venomGas.setStrength(1 + Dungeon.depth / 4);
+        venomGas.setStrength(1 + SpacebaseRun.depth / 4);
 
         GameScene.add(venomGas);
 

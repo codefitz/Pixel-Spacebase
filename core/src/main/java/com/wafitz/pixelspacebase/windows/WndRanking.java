@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.windows;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Rankings;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
@@ -143,24 +143,24 @@ public class WndRanking extends WndTabbed {
         StatsTab() {
             super();
 
-            if (Dungeon.challenges > 0) GAP--;
+            if (SpacebaseRun.challenges > 0) GAP--;
 
-            String heroClass = Dungeon.hero.className();
+            String heroClass = SpacebaseRun.hero.className();
 
             IconTitle title = new IconTitle();
-            title.icon(HeroSprite.avatar(Dungeon.hero.heroClass, Dungeon.hero.tier()));
-            title.label(Messages.get(this, "title", Dungeon.hero.lvl, heroClass).toUpperCase(Locale.ENGLISH));
+            title.icon(HeroSprite.avatar(SpacebaseRun.hero.heroClass, SpacebaseRun.hero.tier()));
+            title.label(Messages.get(this, "title", SpacebaseRun.hero.lvl, heroClass).toUpperCase(Locale.ENGLISH));
             title.color(Window.SHPX_COLOR);
             title.setRect(0, 0, WIDTH, 0);
             add(title);
 
             float pos = title.bottom();
 
-            if (Dungeon.challenges > 0) {
+            if (SpacebaseRun.challenges > 0) {
                 RedButton btnCatalogus = new RedButton(Messages.get(this, "challenges")) {
                     @Override
                     protected void onClick() {
-                        Game.scene().add(new WndChallenges(Dungeon.challenges, false));
+                        Game.scene().add(new WndChallenges(SpacebaseRun.challenges, false));
                     }
                 };
                 btnCatalogus.setRect(0, pos, btnCatalogus.reqWidth() + 2, btnCatalogus.reqHeight() + 2);
@@ -171,8 +171,8 @@ public class WndRanking extends WndTabbed {
 
             pos += GAP + GAP;
 
-            pos = statSlot(this, Messages.get(this, "str"), Integer.toString(Dungeon.hero.STR), pos);
-            pos = statSlot(this, Messages.get(this, "health"), Integer.toString(Dungeon.hero.HT), pos);
+            pos = statSlot(this, Messages.get(this, "str"), Integer.toString(SpacebaseRun.hero.STR), pos);
+            pos = statSlot(this, Messages.get(this, "health"), Integer.toString(SpacebaseRun.hero.HT), pos);
 
             pos += GAP;
 
@@ -214,7 +214,7 @@ public class WndRanking extends WndTabbed {
         ItemsTab() {
             super();
 
-            Belongings stuff = Dungeon.hero.belongings;
+            Belongings stuff = SpacebaseRun.hero.belongings;
             if (stuff.weapon != null) {
                 addItem(stuff.weapon);
             }
@@ -230,8 +230,8 @@ public class WndRanking extends WndTabbed {
 
             pos = 0;
             for (int i = 0; i < 4; i++) {
-                if (Dungeon.quickslot.getItem(i) != null) {
-                    QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
+                if (SpacebaseRun.quickslot.getItem(i) != null) {
+                    QuickSlotButton slot = new QuickSlotButton(SpacebaseRun.quickslot.getItem(i));
 
                     slot.setRect(pos, 116, 28, 28);
 

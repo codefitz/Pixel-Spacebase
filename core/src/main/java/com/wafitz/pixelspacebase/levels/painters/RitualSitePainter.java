@@ -61,7 +61,7 @@ public class RitualSitePainter extends Painter {
         {
             name = Messages.get(this, "name");
 
-            tx = Assets.PRISON_QUEST;
+            tx = Assets.SECURITY_QUEST;
             txX = txY = 0;
             tileW = tileH = 3;
         }

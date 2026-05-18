@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.scripts;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -55,21 +55,21 @@ public class TeleportationScript extends Script {
         int count = 10;
         int pos;
         do {
-            pos = Dungeon.level.randomRespawnCell();
+            pos = SpacebaseRun.level.randomRespawnCell();
             if (count-- <= 0) {
                 break;
             }
         } while (pos == -1);
 
-        if (pos == -1 || Dungeon.bossLevel()) {
+        if (pos == -1 || SpacebaseRun.bossLevel()) {
 
             GLog.w(Messages.get(TeleportationScript.class, "no_tele"));
 
         } else {
 
             appear(hero, pos);
-            Dungeon.level.press(pos, hero);
-            Dungeon.observe();
+            SpacebaseRun.level.press(pos, hero);
+            SpacebaseRun.observe();
             GameScene.updateFog();
 
             GLog.i(Messages.get(TeleportationScript.class, "tele"));

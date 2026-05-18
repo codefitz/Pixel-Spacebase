@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -33,7 +33,7 @@ public class AltarPainter extends Painter {
     public static void paint(Level level, Room room) {
 
         fill(level, room, Terrain.WALL);
-        fill(level, room, 1, Dungeon.bossLevel(Dungeon.depth + 1) ? Terrain.OFFVENT : Terrain.CHASM);
+        fill(level, room, 1, SpacebaseRun.bossLevel(SpacebaseRun.depth + 1) ? Terrain.OFFVENT : Terrain.CHASM);
 
         Point c = room.center();
         Room.Door door = room.entrance();
@@ -57,7 +57,7 @@ public class AltarPainter extends Painter {
         if (fire == null) {
 			fire = new SacrificialFire();
 		}
-		fire.device( c.x + c.y * Level.WIDTH, 5 + Dungeon.depth * 5 );
+		fire.device( c.x + c.y * Level.WIDTH, 5 + SpacebaseRun.depth * 5 );
 		level.blobs.put( SacrificialFire.class, fire );*/
 
         door.set(Room.Door.Type.EMPTY);

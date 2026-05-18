@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.armor;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Shuriken;
@@ -47,7 +47,7 @@ class PowerSuit extends ClassArmor {
 
         Item proto = new Shuriken();
 
-        for (Mob mob : Dungeon.level.mobs) {
+        for (Mob mob : SpacebaseRun.level.mobs) {
             if (Level.fieldOfView[mob.pos]) {
 
                 Callback callback = new Callback() {

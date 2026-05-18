@@ -1,25 +1,20 @@
 # Naming and Refactor Audit
 
-This audit separates player-facing cleanup from internal compatibility names. The codebase still inherits many Shattered Pixel Dungeon class names, resource keys, and save identifiers. Some should be renamed eventually, but broad package/class renames should be staged behind compatibility checks because saved games, bundles, reflection, assets, and message keys can depend on them.
+This audit separates player-facing cleanup from internal compatibility names. The pre-release internal rename pass intentionally broke old save compatibility so central classes, resource keys, and asset names could move toward Pixel Spacebase terminology.
 
 ## Current Naming Policy
 
 - Player-facing text should use Pixel Spacebase terminology.
-- Internal class names may remain inherited when they are tied to saves, reflection, resource lookup, or large mechanics.
+- Internal class names may remain inherited only where they are still tied to broad mechanics or later package cleanup.
 - When keeping an inherited internal name, document the current player-facing concept in `docs/ENTITY_BEHAVIOR.md`.
-- Prefer wrapper aliases, comments, and new docs before renaming deeply connected classes.
-- Rename internal classes only when the save/resource migration path is clear and the diff can be tested in isolation.
+- Prefer direct renames during pre-release when tests can prove the affected flow still compiles and loads.
 
 ## Keep Internally For Now
 
 | Internal name | Player-facing concept | Reason to keep for now |
 | --- | --- | --- |
-| `Dungeon` | Pixel Spacebase run/session state | Extremely central API; renaming would touch nearly every system. |
 | `Level`, `depth`, `floor` | Deck/level | Deeply embedded in save and progression logic. Keep internal, use deck in UI where practical. |
-| `PrisonLevel`, `CavesLevel`, `CityLevel`, `HallsLevel` | Security Block, Lower Engineering, Habitation/Command, Deep Containment | These classes map inherited tilesets and level-gen bands. Rename later only with asset/resource cleanup. |
-| `Amulet`, `AmuletScene` | Escape Pod Override / launch scene | Save identity and victory flow. Player-facing text is converted. |
-| `King` | Holodeck Monarch | Boss mechanics and summon flow are inherited. Player-facing conversion is done. |
-| `Skeleton` | Ruptured Crew Suit | Mechanics and sprite still inherited. Player-facing text is converted. |
+| `HabitationCommandLevel`, `DeepContainmentLevel` | Habitation/Command, Deep Containment | These classes still map inherited tilesets and level-gen bands. Rename in a later isolated pass with resource cleanup. |
 | `Spinner` | Facehugger | Mechanics have been converted to xeno infection latch. Sprite/class can be renamed later. |
 | `Bat` | Siphon Drone | Player-facing text is converted; repair blaster machine behavior now matches. |
 | `Squiddard` | Replicator Swarm | Player-facing naming exists, but class/sprite need later cleanup. |
@@ -43,8 +38,7 @@ These are low-risk because they are mostly resource strings, docs, or small alia
 These should be done one at a time with a build after each:
 
 - Rename `EMP` to a repair-blaster class only if a future blaster package cleanup includes save and message-key migration. Do not add a wrapper in the current codebase.
-- Rename `Amulet`/`AmuletScene` only if old save class-name compatibility is handled.
-- Rename mob classes such as `King`, `Spinner`, `Bat`, `Squiddard`, and `Skeleton` only after checking bundle serialization and resource key lookup.
+- Rename mob classes such as `Spinner`, `Bat`, and `Squiddard` after checking bundle serialization and resource key lookup.
 - Rename package `items.ExperimentalTech` to `items.genemods`; the uppercase package name is nonstandard Java style but widely referenced. Current decision: leave as internal compatibility naming.
 - Rename package `items.scripts` to `items.tech`; broad but conceptually clean. Current decision: leave as internal compatibility naming.
 - Rename tileset asset constants from `PRISON/CAVES/CITY/HALLS` to current area names. This touches assets, level classes, and docs.
@@ -59,4 +53,4 @@ These should be done one at a time with a build after each:
 
 ## Immediate Audit Result
 
-The biggest remaining naming debt is not player-facing text; it is internal compatibility naming. The latest pass cleaned up additional live resource strings around ghost/projection rewards, subclass labels, Yendor warlord wording, keycard/chest copy, bio-siphon/lazer descriptions, and area docs. The safest next refactor is still to add explicit compatibility notes and small wrapper names around high-value concepts, then slowly migrate isolated systems.
+The biggest remaining naming debt is now the long-tail inherited systems: broad package names such as `ExperimentalTech` and `items.scripts`, legacy enemy classes such as `Spinner`, `Bat`, and `Squiddard`, and area classes/assets for `HabitationCommandLevel` and `DeepContainmentLevel`. The central run class, tilemap, seed helper, Security/Engineering level classes, major bosses, several enemies, the escape-pod override, medigel droplet, training manual, hologram emitter, master keycard, and equippable-module package have been renamed.

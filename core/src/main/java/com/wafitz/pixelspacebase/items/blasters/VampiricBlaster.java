@@ -21,8 +21,8 @@
 package com.wafitz.pixelspacebase.items.blasters;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
@@ -71,7 +71,7 @@ public class VampiricBlaster extends Blaster {
         int cell = beam.collisionPos;
 
         Char ch = Actor.findChar(cell);
-        Heap heap = Dungeon.level.heaps.get(cell);
+        Heap heap = SpacebaseRun.level.heaps.get(cell);
 
         boolean damageHero = true;
 
@@ -144,7 +144,7 @@ public class VampiricBlaster extends Blaster {
             }
 
             //if we find some trampled lightedvent...
-        } else if (Dungeon.level.map[cell] == Terrain.LIGHTEDVENT) {
+        } else if (SpacebaseRun.level.map[cell] == Terrain.LIGHTEDVENT) {
 
             //regrow one lightedvent tile, suuuuuper useful...
             Level.set(cell, Terrain.OFFVENT);
@@ -152,11 +152,11 @@ public class VampiricBlaster extends Blaster {
             CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 4);
 
             //If we find embers...
-        } else if (Dungeon.level.map[cell] == Terrain.EMBERS) {
+        } else if (SpacebaseRun.level.map[cell] == Terrain.EMBERS) {
 
             //30% + 3%*lvl chance to grow a random mines, or just regrow lightedvent.
             if (Random.Float() <= 0.3f + level() * 0.03f) {
-                Dungeon.level.mine((Mine.Device) Generator.random(Generator.Category.DEVICE), cell);
+                SpacebaseRun.level.mine((Mine.Device) Generator.random(Generator.Category.DEVICE), cell);
                 CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 8);
                 GameScene.updateMap(cell);
             } else {
@@ -182,7 +182,7 @@ public class VampiricBlaster extends Blaster {
         curUser.damage(damage, this);
 
         if (!curUser.isAlive()) {
-            Dungeon.fail(getClass());
+            SpacebaseRun.fail(getClass());
             GLog.n(Messages.get(this, "ondeath"));
         }
     }
@@ -208,7 +208,7 @@ public class VampiricBlaster extends Blaster {
     @Override
     protected void fx(Ballistica beam, Callback callback) {
         curUser.sprite.parent.add(
-                new Beam.HealthRay(curUser.sprite.center(), DungeonTilemap.tileCenterToWorld(beam.collisionPos)));
+                new Beam.HealthRay(curUser.sprite.center(), SpacebaseTilemap.tileCenterToWorld(beam.collisionPos)));
         callback.call();
     }
 

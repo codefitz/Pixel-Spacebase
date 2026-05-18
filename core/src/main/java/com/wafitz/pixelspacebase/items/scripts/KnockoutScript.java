@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.scripts;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.Knockout;
@@ -45,7 +45,7 @@ public class KnockoutScript extends Script {
         Sample.INSTANCE.play(Assets.SND_LULLABY);
         Camoflage.dispel();
 
-        for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+        for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0])) {
             if (Level.fieldOfView[mob.pos]) {
                 Buff.affect(mob, Knockout.class);
                 mob.sprite.centerEmitter().start(Speck.factory(Speck.NOTE), 0.3f, 5);

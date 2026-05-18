@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.blobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.effects.BlobEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
@@ -49,9 +49,9 @@ public class Craft extends Blob {
     @Override
     protected void evolve() {
         volume = off[pos] = cur[pos];
-        area.union(pos % Dungeon.level.width(), pos / Dungeon.level.width());
+        area.union(pos % SpacebaseRun.level.width(), pos / SpacebaseRun.level.width());
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             Journal.add(Journal.Feature.CRAFTING);
         }
     }
@@ -69,12 +69,12 @@ public class Craft extends Blob {
     }
 
     public static void transmute(int cell) {
-        Heap heap = Dungeon.level.heaps.get(cell);
+        Heap heap = SpacebaseRun.level.heaps.get(cell);
         if (heap != null) {
 
             Item result = heap.transmute();
             if (result != null) {
-                Dungeon.level.drop(result, cell).sprite.drop(cell);
+                SpacebaseRun.level.drop(result, cell).sprite.drop(cell);
             }
         }
     }

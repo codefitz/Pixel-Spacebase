@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.quest;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -77,10 +77,10 @@ public class CeremonialCandle extends Item {
     }
 
     private static void checkCandles() {
-        Heap heapTop = Dungeon.level.heaps.get(ritualPos - Dungeon.level.width());
-        Heap heapRight = Dungeon.level.heaps.get(ritualPos + 1);
-        Heap heapBottom = Dungeon.level.heaps.get(ritualPos + Dungeon.level.width());
-        Heap heapLeft = Dungeon.level.heaps.get(ritualPos - 1);
+        Heap heapTop = SpacebaseRun.level.heaps.get(ritualPos - SpacebaseRun.level.width());
+        Heap heapRight = SpacebaseRun.level.heaps.get(ritualPos + 1);
+        Heap heapBottom = SpacebaseRun.level.heaps.get(ritualPos + SpacebaseRun.level.width());
+        Heap heapLeft = SpacebaseRun.level.heaps.get(ritualPos - 1);
 
         if (heapTop != null &&
                 heapRight != null &&

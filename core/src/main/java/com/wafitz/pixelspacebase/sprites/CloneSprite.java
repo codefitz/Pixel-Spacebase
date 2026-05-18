@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.sprites;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.WeakClone;
 import com.watabou.noosa.TextureFilm;
@@ -33,7 +33,7 @@ public class CloneSprite extends MobSprite {
     public CloneSprite() {
         super();
 
-        texture(Dungeon.hero.heroClass.spritesheet());
+        texture(SpacebaseRun.hero.heroClass.spritesheet());
         updateArmor(0);
         idle();
     }

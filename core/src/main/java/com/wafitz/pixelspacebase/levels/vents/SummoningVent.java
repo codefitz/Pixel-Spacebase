@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.vents;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
@@ -44,7 +44,7 @@ public class SummoningVent extends Vent {
     @Override
     public void activate() {
 
-        if (Dungeon.bossLevel()) {
+        if (SpacebaseRun.bossLevel()) {
             return;
         }
 
@@ -77,7 +77,7 @@ public class SummoningVent extends Vent {
         ArrayList<Mob> mobs = new ArrayList<>();
 
         for (Integer point : respawnPoints) {
-            Mob mob = Bestiary.mob(Dungeon.depth);
+            Mob mob = Bestiary.mob(SpacebaseRun.depth);
             mob.state = mob.WANDERING;
             mob.pos = point;
             GameScene.add(mob, DELAY);

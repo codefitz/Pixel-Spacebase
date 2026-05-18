@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.XenoInfection;
@@ -40,7 +40,7 @@ public class AlienEgg extends Mine {
         if (ch instanceof Hero) {
             XenoInfection.infect((Hero) ch);
         }
-        Dungeon.level.drop(new AlienPod(), pos).sprite.drop();
+        SpacebaseRun.level.drop(new AlienPod(), pos).sprite.drop();
     }
 
     public static class Device extends Mine.Device {

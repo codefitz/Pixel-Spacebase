@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
@@ -72,7 +72,7 @@ class Scorpio extends Mob {
     @Override
     protected boolean canAttack(Char enemy) {
         Ballistica attack = new Ballistica(pos, enemy.pos, Ballistica.PROJECTILE);
-        return !Dungeon.level.adjacent(pos, enemy.pos) && attack.collisionPos == enemy.pos;
+        return !SpacebaseRun.level.adjacent(pos, enemy.pos) && attack.collisionPos == enemy.pos;
     }
 
     @Override
@@ -96,8 +96,8 @@ class Scorpio extends Mob {
     @Override
     protected Item createLoot() {
         //5/count+5 total chance of getting healing, failing the 2nd roll drops mystery meat instead.
-        if (Random.Int(5 + Dungeon.limitedDrops.scorpioHP.count) <= 4) {
-            Dungeon.limitedDrops.scorpioHP.count++;
+        if (Random.Int(5 + SpacebaseRun.limitedDrops.scorpioHP.count) <= 4) {
+            SpacebaseRun.limitedDrops.scorpioHP.count++;
             return (Item) loot;
         } else {
             return new MysteryMeat();

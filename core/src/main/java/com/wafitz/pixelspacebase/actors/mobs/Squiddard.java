@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -89,7 +89,7 @@ class Squiddard extends Mob {
             ArrayList<Integer> candidates = new ArrayList<>();
             boolean[] passable = Level.passable;
 
-            int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
+            int[] neighbours = {pos + 1, pos - 1, pos + SpacebaseRun.level.width(), pos - SpacebaseRun.level.width()};
             for (int n : neighbours) {
                 if (passable[n] && Actor.findChar(n) == null) {
                     candidates.add(n);
@@ -103,7 +103,7 @@ class Squiddard extends Mob {
                 clone.pos = Random.element(candidates);
                 clone.state = clone.HUNTING;
 
-                if (Dungeon.level.map[clone.pos] == Terrain.DOOR) {
+                if (SpacebaseRun.level.map[clone.pos] == Terrain.DOOR) {
                     Door.enter(clone.pos);
                 }
 
@@ -141,13 +141,13 @@ class Squiddard extends Mob {
     @Override
     public void die(Object cause) {
         //sets drop chance
-        lootChance = 1f / ((6 + 2 * Dungeon.limitedDrops.squiddardHP.count) * (generation + 1));
+        lootChance = 1f / ((6 + 2 * SpacebaseRun.limitedDrops.squiddardHP.count) * (generation + 1));
         super.die(cause);
     }
 
     @Override
     protected Item createLoot() {
-        Dungeon.limitedDrops.squiddardHP.count++;
+        SpacebaseRun.limitedDrops.squiddardHP.count++;
         return super.createLoot();
     }
 }

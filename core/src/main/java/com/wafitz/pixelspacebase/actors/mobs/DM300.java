@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
@@ -34,9 +34,9 @@ import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
-import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
-import com.wafitz.pixelspacebase.items.artifacts.StrongForcefield;
-import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
+import com.wafitz.pixelspacebase.items.equippablemodules.PortableMaker;
+import com.wafitz.pixelspacebase.items.equippablemodules.StrongForcefield;
+import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
 import com.wafitz.pixelspacebase.items.scripts.PsionicBlastScript;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -88,7 +88,7 @@ public class DM300 extends Mob {
     public boolean act() {
 
         GameScene.add(Blob.device(pos, 30, ToxicGas.class));
-        if (Dungeon.visible[pos] && Random.Int(15) == 0) {
+        if (SpacebaseRun.visible[pos] && Random.Int(15) == 0) {
             yell(Messages.get(this, Random.element(LLM_BARKS)));
         }
 
@@ -99,33 +99,33 @@ public class DM300 extends Mob {
     public void move(int step) {
         super.move(step);
 
-        if (Dungeon.level.map[step] == Terrain.INACTIVE_VENT && HP < HT) {
+        if (SpacebaseRun.level.map[step] == Terrain.INACTIVE_VENT && HP < HT) {
 
             HP += Random.Int(1, HT - HP);
             sprite.emitter().burst(ElmoParticle.FACTORY, 5);
 
-            if (Dungeon.visible[step] && Dungeon.hero.isAlive()) {
+            if (SpacebaseRun.visible[step] && SpacebaseRun.hero.isAlive()) {
                 GLog.n(Messages.get(this, "repair"));
             }
         }
 
         int[] cells = {
-                step - 1, step + 1, step - Dungeon.level.width(), step + Dungeon.level.width(),
-                step - 1 - Dungeon.level.width(),
-                step - 1 + Dungeon.level.width(),
-                step + 1 - Dungeon.level.width(),
-                step + 1 + Dungeon.level.width()
+                step - 1, step + 1, step - SpacebaseRun.level.width(), step + SpacebaseRun.level.width(),
+                step - 1 - SpacebaseRun.level.width(),
+                step - 1 + SpacebaseRun.level.width(),
+                step + 1 - SpacebaseRun.level.width(),
+                step + 1 + SpacebaseRun.level.width()
         };
         int cell = cells[Random.Int(cells.length)];
 
-        if (Dungeon.visible[cell]) {
+        if (SpacebaseRun.visible[cell]) {
             CellEmitter.get(cell).start(Speck.factory(Speck.ROCK), 0.07f, 10);
             Camera.main.shake(3, 0.7f);
             Sample.INSTANCE.play(Assets.SND_ROCKS);
 
             if (Level.water[cell]) {
                 GameScene.ripple(cell);
-            } else if (Dungeon.level.map[cell] == Terrain.EMPTY) {
+            } else if (SpacebaseRun.level.map[cell] == Terrain.EMPTY) {
                 Level.set(cell, Terrain.EMPTY_DECO);
                 GameScene.updateMap(cell);
             }
@@ -140,7 +140,7 @@ public class DM300 extends Mob {
     @Override
     public void damage(int dmg, Object src) {
         super.damage(dmg, src);
-        LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+        LockedFloor lock = SpacebaseRun.hero.buff(LockedFloor.class);
         if (lock != null && !immunities().contains(src.getClass())) lock.addTime(dmg * 1.5f);
     }
 
@@ -150,16 +150,16 @@ public class DM300 extends Mob {
         super.die(cause);
 
         GameScene.bossSlain();
-        Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).sprite.drop();
+        SpacebaseRun.level.drop(new MasterKeycard(SpacebaseRun.depth), pos).sprite.drop();
 
         Badges.validateBossSlain();
 
-        PortableMaker beacon = Dungeon.hero.belongings.getItem(PortableMaker.class);
+        PortableMaker beacon = SpacebaseRun.hero.belongings.getItem(PortableMaker.class);
         if (beacon != null) {
             beacon.upgrade();
         }
 
-        GLog.i(Messages.get(Dungeon.hero, "dm300_rebuild"));
+        GLog.i(Messages.get(SpacebaseRun.hero, "dm300_rebuild"));
 
         yell(Messages.get(this, "defeated"));
     }

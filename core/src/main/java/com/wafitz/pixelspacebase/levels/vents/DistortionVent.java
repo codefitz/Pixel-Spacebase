@@ -20,12 +20,12 @@
  */
 package com.wafitz.pixelspacebase.levels.vents;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
+import com.wafitz.pixelspacebase.items.equippablemodules.HoloPad;
+import com.wafitz.pixelspacebase.items.equippablemodules.PortableMaker;
 import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.watabou.noosa.Game;
 
@@ -38,16 +38,16 @@ public class DistortionVent extends Vent {
 
     @Override
     public void activate() {
-        InterlevelScene.returnDepth = Dungeon.depth;
-        Belongings belongings = Dungeon.hero.belongings;
-        belongings.ironKeys[Dungeon.depth] = 0;
-        belongings.specialKeys[Dungeon.depth] = 0;
+        InterlevelScene.returnDepth = SpacebaseRun.depth;
+        Belongings belongings = SpacebaseRun.hero.belongings;
+        belongings.ironKeys[SpacebaseRun.depth] = 0;
+        belongings.specialKeys[SpacebaseRun.depth] = 0;
         for (Item i : belongings) {
-            if (i instanceof PortableMaker && ((PortableMaker) i).returnDepth == Dungeon.depth)
+            if (i instanceof PortableMaker && ((PortableMaker) i).returnDepth == SpacebaseRun.depth)
                 ((PortableMaker) i).returnDepth = -1;
         }
 
-        for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
+        for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
             if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
         InterlevelScene.mode = InterlevelScene.Mode.RESET;

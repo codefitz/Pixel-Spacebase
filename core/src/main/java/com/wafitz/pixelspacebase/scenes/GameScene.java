@@ -24,8 +24,8 @@ import android.opengl.GLES20;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.FogOfWar;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.Statistics;
@@ -38,7 +38,7 @@ import com.wafitz.pixelspacebase.effects.EmoIcon;
 import com.wafitz.pixelspacebase.effects.Flare;
 import com.wafitz.pixelspacebase.effects.FloatingText;
 import com.wafitz.pixelspacebase.effects.Ripple;
-import com.wafitz.pixelspacebase.effects.SpellSprite;
+import com.wafitz.pixelspacebase.effects.EffectSprite;
 import com.wafitz.pixelspacebase.items.DroneController;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Heap;
@@ -48,7 +48,7 @@ import com.wafitz.pixelspacebase.items.containers.DeviceCase;
 import com.wafitz.pixelspacebase.items.containers.ScriptLibrary;
 import com.wafitz.pixelspacebase.items.containers.XPort;
 import com.wafitz.pixelspacebase.items.scripts.TeleportationScript;
-import com.wafitz.pixelspacebase.levels.PrisonLevel;
+import com.wafitz.pixelspacebase.levels.SecurityBlockLevel;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
@@ -111,7 +111,7 @@ public class GameScene extends PixelScene {
     static GameScene scene;
 
     private SkinnedBlock water;
-    private DungeonTilemap tiles;
+    private SpacebaseTilemap tiles;
     private TerrainFeaturesTilemap terrainFeatures;
     private FogOfWar fog;
     private HeroSprite hero;
@@ -153,7 +153,7 @@ public class GameScene extends PixelScene {
         Music.INSTANCE.play(musicForDepth(), true);
         Music.INSTANCE.volume(PixelSpacebase.musicVol() / 10f);
 
-        PixelSpacebase.lastClass(Dungeon.hero.heroClass.ordinal());
+        PixelSpacebase.lastClass(SpacebaseRun.hero.heroClass.ordinal());
 
         super.create();
         Camera.main.zoom(GameMath.gate(minZoom, defaultZoom + PixelSpacebase.zoom(), maxZoom));
@@ -164,9 +164,9 @@ public class GameScene extends PixelScene {
         add(terrain);
 
         water = new SkinnedBlock(
-                Dungeon.level.width() * DungeonTilemap.SIZE,
-                Dungeon.level.height() * DungeonTilemap.SIZE,
-                Dungeon.level.waterTex()) {
+                SpacebaseRun.level.width() * SpacebaseTilemap.SIZE,
+                SpacebaseRun.level.height() * SpacebaseTilemap.SIZE,
+                SpacebaseRun.level.waterTex()) {
 
             @Override
             protected NoosaScript script() {
@@ -183,7 +183,7 @@ public class GameScene extends PixelScene {
         };
         terrain.add(water);
 
-        tiles = new DungeonTilemap();
+        tiles = new SpacebaseTilemap();
         terrain.add(tiles);
 
         ripples = new Group();
@@ -192,22 +192,22 @@ public class GameScene extends PixelScene {
         customTiles = new Group();
         terrain.add(customTiles);
 
-        for (CustomTileVisual visual : Dungeon.level.customTiles) {
+        for (CustomTileVisual visual : SpacebaseRun.level.customTiles) {
             addCustomTile(visual.create());
         }
 
-        terrainFeatures = new TerrainFeaturesTilemap(Dungeon.level.mines, Dungeon.level.vents);
+        terrainFeatures = new TerrainFeaturesTilemap(SpacebaseRun.level.mines, SpacebaseRun.level.vents);
         terrain.add(terrainFeatures);
 
-        levelVisuals = Dungeon.level.addVisuals();
+        levelVisuals = SpacebaseRun.level.addVisuals();
         add(levelVisuals);
 
         heaps = new Group();
         add(heaps);
 
-        int size = Dungeon.level.heaps.size();
+        int size = SpacebaseRun.level.heaps.size();
         for (int i = 0; i < size; i++) {
-            addHeapSprite(Dungeon.level.heaps.valueAt(i));
+            addHeapSprite(SpacebaseRun.level.heaps.valueAt(i));
         }
 
         emitters = new Group();
@@ -217,10 +217,10 @@ public class GameScene extends PixelScene {
         mobs = new Group();
         add(mobs);
 
-        for (Mob mob : Dungeon.level.mobs) {
+        for (Mob mob : SpacebaseRun.level.mobs) {
             addMobSprite(mob);
             if (Statistics.amuletObtained) {
-                mob.beckon(Dungeon.hero.pos);
+                mob.beckon(SpacebaseRun.hero.pos);
             }
         }
 
@@ -230,12 +230,12 @@ public class GameScene extends PixelScene {
         gases = new Group();
         add(gases);
 
-        for (Blob blob : Dungeon.level.blobs.values()) {
+        for (Blob blob : SpacebaseRun.level.blobs.values()) {
             blob.emitter = null;
             addBlobSprite(blob);
         }
 
-        fog = new FogOfWar(Dungeon.level.width(), Dungeon.level.height());
+        fog = new FogOfWar(SpacebaseRun.level.width(), SpacebaseRun.level.height());
         add(fog);
 
         spells = new Group();
@@ -247,7 +247,7 @@ public class GameScene extends PixelScene {
         add(emoicons);
 
         hero = new HeroSprite();
-        hero.place(Dungeon.hero.pos);
+        hero.place(SpacebaseRun.hero.pos);
         hero.updateArmor();
         mobs.add(hero);
 
@@ -295,17 +295,17 @@ public class GameScene extends PixelScene {
 
         switch (InterlevelScene.mode) {
             case RESURRECT:
-                TeleportationScript.appear(Dungeon.hero, Dungeon.level.entrance);
+                TeleportationScript.appear(SpacebaseRun.hero, SpacebaseRun.level.entrance);
                 new Flare(8, 32).color(0xFFFF66, true).show(hero, 2f);
                 break;
             case RETURN:
-                TeleportationScript.appear(Dungeon.hero, Dungeon.hero.pos);
+                TeleportationScript.appear(SpacebaseRun.hero, SpacebaseRun.hero.pos);
                 break;
             case FALL:
                 Chasm.heroLand();
                 break;
             case DESCEND:
-                switch (Dungeon.depth) {
+                switch (SpacebaseRun.depth) {
                     case 1:
                         WndStory.showChapter(WndStory.ID_OPERATIONS);
                         break;
@@ -322,54 +322,54 @@ public class GameScene extends PixelScene {
                         WndStory.showChapter(WndStory.ID_HALLS);
                         break;
                 }
-                if (Dungeon.hero.isAlive() && Dungeon.depth != 22) {
+                if (SpacebaseRun.hero.isAlive() && SpacebaseRun.depth != 22) {
                     Badges.validateNoKilling();
                 }
                 break;
             default:
         }
 
-        ArrayList<Item> dropped = Dungeon.droppedItems.get(Dungeon.depth);
+        ArrayList<Item> dropped = SpacebaseRun.droppedItems.get(SpacebaseRun.depth);
         if (dropped != null) {
             for (Item item : dropped) {
-                int pos = Dungeon.level.randomRespawnCell();
+                int pos = SpacebaseRun.level.randomRespawnCell();
                 if (item instanceof ExperimentalTech) {
                     ((ExperimentalTech) item).shatter(pos);
                 } else if (item instanceof Mine.Device) {
-                    Dungeon.level.mine((Mine.Device) item, pos);
+                    SpacebaseRun.level.mine((Mine.Device) item, pos);
                 } else if (item instanceof DroneController) {
-                    Dungeon.level.drop(((DroneController) item).shatter(null, pos), pos);
+                    SpacebaseRun.level.drop(((DroneController) item).shatter(null, pos), pos);
                 } else {
-                    Dungeon.level.drop(item, pos);
+                    SpacebaseRun.level.drop(item, pos);
                 }
             }
-            Dungeon.droppedItems.remove(Dungeon.depth);
+            SpacebaseRun.droppedItems.remove(SpacebaseRun.depth);
         }
 
-        ArrayList<Heap> droppedHeaps = Dungeon.droppedHeaps.get(Dungeon.depth);
+        ArrayList<Heap> droppedHeaps = SpacebaseRun.droppedHeaps.get(SpacebaseRun.depth);
         if (droppedHeaps != null) {
             for (Heap heap : droppedHeaps) {
                 int pos = freeRespawnCell();
                 heap.pos = pos;
-                Dungeon.level.heaps.put(pos, heap);
+                SpacebaseRun.level.heaps.put(pos, heap);
                 add(heap);
             }
-            Dungeon.droppedHeaps.remove(Dungeon.depth);
+            SpacebaseRun.droppedHeaps.remove(SpacebaseRun.depth);
         }
 
-        Dungeon.hero.next();
+        SpacebaseRun.hero.next();
 
         Camera.main.target = hero;
 
         if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
-            if (Dungeon.depth < Statistics.deepestFloor) {
-                GLog.h(Messages.get(this, "welcome_back"), Dungeon.depth, Dungeon.hero.givenName());
+            if (SpacebaseRun.depth < Statistics.deepestFloor) {
+                GLog.h(Messages.get(this, "welcome_back"), SpacebaseRun.depth, SpacebaseRun.hero.givenName());
             } else {
-                GLog.h(Messages.get(this, "welcome"), Dungeon.depth, Dungeon.hero.givenName());
-                Sample.INSTANCE.play(Dungeon.level instanceof PrisonLevel ? Assets.SND_ALERT : Assets.SND_DESCEND);
+                GLog.h(Messages.get(this, "welcome"), SpacebaseRun.depth, SpacebaseRun.hero.givenName());
+                Sample.INSTANCE.play(SpacebaseRun.level instanceof SecurityBlockLevel ? Assets.SND_ALERT : Assets.SND_DESCEND);
             }
 
-            switch (Dungeon.level.feeling) {
+            switch (SpacebaseRun.level.feeling) {
                 case CHASM:
                     GLog.w(Messages.get(this, "chasm"));
                     break;
@@ -384,8 +384,8 @@ public class GameScene extends PixelScene {
                     break;
                 default:
             }
-            if (Dungeon.level instanceof RegularLevel &&
-                    ((RegularLevel) Dungeon.level).secretDoors > Random.IntRange(3, 4)) {
+            if (SpacebaseRun.level instanceof RegularLevel &&
+                    ((RegularLevel) SpacebaseRun.level).secretDoors > Random.IntRange(3, 4)) {
                 GLog.w(Messages.get(this, "secrets"));
             }
 
@@ -397,13 +397,13 @@ public class GameScene extends PixelScene {
     }
 
     private String musicForDepth() {
-        if (Dungeon.depth >= 1 && Dungeon.depth <= 4) {
+        if (SpacebaseRun.depth >= 1 && SpacebaseRun.depth <= 4) {
             return Assets.OXYGEN_WARNING;
-        } else if (Dungeon.depth == 10) {
+        } else if (SpacebaseRun.depth == 10) {
             return Assets.SECTOR_9;
-        } else if (Dungeon.depth >= 6 && Dungeon.depth <= 9) {
+        } else if (SpacebaseRun.depth >= 6 && SpacebaseRun.depth <= 9) {
             return Assets.LOCKDOWN;
-        } else if (Dungeon.depth >= 11 && Dungeon.depth <= 14) {
+        } else if (SpacebaseRun.depth >= 11 && SpacebaseRun.depth <= 14) {
             return Assets.PROTOCOL;
         } else {
             return Assets.TUNE;
@@ -413,8 +413,8 @@ public class GameScene extends PixelScene {
     private int freeRespawnCell() {
         int pos;
         do {
-            pos = Dungeon.level.randomRespawnCell();
-        } while (Dungeon.level.heaps.get(pos) != null);
+            pos = SpacebaseRun.level.randomRespawnCell();
+        } while (SpacebaseRun.level.heaps.get(pos) != null);
         return pos;
     }
 
@@ -431,7 +431,7 @@ public class GameScene extends PixelScene {
     @Override
     public synchronized void pause() {
         try {
-            Dungeon.saveAll();
+            SpacebaseRun.saveAll();
             Badges.saveGlobal();
         } catch (IOException e) {
             PixelSpacebase.reportException(e);
@@ -447,7 +447,7 @@ public class GameScene extends PixelScene {
 
     @Override
     public synchronized void update() {
-        if (Dungeon.hero == null || scene == null) {
+        if (SpacebaseRun.hero == null || scene == null) {
             return;
         }
 
@@ -455,7 +455,7 @@ public class GameScene extends PixelScene {
 
         if (!freezeEmitters) water.offset(0, -5 * Game.elapsed);
 
-        if (!Actor.processing() && Dungeon.hero.isAlive()) {
+        if (!Actor.processing() && SpacebaseRun.hero.isAlive()) {
             if (!t.isAlive()) {
                 //if cpu time is limited, game should prefer drawing the current frame
                 t.setPriority(Thread.NORM_PRIORITY - 1);
@@ -467,7 +467,7 @@ public class GameScene extends PixelScene {
             }
         }
 
-        if (Dungeon.hero.ready && Dungeon.hero.paralysed == 0) {
+        if (SpacebaseRun.hero.ready && SpacebaseRun.hero.paralysed == 0) {
             log.newLine();
         }
 
@@ -490,7 +490,7 @@ public class GameScene extends PixelScene {
             if (tagAppearing) layoutTags();
         }
 
-        cellSelector.enable(Dungeon.hero.ready);
+        cellSelector.enable(SpacebaseRun.hero.ready);
     }
 
     private boolean tagAttack = false;
@@ -545,7 +545,7 @@ public class GameScene extends PixelScene {
 
     @Override
     protected void onMenuPressed() {
-        if (Dungeon.hero.ready) {
+        if (SpacebaseRun.hero.ready) {
             selectItem(null, WndContainer.Mode.ALL, null);
         }
     }
@@ -556,7 +556,7 @@ public class GameScene extends PixelScene {
 
     public void resetCustomTiles() {
         customTiles.clear();
-        for (CustomTileVisual visual : Dungeon.level.customTiles) {
+        for (CustomTileVisual visual : SpacebaseRun.level.customTiles) {
             addCustomTile(visual);
         }
     }
@@ -591,7 +591,7 @@ public class GameScene extends PixelScene {
 
     private void addMobSprite(Mob mob) {
         CharSprite sprite = mob.sprite();
-        sprite.visible = Dungeon.visible[mob.pos];
+        sprite.visible = SpacebaseRun.visible[mob.pos];
         mobs.add(sprite);
         sprite.link(mob);
     }
@@ -658,13 +658,13 @@ public class GameScene extends PixelScene {
     }
 
     public static void add(Mob mob) {
-        Dungeon.level.mobs.add(mob);
+        SpacebaseRun.level.mobs.add(mob);
         Actor.add(mob);
         scene.addMobSprite(mob);
     }
 
     public static void add(Mob mob, float delay) {
-        Dungeon.level.mobs.add(mob);
+        SpacebaseRun.level.mobs.add(mob);
         Actor.addDelayed(mob, delay);
         scene.addMobSprite(mob);
     }
@@ -687,8 +687,8 @@ public class GameScene extends PixelScene {
         }
     }
 
-    public static SpellSprite spellSprite() {
-        return (SpellSprite) scene.spells.recycle(SpellSprite.class);
+    public static EffectSprite spellSprite() {
+        return (EffectSprite) scene.spells.recycle(EffectSprite.class);
     }
 
     public static Emitter emitter() {
@@ -715,8 +715,8 @@ public class GameScene extends PixelScene {
 
     public static void resetMap() {
         if (scene != null) {
-            scene.tiles.map(Dungeon.level.map, Dungeon.level.width());
-            scene.terrainFeatures.map(Dungeon.level.map, Dungeon.level.width());
+            scene.tiles.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
+            scene.terrainFeatures.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
         }
         updateFog();
     }
@@ -766,9 +766,9 @@ public class GameScene extends PixelScene {
 
     public static void afterObserve() {
         if (scene != null) {
-            for (Mob mob : Dungeon.level.mobs) {
+            for (Mob mob : SpacebaseRun.level.mobs) {
                 if (mob.sprite != null)
-                    mob.sprite.visible = Dungeon.visible[mob.pos];
+                    mob.sprite.visible = SpacebaseRun.visible[mob.pos];
             }
         }
     }
@@ -843,7 +843,7 @@ public class GameScene extends PixelScene {
     }
 
     public static void bossSlain() {
-        if (Dungeon.hero.isAlive()) {
+        if (SpacebaseRun.hero.isAlive()) {
             Banner bossSlain = new Banner(BannerSprites.get(BannerSprites.Type.BOSS_SLAIN));
             bossSlain.show(0xFFFFFF, 0.3f, 5f);
             scene.showBanner(bossSlain);
@@ -891,10 +891,10 @@ public class GameScene extends PixelScene {
     }
 
     static boolean cancel() {
-        if (Dungeon.hero.curAction != null || Dungeon.hero.resting) {
+        if (SpacebaseRun.hero.curAction != null || SpacebaseRun.hero.resting) {
 
-            Dungeon.hero.curAction = null;
-            Dungeon.hero.resting = false;
+            SpacebaseRun.hero.curAction = null;
+            SpacebaseRun.hero.resting = false;
             return true;
 
         } else {
@@ -915,7 +915,7 @@ public class GameScene extends PixelScene {
             return;
         }
 
-        if (cell < 0 || cell > Dungeon.level.length() || (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell])) {
+        if (cell < 0 || cell > SpacebaseRun.level.length() || (!SpacebaseRun.level.visited[cell] && !SpacebaseRun.level.mapped[cell])) {
             GameScene.show(new WndMessage(Messages.get(GameScene.class, "dont_know")));
             return;
         }
@@ -946,23 +946,23 @@ public class GameScene extends PixelScene {
         final ArrayList<Object> objects = new ArrayList<>();
 
         int distance = 1;
-        int cx = Dungeon.hero.pos % Dungeon.level.width();
-        int cy = Dungeon.hero.pos / Dungeon.level.width();
+        int cx = SpacebaseRun.hero.pos % SpacebaseRun.level.width();
+        int cy = SpacebaseRun.hero.pos / SpacebaseRun.level.width();
         int ax = Math.max(0, cx - distance);
-        int bx = Math.min(Dungeon.level.width() - 1, cx + distance);
+        int bx = Math.min(SpacebaseRun.level.width() - 1, cx + distance);
         int ay = Math.max(0, cy - distance);
-        int by = Math.min(Dungeon.level.height() - 1, cy + distance);
+        int by = Math.min(SpacebaseRun.level.height() - 1, cy + distance);
 
         for (int y = ay; y <= by; y++) {
-            for (int x = ax, cell = ax + y * Dungeon.level.width(); x <= bx; x++, cell++) {
-                if (Dungeon.level.visited[cell] || Dungeon.level.mapped[cell]) {
+            for (int x = ax, cell = ax + y * SpacebaseRun.level.width(); x <= bx; x++, cell++) {
+                if (SpacebaseRun.level.visited[cell] || SpacebaseRun.level.mapped[cell]) {
                     collectExamineObjects(cell, names, objects, false);
                 }
             }
         }
 
         if (objects.isEmpty()) {
-            Dungeon.hero.search(true);
+            SpacebaseRun.hero.search(true);
         } else if (objects.size() == 1) {
             names.add(Messages.get(GameScene.class, "search"));
             GameScene.show(new WndOptions(Messages.get(GameScene.class, "nearby_examine"),
@@ -970,7 +970,7 @@ public class GameScene extends PixelScene {
                 @Override
                 protected void onSelect(int index) {
                     if (index == objects.size()) {
-                        Dungeon.hero.search(true);
+                        SpacebaseRun.hero.search(true);
                     } else {
                         examineObject(objects.get(index));
                     }
@@ -983,7 +983,7 @@ public class GameScene extends PixelScene {
                 @Override
                 protected void onSelect(int index) {
                     if (index == objects.size()) {
-                        Dungeon.hero.search(true);
+                        SpacebaseRun.hero.search(true);
                     } else {
                         examineObject(objects.get(index));
                     }
@@ -993,10 +993,10 @@ public class GameScene extends PixelScene {
     }
 
     private static void collectExamineObjects(int cell, ArrayList<String> names, ArrayList<Object> objects, boolean includeHero) {
-        if (Dungeon.visible[cell]) {
-            if (includeHero && cell == Dungeon.hero.pos) {
-                objects.add(Dungeon.hero);
-                names.add(Dungeon.hero.className().toUpperCase(Locale.ENGLISH));
+        if (SpacebaseRun.visible[cell]) {
+            if (includeHero && cell == SpacebaseRun.hero.pos) {
+                objects.add(SpacebaseRun.hero);
+                names.add(SpacebaseRun.hero.className().toUpperCase(Locale.ENGLISH));
             } else {
                 Actor actor = Actor.findChar(cell);
                 if (actor instanceof Mob) {
@@ -1007,19 +1007,19 @@ public class GameScene extends PixelScene {
             }
         }
 
-        Heap heap = Dungeon.level.heaps.get(cell);
+        Heap heap = SpacebaseRun.level.heaps.get(cell);
         if (heap != null && heap.seen) {
             objects.add(heap);
             names.add(Messages.titleCase(heap.toString()));
         }
 
-        Mine mine = Dungeon.level.mines.get(cell);
+        Mine mine = SpacebaseRun.level.mines.get(cell);
         if (mine != null) {
             objects.add(mine);
             names.add(Messages.titleCase(mine.mineName));
         }
 
-        Vent vent = Dungeon.level.vents.get(cell);
+        Vent vent = SpacebaseRun.level.vents.get(cell);
         if (vent != null && vent.visible) {
             objects.add(vent);
             names.add(Messages.titleCase(vent.name));
@@ -1027,7 +1027,7 @@ public class GameScene extends PixelScene {
     }
 
     private static void examineObject(Object o) {
-        if (o == Dungeon.hero) {
+        if (o == SpacebaseRun.hero) {
             GameScene.show(new WndHero());
         } else if (o instanceof Mob) {
             GameScene.show(new WndInfoMob((Mob) o));
@@ -1051,8 +1051,8 @@ public class GameScene extends PixelScene {
     private static final CellSelector.Listener defaultCellListener = new CellSelector.Listener() {
         @Override
         public void onSelect(Integer cell) {
-            if (Dungeon.hero.handle(cell)) {
-                Dungeon.hero.next();
+            if (SpacebaseRun.hero.handle(cell)) {
+                SpacebaseRun.hero.next();
             }
         }
 

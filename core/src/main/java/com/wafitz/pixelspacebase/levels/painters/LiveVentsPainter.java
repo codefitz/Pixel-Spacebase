@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalRockets;
 import com.wafitz.pixelspacebase.items.Generator;
@@ -59,12 +59,12 @@ public class LiveVentsPainter extends Painter {
                 ventClass = SpearVent.class;
                 break;
             case 1:
-                ventClass = !Dungeon.bossLevel(Dungeon.depth + 1) ? null : SummoningVent.class;
+                ventClass = !SpacebaseRun.bossLevel(SpacebaseRun.depth + 1) ? null : SummoningVent.class;
                 break;
             case 2:
             case 3:
             case 4:
-                ventClass = Random.oneOf(levelVents[Dungeon.depth / 5]);
+                ventClass = Random.oneOf(levelVents[SpacebaseRun.depth / 5]);
                 break;
         }
 

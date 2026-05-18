@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.armor.malfunctions;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
@@ -65,7 +65,7 @@ public class Multiplicity extends Armor.Enhancement {
 
                 } else {
                     if (attacker.properties().contains(Char.Property.BOSS) || attacker.properties().contains(Char.Property.MINIBOSS)) {
-                        m = Bestiary.mutable(Dungeon.depth % 5 == 0 ? Dungeon.depth - 1 : Dungeon.depth);
+                        m = Bestiary.mutable(SpacebaseRun.depth % 5 == 0 ? SpacebaseRun.depth - 1 : SpacebaseRun.depth);
                     } else {
                         try {
                             m = (Mob) attacker.getClass().newInstance();

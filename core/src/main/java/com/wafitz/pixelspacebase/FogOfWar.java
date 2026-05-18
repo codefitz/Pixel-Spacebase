@@ -75,15 +75,15 @@ public class FogOfWar extends Image {
             height2 <<= 1;
         }
 
-        float size = DungeonTilemap.SIZE;
+        float size = SpacebaseTilemap.SIZE;
         width = width2 * size;
         height = height2 * size;
 
         texture(new FastEditTexture(width2, height2, FogOfWar.class));
 
         scale.set(
-                DungeonTilemap.SIZE,
-                DungeonTilemap.SIZE);
+                SpacebaseTilemap.SIZE,
+                SpacebaseTilemap.SIZE);
 
         x = y = -size / 2;
 
@@ -119,7 +119,7 @@ public class FogOfWar extends Image {
             int cell = (pWidth - 1) * i + updating.left;
             fog.pixels.position((width2) * i + updating.left);
             for (int j = updating.left; j < updating.right; j++) {
-                if (cell < pWidth || cell >= Dungeon.level.length() || j == 0 || j == pWidth - 1) {
+                if (cell < pWidth || cell >= SpacebaseRun.level.length() || j == 0 || j == pWidth - 1) {
                     fog.pixels.put(INVISIBLE[brightness]);
                 } else if (visible[cell] && visible[cell - (pWidth - 1)] &&
                         visible[cell - 1] && visible[cell - (pWidth - 1) - 1]) {
@@ -154,7 +154,7 @@ public class FogOfWar extends Image {
     public void draw() {
 
         if (!updated.isEmpty()) {
-            updateTexture(Dungeon.visible, Dungeon.level.visited, Dungeon.level.mapped);
+            updateTexture(SpacebaseRun.visible, SpacebaseRun.level.visited, SpacebaseRun.level.mapped);
             updating.setEmpty();
         }
 

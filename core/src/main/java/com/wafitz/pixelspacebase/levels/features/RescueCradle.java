@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.features;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
@@ -37,11 +37,11 @@ public class RescueCradle {
     private static final int[] DEPTHS = new int[]{1, 6, 11, 16, 21};
 
     public static boolean isAvailableHere() {
-        return Statistics.amuletObtained && isRescueDepth(Dungeon.depth);
+        return Statistics.amuletObtained && isRescueDepth(SpacebaseRun.depth);
     }
 
     public static void read(final int pos) {
-        if (isOpened(Dungeon.depth)) {
+        if (isOpened(SpacebaseRun.depth)) {
             GameScene.show(new WndMessage(Messages.get(RescueCradle.class, "already_open",
                     rescuedCount(), totalCradles())));
             return;
@@ -75,7 +75,7 @@ public class RescueCradle {
     }
 
     private static void open(int pos) {
-        Statistics.rescueCradleDepths |= mask(Dungeon.depth);
+        Statistics.rescueCradleDepths |= mask(SpacebaseRun.depth);
 
         Sample.INSTANCE.play(Assets.SND_UNLOCK);
         CellEmitter.get(pos).burst(SparkParticle.FACTORY, 8);
@@ -103,6 +103,6 @@ public class RescueCradle {
     }
 
     private static String deckName() {
-        return Messages.get(RescueCradle.class, "deck_" + Dungeon.depth);
+        return Messages.get(RescueCradle.class, "deck_" + SpacebaseRun.depth);
     }
 }

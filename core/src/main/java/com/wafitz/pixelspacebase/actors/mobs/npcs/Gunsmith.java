@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
 import com.wafitz.pixelspacebase.Challenges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -31,7 +31,7 @@ import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.quest.CeremonialCandle;
 import com.wafitz.pixelspacebase.items.quest.Embers;
 import com.wafitz.pixelspacebase.items.quest.Lazer;
-import com.wafitz.pixelspacebase.levels.PrisonLevel;
+import com.wafitz.pixelspacebase.levels.SecurityBlockLevel;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.mines.HunterTrapper;
@@ -78,20 +78,20 @@ public class Gunsmith extends NPC {
     @Override
     public boolean interact() {
 
-        sprite.turnTo(pos, Dungeon.hero.pos);
+        sprite.turnTo(pos, SpacebaseRun.hero.pos);
         if (Quest.given) {
 
             Item item;
             switch (Quest.type) {
                 case 1:
                 default:
-                    item = Dungeon.hero.belongings.getItem(Lazer.class);
+                    item = SpacebaseRun.hero.belongings.getItem(Lazer.class);
                     break;
                 case 2:
-                    item = Dungeon.hero.belongings.getItem(Embers.class);
+                    item = SpacebaseRun.hero.belongings.getItem(Embers.class);
                     break;
                 case 3:
-                    item = Dungeon.hero.belongings.getItem(HunterTrapper.Device.class);
+                    item = SpacebaseRun.hero.belongings.getItem(HunterTrapper.Device.class);
                     break;
             }
 
@@ -101,13 +101,13 @@ public class Gunsmith extends NPC {
                 String msg = "";
                 switch (Quest.type) {
                     case 1:
-                        msg = Messages.get(this, "reminder_lazer", Dungeon.hero.givenName());
+                        msg = Messages.get(this, "reminder_lazer", SpacebaseRun.hero.givenName());
                         break;
                     case 2:
-                        msg = Messages.get(this, "reminder_ember", Dungeon.hero.givenName());
+                        msg = Messages.get(this, "reminder_ember", SpacebaseRun.hero.givenName());
                         break;
                     case 3:
-                        msg = Messages.get(this, "reminder_device", Dungeon.hero.givenName());
+                        msg = Messages.get(this, "reminder_device", SpacebaseRun.hero.givenName());
                         break;
                 }
                 GameScene.show(new WndQuest(this, msg));
@@ -117,7 +117,7 @@ public class Gunsmith extends NPC {
 
             String msg1 = "";
             String msg2 = "";
-            switch (Dungeon.hero.heroClass) {
+            switch (SpacebaseRun.hero.heroClass) {
                 case COMMANDER:
                     msg1 += Messages.get(this, "intro_commander");
                     break;
@@ -125,7 +125,7 @@ public class Gunsmith extends NPC {
                     msg1 += Messages.get(this, "intro_shapeshifter");
                     break;
                 case DM3000:
-                    msg1 += Messages.get(this, "intro_dm3000", Dungeon.hero.givenName());
+                    msg1 += Messages.get(this, "intro_dm3000", SpacebaseRun.hero.givenName());
                     break;
                 case CAPTAIN:
                     msg1 += Messages.get(this, "intro_captain");
@@ -248,12 +248,12 @@ public class Gunsmith extends NPC {
             }
         }
 
-        public static boolean spawn(PrisonLevel level, Room room, Collection<Room> rooms) {
-            if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int(10 - Dungeon.depth) == 0))) {
+        public static boolean spawn(SecurityBlockLevel level, Room room, Collection<Room> rooms) {
+            if (!spawned && (type != 0 || (SpacebaseRun.depth > 6 && Random.Int(10 - SpacebaseRun.depth) == 0))) {
                 // decide between 1,2, or 3 for quest type.
                 // but if the no herbalism challenge is enabled, only pick 1 or 2, no rotberry.
                 if (type == 0)
-                    type = Random.Int(Dungeon.isChallenged(Challenges.NO_HERBALISM) ? 2 : 3) + 1;
+                    type = Random.Int(SpacebaseRun.isChallenged(Challenges.NO_HERBALISM) ? 2 : 3) + 1;
 
                 //note that we set the type but can fail here. This ensures that if a level needs to be re-generated
                 //we don't re-roll the quest, it will try to assign itself to that new level with the same type.

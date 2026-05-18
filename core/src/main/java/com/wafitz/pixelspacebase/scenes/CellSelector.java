@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.scenes;
 
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
@@ -39,11 +39,11 @@ public class CellSelector extends TouchArea {
 
     private float dragThreshold;
 
-    public CellSelector(DungeonTilemap map) {
+    public CellSelector(SpacebaseTilemap map) {
         super(map);
         camera = map.camera();
 
-        dragThreshold = PixelScene.defaultZoom * DungeonTilemap.SIZE / 2;
+        dragThreshold = PixelScene.defaultZoom * SpacebaseTilemap.SIZE / 2;
     }
 
     private float pressTime;
@@ -56,7 +56,7 @@ public class CellSelector extends TouchArea {
         if (enabled && touch != null && !dragging && !pinching && !longPressProcessed) {
             if ((pressTime += Game.elapsed) >= Button.longClick) {
                 longPressProcessed = true;
-                int cell = ((DungeonTilemap) target).screenToTile(
+                int cell = ((SpacebaseTilemap) target).screenToTile(
                         (int) touch.current.x,
                         (int) touch.current.y);
 
@@ -82,7 +82,7 @@ public class CellSelector extends TouchArea {
 
         } else {
 
-            select(((DungeonTilemap) target).screenToTile(
+            select(((SpacebaseTilemap) target).screenToTile(
                     (int) touch.current.x,
                     (int) touch.current.y));
         }

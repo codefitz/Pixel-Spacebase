@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.Recharging;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.effects.SpellSprite;
+import com.wafitz.pixelspacebase.effects.EffectSprite;
 import com.wafitz.pixelspacebase.effects.particles.EnergyParticle;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -49,7 +49,7 @@ public class RechargingScript extends Script {
         Camoflage.dispel();
 
         GLog.i(Messages.get(this, "surge"));
-        SpellSprite.show(curUser, SpellSprite.CHARGE);
+        EffectSprite.show(curUser, EffectSprite.CHARGE);
         setKnown();
 
         readAnimation();

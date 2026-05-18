@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.blobs.Fire;
 import com.wafitz.pixelspacebase.actors.blobs.Freezing;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.Cryongenics;
@@ -40,7 +40,7 @@ public class IceMine extends Mine {
 
         PathFinder.buildDistanceMap(pos, BArray.not(Level.losBlocking, null), 1);
 
-        Fire fire = (Fire) Dungeon.level.blobs.get(Fire.class);
+        Fire fire = (Fire) SpacebaseRun.level.blobs.get(Fire.class);
 
         for (int i = 0; i < PathFinder.distance.length; i++) {
             if (PathFinder.distance[i] < Integer.MAX_VALUE) {

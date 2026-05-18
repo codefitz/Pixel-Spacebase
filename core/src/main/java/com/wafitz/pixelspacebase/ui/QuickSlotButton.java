@@ -20,8 +20,8 @@
  */
 package com.wafitz.pixelspacebase.ui;
 
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.items.Item;
@@ -93,7 +93,7 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
                     Item item = select(slotNum);
                     if (item.usesTargeting)
                         useTargeting();
-                    item.execute(Dungeon.hero);
+                    item.execute(SpacebaseRun.hero);
                 }
             }
 
@@ -147,13 +147,13 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
     }
 
     private static Item select(int slotNum) {
-        return Dungeon.quickslot.getItem(slotNum);
+        return SpacebaseRun.quickslot.getItem(slotNum);
     }
 
     @Override
     public void onSelect(Item item) {
         if (item != null) {
-            Dungeon.quickslot.setSlot(slotNum, item);
+            SpacebaseRun.quickslot.setSlot(slotNum, item);
             refresh();
         }
     }
@@ -173,7 +173,7 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
     }
 
     private void enableSlot() {
-        slot.enable(Dungeon.quickslot.isNonePlaceholder(slotNum));
+        slot.enable(SpacebaseRun.quickslot.isNonePlaceholder(slotNum));
     }
 
     private void useTargeting() {
@@ -181,7 +181,7 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
         if (lastTarget != null &&
                 Actor.chars().contains(lastTarget) &&
                 lastTarget.isAlive() &&
-                Dungeon.visible[lastTarget.pos]) {
+                SpacebaseRun.visible[lastTarget.pos]) {
 
             targeting = true;
             mark(lastTarget);
@@ -213,13 +213,13 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
     private static int autoAim(Char target, Item item) {
 
         //first try to directly target
-        if (item.throwPos(Dungeon.hero, target.pos) == target.pos) {
+        if (item.throwPos(SpacebaseRun.hero, target.pos) == target.pos) {
             return target.pos;
         }
 
         //rebuild passable map only when target changed
-        if (passableCache == null || passableCache.length != Dungeon.level.length()) {
-            passableCache = new boolean[Dungeon.level.length()];
+        if (passableCache == null || passableCache.length != SpacebaseRun.level.length()) {
+            passableCache = new boolean[SpacebaseRun.level.length()];
         }
         if (cachedPos != target.pos) {
             Arrays.fill(passableCache, true);
@@ -230,7 +230,7 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
         //search nearby tiles within 2 cells for a valid throw path
         for (int i = 0; i < PathFinder.distance.length; i++) {
             if (PathFinder.distance[i] < Integer.MAX_VALUE
-                    && item.throwPos(Dungeon.hero, i) == target.pos)
+                    && item.throwPos(SpacebaseRun.hero, i) == target.pos)
                 return i;
         }
 
@@ -247,7 +247,7 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
     }
 
     public static void target(Char target) {
-        if (target != Dungeon.hero) {
+        if (target != SpacebaseRun.hero) {
             lastTarget = target;
 
             HealthIndicator.instance.target(target);
@@ -257,7 +257,7 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
     public static void aim(Char target) {
         target(target);
 
-        if (target != null && target != Dungeon.hero && target.sprite != null && target.sprite.parent != null) {
+        if (target != null && target != SpacebaseRun.hero && target.sprite != null && target.sprite.parent != null) {
             mark(target);
         } else if (!targeting && crossM != null) {
             crossM.remove();
@@ -268,7 +268,7 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
         if (crossM != null) {
             crossM.remove();
             target.sprite.parent.add(crossM);
-            crossM.point(DungeonTilemap.tileToWorld(target.pos));
+            crossM.point(SpacebaseTilemap.tileToWorld(target.pos));
             crossM.hardlight(0xFF3333);
             crossM.visible = true;
         }

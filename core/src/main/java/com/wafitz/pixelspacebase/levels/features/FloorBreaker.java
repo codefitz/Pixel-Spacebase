@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.features;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
@@ -32,13 +32,13 @@ import com.watabou.noosa.audio.Sample;
 public class FloorBreaker {
 
     public static void operate(int pos) {
-        if (Dungeon.level.floorBreakerOn) {
+        if (SpacebaseRun.level.floorBreakerOn) {
             GLog.i(Messages.get(FloorBreaker.class, "already_on"));
             return;
         }
 
-        Dungeon.level.floorBreakerOn = true;
-        Dungeon.observe();
+        SpacebaseRun.level.floorBreakerOn = true;
+        SpacebaseRun.observe();
         GameScene.updateFog();
         CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 8);
         Sample.INSTANCE.play(Assets.SND_CLICK);

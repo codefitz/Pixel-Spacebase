@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -58,7 +58,7 @@ public class FlameOn extends Buff {
 
     @Override
     public boolean act() {
-        if (Dungeon.level.map[target.pos] == Terrain.LIGHTEDVENT) {
+        if (SpacebaseRun.level.map[target.pos] == Terrain.LIGHTEDVENT) {
             Level.set(target.pos, Terrain.EMBERS);
             GameScene.updateMap(target.pos);
         }

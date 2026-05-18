@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.actors;
 
 import android.util.SparseArray;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
@@ -120,7 +120,7 @@ public abstract class Actor implements Bundlable {
 
     public static void fixTime() {
 
-        if (Dungeon.hero != null && all.contains(Dungeon.hero)) {
+        if (SpacebaseRun.hero != null && all.contains(SpacebaseRun.hero)) {
             Statistics.duration += now;
         }
 
@@ -138,13 +138,13 @@ public abstract class Actor implements Bundlable {
 
     public static void init() {
 
-        add(Dungeon.hero);
+        add(SpacebaseRun.hero);
 
-        for (Mob mob : Dungeon.level.mobs) {
+        for (Mob mob : SpacebaseRun.level.mobs) {
             add(mob);
         }
 
-        for (Blob blob : Dungeon.level.blobs.values()) {
+        for (Blob blob : SpacebaseRun.level.blobs.values()) {
             add(blob);
         }
 
@@ -219,7 +219,7 @@ public abstract class Actor implements Bundlable {
                 }
 
                 doNext = acting.act();
-                if (doNext && !Dungeon.hero.isAlive()) {
+                if (doNext && !SpacebaseRun.hero.isAlive()) {
                     doNext = false;
                     current = null;
                 }

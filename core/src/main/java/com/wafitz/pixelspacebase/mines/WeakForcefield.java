@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -43,11 +43,11 @@ public class WeakForcefield extends Mine {
     public void activate() {
         Char ch = Actor.findChar(pos);
 
-        if (ch == Dungeon.hero) {
+        if (ch == SpacebaseRun.hero) {
             Buff.affect(ch, Armor.class).level(ch != null ? ch.HT : 0, !stimulant);
         }
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             CellEmitter.bottom(pos).start(EarthParticle.FACTORY, 0.05f, 8);
             Camera.main.shake(1, 0.4f);
         }

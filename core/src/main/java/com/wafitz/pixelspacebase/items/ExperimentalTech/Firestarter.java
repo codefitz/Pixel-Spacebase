@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.ExperimentalTech;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.Fire;
@@ -41,7 +41,7 @@ public class Firestarter extends ExperimentalTech {
     @Override
     public void shatter(int cell) {
 
-        if (Dungeon.visible[cell]) {
+        if (SpacebaseRun.visible[cell]) {
             setKnown();
 
             splash(cell);
@@ -51,7 +51,7 @@ public class Firestarter extends ExperimentalTech {
         for (int offset : PathFinder.NEIGHBOURS9) {
             if (Level.flamable[cell + offset]
                     || Actor.findChar(cell + offset) != null
-                    || Dungeon.level.heaps.get(cell + offset) != null) {
+                    || SpacebaseRun.level.heaps.get(cell + offset) != null) {
 
                 GameScene.add(Blob.device(cell + offset, 2, Fire.class));
 

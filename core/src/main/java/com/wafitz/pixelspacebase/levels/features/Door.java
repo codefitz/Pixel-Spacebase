@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.features;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -33,18 +33,18 @@ public class Door {
         Level.set(pos, Terrain.OPEN_DOOR);
         GameScene.updateMap(pos);
 
-        if (Dungeon.visible[pos]) {
-            Dungeon.observe();
+        if (SpacebaseRun.visible[pos]) {
+            SpacebaseRun.observe();
             Sample.INSTANCE.play(Assets.SND_OPEN);
         }
     }
 
     public static void leave(int pos) {
-        if (Dungeon.level.heaps.get(pos) == null) {
+        if (SpacebaseRun.level.heaps.get(pos) == null) {
             Level.set(pos, Terrain.DOOR);
             GameScene.updateMap(pos);
-            if (Dungeon.visible[pos])
-                Dungeon.observe();
+            if (SpacebaseRun.visible[pos])
+                SpacebaseRun.observe();
         }
     }
 }

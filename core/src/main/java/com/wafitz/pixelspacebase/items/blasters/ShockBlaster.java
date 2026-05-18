@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.blasters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
@@ -75,13 +75,13 @@ public class ShockBlaster extends DamageBlaster {
             processSoulMark(ch, chargesPerCast());
             ch.damage(Math.round(damageRoll() * multipler), LightningVent.LIGHTNING);
 
-            if (ch == Dungeon.hero) Camera.main.shake(2, 0.3f);
+            if (ch == SpacebaseRun.hero) Camera.main.shake(2, 0.3f);
             ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
             ch.sprite.flash();
         }
 
         if (!curUser.isAlive()) {
-            Dungeon.fail(getClass());
+            SpacebaseRun.fail(getClass());
             GLog.n(Messages.get(this, "ondeath"));
         }
     }
@@ -106,7 +106,7 @@ public class ShockBlaster extends DamageBlaster {
         for (int i = 0; i < PathFinder.distance.length; i++) {
             if (PathFinder.distance[i] < Integer.MAX_VALUE) {
                 Char n = Actor.findChar(i);
-                if (n == Dungeon.hero && PathFinder.distance[i] > 1)
+                if (n == SpacebaseRun.hero && PathFinder.distance[i] > 1)
                     //the hero is only zapped if they are adjacent
                     continue;
                 else if (n != null && !affected.contains(n)) {

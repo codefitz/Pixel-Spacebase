@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.items.weapon.melee;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
@@ -128,7 +128,7 @@ public class DM3000Launcher extends MeleeWeapon {
 
     @Override
     public int proc(Char attacker, Char defender, int damage) {
-        if (blaster != null && Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE) {
+        if (blaster != null && SpacebaseRun.hero.subClass == HeroSubClass.BATTLEMAGE) {
             if (blaster.curCharges < blaster.maxCharges) blaster.partialCharge += 0.33f;
             RechargingScript.charge((Hero) attacker);
             blaster.onHit(this, attacker, defender, damage);
@@ -200,11 +200,11 @@ public class DM3000Launcher extends MeleeWeapon {
 
         //This is necessary to reset any particles.
         //FIXME this is gross, should implement a better way to fully reset quickslot visuals
-        int slot = Dungeon.quickslot.getSlot(this);
+        int slot = SpacebaseRun.quickslot.getSlot(this);
         if (slot != -1) {
-            Dungeon.quickslot.clearSlot(slot);
+            SpacebaseRun.quickslot.clearSlot(slot);
             updateQuickslot();
-            Dungeon.quickslot.setSlot(slot, this);
+            SpacebaseRun.quickslot.setSlot(slot, this);
             updateQuickslot();
         }
 
@@ -343,7 +343,7 @@ public class DM3000Launcher extends MeleeWeapon {
             curUser.sprite.emitter().burst(ElmoParticle.FACTORY, 12);
             evoke(curUser);
 
-            Dungeon.quickslot.clearItem(blaster);
+            SpacebaseRun.quickslot.clearItem(blaster);
 
             blaster.detach(curUser.belongings.backpack);
             Badges.validateTutorial();

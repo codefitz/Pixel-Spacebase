@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.windows;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.TerrainFeaturesTilemap;
@@ -29,7 +29,7 @@ public class WndInfoVent extends WndTitledMessage {
 
     public WndInfoVent(Vent vent) {
 
-        super(TerrainFeaturesTilemap.tile(vent.pos, Dungeon.level.map[vent.pos]),
+        super(TerrainFeaturesTilemap.tile(vent.pos, SpacebaseRun.level.map[vent.pos]),
                 vent.name,
                 (!vent.active ? Messages.get(WndInfoVent.class, "inactive") + "\n\n" : "") + vent.desc());
 

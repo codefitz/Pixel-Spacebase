@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.ExperimentalTech;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.ParalyticGas;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -36,7 +36,7 @@ public class ParalyzingAgent extends ExperimentalTech {
     @Override
     public void shatter(int cell) {
 
-        if (Dungeon.visible[cell]) {
+        if (SpacebaseRun.visible[cell]) {
             setKnown();
 
             splash(cell);

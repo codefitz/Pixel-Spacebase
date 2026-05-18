@@ -21,8 +21,8 @@
 package com.wafitz.pixelspacebase.items.blasters;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Blindness;
@@ -72,7 +72,7 @@ public class LazerGun extends DamageBlaster {
         }
         affectMap(beam);
 
-        if (Dungeon.level.viewDistance < 4)
+        if (SpacebaseRun.level.viewDistance < 4)
             Buff.prolong(curUser, Light.class, 10f + level() * 5);
     }
 
@@ -105,12 +105,12 @@ public class LazerGun extends DamageBlaster {
                 int cell = c + n;
 
                 if (Level.discoverable[cell])
-                    Dungeon.level.mapped[cell] = true;
+                    SpacebaseRun.level.mapped[cell] = true;
 
-                int terr = Dungeon.level.map[cell];
+                int terr = SpacebaseRun.level.map[cell];
                 if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
 
-                    Dungeon.level.discover(cell);
+                    SpacebaseRun.level.discover(cell);
 
                     GameScene.discoverTile(cell, terr);
                     MappingScript.discover(cell);
@@ -130,7 +130,7 @@ public class LazerGun extends DamageBlaster {
     @Override
     protected void fx(Ballistica beam, Callback callback) {
         curUser.sprite.parent.add(
-                new Beam.LightRay(curUser.sprite.center(), DungeonTilemap.tileCenterToWorld(beam.collisionPos)));
+                new Beam.LightRay(curUser.sprite.center(), SpacebaseTilemap.tileCenterToWorld(beam.collisionPos)));
         callback.call();
     }
 

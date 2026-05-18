@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.ui;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.watabou.noosa.Image;
 
@@ -56,15 +56,15 @@ public class ResumeIndicator extends Tag {
 
     @Override
     protected void onClick() {
-        Dungeon.hero.resume();
+        SpacebaseRun.hero.resume();
     }
 
     @Override
     public void update() {
-        if (!Dungeon.hero.isAlive())
+        if (!SpacebaseRun.hero.isAlive())
             visible = false;
-        else if (visible != (Dungeon.hero.lastAction != null)) {
-            visible = Dungeon.hero.lastAction != null;
+        else if (visible != (SpacebaseRun.hero.lastAction != null)) {
+            visible = SpacebaseRun.hero.lastAction != null;
             if (visible)
                 flash();
         }

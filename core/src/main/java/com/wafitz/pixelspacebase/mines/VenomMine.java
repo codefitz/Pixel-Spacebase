@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -41,10 +41,10 @@ public class VenomMine extends Mine {
         Char ch = Actor.findChar(pos);
 
         if (ch != null) {
-            Buff.affect(ch, Poison.class).set(Poison.durationFactor(ch) * (4 + Dungeon.depth / 2));
+            Buff.affect(ch, Poison.class).set(Poison.durationFactor(ch) * (4 + SpacebaseRun.depth / 2));
         }
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             CellEmitter.center(pos).burst(PoisonParticle.SPLASH, 3);
         }
     }

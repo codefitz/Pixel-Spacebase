@@ -21,14 +21,14 @@
 package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
+import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -76,7 +76,7 @@ public class XenoQueen extends Mob {
 
     @Override
     public int defenseSkill(Char enemy) {
-        if (enemy == Dungeon.hero && Dungeon.hero.heroClass == HeroClass.SHAPESHIFTER) {
+        if (enemy == SpacebaseRun.hero && SpacebaseRun.hero.heroClass == HeroClass.SHAPESHIFTER) {
             return 2;
         }
         return super.defenseSkill(enemy);
@@ -110,8 +110,8 @@ public class XenoQueen extends Mob {
     public void notice() {
         super.notice();
         state = HUNTING;
-        target = Dungeon.hero.pos;
-        Dungeon.level.seal();
+        target = SpacebaseRun.hero.pos;
+        SpacebaseRun.level.seal();
         BossHealthBar.assignBoss(this);
         yell(Messages.get(this, "notice"));
     }
@@ -120,7 +120,7 @@ public class XenoQueen extends Mob {
     public void damage(int dmg, Object src) {
         super.damage(dmg, src);
 
-        LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+        LockedFloor lock = SpacebaseRun.hero.buff(LockedFloor.class);
         if (lock != null) {
             lock.addTime(dmg * 2);
         }
@@ -129,9 +129,9 @@ public class XenoQueen extends Mob {
     @Override
     public void die(Object cause) {
         yell(Messages.get(this, "defeated"));
-        Dungeon.level.unseal();
+        SpacebaseRun.level.unseal();
         GameScene.bossSlain();
-        Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).sprite.drop();
+        SpacebaseRun.level.drop(new MasterKeycard(SpacebaseRun.depth), pos).sprite.drop();
         Badges.validateBossSlain();
         super.die(cause);
     }
@@ -146,7 +146,7 @@ public class XenoQueen extends Mob {
                 break;
             }
 
-            Dungeon.level.map[cell] = Terrain.WALL_DECO;
+            SpacebaseRun.level.map[cell] = Terrain.WALL_DECO;
             GameScene.updateMap(cell);
         }
 
@@ -158,14 +158,14 @@ public class XenoQueen extends Mob {
 
             AlienEgg egg = new AlienEgg();
             egg.pos = cell;
-            Dungeon.level.mines.put(cell, egg);
+            SpacebaseRun.level.mines.put(cell, egg);
             GameScene.updateMap(cell);
         }
     }
 
     private int randomEggCell() {
         for (int tries = 0; tries < 80; tries++) {
-            int cell = Random.Int(Dungeon.level.length());
+            int cell = Random.Int(SpacebaseRun.level.length());
             if (canPlaceEgg(cell)) {
                 return cell;
             }
@@ -175,7 +175,7 @@ public class XenoQueen extends Mob {
 
     private int randomCrackWallCell() {
         ArrayList<Integer> cells = new ArrayList<>();
-        for (int i = Dungeon.level.width(); i < Dungeon.level.length() - Dungeon.level.width(); i++) {
+        for (int i = SpacebaseRun.level.width(); i < SpacebaseRun.level.length() - SpacebaseRun.level.width(); i++) {
             if (canMarkCrack(i)) {
                 cells.add(i);
             }
@@ -185,15 +185,15 @@ public class XenoQueen extends Mob {
     }
 
     private boolean canMarkCrack(int cell) {
-        if (Dungeon.level.map[cell] != Terrain.WALL
-                || Dungeon.level.distance(cell, pos) > 14
-                || Dungeon.level.distance(cell, Dungeon.hero.pos) < 4) {
+        if (SpacebaseRun.level.map[cell] != Terrain.WALL
+                || SpacebaseRun.level.distance(cell, pos) > 14
+                || SpacebaseRun.level.distance(cell, SpacebaseRun.hero.pos) < 4) {
             return false;
         }
 
         for (int offset : PathFinder.NEIGHBOURS4) {
             if (cell + offset >= 0
-                    && cell + offset < Dungeon.level.length()
+                    && cell + offset < SpacebaseRun.level.length()
                     && (Level.passable[cell + offset] || Level.avoid[cell + offset])) {
                 return true;
             }
@@ -203,18 +203,18 @@ public class XenoQueen extends Mob {
 
     private boolean canPlaceEgg(int cell) {
         return cell >= 0
-                && cell < Dungeon.level.length()
+                && cell < SpacebaseRun.level.length()
                 && (Level.passable[cell] || Level.avoid[cell])
-                && Dungeon.level.distance(cell, pos) <= 10
-                && Dungeon.level.distance(cell, Dungeon.hero.pos) > 2
+                && SpacebaseRun.level.distance(cell, pos) <= 10
+                && SpacebaseRun.level.distance(cell, SpacebaseRun.hero.pos) > 2
                 && Actor.findChar(cell) == null
-                && Dungeon.level.heaps.get(cell) == null
-                && Dungeon.level.mines.get(cell) == null;
+                && SpacebaseRun.level.heaps.get(cell) == null
+                && SpacebaseRun.level.mines.get(cell) == null;
     }
 
     private int countXenos() {
         int count = 0;
-        for (Mob mob : Dungeon.level.mobs) {
+        for (Mob mob : SpacebaseRun.level.mobs) {
             if (mob instanceof Xenomorph) {
                 count++;
             }
@@ -224,7 +224,7 @@ public class XenoQueen extends Mob {
 
     private void spawnXenoFromCrack() {
         ArrayList<Integer> spawnPoints = new ArrayList<>();
-        for (int i = 0; i < Dungeon.level.length(); i++) {
+        for (int i = 0; i < SpacebaseRun.level.length(); i++) {
             if (canSpawnFromCrack(i)) {
                 spawnPoints.add(i);
             }
@@ -240,23 +240,23 @@ public class XenoQueen extends Mob {
         xenomorph.state = xenomorph.HUNTING;
         GameScene.add(xenomorph);
 
-        if (Dungeon.visible[cell]) {
+        if (SpacebaseRun.visible[cell]) {
             CellEmitter.get(cell).burst(Speck.factory(Speck.WOOL), 8);
             xenomorph.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "spawn"));
         }
     }
 
     private boolean canSpawnFromCrack(int cell) {
-        if (cell <= Dungeon.level.width()
-                || cell >= Dungeon.level.length() - Dungeon.level.width()
+        if (cell <= SpacebaseRun.level.width()
+                || cell >= SpacebaseRun.level.length() - SpacebaseRun.level.width()
                 || !(Level.passable[cell] || Level.avoid[cell])
                 || Actor.findChar(cell) != null
-                || Dungeon.level.distance(cell, Dungeon.hero.pos) < 4) {
+                || SpacebaseRun.level.distance(cell, SpacebaseRun.hero.pos) < 4) {
             return false;
         }
 
         for (int offset : PathFinder.NEIGHBOURS4) {
-            if (Dungeon.level.map[cell + offset] == Terrain.WALL_DECO) {
+            if (SpacebaseRun.level.map[cell + offset] == Terrain.WALL_DECO) {
                 return true;
             }
         }

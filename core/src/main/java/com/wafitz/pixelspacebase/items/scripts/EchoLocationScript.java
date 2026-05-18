@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.scripts;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
@@ -43,14 +43,14 @@ public class EchoLocationScript extends Script {
     @Override
     protected void doRead() {
 
-        for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+        for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0])) {
             mob.beckon(curUser.pos);
             if (Level.fieldOfView[mob.pos]) {
                 Buff.prolong(mob, Paranoid.class, 5f);
             }
         }
 
-        for (Heap heap : Dungeon.level.heaps.values()) {
+        for (Heap heap : SpacebaseRun.level.heaps.values()) {
             if (heap.type == Heap.Type.CONFUSEDSHAPESHIFTER) {
                 ConfusedShapeshifter m = ConfusedShapeshifter.spawnAt(heap.pos, heap.items);
                 if (m != null) {

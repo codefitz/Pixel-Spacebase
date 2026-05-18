@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.windows;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.quest.Embers;
@@ -89,16 +89,16 @@ public class Gunsmith extends Window {
 
         hide();
 
-        item.detach(Dungeon.hero.belongings.backpack);
+        item.detach(SpacebaseRun.hero.belongings.backpack);
 
         reward.identify();
-        if (reward.doPickUp(Dungeon.hero)) {
-            GLog.i(Messages.get(Dungeon.hero, "you_now_have", reward.name()));
+        if (reward.doPickUp(SpacebaseRun.hero)) {
+            GLog.i(Messages.get(SpacebaseRun.hero, "you_now_have", reward.name()));
         } else {
-            Dungeon.level.drop(reward, gunsmith.pos).sprite.drop();
+            SpacebaseRun.level.drop(reward, gunsmith.pos).sprite.drop();
         }
 
-        gunsmith.yell(Messages.get(this, "farewell", Dungeon.hero.givenName()));
+        gunsmith.yell(Messages.get(this, "farewell", SpacebaseRun.hero.givenName()));
         gunsmith.destroy();
 
         gunsmith.sprite.die();

@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
@@ -80,7 +80,7 @@ public class RotHeart extends Mob {
     @Override
     public void destroy() {
         super.destroy();
-        for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size()])) {
+        for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[SpacebaseRun.level.mobs.size()])) {
             if (mob instanceof RotLasher) {
                 mob.die(null);
             }
@@ -90,7 +90,7 @@ public class RotHeart extends Mob {
     @Override
     public void die(Object cause) {
         super.die(cause);
-        Dungeon.level.drop(new HunterTrapper.Device(), pos).sprite.drop();
+        SpacebaseRun.level.drop(new HunterTrapper.Device(), pos).sprite.drop();
     }
 
     @Override

@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Blindness;
@@ -49,11 +49,11 @@ public class FlashMine extends Mine {
             Buff.prolong(ch, Cripple.class, len);
             if (ch instanceof Mob) {
                 if (((Mob) ch).state == ((Mob) ch).HUNTING) ((Mob) ch).state = ((Mob) ch).WANDERING;
-                ((Mob) ch).beckon(Dungeon.level.randomDestination());
+                ((Mob) ch).beckon(SpacebaseRun.level.randomDestination());
             }
         }
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
         }
     }

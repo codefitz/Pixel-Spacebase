@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Blindness;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.ItemStatusHandler;
-import com.wafitz.pixelspacebase.items.artifacts.BuggyCompiler;
+import com.wafitz.pixelspacebase.items.equippablemodules.BuggyCompiler;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.HeroSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;

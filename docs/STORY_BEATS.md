@@ -61,26 +61,26 @@ Primary story function:
 
 - Escalate from station failure to deliberate containment failure.
 - Reveal that security staff knew something catastrophic was coming.
-- Introduce Tengu as the one prisoner everyone feared releasing.
+- Introduce the Masked Prisoner as the one detainee everyone feared releasing.
 
 Key note:
 
-- A sign from Warden Smith tells Thomas to check Tengu's cell and flee, warning that soon nobody will be able to leave.
+- A sign from Warden Smith tells Thomas to check the Masked Prisoner's cell and flee, warning that soon nobody will be able to leave.
 
 ### Floor 10: Security Boss
 
-Boss: Tengu.
+Boss: Masked Prisoner.
 
 Current beat:
 
-- Tengu is an infamous assassin restrained in the prison block.
+- The Masked Prisoner is an infamous assassin restrained in the security block.
 - The player becomes the only thing stopping his escape.
 - He uses floor lighting systems, deception, and precision attacks.
 - On defeat he says, "Free at last... no more locks. No more breath."
 
 Resolved story note:
 
-- "Free at last" means death: Tengu treats dying as the only release left from confinement.
+- "Free at last" means death: the Masked Prisoner treats dying as the only release left from confinement.
 
 ### Floors 11-14: Lower Engineering
 
@@ -164,25 +164,25 @@ Primary story function:
 
 - Show the real source of corruption beneath earlier failures.
 - Replace normal station hazards with occult/extradimensional or severe biological hazards.
-- Prepare for Yog-Dzewa as the final threat.
+- Prepare for the Containment Mass as the final threat.
 
 ### Floor 25: End Boss
 
-Boss: Yog-Dzewa.
+Boss: Containment Mass.
 
 Current beat:
 
-- Yog-Dzewa is an organism fused around the evacuation spine.
+- The Containment Mass is an organism fused around the evacuation spine.
 - Its appendages and larvae defend the route to the escape pods.
 - It speaks as hunger and containment failure rather than inherited dungeon prophecy.
 
 Resolved story note:
 
-- Yog-Dzewa is now framed as a sealed bio-containment parasite whose origin remains ambiguous: sample, stowaway, or breach experiment.
+- The Containment Mass is framed as a sealed bio-containment parasite whose origin remains ambiguous: sample, stowaway, or breach experiment.
 
 ### Floor 26: Finale / Escape
 
-Current end-game now presents the inherited Amulet item as an escape pod override in player-facing text. Floor 26 is framed as the evacuation cradle for the last working escape pod, with launch-or-stay wording in the victory scene. The hero also has a line indicating an escape pod is visible but the airlock door has been welded shut earlier in the run.
+Current end-game presents the Escape Pod Override as the command item for the last working escape pod. Floor 26 is framed as the evacuation cradle, with launch-or-stay wording in the victory scene. The hero also has a line indicating an escape pod is visible but the airlock door has been welded shut earlier in the run.
 
 Current finale function:
 
@@ -192,7 +192,7 @@ Current finale function:
 
 Open story need:
 
-- Continue converting any remaining internal class names or surrounding flow that still assumes the inherited Amulet of Yendor framing.
+- Continue converting any remaining surrounding flow that still assumes inherited Yendor framing.
 - A deeper reclaim/seal-the-station ending can be added later, but the active win condition is evacuation by escape pod.
 
 ## Side Quests
@@ -271,15 +271,15 @@ Story role:
 | Floor | Boss | Current story role | Conversion status |
 | --- | --- | --- | --- |
 | 5 | Feral Shapeshifter | Shapeshifter collapse in Maintenance | Strong Pixel Spacebase fit |
-| 10 | Tengu | Prisoner/assassin containment failure | Partial fit |
+| 10 | Masked Prisoner | Prisoner/assassin containment failure | Strong Pixel Spacebase fit |
 | 15 | DM-300 | Unstable station defense platform | Good Pixel Spacebase fit, now split from DM-3000 player class |
 | 20 | Holodeck Monarch | Rogue hard-light monarch simulation | Player-facing text converted; sprite remains inherited |
-| 25 | Yog-Dzewa | Bio-containment parasite fused around evacuation access | Player-facing text converted; mechanics remain inherited |
+| 25 | Containment Mass | Bio-containment parasite fused around evacuation access | Internal and player-facing naming converted |
 
 ## Current Continuity Gaps
 
 - Security Block, Lower Engineering, Habitation/Command, and Deep Containment chapter text now use sci-fi framing; individual tiles, enemies, and boss lore in those areas still need follow-up conversion.
-- The Amulet item has player-facing escape pod override text, but surrounding code/class names and any remaining end-game assumptions may still need cleanup.
+- The Escape Pod Override item now owns the end artifact role, but surrounding flow may still need cleanup if inherited Yendor assumptions surface.
 - Yendor remains a raider faction and may still appear in inherited story/item names outside the updated end artifact text.
 - DM-300 is the unstable floor-15 boss machine; DM-3000 is the playable robot class brought back into service after that encounter.
 - The final victory condition needs a Pixel Spacebase-specific ending.
@@ -292,5 +292,5 @@ Use the existing mechanics as the skeleton:
 2. Security reveals that command knew a containment breach was inevitable.
 3. Lower engineering reveals the breach is tied to old station experiments and surviving engineers.
 4. Command/habitation reveals historical corruption, Yendor involvement, or a failed ruling/AI faction.
-5. Deep containment reveals Yog-Dzewa or the final anomaly as the root cause.
+5. Deep containment reveals the Containment Mass or the final anomaly as the root cause.
 6. The finale uses the end artifact to either reclaim the station, seal the breach, or escape with proof of what happened.

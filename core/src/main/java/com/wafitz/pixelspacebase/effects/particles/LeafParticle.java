@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.effects.particles;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.noosa.particles.PixelParticle;
@@ -46,7 +46,7 @@ public class LeafParticle extends PixelParticle.Shrinking {
         @Override
         public void emit(Emitter emitter, int index, float x, float y) {
             LeafParticle p = ((LeafParticle) emitter.recycle(LeafParticle.class));
-            p.color(ColorMath.random(Dungeon.level.color1, Dungeon.level.color2));
+            p.color(ColorMath.random(SpacebaseRun.level.color1, SpacebaseRun.level.color2));
             p.reset(x, y);
         }
     };

@@ -4,7 +4,7 @@
 
 - [x] Update build number to v1.0.2
 - [x] Update about (give credit to Codex), recent changes
-- [x] Update the Dark Lord of Yendor theme to have stronger "Darth Sidious" vibes.
+- [x] Update the hooded raider commander theme to have stronger "Darth Sidious" vibes.
   - [x] Review actor and item message strings for tone.
   - [x] Review encounter presentation and boss text.
 - [x] Replace the chain/restraint theme with "the force".
@@ -63,10 +63,7 @@
   - [x] Let exposed panels reveal hidden pickups or trigger electric/burn hazards.
   - [x] Keep room lighting controlled by the floor breaker state instead of tile lights.
 - [x] Add generic storage/reveal behavior so the container opens before the tech/biogenetic item identity is known.
-- [ ] Add protectable NPC rescue flow.
-  - [x] Add ambient crew survivor NPCs.
-  - [ ] Add escape pod ending where the player leaves.
-  - [ ] Add return-to-stabilize ending where NPCs can be rescued.
+- [x] Add ambient crew survivor NPCs.
 - [x] Add cat follower NPC.
   - [x] Implement cat following behavior.
   - [x] Decide whether petting is blocked, punished, or only warned against.
@@ -89,22 +86,21 @@
   - [x] Fade the screen briefly to black when stepping on an alien egg.
   - [x] Show a "what happened" dialog when the screen returns.
 - [x] Falling needs to be fixed so it falls to the level below - not up. The locked room needs to appear on the (next) level above.
-- [x] Y should appear 3 times in the maze before Tengu main battle (hero to seek him out). If hero finds Y all 3 times, he will look in heros backpack and compare against Tengus stats. If the hero seems to be under equipped - Y even the odds and will provide an offensive ranged weapon with at least 3 charges. If the hero seems to be overequipped - Y will even the odds and remove one random weapon and place it to be found in one of the cells after the battle.
+- [x] Y should appear 3 times in the maze before the masked prisoner battle (hero to seek him out). If hero finds Y all 3 times, he will look in heros backpack and compare against the prisoner's stats. If the hero seems to be under equipped - Y even the odds and will provide an offensive ranged weapon with at least 3 charges. If the hero seems to be overequipped - Y will even the odds and remove one random weapon and place it to be found in one of the cells after the battle.
   - [x] Place three Y maze encounters with mischievous ambiguous dialogue.
   - [x] Track whether the hero found all three encounters.
-  - [x] Compare the backpack against Tengu's stats before the arena.
+  - [x] Compare the backpack against the masked prisoner's stats before the arena.
   - [x] Give or remove a ranged weapon based on that comparison.
 - [x] facehugger should die on infection. Also remove the sticky web effects.
 
 ## Refactorial Changes and Small Adjustments
 
-- [ ] Rename legacy fantasy concepts to spacebase equivalents.
-  - [ ] Rename code/messages/assets that still expose `Dungeon`.
-  - [ ] Rename code/messages/assets that still expose `King`.
-  - [ ] Rename code/messages/assets that still expose `Skeleton`.
-  - [ ] Rename code/messages/assets that still expose `DarkLordGnoll`.
-  - [ ] Rename code/messages/assets that still expose `PrisonLevel`.
-  - [ ] Rename code/messages/assets that still expose `CavesLevel`.
+- [x] Rename legacy fantasy concepts to spacebase equivalents.
+  - [x] Clean high-priority player-visible fantasy labels in item/enhancement/subclass text.
+  - [x] Clean medium-priority player-visible fantasy labels in signs, windows, quests, and enemy text.
+  - [x] Clean low-priority visible fantasy labels and release-plan wording.
+  - [x] Rename central run, tilemap, and seed internals to spacebase terms.
+  - [x] Rename monarch, ruptured-suit, raider commander, Security Block, and Engineering internals.
 - [ ] Reorganize tech and biogenetics by use.
   - [ ] Classify defensive tech/biogenetics as effects applied to the player.
   - [ ] Classify offensive tech/biogenetics as weapon/action items.
@@ -115,12 +111,12 @@
   - [x] Lighting that contains a trap, should be invisible - so it's a real trap
   - [x] Traps shouldn't ever look like a light - they should look like a blown panel after being set off.
   - [x] Adjust terrain features so that only one type appears on each zone/area
-  - [x] Adjust terrain features to look less 'dungeon' and more like different types of lighting.
+  - [x] Adjust terrain features to look less like ruins and more like different types of lighting.
   - [x] Set mines should look a bit more obvious like mines
 - [x] Shuriken need to be updated to something suitably sci-fi 
 - [x] Sealed Cache should automatically consume.
 - [x] Level 5 boss - should be alien queen for shapeshifter, but everyone else gets the standard shapeshifter boss.
-- [x] Level 5 alien queen boss needs to be tougher and also use the alien queen (rat king) sprite.
+- [x] Level 5 alien queen boss needs to be tougher and also use the alien queen sprite.
 - [x] Level 5 alien queen boss should be in the dark (but not the shapeshifter boss)
 - [x] Stims should not require the hero to stay fixed - they should offer a temporary boost.
 
@@ -134,7 +130,7 @@
 - [x] Add cat sprite or reuse/update an existing follower sprite.
 - [x] Add visual treatment for dark levels and breaker-restored lighting.
 - [x] Change Xeno-booster to an x-port icon.
-- [x] Tengu battle arena needs to be more like an alien planet (think Star Trek TOS).
+- [x] Masked prisoner battle arena needs to be more like an alien planet (think Star Trek TOS).
 - [x] Siphon drone sprite needs updating.
 
 ## Bugs

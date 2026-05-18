@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.effects.Speck;
@@ -86,7 +86,7 @@ public class AirTank extends Item {
 
             if (volume > 0) {
 
-                int value = 1 + (Dungeon.depth - 1) / 5;
+                int value = 1 + (SpacebaseRun.depth - 1) / 5;
                 if (hero.heroClass == HeroClass.CAPTAIN) {
                     value++;
                 }
@@ -135,7 +135,7 @@ public class AirTank extends Item {
         return volume >= MAX_VOLUME;
     }
 
-    void collectDew(Dewdrop dew) {
+    void collectDew(MedigelDroplet dew) {
 
         GLog.i(Messages.get(this, "collected"));
         volume += dew.quantity;

@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.ui;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -99,7 +99,7 @@ public class BuffIndicator extends Component {
         super();
 
         this.ch = ch;
-        if (ch == Dungeon.hero) {
+        if (ch == SpacebaseRun.hero) {
             heroInstance = this;
         }
     }

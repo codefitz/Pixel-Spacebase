@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.effects;
 
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -34,9 +34,9 @@ public class CheckedCell extends Image {
 
         origin.set(0.5f);
 
-        point(DungeonTilemap.tileToWorld(pos).offset(
-                DungeonTilemap.SIZE / 2,
-                DungeonTilemap.SIZE / 2));
+        point(SpacebaseTilemap.tileToWorld(pos).offset(
+                SpacebaseTilemap.SIZE / 2,
+                SpacebaseTilemap.SIZE / 2));
 
         alpha = 0.8f;
     }
@@ -45,7 +45,7 @@ public class CheckedCell extends Image {
     public void update() {
         if ((alpha -= Game.elapsed) > 0) {
             alpha(alpha);
-            scale.set(DungeonTilemap.SIZE * alpha);
+            scale.set(SpacebaseTilemap.SIZE * alpha);
         } else {
             killAndErase();
         }

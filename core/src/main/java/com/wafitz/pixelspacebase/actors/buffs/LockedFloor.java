@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
@@ -34,7 +34,7 @@ public class LockedFloor extends Buff {
     public boolean act() {
         spend(TICK);
 
-        if (!Dungeon.level.locked)
+        if (!SpacebaseRun.level.locked)
             detach();
 
         if (left >= 1)

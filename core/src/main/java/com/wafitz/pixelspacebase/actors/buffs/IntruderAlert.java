@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -48,7 +48,7 @@ public class IntruderAlert extends FlavourBuff {
     @Override
     public void detach() {
         super.detach();
-        Dungeon.observe();
+        SpacebaseRun.observe();
         GameScene.updateFog();
     }
 

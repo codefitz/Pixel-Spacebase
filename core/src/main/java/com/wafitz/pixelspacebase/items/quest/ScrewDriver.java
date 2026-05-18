@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.quest;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -92,7 +92,7 @@ public class ScrewDriver extends Weapon {
 
         if (action.equals(AC_MINE)) {
 
-            if (Dungeon.depth < 11 || Dungeon.depth > 15) {
+            if (SpacebaseRun.depth < 11 || SpacebaseRun.depth > 15) {
                 GLog.w(Messages.get(this, "no_vein"));
                 return;
             }
@@ -100,7 +100,7 @@ public class ScrewDriver extends Weapon {
             for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 
                 final int pos = hero.pos + PathFinder.NEIGHBOURS8[i];
-                if (Dungeon.level.map[pos] == Terrain.WALL_DECO) {
+                if (SpacebaseRun.level.map[pos] == Terrain.WALL_DECO) {
 
                     hero.spend(TIME_TO_MINE);
                     hero.busy();
@@ -117,10 +117,10 @@ public class ScrewDriver extends Weapon {
                             GameScene.updateMap(pos);
 
                             SpareBaseParts parts = new SpareBaseParts();
-                            if (parts.doPickUp(Dungeon.hero)) {
-                                GLog.i(Messages.get(Dungeon.hero, "you_now_have", parts.name()));
+                            if (parts.doPickUp(SpacebaseRun.hero)) {
+                                GLog.i(Messages.get(SpacebaseRun.hero, "you_now_have", parts.name()));
                             } else {
-                                Dungeon.level.drop(parts, hero.pos).sprite.drop();
+                                SpacebaseRun.level.drop(parts, hero.pos).sprite.drop();
                             }
 
                             Hunger hunger = hero.buff(Hunger.class);

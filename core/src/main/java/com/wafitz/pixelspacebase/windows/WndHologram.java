@@ -21,12 +21,12 @@
 package com.wafitz.pixelspacebase.windows;
 
 import com.wafitz.pixelspacebase.Challenges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
-import com.wafitz.pixelspacebase.sprites.DarkLordGnollSprite;
+import com.wafitz.pixelspacebase.sprites.HoodedRaiderCommanderSprite;
 import com.wafitz.pixelspacebase.sprites.GreatCrabSprite;
 import com.wafitz.pixelspacebase.sprites.ToughXenoSprite;
 import com.wafitz.pixelspacebase.ui.RedButton;
@@ -54,7 +54,7 @@ public class WndHologram extends Window {
                 message = PixelScene.renderMultiline(Messages.get(this, "xenomorph") + Messages.get(this, "give_item"), 6);
                 break;
             case 2:
-                titlebar.icon(new DarkLordGnollSprite());
+                titlebar.icon(new HoodedRaiderCommanderSprite());
                 titlebar.label(Messages.get(this, "gnoll_title"));
                 message = PixelScene.renderMultiline(Messages.get(this, "gnoll") + Messages.get(this, "give_item"), 6);
                 break;
@@ -82,7 +82,7 @@ public class WndHologram extends Window {
         btnWeapon.setRect(0, message.top() + message.height() + GAP, WIDTH, BTN_HEIGHT);
         add(btnWeapon);
 
-        if (!Dungeon.isChallenged(Challenges.NO_ARMOR)) {
+        if (!SpacebaseRun.isChallenged(Challenges.NO_ARMOR)) {
             RedButton btnArmor = new RedButton(Messages.get(this, "armor")) {
                 @Override
                 protected void onClick() {
@@ -102,14 +102,14 @@ public class WndHologram extends Window {
 
         hide();
 
-        if (reward.doPickUp(Dungeon.hero)) {
-            GLog.i(Messages.get(Dungeon.hero, "you_now_have", reward.name()));
+        if (reward.doPickUp(SpacebaseRun.hero)) {
+            GLog.i(Messages.get(SpacebaseRun.hero, "you_now_have", reward.name()));
         } else {
-            Dungeon.level.drop(reward, hologram.pos).sprite.drop();
+            SpacebaseRun.level.drop(reward, hologram.pos).sprite.drop();
         }
 
         // wafitz.v1 - Hologram now recognises you!
-        hologram.yell("Farewell, " + Dungeon.hero.heroClass.title() + "!");
+        hologram.yell("Farewell, " + SpacebaseRun.hero.heroClass.title() + "!");
         hologram.die(null);
 
         Hologram.Quest.complete();

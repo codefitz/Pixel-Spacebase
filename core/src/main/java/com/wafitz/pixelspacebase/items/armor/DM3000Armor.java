@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.armor;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
@@ -41,7 +41,7 @@ class DM3000Armor extends ClassArmor {
     @Override
     public void doSpecial() {
 
-        for (Mob mob : Dungeon.level.mobs) {
+        for (Mob mob : SpacebaseRun.level.mobs) {
             if (Level.fieldOfView[mob.pos]) {
                 Buff.affect(mob, Burning.class).reignite(mob);
                 Buff.prolong(mob, LockedDown.class, 3);

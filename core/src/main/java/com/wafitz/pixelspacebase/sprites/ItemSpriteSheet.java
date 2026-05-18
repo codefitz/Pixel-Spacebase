@@ -69,7 +69,7 @@ public class ItemSpriteSheet {
     public static final int SECURITY_KEYCARD = SINGLE_USE + 11;
     public static final int MASTERY = SINGLE_USE + 12;
     public static final int KIT = SINGLE_USE + 13;
-    public static final int AMULET = SINGLE_USE + 14;
+    public static final int ESCAPE_POD_OVERRIDE = SINGLE_USE + 14;
 
     //32 free slots
 

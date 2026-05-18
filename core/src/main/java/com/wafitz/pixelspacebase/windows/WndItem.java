@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.windows;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -71,16 +71,16 @@ public class WndItem extends Window {
         float y = info.top() + info.height() + GAP;
         float x = 0;
 
-        if (Dungeon.hero.isAlive() && options) {
+        if (SpacebaseRun.hero.isAlive() && options) {
             ArrayList<RedButton> line = new ArrayList<>();
-            for (final String action : item.actions(Dungeon.hero)) {
+            for (final String action : item.actions(SpacebaseRun.hero)) {
 
                 RedButton btn = new RedButton(Messages.get(item, "ac_" + action), 8) {
                     @Override
                     protected void onClick() {
                         hide();
                         if (owner != null && owner.parent != null) owner.hide();
-                        item.execute(Dungeon.hero, action);
+                        item.execute(SpacebaseRun.hero, action);
                     }
                 };
                 btn.setSize(btn.reqWidth(), BUTTON_HEIGHT);

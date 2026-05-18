@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.effects.Splash;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -78,8 +78,8 @@ public class Bleeding extends Buff {
                             target.sprite.blood(), Math.min(10 * level / target.HT, 10));
                 }
 
-                if (target == Dungeon.hero && !target.isAlive()) {
-                    Dungeon.fail(getClass());
+                if (target == SpacebaseRun.hero && !target.isAlive()) {
+                    SpacebaseRun.fail(getClass());
                     GLog.n(Messages.get(this, "ondeath"));
                 }
 

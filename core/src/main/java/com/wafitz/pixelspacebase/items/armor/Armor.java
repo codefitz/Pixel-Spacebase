@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.armor;
 
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -129,7 +129,7 @@ public class Armor extends EquipableItem {
             GLog.i(Messages.get(Armor.class, "disarm_forcefield", name()));
             hero.sprite.operate(hero.pos);
             if (!forcefield.collect()) {
-                Dungeon.level.drop(forcefield, hero.pos);
+                SpacebaseRun.level.drop(forcefield, hero.pos);
             }
             forcefield = null;
         }
@@ -177,8 +177,8 @@ public class Armor extends EquipableItem {
             level(level() + 1);
             Badges.validateItemLevelAquired(this);
         }
-        if (isEquipped(Dungeon.hero)) {
-            Buff.affect(Dungeon.hero, WeakForcefield.CommanderShield.class).setArmor(this);
+        if (isEquipped(SpacebaseRun.hero)) {
+            Buff.affect(SpacebaseRun.hero, WeakForcefield.CommanderShield.class).setArmor(this);
         }
     }
 
@@ -287,15 +287,15 @@ public class Armor extends EquipableItem {
         if (levelKnown) {
             info += "\n\n" + Messages.get(Armor.class, "curr_absorb", name(), DRMin(), DRMax(), STRReq());
 
-            if (STRReq() > Dungeon.hero.STR()) {
+            if (STRReq() > SpacebaseRun.hero.STR()) {
                 info += " " + Messages.get(Armor.class, "too_heavy", name());
-            } else if (Dungeon.hero.heroClass == HeroClass.SHAPESHIFTER && Dungeon.hero.STR() > STRReq()) {
+            } else if (SpacebaseRun.hero.heroClass == HeroClass.SHAPESHIFTER && SpacebaseRun.hero.STR() > STRReq()) {
                 info += " " + Messages.get(Armor.class, "excess_str", name());
             }
         } else {
             info += "\n\n" + Messages.get(Armor.class, "avg_absorb", name(), DRMin(0), DRMax(0), STRReq(0));
 
-            if (STRReq(0) > Dungeon.hero.STR()) {
+            if (STRReq(0) > SpacebaseRun.hero.STR()) {
                 info += " " + Messages.get(Armor.class, "probably_too_heavy", name());
             }
         }
@@ -305,7 +305,7 @@ public class Armor extends EquipableItem {
             info += " " + enhancement.desc();
         }
 
-        if (malfunctioning && isEquipped(Dungeon.hero)) {
+        if (malfunctioning && isEquipped(SpacebaseRun.hero)) {
             info += "\n\n" + Messages.get(Armor.class, "malfunctioning_worn", name());
         } else if (malfunctioningKnown && malfunctioning) {
             info += "\n\n" + Messages.get(Armor.class, "malfunctioning", name());
@@ -476,7 +476,7 @@ public class Armor extends EquipableItem {
         protected boolean checkOwner(Char owner) {
             if (!owner.isAlive() && owner instanceof Hero) {
 
-                Dungeon.fail(getClass());
+                SpacebaseRun.fail(getClass());
                 GLog.n(Messages.get(this, "killed", name()));
 
                 Badges.validateDeathFromEnhancement();

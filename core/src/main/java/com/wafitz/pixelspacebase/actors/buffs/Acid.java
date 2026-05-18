@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -56,12 +56,12 @@ public class Acid extends Buff {
     @Override
     public boolean act() {
         if (target.isAlive()) {
-            if (Dungeon.depth > 4)
-                target.damage(Dungeon.depth / 5, this);
+            if (SpacebaseRun.depth > 4)
+                target.damage(SpacebaseRun.depth / 5, this);
             else if (Random.Int(2) == 0)
                 target.damage(1, this);
-            if (!target.isAlive() && target == Dungeon.hero) {
-                Dungeon.fail(getClass());
+            if (!target.isAlive() && target == SpacebaseRun.hero) {
+                SpacebaseRun.fail(getClass());
                 GLog.n(Messages.get(this, "ondeath"));
             }
             spend(TICK);

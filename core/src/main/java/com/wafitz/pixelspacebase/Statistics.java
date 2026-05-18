@@ -70,7 +70,7 @@ public class Statistics {
     private static final String NIGHT = "nightHunt";
     private static final String CLONES = "clonesSpent";
     private static final String DURATION = "duration";
-    private static final String AMULET = "amuletObtained";
+    private static final String ESCAPE_POD_OVERRIDE = "amuletObtained";
     private static final String RESCUE_CRADLES = "rescueCradleDepths";
 
     public static void storeInBundle(Bundle bundle) {
@@ -83,7 +83,7 @@ public class Statistics {
         bundle.put(NIGHT, nightHunt);
         bundle.put(CLONES, clonesSpent);
         bundle.put(DURATION, duration);
-        bundle.put(AMULET, amuletObtained);
+        bundle.put(ESCAPE_POD_OVERRIDE, amuletObtained);
         bundle.put(RESCUE_CRADLES, rescueCradleDepths);
     }
 
@@ -97,7 +97,7 @@ public class Statistics {
         nightHunt = bundle.getInt(NIGHT);
         clonesSpent = bundle.getInt(CLONES);
         duration = bundle.getFloat(DURATION);
-        amuletObtained = bundle.getBoolean(AMULET);
+        amuletObtained = bundle.getBoolean(ESCAPE_POD_OVERRIDE);
         rescueCradleDepths = bundle.getInt(RESCUE_CRADLES);
     }
 

@@ -54,9 +54,9 @@ public class ChangesScene extends PixelScene {
                     "_-_ Preserved unopened chest contents when lower-level warp effects move heaps between floors.\n" +
                     "_-_ Fixed weak-floor falling so pit rooms are generated below the floor being left.\n" +
                     "_-_ Fixed falling vents so they always send the hero to the level below.\n" +
-                    "_-_ Added three optional Y encounters to the Tengu maze interlude.\n" +
-                    "_-_ Let Y rebalance the Tengu arena if all three maze encounters are found.\n" +
-                    "_-_ Re-skinned Tengu's arena floor as an alien planet surface.\n" +
+                    "_-_ Added three optional Y encounters to the MaskedPrisoner maze interlude.\n" +
+                    "_-_ Let Y rebalance the MaskedPrisoner arena if all three maze encounters are found.\n" +
+                    "_-_ Re-skinned MaskedPrisoner's arena floor as an alien planet surface.\n" +
                     "_-_ Reworked Shapeshifter healing so medical items heal less while water slowly restores health.\n" +
                     "_-_ Replaced medical garden rooms with one-cell healing tank booths.\n" +
                     "_-_ Strengthened the Dark Lord of Yendor quest and victory text.\n" +

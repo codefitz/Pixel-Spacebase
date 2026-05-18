@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.actors.blobs;
 
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -37,14 +37,14 @@ public class ToxicGas extends Blob implements Hero.Doom {
     protected void evolve() {
         super.evolve();
 
-        int levelDamage = 5 + Dungeon.depth * 5;
+        int levelDamage = 5 + SpacebaseRun.depth * 5;
 
         Char ch;
         int cell;
 
         for (int i = area.left; i < area.right; i++) {
             for (int j = area.top; j < area.bottom; j++) {
-                cell = i + j * Dungeon.level.width();
+                cell = i + j * SpacebaseRun.level.width();
                 if (cur[cell] > 0 && (ch = Actor.findChar(cell)) != null) {
                     int damage = (ch.HT + levelDamage) / 40;
                     if (Random.Int(40) < (ch.HT + levelDamage) % 40) {
@@ -74,7 +74,7 @@ public class ToxicGas extends Blob implements Hero.Doom {
 
         Badges.validateDeathFromGas();
 
-        Dungeon.fail(getClass());
+        SpacebaseRun.fail(getClass());
         GLog.n(Messages.get(this, "ondeath"));
     }
 }

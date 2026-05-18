@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.armor;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.buffs.Blindness;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -64,7 +64,7 @@ class Eldridge extends ClassArmor {
 
                 curUser.HP -= (curUser.HP / 3);
 
-                for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size()])) {
+                for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[SpacebaseRun.level.mobs.size()])) {
                     if (Level.fieldOfView[mob.pos]) {
                         Buff.prolong(mob, Blindness.class, 2);
                         if (mob.state == mob.HUNTING) mob.state = mob.WANDERING;
@@ -75,8 +75,8 @@ class Eldridge extends ClassArmor {
                 TeleportationScript.appear(curUser, target);
                 CellEmitter.get(target).burst(Speck.factory(Speck.WOOL), 10);
                 Sample.INSTANCE.play(Assets.SND_PUFF);
-                Dungeon.level.press(target, curUser);
-                Dungeon.observe();
+                SpacebaseRun.level.press(target, curUser);
+                SpacebaseRun.observe();
                 GameScene.updateFog();
 
                 curUser.spendAndNext(Actor.TICK);

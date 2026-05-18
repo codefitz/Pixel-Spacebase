@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.features;
 
 import com.wafitz.pixelspacebase.Challenges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -31,11 +31,11 @@ import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
-import com.wafitz.pixelspacebase.items.Dewdrop;
+import com.wafitz.pixelspacebase.items.MedigelDroplet;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Camouflage;
-import com.wafitz.pixelspacebase.items.artifacts.GnollTechShield;
+import com.wafitz.pixelspacebase.items.equippablemodules.FrontierTechShield;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.levels.vents.LightningVent;
@@ -78,15 +78,15 @@ public class OffVent {
         // wafitz.v4: No more leaves for lights/vents
         //CellEmitter.get(pos).burst(LeafParticle.LEVEL_SPECIFIC, leaves);
         CellEmitter.get(pos).burst(ElmoParticle.FACTORY, 1);
-        if (Dungeon.visible[pos])
-            Dungeon.observe();
+        if (SpacebaseRun.visible[pos])
+            SpacebaseRun.observe();
     }
 
     private static void triggerPanelOutcome(Level level, int pos, Hero hero) {
-        if (!Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
+        if (!SpacebaseRun.isChallenged(Challenges.NO_HERBALISM)) {
             int naturalismLevel = 0;
 
-            GnollTechShield.Naturalism naturalism = hero.buff(GnollTechShield.Naturalism.class);
+            FrontierTechShield.Naturalism naturalism = hero.buff(FrontierTechShield.Naturalism.class);
             if (naturalism != null) {
                 if (!naturalism.isMalfunctioning()) {
                     naturalismLevel = naturalism.itemLevel() + 1;
@@ -102,9 +102,9 @@ public class OffVent {
                     Item device = Generator.random(Generator.Category.DEVICE);
 
                     if (device instanceof AlienEgg.Device) {
-                        if (Random.Int(15) - Dungeon.limitedDrops.alienTechDevice.count >= 0) {
+                        if (Random.Int(15) - SpacebaseRun.limitedDrops.alienTechDevice.count >= 0) {
                             level.drop(device, pos).sprite.drop();
-                            Dungeon.limitedDrops.alienTechDevice.count++;
+                            SpacebaseRun.limitedDrops.alienTechDevice.count++;
                         }
                     } else
                         level.drop(device, pos).sprite.drop();
@@ -114,7 +114,7 @@ public class OffVent {
 
                 // Dew, scales from 1/6 to 1/3
                 if (Random.Int(24 - naturalismLevel * 3) <= 3) {
-                    level.drop(new Dewdrop(), pos).sprite.drop();
+                    level.drop(new MedigelDroplet(), pos).sprite.drop();
                 }
             }
         }
@@ -126,7 +126,7 @@ public class OffVent {
                 GLog.w(Messages.get(OffVent.class, "burn"));
                 break;
             case 1:
-                hero.damage(Math.max(1, Random.IntRange(1, Math.max(2, Dungeon.depth / 2 + 1))), LightningVent.LIGHTNING);
+                hero.damage(Math.max(1, Random.IntRange(1, Math.max(2, SpacebaseRun.depth / 2 + 1))), LightningVent.LIGHTNING);
                 CellEmitter.center(pos).burst(Speck.factory(Speck.LIGHT), 4);
                 GLog.w(Messages.get(OffVent.class, "shock"));
                 break;

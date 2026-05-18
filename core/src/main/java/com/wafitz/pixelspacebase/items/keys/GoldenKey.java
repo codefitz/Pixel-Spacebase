@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.keys;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
@@ -32,7 +32,7 @@ public class GoldenKey extends Key {
 
     @Override
     public boolean doPickUp(Hero hero) {
-        Dungeon.hero.belongings.specialKeys[depth] += quantity();
+        SpacebaseRun.hero.belongings.specialKeys[depth] += quantity();
         return super.doPickUp(hero);
     }
 

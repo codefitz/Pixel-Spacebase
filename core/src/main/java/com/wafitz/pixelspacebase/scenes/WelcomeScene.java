@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.scenes;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.Rankings;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -133,7 +133,7 @@ public class WelcomeScene extends PixelScene {
             for (Rankings.Record rec : Rankings.INSTANCE.records) {
                 if (rec.gameFile != null) {
                     try {
-                        Dungeon.loadGame(rec.gameFile, false);
+                        SpacebaseRun.loadGame(rec.gameFile, false);
                         rec.gameID = rec.gameFile.replaceAll("\\D", "");
 
                         Rankings.INSTANCE.saveGameData(rec);

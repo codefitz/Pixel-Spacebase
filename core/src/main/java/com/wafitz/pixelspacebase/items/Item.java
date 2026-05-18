@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.items;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
@@ -123,7 +123,7 @@ public class Item implements Bundlable {
 
     public void doDrop(Hero hero) {
         hero.spendAndNext(TIME_TO_DROP);
-        Dungeon.level.drop(detachAll(hero.belongings.backpack), hero.pos).sprite.drop(hero.pos);
+        SpacebaseRun.level.drop(detachAll(hero.belongings.backpack), hero.pos).sprite.drop(hero.pos);
     }
 
     //resets an item's properties, to ensure consistency between runs
@@ -182,7 +182,7 @@ public class Item implements Bundlable {
             return;
         }
 
-        Heap heap = Dungeon.level.drop(this, cell);
+        Heap heap = SpacebaseRun.level.drop(this, cell);
         if (!heap.isEmpty()) {
             heap.sprite.drop(cell);
         }
@@ -196,7 +196,7 @@ public class Item implements Bundlable {
             return;
         }
 
-        Dungeon.level.drop(item, hero.pos).sprite.drop(hero.pos);
+        SpacebaseRun.level.drop(item, hero.pos).sprite.drop(hero.pos);
         hero.spendAndNext(TIME_TO_PICK_UP);
         Buff.affect(hero, Shapeshifted.class).setItemImage(item.image());
         GLog.i(Messages.get(Item.class, "shapeshift", item.name()));
@@ -228,12 +228,12 @@ public class Item implements Bundlable {
 
         if (items.size() < container.size) {
 
-            if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
+            if (SpacebaseRun.hero != null && SpacebaseRun.hero.isAlive()) {
                 Badges.validateItemLevelAquired(this);
             }
 
             items.add(this);
-            if (stackable || this instanceof HunterDisc) Dungeon.quickslot.replaceSimilar(this);
+            if (stackable || this instanceof HunterDisc) SpacebaseRun.quickslot.replaceSimilar(this);
             updateQuickslot();
             Collections.sort(items, itemComparator);
             return true;
@@ -247,7 +247,7 @@ public class Item implements Bundlable {
     }
 
     public boolean collect() {
-        return collect(Dungeon.hero.belongings.backpack);
+        return collect(SpacebaseRun.hero.belongings.backpack);
     }
 
     public final Item detach(Container container) {
@@ -259,7 +259,7 @@ public class Item implements Bundlable {
         } else if (quantity == 1) {
 
             if (stackable || this instanceof HunterDisc) {
-                Dungeon.quickslot.convertToPlaceholder(this);
+                SpacebaseRun.quickslot.convertToPlaceholder(this);
             }
 
             return detachAll(container);
@@ -288,7 +288,7 @@ public class Item implements Bundlable {
     }
 
     public final Item detachAll(Container container) {
-        Dungeon.quickslot.clearItem(this);
+        SpacebaseRun.quickslot.clearItem(this);
         updateQuickslot();
 
         for (Item item : container.items) {
@@ -485,8 +485,8 @@ public class Item implements Bundlable {
         bundle.put(LEVEL_KNOWN, levelKnown);
         bundle.put(MALFUNCTIONING, malfunctioning);
         bundle.put(MALFUNCTIONING_KNOWN, malfunctioningKnown);
-        if (Dungeon.quickslot.contains(this)) {
-            bundle.put(QUICKSLOT, Dungeon.quickslot.getSlot(this));
+        if (SpacebaseRun.quickslot.contains(this)) {
+            bundle.put(QUICKSLOT, SpacebaseRun.quickslot.getSlot(this));
         }
     }
 
@@ -506,12 +506,12 @@ public class Item implements Bundlable {
         malfunctioning = bundle.getBoolean(MALFUNCTIONING);
 
         //only want to populate slot on first load.
-        if (Dungeon.hero == null) {
+        if (SpacebaseRun.hero == null) {
             //support for pre-0.2.3 saves and rankings
             if (bundle.contains(OLDSLOT)) {
-                Dungeon.quickslot.setSlot(0, this);
+                SpacebaseRun.quickslot.setSlot(0, this);
             } else if (bundle.contains(QUICKSLOT)) {
-                Dungeon.quickslot.setSlot(bundle.getInt(QUICKSLOT), this);
+                SpacebaseRun.quickslot.setSlot(bundle.getInt(QUICKSLOT), this);
             }
         }
     }

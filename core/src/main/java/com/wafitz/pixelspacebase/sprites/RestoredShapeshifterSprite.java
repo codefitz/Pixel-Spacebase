@@ -20,8 +20,8 @@
  */
 package com.wafitz.pixelspacebase.sprites;
 
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
@@ -43,14 +43,14 @@ public class RestoredShapeshifterSprite extends Image {
         this.pos = pos;
         frame(new TextureFilm(texture, FRAME_WIDTH, FRAME_HEIGHT).get(0));
         place(pos);
-        visible = Dungeon.visible[pos];
+        visible = SpacebaseRun.visible[pos];
     }
 
     private void place(int cell) {
-        int csize = DungeonTilemap.SIZE;
+        int csize = SpacebaseTilemap.SIZE;
         PointF p = new PointF(
-                PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) + 0.5f) * csize - width * 0.5f),
-                PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height)
+                PixelScene.align(Camera.main, ((cell % SpacebaseRun.level.width()) + 0.5f) * csize - width * 0.5f),
+                PixelScene.align(Camera.main, ((cell / SpacebaseRun.level.width()) + 1.0f) * csize - height)
         );
         point(p);
     }
@@ -58,7 +58,7 @@ public class RestoredShapeshifterSprite extends Image {
     @Override
     public void update() {
         super.update();
-        visible = Dungeon.visible[pos];
+        visible = SpacebaseRun.visible[pos];
     }
 
     public static void show(int pos) {

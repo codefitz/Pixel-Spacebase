@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.items;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.armor.Armor;
@@ -90,10 +90,10 @@ public class WeakForcefield extends Item {
                     GLog.w(Messages.get(WeakForcefield.class, "malfunctioning_armor", armor.name()));
                 } else {
                     GLog.p(Messages.get(WeakForcefield.class, "apply", armor.name()));
-                    Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+                    SpacebaseRun.hero.sprite.operate(SpacebaseRun.hero.pos);
                     Sample.INSTANCE.play(Assets.SND_UNLOCK);
                     armor.applyForcefield((WeakForcefield) curItem);
-                    curItem.detach(Dungeon.hero.belongings.backpack);
+                    curItem.detach(SpacebaseRun.hero.belongings.backpack);
                     Badges.validateTutorial();
                 }
             }

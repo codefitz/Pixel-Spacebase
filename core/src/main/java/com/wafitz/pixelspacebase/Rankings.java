@@ -31,10 +31,10 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.DM300;
 import com.wafitz.pixelspacebase.actors.mobs.FeralShapeshifter;
-import com.wafitz.pixelspacebase.actors.mobs.King;
-import com.wafitz.pixelspacebase.actors.mobs.Tengu;
-import com.wafitz.pixelspacebase.actors.mobs.Yog;
-import com.wafitz.pixelspacebase.items.Amulet;
+import com.wafitz.pixelspacebase.actors.mobs.HolodeckMonarch;
+import com.wafitz.pixelspacebase.actors.mobs.MaskedPrisoner;
+import com.wafitz.pixelspacebase.actors.mobs.ContainmentMass;
+import com.wafitz.pixelspacebase.items.EscapePodOverride;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
@@ -79,10 +79,10 @@ public enum Rankings {
 
         rec.cause = cause;
         rec.win = win;
-        rec.heroClass = Dungeon.hero.heroClass;
-        rec.armorTier = Dungeon.hero.tier();
-        rec.herolevel = Dungeon.hero.lvl;
-        rec.depth = Dungeon.depth;
+        rec.heroClass = SpacebaseRun.hero.heroClass;
+        rec.armorTier = SpacebaseRun.hero.tier();
+        rec.herolevel = SpacebaseRun.hero.lvl;
+        rec.depth = SpacebaseRun.depth;
         rec.score = score(win);
 
         INSTANCE.saveGameData(rec);
@@ -118,7 +118,7 @@ public enum Rankings {
     }
 
     private int score(boolean win) {
-        return (Statistics.partsCollected + Dungeon.hero.lvl * (win ? 26 : Dungeon.depth) * 100) * (win ? 2 : 1);
+        return (Statistics.partsCollected + SpacebaseRun.hero.lvl * (win ? 26 : SpacebaseRun.depth) * 100) * (win ? 2 : 1);
     }
 
     public static final String HERO = "hero";
@@ -129,7 +129,7 @@ public enum Rankings {
     public void saveGameData(Record rec) {
         rec.gameData = new Bundle();
 
-        Belongings belongings = Dungeon.hero.belongings;
+        Belongings belongings = SpacebaseRun.hero.belongings;
 
         //save the hero and belongings
         ArrayList<Item> allItems = (ArrayList<Item>) belongings.backpack.items.clone();
@@ -137,14 +137,14 @@ public enum Rankings {
         for (Item item : belongings.backpack.items.toArray(new Item[0])) {
             if (item instanceof Container) {
                 for (Item containerItem : ((Container) item).items.toArray(new Item[0])) {
-                    if (Dungeon.quickslot.contains(containerItem))
+                    if (SpacebaseRun.quickslot.contains(containerItem))
                         belongings.backpack.items.add(containerItem);
                 }
                 belongings.backpack.items.remove(item);
-            } else if (!Dungeon.quickslot.contains(item))
+            } else if (!SpacebaseRun.quickslot.contains(item))
                 belongings.backpack.items.remove(item);
         }
-        rec.gameData.put(HERO, Dungeon.hero);
+        rec.gameData.put(HERO, SpacebaseRun.hero);
 
         //save stats
         Bundle stats = new Bundle();
@@ -173,10 +173,10 @@ public enum Rankings {
     public void loadGameData(Record rec) {
         Bundle data = rec.gameData;
 
-        Dungeon.hero = null;
-        Dungeon.level = null;
+        SpacebaseRun.hero = null;
+        SpacebaseRun.level = null;
         Generator.reset();
-        Dungeon.quickslot.reset();
+        SpacebaseRun.quickslot.reset();
         QuickSlotButton.reset();
 
         Bundle handler = data.getBundle(HANDLERS);
@@ -186,7 +186,7 @@ public enum Rankings {
 
         Badges.loadLocal(data.getBundle(BADGES));
 
-        Dungeon.hero = (Hero) data.get(HERO);
+        SpacebaseRun.hero = (Hero) data.get(HERO);
 
         Statistics.restoreFromBundle(data.getBundle(STATS));
 
@@ -309,14 +309,14 @@ public enum Rankings {
             //conversion logic for pre-0.3.4 saves
             if (bundle.contains(REASON)) {
                 String info = bundle.getString(REASON).toLowerCase(Locale.ENGLISH);
-                if (info.equals("obtained the amulet of yendor")) cause = Amulet.class;
+                if (info.equals("obtained the amulet of yendor")) cause = EscapePodOverride.class;
                 else if (info.contains("feralshapeshifter")) cause = FeralShapeshifter.class;
-                else if (info.contains("tengu")) cause = Tengu.class;
+                else if (info.contains("masked_prisoner")) cause = MaskedPrisoner.class;
                 else if (info.contains("dm-300")) cause = DM300.class;
-                else if (info.contains("king")) cause = King.class;
-                else if (info.contains("yog")) cause = Yog.class;
-                else if (info.contains("fist")) cause = Yog.class;
-                else if (info.contains("larva")) cause = Yog.class;
+                else if (info.contains("king")) cause = HolodeckMonarch.class;
+                else if (info.contains("yog")) cause = ContainmentMass.class;
+                else if (info.contains("fist")) cause = ContainmentMass.class;
+                else if (info.contains("larva")) cause = ContainmentMass.class;
                 else if (info.equals("burned to ash")) cause = Burning.class;
                 else if (info.equals("starved to death")) cause = Hunger.class;
                 else if (info.equals("succumbed to poison")) cause = Poison.class;

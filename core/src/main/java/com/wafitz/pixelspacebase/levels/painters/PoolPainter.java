@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.mobs.WaterThing;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.InvisibilityEnhancement;
 import com.wafitz.pixelspacebase.items.Generator;
@@ -98,9 +98,9 @@ public class PoolPainter extends Painter {
         //1 floor set higher in probability, never malfunctioning
         do {
             if (Random.Int(2) == 0) {
-                prize = Generator.randomWeapon((Dungeon.depth / 5) + 1);
+                prize = Generator.randomWeapon((SpacebaseRun.depth / 5) + 1);
             } else {
-                prize = Generator.randomArmor((Dungeon.depth / 5) + 1);
+                prize = Generator.randomArmor((SpacebaseRun.depth / 5) + 1);
             }
         } while (prize.malfunctioning);
 

@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.vents;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
@@ -50,24 +50,24 @@ public class LightningVent extends Vent {
 
         if (ch != null) {
             ch.damage(Math.max(1, Random.Int(ch.HP / 3, 2 * ch.HP / 3)), LIGHTNING);
-            if (ch == Dungeon.hero) {
+            if (ch == SpacebaseRun.hero) {
 
                 Camera.main.shake(2, 0.3f);
 
                 if (!ch.isAlive()) {
-                    Dungeon.fail(getClass());
+                    SpacebaseRun.fail(getClass());
                     GLog.n(Messages.get(this, "ondeath"));
                 }
             }
 
             ArrayList<Lightning.Arc> arcs = new ArrayList<>();
-            arcs.add(new Lightning.Arc(pos - Dungeon.level.width(), pos + Dungeon.level.width()));
+            arcs.add(new Lightning.Arc(pos - SpacebaseRun.level.width(), pos + SpacebaseRun.level.width()));
             arcs.add(new Lightning.Arc(pos - 1, pos + 1));
 
             ch.sprite.parent.add(new Lightning(arcs, null));
         }
 
-        Heap heap = Dungeon.level.heaps.get(pos);
+        Heap heap = SpacebaseRun.level.heaps.get(pos);
         if (heap != null) {
             //TODO: this should probably charge staffs too
             Item item = heap.items.peek();

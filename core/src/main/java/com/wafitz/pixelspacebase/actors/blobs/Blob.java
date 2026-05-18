@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.blobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.effects.BlobEmitter;
@@ -54,13 +54,13 @@ public class Blob extends Actor {
         if (volume > 0) {
 
             int start;
-            for (start = 0; start < Dungeon.level.length(); start++) {
+            for (start = 0; start < SpacebaseRun.level.length(); start++) {
                 if (cur[start] > 0) {
                     break;
                 }
             }
             int end;
-            for (end = Dungeon.level.length() - 1; end > start; end--) {
+            for (end = SpacebaseRun.level.length() - 1; end > start; end--) {
                 if (cur[end] > 0) {
                     break;
                 }
@@ -132,7 +132,7 @@ public class Blob extends Actor {
     public void setupArea() {
         for (int cell = 0; cell < cur.length; cell++) {
             if (cur[cell] != 0) {
-                area.union(cell % Dungeon.level.width(), cell / Dungeon.level.width());
+                area.union(cell % SpacebaseRun.level.width(), cell / SpacebaseRun.level.width());
             }
         }
     }
@@ -147,8 +147,8 @@ public class Blob extends Actor {
         int cell;
         for (int i = area.top - 1; i <= area.bottom; i++) {
             for (int j = area.left - 1; j <= area.right; j++) {
-                cell = j + i * Dungeon.level.width();
-                if (Dungeon.level.insideMap(cell)) {
+                cell = j + i * SpacebaseRun.level.width();
+                if (SpacebaseRun.level.insideMap(cell)) {
                     if (!blocking[cell]) {
 
                         int count = 1;
@@ -162,12 +162,12 @@ public class Blob extends Actor {
                             sum += cur[cell + 1];
                             count++;
                         }
-                        if (i > area.top && !blocking[cell - Dungeon.level.width()]) {
-                            sum += cur[cell - Dungeon.level.width()];
+                        if (i > area.top && !blocking[cell - SpacebaseRun.level.width()]) {
+                            sum += cur[cell - SpacebaseRun.level.width()];
                             count++;
                         }
-                        if (i < area.bottom && !blocking[cell + Dungeon.level.width()]) {
-                            sum += cur[cell + Dungeon.level.width()];
+                        if (i < area.bottom && !blocking[cell + SpacebaseRun.level.width()]) {
+                            sum += cur[cell + SpacebaseRun.level.width()];
                             count++;
                         }
 
@@ -213,8 +213,8 @@ public class Blob extends Actor {
     public void fullyClear() {
         volume = 0;
         area.setEmpty();
-        cur = new int[Dungeon.level.length()];
-        off = new int[Dungeon.level.length()];
+        cur = new int[SpacebaseRun.level.length()];
+        off = new int[SpacebaseRun.level.length()];
     }
 
     public String tileDesc() {
@@ -225,13 +225,13 @@ public class Blob extends Actor {
     public static <T extends Blob> T device(int cell, int amount, Class<T> type) {
         try {
 
-            T gas = (T) Dungeon.level.blobs.get(type);
+            T gas = (T) SpacebaseRun.level.blobs.get(type);
             if (gas == null) {
                 gas = type.newInstance();
-                Dungeon.level.blobs.put(type, gas);
+                SpacebaseRun.level.blobs.put(type, gas);
             }
 
-            gas.device(Dungeon.level, cell, amount);
+            gas.device(SpacebaseRun.level, cell, amount);
 
             return gas;
 
@@ -242,7 +242,7 @@ public class Blob extends Actor {
     }
 
     public static int volumeAt(int cell, Class<? extends Blob> type) {
-        Blob gas = Dungeon.level.blobs.get(type);
+        Blob gas = SpacebaseRun.level.blobs.get(type);
         if (gas == null || gas.volume == 0) {
             return 0;
         } else {

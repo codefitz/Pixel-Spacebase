@@ -20,10 +20,10 @@
  */
 package com.wafitz.pixelspacebase.windows;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.quest.DwarfToken;
+import com.wafitz.pixelspacebase.items.quest.HardLightEmitter;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
@@ -38,7 +38,7 @@ public class WndArp extends Window {
     private static final int BTN_HEIGHT = 20;
     private static final int GAP = 2;
 
-    public WndArp(final Arp arp, final DwarfToken tokens) {
+    public WndArp(final Arp arp, final HardLightEmitter tokens) {
 
         super();
 
@@ -65,17 +65,17 @@ public class WndArp extends Window {
         resize(WIDTH, (int) btnReward.bottom());
     }
 
-    private void takeReward(Arp arp, DwarfToken tokens, Item reward) {
+    private void takeReward(Arp arp, HardLightEmitter tokens, Item reward) {
 
         hide();
 
-        tokens.detachAll(Dungeon.hero.belongings.backpack);
+        tokens.detachAll(SpacebaseRun.hero.belongings.backpack);
 
         reward.identify();
-        if (reward.doPickUp(Dungeon.hero)) {
-            GLog.i(Messages.get(Dungeon.hero, "you_now_have", reward.name()));
+        if (reward.doPickUp(SpacebaseRun.hero)) {
+            GLog.i(Messages.get(SpacebaseRun.hero, "you_now_have", reward.name()));
         } else {
-            Dungeon.level.drop(reward, arp.pos).sprite.drop();
+            SpacebaseRun.level.drop(reward, arp.pos).sprite.drop();
         }
 
         arp.flee();

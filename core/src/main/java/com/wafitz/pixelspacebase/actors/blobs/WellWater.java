@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.blobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.Journal.Feature;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -53,9 +53,9 @@ public class WellWater extends Blob {
     @Override
     protected void evolve() {
         volume = off[pos] = cur[pos];
-        area.union(pos % Dungeon.level.width(), pos / Dungeon.level.width());
+        area.union(pos % SpacebaseRun.level.width(), pos / SpacebaseRun.level.width());
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             if (this instanceof KnowledgebaseTerminal) {
                 Journal.add(Feature.KNOWLEDGE_TERMINAL);
             } else if (this instanceof MedicalTerminal) {
@@ -70,12 +70,12 @@ public class WellWater extends Blob {
 
         Heap heap;
 
-        if (pos == Dungeon.hero.pos && affectHero(Dungeon.hero)) {
+        if (pos == SpacebaseRun.hero.pos && affectHero(SpacebaseRun.hero)) {
 
             volume = off[pos] = cur[pos] = 0;
             return true;
 
-        } else if ((heap = Dungeon.level.heaps.get(pos)) != null) {
+        } else if ((heap = SpacebaseRun.level.heaps.get(pos)) != null) {
 
             Item oldItem = heap.peek();
             Item newItem = affectItem(oldItem);
@@ -104,7 +104,7 @@ public class WellWater extends Blob {
                 do {
                     newPlace = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
                 } while (!Level.passable[newPlace] && !Level.avoid[newPlace]);
-                Dungeon.level.drop(heap.pickUp(), newPlace).sprite.drop(pos);
+                SpacebaseRun.level.drop(heap.pickUp(), newPlace).sprite.drop(pos);
 
                 return false;
 
@@ -142,7 +142,7 @@ public class WellWater extends Blob {
         Class<?>[] waters = {MedicalTerminal.class, HealingTank.class, KnowledgebaseTerminal.class, DiffusionalTerminal.class};
 
         for (Class<?> waterClass : waters) {
-            WellWater water = (WellWater) Dungeon.level.blobs.get(waterClass);
+            WellWater water = (WellWater) SpacebaseRun.level.blobs.get(waterClass);
             if (water != null &&
                     water.volume > 0 &&
                     water.pos == cell &&

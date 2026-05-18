@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.ui;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Game;
@@ -66,9 +66,9 @@ class PartsIndicator extends Component {
 
         }
 
-        if (Dungeon.parts != lastValue) {
+        if (SpacebaseRun.parts != lastValue) {
 
-            lastValue = Dungeon.parts;
+            lastValue = SpacebaseRun.parts;
 
             tf.text(Integer.toString(lastValue));
             tf.measure();

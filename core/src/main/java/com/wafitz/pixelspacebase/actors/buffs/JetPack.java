@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
@@ -44,7 +44,7 @@ public class JetPack extends FlavourBuff {
     @Override
     public void detach() {
         target.flying = false;
-        Dungeon.level.press(target.pos, target);
+        SpacebaseRun.level.press(target.pos, target);
         super.detach();
     }
 

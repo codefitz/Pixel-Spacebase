@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.scripts;
 
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
@@ -59,9 +59,9 @@ public class UpgradeScript extends InventoryScript {
             w.upgrade();
 
             if (hadMalfunctioningEnhance && !w.hasMalfunctionEnhance()) {
-                fix(Dungeon.hero);
+                fix(SpacebaseRun.hero);
             } else if (wasMalfunctioning && !w.malfunctioning) {
-                tweakMalfunction(Dungeon.hero);
+                tweakMalfunction(SpacebaseRun.hero);
             }
             if (hadGoodEnhance && !w.hasGoodEnhance()) {
                 GLog.w(Messages.get(Weapon.class, "incompatible"));
@@ -76,9 +76,9 @@ public class UpgradeScript extends InventoryScript {
             a.upgrade();
 
             if (hadMalfunctioningEnhancement && !a.hasMalfunctionEnhancement()) {
-                fix(Dungeon.hero);
+                fix(SpacebaseRun.hero);
             } else if (wasMalfunctioning && !a.malfunctioning) {
-                tweakMalfunction(Dungeon.hero);
+                tweakMalfunction(SpacebaseRun.hero);
             }
             if (hadGoodEnhancement && !a.hasGoodEnhancement()) {
                 GLog.w(Messages.get(Armor.class, "incompatible"));
@@ -90,7 +90,7 @@ public class UpgradeScript extends InventoryScript {
             item.upgrade();
 
             if (wasMalfunctioning && !item.malfunctioning) {
-                fix(Dungeon.hero);
+                fix(SpacebaseRun.hero);
             }
 
         } else if (item instanceof Module) {
@@ -100,9 +100,9 @@ public class UpgradeScript extends InventoryScript {
 
             if (wasMalfunctioning && !item.malfunctioning) {
                 if (item.level() < 1) {
-                    tweakMalfunction(Dungeon.hero);
+                    tweakMalfunction(SpacebaseRun.hero);
                 } else {
-                    fix(Dungeon.hero);
+                    fix(SpacebaseRun.hero);
                 }
             }
 

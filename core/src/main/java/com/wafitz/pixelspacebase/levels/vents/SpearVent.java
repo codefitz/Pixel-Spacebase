@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.Wound;
@@ -41,7 +41,7 @@ public class SpearVent extends Vent {
 
     @Override
     public void mine() {
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             Sample.INSTANCE.play(Assets.SND_TRAP);
         }
         //this trap is not disarmed by being triggered
@@ -52,18 +52,18 @@ public class SpearVent extends Vent {
 
     @Override
     public void activate() {
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             Sample.INSTANCE.play(Assets.SND_HIT);
             Wound.hit(pos);
         }
 
         Char ch = Actor.findChar(pos);
         if (ch != null && !ch.flying) {
-            int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth * 2);
+            int damage = Random.NormalIntRange(SpacebaseRun.depth, SpacebaseRun.depth * 2);
             damage -= ch.drRoll();
             ch.damage(Math.max(damage, 0), this);
-            if (!ch.isAlive() && ch == Dungeon.hero) {
-                Dungeon.fail(getClass());
+            if (!ch.isAlive() && ch == SpacebaseRun.hero) {
+                SpacebaseRun.fail(getClass());
                 GLog.n(Messages.get(this, "ondeath"));
             }
         }

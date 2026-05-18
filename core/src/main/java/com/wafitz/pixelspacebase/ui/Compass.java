@@ -20,8 +20,8 @@
  */
 package com.wafitz.pixelspacebase.ui;
 
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.utils.PointF;
@@ -43,7 +43,7 @@ class Compass extends Image {
         origin.set(width / 2, RADIUS);
 
         this.cell = cell;
-        cellCenter = DungeonTilemap.tileCenterToWorld(cell);
+        cellCenter = SpacebaseTilemap.tileCenterToWorld(cell);
         visible = false;
     }
 
@@ -52,7 +52,7 @@ class Compass extends Image {
         super.update();
 
         if (!visible) {
-            visible = Dungeon.level.visited[cell] || Dungeon.level.mapped[cell];
+            visible = SpacebaseRun.level.visited[cell] || SpacebaseRun.level.mapped[cell];
         }
 
         if (visible) {

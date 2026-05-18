@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.mines;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -51,23 +51,23 @@ public class TeleportationPod extends Mine {
             int count = 10;
             int newPos;
             do {
-                newPos = Dungeon.level.randomRespawnCell();
+                newPos = SpacebaseRun.level.randomRespawnCell();
                 if (count-- <= 0) {
                     break;
                 }
             } while (newPos == -1);
 
-            if (newPos != -1 && !Dungeon.bossLevel()) {
+            if (newPos != -1 && !SpacebaseRun.bossLevel()) {
 
                 ch.pos = newPos;
                 ch.sprite.place(ch.pos);
-                ch.sprite.visible = Dungeon.visible[ch.pos];
+                ch.sprite.visible = SpacebaseRun.visible[ch.pos];
 
             }
 
         }
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
         }
     }

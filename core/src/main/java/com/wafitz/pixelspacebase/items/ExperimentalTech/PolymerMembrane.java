@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.ExperimentalTech;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.ConfusionGas;
 import com.wafitz.pixelspacebase.actors.blobs.ParalyticGas;
@@ -56,11 +56,11 @@ public class PolymerMembrane extends ExperimentalTech {
         boolean procd = false;
 
         Blob[] blobs = {
-                Dungeon.level.blobs.get(ToxicGas.class),
-                Dungeon.level.blobs.get(ParalyticGas.class),
-                Dungeon.level.blobs.get(ConfusionGas.class),
-                Dungeon.level.blobs.get(StenchGas.class),
-                Dungeon.level.blobs.get(VenomGas.class)
+                SpacebaseRun.level.blobs.get(ToxicGas.class),
+                SpacebaseRun.level.blobs.get(ParalyticGas.class),
+                SpacebaseRun.level.blobs.get(ConfusionGas.class),
+                SpacebaseRun.level.blobs.get(StenchGas.class),
+                SpacebaseRun.level.blobs.get(VenomGas.class)
         };
 
         for (Blob blob : blobs) {
@@ -69,7 +69,7 @@ public class PolymerMembrane extends ExperimentalTech {
                 continue;
             }
 
-            for (int i = 0; i < Dungeon.level.length(); i++) {
+            for (int i = 0; i < SpacebaseRun.level.length(); i++) {
                 if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 
                     int value = blob.cur[i];
@@ -79,7 +79,7 @@ public class PolymerMembrane extends ExperimentalTech {
                         blob.volume -= value;
                         procd = true;
 
-                        if (Dungeon.visible[i]) {
+                        if (SpacebaseRun.visible[i]) {
                             CellEmitter.get(i).burst(Speck.factory(Speck.DISCOVER), 1);
                         }
                     }
@@ -88,11 +88,11 @@ public class PolymerMembrane extends ExperimentalTech {
             }
         }
 
-        boolean heroAffected = PathFinder.distance[Dungeon.hero.pos] < Integer.MAX_VALUE;
+        boolean heroAffected = PathFinder.distance[SpacebaseRun.hero.pos] < Integer.MAX_VALUE;
 
         if (procd) {
 
-            if (Dungeon.visible[cell]) {
+            if (SpacebaseRun.visible[cell]) {
                 splash(cell);
                 Sample.INSTANCE.play(Assets.SND_SHATTER);
             }

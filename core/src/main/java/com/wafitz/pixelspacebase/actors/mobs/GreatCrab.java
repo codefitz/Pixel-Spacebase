@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
@@ -81,6 +81,6 @@ public class GreatCrab extends Crab {
 
         Hologram.Quest.process();
 
-        Dungeon.level.drop(new Parts(100), pos).sprite.drop();
+        SpacebaseRun.level.drop(new Parts(100), pos).sprite.drop();
     }
 }

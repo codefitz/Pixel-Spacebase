@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.effects;
 
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
@@ -43,8 +43,8 @@ public class ForcePull extends Group {
     private PointF from, to;
 
     public ForcePull(int from, int to, Callback callback) {
-        this(DungeonTilemap.tileCenterToWorld(from),
-                DungeonTilemap.tileCenterToWorld(to),
+        this(SpacebaseTilemap.tileCenterToWorld(from),
+                SpacebaseTilemap.tileCenterToWorld(to),
                 callback);
     }
 

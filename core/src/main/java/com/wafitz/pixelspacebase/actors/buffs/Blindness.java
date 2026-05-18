@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.buffs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
 
@@ -33,7 +33,7 @@ public class Blindness extends FlavourBuff {
     @Override
     public void detach() {
         super.detach();
-        Dungeon.observe();
+        SpacebaseRun.observe();
     }
 
     @Override

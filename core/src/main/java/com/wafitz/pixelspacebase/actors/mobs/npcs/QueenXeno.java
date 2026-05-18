@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -64,7 +64,7 @@ public class QueenXeno extends NPC {
 
     @Override
     public boolean interact() {
-        sprite.turnTo(pos, Dungeon.hero.pos);
+        sprite.turnTo(pos, SpacebaseRun.hero.pos);
         if (state == SLEEPING) {
             notice();
             yell(Messages.get(this, "not_sleeping"));

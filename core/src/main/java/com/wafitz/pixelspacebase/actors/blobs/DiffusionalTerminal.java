@@ -31,7 +31,7 @@ import com.wafitz.pixelspacebase.items.ExperimentalTech.StrengthUpgrade;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Generator.Category;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.artifacts.Artifact;
+import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.scripts.EnhancementScript;
@@ -63,8 +63,8 @@ public class DiffusionalTerminal extends WellWater {
             item = changeBlaster((Blaster) item);
         } else if (item instanceof Mine.Device) {
             item = changeDevice((Mine.Device) item);
-        } else if (item instanceof Artifact) {
-            item = changeArtifact((Artifact) item);
+        } else if (item instanceof EquippableModule) {
+            item = changeArtifact((EquippableModule) item);
         } else {
             item = null;
         }
@@ -153,8 +153,8 @@ public class DiffusionalTerminal extends WellWater {
         return n;
     }
 
-    private Artifact changeArtifact(Artifact a) {
-        Artifact n = Generator.randomArtifact();
+    private EquippableModule changeArtifact(EquippableModule a) {
+        EquippableModule n = Generator.randomEquippableModule();
 
         if (n != null) {
             n.malfunctioningKnown = a.malfunctioningKnown;

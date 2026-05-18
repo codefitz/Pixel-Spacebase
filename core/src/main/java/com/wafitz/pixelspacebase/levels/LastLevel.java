@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.levels;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.actors.Actor;
-import com.wafitz.pixelspacebase.items.Amulet;
+import com.wafitz.pixelspacebase.items.EscapePodOverride;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.watabou.noosa.Group;
@@ -54,12 +54,12 @@ public class LastLevel extends Level {
 
     @Override
     public String tilesTex() {
-        return Assets.TILES_HALLS;
+        return Assets.TILES_DEEP_CONTAINMENT;
     }
 
     @Override
     public String waterTex() {
-        return Assets.WATER_HALLS;
+        return Assets.WATER_DEEP_CONTAINMENT;
     }
 
     @Override
@@ -134,7 +134,7 @@ public class LastLevel extends Level {
 
     @Override
     protected void createItems() {
-        drop(new Amulet(), pedestal);
+        drop(new EscapePodOverride(), pedestal);
     }
 
     @Override
@@ -152,9 +152,9 @@ public class LastLevel extends Level {
             case Terrain.WATER:
                 return Messages.get(LastLevel.class, "water_name");
             case Terrain.LIGHTEDVENT:
-                return Messages.get(HallsLevel.class, "lightedvent_name");
+                return Messages.get(DeepContainmentLevel.class, "lightedvent_name");
             case Terrain.OFFVENT:
-                return Messages.get(HallsLevel.class, "off_vent_name");
+                return Messages.get(DeepContainmentLevel.class, "off_vent_name");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
                 return Messages.get(LastLevel.class, "statue_name");
@@ -176,7 +176,7 @@ public class LastLevel extends Level {
             case Terrain.PEDESTAL:
                 return Messages.get(LastLevel.class, "pedestal_desc");
             case Terrain.BOOKSHELF:
-                return Messages.get(HallsLevel.class, "bookshelf_desc");
+                return Messages.get(DeepContainmentLevel.class, "bookshelf_desc");
             default:
                 return super.tileDesc(tile);
         }
@@ -185,7 +185,7 @@ public class LastLevel extends Level {
     @Override
     public Group addVisuals() {
         super.addVisuals();
-        HallsLevel.addHallsVisuals(this, visuals);
+        DeepContainmentLevel.addHallsVisuals(this, visuals);
         return visuals;
     }
 

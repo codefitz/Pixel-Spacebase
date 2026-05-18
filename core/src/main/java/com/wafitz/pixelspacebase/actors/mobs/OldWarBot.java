@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
@@ -60,8 +60,8 @@ public class OldWarBot extends Mob {
         weapon.identify();
         weapon.enhance(Enhancement.random());
 
-        HP = HT = 15 + Dungeon.depth * 5;
-        defenseSkill = 4 + Dungeon.depth;
+        HP = HT = 15 + SpacebaseRun.depth * 5;
+        defenseSkill = 4 + SpacebaseRun.depth;
     }
 
     private static final String WEAPON = "weapon";
@@ -80,7 +80,7 @@ public class OldWarBot extends Mob {
 
     @Override
     protected boolean act() {
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             Journal.add(Journal.Feature.OLDWARBOT);
         }
         return super.act();
@@ -93,7 +93,7 @@ public class OldWarBot extends Mob {
 
     @Override
     public int attackSkill(Char target) {
-        return (int) ((9 + Dungeon.depth) * weapon.ACC);
+        return (int) ((9 + SpacebaseRun.depth) * weapon.ACC);
     }
 
     @Override
@@ -103,12 +103,12 @@ public class OldWarBot extends Mob {
 
     @Override
     protected boolean canAttack(Char enemy) {
-        return Dungeon.level.distance(pos, enemy.pos) <= weapon.RCH;
+        return SpacebaseRun.level.distance(pos, enemy.pos) <= weapon.RCH;
     }
 
     @Override
     public int drRoll() {
-        return Random.NormalIntRange(0, Dungeon.depth + weapon.defenseFactor(null));
+        return Random.NormalIntRange(0, SpacebaseRun.depth + weapon.defenseFactor(null));
     }
 
     @Override
@@ -133,7 +133,7 @@ public class OldWarBot extends Mob {
 
     @Override
     public void die(Object cause) {
-        Dungeon.level.drop(weapon, pos).sprite.drop();
+        SpacebaseRun.level.drop(weapon, pos).sprite.drop();
         super.die(cause);
     }
 

@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.actors.buffs;
 
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -104,7 +104,7 @@ public class Burning extends Buff implements Hero.Doom {
                         item = item.detach(hero.belongings.backpack);
                         ChargrilledMeat steak = new ChargrilledMeat();
                         if (!steak.collect(hero.belongings.backpack)) {
-                            Dungeon.level.drop(steak, hero.pos).sprite.drop();
+                            SpacebaseRun.level.drop(steak, hero.pos).sprite.drop();
                         }
                         GLog.w(Messages.get(this, "burnsup", item.toString()));
 
@@ -195,7 +195,7 @@ public class Burning extends Buff implements Hero.Doom {
 
         Badges.validateDeathFromFire();
 
-        Dungeon.fail(getClass());
+        SpacebaseRun.fail(getClass());
         GLog.n(Messages.get(this, "ondeath"));
     }
 }

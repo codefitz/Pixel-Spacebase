@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.ui;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -81,7 +81,7 @@ public class StatusPane extends Component {
         add(new TouchArea(0, 1, 31, 31) {
             @Override
             protected void onClick(Touch touch) {
-                Image sprite = Dungeon.hero.sprite;
+                Image sprite = SpacebaseRun.hero.sprite;
                 if (!sprite.isVisible()) {
                     Camera.main.focusOn(sprite);
                 }
@@ -95,10 +95,10 @@ public class StatusPane extends Component {
         btnMenu = new MenuButton();
         add(btnMenu);
 
-        avatar = HeroSprite.avatar(Dungeon.hero.heroClass, lastTier);
+        avatar = HeroSprite.avatar(SpacebaseRun.hero.heroClass, lastTier);
         add(avatar);
 
-        compass = new Compass(Dungeon.level.exit);
+        compass = new Compass(SpacebaseRun.level.exit);
         add(compass);
 
         rawShielding = new Image(Assets.SHLD_BAR);
@@ -121,7 +121,7 @@ public class StatusPane extends Component {
         level.hardlight(0xFFEBA4);
         add(level);
 
-        depth = new BitmapText(Integer.toString(Dungeon.depth), PixelScene.pixelFont);
+        depth = new BitmapText(Integer.toString(SpacebaseRun.depth), PixelScene.pixelFont);
         depth.hardlight(0xCACFC2);
         depth.measure();
         add(depth);
@@ -129,7 +129,7 @@ public class StatusPane extends Component {
         danger = new DangerIndicator();
         add(danger);
 
-        buffs = new BuffIndicator(Dungeon.hero);
+        buffs = new BuffIndicator(SpacebaseRun.hero);
         add(buffs);
 
         add(pickedUp = new Toolbar.PickedUpItem());
@@ -172,11 +172,11 @@ public class StatusPane extends Component {
     public void update() {
         super.update();
 
-        float health = Dungeon.hero.HP;
-        float shield = Dungeon.hero.SHLD;
-        float max = Dungeon.hero.HT;
+        float health = SpacebaseRun.hero.HP;
+        float shield = SpacebaseRun.hero.SHLD;
+        float max = SpacebaseRun.hero.HT;
 
-        if (!Dungeon.hero.isAlive()) {
+        if (!SpacebaseRun.hero.isAlive()) {
             avatar.tint(0x000000, 0.5f);
         } else if ((health / max) < 0.3f) {
             warning += Game.elapsed * 5f * (0.4f - (health / max));
@@ -192,9 +192,9 @@ public class StatusPane extends Component {
         shieldedHP.visible = shield > 0;
         rawShielding.visible = shield > 0;
 
-        exp.scale.x = (width / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();
+        exp.scale.x = (width / exp.width) * SpacebaseRun.hero.exp / SpacebaseRun.hero.maxExp();
 
-        if (Dungeon.hero.lvl != lastLvl) {
+        if (SpacebaseRun.hero.lvl != lastLvl) {
 
             if (lastLvl != -1) {
                 Emitter emitter = (Emitter) recycle(Emitter.class);
@@ -203,7 +203,7 @@ public class StatusPane extends Component {
                 emitter.burst(Speck.factory(Speck.STAR), 12);
             }
 
-            lastLvl = Dungeon.hero.lvl;
+            lastLvl = SpacebaseRun.hero.lvl;
             level.text(Integer.toString(lastLvl));
             level.measure();
             level.x = 27.5f - level.width() / 2f;
@@ -211,10 +211,10 @@ public class StatusPane extends Component {
             PixelScene.align(level);
         }
 
-        int tier = Dungeon.hero.tier();
+        int tier = SpacebaseRun.hero.tier();
         if (tier != lastTier) {
             lastTier = tier;
-            avatar.copy(HeroSprite.avatar(Dungeon.hero.heroClass, tier));
+            avatar.copy(HeroSprite.avatar(SpacebaseRun.hero.heroClass, tier));
         }
     }
 
@@ -278,18 +278,18 @@ public class StatusPane extends Component {
             boolean blackKey = false;
             boolean specialKey = false;
             int ironKeys = 0;
-            for (int i = 1; i <= Math.min(Dungeon.depth, 25); i++) {
-                if (Dungeon.hero.belongings.ironKeys[i] > 0 || Dungeon.hero.belongings.specialKeys[i] > 0) {
+            for (int i = 1; i <= Math.min(SpacebaseRun.depth, 25); i++) {
+                if (SpacebaseRun.hero.belongings.ironKeys[i] > 0 || SpacebaseRun.hero.belongings.specialKeys[i] > 0) {
                     foundKeys = true;
 
-                    if (i < Dungeon.depth) {
+                    if (i < SpacebaseRun.depth) {
                         blackKey = true;
 
                     } else {
-                        if (Dungeon.hero.belongings.specialKeys[i] > 0) {
+                        if (SpacebaseRun.hero.belongings.specialKeys[i] > 0) {
                             specialKey = true;
                         }
-                        ironKeys = Dungeon.hero.belongings.ironKeys[i];
+                        ironKeys = SpacebaseRun.hero.belongings.ironKeys[i];
                     }
                 }
             }

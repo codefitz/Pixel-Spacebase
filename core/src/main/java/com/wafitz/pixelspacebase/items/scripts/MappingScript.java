@@ -21,11 +21,11 @@
 package com.wafitz.pixelspacebase.items.scripts;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.effects.SpellSprite;
+import com.wafitz.pixelspacebase.effects.EffectSprite;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -42,9 +42,9 @@ public class MappingScript extends Script {
     @Override
     protected void doRead() {
 
-        int length = Dungeon.level.length();
-        int[] map = Dungeon.level.map;
-        boolean[] mapped = Dungeon.level.mapped;
+        int length = SpacebaseRun.level.length();
+        int[] map = SpacebaseRun.level.map;
+        boolean[] mapped = SpacebaseRun.level.mapped;
         boolean[] discoverable = Level.discoverable;
 
         boolean noticed = false;
@@ -58,9 +58,9 @@ public class MappingScript extends Script {
                 mapped[i] = true;
                 if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
 
-                    Dungeon.level.discover(i);
+                    SpacebaseRun.level.discover(i);
 
-                    if (Dungeon.visible[i]) {
+                    if (SpacebaseRun.visible[i]) {
                         GameScene.discoverTile(i, terr);
                         discover(i);
 
@@ -76,7 +76,7 @@ public class MappingScript extends Script {
             Sample.INSTANCE.play(Assets.SND_SECRET);
         }
 
-        SpellSprite.show(curUser, SpellSprite.MAP);
+        EffectSprite.show(curUser, EffectSprite.MAP);
         Sample.INSTANCE.play(Assets.SND_READ);
         Camoflage.dispel();
 

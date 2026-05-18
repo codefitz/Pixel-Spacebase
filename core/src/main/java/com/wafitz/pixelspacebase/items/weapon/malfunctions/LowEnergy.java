@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.weapon.malfunctions;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Weakness;
@@ -35,7 +35,7 @@ public class LowEnergy extends Weapon.Enhancement {
     @Override
     public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
 
-        if (attacker == Dungeon.hero && Random.Int(20) == 0) {
+        if (attacker == SpacebaseRun.hero && Random.Int(20) == 0) {
             Buff.affect(attacker, Weakness.class, Random.Float(5f, 25f));
         }
 

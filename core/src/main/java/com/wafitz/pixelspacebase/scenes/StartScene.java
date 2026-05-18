@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.scenes;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.GamesInProgress;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
@@ -316,7 +316,7 @@ public class StartScene extends PixelScene {
 
     private void startNewGame() {
 
-        Dungeon.hero = null;
+        SpacebaseRun.hero = null;
         InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 
         if (PixelSpacebase.intro()) {

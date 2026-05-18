@@ -28,10 +28,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
-import com.wafitz.pixelspacebase.actors.mobs.DarkLordGnoll;
+import com.wafitz.pixelspacebase.actors.mobs.HoodedRaiderCommander;
 import com.wafitz.pixelspacebase.actors.mobs.ToughXeno;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Lockdown;
-import com.wafitz.pixelspacebase.items.artifacts.PortableMaker;
+import com.wafitz.pixelspacebase.items.equippablemodules.PortableMaker;
 import com.wafitz.pixelspacebase.items.blasters.DominationBlaster;
 import com.wafitz.pixelspacebase.items.blasters.FlameThrower;
 import com.wafitz.pixelspacebase.items.blasters.FreezeThrower;
@@ -111,8 +111,8 @@ public class PixelSpacebase extends Game {
                 ToughXeno.class,
                 "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$ToughXeno");
         com.watabou.utils.Bundle.addAlias(
-                DarkLordGnoll.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$DarkLordGnoll");
+                HoodedRaiderCommander.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$HoodedRaiderCommander");
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.actors.mobs.GreatCrab.class,
                 "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$GreatCrab");
@@ -224,7 +224,7 @@ public class PixelSpacebase extends Game {
                 Assets.SND_OPEN,
                 Assets.SND_UNLOCK,
                 Assets.SND_ITEM,
-                Assets.SND_DEWDROP,
+                Assets.SND_MEDIGEL,
                 Assets.SND_HIT,
                 Assets.SND_MISS,
 

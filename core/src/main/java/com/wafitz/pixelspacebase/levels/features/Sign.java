@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.features;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.levels.DeadEndLevel;
@@ -43,7 +43,7 @@ public class Sign {
 
     public static void read(int pos) {
 
-        if (Dungeon.level instanceof DeadEndLevel) {
+        if (SpacebaseRun.level instanceof DeadEndLevel) {
 
             GameScene.show(new WndMessage(Messages.get(Sign.class, "dead_end")));
 
@@ -54,16 +54,16 @@ public class Sign {
                 return;
             }
 
-            if (Dungeon.depth <= 21) {
-                GameScene.show(new WndMessage(Messages.get(Sign.class, "tip_" + Dungeon.depth)));
+            if (SpacebaseRun.depth <= 21) {
+                GameScene.show(new WndMessage(Messages.get(Sign.class, "tip_" + SpacebaseRun.depth)));
             } else {
 
                 //if we are at depths 22-24 and in english
-                if (Dungeon.depth - 21 <= 3 && Messages.lang() == Languages.ENGLISH) {
-                    GameScene.show(new WndMessage(teaser_texts[Dungeon.depth - 22]));
+                if (SpacebaseRun.depth - 21 <= 3 && Messages.lang() == Languages.ENGLISH) {
+                    GameScene.show(new WndMessage(teaser_texts[SpacebaseRun.depth - 22]));
                 }
 
-                Dungeon.level.destroy(pos);
+                SpacebaseRun.level.destroy(pos);
                 GameScene.updateMap(pos);
                 GameScene.discoverTile(pos, Terrain.SIGN);
 

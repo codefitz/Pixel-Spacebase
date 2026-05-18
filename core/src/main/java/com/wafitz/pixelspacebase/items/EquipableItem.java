@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
@@ -55,10 +55,10 @@ public abstract class EquipableItem extends Item {
         if (action.equals(AC_EQUIP)) {
             //In addition to equipping itself, item reassigns itself to the quickslot
             //This is a special case as the item is being removed from inventory, but is staying with the hero.
-            int slot = Dungeon.quickslot.getSlot(this);
+            int slot = SpacebaseRun.quickslot.getSlot(this);
             doEquip(hero);
             if (slot != -1) {
-                Dungeon.quickslot.setSlot(slot, this);
+                SpacebaseRun.quickslot.setSlot(slot, this);
                 updateQuickslot();
             }
         } else if (action.equals(AC_UNEQUIP)) {
@@ -111,9 +111,9 @@ public abstract class EquipableItem extends Item {
 
         if (!collect || !collect(hero.belongings.backpack)) {
             onDetach();
-            Dungeon.quickslot.clearItem(this);
+            SpacebaseRun.quickslot.clearItem(this);
             updateQuickslot();
-            if (collect) Dungeon.level.drop(this, hero.pos);
+            if (collect) SpacebaseRun.level.drop(this, hero.pos);
         }
 
         return true;

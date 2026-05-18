@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.vents;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Bleeding;
@@ -42,7 +42,7 @@ public class GrippingVent extends Vent {
         Char c = Actor.findChar(pos);
 
         if (c != null) {
-            int damage = Math.max(0, (Dungeon.depth) - (c.drRoll() / 2));
+            int damage = Math.max(0, (SpacebaseRun.depth) - (c.drRoll() / 2));
             Buff.affect(c, Bleeding.class).set(damage);
             Buff.prolong(c, Cripple.class, 15f);
             Buff.prolong(c, LockedDown.class, 5f);

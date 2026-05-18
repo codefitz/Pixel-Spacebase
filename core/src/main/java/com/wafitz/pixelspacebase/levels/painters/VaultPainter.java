@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.levels.painters;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
@@ -48,7 +48,7 @@ public class VaultPainter extends Painter {
 
             case 0:
                 level.drop(prize(level), c).type = Type.LOCKED_CHEST;
-                level.addItemToSpawn(new GoldenKey(Dungeon.depth));
+                level.addItemToSpawn(new GoldenKey(SpacebaseRun.depth));
                 break;
 
             case 1:
@@ -59,7 +59,7 @@ public class VaultPainter extends Painter {
                 } while (i1.getClass() == i2.getClass());
                 level.drop(i1, c).type = Type.CRYSTAL_CHEST;
                 level.drop(i2, c + PathFinder.NEIGHBOURS8[Random.Int(8)]).type = Type.CRYSTAL_CHEST;
-                level.addItemToSpawn(new GoldenKey(Dungeon.depth));
+                level.addItemToSpawn(new GoldenKey(SpacebaseRun.depth));
                 break;
 
             case 2:
@@ -69,14 +69,14 @@ public class VaultPainter extends Painter {
         }
 
         room.entrance().set(Room.Door.Type.LOCKED);
-        level.addItemToSpawn(new IronKey(Dungeon.depth));
+        level.addItemToSpawn(new IronKey(SpacebaseRun.depth));
     }
 
     private static Item prize(Level level) {
         return Generator.random(Random.oneOf(
                 Generator.Category.BLASTER,
                 Generator.Category.MODULE,
-                Generator.Category.ARTIFACT
+                Generator.Category.EQUIPPABLE_MODULE
         ));
     }
 }

@@ -21,12 +21,12 @@
 package com.wafitz.pixelspacebase.ui;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.ExperimentalTech;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.keys.Key;
-import com.wafitz.pixelspacebase.items.keys.SkeletonKey;
+import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
 import com.wafitz.pixelspacebase.items.scripts.Script;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
@@ -202,7 +202,7 @@ public class ItemSlot extends Button {
 
                 int str = isArmor ? ((Armor) item).STRReq() : ((Weapon) item).STRReq();
                 topRight.text(Messages.format(TXT_STRENGTH, str));
-                if (str > Dungeon.hero.STR()) {
+                if (str > SpacebaseRun.hero.STR()) {
                     topRight.hardlight(DEGRADED);
                 } else {
                     topRight.resetColor();
@@ -218,7 +218,7 @@ public class ItemSlot extends Button {
             }
             topRight.measure();
 
-        } else if (item instanceof Key && !(item instanceof SkeletonKey)) {
+        } else if (item instanceof Key && !(item instanceof MasterKeycard)) {
             topRight.text(Messages.format(TXT_KEY_DEPTH, ((Key) item).depth));
             topRight.measure();
         } else {

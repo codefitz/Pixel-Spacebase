@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.actors.blobs;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.Journal.Feature;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
@@ -50,7 +50,7 @@ public class MedicalTerminal extends WellWater {
 
         CellEmitter.get(pos).start(ShaftParticle.FACTORY, 0.2f, 3);
 
-        Dungeon.hero.interrupt();
+        SpacebaseRun.hero.interrupt();
 
         GLog.p(Messages.get(this, "procced"));
 

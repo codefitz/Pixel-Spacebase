@@ -21,12 +21,12 @@
 package com.wafitz.pixelspacebase.sprites;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.Eye;
 import com.wafitz.pixelspacebase.effects.Beam;
-import com.wafitz.pixelspacebase.effects.MagicMissile;
+import com.wafitz.pixelspacebase.effects.EnergyBeam;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.particles.Emitter;
 
@@ -52,7 +52,7 @@ public class EyeSprite extends MobSprite {
 
         chargeParticles = centerEmitter();
         chargeParticles.autoKill = false;
-        chargeParticles.pour(MagicMissile.MagicParticle.ATTRACTING, 0.05f);
+        chargeParticles.pour(EnergyBeam.MagicParticle.ATTRACTING, 0.05f);
         chargeParticles.on = false;
 
         run = new Animation(12, true);
@@ -103,8 +103,8 @@ public class EyeSprite extends MobSprite {
         super.onComplete(anim);
 
         if (anim == zap) {
-            if (Dungeon.visible[ch.pos] || Dungeon.visible[zapPos]) {
-                parent.add(new Beam.DeathRay(center(), DungeonTilemap.tileCenterToWorld(zapPos)));
+            if (SpacebaseRun.visible[ch.pos] || SpacebaseRun.visible[zapPos]) {
+                parent.add(new Beam.DeathRay(center(), SpacebaseTilemap.tileCenterToWorld(zapPos)));
             }
             ((Eye) ch).deathGaze();
             ch.next();

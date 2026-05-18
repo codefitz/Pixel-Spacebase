@@ -22,7 +22,7 @@ package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -62,12 +62,12 @@ public class Leonard extends NPC {
     @Override
     public boolean interact() {
 
-        sprite.turnTo(pos, Dungeon.hero.pos);
+        sprite.turnTo(pos, SpacebaseRun.hero.pos);
 
         if (!Quest.given) {
 
             GameScene.show(new WndQuest(this,
-                    Quest.alternative ? Messages.get(this, "bats_1") : Messages.get(this, "parts_1", Dungeon.hero.givenName())) {
+                    Quest.alternative ? Messages.get(this, "bats_1") : Messages.get(this, "parts_1", SpacebaseRun.hero.givenName())) {
 
                 @Override
                 public void onBackPressed() {
@@ -77,10 +77,10 @@ public class Leonard extends NPC {
                     Quest.completed = false;
 
                     ScrewDriver pick = new ScrewDriver();
-                    if (pick.doPickUp(Dungeon.hero)) {
-                        GLog.i(Messages.get(Dungeon.hero, "you_now_have", pick.name()));
+                    if (pick.doPickUp(SpacebaseRun.hero)) {
+                        GLog.i(Messages.get(SpacebaseRun.hero, "you_now_have", pick.name()));
                     } else {
-                        Dungeon.level.drop(pick, Dungeon.hero.pos).sprite.drop();
+                        SpacebaseRun.level.drop(pick, SpacebaseRun.hero.pos).sprite.drop();
                     }
                 }
             });
@@ -90,17 +90,17 @@ public class Leonard extends NPC {
         } else if (!Quest.completed) {
             if (Quest.alternative) {
 
-                ScrewDriver pick = Dungeon.hero.belongings.getItem(ScrewDriver.class);
+                ScrewDriver pick = SpacebaseRun.hero.belongings.getItem(ScrewDriver.class);
                 if (pick == null) {
                     tell(Messages.get(this, "lost_screw"));
                 } else if (!pick.bloodStained) {
-                    tell(Messages.get(this, "bats_2", Dungeon.hero.givenName()));
+                    tell(Messages.get(this, "bats_2", SpacebaseRun.hero.givenName()));
                 } else {
-                    if (pick.isEquipped(Dungeon.hero)) {
-                        pick.doUnequip(Dungeon.hero, false);
+                    if (pick.isEquipped(SpacebaseRun.hero)) {
+                        pick.doUnequip(SpacebaseRun.hero, false);
                     }
-                    pick.detach(Dungeon.hero.belongings.backpack);
-                    tell(Messages.get(this, "completed", Dungeon.hero.givenName()));
+                    pick.detach(SpacebaseRun.hero.belongings.backpack);
+                    tell(Messages.get(this, "completed", SpacebaseRun.hero.givenName()));
 
                     Quest.completed = true;
                     Quest.reforged = false;
@@ -108,19 +108,19 @@ public class Leonard extends NPC {
 
             } else {
 
-                ScrewDriver pick = Dungeon.hero.belongings.getItem(ScrewDriver.class);
-                SpareBaseParts parts = Dungeon.hero.belongings.getItem(SpareBaseParts.class);
+                ScrewDriver pick = SpacebaseRun.hero.belongings.getItem(ScrewDriver.class);
+                SpareBaseParts parts = SpacebaseRun.hero.belongings.getItem(SpareBaseParts.class);
                 if (pick == null) {
                     tell(Messages.get(this, "lost_screw"));
                 } else if (parts == null || parts.quantity() < 15) {
                     tell(Messages.get(this, "parts_2"));
                 } else {
-                    if (pick.isEquipped(Dungeon.hero)) {
-                        pick.doUnequip(Dungeon.hero, false);
+                    if (pick.isEquipped(SpacebaseRun.hero)) {
+                        pick.doUnequip(SpacebaseRun.hero, false);
                     }
-                    pick.detach(Dungeon.hero.belongings.backpack);
-                    parts.detachAll(Dungeon.hero.belongings.backpack);
-                    tell(Messages.get(this, "completed", Dungeon.hero.givenName()));
+                    pick.detach(SpacebaseRun.hero.belongings.backpack);
+                    parts.detachAll(SpacebaseRun.hero.belongings.backpack);
+                    tell(Messages.get(this, "completed", SpacebaseRun.hero.givenName()));
 
                     Quest.completed = true;
                     Quest.reforged = false;
@@ -129,11 +129,11 @@ public class Leonard extends NPC {
             }
         } else if (!Quest.reforged) {
 
-            GameScene.show(new WndLeonard(this, Dungeon.hero));
+            GameScene.show(new WndLeonard(this, SpacebaseRun.hero));
 
         } else {
 
-            tell(Messages.get(this, "thanks", Dungeon.hero.givenName()));
+            tell(Messages.get(this, "thanks", SpacebaseRun.hero.givenName()));
 
         }
 
@@ -189,20 +189,20 @@ public class Leonard extends NPC {
         }
 
         Sample.INSTANCE.play(Assets.SND_EVOKE);
-        UpgradeScript.upgrade(Dungeon.hero);
-        Item.evoke(Dungeon.hero);
+        UpgradeScript.upgrade(SpacebaseRun.hero);
+        Item.evoke(SpacebaseRun.hero);
 
-        if (first.isEquipped(Dungeon.hero)) {
-            ((EquipableItem) first).doUnequip(Dungeon.hero, true);
+        if (first.isEquipped(SpacebaseRun.hero)) {
+            ((EquipableItem) first).doUnequip(SpacebaseRun.hero, true);
         }
         first.level(first.level() + 1); //prevents on-upgrade effects like enhance/enhancement removal
-        Dungeon.hero.spendAndNext(2f);
+        SpacebaseRun.hero.spendAndNext(2f);
         Badges.validateItemLevelAquired(first);
 
-        if (second.isEquipped(Dungeon.hero)) {
-            ((EquipableItem) second).doUnequip(Dungeon.hero, false);
+        if (second.isEquipped(SpacebaseRun.hero)) {
+            ((EquipableItem) second).doUnequip(SpacebaseRun.hero, false);
         }
-        second.detachAll(Dungeon.hero.belongings.backpack);
+        second.detachAll(SpacebaseRun.hero.belongings.backpack);
 
         if (completeQuest) {
             Quest.reforged = true;
@@ -283,7 +283,7 @@ public class Leonard extends NPC {
         }
 
         public static boolean spawn(Collection<Room> rooms) {
-            if (!spawned && Dungeon.depth > 11 && Random.Int(15 - Dungeon.depth) == 0) {
+            if (!spawned && SpacebaseRun.depth > 11 && Random.Int(15 - SpacebaseRun.depth) == 0) {
 
                 Room leonard;
                 for (Room r : rooms) {

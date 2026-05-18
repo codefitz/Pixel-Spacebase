@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.scenes;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
@@ -119,7 +119,7 @@ public class InterlevelScene extends PixelScene {
                             break;
                     }
 
-                    if ((Dungeon.depth % 5) == 0) {
+                    if ((SpacebaseRun.depth % 5) == 0) {
                         Sample.INSTANCE.load(Assets.SND_BOSS);
                     }
 
@@ -164,7 +164,7 @@ public class InterlevelScene extends PixelScene {
             case FADE_OUT:
                 message.alpha(p);
 
-                if (mode == Mode.CONTINUE || (mode == Mode.DESCEND && Dungeon.depth == 1)) {
+                if (mode == Mode.CONTINUE || (mode == Mode.DESCEND && SpacebaseRun.depth == 1)) {
                     Music.INSTANCE.volume(p * (PixelSpacebase.musicVol() / 10f));
                 }
                 if ((timeLeft -= Game.elapsed) <= 0) {
@@ -193,7 +193,7 @@ public class InterlevelScene extends PixelScene {
                 } else if ((int) waitingTime == 10) {
                     waitingTime = 11f;
                     PixelSpacebase.reportException(
-                            new RuntimeException("waited more than 10 seconds on levelgen. Device:" + Dungeon.seed + " depth:" + Dungeon.depth)
+                            new RuntimeException("waited more than 10 seconds on levelgen. Device:" + SpacebaseRun.seed + " depth:" + SpacebaseRun.depth)
                     );
                 }
                 break;
@@ -203,72 +203,72 @@ public class InterlevelScene extends PixelScene {
     private void descend() throws IOException {
 
         Actor.fixTime();
-        boolean nextLevelNeedsPit = levelHasWeakFloor(Dungeon.level);
-        if (Dungeon.hero == null) {
-            Dungeon.init();
+        boolean nextLevelNeedsPit = levelHasWeakFloor(SpacebaseRun.level);
+        if (SpacebaseRun.hero == null) {
+            SpacebaseRun.init();
             if (noStory) {
-                Dungeon.chapters.add(WndStory.ID_OPERATIONS);
+                SpacebaseRun.chapters.add(WndStory.ID_OPERATIONS);
                 noStory = false;
             }
             GameLog.wipe();
         } else {
-            Workshop.carryStockFrom(Dungeon.level);
-            Dungeon.saveAll();
+            Workshop.carryStockFrom(SpacebaseRun.level);
+            SpacebaseRun.saveAll();
         }
 
         Level level;
-        if (Dungeon.depth >= Statistics.deepestFloor) {
+        if (SpacebaseRun.depth >= Statistics.deepestFloor) {
             RegularLevel.weakFloorCreated = nextLevelNeedsPit;
-            level = Dungeon.newLevel();
+            level = SpacebaseRun.newLevel();
         } else {
-            Dungeon.depth++;
-            level = Dungeon.loadLevel(Dungeon.hero.heroClass);
+            SpacebaseRun.depth++;
+            level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
             Workshop.deliverStorageTo(level);
         }
-        Dungeon.switchLevel(level, level.entrance);
+        SpacebaseRun.switchLevel(level, level.entrance);
     }
 
     private void fall() throws IOException {
 
         Actor.fixTime();
-        int targetDepth = Dungeon.depth + 1;
-        boolean nextLevelNeedsPit = fallIntoPit || levelHasWeakFloor(Dungeon.level);
-        Workshop.carryStockFrom(Dungeon.level);
-        Dungeon.saveAll();
+        int targetDepth = SpacebaseRun.depth + 1;
+        boolean nextLevelNeedsPit = fallIntoPit || levelHasWeakFloor(SpacebaseRun.level);
+        Workshop.carryStockFrom(SpacebaseRun.level);
+        SpacebaseRun.saveAll();
 
         Level level;
         if (targetDepth > Statistics.deepestFloor) {
             RegularLevel.weakFloorCreated = nextLevelNeedsPit;
-            level = Dungeon.newLevel();
+            level = SpacebaseRun.newLevel();
         } else {
-            Dungeon.depth = targetDepth;
-            level = Dungeon.loadLevel(Dungeon.hero.heroClass);
+            SpacebaseRun.depth = targetDepth;
+            level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
             Workshop.deliverStorageTo(level);
         }
-        Dungeon.switchLevel(level, fallIntoPit ? level.pitCell() : level.randomRespawnCell());
+        SpacebaseRun.switchLevel(level, fallIntoPit ? level.pitCell() : level.randomRespawnCell());
     }
 
     private void ascend() throws IOException {
         Actor.fixTime();
 
-        Workshop.carryStockFrom(Dungeon.level);
-        Dungeon.saveAll();
-        Dungeon.depth--;
-        Level level = Dungeon.loadLevel(Dungeon.hero.heroClass);
+        Workshop.carryStockFrom(SpacebaseRun.level);
+        SpacebaseRun.saveAll();
+        SpacebaseRun.depth--;
+        Level level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
         Workshop.deliverStorageTo(level);
-        Dungeon.switchLevel(level, level.exit);
+        SpacebaseRun.switchLevel(level, level.exit);
     }
 
     private void returnTo() throws IOException {
 
         Actor.fixTime();
 
-        Workshop.carryStockFrom(Dungeon.level);
-        Dungeon.saveAll();
-        Dungeon.depth = returnDepth;
-        Level level = Dungeon.loadLevel(Dungeon.hero.heroClass);
+        Workshop.carryStockFrom(SpacebaseRun.level);
+        SpacebaseRun.saveAll();
+        SpacebaseRun.depth = returnDepth;
+        Level level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
         Workshop.deliverStorageTo(level);
-        Dungeon.switchLevel(level, returnPos);
+        SpacebaseRun.switchLevel(level, returnPos);
     }
 
     private void restore() throws IOException {
@@ -277,13 +277,13 @@ public class InterlevelScene extends PixelScene {
 
         GameLog.wipe();
 
-        Dungeon.loadGame(StartScene.curClass);
-        if (Dungeon.depth == -1) {
-            Dungeon.depth = Statistics.deepestFloor;
-            Dungeon.switchLevel(Dungeon.loadLevel(StartScene.curClass), -1);
+        SpacebaseRun.loadGame(StartScene.curClass);
+        if (SpacebaseRun.depth == -1) {
+            SpacebaseRun.depth = Statistics.deepestFloor;
+            SpacebaseRun.switchLevel(SpacebaseRun.loadLevel(StartScene.curClass), -1);
         } else {
-            Level level = Dungeon.loadLevel(StartScene.curClass);
-            Dungeon.switchLevel(level, Dungeon.hero.pos);
+            Level level = SpacebaseRun.loadLevel(StartScene.curClass);
+            SpacebaseRun.switchLevel(level, SpacebaseRun.hero.pos);
         }
     }
 
@@ -291,14 +291,14 @@ public class InterlevelScene extends PixelScene {
 
         Actor.fixTime();
 
-        if (Dungeon.level.locked) {
-            Dungeon.hero.resurrect(Dungeon.depth);
-            Dungeon.depth--;
-            Level level = Dungeon.newLevel();
-            Dungeon.switchLevel(level, level.entrance);
+        if (SpacebaseRun.level.locked) {
+            SpacebaseRun.hero.resurrect(SpacebaseRun.depth);
+            SpacebaseRun.depth--;
+            Level level = SpacebaseRun.newLevel();
+            SpacebaseRun.switchLevel(level, level.entrance);
         } else {
-            Dungeon.hero.resurrect(-1);
-            Dungeon.resetLevel();
+            SpacebaseRun.hero.resurrect(-1);
+            SpacebaseRun.resetLevel();
         }
     }
 
@@ -306,10 +306,10 @@ public class InterlevelScene extends PixelScene {
 
         Actor.fixTime();
 
-        Dungeon.depth--;
+        SpacebaseRun.depth--;
         RegularLevel.weakFloorCreated = false;
-        Level level = Dungeon.newLevel();
-        Dungeon.switchLevel(level, level.entrance);
+        Level level = SpacebaseRun.newLevel();
+        SpacebaseRun.switchLevel(level, level.entrance);
     }
 
     private boolean levelHasWeakFloor(Level level) {

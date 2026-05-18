@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
@@ -104,7 +104,7 @@ public class Turret extends Mob {
         if (Level.passable[pos] && Actor.findChar(pos) == null) {
 
             Turret w = new Turret();
-            w.adjustStats(Dungeon.depth);
+            w.adjustStats(SpacebaseRun.depth);
             w.pos = pos;
             w.state = w.HUNTING;
             GameScene.add(w, SPAWN_DELAY);

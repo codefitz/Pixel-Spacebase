@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.sprites.SeniorSprite;
 import com.watabou.utils.Random;
 
-public class Senior extends Monk {
+public class Senior extends JedaKnight {
 
     {
         spriteClass = SeniorSprite.class;

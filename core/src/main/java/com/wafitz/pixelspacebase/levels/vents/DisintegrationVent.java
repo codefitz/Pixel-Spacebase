@@ -21,8 +21,8 @@
 package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
@@ -46,24 +46,24 @@ public class DisintegrationVent extends Vent {
     @Override
     public void activate() {
 
-        if (Dungeon.visible[pos]) {
-            PixelSpacebase.scene().add(new Beam.DeathRay(DungeonTilemap.tileCenterToWorld(pos - 1),
-                    DungeonTilemap.tileCenterToWorld(pos + 1)));
-            PixelSpacebase.scene().add(new Beam.DeathRay(DungeonTilemap.tileCenterToWorld(pos - Dungeon.level.width()),
-                    DungeonTilemap.tileCenterToWorld(pos + Dungeon.level.width())));
+        if (SpacebaseRun.visible[pos]) {
+            PixelSpacebase.scene().add(new Beam.DeathRay(SpacebaseTilemap.tileCenterToWorld(pos - 1),
+                    SpacebaseTilemap.tileCenterToWorld(pos + 1)));
+            PixelSpacebase.scene().add(new Beam.DeathRay(SpacebaseTilemap.tileCenterToWorld(pos - SpacebaseRun.level.width()),
+                    SpacebaseTilemap.tileCenterToWorld(pos + SpacebaseRun.level.width())));
             Sample.INSTANCE.play(Assets.SND_RAY);
         }
 
-        Heap heap = Dungeon.level.heaps.get(pos);
+        Heap heap = SpacebaseRun.level.heaps.get(pos);
         if (heap != null) heap.explode();
 
         Char ch = Actor.findChar(pos);
         if (ch != null) {
             ch.damage(Math.max(ch.HT / 5, Random.Int(ch.HP / 2, 2 * ch.HP / 3)), this);
-            if (ch == Dungeon.hero) {
+            if (ch == SpacebaseRun.hero) {
                 Hero hero = (Hero) ch;
                 if (!hero.isAlive()) {
-                    Dungeon.fail(getClass());
+                    SpacebaseRun.fail(getClass());
                     GLog.n(Messages.get(this, "ondeath"));
                 } else {
                     Item item = hero.belongings.randomUnequipped();

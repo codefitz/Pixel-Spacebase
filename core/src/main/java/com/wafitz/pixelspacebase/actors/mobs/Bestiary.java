@@ -47,7 +47,7 @@ public class Bestiary {
                 cl = Bandit.class;
             } else if (cl == Brute.class) {
                 cl = Shielded.class;
-            } else if (cl == Monk.class) {
+            } else if (cl == JedaKnight.class) {
                 cl = Senior.class;
             } else if (cl == Scorpio.class) {
                 cl = Acidic.class;
@@ -74,15 +74,15 @@ public class Bestiary {
                 break;
             case 2:
                 chances = new float[]{4, 0.01f, 4};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, Gnoll.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class};
                 break;
             case 3:
                 chances = new float[]{3, 0.01f, 4, 4, 0.1f};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, Gnoll.class, Crab.class, Squiddard.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class};
                 break;
             case 4:
                 chances = new float[]{3, 0.02f, 3, 4, 0.2f};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, Gnoll.class, Crab.class, Squiddard.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class};
                 break;
 
             case 5:
@@ -92,41 +92,41 @@ public class Bestiary {
 
             case 6:
                 chances = new float[]{2, 0.02f, 3, 3, 1, 4, 4, 4};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, Gnoll.class, Crab.class, Squiddard.class, Skeleton.class, Thief.class, Shaman.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, Thief.class, OuterColonyPsion.class};
                 break;
             case 7:
                 chances = new float[]{2, 0.03f, 2, 3, 2, 4, 3, 4, 4};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, Gnoll.class, Crab.class, Squiddard.class, Skeleton.class, Thief.class, Shaman.class, Guard.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, Thief.class, OuterColonyPsion.class, Guard.class};
                 break;
             case 8:
                 chances = new float[]{1, 0.03f, 2, 2, 3, 3, 2, 3, 3, 0.1f};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, Gnoll.class, Crab.class, Squiddard.class, Skeleton.class, Thief.class, Shaman.class, Guard.class, Bat.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, Thief.class, OuterColonyPsion.class, Guard.class, Bat.class};
                 break;
             case 9:
                 chances = new float[]{1, 0.04f, 1, 2, 4, 3, 1, 3, 2, 0.2f, 0.1f};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, Gnoll.class, Crab.class, Squiddard.class, Skeleton.class, Thief.class, Shaman.class, Guard.class, Bat.class, Brute.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, Thief.class, OuterColonyPsion.class, Guard.class, Bat.class, Brute.class};
                 break;
 
             case 10:
                 chances = new float[]{1};
-                classes = new Class<?>[]{Tengu.class};
+                classes = new Class<?>[]{MaskedPrisoner.class};
                 break;
 
             case 11:
                 chances = new float[]{0.2f, 0.04f, 1, 1, 4, 2, 2, 1, 1, 1};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, Gnoll.class, Crab.class, Squiddard.class, Skeleton.class, Shaman.class, Guard.class, Bat.class, Brute.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, OuterColonyPsion.class, Guard.class, Bat.class, Brute.class};
                 break;
             case 12:
                 chances = new float[]{0.1f, 0.05f, 0.2f, 0.2f, 3, 2, 2, 0.2f, 2, 2, 4};
-                classes = new Class<?>[]{Xenomorph.class, Eye.class, Gnoll.class, Crab.class, Squiddard.class, Skeleton.class, Shaman.class, Guard.class, Bat.class, Brute.class, Spinner.class};
+                classes = new Class<?>[]{Xenomorph.class, Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, OuterColonyPsion.class, Guard.class, Bat.class, Brute.class, Spinner.class};
                 break;
             case 13:
                 chances = new float[]{0.05f, 0.1f, 0.1f, 3, 1, 1, 0.1f, 3, 3, 3, 0.1f};
-                classes = new Class<?>[]{Eye.class, Gnoll.class, Crab.class, Squiddard.class, Skeleton.class, Shaman.class, Guard.class, Bat.class, Brute.class, Spinner.class, Elemental.class};
+                classes = new Class<?>[]{Eye.class, OuterColonyScout.class, Crab.class, Squiddard.class, RupturedCrewSuit.class, OuterColonyPsion.class, Guard.class, Bat.class, Brute.class, Spinner.class, Elemental.class};
                 break;
             case 14:
                 chances = new float[]{0.06f, 2, 1, 1, 4, 4, 2, 0.2f, 0.1f};
-                classes = new Class<?>[]{Eye.class, Squiddard.class, Skeleton.class, Shaman.class, Bat.class, Brute.class, Spinner.class, Elemental.class, Monk.class};
+                classes = new Class<?>[]{Eye.class, Squiddard.class, RupturedCrewSuit.class, OuterColonyPsion.class, Bat.class, Brute.class, Spinner.class, Elemental.class, JedaKnight.class};
                 break;
 
             case 15:
@@ -136,46 +136,46 @@ public class Bestiary {
 
             case 16:
                 chances = new float[]{0.06f, 2, 0.2f, 0.2f, 4, 4, 1, 1, 1, 1};
-                classes = new Class<?>[]{Eye.class, Squiddard.class, Skeleton.class, Shaman.class, Bat.class, Brute.class, Spinner.class, Elemental.class, Monk.class, Warlock.class,};
+                classes = new Class<?>[]{Eye.class, Squiddard.class, RupturedCrewSuit.class, OuterColonyPsion.class, Bat.class, Brute.class, Spinner.class, Elemental.class, JedaKnight.class, SignalLeech.class,};
                 break;
             case 17:
                 chances = new float[]{0.07f, 1, 0.1f, 0.1f, 3, 3, 2, 2, 2};
-                classes = new Class<?>[]{Eye.class, Squiddard.class, Skeleton.class, Shaman.class, Bat.class, Brute.class, Elemental.class, Monk.class, Warlock.class,};
+                classes = new Class<?>[]{Eye.class, Squiddard.class, RupturedCrewSuit.class, OuterColonyPsion.class, Bat.class, Brute.class, Elemental.class, JedaKnight.class, SignalLeech.class,};
                 break;
             case 18:
                 chances = new float[]{0.07f, 0.2f, 2, 2, 3, 3, 3, 4};
-                classes = new Class<?>[]{Eye.class, Squiddard.class, Bat.class, Brute.class, Elemental.class, Monk.class, Warlock.class, Golem.class};
+                classes = new Class<?>[]{Eye.class, Squiddard.class, Bat.class, Brute.class, Elemental.class, JedaKnight.class, SignalLeech.class, WarMachine.class};
                 break;
             case 19:
                 chances = new float[]{0.08f, 0.1f, 1, 1, 4, 4, 4, 3, 0.1f};
-                classes = new Class<?>[]{Eye.class, Squiddard.class, Bat.class, Brute.class, Elemental.class, Monk.class, Warlock.class, Golem.class, Succubus.class};
+                classes = new Class<?>[]{Eye.class, Squiddard.class, Bat.class, Brute.class, Elemental.class, JedaKnight.class, SignalLeech.class, WarMachine.class, SignalSiren.class};
                 break;
 
             case 20:
                 chances = new float[]{1};
-                classes = new Class<?>[]{King.class};
+                classes = new Class<?>[]{HolodeckMonarch.class};
                 break;
 
             case 21:
                 chances = new float[]{0.09f, 0.2f, 0.2f, 0.2f, 2, 0.2f};
-                classes = new Class<?>[]{Eye.class, Brute.class, Elemental.class, Monk.class, Golem.class, Succubus.class};
+                classes = new Class<?>[]{Eye.class, Brute.class, Elemental.class, JedaKnight.class, WarMachine.class, SignalSiren.class};
                 break;
             case 22:
                 chances = new float[]{0.1f, 0.1f, 0.1f, 0.1f, 1, 1};
-                classes = new Class<?>[]{Eye.class, Brute.class, Elemental.class, Monk.class, Golem.class, Succubus.class};
+                classes = new Class<?>[]{Eye.class, Brute.class, Elemental.class, JedaKnight.class, WarMachine.class, SignalSiren.class};
                 break;
             case 23:
                 chances = new float[]{0.2f, 0.2f, 2, 1};
-                classes = new Class<?>[]{Eye.class, Golem.class, Succubus.class, Scorpio.class};
+                classes = new Class<?>[]{Eye.class, WarMachine.class, SignalSiren.class, Scorpio.class};
                 break;
             case 24:
                 chances = new float[]{1, 3, 2};
-                classes = new Class<?>[]{Eye.class, Succubus.class, Scorpio.class};
+                classes = new Class<?>[]{Eye.class, SignalSiren.class, Scorpio.class};
                 break;
 
             case 25:
                 chances = new float[]{1};
-                classes = new Class<?>[]{Yog.class};
+                classes = new Class<?>[]{ContainmentMass.class};
                 break;
 
             default:

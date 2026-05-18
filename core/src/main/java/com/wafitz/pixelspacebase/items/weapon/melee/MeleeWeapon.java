@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.weapon.melee;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -63,14 +63,14 @@ public class MeleeWeapon extends Weapon {
 
         if (levelKnown) {
             info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, convert.damageFactor(min()), convert.damageFactor(max()), STRReq());
-            if (STRReq() > Dungeon.hero.STR()) {
+            if (STRReq() > SpacebaseRun.hero.STR()) {
                 info += " " + Messages.get(Weapon.class, "too_heavy", name());
-            } else if (Dungeon.hero.STR() > STRReq()) {
-                info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq(), name());
+            } else if (SpacebaseRun.hero.STR() > STRReq()) {
+                info += " " + Messages.get(Weapon.class, "excess_str", SpacebaseRun.hero.STR() - STRReq(), name());
             }
         } else {
             info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
-            if (STRReq(0) > Dungeon.hero.STR()) {
+            if (STRReq(0) > SpacebaseRun.hero.STR()) {
                 info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
             }
         }
@@ -93,7 +93,7 @@ public class MeleeWeapon extends Weapon {
             info += " " + Messages.get(enhancement, "desc");
         }
 
-        if (malfunctioning && isEquipped(Dungeon.hero)) {
+        if (malfunctioning && isEquipped(SpacebaseRun.hero)) {
             info += "\n\n" + Messages.get(Weapon.class, "malfunctioning_worn", name());
         } else if (malfunctioningKnown && malfunctioning) {
             info += "\n\n" + Messages.get(Weapon.class, "malfunctioning", name());

@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.ExperimentalTech;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.IntruderAlert;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -37,9 +37,9 @@ public class SecurityOverride extends ExperimentalTech {
     public void apply(Hero hero) {
         setKnown();
         Buff.affect(hero, IntruderAlert.class, IntruderAlert.DURATION);
-        Dungeon.observe();
+        SpacebaseRun.observe();
 
-        if (Dungeon.level.mobs.size() > 0) {
+        if (SpacebaseRun.level.mobs.size() > 0) {
             GLog.i(Messages.get(this, "see_mobs"));
         } else {
             GLog.i(Messages.get(this, "see_none"));

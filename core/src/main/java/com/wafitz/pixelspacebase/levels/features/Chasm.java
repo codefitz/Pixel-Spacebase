@@ -22,14 +22,14 @@ package com.wafitz.pixelspacebase.levels.features;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Bleeding;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.items.artifacts.HoloPad;
-import com.wafitz.pixelspacebase.items.artifacts.TimeFolder;
+import com.wafitz.pixelspacebase.items.equippablemodules.HoloPad;
+import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -70,30 +70,30 @@ public class Chasm {
 
         Sample.INSTANCE.play(Assets.SND_FALLING);
 
-        Buff buff = Dungeon.hero.buff(TimeFolder.timeFreeze.class);
+        Buff buff = SpacebaseRun.hero.buff(TimeFolder.timeFreeze.class);
         if (buff != null) buff.detach();
 
-        for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
+        for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
             if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
-        if (Dungeon.hero.isAlive()) {
-            Dungeon.hero.interrupt();
+        if (SpacebaseRun.hero.isAlive()) {
+            SpacebaseRun.hero.interrupt();
             InterlevelScene.mode = InterlevelScene.Mode.FALL;
-            if (Dungeon.level instanceof RegularLevel) {
-                Room room = ((RegularLevel) Dungeon.level).room(pos);
+            if (SpacebaseRun.level instanceof RegularLevel) {
+                Room room = ((RegularLevel) SpacebaseRun.level).room(pos);
                 InterlevelScene.fallIntoPit = room != null && room.type == Room.Type.WEAK_FLOOR;
             } else {
                 InterlevelScene.fallIntoPit = false;
             }
             Game.switchScene(InterlevelScene.class);
         } else {
-            Dungeon.hero.sprite.visible = false;
+            SpacebaseRun.hero.sprite.visible = false;
         }
     }
 
     public static void heroLand() {
 
-        Hero hero = Dungeon.hero;
+        Hero hero = SpacebaseRun.hero;
 
         hero.sprite.burst(hero.sprite.blood(), 10);
         Camera.main.shake(4, 0.2f);
@@ -105,7 +105,7 @@ public class Chasm {
             public void onDeath() {
                 Badges.validateDeathFromFalling();
 
-                Dungeon.fail(getClass());
+                SpacebaseRun.fail(getClass());
                 GLog.n(Messages.get(Chasm.class, "ondeath"));
             }
         });

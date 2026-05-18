@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.blobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
@@ -40,7 +40,7 @@ public class ParalyticGas extends Blob {
 
         for (int i = area.left; i < area.right; i++) {
             for (int j = area.top; j < area.bottom; j++) {
-                cell = i + j * Dungeon.level.width();
+                cell = i + j * SpacebaseRun.level.width();
                 if (cur[cell] > 0 && (ch = Actor.findChar(cell)) != null) {
                     if (!ch.immunities().contains(this.getClass()))
                         Buff.prolong(ch, Paralysis.class, Paralysis.duration(ch));

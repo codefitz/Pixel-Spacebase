@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.actors.mobs.Skeleton;
+import com.wafitz.pixelspacebase.actors.mobs.RupturedCrewSuit;
 import com.wafitz.pixelspacebase.items.ExperimentalTech.Firestarter;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
@@ -53,7 +53,7 @@ public class MassGravePainter extends Painter {
 
         //50% 1 skeleton, 50% 2 skeletons
         for (int i = 0; i <= Random.Int(2); i++) {
-            Skeleton skele = new Skeleton();
+            RupturedCrewSuit skele = new RupturedCrewSuit();
 
             int pos;
             do {

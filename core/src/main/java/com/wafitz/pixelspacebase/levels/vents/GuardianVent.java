@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.OldWarBot;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
@@ -42,23 +42,23 @@ public class GuardianVent extends Vent {
     @Override
     public void activate() {
 
-        for (Mob mob : Dungeon.level.mobs) {
+        for (Mob mob : SpacebaseRun.level.mobs) {
             mob.beckon(pos);
         }
 
-        if (Dungeon.visible[pos]) {
+        if (SpacebaseRun.visible[pos]) {
             GLog.w(Messages.get(this, "alarm"));
             CellEmitter.center(pos).start(Speck.factory(Speck.SCREAM), 0.3f, 3);
         }
 
         Sample.INSTANCE.play(Assets.SND_ALERT);
 
-        for (int i = 0; i < (Dungeon.depth - 5) / 5; i++) {
+        for (int i = 0; i < (SpacebaseRun.depth - 5) / 5; i++) {
             Guardian guardian = new Guardian();
             guardian.state = guardian.WANDERING;
-            guardian.pos = Dungeon.level.randomRespawnCell();
+            guardian.pos = SpacebaseRun.level.randomRespawnCell();
             GameScene.add(guardian);
-            guardian.beckon(Dungeon.hero.pos);
+            guardian.beckon(SpacebaseRun.hero.pos);
         }
 
     }

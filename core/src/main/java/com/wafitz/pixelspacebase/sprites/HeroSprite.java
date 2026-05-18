@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.sprites;
 import android.graphics.RectF;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.watabou.gltextures.SmartTexture;
@@ -50,9 +50,9 @@ public class HeroSprite extends CharSprite {
     public HeroSprite() {
         super();
 
-        link(Dungeon.hero);
+        link(SpacebaseRun.hero);
 
-        texture(Dungeon.hero.heroClass.spritesheet());
+        texture(SpacebaseRun.hero.heroClass.spritesheet());
         updateArmor();
 
         if (ch.isAlive())
@@ -112,7 +112,7 @@ public class HeroSprite extends CharSprite {
 
     public void restoreHeroForm() {
         if (itemForm) {
-            texture(Dungeon.hero.heroClass.spritesheet());
+            texture(SpacebaseRun.hero.heroClass.spritesheet());
             updateArmor();
             idle();
         }

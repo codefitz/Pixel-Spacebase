@@ -20,7 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Domination;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.DroneController;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
-import com.wafitz.pixelspacebase.items.artifacts.McGyvrModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.McGyvrModule;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.sprites.ThiefSprite;
@@ -95,7 +95,7 @@ public class Thief extends Mob {
         super.die(cause);
 
         if (item != null) {
-            Dungeon.level.drop(item, pos).sprite.drop();
+            SpacebaseRun.level.drop(item, pos).sprite.drop();
             //updates position
             if (item instanceof DroneController.ActivatedDrone)
                 ((DroneController.ActivatedDrone) item).setHolder(this);
@@ -104,8 +104,8 @@ public class Thief extends Mob {
 
     @Override
     protected Item createLoot() {
-        if (!Dungeon.limitedDrops.armband.dropped()) {
-            Dungeon.limitedDrops.armband.drop();
+        if (!SpacebaseRun.limitedDrops.armband.dropped()) {
+            SpacebaseRun.limitedDrops.armband.drop();
             return super.createLoot();
         } else
             return new Parts(Random.NormalIntRange(100, 250));
@@ -133,7 +133,7 @@ public class Thief extends Mob {
     @Override
     public int defenseProc(Char enemy, int damage) {
         if (state == FLEEING) {
-            Dungeon.level.drop(new Parts(), pos).sprite.drop();
+            SpacebaseRun.level.drop(new Parts(), pos).sprite.drop();
         }
 
         return super.defenseProc(enemy, damage);
@@ -146,7 +146,7 @@ public class Thief extends Mob {
         if (item != null && !item.unique && item.level() < 1) {
 
             GLog.w(Messages.get(Thief.class, "stole", item.name()));
-            Dungeon.quickslot.clearItem(item);
+            SpacebaseRun.quickslot.clearItem(item);
             item.updateQuickslot();
 
             if (item instanceof DroneController) {
@@ -187,21 +187,21 @@ public class Thief extends Mob {
                     int count = 32;
                     int newPos;
                     do {
-                        newPos = Dungeon.level.randomRespawnCell();
+                        newPos = SpacebaseRun.level.randomRespawnCell();
                         if (count-- <= 0) {
                             break;
                         }
                     }
-                    while (newPos == -1 || Dungeon.visible[newPos] || Dungeon.level.distance(newPos, pos) < (count / 3));
+                    while (newPos == -1 || SpacebaseRun.visible[newPos] || SpacebaseRun.level.distance(newPos, pos) < (count / 3));
 
                     if (newPos != -1) {
 
-                        if (Dungeon.visible[pos])
+                        if (SpacebaseRun.visible[pos])
                             CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
                         pos = newPos;
                         sprite.place(pos);
-                        sprite.visible = Dungeon.visible[pos];
-                        if (Dungeon.visible[pos])
+                        sprite.visible = SpacebaseRun.visible[pos];
+                        if (SpacebaseRun.visible[pos])
                             CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
 
                     }

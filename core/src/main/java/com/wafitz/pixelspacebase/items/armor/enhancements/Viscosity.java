@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.items.armor.enhancements;
 
 import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.Dungeon;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.items.armor.Armor;
@@ -119,9 +119,9 @@ public class Viscosity extends Armor.Enhancement {
 
                 int damageThisTick = Math.max(1, damage / 10);
                 target.damage(damageThisTick, this);
-                if (target == Dungeon.hero && !target.isAlive()) {
+                if (target == SpacebaseRun.hero && !target.isAlive()) {
 
-                    Dungeon.fail(getClass());
+                    SpacebaseRun.fail(getClass());
                     GLog.n(Messages.get(this, "ondeath"));
 
                     Badges.validateDeathFromEnhancement();

@@ -21,13 +21,13 @@
 package com.wafitz.pixelspacebase.items.blasters;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.Dungeon;
-import com.wafitz.pixelspacebase.DungeonTilemap;
+import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.effects.Effects;
-import com.wafitz.pixelspacebase.effects.MagicMissile;
+import com.wafitz.pixelspacebase.effects.EnergyBeam;
 import com.wafitz.pixelspacebase.effects.Pushing;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -74,7 +74,7 @@ public class WaveBlaster extends DamageBlaster {
         for (int i : PathFinder.NEIGHBOURS9) {
             int cell = bolt.collisionPos + i;
             if (validCell(cell)) {
-                Dungeon.level.press(cell, Actor.findChar(cell));
+                SpacebaseRun.level.press(cell, Actor.findChar(cell));
             }
         }
 
@@ -118,7 +118,7 @@ public class WaveBlaster extends DamageBlaster {
         }
 
         if (!curUser.isAlive()) {
-            Dungeon.fail(getClass());
+            SpacebaseRun.fail(getClass());
             GLog.n(Messages.get(this, "ondeath"));
         }
     }
@@ -176,7 +176,7 @@ public class WaveBlaster extends DamageBlaster {
                     ch.damage(Random.NormalIntRange(finalDist, 2 * finalDist), WaveBlaster.class);
                     Paralysis.prolong(ch, Paralysis.class, 1 + finalDist / 2f);
                 }
-                Dungeon.level.press(ch.pos, ch);
+                SpacebaseRun.level.press(ch.pos, ch);
             }
         }), -1);
     }
@@ -206,7 +206,7 @@ public class WaveBlaster extends DamageBlaster {
     }
 
     private static boolean validCell(int cell) {
-        return cell >= 0 && cell < Dungeon.level.length() && Dungeon.level.insideMap(cell);
+        return cell >= 0 && cell < SpacebaseRun.level.length() && SpacebaseRun.level.insideMap(cell);
     }
 
     @Override
@@ -226,7 +226,7 @@ public class WaveBlaster extends DamageBlaster {
 
     @Override
     protected void fx(Ballistica bolt, Callback callback) {
-        MagicMissile.slowness(curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
+        EnergyBeam.slowness(curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
         Sample.INSTANCE.play(Assets.SND_ZAP);
     }
 
@@ -254,8 +254,8 @@ public class WaveBlaster extends DamageBlaster {
         public void reset(int pos) {
             revive();
 
-            x = (pos % Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - width) / 2;
-            y = (pos / Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - height) / 2;
+            x = (pos % SpacebaseRun.level.width()) * SpacebaseTilemap.SIZE + (SpacebaseTilemap.SIZE - width) / 2;
+            y = (pos / SpacebaseRun.level.width()) * SpacebaseTilemap.SIZE + (SpacebaseTilemap.SIZE - height) / 2;
 
             time = TIME_TO_FADE;
         }
@@ -274,7 +274,7 @@ public class WaveBlaster extends DamageBlaster {
         }
 
         static void blast(int pos) {
-            Group parent = Dungeon.hero.sprite.parent;
+            Group parent = SpacebaseRun.hero.sprite.parent;
             if (parent == null) {
                 return;
             }
