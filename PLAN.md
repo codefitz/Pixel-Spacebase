@@ -17,14 +17,18 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [ ] Standard escape pod
     - [ ] Escape pod with cat
     - [ ] Fix core (save NPCs, remain on station) - possible time-based challenge, work back through station levels - unstable shaking.
+    - [ ] Download/Upload save files.
 
 ## Cosmetic / Narrative
 
 - [ ] Deep containment - change this to Bridge.
 - [ ] Should be made clear that Y is taking or giving something to hero for Tengu battle.
 - [ ] Fix ugly HP bar
-- [ ] Modal dialogs still need fixing (border size, transparent background)
+- [ ] Modal dialogs still need fixing (border size) - Start of game intro.
 - [ ] Rot lasher/heart sci-fi rework
+- [ ] Weak forcefield shouldn't rumble the ground.
+- [ ] If a bridge and chasm is in a room, then space suit isn't needed.
+- [ ] Convert makerbot to a workdesk. No sprite, no character.
 
 ## Graphical Changes
 
@@ -47,7 +51,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Bugs
 
-- [ ] Placeholder.
+- [ ] No text found picking up medigel
+- [ ] Flock trigger - the log says alien: No text found
 
 ## Refactorial Changes and Small Adjustments
 
