@@ -16,13 +16,14 @@ android {
                 def ndkDirectory = android.ndkDirectory
                 if (ndkDirectory instanceof File) {
                     ndkDir = ndkDirectory.absolutePath
-                } else if (ndkDirectory.hasProperty('asFile')) {
+                } else if (ndkDirectory.metaClass.respondsTo(ndkDirectory, 'asFile')) {
                     ndkDir = ndkDirectory.asFile.absolutePath
                 } else if (ndkDirectory.metaClass.respondsTo(ndkDirectory, 'get')) {
                     def providedDirectory = ndkDirectory.get()
                     if (providedDirectory instanceof File) {
                         ndkDir = providedDirectory.absolutePath
-                    } else if (providedDirectory != null && providedDirectory.hasProperty('asFile')) {
+                    } else if (providedDirectory != null &&
+                            providedDirectory.metaClass.respondsTo(providedDirectory, 'asFile')) {
                         ndkDir = providedDirectory.asFile.absolutePath
                     }
                 }
@@ -32,7 +33,7 @@ android {
                 def localProperties = project.rootProject.file('local.properties')
                 if (localProperties.exists()) {
                     Properties properties = new Properties()
-                    properties.load(localProperties.newDataInputStream())
+                    localProperties.withInputStream { properties.load(it) }
                     ndkDir = properties.getProperty('ndk.dir')
                 }
             }
