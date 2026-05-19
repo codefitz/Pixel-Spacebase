@@ -21,20 +21,3 @@ dependencies {
     implementation project(':pd-classes')
     testImplementation 'junit:junit:4.13.2'
 }
-
-buildscript {
-    repositories {
-        mavenCentral()
-        google()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.0'
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}

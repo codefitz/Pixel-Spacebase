@@ -26,9 +26,10 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Fix ugly HP bar
 - [ ] Modal dialogs still need fixing (border size) - Start of game intro.
 - [ ] Rot lasher/heart sci-fi rework
-- [ ] Weak forcefield shouldn't rumble the ground.
-- [ ] If a bridge and chasm is in a room, then space suit isn't needed.
+- [x] Weak forcefield shouldn't rumble the ground.
+- [x] If a bridge and chasm is in a room, then space suit isn't needed.
 - [ ] Convert makerbot to a workdesk. No sprite, no character.
+- [x] Hoverpod should also offer protection in vacuum.
 
 ## Graphical Changes
 
@@ -51,8 +52,19 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Bugs
 
-- [ ] No text found picking up medigel
-- [ ] Flock trigger - the log says alien: No text found
+- [x] No text found picking up medigel
+- [x] Flock trigger - the log says alien: No text found
+- [ ] Feral shapeshifter's last words are DIE!, this shouldd be the "Thankyou" line.
+
+## Code Quality / Stability
+
+- [x] #22 Save failures can be silently accepted.
+- [x] #23 Bound randomRespawnCell to avoid infinite loops.
+- [x] #24 Fix Android lint failure for vibrator permission in pd-classes.
+- [x] #25 Replace sniper DR unit test with production-code coverage.
+- [x] #26 Make optional NDK build task portable without local.properties.
+- [x] #27 Reduce static Android context and activity leaks.
+- [x] #28 Clean up low-risk Android lint warnings.
 
 ## Refactorial Changes and Small Adjustments
 
@@ -78,10 +90,12 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [ ] Wraith
 - [ ] Stims, plasmids - should stay in effect whilst hero moving.
 - [ ] Lights breaker turns lights on and off for any level.
+- [ ] Torch needs a switch off option when it is on.
+- [ ] Yendor sheild has no text found
 
 ## Release Prep
 
-- [ ] Re-enable any needed dev/test helpers deliberately behind a clear flag.
+- [x] Re-enable any needed dev/test helpers deliberately behind a clear flag.
 - [ ] Update release notes and version (on plan completion)
 - [ ] Run `./gradlew :core:testDebugUnitTest`.
 - [ ] Run `./gradlew :core:assembleDebug`.

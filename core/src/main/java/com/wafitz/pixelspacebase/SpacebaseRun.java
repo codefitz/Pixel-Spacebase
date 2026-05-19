@@ -72,9 +72,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.AtomicMoveNotSupportedException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -417,6 +414,7 @@ public class SpacebaseRun {
     private static final String DROPPED_HEAPS = "droppedHeaps%d";
     private static final String LEVEL = "level";
     private static final String TEMP_SAVE_SUFFIX = ".tmp";
+    private static final String BACKUP_SAVE_SUFFIX = ".bak";
     private static final String LIMDROPS = "limiteddrops";
     private static final String DV = "airTank";
     private static final String WT = "transmutation";
@@ -452,6 +450,7 @@ public class SpacebaseRun {
 
     private static void writeBundleAtomically(String fileName, Bundle bundle) throws IOException {
         String tempFileName = fileName + TEMP_SAVE_SUFFIX;
+        String backupFileName = fileName + BACKUP_SAVE_SUFFIX;
 
         boolean writeSucceeded;
         try (OutputStream output = Game.instance.openFileOutput(tempFileName, Game.MODE_PRIVATE)) {
@@ -465,19 +464,29 @@ public class SpacebaseRun {
 
         File tempFile = Game.instance.getFileStreamPath(tempFileName);
         File targetFile = Game.instance.getFileStreamPath(fileName);
-        try {
-            Files.move(
-                    tempFile.toPath(),
-                    targetFile.toPath(),
-                    StandardCopyOption.ATOMIC_MOVE,
-                    StandardCopyOption.REPLACE_EXISTING
-            );
-        } catch (AtomicMoveNotSupportedException e) {
+        File backupFile = Game.instance.getFileStreamPath(backupFileName);
+
+        if (backupFile.exists() && !backupFile.delete()) {
             deleteTempSaveFile(tempFileName);
-            throw new IOException("Atomic save replacement not supported for file: " + fileName, e);
-        } catch (IOException e) {
+            throw new IOException("Failed to clear backup save file: " + backupFileName);
+        }
+
+        boolean hadExistingSave = targetFile.exists();
+        if (hadExistingSave && !targetFile.renameTo(backupFile)) {
             deleteTempSaveFile(tempFileName);
-            throw new IOException("Failed to replace save file: " + fileName, e);
+            throw new IOException("Failed to back up existing save file: " + fileName);
+        }
+
+        if (!tempFile.renameTo(targetFile)) {
+            if (hadExistingSave && !backupFile.renameTo(targetFile)) {
+                PixelSpacebase.reportException(new IOException("Failed to restore backup save file: " + fileName));
+            }
+            deleteTempSaveFile(tempFileName);
+            throw new IOException("Failed to replace save file: " + fileName);
+        }
+
+        if (hadExistingSave && backupFile.exists() && !backupFile.delete()) {
+            PixelSpacebase.reportException(new IOException("Failed to delete backup save file: " + backupFileName));
         }
     }
 

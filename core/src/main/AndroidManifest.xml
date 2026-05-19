@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionCode="10002"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:versionCode="10002"
 	android:versionName="1.0.2"
 	android:installLocation="auto">
 
@@ -16,11 +17,14 @@
 		android:largeScreens="true"
 		android:xlargeScreens="true"/>
 
-	<application
-		android:icon="@drawable/ic_launcher"
-		android:label="@string/app_name"
-		android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-		android:allowBackup="false">
+		<application
+			android:icon="@drawable/ic_launcher"
+			android:label="@string/app_name"
+			android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+			android:allowBackup="false"
+			android:fullBackupContent="@xml/backup_rules"
+			android:dataExtractionRules="@xml/data_extraction_rules"
+			tools:targetApi="s">
 		<activity
 			android:name=".PixelSpacebase"
 			android:configChanges="keyboardHidden|orientation|screenSize"

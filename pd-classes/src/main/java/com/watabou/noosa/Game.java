@@ -23,6 +23,7 @@ package com.watabou.noosa;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.media.AudioManager;
 import android.opengl.GLES20;
@@ -54,6 +55,7 @@ import javax.microedition.khronos.opengles.GL10;
 public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTouchListener {
 
 	// Holds the active game activity while the engine is running.
+	@SuppressLint("StaticFieldLeak")
 	public static Game instance;
 
 	//actual size of the display
@@ -90,7 +92,7 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	public static float elapsed = 0f;
 	public static float timeTotal = 0f;
 	
-	protected GLSurfaceView view;
+	protected GameSurfaceView view;
 	protected SurfaceHolder holder;
 	
 	// Accumulated touch events
@@ -131,7 +133,7 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		
 		setVolumeControlStream( AudioManager.STREAM_MUSIC );
 		
-		view = new GLSurfaceView( this );
+		view = new GameSurfaceView( this );
 		view.setEGLContextClientVersion( 2 );
 		view.setEGLConfigChooser( 5, 6, 5, 0, 0, 0 );
 		view.setRenderer( this );
@@ -174,9 +176,12 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		Sample.INSTANCE.reset();
 	}
 
-	@SuppressLint({ "Recycle", "ClickableViewAccessibility" })
+	@SuppressLint("Recycle")
 	@Override
 	public boolean onTouch( View view, MotionEvent event ) {
+		if (event.getAction() == MotionEvent.ACTION_UP) {
+			view.performClick();
+		}
 		synchronized (motionEvents) {
 			motionEvents.add( MotionEvent.obtain( event ) );
 		}
@@ -351,5 +356,17 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	public interface SceneChangeCallback{
 		void beforeCreate();
 		void afterCreate();
+	}
+
+	public static class GameSurfaceView extends GLSurfaceView {
+		public GameSurfaceView( Context context ) {
+			super( context );
+		}
+
+		@Override
+		public boolean performClick() {
+			super.performClick();
+			return true;
+		}
 	}
 }

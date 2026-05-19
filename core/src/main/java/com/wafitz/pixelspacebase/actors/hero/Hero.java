@@ -64,6 +64,7 @@ import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.armor.Armor;
+import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
@@ -142,8 +143,8 @@ public class Hero extends Char {
 
     public static final int MAX_LEVEL = 30;
 
-    private static final int STARTING_STR = 10;
-    private static final boolean DEV_TEST_INVULNERABLE = false;
+    private static final int STARTING_STR = 100;
+    private static final boolean DEV_TEST_INVULNERABLE = true;
 
     private static final float TIME_TO_REST = 1f;
     private static final float TIME_TO_SEARCH = 2f;
@@ -1706,6 +1707,7 @@ public class Hero extends Char {
     private boolean canSurviveVacuum() {
         return heroClass == HeroClass.DM3000
                 || heroClass == HeroClass.SHAPESHIFTER
+                || belongings.armor instanceof HoverPod
                 || belongings.armor instanceof SpaceSuit
                 || belongings.armor instanceof HunterSpaceSuit;
     }

@@ -1,20 +1,15 @@
 package com.wafitz.pixelspacebase.levels;
 
 import com.wafitz.pixelspacebase.SpacebaseRun;
-import com.wafitz.pixelspacebase.actors.Actor;
-import org.junit.After;
 import org.junit.Test;
 
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class LevelRandomRespawnCellTest {
-
-    @After
-    public void tearDown() {
-        Actor.clear();
-    }
 
     @Test
     public void randomRespawnCellReturnsMinusOneWhenNoCellIsValid() {
@@ -41,12 +36,41 @@ public class LevelRandomRespawnCellTest {
         assertEquals(17, level.randomRespawnCell());
     }
 
+    @Test
+    public void exposedBridgeCellIsVacuumUnlessPressurized() {
+        TestLevel level = new TestLevel(5, 5);
+        Arrays.fill(level.map, Terrain.EMPTY);
+
+        int bridge = 2 + 2 * level.width();
+        level.map[bridge] = Terrain.EMPTY_SP;
+        level.map[bridge - 1] = Terrain.CHASM;
+        level.map[bridge + 1] = Terrain.CHASM;
+
+        assertTrue(level.isVacuum(bridge));
+
+        level = new TestLevel(5, 5);
+        Arrays.fill(level.map, Terrain.EMPTY);
+        level.map[bridge] = Terrain.EMPTY_SP;
+        level.map[bridge - 1] = Terrain.CHASM;
+        level.map[bridge + 1] = Terrain.CHASM;
+        level.setPressurized(bridge);
+
+        assertFalse(level.isVacuum(bridge));
+    }
+
     private static class TestLevel extends Level {
 
         private TestLevel(int levelLength) {
-            width = levelLength;
-            height = 1;
-            length = levelLength;
+            this(levelLength, 1);
+        }
+
+        private TestLevel(int levelWidth, int levelHeight) {
+            width = levelWidth;
+            height = levelHeight;
+            length = levelWidth * levelHeight;
+            map = new int[length];
+            vacuum = new boolean[length];
+            pressurized = new boolean[length];
         }
 
         @Override

@@ -245,7 +245,7 @@ public class StandardPainter extends Painter {
             for (int x = room.left + 1; x < room.right; x++) {
                 int cell = x + y * level.width();
                 if (level.map[cell] == Terrain.EMPTY_SP) {
-                    level.setVacuum(cell);
+                    level.setPressurized(cell);
                 }
             }
         }

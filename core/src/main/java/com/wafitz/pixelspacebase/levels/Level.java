@@ -116,6 +116,7 @@ public abstract class Level implements Bundlable {
     public boolean[] visited;
     public boolean[] mapped;
     public boolean[] vacuum;
+    public boolean[] pressurized;
 
     public int viewDistance = SpacebaseRun.isChallenged(Challenges.DARKNESS) ? 3 : 8;
 
@@ -165,6 +166,7 @@ public abstract class Level implements Bundlable {
     private static final String VISITED = "visited";
     private static final String MAPPED = "mapped";
     private static final String VACUUM = "vacuum";
+    private static final String PRESSURIZED = "pressurized";
     private static final String ENTRANCE = "entrance";
     private static final String EXIT = "exit";
     private static final String LOCKED = "locked";
@@ -199,6 +201,8 @@ public abstract class Level implements Bundlable {
         Arrays.fill(mapped, false);
         vacuum = new boolean[length()];
         Arrays.fill(vacuum, false);
+        pressurized = new boolean[length()];
+        Arrays.fill(pressurized, false);
 
         if (!(SpacebaseRun.bossLevel() || SpacebaseRun.depth == 21) /*final shop floor*/) {
             addItemToSpawn(Generator.random(Generator.Category.FOOD));
@@ -352,6 +356,10 @@ public abstract class Level implements Bundlable {
             vacuum = new boolean[length()];
             hasStoredVacuum = false;
         }
+        pressurized = bundle.contains(PRESSURIZED) ? bundle.getBooleanArray(PRESSURIZED) : new boolean[length()];
+        if (pressurized == null || pressurized.length != length()) {
+            pressurized = new boolean[length()];
+        }
         if (!hasStoredVacuum || !hasAnyVacuum()) {
             rebuildVacuumFromTerrain();
         }
@@ -432,6 +440,7 @@ public abstract class Level implements Bundlable {
         bundle.put(VISITED, visited);
         bundle.put(MAPPED, mapped);
         bundle.put(VACUUM, vacuum);
+        bundle.put(PRESSURIZED, pressurized);
         bundle.put(ENTRANCE, entrance);
         bundle.put(EXIT, exit);
         bundle.put(LOCKED, locked);
@@ -451,12 +460,29 @@ public abstract class Level implements Bundlable {
 
     public void setVacuum(int cell) {
         if (vacuum != null && insideMap(cell)) {
+            if (pressurized != null) {
+                pressurized[cell] = false;
+            }
             vacuum[cell] = true;
+        }
+    }
+
+    public void setPressurized(int cell) {
+        if (insideMap(cell)) {
+            if (pressurized != null) {
+                pressurized[cell] = true;
+            }
+            if (vacuum != null) {
+                vacuum[cell] = false;
+            }
         }
     }
 
     public boolean isVacuum(int cell) {
         if (vacuum == null || !insideMap(cell)) {
+            return false;
+        }
+        if (pressurized != null && pressurized[cell]) {
             return false;
         }
         if (!vacuum[cell] && isExposedBridgeCell(cell)) {
@@ -482,7 +508,7 @@ public abstract class Level implements Bundlable {
             return;
         }
         for (int cell = 0; cell < map.length; cell++) {
-            if (isExposedBridgeCell(cell)) {
+            if ((pressurized == null || !pressurized[cell]) && isExposedBridgeCell(cell)) {
                 vacuum[cell] = true;
             }
         }
