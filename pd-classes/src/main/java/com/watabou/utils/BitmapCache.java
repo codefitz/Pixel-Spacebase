@@ -22,6 +22,8 @@
 package com.watabou.utils;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -40,7 +42,17 @@ public class BitmapCache {
 		opts.inDither = false;
 	}
 	
-	public static Context context;
+	private static Resources resources;
+	private static AssetManager assets;
+
+	public static void setContext( Context context ) {
+		Context appContext = context.getApplicationContext();
+		if (appContext == null) {
+			appContext = context;
+		}
+		resources = appContext.getResources();
+		assets = appContext.getAssets();
+	}
 	
 	public static Bitmap get( String assetName ) {
 		return get( DEFAULT, assetName );
@@ -61,7 +73,7 @@ public class BitmapCache {
 		} else {
 			
 			try {
-				InputStream stream = context.getResources().getAssets().open( assetName );
+				InputStream stream = assets.open( assetName );
 				Bitmap bmp = BitmapFactory.decodeStream( stream, null, opts );
 				layer.put( assetName, bmp );
 				return bmp;
@@ -90,7 +102,7 @@ public class BitmapCache {
 			return layer.get( resID );
 		} else {
 			
-			Bitmap bmp = BitmapFactory.decodeResource( context.getResources(), resID );
+			Bitmap bmp = BitmapFactory.decodeResource( resources, resID );
 			layer.put( resID, bmp );
 			return bmp;
 			

@@ -53,6 +53,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTouchListener {
 
+	// Holds the active game activity while the engine is running.
 	public static Game instance;
 
 	//actual size of the display
@@ -107,7 +108,9 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	protected void onCreate( Bundle savedInstanceState ) {
 		super.onCreate( savedInstanceState );
 		
-		BitmapCache.context = TextureCache.context = instance = this;
+		instance = this;
+		TextureCache.setContext( getApplicationContext() );
+		BitmapCache.setContext( getApplicationContext() );
 		
 		DisplayMetrics m = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics( m );
@@ -260,7 +263,9 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 			scene = null;
 		}
 		
-		//instance = null;
+		if (instance == this) {
+			instance = null;
+		}
 	}
 	
 	public static void resetScene() {
