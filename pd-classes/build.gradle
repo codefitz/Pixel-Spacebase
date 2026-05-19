@@ -13,6 +13,7 @@ android {
             def ndkDir = null
             // Limits nested provider/path unwrapping to avoid accidental infinite recursion.
             final int MAX_PROVIDER_NESTING_DEPTH = 10
+            // Recursively unwraps provider-like objects until a File path can be derived.
             def resolvePath
             resolvePath = { candidate, depth = 0 ->
                 if (depth > MAX_PROVIDER_NESTING_DEPTH) {
@@ -41,7 +42,7 @@ android {
                 try {
                     ndkDir = resolvePath(android.ndkDirectory)
                 } catch (RuntimeException e) {
-                    logger.debug("Falling back from android.ndkDirectory for :pd-classes:ndkBuild: ${e.class.name}: ${e.message}", e)
+                    logger.debug("Falling back from android.ndkDirectory for :pd-classes:ndkBuild: ${e.getClass().getName()}: ${e.message}", e)
                     ndkDir = null
                 }
             }
@@ -65,7 +66,7 @@ android {
 
             if (ndkDir == null) {
                 throw new GradleException(
-                        "Android NDK not found. Configure android.ndkDirectory, " +
+                        "Android NDK not found. Configure android.ndkDirectory in your build.gradle, " +
                                 "set ndk.dir in local.properties, or set " +
                                 "ANDROID_NDK_ROOT or ANDROID_NDK_HOME before running :pd-classes:ndkBuild."
                 )
