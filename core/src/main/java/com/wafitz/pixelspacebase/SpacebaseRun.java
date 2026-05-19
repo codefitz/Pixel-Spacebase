@@ -68,9 +68,13 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -412,6 +416,7 @@ public class SpacebaseRun {
     private static final String DROPPED = "dropped%d";
     private static final String DROPPED_HEAPS = "droppedHeaps%d";
     private static final String LEVEL = "level";
+    private static final String TEMP_SAVE_SUFFIX = ".tmp";
     private static final String LIMDROPS = "limiteddrops";
     private static final String DV = "airTank";
     private static final String WT = "transmutation";
@@ -442,6 +447,43 @@ public class SpacebaseRun {
                 return RN_DEPTH_FILE;
             default:
                 return RG_DEPTH_FILE;
+        }
+    }
+
+    private static void writeBundleAtomically(String fileName, Bundle bundle) throws IOException {
+        String tempFileName = fileName + TEMP_SAVE_SUFFIX;
+
+        boolean writeSucceeded;
+        try (OutputStream output = Game.instance.openFileOutput(tempFileName, Game.MODE_PRIVATE)) {
+            writeSucceeded = Bundle.write(bundle, output);
+        }
+
+        if (!writeSucceeded) {
+            deleteTempSaveFile(tempFileName);
+            throw new IOException("Failed to write save file: " + fileName);
+        }
+
+        File tempFile = Game.instance.getFileStreamPath(tempFileName);
+        File targetFile = Game.instance.getFileStreamPath(fileName);
+        try {
+            Files.move(
+                    tempFile.toPath(),
+                    targetFile.toPath(),
+                    StandardCopyOption.ATOMIC_MOVE,
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+        } catch (AtomicMoveNotSupportedException e) {
+            deleteTempSaveFile(tempFileName);
+            throw new IOException("Atomic save replacement not supported for file: " + fileName, e);
+        } catch (IOException e) {
+            deleteTempSaveFile(tempFileName);
+            throw new IOException("Failed to replace save file: " + fileName, e);
+        }
+    }
+
+    private static void deleteTempSaveFile(String tempFileName) {
+        if (!Game.instance.deleteFile(tempFileName)) {
+            PixelSpacebase.reportException(new IOException("Failed to delete temp save file: " + tempFileName));
         }
     }
 
@@ -503,13 +545,12 @@ public class SpacebaseRun {
             Badges.saveLocal(badges);
             bundle.put(BADGES, badges);
 
-            OutputStream output = Game.instance.openFileOutput(fileName, Game.MODE_PRIVATE);
-            Bundle.write(bundle, output);
-            output.close();
+            writeBundleAtomically(fileName, bundle);
 
         } catch (IOException e) {
             GamesInProgress.setUnknown(hero.heroClass);
             PixelSpacebase.reportException(e);
+            throw e;
         }
     }
 
@@ -517,10 +558,7 @@ public class SpacebaseRun {
         Bundle bundle = new Bundle();
         bundle.put(LEVEL, level);
 
-        OutputStream output = Game.instance.openFileOutput(
-                Messages.format(depthFile(hero.heroClass), depth), Game.MODE_PRIVATE);
-        Bundle.write(bundle, output);
-        output.close();
+        writeBundleAtomically(Messages.format(depthFile(hero.heroClass), depth), bundle);
     }
 
     public static void saveAll() throws IOException {
