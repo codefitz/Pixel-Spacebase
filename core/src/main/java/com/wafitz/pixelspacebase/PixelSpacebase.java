@@ -295,15 +295,9 @@ public class PixelSpacebase extends Game {
 	 */
 
     public static void landscape(boolean value) {
-        if (android.os.Build.VERSION.SDK_INT >= 9) {
-            Game.instance.setRequestedOrientation(value ?
-                    ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
-                    ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-        } else {
-            Game.instance.setRequestedOrientation(value ?
-                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
-                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        Game.instance.setRequestedOrientation(value ?
+                ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
+                ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         Preferences.INSTANCE.put(Preferences.KEY_LANDSCAPE, value);
         ((PixelSpacebase) instance).updateDisplaySize();
     }

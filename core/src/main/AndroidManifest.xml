@@ -22,7 +22,6 @@
 		android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
 		android:allowBackup="false">
 		<activity
-			android:label="@string/app_name"
 			android:name=".PixelSpacebase"
 			android:configChanges="keyboardHidden|orientation|screenSize"
 			android:exported="true"
