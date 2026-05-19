@@ -45,7 +45,7 @@ public class BitmapCache {
 	private static Resources resources;
 	private static AssetManager assets;
 
-	public static void setContext( Context context ) {
+	public static synchronized void setContext( Context context ) {
 		Context appContext = context.getApplicationContext();
 		if (appContext == null) {
 			appContext = context;
@@ -71,6 +71,9 @@ public class BitmapCache {
 		if (layer.containsKey( assetName )) {
 			return layer.get( assetName );
 		} else {
+			if (assets == null) {
+				return null;
+			}
 			
 			try {
 				InputStream stream = assets.open( assetName );
@@ -101,6 +104,9 @@ public class BitmapCache {
 		if (layer.containsKey( resID )) {
 			return layer.get( resID );
 		} else {
+			if (resources == null) {
+				return null;
+			}
 			
 			Bitmap bmp = BitmapFactory.decodeResource( resources, resID );
 			layer.put( resID, bmp );

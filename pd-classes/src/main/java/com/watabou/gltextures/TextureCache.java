@@ -48,7 +48,7 @@ public class TextureCache {
 		bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
 	}
 
-	public static void setContext( Context context ) {
+	public static synchronized void setContext( Context context ) {
 		Context appContext = context.getApplicationContext();
 		if (appContext == null) {
 			appContext = context;
@@ -140,6 +140,10 @@ public class TextureCache {
 	}
 	
 	public static Bitmap getBitmap( Object src ) {
+		if (resources == null || assets == null) {
+			Logger.e("TextureCache context has not been initialized", new IllegalStateException("Call TextureCache.setContext(...) before loading textures"));
+			return null;
+		}
 		
 		try {
 			if (src instanceof Integer){
