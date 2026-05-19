@@ -12,10 +12,10 @@ android {
         doFirst {
             def ndkDir = null
             // Limits nested provider/path unwrapping to avoid accidental infinite recursion.
-            final int maxResolveDepth = 10
+            final int MAX_PROVIDER_NESTING_DEPTH = 10
             def resolvePath
             resolvePath = { candidate, depth = 0 ->
-                if (depth > maxResolveDepth) {
+                if (depth > MAX_PROVIDER_NESTING_DEPTH) {
                     return null
                 }
                 if (candidate == null) {
@@ -41,7 +41,7 @@ android {
                 try {
                     ndkDir = resolvePath(android.ndkDirectory)
                 } catch (RuntimeException e) {
-                    logger.debug("Falling back from android.ndkDirectory for :pd-classes:ndkBuild: ${e.class.simpleName}: ${e.message}", e)
+                    logger.debug("Falling back from android.ndkDirectory for :pd-classes:ndkBuild: ${e.class.name}: ${e.message}", e)
                     ndkDir = null
                 }
             }
@@ -53,7 +53,7 @@ android {
                     try {
                         localProperties.withInputStream { properties.load(it) }
                     } catch (IOException e) {
-                        throw new GradleException("Failed to read ${localProperties.absolutePath}. Check file readability and permissions.", e)
+                        throw new GradleException("Failed to read ${localProperties.absolutePath}. Verify the file exists and is readable.", e)
                     }
                     ndkDir = properties.getProperty('ndk.dir')
                 }
