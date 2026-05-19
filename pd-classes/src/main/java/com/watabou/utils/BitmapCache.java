@@ -72,6 +72,7 @@ public class BitmapCache {
 			return layer.get( assetName );
 		} else {
 			if (assets == null) {
+				Logger.e("BitmapCache context has not been initialized", new IllegalStateException("BitmapCache.setContext() must be called during application initialization before loading bitmaps"));
 				return null;
 			}
 			
@@ -105,6 +106,7 @@ public class BitmapCache {
 			return layer.get( resID );
 		} else {
 			if (resources == null) {
+				Logger.e("BitmapCache context has not been initialized", new IllegalStateException("BitmapCache.setContext() must be called during application initialization before loading bitmaps"));
 				return null;
 			}
 			

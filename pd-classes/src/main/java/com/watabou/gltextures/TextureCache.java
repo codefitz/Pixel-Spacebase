@@ -141,7 +141,7 @@ public class TextureCache {
 	
 	public static Bitmap getBitmap( Object src ) {
 		if (resources == null || assets == null) {
-			Logger.e("TextureCache context has not been initialized", new IllegalStateException("Call TextureCache.setContext(...) before loading textures"));
+			Logger.e("TextureCache context has not been initialized", new IllegalStateException("TextureCache.setContext() must be called during application initialization before loading textures"));
 			return null;
 		}
 		
