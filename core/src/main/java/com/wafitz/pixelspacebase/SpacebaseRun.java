@@ -72,6 +72,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -450,24 +453,37 @@ public class SpacebaseRun {
     private static void writeBundleAtomically(String fileName, Bundle bundle) throws IOException {
         String tempFileName = fileName + TEMP_SAVE_SUFFIX;
 
-        OutputStream output = Game.instance.openFileOutput(tempFileName, Game.MODE_PRIVATE);
         boolean writeSucceeded;
-        try {
+        try (OutputStream output = Game.instance.openFileOutput(tempFileName, Game.MODE_PRIVATE)) {
             writeSucceeded = Bundle.write(bundle, output);
-        } finally {
-            output.close();
         }
 
         if (!writeSucceeded) {
-            Game.instance.deleteFile(tempFileName);
+            deleteTempSaveFile(tempFileName);
             throw new IOException("Failed to write save file: " + fileName);
         }
 
         File tempFile = Game.instance.getFileStreamPath(tempFileName);
         File targetFile = Game.instance.getFileStreamPath(fileName);
-        if (!tempFile.renameTo(targetFile)) {
-            Game.instance.deleteFile(tempFileName);
-            throw new IOException("Failed to replace save file: " + fileName);
+        try {
+            Files.move(
+                    tempFile.toPath(),
+                    targetFile.toPath(),
+                    StandardCopyOption.ATOMIC_MOVE,
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+        } catch (AtomicMoveNotSupportedException e) {
+            deleteTempSaveFile(tempFileName);
+            throw new IOException("Atomic save replacement not supported for file: " + fileName, e);
+        } catch (IOException e) {
+            deleteTempSaveFile(tempFileName);
+            throw new IOException("Failed to replace save file: " + fileName, e);
+        }
+    }
+
+    private static void deleteTempSaveFile(String tempFileName) {
+        if (!Game.instance.deleteFile(tempFileName)) {
+            PixelSpacebase.reportException(new IOException("Failed to delete temp save file: " + tempFileName));
         }
     }
 
