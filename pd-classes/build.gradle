@@ -13,7 +13,19 @@ android {
             def ndkDir = null
 
             if (android.hasProperty('ndkDirectory') && android.ndkDirectory != null) {
-                ndkDir = android.ndkDirectory.absolutePath
+                def ndkDirectory = android.ndkDirectory
+                if (ndkDirectory instanceof File) {
+                    ndkDir = ndkDirectory.absolutePath
+                } else if (ndkDirectory.hasProperty('asFile')) {
+                    ndkDir = ndkDirectory.asFile.absolutePath
+                } else if (ndkDirectory.metaClass.respondsTo(ndkDirectory, 'get')) {
+                    def providedDirectory = ndkDirectory.get()
+                    if (providedDirectory instanceof File) {
+                        ndkDir = providedDirectory.absolutePath
+                    } else if (providedDirectory != null && providedDirectory.hasProperty('asFile')) {
+                        ndkDir = providedDirectory.asFile.absolutePath
+                    }
+                }
             }
 
             if (ndkDir == null) {
@@ -33,7 +45,7 @@ android {
                 throw new GradleException(
                         "Android NDK not found. Configure android.ndkDirectory, " +
                                 "set ndk.dir in local.properties, or set " +
-                                "ANDROID_NDK_ROOT/ANDROID_NDK_HOME before running :pd-classes:ndkBuild."
+                                "ANDROID_NDK_ROOT or ANDROID_NDK_HOME before running :pd-classes:ndkBuild."
                 )
             }
 
