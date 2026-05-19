@@ -9,27 +9,86 @@ android {
                 "This requires the Android NDK and is optional as precompiled libs are provided."
 
         def root = project(':pd-classes').projectDir
-        //def ndkDir = android.ndkDirectory
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-        def ndkDir = properties.getProperty('ndk.dir')
+        doFirst {
+            def ndkDir = null
+            // Limits nested provider/path unwrapping to avoid accidental infinite recursion.
+            final int MAX_PROVIDER_NESTING_DEPTH = 10
+            // Recursively unwraps provider-like objects until a File path can be derived.
+            def resolvePath
+            resolvePath = { candidate, depth = 0 ->
+                if (depth > MAX_PROVIDER_NESTING_DEPTH) {
+                    return null
+                }
+                if (candidate == null) {
+                    return null
+                } else if (candidate instanceof File) {
+                    return candidate.absolutePath
+                } else if (candidate.metaClass.respondsTo(candidate, 'getOrNull')) {
+                    return resolvePath(candidate.getOrNull(), depth + 1)
+                } else if (candidate.metaClass.respondsTo(candidate, 'isPresent') &&
+                        candidate.metaClass.respondsTo(candidate, 'get')) {
+                    return candidate.isPresent() ? resolvePath(candidate.get(), depth + 1) : null
+                } else if (candidate.metaClass.respondsTo(candidate, 'get')) {
+                    return resolvePath(candidate.get(), depth + 1)
+                } else if (candidate.metaClass.respondsTo(candidate, 'asFile')) {
+                    return resolvePath(candidate.asFile, depth + 1)
+                } else if (candidate.metaClass.respondsTo(candidate, 'getAsFile')) {
+                    return resolvePath(candidate.getAsFile(), depth + 1)
+                }
+                return null
+            }
 
-        //Need to execute through cmd on windows systems
-        if (System.properties["os.name"].toLowerCase().contains("windows")){
-            executable "cmd"
-            args "/c", "$ndkDir${File.separator}ndk-build",
-                    "NDK_PROJECT_PATH=$root/src/main/jniSources",
-                    "NDK_APPLICATION_MK=$root/src/main/jniSources/Application.mk",
-                    "APP_BUILD_SCRIPT=$root/src/main/jniSources/Android.mk",
-                    "NDK_LIBS_OUT=$root/src/main/jniLibs"
+            if (android.hasProperty('ndkDirectory') && android.ndkDirectory != null) {
+                try {
+                    ndkDir = resolvePath(android.ndkDirectory)
+                } catch (RuntimeException e) {
+                    logger.debug("Falling back from android.ndkDirectory for :pd-classes:ndkBuild: ${e.getClass().getName()}: ${e.message}", e)
+                    ndkDir = null
+                }
+            }
 
-        } else {
-            executable "$ndkDir/ndk-build"
-            args "NDK_PROJECT_PATH=$root/src/main/jniSources",
-                    "NDK_APPLICATION_MK=$root/src/main/jniSources/Application.mk",
-                    "APP_BUILD_SCRIPT=$root/src/main/jniSources/Android.mk",
-                    "NDK_LIBS_OUT=$root/src/main/jniLibs"
+            if (ndkDir == null) {
+                def localProperties = project.rootProject.file('local.properties')
+                if (localProperties.exists()) {
+                    Properties properties = new Properties()
+                    try {
+                        localProperties.withInputStream { properties.load(it) }
+                    } catch (IOException e) {
+                        throw new GradleException("Failed to read ${localProperties.absolutePath}. Verify the file exists and is readable.", e)
+                    }
+                    ndkDir = properties.getProperty('ndk.dir')
+                }
+            }
 
+            if (ndkDir == null) {
+                ndkDir = System.getenv("ANDROID_NDK_ROOT") ?: System.getenv("ANDROID_NDK_HOME")
+            }
+
+            if (ndkDir == null) {
+                throw new GradleException(
+                        "Android NDK not found. Configure android.ndkDirectory in your build.gradle, " +
+                                "set ndk.dir in local.properties, or set " +
+                                "ANDROID_NDK_ROOT or ANDROID_NDK_HOME before running :pd-classes:ndkBuild."
+                )
+            }
+
+            //Need to execute through cmd on windows systems
+            if (System.properties["os.name"].toLowerCase().contains("windows")){
+                executable "cmd"
+                args "/c", "$ndkDir${File.separator}ndk-build",
+                        "NDK_PROJECT_PATH=$root/src/main/jniSources",
+                        "NDK_APPLICATION_MK=$root/src/main/jniSources/Application.mk",
+                        "APP_BUILD_SCRIPT=$root/src/main/jniSources/Android.mk",
+                        "NDK_LIBS_OUT=$root/src/main/jniLibs"
+
+            } else {
+                executable "$ndkDir/ndk-build"
+                args "NDK_PROJECT_PATH=$root/src/main/jniSources",
+                        "NDK_APPLICATION_MK=$root/src/main/jniSources/Application.mk",
+                        "APP_BUILD_SCRIPT=$root/src/main/jniSources/Android.mk",
+                        "NDK_LIBS_OUT=$root/src/main/jniLibs"
+
+            }
         }
     }
     defaultConfig {
