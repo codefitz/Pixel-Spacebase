@@ -131,9 +131,7 @@ public abstract class Char extends Actor {
             int dr = enemy.drRoll();
             if (this instanceof Hero) {
                 Hero hero = (Hero) this;
-                if (hero.rangedWeapon != null && hero.subClass == HeroSubClass.SNIPER) {
-                    dr = 0;
-                }
+                dr = adjustedDamageReductionForAttack(dr, hero.rangedWeapon != null, hero.subClass);
             }
 
             int dmg = damageRoll();
@@ -195,6 +193,13 @@ public abstract class Char extends Actor {
             return false;
 
         }
+    }
+
+    static int adjustedDamageReductionForAttack(int dr, boolean hasRangedWeapon, HeroSubClass subClass) {
+        if (hasRangedWeapon && subClass == HeroSubClass.SNIPER) {
+            return 0;
+        }
+        return dr;
     }
 
     public static boolean hit(Char attacker, Char defender, boolean specialAttack) {
