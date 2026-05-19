@@ -9,27 +9,47 @@ android {
                 "This requires the Android NDK and is optional as precompiled libs are provided."
 
         def root = project(':pd-classes').projectDir
-        //def ndkDir = android.ndkDirectory
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-        def ndkDir = properties.getProperty('ndk.dir')
+        doFirst {
+            def ndkDir = null
 
-        //Need to execute through cmd on windows systems
-        if (System.properties["os.name"].toLowerCase().contains("windows")){
-            executable "cmd"
-            args "/c", "$ndkDir${File.separator}ndk-build",
-                    "NDK_PROJECT_PATH=$root/src/main/jniSources",
-                    "NDK_APPLICATION_MK=$root/src/main/jniSources/Application.mk",
-                    "APP_BUILD_SCRIPT=$root/src/main/jniSources/Android.mk",
-                    "NDK_LIBS_OUT=$root/src/main/jniLibs"
+            if (android.hasProperty('ndkDirectory') && android.ndkDirectory != null) {
+                ndkDir = android.ndkDirectory.absolutePath
+            }
 
-        } else {
-            executable "$ndkDir/ndk-build"
-            args "NDK_PROJECT_PATH=$root/src/main/jniSources",
-                    "NDK_APPLICATION_MK=$root/src/main/jniSources/Application.mk",
-                    "APP_BUILD_SCRIPT=$root/src/main/jniSources/Android.mk",
-                    "NDK_LIBS_OUT=$root/src/main/jniLibs"
+            if (ndkDir == null) {
+                def localProperties = project.rootProject.file('local.properties')
+                if (localProperties.exists()) {
+                    Properties properties = new Properties()
+                    properties.load(localProperties.newDataInputStream())
+                    ndkDir = properties.getProperty('ndk.dir')
+                }
+            }
 
+            if (ndkDir == null) {
+                ndkDir = System.getenv("ANDROID_NDK_ROOT") ?: System.getenv("ANDROID_NDK_HOME")
+            }
+
+            if (ndkDir == null) {
+                throw new GradleException("Android NDK not found. Configure the SDK/NDK so AGP can resolve android.ndkDirectory, set ndk.dir in local.properties, or set ANDROID_NDK_ROOT/ANDROID_NDK_HOME before running :pd-classes:ndkBuild.")
+            }
+
+            //Need to execute through cmd on windows systems
+            if (System.properties["os.name"].toLowerCase().contains("windows")){
+                executable "cmd"
+                args "/c", "$ndkDir${File.separator}ndk-build",
+                        "NDK_PROJECT_PATH=$root/src/main/jniSources",
+                        "NDK_APPLICATION_MK=$root/src/main/jniSources/Application.mk",
+                        "APP_BUILD_SCRIPT=$root/src/main/jniSources/Android.mk",
+                        "NDK_LIBS_OUT=$root/src/main/jniLibs"
+
+            } else {
+                executable "$ndkDir/ndk-build"
+                args "NDK_PROJECT_PATH=$root/src/main/jniSources",
+                        "NDK_APPLICATION_MK=$root/src/main/jniSources/Application.mk",
+                        "APP_BUILD_SCRIPT=$root/src/main/jniSources/Android.mk",
+                        "NDK_LIBS_OUT=$root/src/main/jniLibs"
+
+            }
         }
     }
     defaultConfig {
