@@ -12,22 +12,25 @@ android {
         doFirst {
             def ndkDir = null
             def resolvePath
-            resolvePath = { candidate ->
+            resolvePath = { candidate, depth = 0 ->
+                if (depth > 10) {
+                    return null
+                }
                 if (candidate == null) {
                     return null
                 } else if (candidate instanceof File) {
                     return candidate.absolutePath
                 } else if (candidate.metaClass.respondsTo(candidate, 'getOrNull')) {
-                    return resolvePath(candidate.getOrNull())
+                    return resolvePath(candidate.getOrNull(), depth + 1)
                 } else if (candidate.metaClass.respondsTo(candidate, 'isPresent') &&
                         candidate.metaClass.respondsTo(candidate, 'get')) {
-                    return candidate.isPresent() ? resolvePath(candidate.get()) : null
+                    return candidate.isPresent() ? resolvePath(candidate.get(), depth + 1) : null
                 } else if (candidate.metaClass.respondsTo(candidate, 'get')) {
-                    return resolvePath(candidate.get())
+                    return resolvePath(candidate.get(), depth + 1)
                 } else if (candidate.metaClass.respondsTo(candidate, 'asFile')) {
-                    return resolvePath(candidate.asFile)
+                    return resolvePath(candidate.asFile, depth + 1)
                 } else if (candidate.metaClass.respondsTo(candidate, 'getAsFile')) {
-                    return resolvePath(candidate.getAsFile())
+                    return resolvePath(candidate.getAsFile(), depth + 1)
                 }
                 return null
             }
@@ -36,7 +39,7 @@ android {
                 try {
                     ndkDir = resolvePath(android.ndkDirectory)
                 } catch (RuntimeException e) {
-                    logger.info("Unable to resolve android.ndkDirectory for ndkBuild", e)
+                    logger.info("Unable to resolve android.ndkDirectory for ndkBuild: ${e.class.simpleName}: ${e.message}", e)
                     ndkDir = null
                 }
             }
