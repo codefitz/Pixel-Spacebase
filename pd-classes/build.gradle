@@ -35,7 +35,8 @@ android {
             if (android.hasProperty('ndkDirectory') && android.ndkDirectory != null) {
                 try {
                     ndkDir = resolvePath(android.ndkDirectory)
-                } catch (Exception ignored) {
+                } catch (RuntimeException e) {
+                    logger.info("Unable to resolve android.ndkDirectory for ndkBuild", e)
                     ndkDir = null
                 }
             }
@@ -47,7 +48,7 @@ android {
                     try {
                         localProperties.withInputStream { properties.load(it) }
                     } catch (IOException e) {
-                        throw new GradleException("Failed to read ${localProperties}.", e)
+                        throw new GradleException("Failed to read ${localProperties.absolutePath}.", e)
                     }
                     ndkDir = properties.getProperty('ndk.dir')
                 }
