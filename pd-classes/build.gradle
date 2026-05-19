@@ -30,7 +30,11 @@ android {
             }
 
             if (ndkDir == null) {
-                throw new GradleException("Android NDK not found. Configure the SDK/NDK so AGP can resolve android.ndkDirectory, set ndk.dir in local.properties, or set ANDROID_NDK_ROOT/ANDROID_NDK_HOME before running :pd-classes:ndkBuild.")
+                throw new GradleException(
+                        "Android NDK not found. Configure android.ndkDirectory, " +
+                                "set ndk.dir in local.properties, or set " +
+                                "ANDROID_NDK_ROOT/ANDROID_NDK_HOME before running :pd-classes:ndkBuild."
+                )
             }
 
             //Need to execute through cmd on windows systems
