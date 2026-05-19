@@ -641,6 +641,7 @@ public abstract class Level implements Bundlable {
         for (int i = 0; i < length(); i++) {
             if (passable[i] && !SpacebaseRun.visible[i] && Actor.findChar(i) == null) {
                 validCells++;
+                // Reservoir sampling keeps each valid cell equally likely without extra allocations.
                 if (Random.Int(validCells) == 0) {
                     candidate = i;
                 }
