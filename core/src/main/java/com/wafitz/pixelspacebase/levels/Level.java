@@ -109,6 +109,7 @@ public abstract class Level implements Bundlable {
     protected int length;
 
     private static final float TIME_TO_RESPAWN = 50;
+    private static final int MAX_RANDOM_RESPAWN_ATTEMPTS = 30;
 
     public int version;
     public int[] map;
@@ -626,7 +627,7 @@ public abstract class Level implements Bundlable {
     }
 
     public int randomRespawnCell() {
-        int attempts = 30;
+        int attempts = MAX_RANDOM_RESPAWN_ATTEMPTS;
 
         while (attempts-- > 0) {
             int cell = Random.Int(length());
