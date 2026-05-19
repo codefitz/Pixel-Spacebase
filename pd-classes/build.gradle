@@ -11,21 +11,32 @@ android {
         def root = project(':pd-classes').projectDir
         doFirst {
             def ndkDir = null
+            def resolvePath
+            resolvePath = { candidate ->
+                if (candidate == null) {
+                    return null
+                } else if (candidate instanceof File) {
+                    return candidate.absolutePath
+                } else if (candidate.metaClass.respondsTo(candidate, 'getOrNull')) {
+                    return resolvePath(candidate.getOrNull())
+                } else if (candidate.metaClass.respondsTo(candidate, 'isPresent') &&
+                        candidate.metaClass.respondsTo(candidate, 'get')) {
+                    return candidate.isPresent() ? resolvePath(candidate.get()) : null
+                } else if (candidate.metaClass.respondsTo(candidate, 'get')) {
+                    return resolvePath(candidate.get())
+                } else if (candidate.metaClass.respondsTo(candidate, 'asFile')) {
+                    return resolvePath(candidate.asFile)
+                } else if (candidate.metaClass.respondsTo(candidate, 'getAsFile')) {
+                    return resolvePath(candidate.getAsFile())
+                }
+                return null
+            }
 
             if (android.hasProperty('ndkDirectory') && android.ndkDirectory != null) {
-                def ndkDirectory = android.ndkDirectory
-                if (ndkDirectory instanceof File) {
-                    ndkDir = ndkDirectory.absolutePath
-                } else if (ndkDirectory.metaClass.respondsTo(ndkDirectory, 'asFile')) {
-                    ndkDir = ndkDirectory.asFile.absolutePath
-                } else if (ndkDirectory.metaClass.respondsTo(ndkDirectory, 'get')) {
-                    def providedDirectory = ndkDirectory.get()
-                    if (providedDirectory instanceof File) {
-                        ndkDir = providedDirectory.absolutePath
-                    } else if (providedDirectory != null &&
-                            providedDirectory.metaClass.respondsTo(providedDirectory, 'asFile')) {
-                        ndkDir = providedDirectory.asFile.absolutePath
-                    }
+                try {
+                    ndkDir = resolvePath(android.ndkDirectory)
+                } catch (Exception ignored) {
+                    ndkDir = null
                 }
             }
 
@@ -33,7 +44,11 @@ android {
                 def localProperties = project.rootProject.file('local.properties')
                 if (localProperties.exists()) {
                     Properties properties = new Properties()
-                    localProperties.withInputStream { properties.load(it) }
+                    try {
+                        localProperties.withInputStream { properties.load(it) }
+                    } catch (IOException e) {
+                        throw new GradleException("Failed to read ${localProperties}.", e)
+                    }
                     ndkDir = properties.getProperty('ndk.dir')
                 }
             }
