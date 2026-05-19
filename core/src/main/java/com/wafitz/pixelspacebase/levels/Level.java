@@ -109,6 +109,7 @@ public abstract class Level implements Bundlable {
     protected int length;
 
     private static final float TIME_TO_RESPAWN = 50;
+    private static final int MAX_RANDOM_RESPAWN_ATTEMPTS = 30;
 
     public int version;
     public int[] map;
@@ -626,11 +627,28 @@ public abstract class Level implements Bundlable {
     }
 
     public int randomRespawnCell() {
-        int cell;
-        do {
-            cell = Random.Int(length());
-        } while (!passable[cell] || SpacebaseRun.visible[cell] || Actor.findChar(cell) != null);
-        return cell;
+        int attempts = MAX_RANDOM_RESPAWN_ATTEMPTS;
+
+        while (attempts-- > 0) {
+            int cell = Random.Int(length());
+            if (passable[cell] && !SpacebaseRun.visible[cell] && Actor.findChar(cell) == null) {
+                return cell;
+            }
+        }
+
+        int candidate = -1;
+        int validCells = 0;
+        for (int i = 0; i < length(); i++) {
+            if (passable[i] && !SpacebaseRun.visible[i] && Actor.findChar(i) == null) {
+                validCells++;
+                // Reservoir sampling keeps each valid cell equally likely without extra allocations.
+                if (Random.Int(validCells) == 0) {
+                    candidate = i;
+                }
+            }
+        }
+
+        return candidate;
     }
 
     public int randomDestination() {
