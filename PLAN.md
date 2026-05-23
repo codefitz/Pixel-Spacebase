@@ -55,6 +55,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] No text found picking up medigel
 - [x] Flock trigger - the log says alien: No text found
 - [x] Feral shapeshifter's last words are DIE!, this shouldd be the "Thankyou" line.
+- [x] Cat crash when touching the Maker Bench in the workshop.
 
 ## Code Quality / Stability
 
@@ -92,9 +93,9 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Lights breaker turns lights on and off for any level.
 - [x] Torch needs a switch off option when it is on.
 - [x] Yendor sheild has no text found
-- [ ] Turning on the breaker doesn't actually make the level back to normal brightness.
-- [ ] Alien Queen doesn't actually attack, also should not have 2 alien queens on the level (queen should only attack shapeshifter hero)
-- [ ] The healing booth should be a permanent healing feature (like the previous garden) - can return any time and slowly restore health.
+- [x] Turning on the breaker doesn't actually make the level back to normal brightness.
+- [x] Alien Queen doesn't actually attack, also should not have 2 alien queens on the level (queen should only attack shapeshifter hero)
+- [x] The healing booth should be a permanent healing feature (like the previous garden) - can return any time and slowly restore health.
 
 ## Release Prep
 

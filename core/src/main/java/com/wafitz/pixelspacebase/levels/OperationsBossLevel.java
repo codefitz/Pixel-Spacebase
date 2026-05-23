@@ -66,7 +66,7 @@ public class OperationsBossLevel extends RegularLevel {
 
         if (isShapeshifterQueenFight()) {
             feeling = Feeling.DARK;
-            viewDistance = Math.max(2, (int) Math.ceil(viewDistance / 3f));
+            viewDistance = Math.max(2, darkViewDistance(litViewDistance));
             floorBreakerOn = false;
         }
 
@@ -146,7 +146,7 @@ public class OperationsBossLevel extends RegularLevel {
                 if (candidates.size() > 0) {
                     Room kingsRoom = Random.element(candidates);
                     kingsRoom.connect(lastRoom);
-                    kingsRoom.type = Room.Type.RAT_KING;
+                    kingsRoom.type = isShapeshifterQueenFight() ? Room.Type.STANDARD : Room.Type.RAT_KING;
 
                     //unacceptable! make a new level...
                 } else {

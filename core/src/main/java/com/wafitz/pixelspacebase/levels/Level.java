@@ -119,6 +119,7 @@ public abstract class Level implements Bundlable {
     public boolean[] pressurized;
 
     public int viewDistance = SpacebaseRun.isChallenged(Challenges.DARKNESS) ? 3 : 8;
+    protected int litViewDistance = viewDistance;
 
     //FIXME should not be static!
     public static boolean[] fieldOfView;
@@ -178,6 +179,7 @@ public abstract class Level implements Bundlable {
     private static final String BLOBS = "blobs";
     private static final String FEELING = "feeling";
     private static final String FLOOR_BREAKER_ON = "floorBreakerOn";
+    private static final String LIT_VIEW_DISTANCE = "litViewDistance";
 
     public void create() {
 
@@ -203,6 +205,7 @@ public abstract class Level implements Bundlable {
         Arrays.fill(vacuum, false);
         pressurized = new boolean[length()];
         Arrays.fill(pressurized, false);
+        litViewDistance = viewDistance;
 
         if (!(SpacebaseRun.bossLevel() || SpacebaseRun.depth == 21) /*final shop floor*/) {
             addItemToSpawn(Generator.random(Generator.Category.FOOD));
@@ -267,7 +270,7 @@ public abstract class Level implements Bundlable {
                             addItemToSpawn(new Torch());
                         }
                         addItemToSpawn(new TorchBattery());
-                        viewDistance = (int) Math.ceil(viewDistance / 3f);
+                        viewDistance = darkViewDistance(litViewDistance);
                         break;
                 }
             }
@@ -424,8 +427,14 @@ public abstract class Level implements Bundlable {
         floorBreakerOn = bundle.contains(FLOOR_BREAKER_ON)
                 ? bundle.getBoolean(FLOOR_BREAKER_ON)
                 : feeling != Feeling.DARK;
-        if (feeling == Feeling.DARK)
-            viewDistance = (int) Math.ceil(viewDistance / 3f);
+        litViewDistance = bundle.contains(LIT_VIEW_DISTANCE)
+                ? bundle.getInt(LIT_VIEW_DISTANCE)
+                : viewDistance;
+        if (feeling == Feeling.DARK && !floorBreakerOn) {
+            viewDistance = darkViewDistance(litViewDistance);
+        } else {
+            viewDistance = litViewDistance;
+        }
 
         buildFlagMaps();
         cleanWalls();
@@ -452,6 +461,16 @@ public abstract class Level implements Bundlable {
         bundle.put(BLOBS, blobs.values());
         bundle.put(FEELING, feeling);
         bundle.put(FLOOR_BREAKER_ON, floorBreakerOn);
+        bundle.put(LIT_VIEW_DISTANCE, litViewDistance);
+    }
+
+    public void restoreFloorLighting() {
+        floorBreakerOn = true;
+        viewDistance = litViewDistance;
+    }
+
+    protected int darkViewDistance(int distance) {
+        return (int) Math.ceil(distance / 3f);
     }
 
     public int tunnelTile() {

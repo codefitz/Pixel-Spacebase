@@ -37,7 +37,8 @@ public class FloorBreaker {
             return;
         }
 
-        SpacebaseRun.level.floorBreakerOn = true;
+        SpacebaseRun.level.restoreFloorLighting();
+        SpacebaseRun.hero.viewDistance = SpacebaseRun.heroViewDistance();
         SpacebaseRun.observe();
         GameScene.updateFog();
         CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 8);
