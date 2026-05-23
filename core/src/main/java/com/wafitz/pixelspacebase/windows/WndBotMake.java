@@ -33,6 +33,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.ui.ItemSlot;
+import com.wafitz.pixelspacebase.utils.GLog;
 import com.wafitz.pixelspacebase.ui.RedButton;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
 import com.wafitz.pixelspacebase.ui.Window;
@@ -151,11 +152,16 @@ public class WndBotMake extends Window {
                                 SpacebaseRun.level.drop(item, heap.pos).sprite.drop();
                             }
                         } else {
+                            boolean warned = false;
                             for (Mob mob : SpacebaseRun.level.mobs) {
                                 if (mob instanceof MakerBot) {
                                     mob.yell(Messages.get(mob, "thief"));
+                                    warned = true;
                                     break;
                                 }
+                            }
+                            if (!warned) {
+                                GLog.n(Messages.get(MakerBot.class, "thief"));
                             }
                             breakFailedBuild(heap);
                             hide();

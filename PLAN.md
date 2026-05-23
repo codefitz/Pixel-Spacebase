@@ -28,7 +28,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Rot lasher/heart sci-fi rework
 - [x] Weak forcefield shouldn't rumble the ground.
 - [x] If a bridge and chasm is in a room, then space suit isn't needed.
-- [ ] Convert makerbot to a workdesk. No sprite, no character.
+- [x] Convert makerbot to a workdesk. No sprite, no character.
 - [x] Hoverpod should also offer protection in vacuum.
 
 ## Graphical Changes
@@ -48,13 +48,13 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
         - [ ] Bridge
         - [ ] Bridge Boss
 - [ ] Update Bridge levels tiles.
-- [ ] Replace leaf particles with sparks.
+- [x] Replace leaf particles with sparks.
 
 ## Bugs
 
 - [x] No text found picking up medigel
 - [x] Flock trigger - the log says alien: No text found
-- [ ] Feral shapeshifter's last words are DIE!, this shouldd be the "Thankyou" line.
+- [x] Feral shapeshifter's last words are DIE!, this shouldd be the "Thankyou" line.
 
 ## Code Quality / Stability
 
@@ -75,8 +75,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [ ] Has automatic light in the darkness.
     - [ ] Is immune to the alien egg effects.
     - [ ] Jawars will disable DM3000 and steal any worn armor.
-- [ ] Chestburster should have a blood effect when appearing.
-- [ ] After alien infection hero should be caught in the sticky effect for 1 turn.
+- [x] Chestburster should have a blood effect when appearing.
+- [x] After alien infection hero should be caught in the sticky effect for 1 turn.
 - [ ] Workshop same size each level.
 - [ ] Renames (classes)
     - [ ] crab
@@ -90,8 +90,11 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [ ] Wraith
 - [ ] Stims, plasmids - should stay in effect whilst hero moving.
 - [ ] Lights breaker turns lights on and off for any level.
-- [ ] Torch needs a switch off option when it is on.
-- [ ] Yendor sheild has no text found
+- [x] Torch needs a switch off option when it is on.
+- [x] Yendor sheild has no text found
+- [ ] Turning on the breaker doesn't actually make the level back to normal brightness.
+- [ ] Alien Queen doesn't actually attack, also should not have 2 alien queens on the level (queen should only attack shapeshifter hero)
+- [ ] The healing booth should be a permanent healing feature (like the previous garden) - can return any time and slowly restore health.
 
 ## Release Prep
 

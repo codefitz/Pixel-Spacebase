@@ -229,14 +229,7 @@ public class Workshop extends Painter {
 
     private static boolean[] workshopCells(Level level) {
         boolean[] cells = new boolean[level.length()];
-        int start = -1;
-
-        for (Mob mob : level.mobs) {
-            if (mob instanceof MakerBot || mob instanceof ArpTrader) {
-                start = mob.pos;
-                break;
-            }
-        }
+        int start = workshopAnchor(level);
 
         if (start == -1) {
             return cells;
@@ -762,18 +755,41 @@ public class Workshop extends Painter {
     }
 
     private static void placeMakerBot(Level level, int pos) {
-        Mob makerbot = level instanceof LastWorkshopLevel ? new ArpTrader() : new MakerBot();
-        makerbot.pos = pos;
-        level.mobs.add(makerbot);
-
         if (level instanceof LastWorkshopLevel) {
+            Mob makerbot = new ArpTrader();
+            makerbot.pos = pos;
+            level.mobs.add(makerbot);
+
             for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
                 int p = makerbot.pos + PathFinder.NEIGHBOURS9[i];
                 if (level.map[p] == Terrain.EMPTY_SP) {
                     level.map[p] = Terrain.WATER;
                 }
             }
+        } else {
+            Heap makerBench = new Heap();
+            makerBench.pos = pos;
+            makerBench.type = Heap.Type.MAKER_BENCH;
+            makerBench.seen = SpacebaseRun.visible[pos];
+            level.heaps.put(pos, makerBench);
+            GameScene.add(makerBench);
         }
+    }
+
+    private static int workshopAnchor(Level level) {
+        for (Mob mob : level.mobs) {
+            if (mob instanceof MakerBot || mob instanceof ArpTrader) {
+                return mob.pos;
+            }
+        }
+
+        for (Heap heap : level.heaps.values()) {
+            if (heap.type == Heap.Type.MAKER_BENCH) {
+                return heap.pos;
+            }
+        }
+
+        return -1;
     }
 
 }

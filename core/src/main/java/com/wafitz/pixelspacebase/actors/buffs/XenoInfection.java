@@ -23,6 +23,8 @@ package com.wafitz.pixelspacebase.actors.buffs;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.ToughXeno;
 import com.wafitz.pixelspacebase.actors.mobs.Xenomorph;
+import com.wafitz.pixelspacebase.effects.CellEmitter;
+import com.wafitz.pixelspacebase.effects.particles.EarthParticle;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -32,6 +34,8 @@ public class XenoInfection extends Buff {
 
     private static final int WARN_TURN = 2;
     private static final int BURST_TURN = 5;
+    private static final float STICKY_DURATION = 1f;
+    private static final int CHESTBURSTER_BLOOD = 0xFFBFE5B8;
 
     private int turns;
     private boolean strongSpawn;
@@ -50,6 +54,8 @@ public class XenoInfection extends Buff {
             infection.turns = 0;
             infection.strongSpawn = strongSpawn;
             infection.spend(TICK);
+            Buff.prolong(hero, LockedDown.class, STICKY_DURATION);
+            CellEmitter.bottom(hero.pos).start(EarthParticle.FACTORY, 0.05f, 8);
             String message = Messages.get(XenoInfection.class, "start");
             GLog.w(message);
             GameScene.flashThenShowMessage(0x000000, message);
@@ -74,10 +80,11 @@ public class XenoInfection extends Buff {
         if (turns >= BURST_TURN) {
             Hero hero = (Hero) target;
             GLog.w(Messages.get(this, "burst"));
-            if (strongSpawn) {
-                ToughXeno.spawnAdjacent(hero.pos, false);
-            } else {
-                Xenomorph.spawnAdjacent(hero.pos);
+            boolean spawned = strongSpawn
+                    ? ToughXeno.spawnAdjacent(hero.pos, false)
+                    : Xenomorph.spawnAdjacent(hero.pos);
+            if (spawned && hero.sprite != null) {
+                hero.sprite.burst(CHESTBURSTER_BLOOD, 12);
             }
             hero.damage(Math.max(hero.HT / 3, hero.HP * 3 / 4), this);
             detach();

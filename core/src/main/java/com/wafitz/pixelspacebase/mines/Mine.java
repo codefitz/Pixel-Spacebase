@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Shielding;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
-import com.wafitz.pixelspacebase.effects.particles.LeafParticle;
+import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
 import com.wafitz.pixelspacebase.items.MedigelDroplet;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
@@ -76,7 +76,7 @@ public abstract class Mine implements Bundlable {
         }
 
         if (SpacebaseRun.visible[pos]) {
-            CellEmitter.get(pos).burst(LeafParticle.GENERAL, 6);
+            CellEmitter.get(pos).burst(SparkParticle.FACTORY, 6);
         }
 
         if (SpacebaseRun.hero.subClass == HeroSubClass.WARDEN) {

@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.effects.BlobEmitter;
-import com.wafitz.pixelspacebase.effects.particles.LeafParticle;
+import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -71,6 +71,6 @@ public class Regrowth extends Blob {
     public void use(BlobEmitter emitter) {
         super.use(emitter);
 
-        emitter.start(LeafParticle.LEVEL_SPECIFIC, 0.2f, 0);
+        emitter.start(SparkParticle.FACTORY, 0.2f, 0);
     }
 }

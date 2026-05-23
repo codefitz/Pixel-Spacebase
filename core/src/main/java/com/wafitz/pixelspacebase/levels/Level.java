@@ -384,7 +384,7 @@ public abstract class Level implements Bundlable {
         Collection<Bundlable> collection = bundle.getCollection(HEAPS);
         for (Bundlable h : collection) {
             Heap heap = (Heap) h;
-            if (!heap.isEmpty() || heap.type == Heap.Type.WORKSHOP_STORAGE || heap.type == Heap.Type.WORKSHOP_UPGRADE)
+            if (!heap.isEmpty() || heap.type == Heap.Type.WORKSHOP_STORAGE || heap.type == Heap.Type.WORKSHOP_UPGRADE || heap.type == Heap.Type.MAKER_BENCH)
                 heaps.put(heap.pos, heap);
         }
 

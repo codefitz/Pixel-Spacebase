@@ -75,8 +75,6 @@ public class OffVent {
             }
         }
 
-        // wafitz.v4: No more leaves for lights/vents
-        //CellEmitter.get(pos).burst(LeafParticle.LEVEL_SPECIFIC, leaves);
         CellEmitter.get(pos).burst(ElmoParticle.FACTORY, 1);
         if (SpacebaseRun.visible[pos])
             SpacebaseRun.observe();
