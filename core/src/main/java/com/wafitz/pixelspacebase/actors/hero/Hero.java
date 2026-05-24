@@ -49,6 +49,7 @@ import com.wafitz.pixelspacebase.actors.buffs.CombatFocus;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.NPC;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.CheckedCell;
 import com.wafitz.pixelspacebase.effects.Flare;
@@ -120,6 +121,7 @@ import com.wafitz.pixelspacebase.utils.BArray;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.wafitz.pixelspacebase.windows.WndBotMake;
 import com.wafitz.pixelspacebase.windows.WndMessage;
+import com.wafitz.pixelspacebase.windows.WndOptions;
 import com.wafitz.pixelspacebase.windows.WndResurrect;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -911,15 +913,24 @@ public class Hero extends Char {
 
             curAction = null;
 
-            Buff buff = buff(TimeFolder.timeFreeze.class);
-            if (buff != null) buff.detach();
+            if (StationCat.isFollowing() && SpacebaseRun.bossLevel(SpacebaseRun.depth + 1)) {
+                GameScene.show(new WndOptions(
+                        Messages.get(this, "cat_boss_title"),
+                        Messages.get(this, "cat_boss_warning"),
+                        Messages.get(this, "cat_boss_bring"),
+                        Messages.get(this, "cat_boss_leave")) {
+                    @Override
+                    protected void onSelect(int index) {
+                        if (index == 1) {
+                            StationCat.abandonFollower(SpacebaseRun.level);
+                        }
+                        proceedDescend();
+                    }
+                });
+                return false;
+            }
 
-            for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
-                if (mob instanceof HoloPad.HologramHero) mob.destroy();
-
-            InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
-            Game.switchScene(InterlevelScene.class);
-
+            proceedDescend();
             return false;
 
         } else if (getCloser(stairs)) {
@@ -930,6 +941,17 @@ public class Hero extends Char {
             ready();
             return false;
         }
+    }
+
+    private void proceedDescend() {
+            Buff buff = buff(TimeFolder.timeFreeze.class);
+            if (buff != null) buff.detach();
+
+            for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
+                if (mob instanceof HoloPad.HologramHero) mob.destroy();
+
+            InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+            Game.switchScene(InterlevelScene.class);
     }
 
     private boolean actAscend(HeroAction.Ascend action) {

@@ -32,6 +32,7 @@ import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Leonard;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Generator;
@@ -186,6 +187,7 @@ public class SpacebaseRun {
         Gunsmith.Quest.reset();
         Leonard.Quest.reset();
         Arp.Quest.reset();
+        StationCat.Quest.reset();
 
         Generator.initArtifacts();
         hero = new Hero();
@@ -300,8 +302,7 @@ public class SpacebaseRun {
 
     // wafitz.v1 - You get a shop, you get a shop, every level get's a shop!
     public static boolean workshopOnLevel() {
-        //return depth == 6 || depth == 11 || depth == 16;
-        return true;
+        return !bossLevel();
     }
 
     public static boolean bossLevel() {
@@ -327,6 +328,7 @@ public class SpacebaseRun {
         }
 
         hero.pos = pos != -1 ? pos : level.exit;
+        StationCat.placeFollowerOn(level);
 
         hero.viewDistance = heroViewDistance();
 
@@ -536,6 +538,7 @@ public class SpacebaseRun {
             Gunsmith.Quest.storeInBundle(quests);
             Leonard.Quest.storeInBundle(quests);
             Arp.Quest.storeInBundle(quests);
+            StationCat.Quest.storeInBundle(quests);
             bundle.put(QUESTS, quests);
 
             Room.storeRoomsInBundle(bundle);
@@ -643,11 +646,13 @@ public class SpacebaseRun {
                 Gunsmith.Quest.restoreFromBundle(quests);
                 Leonard.Quest.restoreFromBundle(quests);
                 Arp.Quest.restoreFromBundle(quests);
+                StationCat.Quest.restoreFromBundle(quests);
             } else {
                 Hologram.Quest.reset();
                 Gunsmith.Quest.reset();
                 Leonard.Quest.reset();
                 Arp.Quest.reset();
+                StationCat.Quest.reset();
             }
 
             Room.restoreRoomsFromBundle(bundle);

@@ -23,7 +23,6 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Bones;
 import com.wafitz.pixelspacebase.actors.Actor;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.levels.Room.Type;
@@ -122,7 +121,7 @@ public class LastWorkshopLevel extends RegularLevel {
         if (roomWorkshop == null) {
             return false;
         } else {
-            roomWorkshop.type = Arp.Quest.isCompleted() ? Room.Type.WORKSHOP : Room.Type.STANDARD;
+            roomWorkshop.type = Room.Type.WORKSHOP;
         }
 
         paint();

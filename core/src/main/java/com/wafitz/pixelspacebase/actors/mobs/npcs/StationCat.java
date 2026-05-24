@@ -34,6 +34,7 @@ import com.watabou.utils.Random;
 public class StationCat extends NPC {
 
     private boolean following;
+    private static StationCat carriedCat;
 
     private static final String FOLLOWING = "following";
 
@@ -54,6 +55,7 @@ public class StationCat extends NPC {
         super.restoreFromBundle(bundle);
         following = bundle.getBoolean(FOLLOWING);
         ally = following;
+        Quest.following = Quest.following || following;
     }
 
     @Override
@@ -114,6 +116,10 @@ public class StationCat extends NPC {
         if (SpacebaseRun.visible[pos]) {
             GLog.w(Messages.get(this, "dies"));
         }
+        Quest.dead = true;
+        Quest.following = false;
+        Quest.gone = false;
+        carriedCat = null;
         super.die(src);
     }
 
@@ -122,6 +128,7 @@ public class StationCat extends NPC {
         if (!following) {
             following = true;
             ally = true;
+            Quest.following = true;
             yell(Messages.get(this, "petted"));
         } else {
             int oldPos = pos;
@@ -136,5 +143,131 @@ public class StationCat extends NPC {
         }
 
         return true;
+    }
+
+    private void follow() {
+        following = true;
+        ally = true;
+        HP = Math.max(1, HP);
+    }
+
+    public static boolean isFollowing() {
+        return Quest.following && !Quest.dead && !Quest.gone;
+    }
+
+    public static void carryFollowerFrom(Level level) {
+        if (!isFollowing() || level == null || level.mobs == null) {
+            return;
+        }
+
+        for (com.wafitz.pixelspacebase.actors.mobs.Mob mob : level.mobs.toArray(new com.wafitz.pixelspacebase.actors.mobs.Mob[0])) {
+            if (mob instanceof StationCat && ((StationCat) mob).following) {
+                carriedCat = (StationCat) mob;
+                level.mobs.remove(mob);
+                Actor.remove(mob);
+                return;
+            }
+        }
+    }
+
+    public static void placeFollowerOn(Level level) {
+        if (!isFollowing() || level == null || level.mobs == null || SpacebaseRun.hero == null) {
+            carriedCat = null;
+            return;
+        }
+
+        StationCat existing = null;
+        for (com.wafitz.pixelspacebase.actors.mobs.Mob mob : level.mobs.toArray(new com.wafitz.pixelspacebase.actors.mobs.Mob[0])) {
+            if (mob instanceof StationCat) {
+                if (existing == null) {
+                    existing = (StationCat) mob;
+                }
+                if (carriedCat == null) {
+                    continue;
+                }
+                level.mobs.remove(mob);
+                Actor.remove(mob);
+            }
+        }
+
+        if (carriedCat == null && existing != null) {
+            existing.follow();
+            return;
+        }
+
+        StationCat cat = carriedCat != null ? carriedCat : new StationCat();
+        carriedCat = null;
+        cat.follow();
+        cat.pos = followerCell(level);
+        level.mobs.add(cat);
+        Actor.add(cat);
+    }
+
+    public static void abandonFollower(Level level) {
+        if (level != null && level.mobs != null) {
+            for (com.wafitz.pixelspacebase.actors.mobs.Mob mob : level.mobs.toArray(new com.wafitz.pixelspacebase.actors.mobs.Mob[0])) {
+                if (mob instanceof StationCat) {
+                    level.mobs.remove(mob);
+                    Actor.remove(mob);
+                }
+            }
+        }
+        carriedCat = null;
+        Quest.following = false;
+        Quest.gone = true;
+    }
+
+    public static boolean canSpawnOnFirstLevel() {
+        return !Quest.following && !Quest.dead && !Quest.gone;
+    }
+
+    private static int followerCell(Level level) {
+        for (int offset : PathFinder.NEIGHBOURS8) {
+            int cell = SpacebaseRun.hero.pos + offset;
+            if (level.insideMap(cell) && Level.passable[cell] && Actor.findChar(cell) == null) {
+                return cell;
+            }
+        }
+
+        int cell = level.randomRespawnCell();
+        return cell != -1 ? cell : SpacebaseRun.hero.pos;
+    }
+
+    public static class Quest {
+
+        private static boolean following;
+        private static boolean dead;
+        private static boolean gone;
+
+        private static final String NODE = "stationCat";
+        private static final String FOLLOWING = "following";
+        private static final String DEAD = "dead";
+        private static final String GONE = "gone";
+
+        public static void reset() {
+            following = false;
+            dead = false;
+            gone = false;
+            carriedCat = null;
+        }
+
+        public static void storeInBundle(Bundle bundle) {
+            Bundle node = new Bundle();
+            node.put(FOLLOWING, following);
+            node.put(DEAD, dead);
+            node.put(GONE, gone);
+            bundle.put(NODE, node);
+        }
+
+        public static void restoreFromBundle(Bundle bundle) {
+            Bundle node = bundle.getBundle(NODE);
+            if (!node.isNull()) {
+                following = node.getBoolean(FOLLOWING);
+                dead = node.getBoolean(DEAD);
+                gone = node.getBoolean(GONE);
+            } else {
+                reset();
+            }
+        }
     }
 }

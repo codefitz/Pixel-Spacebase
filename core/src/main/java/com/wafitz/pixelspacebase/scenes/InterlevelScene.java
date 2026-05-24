@@ -25,6 +25,7 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
@@ -213,6 +214,7 @@ public class InterlevelScene extends PixelScene {
             GameLog.wipe();
         } else {
             Workshop.carryStockFrom(SpacebaseRun.level);
+            StationCat.carryFollowerFrom(SpacebaseRun.level);
             SpacebaseRun.saveAll();
         }
 
@@ -234,6 +236,7 @@ public class InterlevelScene extends PixelScene {
         int targetDepth = SpacebaseRun.depth + 1;
         boolean nextLevelNeedsPit = fallIntoPit || levelHasWeakFloor(SpacebaseRun.level);
         Workshop.carryStockFrom(SpacebaseRun.level);
+        StationCat.carryFollowerFrom(SpacebaseRun.level);
         SpacebaseRun.saveAll();
 
         Level level;
@@ -252,6 +255,7 @@ public class InterlevelScene extends PixelScene {
         Actor.fixTime();
 
         Workshop.carryStockFrom(SpacebaseRun.level);
+        StationCat.carryFollowerFrom(SpacebaseRun.level);
         SpacebaseRun.saveAll();
         SpacebaseRun.depth--;
         Level level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
@@ -264,6 +268,7 @@ public class InterlevelScene extends PixelScene {
         Actor.fixTime();
 
         Workshop.carryStockFrom(SpacebaseRun.level);
+        StationCat.carryFollowerFrom(SpacebaseRun.level);
         SpacebaseRun.saveAll();
         SpacebaseRun.depth = returnDepth;
         Level level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);

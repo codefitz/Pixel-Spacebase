@@ -69,7 +69,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Refactorial Changes and Small Adjustments
 
-- [ ] If petted, cat always follows hero to next level. before ascending to boss level, a dialogue will warn do you want to bring the cat or not? If no is selected, the cat will wander off, and will not be found if the hero returns.
+- [x] If petted, cat always follows hero to next level. before ascending to boss level, a dialogue will warn do you want to bring the cat or not? If no is selected, the cat will wander off, and will not be found if the hero returns.
 - [ ] DM3000 reconfiguration
     - [ ] Cannot hold mele weapons, only missiles and blasters. Mele weapons can be melted own to bolts that can be fired.
     - [ ] Is immune to gases, doesn't require food can't use health packs, siphons water to recover. Can eat batteries.
@@ -96,6 +96,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Turning on the breaker doesn't actually make the level back to normal brightness.
 - [x] Alien Queen doesn't actually attack, also should not have 2 alien queens on the level (queen should only attack shapeshifter hero)
 - [x] The healing booth should be a permanent healing feature (like the previous garden) - can return any time and slowly restore health.
+- [ ] The polymer plasmid, you should be able to throw this and it will instead nuetralise any gases in the air, but can still be injested for immunity.
 
 ## Release Prep
 

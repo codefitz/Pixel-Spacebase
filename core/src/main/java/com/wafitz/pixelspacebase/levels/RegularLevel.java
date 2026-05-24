@@ -71,6 +71,9 @@ public abstract class RegularLevel extends Level {
         if (!initRooms()) {
             return false;
         }
+        if (SpacebaseRun.workshopOnLevel() && !hasWorkshopEntranceCandidate()) {
+            return false;
+        }
 
         int distance;
         int retry = 0;
@@ -78,7 +81,8 @@ public abstract class RegularLevel extends Level {
         do {
             do {
                 roomEntrance = Random.element(rooms);
-            } while (roomEntrance.width() < 4 || roomEntrance.height() < 4);
+            } while (roomEntrance.width() < 4 || roomEntrance.height() < 4
+                    || SpacebaseRun.workshopOnLevel() && !hasWorkshopNeighbor(roomEntrance));
 
             do {
                 roomExit = Random.element(rooms);
@@ -134,16 +138,7 @@ public abstract class RegularLevel extends Level {
         }
 
         if (SpacebaseRun.workshopOnLevel()) {
-            Room workshop = null;
-            for (Room r : roomEntrance.connected.keySet()) {
-                if (r.connected.size() == 1
-                        && Workshop.canHostFixedLayout(r)
-                        && ((r.width() - 1) * (r.height() - 1) >= Workshop.spaceNeeded())) {
-                    workshop = r;
-                    break;
-                }
-            }
-
+            Room workshop = workshopRoom();
             if (workshop == null) {
                 return false;
             } else {
@@ -175,6 +170,37 @@ public abstract class RegularLevel extends Level {
         placeVents();
 
         return true;
+    }
+
+    private Room workshopRoom() {
+        for (Room r : roomEntrance.neigbours) {
+            if (r.type == Type.NULL && r != roomExit && Workshop.canHostFixedLayout(r)) {
+                roomEntrance.connect(r);
+                return r;
+            }
+        }
+
+        return null;
+    }
+
+    private boolean hasWorkshopNeighbor(Room room) {
+        for (Room r : room.neigbours) {
+            if (r.type == Type.NULL && Workshop.canHostFixedLayout(r)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean hasWorkshopEntranceCandidate() {
+        for (Room r : rooms) {
+            if (r.width() >= 4 && r.height() >= 4 && hasWorkshopNeighbor(r)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     void placeSign() {

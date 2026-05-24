@@ -84,9 +84,8 @@ import java.util.LinkedList;
 
 public class Workshop extends Painter {
 
-    private static final int TEMPLATE_WIDTH = 8;
+    private static final int TEMPLATE_WIDTH = 7;
     private static final int TEMPLATE_HEIGHT = 7;
-    private static final int TEMPLATE_CAPACITY = (TEMPLATE_WIDTH - 1) * (TEMPLATE_HEIGHT - 1);
 
     private static ArrayList<Item> itemsToSpawn;
     private static ArrayList<Item> carriedStock;
@@ -417,10 +416,6 @@ public class Workshop extends Painter {
             itemsToSpawn.add(rareWorkshopItem(true));
         }
 
-        //this is a hard limit, the fixed workshop template has 38 item cells after workbench/storage fixtures.
-        if (itemsToSpawn.size() > 39)
-            throw new RuntimeException("Workshop attempted to carry more than 39 items!");
-
         Collections.shuffle(itemsToSpawn);
     }
 
@@ -574,16 +569,8 @@ public class Workshop extends Painter {
         return belongings.getItem(type) != null;
     }
 
-    public static int spaceNeeded() {
-        itemsToSpawn = stockForCurrentDepth();
-
-        //plus one for the shopkeeper; stock is trimmed later so storage cells stay clear
-        return itemsToSpawn.size() + 1;
-    }
-
     public static boolean canHostFixedLayout(Room room) {
-        return canFitTemplate(room)
-                && (room.width() - 1) * (room.height() - 1) >= spaceNeeded();
+        return canFitTemplate(room);
     }
 
     private static Rect fixedWorkshop(Room room) {

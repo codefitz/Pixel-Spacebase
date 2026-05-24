@@ -186,7 +186,7 @@ public class OperationsLevel extends RegularLevel {
     }
 
     private void ensureStationCat() {
-        if (SpacebaseRun.depth == 1 && roomEntrance != null) {
+        if (SpacebaseRun.depth == 1 && roomEntrance != null && StationCat.canSpawnOnFirstLevel()) {
             for (Mob mob : mobs) {
                 if (mob instanceof StationCat) {
                     return;
