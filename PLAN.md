@@ -78,7 +78,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [ ] Jawars will disable DM3000 and steal any worn armor.
 - [x] Chestburster should have a blood effect when appearing.
 - [x] After alien infection hero should be caught in the sticky effect for 1 turn.
-- [ ] Workshop same size each level.
+- [x] Workshop same size each level.
 - [ ] Renames (classes)
     - [ ] crab
     - [ ] bat
@@ -89,8 +89,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [ ] arp
     - [ ] Operations Level = Maintenance
     - [ ] Wraith
-- [ ] Stims, plasmids - should stay in effect whilst hero moving.
-- [ ] Lights breaker turns lights on and off for any level.
+- [x] Stims, plasmids - should stay in effect whilst hero moving.
+- [x] Lights breaker turns lights on and off for any level.
 - [x] Torch needs a switch off option when it is on.
 - [x] Yendor sheild has no text found
 - [x] Turning on the breaker doesn't actually make the level back to normal brightness.

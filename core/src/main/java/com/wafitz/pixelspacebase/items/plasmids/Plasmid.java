@@ -241,6 +241,7 @@ public class Plasmid extends Item {
 
         detach(hero.belongings.backpack);
 
+        hero.preserveShapeshiftForNextSpend();
         hero.spend(TIME_TO_USE);
         hero.busy();
         apply(hero);

@@ -164,6 +164,7 @@ public class Hero extends Char {
     private boolean emergencyEating = false;
     public HeroAction curAction = null;
     public HeroAction lastAction = null;
+    private boolean preserveShapeshiftForNextSpend;
 
     private Char enemy;
 
@@ -480,16 +481,23 @@ public class Hero extends Char {
 
     @Override
     public void spend(float time) {
+        boolean preserveShapeshift = preserveShapeshiftForNextSpend;
+        preserveShapeshiftForNextSpend = false;
         TimeFolder.timeFreeze buff = buff(TimeFolder.timeFreeze.class);
         if (!(buff != null && buff.processTime(time))) {
             super.spend(time);
             recoverShapeshifterInWater(time);
             if (time > 0
+                    && !preserveShapeshift
                     && !(curAction instanceof HeroAction.Attack)
                     && !(curAction instanceof HeroAction.Move)) {
                 Buff.detach(this, Shapeshifted.class);
             }
         }
+    }
+
+    public void preserveShapeshiftForNextSpend() {
+        preserveShapeshiftForNextSpend = true;
     }
 
     public int medicalHealing(int amount) {

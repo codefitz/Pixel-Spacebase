@@ -417,7 +417,7 @@ public class Workshop extends Painter {
             itemsToSpawn.add(rareWorkshopItem(true));
         }
 
-        //this is a hard limit, level gen allows for at most an 8x5 room, can't fit more than 39 items + 1 shopkeeper.
+        //this is a hard limit, the fixed workshop template has 38 item cells after workbench/storage fixtures.
         if (itemsToSpawn.size() > 39)
             throw new RuntimeException("Workshop attempted to carry more than 39 items!");
 
@@ -582,25 +582,27 @@ public class Workshop extends Painter {
     }
 
     public static boolean canHostFixedLayout(Room room) {
-        return (room.width() - 1) * (room.height() - 1) >= spaceNeeded();
+        return canFitTemplate(room)
+                && (room.width() - 1) * (room.height() - 1) >= spaceNeeded();
     }
 
     private static Rect fixedWorkshop(Room room) {
-        int width;
-        int height;
-        if (room.width() >= TEMPLATE_WIDTH && room.height() >= TEMPLATE_HEIGHT) {
-            width = TEMPLATE_WIDTH;
-            height = TEMPLATE_HEIGHT;
-        } else if (room.width() >= TEMPLATE_HEIGHT && room.height() >= TEMPLATE_WIDTH) {
+        int width = TEMPLATE_WIDTH;
+        int height = TEMPLATE_HEIGHT;
+        if (!canFitTemplate(room)) {
+            throw new IllegalArgumentException("Workshop room cannot fit fixed template.");
+        } else if (room.width() < TEMPLATE_WIDTH || room.height() < TEMPLATE_HEIGHT) {
             width = TEMPLATE_HEIGHT;
             height = TEMPLATE_WIDTH;
-        } else {
-            width = room.width();
-            height = room.height();
         }
         int left = room.left + (room.width() - width) / 2;
         int top = room.top + (room.height() - height) / 2;
         return new Rect(left, top, left + width, top + height);
+    }
+
+    private static boolean canFitTemplate(Room room) {
+        return room.width() >= TEMPLATE_WIDTH && room.height() >= TEMPLATE_HEIGHT
+                || room.width() >= TEMPLATE_HEIGHT && room.height() >= TEMPLATE_WIDTH;
     }
 
     private static void carveAccessPath(Level level, Room room, Rect workshop, Point door) {

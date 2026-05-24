@@ -33,16 +33,18 @@ public class FloorBreaker {
 
     public static void operate(int pos) {
         if (SpacebaseRun.level.floorBreakerOn) {
-            GLog.i(Messages.get(FloorBreaker.class, "already_on"));
-            return;
+            SpacebaseRun.level.dimFloorLighting();
+            GLog.w(Messages.get(FloorBreaker.class, "dimmed"));
+        } else {
+            SpacebaseRun.level.restoreFloorLighting();
+            GLog.p(Messages.get(FloorBreaker.class, "restored"));
         }
 
-        SpacebaseRun.level.restoreFloorLighting();
         SpacebaseRun.hero.viewDistance = SpacebaseRun.heroViewDistance();
         SpacebaseRun.observe();
+        GameScene.updateMap(pos);
         GameScene.updateFog();
         CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 8);
         Sample.INSTANCE.play(Assets.SND_CLICK);
-        GLog.p(Messages.get(FloorBreaker.class, "restored"));
     }
 }

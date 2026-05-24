@@ -469,6 +469,11 @@ public abstract class Level implements Bundlable {
         viewDistance = litViewDistance;
     }
 
+    public void dimFloorLighting() {
+        floorBreakerOn = false;
+        viewDistance = darkViewDistance(litViewDistance);
+    }
+
     protected int darkViewDistance(int distance) {
         return (int) Math.ceil(distance / 3f);
     }

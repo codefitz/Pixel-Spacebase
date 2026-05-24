@@ -237,6 +237,7 @@ public abstract class Mine implements Bundlable {
             super.execute(hero, action);
 
             if (action.equals(AC_USE)) {
+                hero.preserveShapeshiftForNextSpend();
                 hero.spend(TIME_TO_SET_MINE);
                 hero.busy();
 
