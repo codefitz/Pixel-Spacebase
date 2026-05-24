@@ -1,19 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 34
-    namespace "com.wafitz.pixelspacebase"
+    compileSdk = 34
+    namespace = "com.wafitz.pixelspacebase"
 
     buildTypes {
         release {
-            shrinkResources true
-            minifyEnabled true
+            shrinkResources = true
+            minifyEnabled = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 34
+        minSdk = 9
+        targetSdk = 34
     }
 }
 

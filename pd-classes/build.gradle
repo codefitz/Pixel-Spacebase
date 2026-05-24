@@ -1,11 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 34
-    namespace "com.watabou"
+    compileSdk = 34
+    namespace = "com.watabou"
 
     task ndkBuild(type: Exec){
-        description "builds JNI libs from source. " +
+        description = "builds JNI libs from source. " +
                 "This requires the Android NDK and is optional as precompiled libs are provided."
 
         def root = project(':pd-classes').projectDir
@@ -92,6 +92,11 @@ android {
         }
     }
     defaultConfig {
-        minSdkVersion 8
+        minSdk = 9
+    }
+    packaging {
+        jniLibs {
+            excludes += ['**/libFroyoGLES20Fix.so']
+        }
     }
 }
