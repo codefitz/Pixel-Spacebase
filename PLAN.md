@@ -12,19 +12,25 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Mechanics
 
-- [ ] On defeating final boss, a pet carrier is dropped. The hero can board the escape pod, or he can return through the spacebase to try to re-find the cat on levels 1-5. If the cat was killed however - then the pet carrier will still drop but there will be no point to the hero going back.
-    - [ ] On clicking on a found cat with pet carrier equipped the cat will be carried. If the pet carrier is dropped, the cat will pop out.
-    - [ ] On defeating the final boss, the pet carrier item can now be found earlier in-game and equipped.
+- [ ] Cat rescue route after the final boss.
+    - [x] Add a pet carrier item with placeholder icon, equip behavior, save data, and text.
+    - [x] On defeating the final boss, drop the pet carrier.
+    - [x] Track whether the station cat is following, dead, gone, or carried in the pet carrier.
+    - [x] On clicking a found cat with an equipped empty pet carrier, put the cat in the carrier.
+    - [x] If a carrier holding the cat is dropped, the cat pops out.
+    - [x] Cat moves between levels only when following, then waits to be petted again before continuing.
+    - [x] Allow returning through Operations decks to re-find the cat when the carrier is available and the cat is alive.
+    - [x] Allow the pet carrier item to be found earlier in-game and equipped before the final boss.
 - [ ] Endings:
     - [ ] Standard escape pod
-    - [ ] Escape pod with cat
+    - [x] Escape pod with cat
     - [ ] Fix core (save NPCs, remain on station) - possible time-based challenge, work back through station levels - unstable shaking.
     - [ ] Download/Upload save files.
 
 ## Cosmetic / Narrative
 
 - [x] Deep containment - change this to Bridge.
-- [ ] Should be made clear that Y is taking or giving something to hero for Tengu battle.
+- [x] Should be made clear that Y is taking or giving something to hero for Tengu battle.
 - [ ] Fix ugly HP bar
 - [ ] Modal dialogs still need fixing (border size) - Start of game intro.
 - [ ] Rot lasher/heart sci-fi rework
@@ -113,10 +119,10 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] The polymer plasmid, you should be able to throw this and it will instead nuetralise any gases in the air, but can still be injested for immunity.
 - [x] If the cat dies, there should be a log indicator, and a sad meow.
 - [x] If the shapeshifter equips a non-consumable item (e.g. blaster) it should act like a missile when clicked (option to throw)
-- [ ] Shapeshifter throws need to be better the more strength he has (like Hunters disk)
-- [ ] Falling trap should send you to the floor below.
-- [ ] Default action with fire grenade for shapeshifter when quickslotted should be throw.
-- [ ] Shapeshifter should be able to quickslot weapons for throwing.
+- [x] Shapeshifter throws need to be better the more strength he has (like Hunters disk)
+- [x] Falling trap should send you to the floor below.
+- [x] Default action with fire grenade when quickslotted should be throw.
+- [x] Shapeshifter should be able to quickslot weapons for throwing.
 
 ## Release Prep
 

@@ -31,6 +31,7 @@ import com.wafitz.pixelspacebase.effects.Ripple;
 import com.wafitz.pixelspacebase.items.AirTank;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
+import com.wafitz.pixelspacebase.items.PetCarrier;
 import com.wafitz.pixelspacebase.items.WeakForcefield;
 import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Uniform;
@@ -186,7 +187,7 @@ public class OperationsLevel extends RegularLevel {
     }
 
     private void ensureStationCat() {
-        if (SpacebaseRun.depth == 1 && roomEntrance != null && StationCat.canSpawnOnFirstLevel()) {
+        if (roomEntrance != null && StationCat.canSpawnInOperationsLevel()) {
             for (Mob mob : mobs) {
                 if (mob instanceof StationCat) {
                     return;
@@ -198,6 +199,7 @@ public class OperationsLevel extends RegularLevel {
                 StationCat cat = new StationCat();
                 cat.pos = pos;
                 mobs.add(cat);
+                StationCat.Quest.markSpawnedInOperationsLevel();
             }
         }
     }
@@ -231,6 +233,10 @@ public class OperationsLevel extends RegularLevel {
 
     @Override
     protected void createItems() {
+        if (SpacebaseRun.depth == 4) {
+            addItemToSpawn(new PetCarrier());
+        }
+
         if (!SpacebaseRun.limitedDrops.airTank.dropped() && Random.Int(4 - SpacebaseRun.depth) == 0) {
             addItemToSpawn(new AirTank());
             SpacebaseRun.limitedDrops.airTank.drop();

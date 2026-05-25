@@ -972,7 +972,7 @@ public class Hero extends Char {
                     GameScene.show(new WndMessage(Messages.get(this, "leave")));
                     ready();
                 } else {
-                    SpacebaseRun.win(EscapePodOverride.class);
+                    SpacebaseRun.win(EscapePodOverride.victoryCause());
                     SpacebaseRun.deleteGame(SpacebaseRun.hero.heroClass, true);
                     Game.switchScene(SurfaceScene.class);
                 }

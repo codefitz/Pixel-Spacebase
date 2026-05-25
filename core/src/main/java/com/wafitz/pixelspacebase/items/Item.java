@@ -34,6 +34,7 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.containers.Container;
+import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.missiles.HunterDisc;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
@@ -160,18 +161,22 @@ public class Item implements Bundlable {
     }
 
     public void execute(Hero hero) {
-        String action = defaultAction;
+        String action = shapeshifterThrowsByDefault(hero) ? AC_THROW : defaultAction;
         if (hero.heroClass == HeroClass.SHAPESHIFTER && (action == null || !actions(hero).contains(action))) {
             action = AC_THROW;
         }
         execute(hero, action);
     }
 
+    protected boolean shapeshifterThrowsByDefault(Hero hero) {
+        return false;
+    }
+
     protected void onThrow(int cell) {
         Char enemy = Actor.findChar(cell);
         if (curUser.heroClass == HeroClass.SHAPESHIFTER && enemy != null && enemy != curUser) {
             if (Char.hit(curUser, enemy, false)) {
-                int damage = Random.NormalIntRange(1, 3);
+                int damage = shapeshifterThrowDamage();
                 damage = Math.max(damage - enemy.drRoll(), 0);
 
                 Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
@@ -190,6 +195,15 @@ public class Item implements Bundlable {
         if (!heap.isEmpty()) {
             heap.sprite.drop(cell);
         }
+    }
+
+    private int shapeshifterThrowDamage() {
+        if (this instanceof Weapon) {
+            return ((Weapon) this).damageRoll(curUser);
+        }
+
+        int strengthBonus = Math.max(0, curUser.STR() - 10);
+        return Random.NormalIntRange(1, 3 + strengthBonus);
     }
 
     private void doShapeshift(Hero hero) {

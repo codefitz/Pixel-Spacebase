@@ -27,6 +27,7 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Item;
@@ -361,7 +362,7 @@ public class WndContainer extends WndTabbed {
                                     mode == Mode.UPGRADEABLE && item.isUpgradable() ||
                                     mode == Mode.UNIDENTIFED && !item.isIdentified() ||
                                     mode == Mode.UNIDED_OR_MALFUNCTIONING && ((item instanceof EquipableItem || item instanceof Blaster) && (!item.isIdentified() || item.malfunctioning)) ||
-                                    mode == Mode.QUICKSLOT && (item.defaultAction != null) ||
+                                    mode == Mode.QUICKSLOT && (item.defaultAction != null || SpacebaseRun.hero.heroClass == HeroClass.SHAPESHIFTER && item instanceof Weapon) ||
                                     mode == Mode.WEAPON && (item instanceof MeleeWeapon || item instanceof HunterDisc) ||
                                     mode == Mode.ARMOR && (item instanceof Armor) ||
                                     mode == Mode.ENHANCEABLE && (item instanceof MeleeWeapon || item instanceof HunterDisc || item instanceof Armor) ||

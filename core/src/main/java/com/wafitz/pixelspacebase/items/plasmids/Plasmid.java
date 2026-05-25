@@ -184,7 +184,12 @@ public class Plasmid extends Item {
     }
 
     private void updateDefaultAction() {
-        defaultAction = isSealed() ? AC_OPEN : AC_USE;
+        defaultAction = isSealed() ? AC_OPEN : this instanceof FireGrenade ? AC_THROW : AC_USE;
+    }
+
+    @Override
+    protected boolean shapeshifterThrowsByDefault(Hero hero) {
+        return false;
     }
 
     private boolean revealStorage() {

@@ -65,6 +65,14 @@ public class Chasm {
     }
 
     public static void heroFall(int pos) {
+        heroFall(pos, false);
+    }
+
+    public static void heroFallIntoPit(int pos) {
+        heroFall(pos, true);
+    }
+
+    private static void heroFall(int pos, boolean forcePitLanding) {
 
         jumpConfirmed = false;
 
@@ -79,7 +87,9 @@ public class Chasm {
         if (SpacebaseRun.hero.isAlive()) {
             SpacebaseRun.hero.interrupt();
             InterlevelScene.mode = InterlevelScene.Mode.FALL;
-            if (SpacebaseRun.level instanceof RegularLevel) {
+            if (forcePitLanding) {
+                InterlevelScene.fallIntoPit = true;
+            } else if (SpacebaseRun.level instanceof RegularLevel) {
                 Room room = ((RegularLevel) SpacebaseRun.level).room(pos);
                 InterlevelScene.fallIntoPit = room != null && room.type == Room.Type.WEAK_FLOOR;
             } else {

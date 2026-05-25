@@ -22,6 +22,7 @@ package com.wafitz.pixelspacebase.scenes;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.effects.Flare;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.EscapePodOverride;
@@ -51,7 +52,7 @@ public class EscapePodScene extends PixelScene {
 
         RenderedTextMultiline text = null;
         if (!noText) {
-            text = renderMultiline(Messages.get(this, "text",
+            text = renderMultiline(Messages.get(this, StationCat.isCarried() ? "text_cat" : "text",
                     RescueCradle.totalCradles()), 8);
             text.maxWidth(WIDTH);
             add(text);
@@ -63,7 +64,7 @@ public class EscapePodScene extends PixelScene {
         RedButton btnExit = new RedButton(Messages.get(this, "exit")) {
             @Override
             protected void onClick() {
-                SpacebaseRun.win(EscapePodOverride.class);
+                SpacebaseRun.win(EscapePodOverride.victoryCause());
                 SpacebaseRun.deleteGame(SpacebaseRun.hero.heroClass, true);
                 Game.switchScene(RankingsScene.class);
             }

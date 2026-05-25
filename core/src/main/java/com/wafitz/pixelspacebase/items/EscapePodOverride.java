@@ -26,6 +26,7 @@ import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.scenes.EscapePodScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Game;
@@ -106,4 +107,10 @@ public class EscapePodOverride extends Item {
         return false;
     }
 
+    public static Class victoryCause() {
+        return StationCat.isCarried() ? CatRescue.class : EscapePodOverride.class;
+    }
+
+    public static class CatRescue {
+    }
 }
