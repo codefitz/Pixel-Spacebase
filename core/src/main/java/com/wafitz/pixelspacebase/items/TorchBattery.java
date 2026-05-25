@@ -21,6 +21,8 @@
 package com.wafitz.pixelspacebase.items;
 
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
+import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -42,6 +44,9 @@ public class TorchBattery extends Item {
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
         actions.add(AC_RECHARGE);
+        if (hero.heroClass == HeroClass.DM3000) {
+            actions.add(Food.AC_USE);
+        }
         return actions;
     }
 
@@ -64,6 +69,12 @@ public class TorchBattery extends Item {
             hero.sprite.operate(hero.pos);
 
             GLog.p(Messages.get(this, "recharged", torch.name()));
+        } else if (action.equals(Food.AC_USE) && hero.heroClass == HeroClass.DM3000) {
+            detach(hero.belongings.backpack);
+            DM3000Power.consumeBattery(hero);
+
+            hero.spend(DM3000Power.TIME_TO_CONSUME);
+            hero.busy();
         }
     }
 

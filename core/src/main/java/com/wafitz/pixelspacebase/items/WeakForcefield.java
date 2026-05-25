@@ -29,6 +29,7 @@ import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
+import com.wafitz.pixelspacebase.ui.BuffIndicator;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.wafitz.pixelspacebase.windows.WndContainer;
 import com.wafitz.pixelspacebase.windows.WndItem;
@@ -127,6 +128,21 @@ public class WeakForcefield extends Item {
 
         public int maxShield() {
             return 1 + armor.tier + armor.level();
+        }
+
+        @Override
+        public String toString() {
+            return Messages.get(this, "name");
+        }
+
+        @Override
+        public String desc() {
+            return Messages.get(this, "desc", armor == null ? 0 : maxShield());
+        }
+
+        @Override
+        public int icon() {
+            return BuffIndicator.WEAKFORCEFIELD;
         }
     }
 }

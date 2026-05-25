@@ -162,7 +162,7 @@ public class LiveVentsPainter extends Painter {
             {BlazingVent.class, VenomVent.class, ExplosiveVent.class},
             //habitation/command
             {WarpingVent.class, VenomVent.class, DisintegrationVent.class},
-            //deep containment
+            //bridge
             {GrimVent.class}
     };
 }

@@ -7,6 +7,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Cat follow-up idea for the next version.
 - [ ] Refactor code and suggest improvements.
 - [ ] What could replace Yog Duza? Maybe a giant angel.
+- [ ] Need to replace chief's pickaxe (screwdriver) with a suitable tool icon.
+- [ ] Need a new reward for chief since reforging redundant.
 
 ## Mechanics
 
@@ -21,7 +23,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Cosmetic / Narrative
 
-- [ ] Deep containment - change this to Bridge.
+- [x] Deep containment - change this to Bridge.
 - [ ] Should be made clear that Y is taking or giving something to hero for Tengu battle.
 - [ ] Fix ugly HP bar
 - [ ] Modal dialogs still need fixing (border size) - Start of game intro.
@@ -49,6 +51,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
         - [ ] Bridge Boss
 - [ ] Update Bridge levels tiles.
 - [x] Replace leaf particles with sparks.
+- [ ] Armor Kit needs icon sci-fi upgrade
 
 ## Bugs
 
@@ -56,6 +59,10 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Flock trigger - the log says alien: No text found
 - [x] Feral shapeshifter's last words are DIE!, this shouldd be the "Thankyou" line.
 - [x] Cat crash when touching the Maker Bench in the workshop.
+- [x] Enhancement chip says You enhanced your %s
+- [x] Hologram says thankyou %s
+- [x] Shield is just called item - no texts found in description.
+- [x] The mastery scripts book has no text found for all buttons, and description
 
 ## Code Quality / Stability
 
@@ -70,12 +77,19 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 ## Refactorial Changes and Small Adjustments
 
 - [x] If petted, cat always follows hero to next level. before ascending to boss level, a dialogue will warn do you want to bring the cat or not? If no is selected, the cat will wander off, and will not be found if the hero returns.
-- [ ] DM3000 reconfiguration
-    - [ ] Cannot hold mele weapons, only missiles and blasters. Mele weapons can be melted own to bolts that can be fired.
-    - [ ] Is immune to gases, doesn't require food can't use health packs, siphons water to recover. Can eat batteries.
-    - [ ] Has automatic light in the darkness.
-    - [ ] Is immune to the alien egg effects.
-    - [ ] Jawars will disable DM3000 and steal any worn armor.
+- [x] DM3000 reconfiguration
+    - [x] Weapon handling
+        - [x] Cannot equip ordinary melee weapons.
+        - [x] Melee weapons can be melted down to missile bolts.
+    - [x] Core body rules
+        - [x] Is immune to gases.
+        - [x] Doesn't require food.
+        - [x] Can't use health packs.
+        - [x] Siphons water to recover.
+        - [x] Can eat batteries.
+    - [x] Has automatic light in the darkness.
+    - [x] Is immune to the alien egg effects.
+    - [x] Jawars will disable DM3000 and steal any worn armor.
 - [x] Chestburster should have a blood effect when appearing.
 - [x] After alien infection hero should be caught in the sticky effect for 1 turn.
 - [x] Workshop same size each level.
@@ -96,7 +110,13 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Turning on the breaker doesn't actually make the level back to normal brightness.
 - [x] Alien Queen doesn't actually attack, also should not have 2 alien queens on the level (queen should only attack shapeshifter hero)
 - [x] The healing booth should be a permanent healing feature (like the previous garden) - can return any time and slowly restore health.
-- [ ] The polymer plasmid, you should be able to throw this and it will instead nuetralise any gases in the air, but can still be injested for immunity.
+- [x] The polymer plasmid, you should be able to throw this and it will instead nuetralise any gases in the air, but can still be injested for immunity.
+- [x] If the cat dies, there should be a log indicator, and a sad meow.
+- [x] If the shapeshifter equips a non-consumable item (e.g. blaster) it should act like a missile when clicked (option to throw)
+- [ ] Shapeshifter throws need to be better the more strength he has (like Hunters disk)
+- [ ] Falling trap should send you to the floor below.
+- [ ] Default action with fire grenade for shapeshifter when quickslotted should be throw.
+- [ ] Shapeshifter should be able to quickslot weapons for throwing.
 
 ## Release Prep
 

@@ -20,6 +20,7 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
+import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
@@ -27,6 +28,7 @@ import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.StationCatSprite;
 import com.wafitz.pixelspacebase.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -113,9 +115,8 @@ public class StationCat extends NPC {
 
     @Override
     public void die(Object src) {
-        if (SpacebaseRun.visible[pos]) {
-            GLog.w(Messages.get(this, "dies"));
-        }
+        Sample.INSTANCE.play(Assets.SND_LULLABY, 0.7f, 0.7f, 0.8f);
+        GLog.w(Messages.get(this, "dies"));
         Quest.dead = true;
         Quest.following = false;
         Quest.gone = false;

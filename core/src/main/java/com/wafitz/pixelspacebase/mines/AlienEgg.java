@@ -25,6 +25,7 @@ import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.XenoInfection;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
@@ -37,7 +38,7 @@ public class AlienEgg extends Mine {
     @Override
     public void activate() {
         Char ch = Actor.findChar(pos);
-        if (ch instanceof Hero) {
+        if (ch instanceof Hero && ((Hero) ch).heroClass != HeroClass.DM3000) {
             XenoInfection.infect((Hero) ch);
         }
         SpacebaseRun.level.drop(new AlienPod(), pos).sprite.drop();

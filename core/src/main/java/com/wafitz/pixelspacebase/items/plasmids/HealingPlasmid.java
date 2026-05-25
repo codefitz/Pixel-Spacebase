@@ -45,6 +45,10 @@ public class HealingPlasmid extends Plasmid {
     public void apply(Hero hero) {
         setKnown();
         Buff.detach(hero, XenoInfection.class);
+        if (hero.heroClass == HeroClass.DM3000) {
+            GLog.w(Messages.get(this, "heal_dm3000"));
+            return;
+        }
         heal(SpacebaseRun.hero);
         GLog.p(Messages.get(this, hero.heroClass == HeroClass.SHAPESHIFTER ? "heal_shapeshifter" : "heal"));
     }

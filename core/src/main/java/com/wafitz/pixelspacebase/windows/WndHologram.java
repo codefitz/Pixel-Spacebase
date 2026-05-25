@@ -109,7 +109,7 @@ public class WndHologram extends Window {
         }
 
         // wafitz.v1 - Hologram now recognises you!
-        hologram.yell("Farewell, " + SpacebaseRun.hero.heroClass.title() + "!");
+        hologram.yell(Messages.get(Hologram.class, "farewell", SpacebaseRun.hero.heroClass.title()));
         hologram.die(null);
 
         Hologram.Quest.complete();

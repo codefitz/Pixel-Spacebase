@@ -22,14 +22,18 @@ package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Domination;
+import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.DroneController;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
+import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.equippablemodules.McGyvrModule;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
@@ -141,6 +145,10 @@ public class Thief extends Mob {
 
     protected boolean steal(Hero hero) {
 
+        if (hero.heroClass == HeroClass.DM3000 && stealDM3000Armor(hero)) {
+            return true;
+        }
+
         Item item = hero.belongings.randomUnequipped();
 
         if (item != null && !item.unique && item.level() < 1) {
@@ -162,6 +170,22 @@ public class Thief extends Mob {
         } else {
             return false;
         }
+    }
+
+    private boolean stealDM3000Armor(Hero hero) {
+        Armor armor = hero.belongings.armor;
+        if (armor == null) {
+            return false;
+        }
+
+        GLog.w(Messages.get(Thief.class, "disabled_dm3000"));
+        Buff.prolong(hero, LockedDown.class, 5f);
+
+        this.item = armor;
+        armor.forceUnequip(hero);
+
+        GLog.w(Messages.get(Thief.class, "stole", armor.name()));
+        return true;
     }
 
     @Override

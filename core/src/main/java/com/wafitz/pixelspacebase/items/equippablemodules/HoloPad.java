@@ -37,7 +37,9 @@ import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ShaftParticle;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.DM3000Power;
 import com.wafitz.pixelspacebase.items.upgrades.PsionicBlastUpgrade;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Languages;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -252,10 +254,20 @@ public class HoloPad extends EquippableModule {
             HoloPad holopad = hero.belongings.getItem(HoloPad.class);
 
             if (holopad == null) {
+                if (hero.heroClass == HeroClass.DM3000) {
+                    DM3000Power.consumeBattery(hero);
+                    hero.spendAndNext(TIME_TO_PICK_UP);
+                    return true;
+                }
                 GLog.w(Messages.get(this, "no_holopad"));
                 return false;
             }
             if (holopad.level() >= holopad.levelCap) {
+                if (hero.heroClass == HeroClass.DM3000) {
+                    DM3000Power.consumeBattery(hero);
+                    hero.spendAndNext(TIME_TO_PICK_UP);
+                    return true;
+                }
                 GLog.i(Messages.get(this, "no_room"));
                 hero.spendAndNext(TIME_TO_PICK_UP);
                 return true;

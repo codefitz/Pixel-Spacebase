@@ -160,7 +160,11 @@ public class Item implements Bundlable {
     }
 
     public void execute(Hero hero) {
-        execute(hero, defaultAction);
+        String action = defaultAction;
+        if (hero.heroClass == HeroClass.SHAPESHIFTER && (action == null || !actions(hero).contains(action))) {
+            action = AC_THROW;
+        }
+        execute(hero, action);
     }
 
     protected void onThrow(int cell) {

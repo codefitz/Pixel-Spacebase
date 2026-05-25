@@ -341,7 +341,7 @@ public class Hologram extends NPC {
 
         public static void process() {
             if (spawned && given && !processed && (depth == SpacebaseRun.depth)) {
-                GLog.n(Messages.get(Hologram.class, "find_me"));
+                GLog.n(Messages.get(Hologram.class, "find_me", SpacebaseRun.hero.givenName()));
                 Sample.INSTANCE.play(Assets.SND_HOLOGRAM);
                 processed = true;
                 Generator.Category.EQUIPPABLE_MODULE.probs[10] = 1; //flags the holopad as spawnable.

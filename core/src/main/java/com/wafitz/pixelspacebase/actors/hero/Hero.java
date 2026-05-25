@@ -29,7 +29,11 @@ import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Fire;
+import com.wafitz.pixelspacebase.actors.blobs.ConfusionGas;
+import com.wafitz.pixelspacebase.actors.blobs.ParalyticGas;
+import com.wafitz.pixelspacebase.actors.blobs.StenchGas;
 import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
+import com.wafitz.pixelspacebase.actors.blobs.VenomGas;
 import com.wafitz.pixelspacebase.actors.buffs.Berserk;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
@@ -488,7 +492,7 @@ public class Hero extends Char {
         TimeFolder.timeFreeze buff = buff(TimeFolder.timeFreeze.class);
         if (!(buff != null && buff.processTime(time))) {
             super.spend(time);
-            recoverShapeshifterInWater(time);
+            recoverInWater(time);
             if (time > 0
                     && !preserveShapeshift
                     && !(curAction instanceof HeroAction.Attack)
@@ -507,6 +511,10 @@ public class Hero extends Char {
             return 0;
         }
 
+        if (heroClass == HeroClass.DM3000) {
+            return 0;
+        }
+
         int adjusted = amount;
         if (heroClass == HeroClass.SHAPESHIFTER) {
             adjusted = Math.max(1, adjusted / 2);
@@ -517,9 +525,9 @@ public class Hero extends Char {
         return effect;
     }
 
-    private void recoverShapeshifterInWater(float time) {
+    private void recoverInWater(float time) {
         if (time <= 0
-                || heroClass != HeroClass.SHAPESHIFTER
+                || (heroClass != HeroClass.SHAPESHIFTER && heroClass != HeroClass.DM3000)
                 || flying
                 || HP >= HT
                 || isStarving()
@@ -1953,6 +1961,11 @@ public class Hero extends Char {
             immunities.add(Terror.class);
             immunities.add(Paralysis.class);
             immunities.add(Vertigo.class);
+            immunities.add(ConfusionGas.class);
+            immunities.add(ParalyticGas.class);
+            immunities.add(StenchGas.class);
+            immunities.add(ToxicGas.class);
+            immunities.add(VenomGas.class);
         }
         return immunities;
     }
