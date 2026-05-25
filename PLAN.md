@@ -49,12 +49,13 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [ ] Terminals
     - [ ] Breaker
     - [ ] Jawar
-    - [ ] Music
-        - [ ] Engineering Boss
-        - [ ] Habitation
-        - [ ] Habitiation Boss
-        - [ ] Bridge
-        - [ ] Bridge Boss
+    - [x] Music
+        - [x] Engineering Boss
+        - [x] Habitation
+        - [x] Habitation Boss
+        - [x] Bridge
+        - [x] Bridge Boss
+        - [x] Completion/credits
 - [ ] Update Bridge levels tiles.
 - [x] Replace leaf particles with sparks.
 - [ ] Armor Kit needs icon sci-fi upgrade

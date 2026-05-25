@@ -133,7 +133,12 @@ public class Assets {
     public static final String OXYGEN_WARNING = "oxygen_warning.mp4";
     public static final String PROTOCOL = "protocol.mp4";
     public static final String SECTOR_9 = "sector-9.mp4";
-    public static final String HAPPY = "surface.ogg";
+    public static final String ENGINEERING_BOSS = "reactor_mech_awakening.mp4";
+    public static final String HABITATION = "sleeping_in_sector_b.mp4";
+    public static final String HABITATION_BOSS = "they're_here.mp4";
+    public static final String BRIDGE = "sector_echo.mp4";
+    public static final String BRIDGE_BOSS = "sanctum.mp4";
+    public static final String HAPPY = "dead_signal_drift.mp4";
 
     public static final String SND_CLICK = "snd_click.mp3";
     public static final String SND_BADGE = "snd_badge.mp3";
