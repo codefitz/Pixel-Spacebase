@@ -124,6 +124,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Falling trap should send you to the floor below.
 - [x] Default action with fire grenade when quickslotted should be throw.
 - [x] Shapeshifter should be able to quickslot weapons for throwing.
+- [ ] Restore specific sprites for Y, Qaurtermaster and Leonard.
+- [ ] Falling down a chasm should send you down a level (already visited), not up (unexplored)
 
 ## Release Prep
 
@@ -131,3 +133,16 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Update release notes and version (on plan completion)
 - [ ] Run `./gradlew :core:testDebugUnitTest`.
 - [ ] Run `./gradlew :core:assembleDebug`.
+
+## v1.0.4
+
+- [ ] Cat should always go to eat meat (restores cat health)
+- [ ] Cat is playful and should throw/bounce items the hero comes across (apart from pet carrier)
+- [ ] Code cleanup and refactor
+- [ ] Alter torch to be equipped in quickslots to activate
+- [ ] Hunter suit to detect <sci-fi term> signatures (lights off, can visualise all enemies/npcs on a level in the dark)
+- [ ] Workbench icon/sprite
+- [ ] Chasms/black should have a subtle starry background, with potentially a planet and nearby star.
+- [ ] Small wormhole generator - can active and select any visible tile on the map.
+- [ ] Fire sprites on walls should be replaced with electrical fizzes.
+- [ ] A battery doused with medigel can explode (locked doors, blockage)

@@ -63,7 +63,7 @@ public abstract class RegularLevel extends Level {
 
     public int secretDoors;
 
-    private static final int[] SURVIVOR_DEPTHS = {2, 3, 4, 6, 7, 8, 9, 11, 12};
+    private static final int[] SURVIVOR_DEPTHS = {2, 7, 12, 17, 22};
 
     @Override
     protected boolean build() {

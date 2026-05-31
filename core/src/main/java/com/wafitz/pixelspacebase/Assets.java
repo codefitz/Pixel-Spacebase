@@ -47,7 +47,7 @@ public class Assets {
     public static final String SHAPESHIFTER = "shapeshifter.png";
     public static final String CAPTAIN = "captain.png";
     public static final String AVATARS = "avatars.png";
-    public static final String PET = "pet.png";
+    public static final String PET = "cat.png";
 
     public static final String SURFACE = "surface.png";
 
@@ -87,9 +87,9 @@ public class Assets {
     public static final String CONTAINMENT_MASS = "containment_mass.png";
     public static final String LARVA = "larva.png";
     public static final String HOLOGRAM = "hologram.png";
-    public static final String GUNSMITH = "gunsmith.png";
-    public static final String TROLL = "leonard.png";
-    public static final String ARP = "arp.png";
+    public static final String GUNSMITH = "npc.png";
+    public static final String TROLL = "npc2.png";
+    public static final String ARP = "npc2.png";
     public static final String XQUEEN = "xqueen.png";
     public static final String DRONE = "drone.png";
     public static final String CONFUSEDSHAPESHIFTER = "confused_shapeshifter.png";
