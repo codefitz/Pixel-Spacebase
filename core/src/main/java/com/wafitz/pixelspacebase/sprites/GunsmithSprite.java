@@ -40,7 +40,7 @@ public class GunsmithSprite extends MobSprite {
     public GunsmithSprite() {
         super();
 
-        texture(Assets.GUNSMITH);
+        texture(Assets.QUARTERMASTER);
 
         TextureFilm frames = new TextureFilm(texture, 12, 14);
 

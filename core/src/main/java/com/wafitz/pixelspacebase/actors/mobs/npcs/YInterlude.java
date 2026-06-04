@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.levels.SecurityBossLevel;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.sprites.ImpSprite;
+import com.wafitz.pixelspacebase.sprites.YSprite;
 import com.wafitz.pixelspacebase.windows.WndQuest;
 import com.watabou.utils.Bundle;
 
@@ -40,7 +40,7 @@ public class YInterlude extends NPC {
     private int mazeAppearance = 0;
 
     {
-        spriteClass = ImpSprite.class;
+        spriteClass = YSprite.class;
         properties.add(Property.IMMOVABLE);
     }
 

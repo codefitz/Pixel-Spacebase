@@ -34,9 +34,9 @@ import com.watabou.utils.SparseArray;
 
 public class WndStory extends Window {
 
-    private static final int WIDTH_P = 120;
-    private static final int WIDTH_L = 144;
-    private static final int MARGIN = 6;
+    private static final int WIDTH_P = 132;
+    private static final int WIDTH_L = 156;
+    private static final int MARGIN = 10;
 
     private static final float bgR = 0.77f;
     private static final float bgG = 0.73f;
@@ -65,10 +65,10 @@ public class WndStory extends Window {
     protected WndStory(String text) {
         super(0, 0, Chrome.get(Chrome.Type.SCRIPT));
 
-        tf = PixelScene.renderMultiline(text, 7);
-        tf.maxWidth(PixelSpacebase.landscape() ?
-                WIDTH_L - MARGIN * 2 :
-                WIDTH_P - MARGIN * 2);
+        int width = PixelSpacebase.landscape() ? WIDTH_L : WIDTH_P;
+
+        tf = PixelScene.renderMultiline(text, 6);
+        tf.maxWidth(width - MARGIN * 2);
         tf.hardlight(0xEAFDFF);
         tf.setPos(MARGIN, MARGIN);
         add(tf);
@@ -80,7 +80,7 @@ public class WndStory extends Window {
             }
         });
 
-        resize((int) (tf.width() + MARGIN * 2), (int) Math.min(tf.height() + MARGIN * 2, 180));
+        resize(width, (int) Math.min(tf.height() + MARGIN * 2, 180));
     }
 
     @Override

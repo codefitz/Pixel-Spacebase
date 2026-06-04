@@ -42,14 +42,14 @@ Column notes:
 | `FeralShapeshifterSprite` | `feral_shapeshifter.png` | 256x16 | 20x14 | 12x1 | 12 | 11 | Sheet dimensions are not an exact multiple of frame size. |
 | `GreatCrabSprite` | `crab.png` | 256x32 | 16x16 | 16x2 | 32 | 14 |  |
 | `GuardSprite` | `guard.png` | 256x16 | 12x16 | 21x1 | 21 | 15 | Sheet dimensions are not an exact multiple of frame size. |
-| `GunsmithSprite` | `npc.png` | 104x48 | 12x14 | 8x3 | 24 | 4 | Sheet dimensions are not an exact multiple of frame size. |
+| `GunsmithSprite` | `gunsmith.png` | 64x16 | 12x14 | 5x1 | 5 | 4 | Sheet dimensions are not an exact multiple of frame size. |
 | `HolodeckMonarchSprite` | `holodeck_monarch.png` | 256x16 | 16x16 | 16x1 | 16 | 16 |  |
 | `HologramSprite` | `hologram.png` | 128x16 | 14x15 | 9x1 | 9 | 8 | Sheet dimensions are not an exact multiple of frame size. |
 | `HoodedRaiderCommanderSprite` | `outer_colony_scout.png` | 256x32 | 12x15 | 21x2 | 42 | 11 | Sheet dimensions are not an exact multiple of frame size. |
 | `ImpSprite` | `npc2.png` | 72x16 | 12x14 | 6x1 | 6 | 5 | Sheet dimensions are not an exact multiple of frame size. |
 | `JedaKnightSprite` | `jeda_knight.png` | 256x32 | 15x14 | 17x2 | 34 | 17 | Sheet dimensions are not an exact multiple of frame size. |
 | `LarvaSprite` | `larva.png` | 128x8 | 12x8 | 10x1 | 10 | 9 | Sheet dimensions are not an exact multiple of frame size. |
-| `LeonardSprite` | `npc2.png` | 72x16 | 13x16 | 5x1 | 5 | 4 | Sheet dimensions are not an exact multiple of frame size. |
+| `LeonardSprite` | `leonard.png` | 64x16 | 13x16 | 4x1 | 4 | 4 | Sheet dimensions are not an exact multiple of frame size. |
 | `MakerBotSprite` | `makerbot.png` | 32x16 | 14x14 | 2x1 | 2 | 1 | Sheet dimensions are not an exact multiple of frame size. |
 | `MaskedPrisonerSprite` | `masked_prisoner.png` | 256x16 | 14x16 | 18x1 | 18 | 11 | Sheet dimensions are not an exact multiple of frame size. |
 | `NewbornElementalSprite` | `elemental.png` | 256x32 | 12x14 | 21x2 | 42 | 14 | Sheet dimensions are not an exact multiple of frame size. |
@@ -73,6 +73,7 @@ Column notes:
 | `ThiefSprite` | `thief.png` | 256x32 | 12x13 | 21x2 | 42 | 13 | Sheet dimensions are not an exact multiple of frame size. |
 | `ToughXenoSprite` | `xenomorph.png` | 256x64 | 16x15 | 16x4 | 64 | 15 | Sheet dimensions are not an exact multiple of frame size. |
 | `TurretSprite` | `wraith.png` | 128x16 | 14x15 | 9x1 | 9 | 8 | Sheet dimensions are not an exact multiple of frame size. |
+| `YSprite` | `arp.png` | 64x16 | 12x14 | 5x1 | 5 | 5 | Sheet dimensions are not an exact multiple of frame size. |
 | `UndeadSprite` | `undead.png` | 256x16 | 12x16 | 21x1 | 21 | 17 | Sheet dimensions are not an exact multiple of frame size. |
 | `WarMachineSprite` | `war_machine.png` | 256x16 | 16x16 | 16x1 | 16 | 14 |  |
 | `WaterThingSprite` | `water_things.png` | 256x16 | 12x16 | 21x1 | 21 | 15 | Sheet dimensions are not an exact multiple of frame size. |

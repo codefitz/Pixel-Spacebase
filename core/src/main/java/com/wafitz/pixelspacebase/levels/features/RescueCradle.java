@@ -25,11 +25,14 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
+import com.wafitz.pixelspacebase.items.EscapePodOverride;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.scenes.CoreStabilizedScene;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.wafitz.pixelspacebase.windows.WndMessage;
 import com.wafitz.pixelspacebase.windows.WndOptions;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 
 public class RescueCradle {
@@ -42,6 +45,10 @@ public class RescueCradle {
 
     public static void read(final int pos) {
         if (isOpened(SpacebaseRun.depth)) {
+            if (allOpened()) {
+                showStabilizePrompt(Messages.get(RescueCradle.class, "stabilize_available"));
+                return;
+            }
             GameScene.show(new WndMessage(Messages.get(RescueCradle.class, "already_open",
                     rescuedCount(), totalCradles())));
             return;
@@ -83,8 +90,11 @@ public class RescueCradle {
         int rescued = rescuedCount();
         GLog.p(Messages.get(RescueCradle.class, "log", rescued, totalCradles()));
 
-        String key = rescued == totalCradles() ? "opened_final" : "opened";
-        GameScene.show(new WndMessage(Messages.get(RescueCradle.class, key, rescued, totalCradles())));
+        if (rescued == totalCradles()) {
+            showStabilizePrompt(Messages.get(RescueCradle.class, "opened_final"));
+        } else {
+            GameScene.show(new WndMessage(Messages.get(RescueCradle.class, "opened", rescued, totalCradles())));
+        }
     }
 
     private static boolean isRescueDepth(int depth) {
@@ -92,6 +102,13 @@ public class RescueCradle {
             if (rescueDepth == depth) return true;
         }
         return false;
+    }
+
+    public static boolean allOpened() {
+        for (int depth : DEPTHS) {
+            if (!isOpened(depth)) return false;
+        }
+        return true;
     }
 
     private static boolean isOpened(int depth) {
@@ -104,5 +121,27 @@ public class RescueCradle {
 
     private static String deckName() {
         return Messages.get(RescueCradle.class, "deck_" + SpacebaseRun.depth);
+    }
+
+    private static void showStabilizePrompt(String message) {
+        GameScene.show(new WndOptions(
+                Messages.get(RescueCradle.class, "core_title"),
+                message + "\n\n" + Messages.get(RescueCradle.class, "stabilize_prompt"),
+                Messages.get(RescueCradle.class, "stabilize"),
+                Messages.get(RescueCradle.class, "continue")) {
+
+            @Override
+            protected void onSelect(int index) {
+                if (index == 0) {
+                    stabilizeStation();
+                }
+            }
+        });
+    }
+
+    private static void stabilizeStation() {
+        SpacebaseRun.win(EscapePodOverride.CoreStabilization.class);
+        SpacebaseRun.deleteGame(SpacebaseRun.hero.heroClass, true);
+        Game.switchScene(CoreStabilizedScene.class);
     }
 }

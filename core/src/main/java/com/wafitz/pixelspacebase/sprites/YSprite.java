@@ -21,28 +21,10 @@
 package com.wafitz.pixelspacebase.sprites;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.watabou.noosa.TextureFilm;
 
-public class SurvivorSprite extends MobSprite {
+public class YSprite extends ImpSprite {
 
-    public SurvivorSprite() {
-        super();
-
-        texture(Assets.NPC);
-
-        TextureFilm frames = new TextureFilm(texture, 12, 14);
-
-        idle = new Animation(10, true);
-        idle.frames(frames, 0, 0, 0, 0, 1, 2, 3, 3, 2, 1);
-
-        run = new Animation(10, true);
-        run.frames(frames, 0);
-
-        attack = idle.clone();
-
-        die = new Animation(10, false);
-        die.frames(frames, 0);
-
-        play(idle);
+    public YSprite() {
+        super(Assets.Y);
     }
 }

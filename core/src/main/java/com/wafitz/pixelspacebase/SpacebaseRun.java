@@ -343,12 +343,20 @@ public class SpacebaseRun {
     }
 
     public static void dropToChasm(Item item) {
-        int depth = SpacebaseRun.depth + 1;
+        int depth = fallTargetDepth();
         ArrayList<Item> dropped = SpacebaseRun.droppedItems.get(depth);
         if (dropped == null) {
             SpacebaseRun.droppedItems.put(depth, dropped = new ArrayList<>());
         }
         dropped.add(item);
+    }
+
+    public static int fallTargetDepth() {
+        return fallTargetDepth(depth);
+    }
+
+    static int fallTargetDepth(int currentDepth) {
+        return currentDepth > 1 ? currentDepth - 1 : currentDepth + 1;
     }
 
     public static void dropHeapToDepth(Heap heap, int depth) {

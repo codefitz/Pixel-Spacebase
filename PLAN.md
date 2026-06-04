@@ -22,18 +22,18 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [x] Allow returning through Operations decks to re-find the cat when the carrier is available and the cat is alive.
     - [x] Allow the pet carrier item to be found earlier in-game and equipped before the final boss.
 - [ ] Endings:
-    - [ ] Standard escape pod
+    - [x] Standard escape pod
     - [x] Escape pod with cat
-    - [ ] Fix core (save NPCs, remain on station) - possible time-based challenge, work back through station levels - unstable shaking.
+    - [x] Fix core (save NPCs, remain on station) - possible time-based challenge, work back through station levels - unstable shaking.
     - [ ] Download/Upload save files.
 
 ## Cosmetic / Narrative
 
 - [x] Deep containment - change this to Bridge.
 - [x] Should be made clear that Y is taking or giving something to hero for Tengu battle.
-- [ ] Fix ugly HP bar
-- [ ] Modal dialogs still need fixing (border size) - Start of game intro.
-- [ ] Rot lasher/heart sci-fi rework
+- [x] Fix ugly HP bar
+- [x] Modal dialogs still need fixing (border size) - Start of game intro.
+- [x] Rot lasher/heart sci-fi rework
 - [x] Weak forcefield shouldn't rumble the ground.
 - [x] If a bridge and chasm is in a room, then space suit isn't needed.
 - [x] Convert makerbot to a workdesk. No sprite, no character.
@@ -41,11 +41,12 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Graphical Changes
 
-- [ ] Manual work
+- [ ] Manual work (Not for codex)
+    - [ ] Pet carrier (needs new sprite and codex for mapping)
     - [ ] Tengu sprite
-    - [ ] Alien egg
+    - [x] Alien egg
     - [ ] Broken floor tiles
-    - [ ] NPC appearances
+    - [x] NPC appearances
     - [ ] Terminals
     - [ ] Breaker
     - [ ] Jawar
@@ -124,8 +125,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Falling trap should send you to the floor below.
 - [x] Default action with fire grenade when quickslotted should be throw.
 - [x] Shapeshifter should be able to quickslot weapons for throwing.
-- [ ] Restore specific sprites for Y, Qaurtermaster and Leonard.
-- [ ] Falling down a chasm should send you down a level (already visited), not up (unexplored)
+- [x] Restore specific sprites for Y, Quartermaster and Leonard.
+- [x] Falling down a chasm should send you down a level (already visited), not up (unexplored)
 
 ## Release Prep
 

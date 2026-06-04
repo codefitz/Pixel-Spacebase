@@ -66,7 +66,7 @@ public class EscapePodScene extends PixelScene {
             protected void onClick() {
                 SpacebaseRun.win(EscapePodOverride.victoryCause());
                 SpacebaseRun.deleteGame(SpacebaseRun.hero.heroClass, true);
-                Game.switchScene(RankingsScene.class);
+                Game.switchScene(SurfaceScene.class);
             }
         };
         btnExit.setSize(WIDTH, BTN_HEIGHT);

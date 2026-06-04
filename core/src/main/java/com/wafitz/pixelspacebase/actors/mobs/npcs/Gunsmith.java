@@ -170,7 +170,7 @@ public class Gunsmith extends NPC {
         private static int type;
         // 1 = corpse dust quest
         // 2 = elemental embers quest
-        // 3 = rotberry quest
+        // 3 = bio-charge core quest
 
         private static boolean spawned;
 
@@ -251,7 +251,7 @@ public class Gunsmith extends NPC {
         public static boolean spawn(SecurityBlockLevel level, Room room, Collection<Room> rooms) {
             if (!spawned && (type != 0 || (SpacebaseRun.depth > 6 && Random.Int(10 - SpacebaseRun.depth) == 0))) {
                 // decide between 1,2, or 3 for quest type.
-                // but if the no herbalism challenge is enabled, only pick 1 or 2, no rotberry.
+                // but if the no herbalism challenge is enabled, only pick 1 or 2, no bio-charge core.
                 if (type == 0)
                     type = Random.Int(SpacebaseRun.isChallenged(Challenges.NO_HERBALISM) ? 2 : 3) + 1;
 

@@ -113,4 +113,7 @@ public class EscapePodOverride extends Item {
 
     public static class CatRescue {
     }
+
+    public static class CoreStabilization {
+    }
 }

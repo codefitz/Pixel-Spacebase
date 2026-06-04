@@ -35,7 +35,7 @@ public class LeonardSprite extends MobSprite {
     public LeonardSprite() {
         super();
 
-        texture(Assets.TROLL);
+        texture(Assets.LEONARD);
 
         TextureFilm frames = new TextureFilm(texture, 13, 16);
 

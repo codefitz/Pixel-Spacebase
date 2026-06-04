@@ -233,7 +233,7 @@ public class InterlevelScene extends PixelScene {
     private void fall() throws IOException {
 
         Actor.fixTime();
-        int targetDepth = SpacebaseRun.depth + 1;
+        int targetDepth = SpacebaseRun.fallTargetDepth();
         boolean nextLevelNeedsPit = fallIntoPit || levelHasWeakFloor(SpacebaseRun.level);
         Workshop.carryStockFrom(SpacebaseRun.level);
         StationCat.carryFollowerFrom(SpacebaseRun.level);

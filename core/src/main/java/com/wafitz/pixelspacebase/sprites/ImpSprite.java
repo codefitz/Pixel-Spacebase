@@ -29,9 +29,13 @@ import com.watabou.noosa.TextureFilm;
 public class ImpSprite extends MobSprite {
 
     public ImpSprite() {
+        this(Assets.ARP);
+    }
+
+    protected ImpSprite(String asset) {
         super();
 
-        texture(Assets.ARP);
+        texture(asset);
 
         TextureFilm frames = new TextureFilm(texture, 12, 14);
 

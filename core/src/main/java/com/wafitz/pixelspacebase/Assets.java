@@ -87,9 +87,14 @@ public class Assets {
     public static final String CONTAINMENT_MASS = "containment_mass.png";
     public static final String LARVA = "larva.png";
     public static final String HOLOGRAM = "hologram.png";
-    public static final String GUNSMITH = "npc.png";
-    public static final String TROLL = "npc2.png";
-    public static final String ARP = "npc2.png";
+    public static final String NPC = "npc.png";
+    public static final String NPC2 = "npc2.png";
+    public static final String GUNSMITH = NPC;
+    public static final String TROLL = NPC2;
+    public static final String ARP = NPC2;
+    public static final String QUARTERMASTER = "gunsmith.png";
+    public static final String LEONARD = "leonard.png";
+    public static final String Y = "arp.png";
     public static final String XQUEEN = "xqueen.png";
     public static final String DRONE = "drone.png";
     public static final String CONFUSEDSHAPESHIFTER = "confused_shapeshifter.png";
