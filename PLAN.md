@@ -45,11 +45,13 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [ ] Pet carrier (needs new sprite and codex for mapping)
     - [ ] Tengu sprite
     - [x] Alien egg
+    - [ ] Fix prison floor alignment
     - [ ] Broken floor tiles
     - [x] NPC appearances
     - [ ] Terminals
     - [ ] Breaker
     - [ ] Jawar
+    - [ ] Floating terrain traps need to be remapped.
     - [x] Music
         - [x] Engineering Boss
         - [x] Habitation
@@ -147,3 +149,9 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Small wormhole generator - can active and select any visible tile on the map.
 - [ ] Fire sprites on walls should be replaced with electrical fizzes.
 - [ ] A battery doused with medigel can explode (locked doors, blockage)
+- [ ] The lazer gun quest- make holodeck look like the offline holodeck, make the 'bodies' be something else, make the lazer be something else.
+- [ ] Tripping the breaker should be ab active task, not trip just by running over it.
+- [ ] Be able to render the drone controller.
+- [ ] Still need to fix intro text box.
+- [ ] Fix health bar.
+- [ ] Have a 'now playing' for music.
