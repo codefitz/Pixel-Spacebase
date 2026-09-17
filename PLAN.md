@@ -155,3 +155,6 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Still need to fix intro text box.
 - [ ] Fix health bar.
 - [ ] Have a 'now playing' for music.
+- [ ] Challenges Icon update
+- [ ] UI Health bar cleanup
+- [ ] Tiles overlay fix
