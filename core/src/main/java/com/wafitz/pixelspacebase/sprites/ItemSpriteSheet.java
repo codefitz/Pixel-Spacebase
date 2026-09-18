@@ -53,6 +53,7 @@ public class ItemSpriteSheet {
     public static final int CHEST = CONTAINERS + 4;
     public static final int LOCKED_CHEST = CONTAINERS + 5;
     public static final int CRYSTAL_CHEST = CONTAINERS + 6;
+    public static final int PET_CARRIER = CONTAINERS + 7;
 
     private static final int SINGLE_USE = xy(1, 3);   //32 slots
     public static final int CLONE = SINGLE_USE;

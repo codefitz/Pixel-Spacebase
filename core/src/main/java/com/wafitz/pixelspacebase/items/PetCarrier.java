@@ -37,7 +37,7 @@ public class PetCarrier extends KindofMisc {
     private boolean hasCat;
 
     {
-        image = ItemSpriteSheet.LOCKED_CHEST;
+        image = ItemSpriteSheet.PET_CARRIER;
         unique = true;
         bones = false;
         defaultAction = AC_RELEASE;
