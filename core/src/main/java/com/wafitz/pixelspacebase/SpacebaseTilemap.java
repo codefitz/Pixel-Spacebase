@@ -66,7 +66,9 @@ public class SpacebaseTilemap extends Tilemap {
         defaultVisuals.put(Terrain.SECRET_DOOR, defaultVisuals.get(Terrain.WALL));
         defaultVisuals.put(Terrain.HIDDEN_VENT, defaultVisuals.get(Terrain.EMPTY));
         defaultVisuals.put(Terrain.VENT, defaultVisuals.get(Terrain.EMPTY));
-        defaultVisuals.put(Terrain.INACTIVE_VENT, defaultVisuals.get(Terrain.EMPTY));
+        defaultVisuals.put(Terrain.INACTIVE_VENT, 9);
+        defaultVisuals.put(Terrain.SPENT_MINE, 41);
+        defaultVisuals.put(Terrain.TRAMPLED_OFFVENT, defaultVisuals.get(Terrain.OFFVENT));
 
         defaultVisuals.put(Terrain.EMPTY_DECO, 16);
         defaultVisuals.put(Terrain.LOCKED_EXIT, 17);
@@ -110,7 +112,8 @@ public class SpacebaseTilemap extends Tilemap {
             Terrain.EMPTY, Terrain.LIGHTEDVENT, Terrain.EMPTY_WELL,
             Terrain.ENTRANCE, Terrain.EXIT, Terrain.EMBERS,
             Terrain.BARRICADE, Terrain.OFFVENT, Terrain.HIDDEN_VENT,
-            Terrain.VENT, Terrain.INACTIVE_VENT, Terrain.EMPTY_DECO,
+            Terrain.VENT, Terrain.INACTIVE_VENT, Terrain.TRAMPLED_OFFVENT,
+            Terrain.SPENT_MINE, Terrain.EMPTY_DECO,
             Terrain.SIGN, Terrain.WELL, Terrain.STATUE, Terrain.CRAFTING,
             Terrain.BREAKER, Terrain.HEALING_TANK
     );
@@ -124,6 +127,8 @@ public class SpacebaseTilemap extends Tilemap {
         chasmStitcheable.put(Terrain.LIGHTEDVENT, 32);
         chasmStitcheable.put(Terrain.EMPTY_WELL, 32);
         chasmStitcheable.put(Terrain.OFFVENT, 32);
+        chasmStitcheable.put(Terrain.TRAMPLED_OFFVENT, 32);
+        chasmStitcheable.put(Terrain.SPENT_MINE, 32);
         chasmStitcheable.put(Terrain.EMPTY_DECO, 32);
         chasmStitcheable.put(Terrain.SIGN, 32);
         chasmStitcheable.put(Terrain.EMPTY_WELL, 32);
@@ -198,6 +203,10 @@ public class SpacebaseTilemap extends Tilemap {
 
     private int getTileVisual(int pos, int tile) {
         int visual = defaultVisuals.get(tile);
+
+        if (tile == Terrain.INACTIVE_VENT || tile == Terrain.SPENT_MINE) {
+            return visual;
+        }
 
         if (tile == Terrain.BREAKER) {
             return SpacebaseRun.level.floorBreakerOn ? 26 : 25;

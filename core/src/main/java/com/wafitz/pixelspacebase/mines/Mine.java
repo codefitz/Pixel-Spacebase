@@ -70,8 +70,10 @@ public abstract class Mine implements Bundlable {
 
     public void wither() {
         SpacebaseRun.level.uproot(pos);
-        if (SpacebaseRun.level.map[pos] == Terrain.LIGHTEDVENT) {
-            Level.set(pos, Terrain.INACTIVE_VENT);
+        int terrain = SpacebaseRun.level.map[pos];
+        if (terrain == Terrain.EMPTY || terrain == Terrain.LIGHTEDVENT ||
+                terrain == Terrain.EMBERS || terrain == Terrain.EMPTY_DECO) {
+            Level.set(pos, Terrain.SPENT_MINE);
             GameScene.updateMap(pos);
         }
 

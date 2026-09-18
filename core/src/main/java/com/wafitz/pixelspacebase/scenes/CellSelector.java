@@ -91,7 +91,7 @@ public class CellSelector extends TouchArea {
     private float zoom(float value) {
 
         value = GameMath.gate(PixelScene.minZoom, value, PixelScene.maxZoom);
-        PixelSpacebase.zoom((int) (value - PixelScene.defaultZoom));
+        PixelSpacebase.zoom(Math.round(value - PixelScene.defaultGameZoom()));
         camera.zoom(value);
 
         //Resets character sprite positions with the new camera zoom

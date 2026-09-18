@@ -49,7 +49,7 @@ public class OffVent {
 
     public static void trample(Level level, int pos, Char ch) {
 
-        Level.set(pos, Terrain.INACTIVE_VENT);
+        Level.set(pos, Terrain.TRAMPLED_OFFVENT);
         GameScene.updateMap(pos);
 
         if (ch instanceof Hero) {

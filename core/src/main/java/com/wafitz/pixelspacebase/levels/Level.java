@@ -908,12 +908,8 @@ public abstract class Level implements Bundlable {
             mine.wither();
         }
 
-        if (map[pos] == Terrain.OFFVENT ||
-                map[pos] == Terrain.LIGHTEDVENT ||
-                map[pos] == Terrain.EMPTY ||
-                map[pos] == Terrain.EMBERS ||
-                map[pos] == Terrain.EMPTY_DECO) {
-            set(pos, Terrain.INACTIVE_VENT);
+        if (map[pos] == Terrain.OFFVENT) {
+            set(pos, Terrain.TRAMPLED_OFFVENT);
         }
 
         mine = device.couch(pos);
@@ -1234,6 +1230,7 @@ public abstract class Level implements Bundlable {
             case Terrain.STATUE_SP:
                 return Messages.get(Level.class, "statue_name");
             case Terrain.INACTIVE_VENT:
+            case Terrain.TRAMPLED_OFFVENT:
                 return Messages.get(Level.class, "inactive_vent_name");
             case Terrain.BOOKSHELF:
                 return Messages.get(Level.class, "bookshelf_name");
@@ -1269,6 +1266,7 @@ public abstract class Level implements Bundlable {
             case Terrain.SIGN:
                 return Messages.get(Level.class, "sign_desc");
             case Terrain.INACTIVE_VENT:
+            case Terrain.TRAMPLED_OFFVENT:
                 return Messages.get(Level.class, "inactive_vent_desc");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:

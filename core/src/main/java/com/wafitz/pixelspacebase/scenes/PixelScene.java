@@ -59,6 +59,10 @@ public class PixelScene extends Scene {
     static float minZoom;
     static float maxZoom;
 
+    public static int defaultGameZoom() {
+        return Math.round(defaultZoom * 1.5f);
+    }
+
     public static Camera uiCamera;
 
     //stylized pixel font

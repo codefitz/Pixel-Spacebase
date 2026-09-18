@@ -156,7 +156,7 @@ public class GameScene extends PixelScene {
         PixelSpacebase.lastClass(SpacebaseRun.hero.heroClass.ordinal());
 
         super.create();
-        Camera.main.zoom(GameMath.gate(minZoom, defaultZoom + PixelSpacebase.zoom(), maxZoom));
+        Camera.main.zoom(GameMath.gate(minZoom, defaultGameZoom() + PixelSpacebase.zoom(), maxZoom));
 
         scene = this;
 

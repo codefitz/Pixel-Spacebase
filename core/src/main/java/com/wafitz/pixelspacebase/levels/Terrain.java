@@ -55,6 +55,8 @@ public class Terrain {
     public static final int CRAFTING = 28;
     public static final int BREAKER = 29;
     public static final int HEALING_TANK = 30;
+    public static final int TRAMPLED_OFFVENT = 31;
+    public static final int SPENT_MINE = 32;
 
     // wafitz.v4 Changed to default, doesn't affect game tiles though...
     public static final int WATER = 63;
@@ -93,6 +95,8 @@ public class Terrain {
         flags[HIDDEN_VENT] = flags[EMPTY] | SECRET;
         flags[VENT] = AVOID;
         flags[INACTIVE_VENT] = flags[EMPTY];
+        flags[TRAMPLED_OFFVENT] = flags[EMPTY];
+        flags[SPENT_MINE] = flags[EMPTY];
 
         flags[EMPTY_DECO] = flags[EMPTY];
         flags[LOCKED_EXIT] = SOLID;

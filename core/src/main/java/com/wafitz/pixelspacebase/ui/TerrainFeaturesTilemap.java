@@ -99,10 +99,10 @@ public class TerrainFeaturesTilemap extends Tilemap {
     private int getTileVisual(int pos, int tile) {
         if (vents.get(pos) != null) {
             Vent vent = vents.get(pos);
-            if (!vent.visible) {
+            if (!vent.visible || !vent.active) {
                 return -1;
             } else {
-                return (vent.active ? vent.color : Vent.BLACK) + (vent.shape * 16);
+                return vent.color + (vent.shape * 16);
             }
         }
 
@@ -110,11 +110,10 @@ public class TerrainFeaturesTilemap extends Tilemap {
             return mines.get(pos).image + 7 * 16;
         }
 
-        if (tile == Terrain.OFFVENT) {
-            // The terrain atlas already contains the complete broken-floor artwork.
+        if (tile == Terrain.OFFVENT || tile == Terrain.TRAMPLED_OFFVENT ||
+                tile == Terrain.INACTIVE_VENT || tile == Terrain.SPENT_MINE) {
+            // These states have complete artwork in the terrain atlas.
             return -1;
-        } else if (tile == Terrain.INACTIVE_VENT) {
-            return 15 + 16 * ((SpacebaseRun.depth - 1) / 5);
         } else if (tile == Terrain.LIGHTEDVENT) {
             return -1;
         } else if (tile == Terrain.EMBERS) {

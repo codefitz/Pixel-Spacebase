@@ -37,7 +37,7 @@ enum Preferences {
     public static final String KEY_MUSIC_VOL = "music_vol";
     public static final String KEY_SOUND_FX = "soundfx";
     public static final String KEY_SFX_VOL = "sfx_vol";
-    public static final String KEY_ZOOM = "zoom";
+    public static final String KEY_ZOOM = "world_zoom_v2";
     public static final String KEY_LAST_CLASS = "last_class";
     public static final String KEY_CHALLENGES = "challenges";
     public static final String KEY_QUICKSLOTS = "quickslots";
