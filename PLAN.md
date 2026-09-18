@@ -45,12 +45,12 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [ ] Pet carrier (needs new sprite and codex for mapping)
     - [ ] Tengu sprite
     - [x] Alien egg
-    - [ ] Fix prison floor alignment
+    - [x] Fix prison floor alignment
     - [ ] Broken floor tiles
     - [x] NPC appearances
     - [ ] Terminals
     - [ ] Breaker
-    - [ ] Jawar
+    - [x] Jawar
     - [ ] Floating terrain traps need to be remapped.
     - [x] Music
         - [x] Engineering Boss

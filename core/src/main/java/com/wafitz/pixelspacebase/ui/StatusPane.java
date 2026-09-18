@@ -36,7 +36,6 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.TouchArea;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -49,7 +48,7 @@ public class StatusPane extends Component {
     private static final int HP_BAR_X = 31;
     private static final int HP_BAR_Y = 4;
     private static final int HP_BAR_WIDTH = 64;
-    private static final int HP_BAR_HEIGHT = 7;
+    private static final int HP_BAR_HEIGHT = 9;
 
     private static final int HP_BORDER = 0xFF8FA8A8;
     private static final int HP_TRACK = 0xFF14201F;
@@ -58,7 +57,8 @@ public class StatusPane extends Component {
     private static final int HP_CRITICAL_FILL = 0xFFFF4A4A;
     private static final int HP_SHIELD_FILL = 0xFF66E6FF;
 
-    private NinePatch bg;
+    private ColorBlock bg;
+    private Image avatarFrame;
     private Image avatar;
     private float warning;
 
@@ -68,7 +68,8 @@ public class StatusPane extends Component {
     private ColorBlock hpTrack;
     private ColorBlock hpFill;
     private ColorBlock hpShield;
-    private Image exp;
+    private ColorBlock expTrack;
+    private ColorBlock exp;
     private BitmapText hpText;
 
     private BossHealthBar bossHP;
@@ -90,8 +91,11 @@ public class StatusPane extends Component {
     @Override
     protected void createChildren() {
 
-        bg = new NinePatch(Assets.STATUS, 0, 0, 128, 36, 85, 0, 45, 0);
+        bg = new ColorBlock(1, 1, 0xFF080F14);
         add(bg);
+
+        avatarFrame = new Image(Assets.STATUS, 0, 0, 28, 32);
+        add(avatarFrame);
 
         add(new TouchArea(0, 1, 31, 31) {
             @Override
@@ -122,7 +126,7 @@ public class StatusPane extends Component {
         hpTrack = new ColorBlock(1, 1, HP_TRACK);
         add(hpTrack);
 
-        hpFill = new ColorBlock(1, 1, HP_FILL);
+        hpFill = new ColorBlock(1, 1, 0xFFFFFFFF);
         add(hpFill);
 
         hpShield = new ColorBlock(1, 1, HP_SHIELD_FILL);
@@ -132,7 +136,9 @@ public class StatusPane extends Component {
         hpText.hardlight(0xF2FFFF);
         add(hpText);
 
-        exp = new Image(Assets.XP_BAR);
+        expTrack = new ColorBlock(1, 1, HP_TRACK);
+        add(expTrack);
+        exp = new ColorBlock(1, 1, 0xFF66E6FF);
         add(exp);
 
         bossHP = new BossHealthBar();
@@ -161,7 +167,7 @@ public class StatusPane extends Component {
 
         height = 32;
 
-        bg.size(width, bg.height);
+        bg.size(width, height);
 
         avatar.x = bg.x + 15 - avatar.width / 2f;
         avatar.y = bg.y + 16 - avatar.height / 2f;
@@ -179,6 +185,10 @@ public class StatusPane extends Component {
         hpTrack.y = hpFill.y = hpShield.y = HP_BAR_Y + 1;
         hpTrack.size(HP_BAR_WIDTH - 2, HP_BAR_HEIGHT - 2);
 
+        expTrack.x = exp.x = HP_BAR_X;
+        expTrack.y = exp.y = HP_BAR_Y + HP_BAR_HEIGHT + 2;
+        expTrack.size(HP_BAR_WIDTH, 1);
+
         bossHP.setPos(6 + (width - bossHP.width()) / 2, 20);
 
         depth.x = width - 35.5f - depth.width() / 2f;
@@ -187,7 +197,7 @@ public class StatusPane extends Component {
 
         danger.setPos(width - danger.width(), 20);
 
-        buffs.setPos(31, 9);
+        buffs.setPos(31, 18);
 
         btnJournal.setPos(width - 42, 1);
 
@@ -218,8 +228,10 @@ public class StatusPane extends Component {
         float shieldPercent = Math.max(0, Math.min(1, shield / max));
         hpFill.hardlight(healthPercent <= 0.25f ? HP_CRITICAL_FILL : healthPercent <= 0.5f ? HP_LOW_FILL : HP_FILL);
         hpFill.size((HP_BAR_WIDTH - 2) * healthPercent, HP_BAR_HEIGHT - 2);
-        hpShield.size((HP_BAR_WIDTH - 2) * Math.max(0, Math.min(shieldPercent, 1 - healthPercent)), HP_BAR_HEIGHT - 2);
-        hpShield.x = hpFill.x + hpFill.width();
+        // Shield occupies a thin strip, including when health is already full.
+        hpShield.size((HP_BAR_WIDTH - 2) * shieldPercent, 1);
+        hpShield.x = hpTrack.x;
+        hpShield.y = hpTrack.y + HP_BAR_HEIGHT - 3;
         hpShield.visible = shield > 0;
 
         hpText.text(shield > 0 ?
@@ -228,7 +240,8 @@ public class StatusPane extends Component {
         hpText.measure();
         layoutHealthText();
 
-        exp.scale.x = (width / exp.width) * SpacebaseRun.hero.exp / SpacebaseRun.hero.maxExp();
+        exp.size(HP_BAR_WIDTH * Math.max(0f, Math.min(1f,
+                (float) SpacebaseRun.hero.exp / SpacebaseRun.hero.maxExp())), 1);
 
         if (SpacebaseRun.hero.lvl != lastLvl) {
 
