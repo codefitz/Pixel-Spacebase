@@ -30,6 +30,16 @@ public class SmartTexture extends Texture {
 
 	public int width;
 	public int height;
+	// Source pixels per game unit for high-resolution asset sheets.
+	public int pixelScale = 1;
+
+	public int logicalWidth() {
+		return width / pixelScale;
+	}
+
+	public int logicalHeight() {
+		return height / pixelScale;
+	}
 	
 	public int fModeMin;
 	public int fModeMax;
@@ -121,9 +131,9 @@ public class SmartTexture extends Texture {
 	
 	public RectF uvRect( int left, int top, int right, int bottom ) {
 		return new RectF(
-			(float)left		/ width,
-			(float)top		/ height,
-			(float)right	/ width,
-			(float)bottom	/ height );
+			(float)left * pixelScale / width,
+			(float)top * pixelScale / height,
+			(float)right * pixelScale / width,
+			(float)bottom * pixelScale / height );
 	}
 }

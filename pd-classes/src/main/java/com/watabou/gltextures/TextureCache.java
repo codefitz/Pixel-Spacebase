@@ -118,6 +118,12 @@ public class TextureCache {
 		} else {
 
 			SmartTexture tx = new SmartTexture( getBitmap( src ) );
+			if (src instanceof String && ((String) src).endsWith(".png")
+					&& !((String) src).endsWith("pixel_font.png")
+					&& !((String) src).endsWith("font1x.png")
+					&& !((String) src).endsWith("font2x.png")) {
+				tx.pixelScale = 4;
+			}
 			all.put( src, tx );
 			return tx;
 		}

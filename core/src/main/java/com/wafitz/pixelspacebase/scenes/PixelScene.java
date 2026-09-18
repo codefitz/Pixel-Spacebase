@@ -87,8 +87,6 @@ public class PixelScene extends Scene {
         maxScreenZoom = (int) Math.min(Game.dispWidth / minWidth, Game.dispHeight / minHeight);
         defaultZoom = PixelSpacebase.scale();
 
-        // wafitz.v2: Larger UI for fingers and thumbs
-        PixelSpacebase.scale(7);
         // wafitz.v2: 3 shall be the number. 4 shalt thou not count. 5 is right out.
         PixelSpacebase.quickSlots(3);
 
