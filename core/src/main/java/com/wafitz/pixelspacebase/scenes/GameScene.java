@@ -725,6 +725,7 @@ public class GameScene extends PixelScene {
 
     public static void resetMap() {
         if (scene != null) {
+            scene.tiles.useTileset(SpacebaseRun.level.tilesTex());
             scene.tiles.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
             scene.terrainFeatures.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
         }

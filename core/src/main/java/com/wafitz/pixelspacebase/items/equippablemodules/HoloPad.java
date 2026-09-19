@@ -507,7 +507,7 @@ public class HoloPad extends EquippableModule {
                 }, {
                 "If only he would see reason, he doesn't seem insane...",
                 "He assumes we are hostile, if only he would stop to talk...",
-                "The one prisoner left sane is a deadly assassin. Of course..."
+                        "The one cryo pod still occupied has been sealed for a century. Of course..."
         }
         }, {
                 {

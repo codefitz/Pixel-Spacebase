@@ -117,7 +117,9 @@ public class Heap implements Bundlable {
             case CRYSTAL_CHEST:
                 return ItemSpriteSheet.CRYSTAL_CHEST;
             case WORKSHOP_UPGRADE:
+                return ItemSpriteSheet.UPGRADE_BENCH;
             case MAKER_BENCH:
+                return ItemSpriteSheet.BREAKDOWN_BENCH;
             case CMD_TERMINAL:
                 return ItemSpriteSheet.REDTERMINAL;
             case EMPTY_SPACESUIT:
@@ -147,7 +149,7 @@ public class Heap implements Bundlable {
                 return;
             case WORKSHOP_UPGRADE:
                 GameScene.show(new WndLeonard(
-                        new ItemSprite(ItemSpriteSheet.REDTERMINAL, null),
+                        new ItemSprite(ItemSpriteSheet.UPGRADE_BENCH, null),
                         Messages.titleCase(Messages.get(this, "workshop_upgrade")),
                         hero,
                         false));

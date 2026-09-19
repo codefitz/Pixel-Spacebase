@@ -103,10 +103,11 @@ public class YInterlude extends NPC {
     public boolean interact() {
         if (mazeAppearance > 0) {
             sprite.turnTo(pos, SpacebaseRun.hero.pos);
+            int meeting = mazeAppearance;
             if (SpacebaseRun.level instanceof SecurityBossLevel) {
-                ((SecurityBossLevel) SpacebaseRun.level).recordMazeYFound(mazeAppearance);
+                meeting = ((SecurityBossLevel) SpacebaseRun.level).recordMazeYFound(mazeAppearance);
             }
-            GameScene.show(new WndQuest(this, Messages.get(this, "maze_" + mazeAppearance)));
+            GameScene.show(new WndQuest(this, Messages.get(this, "maze_" + meeting)));
             destroy();
             sprite.emitter().burst(Speck.factory(Speck.WOOL), 15);
             sprite.killAndErase();

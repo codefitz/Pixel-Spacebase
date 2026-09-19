@@ -84,6 +84,16 @@ public class ItemSlot extends Button {
             return ItemSpriteSheet.REDTERMINAL;
         }
     };
+    static final Item UPGRADE_BENCH = new Item() {
+        public int image() {
+            return ItemSpriteSheet.UPGRADE_BENCH;
+        }
+    };
+    static final Item BREAKDOWN_BENCH = new Item() {
+        public int image() {
+            return ItemSpriteSheet.BREAKDOWN_BENCH;
+        }
+    };
     static final Item EMPTY_SPACESUIT = new Item() {
         public int image() {
             return ItemSpriteSheet.DISCARDEDSUIT;

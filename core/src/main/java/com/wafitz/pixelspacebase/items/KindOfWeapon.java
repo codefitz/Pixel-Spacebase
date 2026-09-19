@@ -20,6 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items;
 
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
@@ -84,6 +85,15 @@ abstract public class KindOfWeapon extends EquipableItem {
 
             return false;
 
+        }
+    }
+
+    public void unequipForConfiscation(Hero hero) {
+        if (hero.belongings.weapon == this) {
+            onDetach();
+            SpacebaseRun.quickslot.clearItem(this);
+            hero.belongings.weapon = null;
+            updateQuickslot();
         }
     }
 

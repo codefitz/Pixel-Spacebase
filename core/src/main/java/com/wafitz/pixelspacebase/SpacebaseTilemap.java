@@ -27,6 +27,7 @@ import com.wafitz.pixelspacebase.levels.Terrain;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
+import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -153,11 +154,13 @@ public class SpacebaseTilemap extends Tilemap {
 
     private int[] map;
     private float[] tileVariance;
+    private String tilesTexturePath;
 
     public SpacebaseTilemap() {
         super(
                 SpacebaseRun.level.tilesTex(),
                 new TextureFilm(SpacebaseRun.level.tilesTex(), SIZE, SIZE));
+        tilesTexturePath = SpacebaseRun.level.tilesTex();
 
         Random.seed(SpacebaseRun.seedCurDepth());
         tileVariance = new float[SpacebaseRun.level.map.length];
@@ -168,6 +171,14 @@ public class SpacebaseTilemap extends Tilemap {
         map(SpacebaseRun.level.map, SpacebaseRun.level.width());
 
         instance = this;
+    }
+
+    public void useTileset(String path) {
+        if (!path.equals(tilesTexturePath)) {
+            texture = TextureCache.get(path);
+            tileset = new TextureFilm(path, SIZE, SIZE);
+            tilesTexturePath = path;
+        }
     }
 
     @Override
