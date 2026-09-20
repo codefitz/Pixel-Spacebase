@@ -68,8 +68,8 @@ public class SpacebaseTilemap extends Tilemap {
         defaultVisuals.put(Terrain.HIDDEN_VENT, defaultVisuals.get(Terrain.EMPTY));
         defaultVisuals.put(Terrain.VENT, defaultVisuals.get(Terrain.EMPTY));
         defaultVisuals.put(Terrain.INACTIVE_VENT, 9);
-        defaultVisuals.put(Terrain.SPENT_MINE, 41);
-        defaultVisuals.put(Terrain.TRAMPLED_OFFVENT, defaultVisuals.get(Terrain.OFFVENT));
+        defaultVisuals.put(Terrain.SPENT_MINE, defaultVisuals.get(Terrain.EMBERS));
+        defaultVisuals.put(Terrain.TRAMPLED_OFFVENT, defaultVisuals.get(Terrain.EMBERS));
 
         defaultVisuals.put(Terrain.EMPTY_DECO, 16);
         defaultVisuals.put(Terrain.LOCKED_EXIT, 17);
@@ -215,7 +215,7 @@ public class SpacebaseTilemap extends Tilemap {
     private int getTileVisual(int pos, int tile) {
         int visual = defaultVisuals.get(tile);
 
-        if (tile == Terrain.INACTIVE_VENT || tile == Terrain.SPENT_MINE) {
+        if (tile == Terrain.INACTIVE_VENT) {
             return visual;
         }
 

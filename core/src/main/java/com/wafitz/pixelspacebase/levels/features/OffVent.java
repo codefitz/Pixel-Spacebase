@@ -49,12 +49,13 @@ public class OffVent {
 
     public static void trample(Level level, int pos, Char ch) {
 
-        Level.set(pos, Terrain.TRAMPLED_OFFVENT);
-        GameScene.updateMap(pos);
-
+        boolean damaged = false;
         if (ch instanceof Hero) {
-            triggerPanelOutcome(level, pos, (Hero) ch);
+            damaged = triggerPanelOutcome(level, pos, (Hero) ch);
         }
+
+        Level.set(pos, damaged ? Terrain.SPENT_MINE : Terrain.TRAMPLED_OFFVENT);
+        GameScene.updateMap(pos);
 
         int leaves = 4;
 
@@ -80,7 +81,7 @@ public class OffVent {
             SpacebaseRun.observe();
     }
 
-    private static void triggerPanelOutcome(Level level, int pos, Hero hero) {
+    private static boolean triggerPanelOutcome(Level level, int pos, Hero hero) {
         if (!SpacebaseRun.isChallenged(Challenges.NO_HERBALISM)) {
             int naturalismLevel = 0;
 
@@ -122,13 +123,14 @@ public class OffVent {
                 Buff.affect(hero, Burning.class).reignite(hero);
                 CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 4);
                 GLog.w(Messages.get(OffVent.class, "burn"));
-                break;
+                return true;
             case 1:
                 hero.damage(Math.max(1, Random.IntRange(1, Math.max(2, SpacebaseRun.depth / 2 + 1))), LightningVent.LIGHTNING);
                 CellEmitter.center(pos).burst(Speck.factory(Speck.LIGHT), 4);
                 GLog.w(Messages.get(OffVent.class, "shock"));
-                break;
+                return true;
             default:
+                return false;
         }
     }
 }

@@ -110,8 +110,10 @@ public class TerrainFeaturesTilemap extends Tilemap {
             return mines.get(pos).image + 7 * 16;
         }
 
-        if (tile == Terrain.OFFVENT || tile == Terrain.TRAMPLED_OFFVENT ||
-                tile == Terrain.INACTIVE_VENT || tile == Terrain.SPENT_MINE) {
+        if (tile == Terrain.SPENT_MINE) {
+            return 126 + (tileVariance[pos] > 0.5f ? 1 : 0);
+        } else if (tile == Terrain.OFFVENT || tile == Terrain.TRAMPLED_OFFVENT ||
+                tile == Terrain.INACTIVE_VENT) {
             // These states have complete artwork in the terrain atlas.
             return -1;
         } else if (tile == Terrain.LIGHTEDVENT) {
