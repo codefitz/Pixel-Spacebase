@@ -7,12 +7,12 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Cat follow-up idea for the next version.
 - [ ] Refactor code and suggest improvements.
 - [ ] What could replace Yog Duza? Maybe a giant angel.
-- [ ] Need to replace chief's pickaxe (screwdriver) with a suitable tool icon.
-- [ ] Need a new reward for chief since reforging redundant.
+- [x] Need to replace chief's pickaxe (screwdriver) with a suitable tool icon.
+- [x] Need a new reward for chief since reforging redundant.
 
 ## Mechanics
 
-- [ ] Cat rescue route after the final boss.
+- [x] Cat rescue route after the final boss.
     - [x] Add a pet carrier item with placeholder icon, equip behavior, save data, and text.
     - [x] On defeating the final boss, drop the pet carrier.
     - [x] Track whether the station cat is following, dead, gone, or carried in the pet carrier.
@@ -42,16 +42,16 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 ## Graphical Changes
 
 - [ ] Manual work (Not for codex)
-    - [ ] Pet carrier (needs new sprite and codex for mapping)
-    - [ ] Tengu sprite
+    - [x] Pet carrier (needs new sprite and codex for mapping)
+    - [x] Tengu sprite
     - [x] Alien egg
     - [x] Fix prison floor alignment
-    - [ ] Broken floor tiles
+    - [x] Broken floor tiles
     - [x] NPC appearances
-    - [ ] Terminals
-    - [ ] Breaker
+    - [x] Terminals
+    - [x] Breaker
     - [x] Jawar
-    - [ ] Floating terrain traps need to be remapped.
+    - [x] Floating terrain traps need to be remapped.
     - [x] Music
         - [x] Engineering Boss
         - [x] Habitation
@@ -134,8 +134,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 - [x] Re-enable any needed dev/test helpers deliberately behind a clear flag.
 - [ ] Update release notes and version (on plan completion)
-- [ ] Run `./gradlew :core:testDebugUnitTest`.
-- [ ] Run `./gradlew :core:assembleDebug`.
+- [x] Run `./gradlew :core:testDebugUnitTest`.
+- [x] Run `./gradlew :core:assembleDebug`.
 
 ## v1.0.4
 
@@ -144,17 +144,17 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Code cleanup and refactor
 - [ ] Alter torch to be equipped in quickslots to activate
 - [ ] Hunter suit to detect <sci-fi term> signatures (lights off, can visualise all enemies/npcs on a level in the dark)
-- [ ] Workbench icon/sprite
+- [x] Workbench icon/sprite
 - [ ] Chasms/black should have a subtle starry background, with potentially a planet and nearby star.
 - [ ] Small wormhole generator - can active and select any visible tile on the map.
 - [ ] Fire sprites on walls should be replaced with electrical fizzes.
 - [ ] A battery doused with medigel can explode (locked doors, blockage)
 - [ ] The lazer gun quest- make holodeck look like the offline holodeck, make the 'bodies' be something else, make the lazer be something else.
-- [ ] Tripping the breaker should be ab active task, not trip just by running over it.
+- [x] Tripping the breaker should be an active task, not trip just by running over it.
 - [ ] Be able to render the drone controller.
-- [ ] Still need to fix intro text box.
-- [ ] Fix health bar.
+- [x] Still need to fix intro text box.
+- [x] Fix health bar.
 - [ ] Have a 'now playing' for music.
 - [ ] Challenges Icon update
-- [ ] UI Health bar cleanup
-- [ ] Tiles overlay fix
+- [x] UI Health bar cleanup
+- [x] Tiles overlay fix

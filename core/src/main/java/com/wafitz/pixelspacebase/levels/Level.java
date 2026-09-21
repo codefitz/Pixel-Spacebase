@@ -65,7 +65,6 @@ import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.Door;
-import com.wafitz.pixelspacebase.levels.features.FloorBreaker;
 import com.wafitz.pixelspacebase.levels.features.OffVent;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
@@ -987,12 +986,6 @@ public abstract class Level implements Bundlable {
             case Terrain.CRAFTING:
                 if (ch == null) {
                     Craft.transmute(cell);
-                }
-                break;
-
-            case Terrain.BREAKER:
-                if (ch == SpacebaseRun.hero) {
-                    FloorBreaker.operate(cell);
                 }
                 break;
 
