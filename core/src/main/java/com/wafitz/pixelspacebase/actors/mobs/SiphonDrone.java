@@ -22,9 +22,11 @@ package com.wafitz.pixelspacebase.actors.mobs;
 
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Leonard;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.quest.DroneParts;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Vampiric;
 import com.wafitz.pixelspacebase.sprites.SiphonDroneSprite;
 import com.watabou.utils.Random;
@@ -80,6 +82,10 @@ public class SiphonDrone extends Mob {
 
     @Override
     public void die(Object cause) {
+        if (Leonard.Quest.collectingDroneParts()) {
+            SpacebaseRun.level.drop(new DroneParts(), pos).sprite.drop();
+        }
+
         //sets drop chance
         lootChance = 1f / ((6 + SpacebaseRun.limitedDrops.siphonDroneHP.count));
         super.die(cause);
