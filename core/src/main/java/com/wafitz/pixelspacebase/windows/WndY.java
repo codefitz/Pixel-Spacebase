@@ -21,7 +21,7 @@
 package com.wafitz.pixelspacebase.windows;
 
 import com.wafitz.pixelspacebase.SpacebaseRun;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.quest.HardLightEmitter;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -32,13 +32,13 @@ import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
 import com.wafitz.pixelspacebase.ui.Window;
 import com.wafitz.pixelspacebase.utils.GLog;
 
-public class WndArp extends Window {
+public class WndY extends Window {
 
     private static final int WIDTH = 120;
     private static final int BTN_HEIGHT = 20;
     private static final int GAP = 2;
 
-    public WndArp(final Arp arp, final HardLightEmitter tokens) {
+    public WndY(final Y npc, final HardLightEmitter tokens) {
 
         super();
 
@@ -56,7 +56,7 @@ public class WndArp extends Window {
         RedButton btnReward = new RedButton(Messages.get(this, "reward")) {
             @Override
             protected void onClick() {
-                takeReward(arp, tokens, Arp.Quest.reward);
+                takeReward(npc, tokens, Y.Quest.reward);
             }
         };
         btnReward.setRect(0, message.top() + message.height() + GAP, WIDTH, BTN_HEIGHT);
@@ -65,7 +65,7 @@ public class WndArp extends Window {
         resize(WIDTH, (int) btnReward.bottom());
     }
 
-    private void takeReward(Arp arp, HardLightEmitter tokens, Item reward) {
+    private void takeReward(Y npc, HardLightEmitter tokens, Item reward) {
 
         hide();
 
@@ -75,11 +75,11 @@ public class WndArp extends Window {
         if (reward.doPickUp(SpacebaseRun.hero)) {
             GLog.i(Messages.get(SpacebaseRun.hero, "you_now_have", reward.name()));
         } else {
-            SpacebaseRun.level.drop(reward, arp.pos).sprite.drop();
+            SpacebaseRun.level.drop(reward, npc.pos).sprite.drop();
         }
 
-        arp.flee();
+        npc.flee();
 
-        Arp.Quest.complete();
+        Y.Quest.complete();
     }
 }

@@ -28,13 +28,13 @@ import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.levels.vents.LightningVent;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
-import com.wafitz.pixelspacebase.sprites.GreatCrabSprite;
+import com.wafitz.pixelspacebase.sprites.ArmoredCrawlerSprite;
 import com.wafitz.pixelspacebase.utils.GLog;
 
-public class GreatCrab extends Crab {
+public class ArmoredCrawler extends MaintenanceCrawler {
 
     {
-        spriteClass = GreatCrabSprite.class;
+        spriteClass = ArmoredCrawlerSprite.class;
 
         HP = HT = 25;
         defenseSkill = 0; //see damage()
@@ -51,7 +51,7 @@ public class GreatCrab extends Crab {
 
     @Override
     protected boolean getCloser(int target) {
-        //this is used so that the crab remains slower, but still detects the player at the expected rate.
+        //Keeps the armored crawler slow while preserving its expected detection rate.
         moving++;
         if (moving < 3) {
             return super.getCloser(target);
@@ -64,7 +64,7 @@ public class GreatCrab extends Crab {
 
     @Override
     public void damage(int dmg, Object src) {
-        //crab blocks all attacks originating from the hero or enemy characters or vents if it is alerted.
+        //The crawler blocks direct attacks from characters, blasters, and vents while alerted.
         //All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
         if ((enemySeen && state != SLEEPING && paralysed == 0)
                 && (src instanceof Blaster || src instanceof LightningVent.Electricity || src instanceof Char)) {

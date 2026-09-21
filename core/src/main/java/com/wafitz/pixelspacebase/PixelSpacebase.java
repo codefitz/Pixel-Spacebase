@@ -114,14 +114,14 @@ public class PixelSpacebase extends Game {
                 HoodedRaiderCommander.class,
                 "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$HoodedRaiderCommander");
         com.watabou.utils.Bundle.addAlias(
-                com.wafitz.pixelspacebase.actors.mobs.GreatCrab.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$GreatCrab");
+                com.wafitz.pixelspacebase.actors.mobs.ArmoredCrawler.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram$ArmoredCrawler");
         com.watabou.utils.Bundle.addAlias(
                 HunterTrapper.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$HunterTrapper");
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster$HunterTrapper");
         com.watabou.utils.Bundle.addAlias(
                 HunterTrapper.Device.class,
-                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith$HunterTrapper$Device");
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster$HunterTrapper$Device");
 
         //0.4.0
         //equipment
@@ -178,6 +178,44 @@ public class PixelSpacebase extends Game {
         com.watabou.utils.Bundle.addAlias(
                 com.wafitz.pixelspacebase.items.armor.enhancements.Repulsion.class,
                 "com.wafitz.pixelspacebase.items.armor.enhancements.Gas");
+
+        // v1.0.3 entity and level terminology cleanup. Keep existing saves loadable.
+        com.watabou.utils.Bundle.addAlias(
+                com.wafitz.pixelspacebase.actors.mobs.MaintenanceCrawler.class,
+                "com.wafitz.pixelspacebase.actors.mobs.Crab");
+        com.watabou.utils.Bundle.addAlias(
+                com.wafitz.pixelspacebase.actors.mobs.ArmoredCrawler.class,
+                "com.wafitz.pixelspacebase.actors.mobs.GreatCrab");
+        com.watabou.utils.Bundle.addAlias(
+                com.wafitz.pixelspacebase.actors.mobs.OuterColonyShockTrooper.class,
+                "com.wafitz.pixelspacebase.actors.mobs.Brute");
+        com.watabou.utils.Bundle.addAlias(
+                com.wafitz.pixelspacebase.actors.mobs.ShieldedShockTrooper.class,
+                "com.wafitz.pixelspacebase.actors.mobs.Shielded");
+        com.watabou.utils.Bundle.addAlias(
+                com.wafitz.pixelspacebase.actors.mobs.BithAcolyte.class,
+                "com.wafitz.pixelspacebase.actors.mobs.Guard");
+        com.watabou.utils.Bundle.addAlias(
+                com.wafitz.pixelspacebase.actors.mobs.Jawar.class,
+                "com.wafitz.pixelspacebase.actors.mobs.Thief");
+        com.watabou.utils.Bundle.addAlias(
+                com.wafitz.pixelspacebase.actors.mobs.JawarScavenger.class,
+                "com.wafitz.pixelspacebase.actors.mobs.Bandit");
+        com.watabou.utils.Bundle.addAlias(
+                com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith");
+        com.watabou.utils.Bundle.addAlias(
+                com.wafitz.pixelspacebase.actors.mobs.npcs.Y.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.Arp");
+        com.watabou.utils.Bundle.addAlias(
+                com.wafitz.pixelspacebase.actors.mobs.npcs.YTrader.class,
+                "com.wafitz.pixelspacebase.actors.mobs.npcs.ArpTrader");
+        com.watabou.utils.Bundle.addAlias(
+                com.wafitz.pixelspacebase.levels.MaintenanceLevel.class,
+                "com.wafitz.pixelspacebase.levels.OperationsLevel");
+        com.watabou.utils.Bundle.addAlias(
+                com.wafitz.pixelspacebase.levels.MaintenanceBossLevel.class,
+                "com.wafitz.pixelspacebase.levels.OperationsBossLevel");
 
         com.watabou.utils.Bundle.exceptionReporter =
                 new com.watabou.utils.Bundle.BundleExceptionCallback() {

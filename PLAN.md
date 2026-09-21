@@ -5,8 +5,6 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 ## Suggestions
 
 - [x] Cat follow-up idea for the next version.
-- [ ] Refactor code and suggest improvements.
-- [ ] What could replace Yog Duza? Maybe a giant angel.
 - [x] Need to replace chief's pickaxe (screwdriver) with a suitable tool icon.
 - [x] Need a new reward for chief since reforging redundant.
 
@@ -25,7 +23,6 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [x] Standard escape pod
     - [x] Escape pod with cat
     - [x] Fix core (save NPCs, remain on station) - possible time-based challenge, work back through station levels - unstable shaking.
-    - [ ] Download/Upload save files.
 
 ## Cosmetic / Narrative
 
@@ -41,7 +38,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Graphical Changes
 
-- [ ] Manual work (Not for codex)
+- [x] Manual work (Not for codex)
     - [x] Pet carrier (needs new sprite and codex for mapping)
     - [x] Tengu sprite
     - [x] Alien egg
@@ -59,9 +56,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
         - [x] Bridge
         - [x] Bridge Boss
         - [x] Completion/credits
-- [ ] Update Bridge levels tiles.
 - [x] Replace leaf particles with sparks.
-- [ ] Armor Kit needs icon sci-fi upgrade
 
 ## Bugs
 
@@ -103,16 +98,16 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Chestburster should have a blood effect when appearing.
 - [x] After alien infection hero should be caught in the sticky effect for 1 turn.
 - [x] Workshop same size each level.
-- [ ] Renames (classes)
-    - [ ] crab
-    - [ ] bat
-    - [ ] brute
-    - [ ] guard
-    - [ ] gunsmith
-    - [ ] thief
-    - [ ] arp
-    - [ ] Operations Level = Maintenance
-    - [ ] Wraith
+- [x] Renames (classes)
+    - [x] crab
+    - [x] bat
+    - [x] brute
+    - [x] guard
+    - [x] gunsmith
+    - [x] thief
+    - [x] arp
+    - [x] Operations Level = Maintenance
+    - [x] Wraith
 - [x] Stims, plasmids - should stay in effect whilst hero moving.
 - [x] Lights breaker turns lights on and off for any level.
 - [x] Torch needs a switch off option when it is on.
@@ -143,7 +138,6 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Cat is playful and should throw/bounce items the hero comes across (apart from pet carrier)
 - [ ] Code cleanup and refactor
 - [ ] Alter torch to be equipped in quickslots to activate
-- [ ] Hunter suit to detect <sci-fi term> signatures (lights off, can visualise all enemies/npcs on a level in the dark)
 - [x] Workbench icon/sprite
 - [ ] Chasms/black should have a subtle starry background, with potentially a planet and nearby star.
 - [ ] Small wormhole generator - can active and select any visible tile on the map.
@@ -158,3 +152,21 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Challenges Icon update
 - [x] UI Health bar cleanup
 - [x] Tiles overlay fix
+- [ ] Download/Upload save files.
+- [ ] Custom skin tiles
+- [ ] Armor Kit needs icon sci-fi upgrade
+- [ ] Refactor code and suggest improvements.
+- [ ] What could replace Yog Duza? Maybe a giant angel.
+- [ ] Rename of icon files
+- [ ] Fix swarm sprite - crap
+- [ ] DM3000 reskin
+- [ ] Hunter suit reskin
+- [ ] Heavy loader reskin
+- [ ] New Suit Mechanics
+- [ ] Swap wall tiles in security
+- [ ] Update common tiles across sets
+  - [ ] Hunter suit to detect <sci-fi term> signatures (lights off, can visualise all enemies/npcs on a level in the dark)
+  - [ ] Hunter can fly
+  - [ ] Hoverpod will protect adventurer but has it's own HP an will breakdown
+  - [ ] Hoverpod can fly
+  - [ ] Heavy loader high protection but can't fire weapons

@@ -69,7 +69,7 @@ public class YInterlude extends NPC {
         }
 
         if (SpacebaseRun.hero.pos != startHeroPos) {
-            yell(Messages.get(Arp.class, "masked_prisoner_cameo"));
+            yell(Messages.get(Y.class, "masked_prisoner_cameo"));
             destroy();
             sprite.emitter().burst(Speck.factory(Speck.WOOL), 15);
             sprite.killAndErase();

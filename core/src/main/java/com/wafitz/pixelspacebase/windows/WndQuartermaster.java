@@ -34,13 +34,13 @@ import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
 import com.wafitz.pixelspacebase.ui.Window;
 import com.wafitz.pixelspacebase.utils.GLog;
 
-public class Gunsmith extends Window {
+public class WndQuartermaster extends Window {
 
     private static final int WIDTH = 120;
     private static final int BTN_HEIGHT = 20;
     private static final float GAP = 2;
 
-    public Gunsmith(final com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith gunsmith, final Item item) {
+    public WndQuartermaster(final com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster quartermaster, final Item item) {
 
         super();
 
@@ -64,19 +64,19 @@ public class Gunsmith extends Window {
         message.setPos(0, titlebar.bottom() + GAP);
         add(message);
 
-        RedButton btnBlaster1 = new RedButton(com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith.Quest.blaster1.name()) {
+        RedButton btnBlaster1 = new RedButton(com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster.Quest.blaster1.name()) {
             @Override
             protected void onClick() {
-                selectReward(gunsmith, item, com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith.Quest.blaster1);
+                selectReward(quartermaster, item, com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster.Quest.blaster1);
             }
         };
         btnBlaster1.setRect(0, message.top() + message.height() + GAP, WIDTH, BTN_HEIGHT);
         add(btnBlaster1);
 
-        RedButton btnBlaster2 = new RedButton(com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith.Quest.blaster2.name()) {
+        RedButton btnBlaster2 = new RedButton(com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster.Quest.blaster2.name()) {
             @Override
             protected void onClick() {
-                selectReward(gunsmith, item, com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith.Quest.blaster2);
+                selectReward(quartermaster, item, com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster.Quest.blaster2);
             }
         };
         btnBlaster2.setRect(0, btnBlaster1.bottom() + GAP, WIDTH, BTN_HEIGHT);
@@ -85,7 +85,7 @@ public class Gunsmith extends Window {
         resize(WIDTH, (int) btnBlaster2.bottom());
     }
 
-    private void selectReward(com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith gunsmith, Item item, Blaster reward) {
+    private void selectReward(com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster quartermaster, Item item, Blaster reward) {
 
         hide();
 
@@ -95,14 +95,14 @@ public class Gunsmith extends Window {
         if (reward.doPickUp(SpacebaseRun.hero)) {
             GLog.i(Messages.get(SpacebaseRun.hero, "you_now_have", reward.name()));
         } else {
-            SpacebaseRun.level.drop(reward, gunsmith.pos).sprite.drop();
+            SpacebaseRun.level.drop(reward, quartermaster.pos).sprite.drop();
         }
 
-        gunsmith.yell(Messages.get(this, "farewell", SpacebaseRun.hero.givenName()));
-        gunsmith.destroy();
+        quartermaster.yell(Messages.get(this, "farewell", SpacebaseRun.hero.givenName()));
+        quartermaster.destroy();
 
-        gunsmith.sprite.die();
+        quartermaster.sprite.die();
 
-        com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith.Quest.complete();
+        com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster.Quest.complete();
     }
 }

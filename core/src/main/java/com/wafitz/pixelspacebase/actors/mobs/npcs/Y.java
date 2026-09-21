@@ -33,12 +33,12 @@ import com.wafitz.pixelspacebase.levels.HabitationRingLevel;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ImpSprite;
-import com.wafitz.pixelspacebase.windows.WndArp;
+import com.wafitz.pixelspacebase.windows.WndY;
 import com.wafitz.pixelspacebase.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Arp extends NPC {
+public class Y extends NPC {
 
     private static final int REQUIRED_EMITTERS = 6;
 
@@ -93,7 +93,7 @@ public class Arp extends NPC {
 
             HardLightEmitter tokens = SpacebaseRun.hero.belongings.getItem(HardLightEmitter.class);
             if (tokens != null && tokens.quantity() >= REQUIRED_EMITTERS) {
-                GameScene.show(new WndArp(this, tokens));
+                GameScene.show(new WndY(this, tokens));
             } else {
                 tell(Messages.get(this, "golems_2", SpacebaseRun.hero.givenName()));
             }
@@ -179,7 +179,7 @@ public class Arp extends NPC {
         public static void spawn(HabitationRingLevel level) {
             if (!spawned && SpacebaseRun.depth > 16 && Random.Int(20 - SpacebaseRun.depth) == 0) {
 
-                Arp npc = new Arp();
+                Y npc = new Y();
                 do {
                     npc.pos = level.randomRespawnCell();
                 } while (npc.pos == -1 || level.heaps.get(npc.pos) != null);

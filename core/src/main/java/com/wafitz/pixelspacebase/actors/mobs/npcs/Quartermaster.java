@@ -36,17 +36,17 @@ import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.mines.HunterTrapper;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.sprites.GunsmithSprite;
+import com.wafitz.pixelspacebase.sprites.QuartermasterSprite;
 import com.wafitz.pixelspacebase.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.Collection;
 
-public class Gunsmith extends NPC {
+public class Quartermaster extends NPC {
 
     {
-        spriteClass = GunsmithSprite.class;
+        spriteClass = QuartermasterSprite.class;
 
         properties.add(Property.IMMOVABLE);
     }
@@ -96,7 +96,7 @@ public class Gunsmith extends NPC {
             }
 
             if (item != null) {
-                GameScene.show(new com.wafitz.pixelspacebase.windows.Gunsmith(this, item));
+                GameScene.show(new com.wafitz.pixelspacebase.windows.WndQuartermaster(this, item));
             } else {
                 String msg = "";
                 switch (Quest.type) {
@@ -148,13 +148,13 @@ public class Gunsmith extends NPC {
 
             msg2 += Messages.get(this, "intro_2");
             final String msg2final = msg2;
-            final NPC gunsmith = this;
+            final NPC quartermaster = this;
 
-            GameScene.show(new WndQuest(gunsmith, msg1) {
+            GameScene.show(new WndQuest(quartermaster, msg1) {
                 @Override
                 public void hide() {
                     super.hide();
-                    GameScene.show(new WndQuest(gunsmith, msg2final));
+                    GameScene.show(new WndQuest(quartermaster, msg2final));
                 }
             });
 
@@ -258,10 +258,10 @@ public class Gunsmith extends NPC {
                 //note that we set the type but can fail here. This ensures that if a level needs to be re-generated
                 //we don't re-roll the quest, it will try to assign itself to that new level with the same type.
                 if (setRoom(rooms)) {
-                    Gunsmith npc = new Gunsmith();
+                    Quartermaster npc = new Quartermaster();
                     do {
                         npc.pos = level.pointToCell(room.random());
-                        //Gunsmith must never spawn in the center.
+                        //Quartermaster must never spawn in the center.
                         //If he does, and the room is 3x3, there is no room for the stairs.
                     } while (npc.pos == level.pointToCell(room.center()));
                     level.mobs.add(npc);

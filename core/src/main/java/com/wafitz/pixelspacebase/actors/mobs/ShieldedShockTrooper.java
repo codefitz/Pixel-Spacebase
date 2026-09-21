@@ -18,37 +18,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.sprites;
+package com.wafitz.pixelspacebase.actors.mobs;
 
-import com.wafitz.pixelspacebase.Assets;
-import com.watabou.noosa.TextureFilm;
+import com.wafitz.pixelspacebase.Badges;
+import com.wafitz.pixelspacebase.sprites.ShieldedShockTrooperSprite;
+import com.watabou.utils.Random;
 
-public class CrabSprite extends MobSprite {
+public class ShieldedShockTrooper extends OuterColonyShockTrooper {
 
-    public CrabSprite() {
-        super();
+    {
+        spriteClass = ShieldedShockTrooperSprite.class;
 
-        texture(Assets.CRAB);
-
-        TextureFilm frames = new TextureFilm(texture, 16, 16);
-
-        idle = new Animation(5, true);
-        idle.frames(frames, 0, 1, 0, 2);
-
-        run = new Animation(15, true);
-        run.frames(frames, 3, 4, 5, 6);
-
-        attack = new Animation(12, false);
-        attack.frames(frames, 7, 8, 9);
-
-        die = new Animation(12, false);
-        die.frames(frames, 10, 11, 12, 13);
-
-        play(idle);
+        defenseSkill = 20;
     }
 
     @Override
-    public int blood() {
-        return 0xFFFFEA80;
+    public int drRoll() {
+        return Random.NormalIntRange(0, 10);
+    }
+
+    @Override
+    public void die(Object cause) {
+        super.die(cause);
+        Badges.validateRare(this);
     }
 }

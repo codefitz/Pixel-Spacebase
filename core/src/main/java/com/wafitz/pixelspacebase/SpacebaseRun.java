@@ -28,8 +28,8 @@ import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Leonard;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
@@ -50,8 +50,8 @@ import com.wafitz.pixelspacebase.levels.DeepContainmentDeckLevel;
 import com.wafitz.pixelspacebase.levels.LastLevel;
 import com.wafitz.pixelspacebase.levels.LastWorkshopLevel;
 import com.wafitz.pixelspacebase.levels.Level;
-import com.wafitz.pixelspacebase.levels.OperationsBossLevel;
-import com.wafitz.pixelspacebase.levels.OperationsLevel;
+import com.wafitz.pixelspacebase.levels.MaintenanceBossLevel;
+import com.wafitz.pixelspacebase.levels.MaintenanceLevel;
 import com.wafitz.pixelspacebase.levels.SecurityBossLevel;
 import com.wafitz.pixelspacebase.levels.SecurityBlockLevel;
 import com.wafitz.pixelspacebase.levels.Room;
@@ -184,9 +184,9 @@ public class SpacebaseRun {
         chapters = new HashSet<>();
 
         Hologram.Quest.reset();
-        Gunsmith.Quest.reset();
+        Quartermaster.Quest.reset();
         Leonard.Quest.reset();
-        Arp.Quest.reset();
+        Y.Quest.reset();
         StationCat.Quest.reset();
 
         Generator.initArtifacts();
@@ -220,10 +220,10 @@ public class SpacebaseRun {
             case 2:
             case 3:
             case 4:
-                level = new OperationsLevel();
+                level = new MaintenanceLevel();
                 break;
             case 5:
-                level = new OperationsBossLevel();
+                level = new MaintenanceBossLevel();
                 break;
             case 6:
             case 7:
@@ -543,9 +543,9 @@ public class SpacebaseRun {
 
             Bundle quests = new Bundle();
             Hologram.Quest.storeInBundle(quests);
-            Gunsmith.Quest.storeInBundle(quests);
+            Quartermaster.Quest.storeInBundle(quests);
             Leonard.Quest.storeInBundle(quests);
-            Arp.Quest.storeInBundle(quests);
+            Y.Quest.storeInBundle(quests);
             StationCat.Quest.storeInBundle(quests);
             bundle.put(QUESTS, quests);
 
@@ -651,15 +651,15 @@ public class SpacebaseRun {
             Bundle quests = bundle.getBundle(QUESTS);
             if (!quests.isNull()) {
                 Hologram.Quest.restoreFromBundle(quests);
-                Gunsmith.Quest.restoreFromBundle(quests);
+                Quartermaster.Quest.restoreFromBundle(quests);
                 Leonard.Quest.restoreFromBundle(quests);
-                Arp.Quest.restoreFromBundle(quests);
+                Y.Quest.restoreFromBundle(quests);
                 StationCat.Quest.restoreFromBundle(quests);
             } else {
                 Hologram.Quest.reset();
-                Gunsmith.Quest.reset();
+                Quartermaster.Quest.reset();
                 Leonard.Quest.reset();
-                Arp.Quest.reset();
+                Y.Quest.reset();
                 StationCat.Quest.reset();
             }
 

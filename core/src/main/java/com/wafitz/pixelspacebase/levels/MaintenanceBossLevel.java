@@ -42,7 +42,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OperationsBossLevel extends RegularLevel {
+public class MaintenanceBossLevel extends RegularLevel {
 
     {
         color1 = 0x48763c;
@@ -53,12 +53,12 @@ public class OperationsBossLevel extends RegularLevel {
 
     @Override
     public String tilesTex() {
-        return Assets.TILES_OPERATIONS;
+        return Assets.TILES_MAINTENANCE;
     }
 
     @Override
     public String waterTex() {
-        return Assets.WATER_OPERATIONS;
+        return Assets.WATER_MAINTENANCE;
     }
 
     @Override
@@ -217,7 +217,7 @@ public class OperationsBossLevel extends RegularLevel {
     @Override
     public Group addVisuals() {
         super.addVisuals();
-        OperationsLevel.addSewerVisuals(this, visuals);
+        MaintenanceLevel.addSewerVisuals(this, visuals);
         return visuals;
     }
 
@@ -307,7 +307,7 @@ public class OperationsBossLevel extends RegularLevel {
     public String tileName(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(OperationsLevel.class, "water_name");
+                return Messages.get(MaintenanceLevel.class, "water_name");
             default:
                 return super.tileName(tile);
         }
@@ -317,9 +317,9 @@ public class OperationsBossLevel extends RegularLevel {
     public String tileDesc(int tile) {
         switch (tile) {
             case Terrain.EMPTY_DECO:
-                return Messages.get(OperationsLevel.class, "empty_deco_desc");
+                return Messages.get(MaintenanceLevel.class, "empty_deco_desc");
             case Terrain.BOOKSHELF:
-                return Messages.get(OperationsLevel.class, "bookshelf_desc");
+                return Messages.get(MaintenanceLevel.class, "bookshelf_desc");
             default:
                 return super.tileDesc(tile);
         }

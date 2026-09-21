@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.SpacebaseTilemap;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.levels.Room.Type;
 import com.wafitz.pixelspacebase.levels.vents.BlazingVent;
 import com.wafitz.pixelspacebase.levels.vents.DisarmingVent;
@@ -122,7 +122,7 @@ public class HabitationRingLevel extends RegularLevel {
     protected void createItems() {
         super.createItems();
 
-        Arp.Quest.spawn(this);
+        Y.Quest.spawn(this);
     }
 
     @Override

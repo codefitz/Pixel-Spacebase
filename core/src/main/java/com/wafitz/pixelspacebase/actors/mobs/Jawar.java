@@ -37,17 +37,17 @@ import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.equippablemodules.McGyvrModule;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
-import com.wafitz.pixelspacebase.sprites.ThiefSprite;
+import com.wafitz.pixelspacebase.sprites.JawarSprite;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Thief extends Mob {
+public class Jawar extends Mob {
 
     public Item item;
 
     {
-        spriteClass = ThiefSprite.class;
+        spriteClass = JawarSprite.class;
 
         HP = HT = 20;
         defenseSkill = 12;
@@ -153,7 +153,7 @@ public class Thief extends Mob {
 
         if (item != null && !item.unique && item.level() < 1) {
 
-            GLog.w(Messages.get(Thief.class, "stole", item.name()));
+            GLog.w(Messages.get(Jawar.class, "stole", item.name()));
             SpacebaseRun.quickslot.clearItem(item);
             item.updateQuickslot();
 
@@ -178,13 +178,13 @@ public class Thief extends Mob {
             return false;
         }
 
-        GLog.w(Messages.get(Thief.class, "disabled_dm3000"));
+        GLog.w(Messages.get(Jawar.class, "disabled_dm3000"));
         Buff.prolong(hero, LockedDown.class, 5f);
 
         this.item = armor;
         armor.forceUnequip(hero);
 
-        GLog.w(Messages.get(Thief.class, "stole", armor.name()));
+        GLog.w(Messages.get(Jawar.class, "stole", armor.name()));
         return true;
     }
 
@@ -230,7 +230,7 @@ public class Thief extends Mob {
 
                     }
 
-                    if (item != null) GLog.n(Messages.get(Thief.class, "escapes", item.name()));
+                    if (item != null) GLog.n(Messages.get(Jawar.class, "escapes", item.name()));
                     item = null;
                     state = WANDERING;
                 }

@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.sprites.BruteSprite;
+import com.wafitz.pixelspacebase.sprites.OuterColonyShockTrooperSprite;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -33,10 +33,10 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-class Brute extends Mob {
+public class OuterColonyShockTrooper extends Mob {
 
     {
-        spriteClass = BruteSprite.class;
+        spriteClass = OuterColonyShockTrooperSprite.class;
 
         HP = HT = 40;
         defenseSkill = 15;

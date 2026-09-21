@@ -18,28 +18,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.wafitz.pixelspacebase.actors.mobs;
+package com.wafitz.pixelspacebase.sprites;
 
-import com.wafitz.pixelspacebase.Badges;
-import com.wafitz.pixelspacebase.sprites.ShieldedSprite;
-import com.watabou.utils.Random;
+import com.wafitz.pixelspacebase.Assets;
+import com.watabou.noosa.TextureFilm;
 
-public class Shielded extends Brute {
+public class JawarSprite extends MobSprite {
 
-    {
-        spriteClass = ShieldedSprite.class;
+    public JawarSprite() {
+        super();
 
-        defenseSkill = 20;
-    }
+        texture(Assets.JAWAR);
+        TextureFilm film = new TextureFilm(texture, 12, 13);
 
-    @Override
-    public int drRoll() {
-        return Random.NormalIntRange(0, 10);
-    }
+        idle = new Animation(1, true);
+        idle.frames(film, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
-    @Override
-    public void die(Object cause) {
-        super.die(cause);
-        Badges.validateRare(this);
+        run = new Animation(15, true);
+        run.frames(film, 0, 0, 2, 3, 3, 4);
+
+        die = new Animation(10, false);
+        die.frames(film, 5, 6, 7, 8, 9);
+
+        attack = new Animation(12, false);
+        attack.frames(film, 10, 11, 12, 0);
+
+        idle();
     }
 }

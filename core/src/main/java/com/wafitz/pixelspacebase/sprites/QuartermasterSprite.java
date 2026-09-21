@@ -33,11 +33,11 @@ import com.watabou.utils.PointF;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class GunsmithSprite extends MobSprite {
+public class QuartermasterSprite extends MobSprite {
 
     private Shield shield;
 
-    public GunsmithSprite() {
+    public QuartermasterSprite() {
         super();
 
         texture(Assets.QUARTERMASTER);
@@ -107,8 +107,8 @@ public class GunsmithSprite extends MobSprite {
                 }
             }
 
-            if (visible = GunsmithSprite.this.visible) {
-                PointF p = GunsmithSprite.this.center();
+            if (visible = QuartermasterSprite.this.visible) {
+                PointF p = QuartermasterSprite.this.center();
                 point(p.x, p.y);
             }
         }

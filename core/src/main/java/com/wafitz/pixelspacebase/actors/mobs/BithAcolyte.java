@@ -34,18 +34,18 @@ import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.sprites.GuardSprite;
+import com.wafitz.pixelspacebase.sprites.BithAcolyteSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-class Guard extends Mob {
+public class BithAcolyte extends Mob {
 
     //they can only use their force-pull rig once
     private boolean forcePullUsed = false;
 
     {
-        spriteClass = GuardSprite.class;
+        spriteClass = BithAcolyteSprite.class;
 
         HP = HT = 40;
         defenseSkill = 10;

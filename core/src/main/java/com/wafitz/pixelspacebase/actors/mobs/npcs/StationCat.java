@@ -277,7 +277,7 @@ public class StationCat extends NPC {
         return SpacebaseRun.depth == 1 && !Quest.following && !Quest.dead && !Quest.gone && !Quest.carried;
     }
 
-    public static boolean canSpawnInOperationsLevel() {
+    public static boolean canSpawnInMaintenanceLevel() {
         if (Quest.following || Quest.dead || Quest.carried) {
             return false;
         }
@@ -345,7 +345,7 @@ public class StationCat extends NPC {
             }
         }
 
-        public static void markSpawnedInOperationsLevel() {
+        public static void markSpawnedInMaintenanceLevel() {
             if (gone && PetCarrier.carriedBy(SpacebaseRun.hero) != null) {
                 rescueSpawned = true;
             }

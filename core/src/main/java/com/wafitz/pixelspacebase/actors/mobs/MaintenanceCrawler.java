@@ -23,13 +23,13 @@ package com.wafitz.pixelspacebase.actors.mobs;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
-import com.wafitz.pixelspacebase.sprites.CrabSprite;
+import com.wafitz.pixelspacebase.sprites.MaintenanceCrawlerSprite;
 import com.watabou.utils.Random;
 
-public class Crab extends Mob {
+public class MaintenanceCrawler extends Mob {
 
     {
-        spriteClass = CrabSprite.class;
+        spriteClass = MaintenanceCrawlerSprite.class;
 
         HP = HT = 15;
         defenseSkill = 5;

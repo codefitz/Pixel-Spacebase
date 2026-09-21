@@ -31,7 +31,7 @@ private static final boolean DEV_TEST_INVULNERABLE = true;
 
 ## Starter Chest
 
-When `Hero.devTestInvulnerable()` is enabled, depth 1 places a starter chest in the entrance room from `core/src/main/java/com/wafitz/pixelspacebase/levels/OperationsLevel.java`, inside `decorate()`, after `placeSign()`.
+When `Hero.devTestInvulnerable()` is enabled, depth 1 places a starter chest in the entrance room from `core/src/main/java/com/wafitz/pixelspacebase/levels/MaintenanceLevel.java`, inside `decorate()`, after `placeSign()`.
 
 The dev/test chest logic:
 

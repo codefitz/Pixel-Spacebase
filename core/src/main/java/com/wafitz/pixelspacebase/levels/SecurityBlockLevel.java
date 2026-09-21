@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.SpacebaseTilemap;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.keys.SecurityKey;
 import com.wafitz.pixelspacebase.levels.Room.Type;
@@ -100,7 +100,7 @@ public class SecurityBlockLevel extends RegularLevel {
             }
         }
 
-        return Gunsmith.Quest.spawn(this, roomEntrance, rooms);
+        return Quartermaster.Quest.spawn(this, roomEntrance, rooms);
     }
 
     @Override

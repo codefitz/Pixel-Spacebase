@@ -28,17 +28,17 @@ import com.wafitz.pixelspacebase.actors.buffs.Cripple;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.sprites.BanditSprite;
+import com.wafitz.pixelspacebase.sprites.JawarScavengerSprite;
 import com.watabou.utils.Random;
 
-public class Bandit extends Thief {
+public class JawarScavenger extends Jawar {
 
     public Item item;
 
     {
-        spriteClass = BanditSprite.class;
+        spriteClass = JawarScavengerSprite.class;
 
-        //1 in 30 chance to be a crazy bandit, equates to overall 1/90 chance.
+        //One in 30 Jawars becomes the more dangerous scavenger variant.
         lootChance = 0.333f;
     }
 

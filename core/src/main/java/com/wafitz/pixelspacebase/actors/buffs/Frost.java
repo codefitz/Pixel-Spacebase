@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.actors.buffs;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.actors.mobs.Thief;
+import com.wafitz.pixelspacebase.actors.mobs.Jawar;
 import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.plasmids.TitanPlasmid;
 import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
@@ -74,13 +74,13 @@ public class Frost extends FlavourBuff {
                     GLog.w(Messages.get(this, "freezes", item.toString()));
 
                 }
-            } else if (target instanceof Thief) {
+            } else if (target instanceof Jawar) {
 
-                Item item = ((Thief) target).item;
+                Item item = ((Jawar) target).item;
 
                 if (item instanceof Plasmid && !(item instanceof MyoFiberPlasmid || item instanceof TitanPlasmid)) {
-                    ((Plasmid) ((Thief) target).item).shatter(target.pos);
-                    ((Thief) target).item = null;
+                    ((Plasmid) ((Jawar) target).item).shatter(target.pos);
+                    ((Jawar) target).item = null;
                 }
 
             }

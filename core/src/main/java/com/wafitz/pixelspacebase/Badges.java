@@ -22,10 +22,10 @@ package com.wafitz.pixelspacebase;
 
 import com.wafitz.pixelspacebase.actors.mobs.Acidic;
 import com.wafitz.pixelspacebase.actors.mobs.Albino;
-import com.wafitz.pixelspacebase.actors.mobs.Bandit;
+import com.wafitz.pixelspacebase.actors.mobs.JawarScavenger;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.Senior;
-import com.wafitz.pixelspacebase.actors.mobs.Shielded;
+import com.wafitz.pixelspacebase.actors.mobs.ShieldedShockTrooper;
 import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
@@ -749,9 +749,9 @@ public class Badges {
         Badge badge = null;
         if (mob instanceof Albino) {
             badge = Badge.RARE_ALBINO;
-        } else if (mob instanceof Bandit) {
+        } else if (mob instanceof JawarScavenger) {
             badge = Badge.RARE_BANDIT;
-        } else if (mob instanceof Shielded) {
+        } else if (mob instanceof ShieldedShockTrooper) {
             badge = Badge.RARE_SHIELDED;
         } else if (mob instanceof Senior) {
             badge = Badge.RARE_SENIOR;

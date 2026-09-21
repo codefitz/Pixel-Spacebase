@@ -57,17 +57,17 @@ public class Assets {
 
     public static final String XENOMORPH = "xenomorph.png";
     public static final String OUTER_COLONY_SCOUT = "outer_colony_scout.png";
-    public static final String CRAB = "crab.png";
+    public static final String MAINTENANCE_CRAWLER = "crab.png";
     public static final String FERALSHAPESHIFTER = "feral_shapeshifter.png";
     public static final String REPLICATOR_SWARM = "swarm.png";
     public static final String RUPTURED_CREW_SUIT = "ruptured_crew_suit.png";
     public static final String OUTER_COLONY_PSION = "outer_colony_psion.png";
-    public static final String THIEF = "thief.png";
+    public static final String JAWAR = "thief.png";
     public static final String MASKED_PRISONER = "masked_prisoner.png";
     public static final String CONTAINMENT_ECHO = "containment_echo.png";
     public static final String MAKERBOT = "makerbot.png";
     public static final String SIPHON_DRONE = "bat.png";
-    public static final String BRUTE = "brute.png";
+    public static final String OUTER_COLONY_SHOCK_TROOPER = "brute.png";
     public static final String FACEHUGGER = "spinner.png";
     public static final String DM300 = "dm300.png";
     public static final String TURRET = "wraith.png";
@@ -100,18 +100,18 @@ public class Assets {
     public static final String CONFUSEDSHAPESHIFTER = "confused_shapeshifter.png";
     public static final String ROT_LASH = "rot_lasher.png";
     public static final String ROT_HEART = "rot_heart.png";
-    public static final String GUARD = "guard.png";
+    public static final String BITH_ACOLYTE = "guard.png";
 
     public static final String ITEMS = "items.png";
     public static final String TERRAIN_FEATURES = "terrain_features.png";
 
-    public static final String TILES_OPERATIONS = "tiles0.png";
+    public static final String TILES_MAINTENANCE = "tiles0.png";
     public static final String TILES_SECURITY_BLOCK = "tiles1.png";
     public static final String TILES_ENGINEERING = "tiles2.png";
     public static final String TILES_HABITATION_RING = "tiles3.png";
     public static final String TILES_CONTAINMENT_DECK = "tiles4.png";
 
-    public static final String WATER_OPERATIONS = "water0.png";
+    public static final String WATER_MAINTENANCE = "water0.png";
     public static final String WATER_SECURITY_BLOCK = "water1.png";
     public static final String WATER_ENGINEERING = "water2.png";
     public static final String WATER_HABITATION_RING = "water3.png";

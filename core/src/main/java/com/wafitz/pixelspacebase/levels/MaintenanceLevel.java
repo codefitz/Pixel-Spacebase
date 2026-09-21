@@ -58,7 +58,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-public class OperationsLevel extends RegularLevel {
+public class MaintenanceLevel extends RegularLevel {
 
     {
         color1 = 0x48763c;
@@ -67,12 +67,12 @@ public class OperationsLevel extends RegularLevel {
 
     @Override
     public String tilesTex() {
-        return Assets.TILES_OPERATIONS;
+        return Assets.TILES_MAINTENANCE;
     }
 
     @Override
     public String waterTex() {
-        return Assets.WATER_OPERATIONS;
+        return Assets.WATER_MAINTENANCE;
     }
 
     protected boolean[] water() {
@@ -187,7 +187,7 @@ public class OperationsLevel extends RegularLevel {
     }
 
     private void ensureStationCat() {
-        if (roomEntrance != null && StationCat.canSpawnInOperationsLevel()) {
+        if (roomEntrance != null && StationCat.canSpawnInMaintenanceLevel()) {
             for (Mob mob : mobs) {
                 if (mob instanceof StationCat) {
                     return;
@@ -199,7 +199,7 @@ public class OperationsLevel extends RegularLevel {
                 StationCat cat = new StationCat();
                 cat.pos = pos;
                 mobs.add(cat);
-                StationCat.Quest.markSpawnedInOperationsLevel();
+                StationCat.Quest.markSpawnedInMaintenanceLevel();
             }
         }
     }
@@ -267,7 +267,7 @@ public class OperationsLevel extends RegularLevel {
     public String tileName(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(OperationsLevel.class, "water_name");
+                return Messages.get(MaintenanceLevel.class, "water_name");
             default:
                 return super.tileName(tile);
         }
@@ -277,11 +277,11 @@ public class OperationsLevel extends RegularLevel {
     public String tileDesc(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(OperationsLevel.class, "water_desc");
+                return Messages.get(MaintenanceLevel.class, "water_desc");
             case Terrain.EMPTY_DECO:
-                return Messages.get(OperationsLevel.class, "empty_deco_desc");
+                return Messages.get(MaintenanceLevel.class, "empty_deco_desc");
             case Terrain.BOOKSHELF:
-                return Messages.get(OperationsLevel.class, "bookshelf_desc");
+                return Messages.get(MaintenanceLevel.class, "bookshelf_desc");
             default:
                 return super.tileDesc(tile);
         }

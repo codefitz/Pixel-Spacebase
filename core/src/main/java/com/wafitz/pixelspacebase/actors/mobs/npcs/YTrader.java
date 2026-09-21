@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ImpSprite;
 
-public class ArpTrader extends MakerBot {
+public class YTrader extends MakerBot {
 
     {
         spriteClass = ImpSprite.class;

@@ -21,39 +21,29 @@
 package com.wafitz.pixelspacebase.sprites;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
-import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
 
-public class GuardSprite extends MobSprite {
+public class ShieldedShockTrooperSprite extends MobSprite {
 
-    public GuardSprite() {
+    public ShieldedShockTrooperSprite() {
         super();
 
-        texture(Assets.GUARD);
+        texture(Assets.OUTER_COLONY_SHOCK_TROOPER);
 
         TextureFilm frames = new TextureFilm(texture, 12, 16);
 
         idle = new Animation(2, true);
-        idle.frames(frames, 0, 0, 0, 1, 0, 0, 1, 1);
+        idle.frames(frames, 21, 21, 21, 22, 21, 21, 22, 22);
 
-        run = new MovieClip.Animation(15, true);
-        run.frames(frames, 2, 3, 4, 5, 6, 7);
+        run = new Animation(12, true);
+        run.frames(frames, 25, 26, 27, 28);
 
-        attack = new MovieClip.Animation(12, false);
-        attack.frames(frames, 8, 9, 10);
+        attack = new Animation(12, false);
+        attack.frames(frames, 23, 24);
 
-        die = new MovieClip.Animation(8, false);
-        die.frames(frames, 11, 12, 13, 14);
+        die = new Animation(12, false);
+        die.frames(frames, 29, 30, 31);
 
         play(idle);
-    }
-
-    @Override
-    public void play(Animation anim) {
-        if (anim == die) {
-            emitter().burst(ShadowParticle.UP, 4);
-        }
-        super.play(anim);
     }
 }

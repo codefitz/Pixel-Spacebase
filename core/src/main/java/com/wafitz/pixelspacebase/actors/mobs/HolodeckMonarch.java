@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.effects.Flare;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.ArmorKit;
@@ -152,7 +152,7 @@ public class HolodeckMonarch extends Mob {
         GameScene.bossSlain();
         SpacebaseRun.level.drop(new ArmorKit(), pos).sprite.drop();
         SpacebaseRun.level.drop(new MasterKeycard(SpacebaseRun.depth), pos).sprite.drop();
-        Arp.Quest.processMonarchDefeat(pos);
+        Y.Quest.processMonarchDefeat(pos);
 
         super.die(cause);
 
@@ -314,7 +314,7 @@ public class HolodeckMonarch extends Mob {
 
         @Override
         public void die(Object cause) {
-            Arp.Quest.process(this);
+            Y.Quest.process(this);
 
             super.die(cause);
 

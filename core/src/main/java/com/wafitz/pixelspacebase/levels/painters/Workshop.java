@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.levels.painters;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.ArpTrader;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.YTrader;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.MakerBot;
 import com.wafitz.pixelspacebase.items.Bomb;
 import com.wafitz.pixelspacebase.items.Clone;
@@ -745,7 +745,7 @@ public class Workshop extends Painter {
 
     private static void placeMakerBot(Level level, int pos) {
         if (level instanceof LastWorkshopLevel) {
-            Mob makerbot = new ArpTrader();
+            Mob makerbot = new YTrader();
             makerbot.pos = pos;
             level.mobs.add(makerbot);
 
@@ -767,7 +767,7 @@ public class Workshop extends Painter {
 
     private static int workshopAnchor(Level level) {
         for (Mob mob : level.mobs) {
-            if (mob instanceof MakerBot || mob instanceof ArpTrader) {
+            if (mob instanceof MakerBot || mob instanceof YTrader) {
                 return mob.pos;
             }
         }
