@@ -127,7 +127,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Release Prep
 
-- [x] Re-enable any needed dev/test helpers deliberately behind a clear flag.
+- [x] Remove temporary hero invulnerability, boosted starting Strength, and starter chest.
 - [ ] Update release notes and version (on plan completion)
 - [x] Run `./gradlew :core:testDebugUnitTest`.
 - [x] Run `./gradlew :core:assembleDebug`.

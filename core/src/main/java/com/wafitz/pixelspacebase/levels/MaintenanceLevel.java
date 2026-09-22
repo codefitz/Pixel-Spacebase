@@ -23,21 +23,12 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.SpacebaseTilemap;
-import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.effects.Ripple;
 import com.wafitz.pixelspacebase.items.AirTank;
-import com.wafitz.pixelspacebase.items.Generator;
-import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.PetCarrier;
-import com.wafitz.pixelspacebase.items.WeakForcefield;
-import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
-import com.wafitz.pixelspacebase.items.armor.Uniform;
-import com.wafitz.pixelspacebase.items.food.Food;
-import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
-import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
 import com.wafitz.pixelspacebase.levels.vents.AlarmVent;
 import com.wafitz.pixelspacebase.levels.vents.ChillingVent;
 import com.wafitz.pixelspacebase.levels.vents.FlockVent;
@@ -147,31 +138,6 @@ public class MaintenanceLevel extends RegularLevel {
             }
 
         placeSign();
-        placeDevTestStarterChest();
-    }
-
-    private void placeDevTestStarterChest() {
-        if (!Hero.devTestInvulnerable() || SpacebaseRun.depth > 1 || roomEntrance == null) {
-            return;
-        }
-
-        int pos = pointToCell(roomEntrance.random());
-        if (pos == entrance
-                || !insideMap(pos)
-                || vents.get(pos) != null
-                || findMob(pos) != null
-                || map[pos] == Terrain.SIGN) {
-            return;
-        }
-
-        drop(Generator.random(), pos).type = Heap.Type.CHEST;
-        drop(new Uniform().identify(), pos);
-        drop(new Food().identify(), pos);
-        drop(new MappingUpgrade().identify(), pos);
-        drop(new WeakForcefield().identify(), pos);
-        drop(new SpaceSuit().identify(), pos);
-        drop(new Wrench().identify(), pos);
-        drop(new Wrench().identify(), pos);
     }
 
     @Override
