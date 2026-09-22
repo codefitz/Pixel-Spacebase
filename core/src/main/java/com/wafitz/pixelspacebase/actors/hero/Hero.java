@@ -148,6 +148,7 @@ public class Hero extends Char {
     public static final int MAX_LEVEL = 30;
 
     private static final int STARTING_STR = 10;
+    private static final boolean DEV_TEST_INVULNERABLE = false;
 
     private static final float TIME_TO_REST = 1f;
     private static final float TIME_TO_SEARCH = 2f;
@@ -1102,6 +1103,11 @@ public class Hero extends Char {
             GLog.w(Messages.get(this, "pain_resist"));
         }
 
+        if (DEV_TEST_INVULNERABLE) {
+            restoreDevTestHealth();
+            return;
+        }
+
         StrongForcefield.Shield shield = buff(StrongForcefield.Shield.class);
         if (shield != null) {
             dmg = shield.proc(dmg, (src instanceof Char ? (Char) src : null), this);
@@ -1520,6 +1526,12 @@ public class Hero extends Char {
 
         curAction = null;
 
+        if (DEV_TEST_INVULNERABLE) {
+            restoreDevTestHealth();
+            new Flare(8, 32).color(0xFFFF66, true).show(sprite, 2f);
+            return;
+        }
+
         Clone clone = null;
 
         //look for revival items in player inventory, prioritize stabilized ones.
@@ -1630,12 +1642,30 @@ public class Hero extends Char {
 
     @Override
     public boolean isAlive() {
+        if (DEV_TEST_INVULNERABLE) {
+            if (HP <= 0) {
+                restoreDevTestHealth();
+            }
+            return true;
+        }
         if (subClass == HeroSubClass.BERSERKER
                 && berserk != null
                 && berserk.berserking()) {
             return true;
         }
         return super.isAlive();
+    }
+
+    public static boolean devTestInvulnerable() {
+        return DEV_TEST_INVULNERABLE;
+    }
+
+    public void restoreDevTestHealth() {
+        if (sprite != null && HP < HT) {
+            heal(this);
+        } else {
+            HP = HT;
+        }
     }
 
     @Override

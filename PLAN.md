@@ -24,7 +24,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [x] Escape pod with cat
     - [x] Fix core (save NPCs, remain on station) - possible time-based challenge, work back through station levels - unstable shaking.
 
-## Cosmetic / Narrative
+## Graphical Changes
 
 - [x] Deep containment - change this to Bridge.
 - [x] Should be made clear that Y is taking or giving something to hero for Tengu battle.
