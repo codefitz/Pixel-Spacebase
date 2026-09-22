@@ -147,7 +147,7 @@ public abstract class RegularLevel extends Level {
         }
 
         specials = new ArrayList<>(Room.SPECIALS);
-        if (SpacebaseRun.bossLevel(SpacebaseRun.depth + 1)) {
+        if (!SpacebaseRun.hasWeakFloorAtDepth(SpacebaseRun.depth)) {
             specials.remove(Room.Type.WEAK_FLOOR);
         }
         if (SpacebaseRun.isChallenged(Challenges.NO_ARMOR)) {
@@ -266,6 +266,8 @@ public abstract class RegularLevel extends Level {
 
         int specialRooms = 0;
         boolean pitMade = false;
+        boolean weakFloorNeeded = SpacebaseRun.hasWeakFloorAtDepth(SpacebaseRun.depth);
+        boolean weakFloorMade = false;
 
         for (Room r : rooms) {
             if (r.type == Type.NULL &&
@@ -289,6 +291,11 @@ public abstract class RegularLevel extends Level {
                         specials.remove(Type.VAULT);
                         specials.remove(Type.WEAK_FLOOR);
 
+                    } else if (weakFloorNeeded && !weakFloorMade) {
+
+                        r.type = Type.WEAK_FLOOR;
+                        weakFloorMade = true;
+
                     } else if (SpacebaseRun.depth % 5 == 2 && specials.contains(Type.LABORATORY)) {
 
                         r.type = Type.LABORATORY;
@@ -301,10 +308,6 @@ public abstract class RegularLevel extends Level {
 
                         int n = specials.size();
                         r.type = specials.get(Math.min(Random.Int(n), Random.Int(n)));
-                        if (r.type == Type.WEAK_FLOOR) {
-                            weakFloorCreated = true;
-                        }
-
                     }
 
                     Room.useType(r.type);
@@ -329,7 +332,7 @@ public abstract class RegularLevel extends Level {
             }
         }
 
-        if (pitRoomNeeded && !pitMade) return false;
+        if ((pitRoomNeeded && !pitMade) || (weakFloorNeeded && !weakFloorMade)) return false;
 
         int count = 0;
         for (Room r : rooms) {

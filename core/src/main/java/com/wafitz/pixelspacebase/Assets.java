@@ -47,7 +47,7 @@ public class Assets {
     public static final String SHAPESHIFTER = "shapeshifter.png";
     public static final String CAPTAIN = "captain.png";
     public static final String AVATARS = "avatars.png";
-    public static final String PET = "cat.png";
+    public static final String PET = "station_cat.png";
 
     public static final String SURFACE = "surface.png";
 
@@ -57,28 +57,28 @@ public class Assets {
 
     public static final String XENOMORPH = "xenomorph.png";
     public static final String OUTER_COLONY_SCOUT = "outer_colony_scout.png";
-    public static final String MAINTENANCE_CRAWLER = "crab.png";
+    public static final String MAINTENANCE_CRAWLER = "maintenance_crawler.png";
     public static final String FERALSHAPESHIFTER = "feral_shapeshifter.png";
-    public static final String REPLICATOR_SWARM = "swarm.png";
+    public static final String REPLICATOR_SWARM = "replicator_swarm.png";
     public static final String RUPTURED_CREW_SUIT = "ruptured_crew_suit.png";
     public static final String OUTER_COLONY_PSION = "outer_colony_psion.png";
-    public static final String JAWAR = "thief.png";
+    public static final String JAWAR = "jawar.png";
     public static final String MASKED_PRISONER = "masked_prisoner.png";
     public static final String CONTAINMENT_ECHO = "containment_echo.png";
     public static final String MAKERBOT = "makerbot.png";
-    public static final String SIPHON_DRONE = "bat.png";
-    public static final String OUTER_COLONY_SHOCK_TROOPER = "brute.png";
-    public static final String FACEHUGGER = "spinner.png";
+    public static final String SIPHON_DRONE = "siphon_drone.png";
+    public static final String OUTER_COLONY_SHOCK_TROOPER = "outer_colony_shock_trooper.png";
+    public static final String FACEHUGGER = "facehugger.png";
     public static final String DM300 = "dm300.png";
-    public static final String TURRET = "wraith.png";
+    public static final String TURRET = "turret.png";
     public static final String ELEMENTAL = "elemental.png";
     public static final String JEDA_KNIGHT = "jeda_knight.png";
     public static final String SIGNAL_LEECH = "signal_leech.png";
     public static final String WAR_MACHINE = "war_machine.png";
     public static final String UNDEAD = "undead.png";
     public static final String HOLODECK_MONARCH = "holodeck_monarch.png";
-    public static final String OLDWARBOT = "war_bot.png";
-    public static final String WATERTHING = "water_things.png";
+    public static final String OLDWARBOT = "old_war_bot.png";
+    public static final String WATERTHING = "water_thing.png";
     public static final String EYE = "eye.png";
     public static final String SIGNAL_SIREN = "signal_siren.png";
     public static final String SCORPIO = "scorpio.png";
@@ -92,15 +92,15 @@ public class Assets {
     public static final String GUNSMITH = NPC;
     public static final String TROLL = NPC2;
     public static final String ARP = NPC2;
-    public static final String QUARTERMASTER = "gunsmith.png";
+    public static final String QUARTERMASTER = "quartermaster.png";
     public static final String LEONARD = "leonard.png";
-    public static final String Y = "arp.png";
-    public static final String XQUEEN = "xqueen.png";
+    public static final String Y = "y.png";
+    public static final String XQUEEN = "queen_xeno.png";
     public static final String DRONE = "drone.png";
     public static final String CONFUSEDSHAPESHIFTER = "confused_shapeshifter.png";
     public static final String ROT_LASH = "rot_lasher.png";
     public static final String ROT_HEART = "rot_heart.png";
-    public static final String BITH_ACOLYTE = "guard.png";
+    public static final String BITH_ACOLYTE = "bith_acolyte.png";
 
     public static final String ITEMS = "items.png";
     public static final String TERRAIN_FEATURES = "terrain_features.png";

@@ -28,7 +28,6 @@ import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.levels.Level;
-import com.wafitz.pixelspacebase.levels.RegularLevel;
 import com.wafitz.pixelspacebase.levels.painters.Workshop;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.ui.GameLog;
@@ -204,7 +203,6 @@ public class InterlevelScene extends PixelScene {
     private void descend() throws IOException {
 
         Actor.fixTime();
-        boolean nextLevelNeedsPit = levelHasWeakFloor(SpacebaseRun.level);
         if (SpacebaseRun.hero == null) {
             SpacebaseRun.init();
             if (noStory) {
@@ -220,7 +218,6 @@ public class InterlevelScene extends PixelScene {
 
         Level level;
         if (SpacebaseRun.depth >= Statistics.deepestFloor) {
-            RegularLevel.weakFloorCreated = nextLevelNeedsPit;
             level = SpacebaseRun.newLevel();
         } else {
             SpacebaseRun.depth++;
@@ -234,14 +231,12 @@ public class InterlevelScene extends PixelScene {
 
         Actor.fixTime();
         int targetDepth = SpacebaseRun.fallTargetDepth();
-        boolean nextLevelNeedsPit = fallIntoPit || levelHasWeakFloor(SpacebaseRun.level);
         Workshop.carryStockFrom(SpacebaseRun.level);
         StationCat.carryFollowerFrom(SpacebaseRun.level);
         SpacebaseRun.saveAll();
 
         Level level;
         if (targetDepth > Statistics.deepestFloor) {
-            RegularLevel.weakFloorCreated = nextLevelNeedsPit;
             level = SpacebaseRun.newLevel();
         } else {
             SpacebaseRun.depth = targetDepth;
@@ -312,13 +307,8 @@ public class InterlevelScene extends PixelScene {
         Actor.fixTime();
 
         SpacebaseRun.depth--;
-        RegularLevel.weakFloorCreated = false;
         Level level = SpacebaseRun.newLevel();
         SpacebaseRun.switchLevel(level, level.entrance);
-    }
-
-    private boolean levelHasWeakFloor(Level level) {
-        return level instanceof RegularLevel && ((RegularLevel) level).hasWeakFloor();
     }
 
     @Override

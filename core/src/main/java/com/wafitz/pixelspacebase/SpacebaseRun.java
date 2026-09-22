@@ -313,6 +313,35 @@ public class SpacebaseRun {
         return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
     }
 
+    /**
+     * Plans weak-floor chasms independently of generation order. In Spacebase,
+     * falling travels to the previous (lower) depth, so that level can create
+     * its locked pit room before this level is generated.
+     */
+    public static boolean hasWeakFloorAtDepth(int depth) {
+        if (depth <= 1 || depth > 25 || bossLevel(depth) || !hasRegularLevelAtDepth(depth - 1)) {
+            return false;
+        }
+
+        long value = seed ^ (0x9E3779B97F4A7C15L * depth);
+        value ^= value >>> 33;
+        value *= 0xFF51AFD7ED558CCDL;
+        value ^= value >>> 33;
+        return (value & 0x07) == 0;
+    }
+
+    public static boolean needsPitRoomAtDepth(int depth) {
+        return hasRegularLevelAtDepth(depth) && hasWeakFloorAtDepth(depth + 1);
+    }
+
+    private static boolean hasRegularLevelAtDepth(int depth) {
+        return (depth >= 1 && depth <= 4)
+                || (depth >= 6 && depth <= 9)
+                || (depth >= 11 && depth <= 14)
+                || (depth >= 16 && depth <= 19)
+                || (depth >= 22 && depth <= 24);
+    }
+
     @SuppressWarnings("deprecation")
     public static void switchLevel(final Level level, int pos) {
 
@@ -685,7 +714,7 @@ public class SpacebaseRun {
 
         droppedItems = new SparseArray<>();
         droppedHeaps = new SparseArray<>();
-        for (int i = 2; i <= Statistics.deepestFloor + 1; i++) {
+        for (int i = 1; i <= Statistics.deepestFloor + 1; i++) {
             ArrayList<Item> dropped = new ArrayList<>();
             if (bundle.contains(Messages.format(DROPPED, i)))
                 for (Bundlable b : bundle.getCollection(Messages.format(DROPPED, i))) {

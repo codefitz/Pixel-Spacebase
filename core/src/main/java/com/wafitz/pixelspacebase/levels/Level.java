@@ -157,9 +157,7 @@ public abstract class Level implements Bundlable {
     public int color1 = 0x004400;
     public int color2 = 0x88CC44;
 
-    //FIXME this is sloppy. Should be able to keep track of this without static variables
     static boolean pitRoomNeeded = false;
-    public static boolean weakFloorCreated = false;
 
     private static final String VERSION = "version";
     private static final String MAP = "map";
@@ -275,14 +273,12 @@ public abstract class Level implements Bundlable {
             }
         }
 
-        boolean pitNeeded = SpacebaseRun.depth > 1 && weakFloorCreated;
+        boolean pitNeeded = SpacebaseRun.needsPitRoomAtDepth(SpacebaseRun.depth);
 
         do {
             Arrays.fill(map, feeling == Feeling.CHASM ? Terrain.CHASM : Terrain.WALL);
 
             pitRoomNeeded = pitNeeded;
-            weakFloorCreated = false;
-
             mobs = new HashSet<>();
             heaps = new SparseArray<>();
             blobs = new HashMap<>();
@@ -370,8 +366,6 @@ public abstract class Level implements Bundlable {
         exit = bundle.getInt(EXIT);
 
         locked = bundle.getBoolean(LOCKED);
-
-        weakFloorCreated = false;
 
         //for pre-0.3.0c saves
         /*if (version < 44) {
