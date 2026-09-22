@@ -22,6 +22,8 @@
 package com.watabou.gltextures;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -33,7 +35,8 @@ import com.watabou.utils.Logger;
 
 public class TextureCache {
 
-	public static Context context;
+	private static Resources resources;
+	private static AssetManager assets;
 	
 	private static HashMap<Object,SmartTexture> all = new HashMap<>();
 	
@@ -43,6 +46,15 @@ public class TextureCache {
 		bitmapOptions.inScaled = false;
 		bitmapOptions.inDither = false;
 		bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+	}
+
+	public static synchronized void setContext( Context context ) {
+		Context appContext = context.getApplicationContext();
+		if (appContext == null) {
+			appContext = context;
+		}
+		resources = appContext.getResources();
+		assets = appContext.getAssets();
 	}
 
 	public static SmartTexture createSolid( int color ) {
@@ -106,6 +118,12 @@ public class TextureCache {
 		} else {
 
 			SmartTexture tx = new SmartTexture( getBitmap( src ) );
+			if (src instanceof String && ((String) src).endsWith(".png")
+					&& !((String) src).endsWith("pixel_font.png")
+					&& !((String) src).endsWith("font1x.png")
+					&& !((String) src).endsWith("font2x.png")) {
+				tx.pixelScale = 4;
+			}
 			all.put( src, tx );
 			return tx;
 		}
@@ -128,17 +146,21 @@ public class TextureCache {
 	}
 	
 	public static Bitmap getBitmap( Object src ) {
+		if (resources == null || assets == null) {
+			Logger.e("TextureCache context has not been initialized", new IllegalStateException("TextureCache.setContext() must be called during application initialization before loading textures"));
+			return null;
+		}
 		
 		try {
 			if (src instanceof Integer){
 				
 				return BitmapFactory.decodeResource(
-					context.getResources(), (Integer)src, bitmapOptions );
+					resources, (Integer)src, bitmapOptions );
 				
 			} else if (src instanceof String) {
 				
 				return BitmapFactory.decodeStream(
-					context.getAssets().open( (String)src ), null, bitmapOptions );
+					assets.open( (String)src ), null, bitmapOptions );
 				
 			} else if (src instanceof Bitmap) {
 				

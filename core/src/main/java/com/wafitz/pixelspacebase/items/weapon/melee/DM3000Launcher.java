@@ -34,6 +34,7 @@ import com.wafitz.pixelspacebase.items.blasters.DominationBlaster;
 import com.wafitz.pixelspacebase.items.blasters.EMP;
 import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.upgrades.RechargeUpgrade;
+import com.wafitz.pixelspacebase.items.weapon.missiles.Dart;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -55,6 +56,7 @@ public class DM3000Launcher extends MeleeWeapon {
 
     private static final String AC_LOAD = "LOAD";
     private static final String AC_FIRE = "FIRE";
+    private static final String AC_MELT = "MELT";
 
     private static final float LAUNCHER_SCALE_FACTOR = 0.75f;
 
@@ -94,6 +96,7 @@ public class DM3000Launcher extends MeleeWeapon {
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
         actions.add(AC_LOAD);
+        actions.add(AC_MELT);
         if (blaster != null && blaster.curCharges > 0) {
             actions.add(AC_FIRE);
         }
@@ -114,6 +117,11 @@ public class DM3000Launcher extends MeleeWeapon {
 
             curUser = hero;
             GameScene.selectItem(itemSelector, WndContainer.Mode.BLASTER, Messages.get(this, "prompt"));
+
+        } else if (action.equals(AC_MELT)) {
+
+            curUser = hero;
+            GameScene.selectItem(meltSelector, WndContainer.Mode.WEAPON, Messages.get(this, "melt_prompt"));
 
         } else if (action.equals(AC_FIRE)) {
 
@@ -352,6 +360,48 @@ public class DM3000Launcher extends MeleeWeapon {
             convertBlaster(blaster, curUser);
 
             updateQuickslot();
+        }
+    };
+
+    private final WndContainer.Listener meltSelector = new WndContainer.Listener() {
+        @Override
+        public void onSelect(final Item item) {
+            if (item == null) {
+                return;
+            }
+
+            if (!(item instanceof MeleeWeapon) || item instanceof DM3000Launcher) {
+                GLog.w(Messages.get(DM3000Launcher.class, "melt_not_weapon"));
+                return;
+            }
+            if (item.isEquipped(curUser) || item.unique) {
+                GLog.w(Messages.get(DM3000Launcher.class, "melt_unique"));
+                return;
+            }
+            if (!item.isIdentified()) {
+                GLog.w(Messages.get(DM3000Launcher.class, "id_first"));
+                return;
+            }
+            if (item.malfunctioning) {
+                GLog.w(Messages.get(DM3000Launcher.class, "malfunctioning"));
+                return;
+            }
+
+            MeleeWeapon weapon = (MeleeWeapon) item;
+            int bolts = Math.max(1, weapon.tier * 2 + Math.max(0, weapon.level()) * 2);
+            Dart result = new Dart(bolts);
+
+            item.detach(curUser.belongings.backpack);
+            if (!result.collect(curUser.belongings.backpack)) {
+                SpacebaseRun.level.drop(result, curUser.pos).sprite.drop();
+            }
+
+            Sample.INSTANCE.play(Assets.SND_BURNING);
+            curUser.sprite.emitter().burst(ElmoParticle.FACTORY, 8);
+            evoke(curUser);
+            curUser.spendAndNext(TIME_TO_EQUIP);
+
+            GLog.p(Messages.get(DM3000Launcher.class, "melt", item.name(), bolts, result.name()));
         }
     };
 

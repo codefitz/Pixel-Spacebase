@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
 import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.TrainingManual;
@@ -116,7 +116,7 @@ public class MaskedPrisoner extends Mob {
         //phase 1 of the fight is over
         if (beforeHitHP > HT / 2 && HP <= HT / 2) {
             HP = (HT / 2) - 1;
-            GLog.n("%s: \"%s\" ", Messages.get(Arp.class, "name"), Messages.get(Arp.class, "masked_prisoner_interesting"));
+            GLog.n("%s: \"%s\" ", Messages.get(Y.class, "name"), Messages.get(Y.class, "masked_prisoner_interesting"));
             ((SecurityBossLevel) SpacebaseRun.level).progress();
             BossHealthBar.bleed(true);
 

@@ -20,8 +20,12 @@
  */
 package com.wafitz.pixelspacebase.items;
 
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
+import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.utils.Random;
@@ -37,6 +41,13 @@ abstract public class KindOfWeapon extends EquipableItem {
 
     @Override
     public boolean doEquip(Hero hero) {
+
+        if (hero.heroClass == HeroClass.DM3000
+                && this instanceof MeleeWeapon
+                && !(this instanceof DM3000Launcher)) {
+            GLog.w(Messages.get(KindOfWeapon.class, "dm3000_cannot_equip"));
+            return false;
+        }
 
         detachAll(hero.belongings.backpack);
 
@@ -74,6 +85,15 @@ abstract public class KindOfWeapon extends EquipableItem {
 
             return false;
 
+        }
+    }
+
+    public void unequipForConfiscation(Hero hero) {
+        if (hero.belongings.weapon == this) {
+            onDetach();
+            SpacebaseRun.quickslot.clearItem(this);
+            hero.belongings.weapon = null;
+            updateQuickslot();
         }
     }
 

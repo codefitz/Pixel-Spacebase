@@ -51,6 +51,7 @@ import com.watabou.noosa.ui.Button;
 import com.watabou.utils.Callback;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class StartScene extends PixelScene {
 
@@ -417,7 +418,7 @@ public class StartScene extends PixelScene {
                 highlighted = BASIC_HIGHLIGHTED;
             }
 
-            name.text(cl.title().toUpperCase());
+            name.text(cl.title().toUpperCase(Locale.ROOT));
             name.hardlight(normal);
 
             brightness = MIN_BRIGHTNESS;

@@ -23,7 +23,7 @@ package com.wafitz.pixelspacebase.levels.painters;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.ArpTrader;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.YTrader;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.MakerBot;
 import com.wafitz.pixelspacebase.items.Bomb;
 import com.wafitz.pixelspacebase.items.Clone;
@@ -84,9 +84,8 @@ import java.util.LinkedList;
 
 public class Workshop extends Painter {
 
-    private static final int TEMPLATE_WIDTH = 8;
+    private static final int TEMPLATE_WIDTH = 7;
     private static final int TEMPLATE_HEIGHT = 7;
-    private static final int TEMPLATE_CAPACITY = (TEMPLATE_WIDTH - 1) * (TEMPLATE_HEIGHT - 1);
 
     private static ArrayList<Item> itemsToSpawn;
     private static ArrayList<Item> carriedStock;
@@ -229,14 +228,7 @@ public class Workshop extends Painter {
 
     private static boolean[] workshopCells(Level level) {
         boolean[] cells = new boolean[level.length()];
-        int start = -1;
-
-        for (Mob mob : level.mobs) {
-            if (mob instanceof MakerBot || mob instanceof ArpTrader) {
-                start = mob.pos;
-                break;
-            }
-        }
+        int start = workshopAnchor(level);
 
         if (start == -1) {
             return cells;
@@ -424,10 +416,6 @@ public class Workshop extends Painter {
             itemsToSpawn.add(rareWorkshopItem(true));
         }
 
-        //this is a hard limit, level gen allows for at most an 8x5 room, can't fit more than 39 items + 1 shopkeeper.
-        if (itemsToSpawn.size() > 39)
-            throw new RuntimeException("Workshop attempted to carry more than 39 items!");
-
         Collections.shuffle(itemsToSpawn);
     }
 
@@ -581,33 +569,27 @@ public class Workshop extends Painter {
         return belongings.getItem(type) != null;
     }
 
-    public static int spaceNeeded() {
-        itemsToSpawn = stockForCurrentDepth();
-
-        //plus one for the shopkeeper; stock is trimmed later so storage cells stay clear
-        return itemsToSpawn.size() + 1;
-    }
-
     public static boolean canHostFixedLayout(Room room) {
-        return (room.width() - 1) * (room.height() - 1) >= spaceNeeded();
+        return canFitTemplate(room);
     }
 
     private static Rect fixedWorkshop(Room room) {
-        int width;
-        int height;
-        if (room.width() >= TEMPLATE_WIDTH && room.height() >= TEMPLATE_HEIGHT) {
-            width = TEMPLATE_WIDTH;
-            height = TEMPLATE_HEIGHT;
-        } else if (room.width() >= TEMPLATE_HEIGHT && room.height() >= TEMPLATE_WIDTH) {
+        int width = TEMPLATE_WIDTH;
+        int height = TEMPLATE_HEIGHT;
+        if (!canFitTemplate(room)) {
+            throw new IllegalArgumentException("Workshop room cannot fit fixed template.");
+        } else if (room.width() < TEMPLATE_WIDTH || room.height() < TEMPLATE_HEIGHT) {
             width = TEMPLATE_HEIGHT;
             height = TEMPLATE_WIDTH;
-        } else {
-            width = room.width();
-            height = room.height();
         }
         int left = room.left + (room.width() - width) / 2;
         int top = room.top + (room.height() - height) / 2;
         return new Rect(left, top, left + width, top + height);
+    }
+
+    private static boolean canFitTemplate(Room room) {
+        return room.width() >= TEMPLATE_WIDTH && room.height() >= TEMPLATE_HEIGHT
+                || room.width() >= TEMPLATE_HEIGHT && room.height() >= TEMPLATE_WIDTH;
     }
 
     private static void carveAccessPath(Level level, Room room, Rect workshop, Point door) {
@@ -762,18 +744,41 @@ public class Workshop extends Painter {
     }
 
     private static void placeMakerBot(Level level, int pos) {
-        Mob makerbot = level instanceof LastWorkshopLevel ? new ArpTrader() : new MakerBot();
-        makerbot.pos = pos;
-        level.mobs.add(makerbot);
-
         if (level instanceof LastWorkshopLevel) {
+            Mob makerbot = new YTrader();
+            makerbot.pos = pos;
+            level.mobs.add(makerbot);
+
             for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
                 int p = makerbot.pos + PathFinder.NEIGHBOURS9[i];
                 if (level.map[p] == Terrain.EMPTY_SP) {
                     level.map[p] = Terrain.WATER;
                 }
             }
+        } else {
+            Heap makerBench = new Heap();
+            makerBench.pos = pos;
+            makerBench.type = Heap.Type.MAKER_BENCH;
+            makerBench.seen = SpacebaseRun.visible[pos];
+            level.heaps.put(pos, makerBench);
+            GameScene.add(makerBench);
         }
+    }
+
+    private static int workshopAnchor(Level level) {
+        for (Mob mob : level.mobs) {
+            if (mob instanceof MakerBot || mob instanceof YTrader) {
+                return mob.pos;
+            }
+        }
+
+        for (Heap heap : level.heaps.values()) {
+            if (heap.type == Heap.Type.MAKER_BENCH) {
+                return heap.pos;
+            }
+        }
+
+        return -1;
     }
 
 }

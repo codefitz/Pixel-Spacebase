@@ -1,40 +1,23 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 34
-    namespace "com.wafitz.pixelspacebase"
+    compileSdk = 34
+    namespace = "com.wafitz.pixelspacebase"
 
     buildTypes {
         release {
-            shrinkResources true
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources = true
+            minifyEnabled = true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 34
+        minSdk = 9
+        targetSdk = 34
     }
 }
 
 dependencies {
     implementation project(':pd-classes')
     testImplementation 'junit:junit:4.13.2'
-}
-
-buildscript {
-    repositories {
-        mavenCentral()
-        google()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.0'
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
 }

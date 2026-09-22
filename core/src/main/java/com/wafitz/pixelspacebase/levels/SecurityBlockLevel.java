@@ -23,9 +23,7 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.SpacebaseTilemap;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith;
-import com.wafitz.pixelspacebase.effects.Halo;
-import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.keys.SecurityKey;
 import com.wafitz.pixelspacebase.levels.Room.Type;
@@ -45,8 +43,9 @@ import com.wafitz.pixelspacebase.levels.vents.SummoningVent;
 import com.wafitz.pixelspacebase.levels.vents.TeleportationVent;
 import com.wafitz.pixelspacebase.levels.vents.ToxicVent;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
-import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -101,7 +100,7 @@ public class SecurityBlockLevel extends RegularLevel {
             }
         }
 
-        return Gunsmith.Quest.spawn(this, roomEntrance, rooms);
+        return Quartermaster.Quest.spawn(this, roomEntrance, rooms);
     }
 
     @Override
@@ -228,33 +227,40 @@ public class SecurityBlockLevel extends RegularLevel {
     static void addPrisonVisuals(Level level, Group group) {
         for (int i = 0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WALL_DECO) {
-                group.add(new Torch(i));
+                group.add(new SecurityCameraLight(level, i));
             }
         }
     }
 
-    private static class Torch extends Emitter {
+    private static class SecurityCameraLight extends ColorBlock {
 
-        private int pos;
+        private final Level level;
+        private final int pos;
+        private float phase;
 
-        Torch(int pos) {
-            super();
+        SecurityCameraLight(Level level, int pos) {
+            super(0.75f, 0.75f, 0xFFFF3030);
 
+            this.level = level;
             this.pos = pos;
+            phase = (pos % 7) * 0.2f;
 
-            PointF p = SpacebaseTilemap.tileCenterToWorld(pos);
-            pos(p.x - 1, p.y + 3, 2, 0);
-
-            pour(FlameParticle.FACTORY, 0.15f);
-
-            add(new Halo(16, 0xFFFFCC, 0.2f).point(p.x, p.y));
+            PointF p = SpacebaseTilemap.tileToWorld(pos);
+            // Indicator socket at source pixel (35, 33) in the 64px camera tile.
+            x = p.x + 35 / 4f;
+            y = p.y + 33 / 4f;
+            visible = false;
         }
 
         @Override
         public void update() {
-            if (visible = SpacebaseRun.visible[pos]) {
-                super.update();
+            super.update();
+            if (level.map[pos] != Terrain.WALL_DECO) {
+                killAndErase();
+                return;
             }
+            phase = (phase + Game.elapsed) % 1.4f;
+            visible = SpacebaseRun.visible[pos] && phase < 0.35f;
         }
     }
 }

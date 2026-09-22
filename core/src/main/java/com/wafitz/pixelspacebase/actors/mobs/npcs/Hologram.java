@@ -29,7 +29,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.LockedDown;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.actors.mobs.HoodedRaiderCommander;
-import com.wafitz.pixelspacebase.actors.mobs.GreatCrab;
+import com.wafitz.pixelspacebase.actors.mobs.ArmoredCrawler;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.ToughXeno;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
@@ -43,7 +43,7 @@ import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
-import com.wafitz.pixelspacebase.levels.OperationsLevel;
+import com.wafitz.pixelspacebase.levels.MaintenanceLevel;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.HologramSprite;
@@ -166,7 +166,7 @@ public class Hologram extends NPC {
                     txt_quest = Messages.get(this, "gnoll_1", SpacebaseRun.hero.givenName());
                     break;
                 case 3:
-                    questBoss = new GreatCrab();
+                    questBoss = new ArmoredCrawler();
                     txt_quest = Messages.get(this, "crab_1", SpacebaseRun.hero.givenName());
                     break;
             }
@@ -268,7 +268,7 @@ public class Hologram extends NPC {
             }
         }
 
-        public static void spawn(OperationsLevel level) {
+        public static void spawn(MaintenanceLevel level) {
             if (!spawned && SpacebaseRun.depth > 1 && Random.Int(5 - SpacebaseRun.depth) == 0) {
 
                 Hologram hologram = new Hologram();
@@ -279,7 +279,7 @@ public class Hologram extends NPC {
 
                 spawned = true;
                 //deck depth determines type of quest.
-                //depth2=fetid rat, 3=gnoll trickster, 4=great crab
+                //Deck 2 = xenomorph, 3 = outer-colony scout, 4 = armored crawler.
                 type = SpacebaseRun.depth - 1;
 
                 given = false;
@@ -341,7 +341,7 @@ public class Hologram extends NPC {
 
         public static void process() {
             if (spawned && given && !processed && (depth == SpacebaseRun.depth)) {
-                GLog.n(Messages.get(Hologram.class, "find_me"));
+                GLog.n(Messages.get(Hologram.class, "find_me", SpacebaseRun.hero.givenName()));
                 Sample.INSTANCE.play(Assets.SND_HOLOGRAM);
                 processed = true;
                 Generator.Category.EQUIPPABLE_MODULE.probs[10] = 1; //flags the holopad as spawnable.

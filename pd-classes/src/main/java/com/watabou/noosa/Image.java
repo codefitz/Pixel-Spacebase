@@ -74,8 +74,8 @@ public class Image extends Visual {
 	public void frame( RectF frame ) {
 		this.frame = frame;
 		
-		width = frame.width() * texture.width;
-		height = frame.height() * texture.height;
+		width = frame.width() * texture.logicalWidth();
+		height = frame.height() * texture.logicalHeight();
 		
 		updateFrame();
 		updateVertices();

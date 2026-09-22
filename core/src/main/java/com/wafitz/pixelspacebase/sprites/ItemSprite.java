@@ -33,6 +33,7 @@ import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.scenes.GameScene;
+import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.MovieClip;
@@ -257,11 +258,13 @@ public class ItemSprite extends MovieClip {
     }
 
     public static int pick(int index, int x, int y) {
-        Bitmap bmp = TextureCache.get(Assets.ITEMS).bitmap;
-        int rows = bmp.getWidth() / SIZE;
+        SmartTexture items = TextureCache.get(Assets.ITEMS);
+        Bitmap bmp = items.bitmap;
+        int scale = items.pixelScale;
+        int rows = items.logicalWidth() / SIZE;
         int row = index / rows;
         int col = index % rows;
-        return bmp.getPixel(col * SIZE + x, row * SIZE + y);
+        return bmp.getPixel((col * SIZE + x) * scale, (row * SIZE + y) * scale);
     }
 
     public static class Glowing {

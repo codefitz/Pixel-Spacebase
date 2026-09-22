@@ -24,6 +24,7 @@ import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Leonard;
+import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
 import com.wafitz.pixelspacebase.levels.Room.Type;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.levels.vents.ConfusionVent;
@@ -48,7 +49,6 @@ import com.wafitz.pixelspacebase.levels.vents.WarpingVent;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
-import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
@@ -291,7 +291,7 @@ public class EngineeringLevel extends RegularLevel {
 
                 if ((delay -= Game.elapsed) <= 0) {
 
-                    //pickaxe can remove the ore, should remove the sparkling too.
+                    //The engineering wrench can salvage the panel, which removes its sparks too.
                     if (SpacebaseRun.level.map[pos] != Terrain.WALL_DECO) {
                         kill();
                         return;
@@ -300,7 +300,7 @@ public class EngineeringLevel extends RegularLevel {
                     delay = Random.Float();
 
                     PointF p = SpacebaseTilemap.tileToWorld(pos);
-                    ((Sparkle) recycle(Sparkle.class)).reset(
+                    ((SparkParticle) recycle(SparkParticle.class)).reset(
                             p.x + Random.Float(SpacebaseTilemap.SIZE),
                             p.y + Random.Float(SpacebaseTilemap.SIZE));
                 }
@@ -308,23 +308,4 @@ public class EngineeringLevel extends RegularLevel {
         }
     }
 
-    public static final class Sparkle extends PixelParticle {
-
-        public void reset(float x, float y) {
-            revive();
-
-            this.x = x;
-            this.y = y;
-
-            left = lifespan = 0.5f;
-        }
-
-        @Override
-        public void update() {
-            super.update();
-
-            float p = left / lifespan;
-            size((am = p < 0.5f ? p * 2 : (1 - p) * 2) * 2);
-        }
-    }
 }

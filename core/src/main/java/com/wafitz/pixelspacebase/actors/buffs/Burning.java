@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.actors.mobs.Thief;
+import com.wafitz.pixelspacebase.actors.mobs.Jawar;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
@@ -118,14 +118,14 @@ public class Burning extends Buff implements Hero.Doom {
                 target.damage(damage, this);
             }
 
-            if (target instanceof Thief) {
+            if (target instanceof Jawar) {
 
-                Item item = ((Thief) target).item;
+                Item item = ((Jawar) target).item;
 
                 if (item instanceof Upgrade &&
                         !(item instanceof UpgradePatch || item instanceof EnhancementUpgrade)) {
                     target.sprite.emitter().burst(ElmoParticle.FACTORY, 6);
-                    ((Thief) target).item = null;
+                    ((Jawar) target).item = null;
                 }
 
             }

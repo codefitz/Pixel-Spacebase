@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.buffs.Sleep;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.sprites.WarMachineSprite;
 import com.watabou.utils.Random;
 
@@ -65,7 +65,7 @@ public class WarMachine extends Mob {
 
     @Override
     public void die(Object cause) {
-        Arp.Quest.process(this);
+        Y.Quest.process(this);
 
         super.die(cause);
     }

@@ -125,7 +125,7 @@ Primary story function:
 
 - Show that the breach is older and stranger than a simple xenomorph infestation.
 - Introduce advanced raiders, signal witches, war machines, and the unresolved command-court theme.
-- Bring in Y, formerly Arp internally, as an overt side-quest/game-aware figure.
+- Bring in Y as an overt side-quest/game-aware figure.
 
 Current side content:
 
@@ -227,11 +227,11 @@ Story role:
 
 ### Quartermaster
 
-NPC: Quartermaster, formerly Old Gunsmith internally.
+NPC: Quartermaster.
 
 Current variants:
 
-- Requests a lazer, a faulty core module, or a bio-charge core recovered from a mature rotberry mine.
+- Requests a lazer, a faulty core module, or a bio-charge core recovered from a mature bio-charge mine.
 - Rewards new blaster options.
 
 Story role:
@@ -241,11 +241,11 @@ Story role:
 
 ### Y
 
-NPC: Y, formerly Arp internally.
+NPC: Y.
 
 Current variants:
 
-- Asks the player to kill war machines or Jeda Knights and collect anomaly tokens.
+- Asks the player to recover hologram emitters from the Holodeck Monarch's hard-light retainers.
 - Speaks as though aware of the game, including inventory, badges, rankings, and quest tracking.
 
 Story role:

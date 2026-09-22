@@ -39,6 +39,7 @@ import java.util.ArrayList;
 public class Torch extends MeleeWeapon {
 
     private static final String AC_LIGHT = "LIGHT";
+    private static final String AC_EXTINGUISH = "EXTINGUISH";
     private static final String AC_EQUIP_MODULE = "EQUIP_MODULE";
 
     private static final float TIME_TO_LIGHT = 1;
@@ -62,7 +63,7 @@ public class Torch extends MeleeWeapon {
         if (!isEquipped(hero)) {
             actions.add(AC_EQUIP_MODULE);
         }
-        actions.add(AC_LIGHT);
+        actions.add(hero.buff(Light.class) == null ? AC_LIGHT : AC_EXTINGUISH);
         return actions;
     }
 
@@ -98,6 +99,21 @@ public class Torch extends MeleeWeapon {
             emitter.start(FlameParticle.FACTORY, 0.2f, 3);
 
             GLog.p(Messages.get(this, "light_msg"));
+        } else if (action.equals(AC_EXTINGUISH)) {
+            Light light = hero.buff(Light.class);
+            if (light == null) {
+                GLog.i(Messages.get(this, "already_off"));
+                return;
+            }
+
+            light.detach();
+            updateQuickslot();
+
+            hero.spend(TIME_TO_LIGHT);
+            hero.busy();
+            hero.sprite.operate(hero.pos);
+
+            GLog.p(Messages.get(this, "extinguish_msg"));
         } else if (action.equals(AC_EQUIP_MODULE)) {
             doEquipModule(hero);
         }

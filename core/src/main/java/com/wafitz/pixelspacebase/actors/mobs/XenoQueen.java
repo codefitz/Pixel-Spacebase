@@ -97,6 +97,11 @@ public class XenoQueen extends Mob {
             prepareArena();
         }
 
+        if (SpacebaseRun.hero != null && SpacebaseRun.hero.heroClass == HeroClass.SHAPESHIFTER) {
+            state = HUNTING;
+            target = SpacebaseRun.hero.pos;
+        }
+
         spawnCooldown -= TICK;
         if (spawnCooldown <= 0 && countXenos() < MAX_XENOS) {
             spawnXenoFromCrack();
@@ -104,6 +109,13 @@ public class XenoQueen extends Mob {
         }
 
         return super.act();
+    }
+
+    @Override
+    protected Char chooseEnemy() {
+        return SpacebaseRun.hero != null && SpacebaseRun.hero.heroClass == HeroClass.SHAPESHIFTER
+                ? SpacebaseRun.hero
+                : null;
     }
 
     @Override

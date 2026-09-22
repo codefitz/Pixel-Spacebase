@@ -28,7 +28,7 @@ public class SurvivorSprite extends MobSprite {
     public SurvivorSprite() {
         super();
 
-        texture(Assets.GUNSMITH);
+        texture(Assets.NPC);
 
         TextureFilm frames = new TextureFilm(texture, 12, 14);
 

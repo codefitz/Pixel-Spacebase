@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.levels.SecurityBossLevel;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.sprites.ImpSprite;
+import com.wafitz.pixelspacebase.sprites.YSprite;
 import com.wafitz.pixelspacebase.windows.WndQuest;
 import com.watabou.utils.Bundle;
 
@@ -40,7 +40,7 @@ public class YInterlude extends NPC {
     private int mazeAppearance = 0;
 
     {
-        spriteClass = ImpSprite.class;
+        spriteClass = YSprite.class;
         properties.add(Property.IMMOVABLE);
     }
 
@@ -69,7 +69,7 @@ public class YInterlude extends NPC {
         }
 
         if (SpacebaseRun.hero.pos != startHeroPos) {
-            yell(Messages.get(Arp.class, "masked_prisoner_cameo"));
+            yell(Messages.get(Y.class, "masked_prisoner_cameo"));
             destroy();
             sprite.emitter().burst(Speck.factory(Speck.WOOL), 15);
             sprite.killAndErase();
@@ -103,10 +103,11 @@ public class YInterlude extends NPC {
     public boolean interact() {
         if (mazeAppearance > 0) {
             sprite.turnTo(pos, SpacebaseRun.hero.pos);
+            int meeting = mazeAppearance;
             if (SpacebaseRun.level instanceof SecurityBossLevel) {
-                ((SecurityBossLevel) SpacebaseRun.level).recordMazeYFound(mazeAppearance);
+                meeting = ((SecurityBossLevel) SpacebaseRun.level).recordMazeYFound(mazeAppearance);
             }
-            GameScene.show(new WndQuest(this, Messages.get(this, "maze_" + mazeAppearance)));
+            GameScene.show(new WndQuest(this, Messages.get(this, "maze_" + meeting)));
             destroy();
             sprite.emitter().burst(Speck.factory(Speck.WOOL), 15);
             sprite.killAndErase();

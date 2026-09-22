@@ -204,10 +204,15 @@ public class Blob extends Actor {
         area.union(cell % level.width(), cell / level.width());
     }
 
-    public void clear(int cell) {
-        if (volume == 0) return;
-        volume -= cur[cell];
+    public int clear(int cell) {
+        if (volume == 0) return 0;
+        int cleared = cur[cell];
+        volume -= cleared;
         cur[cell] = 0;
+        if (off != null) {
+            off[cell] = 0;
+        }
+        return cleared;
     }
 
     public void fullyClear() {

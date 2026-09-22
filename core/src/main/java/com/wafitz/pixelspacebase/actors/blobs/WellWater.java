@@ -72,7 +72,9 @@ public class WellWater extends Blob {
 
         if (pos == SpacebaseRun.hero.pos && affectHero(SpacebaseRun.hero)) {
 
-            volume = off[pos] = cur[pos] = 0;
+            if (isConsumedOnUse()) {
+                volume = off[pos] = cur[pos] = 0;
+            }
             return true;
 
         } else if ((heap = SpacebaseRun.level.heaps.get(pos)) != null) {
@@ -94,7 +96,9 @@ public class WellWater extends Blob {
                 }
 
                 heap.sprite.link();
-                volume = off[pos] = cur[pos] = 0;
+                if (isConsumedOnUse()) {
+                    volume = off[pos] = cur[pos] = 0;
+                }
 
                 return true;
 
@@ -125,6 +129,10 @@ public class WellWater extends Blob {
         return null;
     }
 
+    protected boolean isConsumedOnUse() {
+        return true;
+    }
+
     @Override
     public void device(Level level, int cell, int amount) {
         super.device(level, cell, amount);
@@ -148,8 +156,10 @@ public class WellWater extends Blob {
                     water.pos == cell &&
                     water.affect()) {
 
-                Level.set(cell, water instanceof HealingTank ? Terrain.EMPTY : Terrain.EMPTY_WELL);
-                GameScene.updateMap(cell);
+                if (water.isConsumedOnUse()) {
+                    Level.set(cell, water instanceof HealingTank ? Terrain.EMPTY : Terrain.EMPTY_WELL);
+                    GameScene.updateMap(cell);
+                }
 
                 return;
             }

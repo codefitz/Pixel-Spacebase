@@ -22,23 +22,19 @@ package com.wafitz.pixelspacebase.items.quest;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
-import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.actors.mobs.SiphonDrone;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
-import com.wafitz.pixelspacebase.effects.Speck;
+import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.sprites.ItemSprite.Glowing;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 
@@ -46,22 +42,20 @@ import java.util.ArrayList;
 
 public class ScrewDriver extends Weapon {
 
+    public static final int IMAGE = ItemSpriteSheet.WRENCH;
+
     private static final String AC_MINE = "MINE";
 
     private static final float TIME_TO_MINE = 2;
 
-    private static final Glowing BLOODY = new Glowing(0x550000);
-
     {
-        image = ItemSpriteSheet.PICKAXE;
+        image = IMAGE;
 
         unique = true;
 
         defaultAction = AC_MINE;
 
     }
-
-    public boolean bloodStained = false;
 
     @Override
     public int min(int lvl) {
@@ -110,7 +104,7 @@ public class ScrewDriver extends Weapon {
                         @Override
                         public void call() {
 
-                            CellEmitter.center(pos).burst(Speck.factory(Speck.STAR), 7);
+                            CellEmitter.center(pos).burst(SparkParticle.FACTORY, 7);
                             Sample.INSTANCE.play(Assets.SND_EVOKE);
 
                             Level.set(pos, Terrain.WALL);
@@ -150,36 +144,6 @@ public class ScrewDriver extends Weapon {
     @Override
     public boolean isIdentified() {
         return true;
-    }
-
-    @Override
-    public int proc(Char attacker, Char defender, int damage) {
-        if (!bloodStained && defender instanceof SiphonDrone && (defender.HP <= damage)) {
-            bloodStained = true;
-            updateQuickslot();
-        }
-        return damage;
-    }
-
-    private static final String BLOODSTAINED = "bloodStained";
-
-    @Override
-    public void storeInBundle(Bundle bundle) {
-        super.storeInBundle(bundle);
-
-        bundle.put(BLOODSTAINED, bloodStained);
-    }
-
-    @Override
-    public void restoreFromBundle(Bundle bundle) {
-        super.restoreFromBundle(bundle);
-
-        bloodStained = bundle.getBoolean(BLOODSTAINED);
-    }
-
-    @Override
-    public Glowing glowing() {
-        return bloodStained ? BLOODY : null;
     }
 
 }

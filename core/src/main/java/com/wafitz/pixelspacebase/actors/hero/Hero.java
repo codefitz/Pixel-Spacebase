@@ -29,7 +29,11 @@ import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Fire;
+import com.wafitz.pixelspacebase.actors.blobs.ConfusionGas;
+import com.wafitz.pixelspacebase.actors.blobs.ParalyticGas;
+import com.wafitz.pixelspacebase.actors.blobs.StenchGas;
 import com.wafitz.pixelspacebase.actors.blobs.ToxicGas;
+import com.wafitz.pixelspacebase.actors.blobs.VenomGas;
 import com.wafitz.pixelspacebase.actors.buffs.Berserk;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
@@ -49,6 +53,7 @@ import com.wafitz.pixelspacebase.actors.buffs.CombatFocus;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.NPC;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.CheckedCell;
 import com.wafitz.pixelspacebase.effects.Flare;
@@ -64,6 +69,7 @@ import com.wafitz.pixelspacebase.items.Heap.Type;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.armor.Armor;
+import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
@@ -119,6 +125,7 @@ import com.wafitz.pixelspacebase.utils.BArray;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.wafitz.pixelspacebase.windows.WndBotMake;
 import com.wafitz.pixelspacebase.windows.WndMessage;
+import com.wafitz.pixelspacebase.windows.WndOptions;
 import com.wafitz.pixelspacebase.windows.WndResurrect;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -131,8 +138,6 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-
-import static com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid.heal;
 
 public class Hero extends Char {
 
@@ -163,6 +168,7 @@ public class Hero extends Char {
     private boolean emergencyEating = false;
     public HeroAction curAction = null;
     public HeroAction lastAction = null;
+    private boolean preserveShapeshiftForNextSpend;
 
     private Char enemy;
 
@@ -479,11 +485,14 @@ public class Hero extends Char {
 
     @Override
     public void spend(float time) {
+        boolean preserveShapeshift = preserveShapeshiftForNextSpend;
+        preserveShapeshiftForNextSpend = false;
         TimeFolder.timeFreeze buff = buff(TimeFolder.timeFreeze.class);
         if (!(buff != null && buff.processTime(time))) {
             super.spend(time);
-            recoverShapeshifterInWater(time);
+            recoverInWater(time);
             if (time > 0
+                    && !preserveShapeshift
                     && !(curAction instanceof HeroAction.Attack)
                     && !(curAction instanceof HeroAction.Move)) {
                 Buff.detach(this, Shapeshifted.class);
@@ -491,8 +500,16 @@ public class Hero extends Char {
         }
     }
 
+    public void preserveShapeshiftForNextSpend() {
+        preserveShapeshiftForNextSpend = true;
+    }
+
     public int medicalHealing(int amount) {
         if (amount <= 0 || HP >= HT) {
+            return 0;
+        }
+
+        if (heroClass == HeroClass.DM3000) {
             return 0;
         }
 
@@ -506,9 +523,9 @@ public class Hero extends Char {
         return effect;
     }
 
-    private void recoverShapeshifterInWater(float time) {
+    private void recoverInWater(float time) {
         if (time <= 0
-                || heroClass != HeroClass.SHAPESHIFTER
+                || (heroClass != HeroClass.SHAPESHIFTER && heroClass != HeroClass.DM3000)
                 || flying
                 || HP >= HT
                 || isStarving()
@@ -902,15 +919,24 @@ public class Hero extends Char {
 
             curAction = null;
 
-            Buff buff = buff(TimeFolder.timeFreeze.class);
-            if (buff != null) buff.detach();
+            if (StationCat.isFollowing() && SpacebaseRun.bossLevel(SpacebaseRun.depth + 1)) {
+                GameScene.show(new WndOptions(
+                        Messages.get(this, "cat_boss_title"),
+                        Messages.get(this, "cat_boss_warning"),
+                        Messages.get(this, "cat_boss_bring"),
+                        Messages.get(this, "cat_boss_leave")) {
+                    @Override
+                    protected void onSelect(int index) {
+                        if (index == 1) {
+                            StationCat.abandonFollower(SpacebaseRun.level);
+                        }
+                        proceedDescend();
+                    }
+                });
+                return false;
+            }
 
-            for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
-                if (mob instanceof HoloPad.HologramHero) mob.destroy();
-
-            InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
-            Game.switchScene(InterlevelScene.class);
-
+            proceedDescend();
             return false;
 
         } else if (getCloser(stairs)) {
@@ -923,6 +949,17 @@ public class Hero extends Char {
         }
     }
 
+    private void proceedDescend() {
+            Buff buff = buff(TimeFolder.timeFreeze.class);
+            if (buff != null) buff.detach();
+
+            for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
+                if (mob instanceof HoloPad.HologramHero) mob.destroy();
+
+            InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+            Game.switchScene(InterlevelScene.class);
+    }
+
     private boolean actAscend(HeroAction.Ascend action) {
         int stairs = action.dst;
         if (pos == stairs && pos == SpacebaseRun.level.entrance) {
@@ -933,7 +970,7 @@ public class Hero extends Char {
                     GameScene.show(new WndMessage(Messages.get(this, "leave")));
                     ready();
                 } else {
-                    SpacebaseRun.win(EscapePodOverride.class);
+                    SpacebaseRun.win(EscapePodOverride.victoryCause());
                     SpacebaseRun.deleteGame(SpacebaseRun.hero.heroClass, true);
                     Game.switchScene(SurfaceScene.class);
                 }
@@ -1034,11 +1071,6 @@ public class Hero extends Char {
 
     @Override
     public int defenseProc(Char enemy, int damage) {
-        if (DEV_TEST_INVULNERABLE) {
-            restoreDevTestHealth();
-            return 0;
-        }
-
         WeakForcefield.Armor armor = buff(WeakForcefield.Armor.class);
         if (armor != null) {
             damage = armor.absorb(damage);
@@ -1706,6 +1738,7 @@ public class Hero extends Char {
     private boolean canSurviveVacuum() {
         return heroClass == HeroClass.DM3000
                 || heroClass == HeroClass.SHAPESHIFTER
+                || belongings.armor instanceof HoverPod
                 || belongings.armor instanceof SpaceSuit
                 || belongings.armor instanceof HunterSpaceSuit;
     }
@@ -1921,6 +1954,11 @@ public class Hero extends Char {
             immunities.add(Terror.class);
             immunities.add(Paralysis.class);
             immunities.add(Vertigo.class);
+            immunities.add(ConfusionGas.class);
+            immunities.add(ParalyticGas.class);
+            immunities.add(StenchGas.class);
+            immunities.add(ToxicGas.class);
+            immunities.add(VenomGas.class);
         }
         return immunities;
     }

@@ -38,6 +38,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.effects.Pushing;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
+import com.wafitz.pixelspacebase.items.PetCarrier;
 import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
 import com.wafitz.pixelspacebase.items.upgrades.PsionicBlastUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.enhancements.Grim;
@@ -170,6 +171,7 @@ public class ContainmentMass extends Mob {
 
         GameScene.bossSlain();
         SpacebaseRun.level.drop(new MasterKeycard(SpacebaseRun.depth), pos).sprite.drop();
+        SpacebaseRun.level.drop(new PetCarrier(), pos).sprite.drop();
         super.die(cause);
 
         yell(Messages.get(this, "defeated"));

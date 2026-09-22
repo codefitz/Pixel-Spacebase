@@ -33,9 +33,9 @@ import com.wafitz.pixelspacebase.windows.WndJournal;
 import com.watabou.input.Touchscreen.Touch;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.TouchArea;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -45,16 +45,32 @@ import com.watabou.utils.ColorMath;
 
 public class StatusPane extends Component {
 
-    private NinePatch bg;
+    private static final int HP_BAR_X = 31;
+    private static final int HP_BAR_Y = 4;
+    private static final int HP_BAR_WIDTH = 64;
+    private static final int HP_BAR_HEIGHT = 9;
+
+    private static final int HP_BORDER = 0xFF8FA8A8;
+    private static final int HP_TRACK = 0xFF14201F;
+    private static final int HP_FILL = 0xFFE53945;
+    private static final int HP_LOW_FILL = 0xFFFFB000;
+    private static final int HP_CRITICAL_FILL = 0xFFFF4A4A;
+    private static final int HP_SHIELD_FILL = 0xFF66E6FF;
+
+    private ColorBlock bg;
+    private Image avatarFrame;
     private Image avatar;
     private float warning;
 
     private int lastTier = 0;
 
-    private Image rawShielding;
-    private Image shieldedHP;
-    private Image hp;
-    private Image exp;
+    private ColorBlock hpBorder;
+    private ColorBlock hpTrack;
+    private ColorBlock hpFill;
+    private ColorBlock hpShield;
+    private ColorBlock expTrack;
+    private ColorBlock exp;
+    private BitmapText hpText;
 
     private BossHealthBar bossHP;
 
@@ -75,8 +91,11 @@ public class StatusPane extends Component {
     @Override
     protected void createChildren() {
 
-        bg = new NinePatch(Assets.STATUS, 0, 0, 128, 36, 85, 0, 45, 0);
+        bg = new ColorBlock(1, 1, 0xFF080F14);
         add(bg);
+
+        avatarFrame = new Image(Assets.STATUS, 0, 0, 28, 32);
+        add(avatarFrame);
 
         add(new TouchArea(0, 1, 31, 31) {
             @Override
@@ -101,17 +120,25 @@ public class StatusPane extends Component {
         compass = new Compass(SpacebaseRun.level.exit);
         add(compass);
 
-        rawShielding = new Image(Assets.SHLD_BAR);
-        rawShielding.alpha(0.5f);
-        add(rawShielding);
+        hpBorder = new ColorBlock(1, 1, HP_BORDER);
+        add(hpBorder);
 
-        shieldedHP = new Image(Assets.SHLD_BAR);
-        add(shieldedHP);
+        hpTrack = new ColorBlock(1, 1, HP_TRACK);
+        add(hpTrack);
 
-        hp = new Image(Assets.HP_BAR);
-        add(hp);
+        hpFill = new ColorBlock(1, 1, 0xFFFFFFFF);
+        add(hpFill);
 
-        exp = new Image(Assets.XP_BAR);
+        hpShield = new ColorBlock(1, 1, HP_SHIELD_FILL);
+        add(hpShield);
+
+        hpText = new BitmapText(PixelScene.pixelFont);
+        hpText.hardlight(0xF2FFFF);
+        add(hpText);
+
+        expTrack = new ColorBlock(1, 1, HP_TRACK);
+        add(expTrack);
+        exp = new ColorBlock(1, 1, 0xFF66E6FF);
         add(exp);
 
         bossHP = new BossHealthBar();
@@ -140,7 +167,7 @@ public class StatusPane extends Component {
 
         height = 32;
 
-        bg.size(width, bg.height);
+        bg.size(width, height);
 
         avatar.x = bg.x + 15 - avatar.width / 2f;
         avatar.y = bg.y + 16 - avatar.height / 2f;
@@ -150,8 +177,17 @@ public class StatusPane extends Component {
         compass.y = avatar.y + avatar.height / 2f - compass.origin.y;
         PixelScene.align(compass);
 
-        hp.x = shieldedHP.x = rawShielding.x = 30;
-        hp.y = shieldedHP.y = rawShielding.y = 3;
+        hpBorder.x = HP_BAR_X;
+        hpBorder.y = HP_BAR_Y;
+        hpBorder.size(HP_BAR_WIDTH, HP_BAR_HEIGHT);
+
+        hpTrack.x = hpFill.x = hpShield.x = HP_BAR_X + 1;
+        hpTrack.y = hpFill.y = hpShield.y = HP_BAR_Y + 1;
+        hpTrack.size(HP_BAR_WIDTH - 2, HP_BAR_HEIGHT - 2);
+
+        expTrack.x = exp.x = HP_BAR_X;
+        expTrack.y = exp.y = HP_BAR_Y + HP_BAR_HEIGHT + 2;
+        expTrack.size(HP_BAR_WIDTH, 1);
 
         bossHP.setPos(6 + (width - bossHP.width()) / 2, 20);
 
@@ -161,11 +197,13 @@ public class StatusPane extends Component {
 
         danger.setPos(width - danger.width(), 20);
 
-        buffs.setPos(31, 9);
+        buffs.setPos(31, 18);
 
         btnJournal.setPos(width - 42, 1);
 
         btnMenu.setPos(width - btnMenu.width(), 1);
+
+        layoutHealthText();
     }
 
     @Override
@@ -186,13 +224,24 @@ public class StatusPane extends Component {
             avatar.resetColor();
         }
 
-        hp.scale.x = Math.max(0, (health - shield) / max);
-        shieldedHP.scale.x = health / max;
-        rawShielding.scale.x = shield / max;
-        shieldedHP.visible = shield > 0;
-        rawShielding.visible = shield > 0;
+        float healthPercent = Math.max(0, Math.min(1, health / max));
+        float shieldPercent = Math.max(0, Math.min(1, shield / max));
+        hpFill.hardlight(healthPercent <= 0.25f ? HP_CRITICAL_FILL : healthPercent <= 0.5f ? HP_LOW_FILL : HP_FILL);
+        hpFill.size((HP_BAR_WIDTH - 2) * healthPercent, HP_BAR_HEIGHT - 2);
+        // Shield occupies a thin strip, including when health is already full.
+        hpShield.size((HP_BAR_WIDTH - 2) * shieldPercent, 1);
+        hpShield.x = hpTrack.x;
+        hpShield.y = hpTrack.y + HP_BAR_HEIGHT - 3;
+        hpShield.visible = shield > 0;
 
-        exp.scale.x = (width / exp.width) * SpacebaseRun.hero.exp / SpacebaseRun.hero.maxExp();
+        hpText.text(shield > 0 ?
+                (int) health + "+" + (int) shield + "/" + (int) max :
+                (int) health + "/" + (int) max);
+        hpText.measure();
+        layoutHealthText();
+
+        exp.size(HP_BAR_WIDTH * Math.max(0f, Math.min(1f,
+                (float) SpacebaseRun.hero.exp / SpacebaseRun.hero.maxExp())), 1);
 
         if (SpacebaseRun.hero.lvl != lastLvl) {
 
@@ -215,6 +264,14 @@ public class StatusPane extends Component {
         if (tier != lastTier) {
             lastTier = tier;
             avatar.copy(HeroSprite.avatar(SpacebaseRun.hero.heroClass, tier));
+        }
+    }
+
+    private void layoutHealthText() {
+        if (hpText != null) {
+            hpText.x = HP_BAR_X + (HP_BAR_WIDTH - hpText.width()) / 2f;
+            hpText.y = HP_BAR_Y + (HP_BAR_HEIGHT - hpText.baseLine()) / 2f + 1f;
+            PixelScene.align(hpText);
         }
     }
 

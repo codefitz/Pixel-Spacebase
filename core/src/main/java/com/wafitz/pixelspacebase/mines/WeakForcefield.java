@@ -30,7 +30,6 @@ import com.wafitz.pixelspacebase.items.plasmids.ParalysisGrenade;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
-import com.watabou.noosa.Camera;
 import com.watabou.utils.Bundle;
 
 public class WeakForcefield extends Mine {
@@ -49,7 +48,6 @@ public class WeakForcefield extends Mine {
 
         if (SpacebaseRun.visible[pos]) {
             CellEmitter.bottom(pos).start(EarthParticle.FACTORY, 0.05f, 8);
-            Camera.main.shake(1, 0.4f);
         }
     }
 

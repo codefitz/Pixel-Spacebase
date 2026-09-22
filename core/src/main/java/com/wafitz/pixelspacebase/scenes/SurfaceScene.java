@@ -25,6 +25,7 @@ import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.XenomorphSprite;
 import com.wafitz.pixelspacebase.ui.Archs;
@@ -137,18 +138,23 @@ public class SurfaceScene extends PixelScene {
         align(a);
         window.add(a);
 
-        final Pet pet = new Pet();
-        pet.rm = pet.gm = pet.bm = 1.2f;
-        pet.x = SKY_WIDTH / 2 + 2;
-        pet.y = SKY_HEIGHT - pet.height;
-        align(pet);
-        window.add(pet);
+        final Pet pet;
+        if (StationCat.isCarried()) {
+            pet = new Pet();
+            pet.rm = pet.gm = pet.bm = 1.2f;
+            pet.x = SKY_WIDTH / 2 + 2;
+            pet.y = SKY_HEIGHT - pet.height;
+            align(pet);
+            window.add(pet);
 
-        window.add(new TouchArea(sky) {
-            protected void onClick(Touch touch) {
-                pet.jump();
-            }
-        });
+            window.add(new TouchArea(sky) {
+                protected void onClick(Touch touch) {
+                    pet.jump();
+                }
+            });
+        } else {
+            pet = null;
+        }
 
         for (int i = 0; i < nPatches; i++) {
             LightedPatch patch = new LightedPatch((i - 0.5f) * LightedPatch.WIDTH, SKY_HEIGHT, dayTime);
@@ -165,7 +171,9 @@ public class SurfaceScene extends PixelScene {
 
         if (dayTime) {
             a.brightness(1.2f);
-            pet.brightness(1.2f);
+            if (pet != null) {
+                pet.brightness(1.2f);
+            }
         } else {
             frame.hardlight(0xDDEEFF);
         }

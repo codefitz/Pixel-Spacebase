@@ -59,6 +59,10 @@ public class PixelScene extends Scene {
     static float minZoom;
     static float maxZoom;
 
+    public static int defaultGameZoom() {
+        return Math.round(defaultZoom * 1.5f);
+    }
+
     public static Camera uiCamera;
 
     //stylized pixel font
@@ -87,8 +91,6 @@ public class PixelScene extends Scene {
         maxScreenZoom = (int) Math.min(Game.dispWidth / minWidth, Game.dispHeight / minHeight);
         defaultZoom = PixelSpacebase.scale();
 
-        // wafitz.v2: Larger UI for fingers and thumbs
-        PixelSpacebase.scale(7);
         // wafitz.v2: 3 shall be the number. 4 shalt thou not count. 5 is right out.
         PixelSpacebase.quickSlots(3);
 

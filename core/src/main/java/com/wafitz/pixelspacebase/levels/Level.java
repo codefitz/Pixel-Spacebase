@@ -109,14 +109,17 @@ public abstract class Level implements Bundlable {
     protected int length;
 
     private static final float TIME_TO_RESPAWN = 50;
+    private static final int MAX_RANDOM_RESPAWN_ATTEMPTS = 30;
 
     public int version;
     public int[] map;
     public boolean[] visited;
     public boolean[] mapped;
     public boolean[] vacuum;
+    public boolean[] pressurized;
 
     public int viewDistance = SpacebaseRun.isChallenged(Challenges.DARKNESS) ? 3 : 8;
+    protected int litViewDistance = viewDistance;
 
     //FIXME should not be static!
     public static boolean[] fieldOfView;
@@ -164,6 +167,7 @@ public abstract class Level implements Bundlable {
     private static final String VISITED = "visited";
     private static final String MAPPED = "mapped";
     private static final String VACUUM = "vacuum";
+    private static final String PRESSURIZED = "pressurized";
     private static final String ENTRANCE = "entrance";
     private static final String EXIT = "exit";
     private static final String LOCKED = "locked";
@@ -175,6 +179,7 @@ public abstract class Level implements Bundlable {
     private static final String BLOBS = "blobs";
     private static final String FEELING = "feeling";
     private static final String FLOOR_BREAKER_ON = "floorBreakerOn";
+    private static final String LIT_VIEW_DISTANCE = "litViewDistance";
 
     public void create() {
 
@@ -198,6 +203,9 @@ public abstract class Level implements Bundlable {
         Arrays.fill(mapped, false);
         vacuum = new boolean[length()];
         Arrays.fill(vacuum, false);
+        pressurized = new boolean[length()];
+        Arrays.fill(pressurized, false);
+        litViewDistance = viewDistance;
 
         if (!(SpacebaseRun.bossLevel() || SpacebaseRun.depth == 21) /*final shop floor*/) {
             addItemToSpawn(Generator.random(Generator.Category.FOOD));
@@ -262,7 +270,7 @@ public abstract class Level implements Bundlable {
                             addItemToSpawn(new Torch());
                         }
                         addItemToSpawn(new TorchBattery());
-                        viewDistance = (int) Math.ceil(viewDistance / 3f);
+                        viewDistance = darkViewDistance(litViewDistance);
                         break;
                 }
             }
@@ -351,6 +359,10 @@ public abstract class Level implements Bundlable {
             vacuum = new boolean[length()];
             hasStoredVacuum = false;
         }
+        pressurized = bundle.contains(PRESSURIZED) ? bundle.getBooleanArray(PRESSURIZED) : new boolean[length()];
+        if (pressurized == null || pressurized.length != length()) {
+            pressurized = new boolean[length()];
+        }
         if (!hasStoredVacuum || !hasAnyVacuum()) {
             rebuildVacuumFromTerrain();
         }
@@ -375,7 +387,7 @@ public abstract class Level implements Bundlable {
         Collection<Bundlable> collection = bundle.getCollection(HEAPS);
         for (Bundlable h : collection) {
             Heap heap = (Heap) h;
-            if (!heap.isEmpty() || heap.type == Heap.Type.WORKSHOP_STORAGE || heap.type == Heap.Type.WORKSHOP_UPGRADE)
+            if (!heap.isEmpty() || heap.type == Heap.Type.WORKSHOP_STORAGE || heap.type == Heap.Type.WORKSHOP_UPGRADE || heap.type == Heap.Type.MAKER_BENCH)
                 heaps.put(heap.pos, heap);
         }
 
@@ -415,8 +427,14 @@ public abstract class Level implements Bundlable {
         floorBreakerOn = bundle.contains(FLOOR_BREAKER_ON)
                 ? bundle.getBoolean(FLOOR_BREAKER_ON)
                 : feeling != Feeling.DARK;
-        if (feeling == Feeling.DARK)
-            viewDistance = (int) Math.ceil(viewDistance / 3f);
+        litViewDistance = bundle.contains(LIT_VIEW_DISTANCE)
+                ? bundle.getInt(LIT_VIEW_DISTANCE)
+                : viewDistance;
+        if (feeling == Feeling.DARK && !floorBreakerOn) {
+            viewDistance = darkViewDistance(litViewDistance);
+        } else {
+            viewDistance = litViewDistance;
+        }
 
         buildFlagMaps();
         cleanWalls();
@@ -431,6 +449,7 @@ public abstract class Level implements Bundlable {
         bundle.put(VISITED, visited);
         bundle.put(MAPPED, mapped);
         bundle.put(VACUUM, vacuum);
+        bundle.put(PRESSURIZED, pressurized);
         bundle.put(ENTRANCE, entrance);
         bundle.put(EXIT, exit);
         bundle.put(LOCKED, locked);
@@ -442,6 +461,21 @@ public abstract class Level implements Bundlable {
         bundle.put(BLOBS, blobs.values());
         bundle.put(FEELING, feeling);
         bundle.put(FLOOR_BREAKER_ON, floorBreakerOn);
+        bundle.put(LIT_VIEW_DISTANCE, litViewDistance);
+    }
+
+    public void restoreFloorLighting() {
+        floorBreakerOn = true;
+        viewDistance = litViewDistance;
+    }
+
+    public void dimFloorLighting() {
+        floorBreakerOn = false;
+        viewDistance = darkViewDistance(litViewDistance);
+    }
+
+    protected int darkViewDistance(int distance) {
+        return (int) Math.ceil(distance / 3f);
     }
 
     public int tunnelTile() {
@@ -450,12 +484,29 @@ public abstract class Level implements Bundlable {
 
     public void setVacuum(int cell) {
         if (vacuum != null && insideMap(cell)) {
+            if (pressurized != null) {
+                pressurized[cell] = false;
+            }
             vacuum[cell] = true;
+        }
+    }
+
+    public void setPressurized(int cell) {
+        if (insideMap(cell)) {
+            if (pressurized != null) {
+                pressurized[cell] = true;
+            }
+            if (vacuum != null) {
+                vacuum[cell] = false;
+            }
         }
     }
 
     public boolean isVacuum(int cell) {
         if (vacuum == null || !insideMap(cell)) {
+            return false;
+        }
+        if (pressurized != null && pressurized[cell]) {
             return false;
         }
         if (!vacuum[cell] && isExposedBridgeCell(cell)) {
@@ -481,7 +532,7 @@ public abstract class Level implements Bundlable {
             return;
         }
         for (int cell = 0; cell < map.length; cell++) {
-            if (isExposedBridgeCell(cell)) {
+            if ((pressurized == null || !pressurized[cell]) && isExposedBridgeCell(cell)) {
                 vacuum[cell] = true;
             }
         }
@@ -626,11 +677,28 @@ public abstract class Level implements Bundlable {
     }
 
     public int randomRespawnCell() {
-        int cell;
-        do {
-            cell = Random.Int(length());
-        } while (!passable[cell] || SpacebaseRun.visible[cell] || Actor.findChar(cell) != null);
-        return cell;
+        int attempts = MAX_RANDOM_RESPAWN_ATTEMPTS;
+
+        while (attempts-- > 0) {
+            int cell = Random.Int(length());
+            if (passable[cell] && !SpacebaseRun.visible[cell] && Actor.findChar(cell) == null) {
+                return cell;
+            }
+        }
+
+        int candidate = -1;
+        int validCells = 0;
+        for (int i = 0; i < length(); i++) {
+            if (passable[i] && !SpacebaseRun.visible[i] && Actor.findChar(i) == null) {
+                validCells++;
+                // Reservoir sampling keeps each valid cell equally likely without extra allocations.
+                if (Random.Int(validCells) == 0) {
+                    candidate = i;
+                }
+            }
+        }
+
+        return candidate;
     }
 
     public int randomDestination() {
@@ -840,12 +908,8 @@ public abstract class Level implements Bundlable {
             mine.wither();
         }
 
-        if (map[pos] == Terrain.OFFVENT ||
-                map[pos] == Terrain.LIGHTEDVENT ||
-                map[pos] == Terrain.EMPTY ||
-                map[pos] == Terrain.EMBERS ||
-                map[pos] == Terrain.EMPTY_DECO) {
-            set(pos, Terrain.INACTIVE_VENT);
+        if (map[pos] == Terrain.OFFVENT) {
+            set(pos, Terrain.TRAMPLED_OFFVENT);
         }
 
         mine = device.couch(pos);
@@ -1166,6 +1230,7 @@ public abstract class Level implements Bundlable {
             case Terrain.STATUE_SP:
                 return Messages.get(Level.class, "statue_name");
             case Terrain.INACTIVE_VENT:
+            case Terrain.TRAMPLED_OFFVENT:
                 return Messages.get(Level.class, "inactive_vent_name");
             case Terrain.BOOKSHELF:
                 return Messages.get(Level.class, "bookshelf_name");
@@ -1201,6 +1266,7 @@ public abstract class Level implements Bundlable {
             case Terrain.SIGN:
                 return Messages.get(Level.class, "sign_desc");
             case Terrain.INACTIVE_VENT:
+            case Terrain.TRAMPLED_OFFVENT:
                 return Messages.get(Level.class, "inactive_vent_desc");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:

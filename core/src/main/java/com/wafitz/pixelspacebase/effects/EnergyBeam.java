@@ -22,11 +22,11 @@ package com.wafitz.pixelspacebase.effects;
 
 import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.effects.particles.FlameParticle;
-import com.wafitz.pixelspacebase.effects.particles.LeafParticle;
 import com.wafitz.pixelspacebase.effects.particles.PoisonParticle;
 import com.wafitz.pixelspacebase.effects.particles.PurpleParticle;
 import com.wafitz.pixelspacebase.effects.particles.RainbowParticle;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
+import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
 import com.wafitz.pixelspacebase.effects.particles.WoolParticle;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -129,7 +129,7 @@ public class EnergyBeam extends Emitter {
         EnergyBeam missile = ((EnergyBeam) group.recycle(EnergyBeam.class));
         missile.reset(from, to, callback);
         missile.size(10);
-        missile.pour(LeafParticle.GENERAL, 0.03f);
+        missile.pour(SparkParticle.FACTORY, 0.03f);
     }
 
     public static void slowness(Group group, int from, int to, Callback callback) {

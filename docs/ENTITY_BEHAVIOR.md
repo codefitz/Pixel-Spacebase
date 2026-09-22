@@ -17,10 +17,10 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | --- | --- |
 | Chief Engineer Leonard | Mid-game survivor/engineer. Offers a repair/reforge-style quest involving parts or protection. Rewards item improvement support. |
 | Hologram Distress Call | Princess Pixel of Yendor projection. Gives one of several optional hunt quests: evolved xenomorph, Dark Lord of Yendor, or armored maintenance crawler. Rewards the player after completion. |
-| Quartermaster | Formerly Old Gunsmith internally. Requests a specific material or quest item, then offers blaster rewards. Reinforces the station reclamation/resistance theme. |
+| Quartermaster | Requests a specific material or quest item, then offers blaster rewards. Reinforces the station reclamation/resistance theme. |
 | Maker Bench | Wall-mounted workshop matter-recycling station. Can break items down into parts. Internally still uses the MakerBot interaction flow. |
-| Y | Optional meta/anomaly quest NPC. Formerly Arp internally. Addresses the player directly, references game systems, asks the player to recover hologram emitters from the Holodeck Monarch's hard-light retainers, and trades them for a reward. Also appears as a brief floor 10 interlude after the Masked Prisoner is defeated, then vanishes once the hero moves. |
-| Y Trader | Follow-up/trader variant of Y. Formerly Arp Trader internally. Acknowledges survival with the same game-aware tone. |
+| Y | Optional meta/anomaly quest NPC. Addresses the player directly, references game systems, asks the player to recover hologram emitters from the Holodeck Monarch's hard-light retainers, and trades them for a reward. Also appears as a brief floor 10 interlude after the Sleeper is defeated, then vanishes once the hero moves. |
+| Y Trader | Follow-up/trader variant of Y. Acknowledges survival with the same game-aware tone. |
 | Queen Xenomorph | Nonstandard xenomorph personality/encounter. Implied cause of excessive xenomorph breeding on Pixel Spacebase. |
 | Weak Clone | Temporary allied clone created by tech. Distracts and attacks enemies but is fragile. |
 | Containment Echo | Joke/summoned neutral creature from flock-style effects. |
@@ -45,17 +45,16 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Outer Colony Scout | Fast light raider from the outer colonies. |
 | Dark Lord of Yendor | Miniboss/quest enemy. Uses toxin and incendiary flechettes. |
 | Outer Colony Psion | Ranged enemy with psionic/telemetry attacks. |
-| Yendor Shock Trooper | Large heavy raider with a combat rig that becomes more dangerous when wounded. |
+| Outer Colony Shock Trooper | Large heavy raider with a combat rig that becomes more dangerous when wounded. |
 | Shielded Shock Trooper | Shock trooper variant with added defensive behavior. |
-| Crab / Maintenance Crawler | Early station maintenance crawler enemy. Drops parts instead of meat. |
-| Great Crab / Armored Crawler | Shield-claw crawler. Blocks frontal attacks unless surprised. Drops a larger parts bundle instead of meat. |
+| Maintenance Crawler | Early station maintenance crawler enemy. Drops parts instead of meat. |
+| Armored Crawler | Shield-claw crawler. Blocks frontal attacks unless surprised. Drops a larger parts bundle instead of meat. |
 | Replicator Swarm | Alien microform swarm with movement and combat behavior around passable spaces. |
 | Ruptured Crew Suit | Corrupted emergency suit/servo enemy that ruptures into shrapnel when damaged enough. |
-| Jawar (`Thief`) | Former thief. Steals an item and attempts to escape. |
-| Jawar Scavenger (`Bandit`) | Rare Jawar variant with enhanced stealing threat. |
-| Bith Acolyte (`Guard`) | Security adept with a force-pull rig; mechanically still pulls or pressures the player in combat. |
+| Jawar | Steals an item and attempts to escape. |
+| Jawar Scavenger | Rare Jawar variant with enhanced stealing threat. |
+| Bith Acolyte | Security adept with a force-pull rig; pulls or pressures the player in combat. |
 | Siphon Drone | Flying medical-drain drone that replenishes health when attacking. |
-| Yendor Shock Trooper | Heavy melee enemy with low-health combat-rig overclock. |
 | Facehugger | Uses adhesive biofilament and direct latching behavior. Successful latches infect the hero like an alien egg; if the infection runs its course it spawns a tougher xenomorph. |
 | Plasma Anomaly (`Elemental`) | Former fire elemental. Reactor/containment leak enemy with special damage flavor. |
 | Plasma Spark (`Newborn Elemental`) | Quest-related discharge source for a faulty core module ejected by the restart sequence. |

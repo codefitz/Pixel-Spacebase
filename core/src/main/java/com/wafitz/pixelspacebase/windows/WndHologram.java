@@ -27,7 +27,7 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.sprites.HoodedRaiderCommanderSprite;
-import com.wafitz.pixelspacebase.sprites.GreatCrabSprite;
+import com.wafitz.pixelspacebase.sprites.ArmoredCrawlerSprite;
 import com.wafitz.pixelspacebase.sprites.ToughXenoSprite;
 import com.wafitz.pixelspacebase.ui.RedButton;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
@@ -59,7 +59,7 @@ public class WndHologram extends Window {
                 message = PixelScene.renderMultiline(Messages.get(this, "gnoll") + Messages.get(this, "give_item"), 6);
                 break;
             case 3:
-                titlebar.icon(new GreatCrabSprite());
+                titlebar.icon(new ArmoredCrawlerSprite());
                 titlebar.label(Messages.get(this, "crab_title"));
                 message = PixelScene.renderMultiline(Messages.get(this, "crab") + Messages.get(this, "give_item"), 6);
                 break;
@@ -109,7 +109,7 @@ public class WndHologram extends Window {
         }
 
         // wafitz.v1 - Hologram now recognises you!
-        hologram.yell("Farewell, " + SpacebaseRun.hero.heroClass.title() + "!");
+        hologram.yell(Messages.get(Hologram.class, "farewell", SpacebaseRun.hero.heroClass.title()));
         hologram.die(null);
 
         Hologram.Quest.complete();

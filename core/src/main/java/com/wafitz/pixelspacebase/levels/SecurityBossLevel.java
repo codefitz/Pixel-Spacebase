@@ -59,7 +59,7 @@ import java.util.ArrayList;
 public class SecurityBossLevel extends Level {
 
     private static final int ALL_Y_MAZE_INTERLUDES_FOUND = 0x7;
-    private static final int TENGU_DAMAGE_CAP = 20;
+    private static final int BOSS_DAMAGE_CAP = 20;
     private static final int MIN_RANGED_USES = 3;
 
     {
@@ -78,13 +78,14 @@ public class SecurityBossLevel extends Level {
     private State state;
     private MaskedPrisoner maskedPrisoner;
     private int yMazeFound;
+    private boolean yBalanceApplied;
 
     //keep track of that need to be removed as the level is changed. We dump 'em back into the level at the end.
     private ArrayList<Item> storedItems = new ArrayList<>();
 
     @Override
     public String tilesTex() {
-        return Assets.TILES_SECURITY_BLOCK;
+        return state == State.FIGHT_ARENA ? Assets.TILES_SECURITY_ARENA : Assets.TILES_SECURITY_BLOCK;
     }
 
     @Override
@@ -95,6 +96,7 @@ public class SecurityBossLevel extends Level {
     private static final String STATE = "state";
     private static final String MASKED_PRISONER = "masked_prisoner";
     private static final String Y_MAZE_FOUND = "yMazeFound";
+    private static final String Y_BALANCE_APPLIED = "yBalanceApplied";
     private static final String STORED_ITEMS = "storeditems";
 
     @Override
@@ -103,6 +105,7 @@ public class SecurityBossLevel extends Level {
         bundle.put(STATE, state);
         bundle.put(MASKED_PRISONER, maskedPrisoner);
         bundle.put(Y_MAZE_FOUND, yMazeFound);
+        bundle.put(Y_BALANCE_APPLIED, yBalanceApplied);
         bundle.put(STORED_ITEMS, storedItems);
     }
 
@@ -111,6 +114,7 @@ public class SecurityBossLevel extends Level {
         super.restoreFromBundle(bundle);
         state = bundle.getEnum(STATE, State.class);
         yMazeFound = bundle.getInt(Y_MAZE_FOUND);
+        yBalanceApplied = bundle.getBoolean(Y_BALANCE_APPLIED);
 
         //in some states the masked prisoner won't be in the world, in others he will be.
         if (state == State.START || state == State.MAZE) {
@@ -128,7 +132,7 @@ public class SecurityBossLevel extends Level {
             storedItems.add((Item) item);
         }
 
-        updateArenaPlanetVisuals(state == State.FIGHT_ARENA);
+        removeLegacyArenaOverlays();
     }
 
     @Override
@@ -250,7 +254,7 @@ public class SecurityBossLevel extends Level {
         this.map = map.clone();
         buildFlagMaps();
         cleanWalls();
-        updateArenaPlanetVisuals(map == MAP_ARENA);
+        removeLegacyArenaOverlays();
 
         exit = entrance = 0;
         for (int i = 0; i < length(); i++)
@@ -274,7 +278,7 @@ public class SecurityBossLevel extends Level {
         SpacebaseRun.observe();
     }
 
-    private void updateArenaPlanetVisuals(boolean arenaActive) {
+    private void removeLegacyArenaOverlays() {
         ArrayList<CustomTileVisual> toRemove = new ArrayList<>();
         for (CustomTileVisual visual : customTiles) {
             if (visual instanceof AlienPlanetSurface) {
@@ -282,21 +286,6 @@ public class SecurityBossLevel extends Level {
             }
         }
         customTiles.removeAll(toRemove);
-
-        if (!arenaActive) {
-            return;
-        }
-
-        for (int i = 0; i < map.length; i++) {
-            if (map[i] == Terrain.EMPTY) {
-                AlienPlanetSurface surface = new AlienPlanetSurface();
-                int x = i % width();
-                int y = i / width();
-                surface.pos(x, y);
-                surface.variant(Math.abs((x * 31 + y * 17) % 8));
-                customTiles.add(surface);
-            }
-        }
     }
 
     private void clearEntities(Room safeArea) {
@@ -366,14 +355,14 @@ public class SecurityBossLevel extends Level {
 
             //maze beaten, moving to the arena
             case MAZE:
-                balanceMaskedPrisonerArenaIfYFound();
-
                 SpacebaseRun.hero.interrupt();
                 SpacebaseRun.hero.pos += 9 + 3 * 32;
                 SpacebaseRun.hero.sprite.interruptMotion();
                 SpacebaseRun.hero.sprite.place(SpacebaseRun.hero.pos);
 
+                state = State.FIGHT_ARENA;
                 changeMap(MAP_ARENA);
+                GLog.n(Messages.get(this, "planet_arrival"));
                 clearEntities(null);
 
                 maskedPrisoner.state = maskedPrisoner.HUNTING;
@@ -383,7 +372,6 @@ public class SecurityBossLevel extends Level {
                 GameScene.add(maskedPrisoner);
                 maskedPrisoner.notice();
 
-                state = State.FIGHT_ARENA;
                 break;
 
             //arena ended, fight over.
@@ -403,6 +391,7 @@ public class SecurityBossLevel extends Level {
                 maskedPrisoner.pos = 5 + 28 * 32;
                 maskedPrisoner.sprite.place(5 + 28 * 32);
 
+                state = State.WON;
                 changeMap(MAP_END);
                 clearEntities(null);
 
@@ -412,22 +401,22 @@ public class SecurityBossLevel extends Level {
                 for (Item item : storedItems)
                     drop(item, randomSecurityCell());
 
-                state = State.WON;
                 break;
         }
     }
 
-    public void recordMazeYFound(int appearance) {
+    public int recordMazeYFound(int appearance) {
         if (appearance >= 1 && appearance <= 3) {
             yMazeFound |= 1 << (appearance - 1);
+            if (yMazeFound == ALL_Y_MAZE_INTERLUDES_FOUND && !yBalanceApplied) {
+                balanceMaskedPrisonerArena();
+                yBalanceApplied = true;
+            }
         }
+        return Math.max(1, Integer.bitCount(yMazeFound));
     }
 
-    private void balanceMaskedPrisonerArenaIfYFound() {
-        if ((yMazeFound & ALL_Y_MAZE_INTERLUDES_FOUND) != ALL_Y_MAZE_INTERLUDES_FOUND) {
-            return;
-        }
-
+    private void balanceMaskedPrisonerArena() {
         if (bestRangedUses() < MIN_RANGED_USES) {
             MissileBlaster blaster = new MissileBlaster();
             blaster.identify();
@@ -436,17 +425,21 @@ public class SecurityBossLevel extends Level {
             if (!blaster.collect(SpacebaseRun.hero.belongings.backpack)) {
                 SpacebaseRun.hero.belongings.backpack.items.add(blaster);
             }
-            GLog.p(Messages.get(YInterlude.class, "balance_gift", blaster.name()));
             return;
         }
 
-        Item strongest = strongestUnequippedOffensiveItem();
-        if (strongest != null && offensiveScore(strongest) > TENGU_DAMAGE_CAP) {
-            Item removed = strongest.detachAll(SpacebaseRun.hero.belongings.backpack);
-            if (removed != null) {
-                storedItems.add(removed);
+        KindOfWeapon equipped = SpacebaseRun.hero.belongings.weapon;
+        Item target = weaponToHold(equipped, SpacebaseRun.hero.belongings.backpack);
+        if (target != null && offensiveScore(target) > BOSS_DAMAGE_CAP) {
+            if (target == equipped) {
+                equipped.unequipForConfiscation(SpacebaseRun.hero);
+                storedItems.add(equipped);
+            } else {
+                Item removed = target.detachAll(SpacebaseRun.hero.belongings.backpack);
+                if (removed != null) {
+                    storedItems.add(removed);
+                }
             }
-            GLog.w(Messages.get(YInterlude.class, "balance_remove", strongest.name()));
         }
     }
 
@@ -465,11 +458,14 @@ public class SecurityBossLevel extends Level {
         return best;
     }
 
-    private Item strongestUnequippedOffensiveItem() {
+    Item weaponToHold(KindOfWeapon equipped, Iterable<Item> backpack) {
+        if (equipped != null) {
+            return equipped;
+        }
         Item strongest = null;
         int bestScore = 0;
 
-        for (Item item : SpacebaseRun.hero.belongings.backpack) {
+        for (Item item : backpack) {
             int score = offensiveScore(item);
             if (score > bestScore) {
                 bestScore = score;

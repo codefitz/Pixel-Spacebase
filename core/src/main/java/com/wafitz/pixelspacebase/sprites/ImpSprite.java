@@ -22,16 +22,20 @@ package com.wafitz.pixelspacebase.sprites;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.actors.Char;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.watabou.noosa.TextureFilm;
 
 public class ImpSprite extends MobSprite {
 
     public ImpSprite() {
+        this(Assets.ARP);
+    }
+
+    protected ImpSprite(String asset) {
         super();
 
-        texture(Assets.ARP);
+        texture(asset);
 
         TextureFilm frames = new TextureFilm(texture, 12, 14);
 
@@ -53,7 +57,7 @@ public class ImpSprite extends MobSprite {
     public void link(Char ch) {
         super.link(ch);
 
-        if (ch instanceof Arp) {
+        if (ch instanceof Y) {
             alpha(0.4f);
         }
     }

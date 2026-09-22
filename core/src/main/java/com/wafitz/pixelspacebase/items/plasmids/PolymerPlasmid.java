@@ -75,8 +75,7 @@ public class PolymerPlasmid extends Plasmid {
                     int value = blob.cur[i];
                     if (value > 0) {
 
-                        blob.cur[i] = 0;
-                        blob.volume -= value;
+                        blob.clear(i);
                         procd = true;
 
                         if (SpacebaseRun.visible[i]) {
@@ -90,12 +89,12 @@ public class PolymerPlasmid extends Plasmid {
 
         boolean heroAffected = PathFinder.distance[SpacebaseRun.hero.pos] < Integer.MAX_VALUE;
 
-        if (procd) {
+        if (SpacebaseRun.visible[cell]) {
+            splash(cell);
+            Sample.INSTANCE.play(Assets.SND_SHATTER);
+        }
 
-            if (SpacebaseRun.visible[cell]) {
-                splash(cell);
-                Sample.INSTANCE.play(Assets.SND_SHATTER);
-            }
+        if (procd) {
 
             setKnown();
 
@@ -104,8 +103,6 @@ public class PolymerPlasmid extends Plasmid {
             }
 
         } else {
-
-            super.shatter(cell);
 
             if (heroAffected) {
                 GLog.i(Messages.get(this, "freshness"));

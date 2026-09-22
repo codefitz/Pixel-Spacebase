@@ -25,7 +25,7 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.weapon.melee.Knuckles;
@@ -76,7 +76,7 @@ public class JedaKnight extends Mob {
 
     @Override
     public void die(Object cause) {
-        Arp.Quest.process(this);
+        Y.Quest.process(this);
 
         super.die(cause);
     }

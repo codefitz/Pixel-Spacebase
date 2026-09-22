@@ -28,10 +28,11 @@ import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Arp;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Gunsmith;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Leonard;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.items.Clone;
 import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Generator;
@@ -49,8 +50,8 @@ import com.wafitz.pixelspacebase.levels.DeepContainmentDeckLevel;
 import com.wafitz.pixelspacebase.levels.LastLevel;
 import com.wafitz.pixelspacebase.levels.LastWorkshopLevel;
 import com.wafitz.pixelspacebase.levels.Level;
-import com.wafitz.pixelspacebase.levels.OperationsBossLevel;
-import com.wafitz.pixelspacebase.levels.OperationsLevel;
+import com.wafitz.pixelspacebase.levels.MaintenanceBossLevel;
+import com.wafitz.pixelspacebase.levels.MaintenanceLevel;
 import com.wafitz.pixelspacebase.levels.SecurityBossLevel;
 import com.wafitz.pixelspacebase.levels.SecurityBlockLevel;
 import com.wafitz.pixelspacebase.levels.Room;
@@ -68,6 +69,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -182,9 +184,10 @@ public class SpacebaseRun {
         chapters = new HashSet<>();
 
         Hologram.Quest.reset();
-        Gunsmith.Quest.reset();
+        Quartermaster.Quest.reset();
         Leonard.Quest.reset();
-        Arp.Quest.reset();
+        Y.Quest.reset();
+        StationCat.Quest.reset();
 
         Generator.initArtifacts();
         hero = new Hero();
@@ -217,10 +220,10 @@ public class SpacebaseRun {
             case 2:
             case 3:
             case 4:
-                level = new OperationsLevel();
+                level = new MaintenanceLevel();
                 break;
             case 5:
-                level = new OperationsBossLevel();
+                level = new MaintenanceBossLevel();
                 break;
             case 6:
             case 7:
@@ -299,8 +302,7 @@ public class SpacebaseRun {
 
     // wafitz.v1 - You get a shop, you get a shop, every level get's a shop!
     public static boolean workshopOnLevel() {
-        //return depth == 6 || depth == 11 || depth == 16;
-        return true;
+        return !bossLevel();
     }
 
     public static boolean bossLevel() {
@@ -326,6 +328,7 @@ public class SpacebaseRun {
         }
 
         hero.pos = pos != -1 ? pos : level.exit;
+        StationCat.placeFollowerOn(level);
 
         hero.viewDistance = heroViewDistance();
 
@@ -340,12 +343,20 @@ public class SpacebaseRun {
     }
 
     public static void dropToChasm(Item item) {
-        int depth = SpacebaseRun.depth + 1;
+        int depth = fallTargetDepth();
         ArrayList<Item> dropped = SpacebaseRun.droppedItems.get(depth);
         if (dropped == null) {
             SpacebaseRun.droppedItems.put(depth, dropped = new ArrayList<>());
         }
         dropped.add(item);
+    }
+
+    public static int fallTargetDepth() {
+        return fallTargetDepth(depth);
+    }
+
+    static int fallTargetDepth(int currentDepth) {
+        return currentDepth > 1 ? currentDepth - 1 : currentDepth + 1;
     }
 
     public static void dropHeapToDepth(Heap heap, int depth) {
@@ -412,6 +423,8 @@ public class SpacebaseRun {
     private static final String DROPPED = "dropped%d";
     private static final String DROPPED_HEAPS = "droppedHeaps%d";
     private static final String LEVEL = "level";
+    private static final String TEMP_SAVE_SUFFIX = ".tmp";
+    private static final String BACKUP_SAVE_SUFFIX = ".bak";
     private static final String LIMDROPS = "limiteddrops";
     private static final String DV = "airTank";
     private static final String WT = "transmutation";
@@ -442,6 +455,54 @@ public class SpacebaseRun {
                 return RN_DEPTH_FILE;
             default:
                 return RG_DEPTH_FILE;
+        }
+    }
+
+    private static void writeBundleAtomically(String fileName, Bundle bundle) throws IOException {
+        String tempFileName = fileName + TEMP_SAVE_SUFFIX;
+        String backupFileName = fileName + BACKUP_SAVE_SUFFIX;
+
+        boolean writeSucceeded;
+        try (OutputStream output = Game.instance.openFileOutput(tempFileName, Game.MODE_PRIVATE)) {
+            writeSucceeded = Bundle.write(bundle, output);
+        }
+
+        if (!writeSucceeded) {
+            deleteTempSaveFile(tempFileName);
+            throw new IOException("Failed to write save file: " + fileName);
+        }
+
+        File tempFile = Game.instance.getFileStreamPath(tempFileName);
+        File targetFile = Game.instance.getFileStreamPath(fileName);
+        File backupFile = Game.instance.getFileStreamPath(backupFileName);
+
+        if (backupFile.exists() && !backupFile.delete()) {
+            deleteTempSaveFile(tempFileName);
+            throw new IOException("Failed to clear backup save file: " + backupFileName);
+        }
+
+        boolean hadExistingSave = targetFile.exists();
+        if (hadExistingSave && !targetFile.renameTo(backupFile)) {
+            deleteTempSaveFile(tempFileName);
+            throw new IOException("Failed to back up existing save file: " + fileName);
+        }
+
+        if (!tempFile.renameTo(targetFile)) {
+            if (hadExistingSave && !backupFile.renameTo(targetFile)) {
+                PixelSpacebase.reportException(new IOException("Failed to restore backup save file: " + fileName));
+            }
+            deleteTempSaveFile(tempFileName);
+            throw new IOException("Failed to replace save file: " + fileName);
+        }
+
+        if (hadExistingSave && backupFile.exists() && !backupFile.delete()) {
+            PixelSpacebase.reportException(new IOException("Failed to delete backup save file: " + backupFileName));
+        }
+    }
+
+    private static void deleteTempSaveFile(String tempFileName) {
+        if (!Game.instance.deleteFile(tempFileName)) {
+            PixelSpacebase.reportException(new IOException("Failed to delete temp save file: " + tempFileName));
         }
     }
 
@@ -482,9 +543,10 @@ public class SpacebaseRun {
 
             Bundle quests = new Bundle();
             Hologram.Quest.storeInBundle(quests);
-            Gunsmith.Quest.storeInBundle(quests);
+            Quartermaster.Quest.storeInBundle(quests);
             Leonard.Quest.storeInBundle(quests);
-            Arp.Quest.storeInBundle(quests);
+            Y.Quest.storeInBundle(quests);
+            StationCat.Quest.storeInBundle(quests);
             bundle.put(QUESTS, quests);
 
             Room.storeRoomsInBundle(bundle);
@@ -503,13 +565,12 @@ public class SpacebaseRun {
             Badges.saveLocal(badges);
             bundle.put(BADGES, badges);
 
-            OutputStream output = Game.instance.openFileOutput(fileName, Game.MODE_PRIVATE);
-            Bundle.write(bundle, output);
-            output.close();
+            writeBundleAtomically(fileName, bundle);
 
         } catch (IOException e) {
             GamesInProgress.setUnknown(hero.heroClass);
             PixelSpacebase.reportException(e);
+            throw e;
         }
     }
 
@@ -517,10 +578,7 @@ public class SpacebaseRun {
         Bundle bundle = new Bundle();
         bundle.put(LEVEL, level);
 
-        OutputStream output = Game.instance.openFileOutput(
-                Messages.format(depthFile(hero.heroClass), depth), Game.MODE_PRIVATE);
-        Bundle.write(bundle, output);
-        output.close();
+        writeBundleAtomically(Messages.format(depthFile(hero.heroClass), depth), bundle);
     }
 
     public static void saveAll() throws IOException {
@@ -593,14 +651,16 @@ public class SpacebaseRun {
             Bundle quests = bundle.getBundle(QUESTS);
             if (!quests.isNull()) {
                 Hologram.Quest.restoreFromBundle(quests);
-                Gunsmith.Quest.restoreFromBundle(quests);
+                Quartermaster.Quest.restoreFromBundle(quests);
                 Leonard.Quest.restoreFromBundle(quests);
-                Arp.Quest.restoreFromBundle(quests);
+                Y.Quest.restoreFromBundle(quests);
+                StationCat.Quest.restoreFromBundle(quests);
             } else {
                 Hologram.Quest.reset();
-                Gunsmith.Quest.reset();
+                Quartermaster.Quest.reset();
                 Leonard.Quest.reset();
-                Arp.Quest.reset();
+                Y.Quest.reset();
+                StationCat.Quest.reset();
             }
 
             Room.restoreRoomsFromBundle(bundle);

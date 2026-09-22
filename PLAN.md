@@ -1,150 +1,172 @@
-# Targeted Release: v1.0.2
+# Targeted Release: v1.0.3
 
-## Cosmetic Changes
+Use this as the working backlog for the next sprint. Put rough ideas in Suggestions first, then move them into the relevant section once the direction is clear enough to implement and test.
 
-- [x] Update build number to v1.0.2
-- [x] Update about (give credit to Codex), recent changes
-- [x] Update the hooded raider commander theme to have stronger "Darth Sidious" vibes.
-  - [x] Review actor and item message strings for tone.
-  - [x] Review encounter presentation and boss text.
-- [x] Replace the chain/restraint theme with "the force".
-  - [x] Rename the Bith pull effect and descriptions so it reads as being pulled by the force.
-  - [x] Remove or replace text that refers to chains.
-- [x] Add "Do not pet the cat" warning sign text.
-- [x] Alien egg - screen still needs to fade to black and return before "Ugh what happened".
-- [x] Stimulantts need to be updated to a stimulant type of sprite. Also should be renamed "Stims".
-- [x] Dialogue boxes could do  with a smaller border and make the background semi-transparent
-- [x] The pickaxe has generic text and NO TEXT FOUND. This should be replaced with some other sci-fi item.
-- [x] The surveyor module has NO TEXT FOUND for it's action button.
-- [x] Backpack extensions should feature in every workshop, but only be available once the previous one has been built.
-- [x] Quaretermaster lazer quest tiles need to be switched to something like a holodeck backdrop. When the hero enters it should switch to a holodeck program like ancient rome or something.
-- [x] Tech Library and Icon need to be updated to 'Mods'
-- [x] Alien Egg item (pick up and plant) should be Black Goo.
-- [x] Bionetics naming - rather than call the items 'Mods' they should be called 'Plasmids'
-- [x] Mods naming - rather than call the items 'Tech' call them 'Upgrade'
-- [x] Swap the Mods and Bionetics backpack extensions icons.
-- [x] Vaccuum warning should be a popup, rather than log.
+## Suggestions
 
-## Mechanic Changes
+- [x] Cat follow-up idea for the next version.
+- [x] Need to replace chief's pickaxe (screwdriver) with a suitable tool icon.
+- [x] Need a new reward for chief since reforging redundant.
 
-- [x] Torch becomes a permanent item with battery pickups.
-  - [x] Add permanent torch item behavior.
-  - [x] Add battery pickup generation and recharge behavior.
-  - [x] Balance torch charge use against dark-level encounters.
-- [x] Spacesuit is required for spacewalk areas.
-  - [x] Gate captain spacewalk access behind spacesuit ownership/equipment.
-  - [x] Gate commander spacewalk access behind spacesuit ownership/equipment.
-  - [x] Add failure messaging when the player tries to enter without a spacesuit.
-- [x] Rework shapeshifter progression.
-  - [x] Prevent shapeshifter from using blaster weapons.
-  - [x] Scale shapeshifter strength as level depth increases.
-  - [x] Give shapeshifter faster level progression.
-  - [x] Let shapeshifter transform into items.
-  - [x] Make item form apply camouflage-like concealment.
-  - [x] Give item form a boosted surprise attack.
-- [x] Rework shapeshifter healing.
-  - [x] Debuff health pack effectiveness for shapeshifter.
-  - [x] Add small shapeshifter recovery while standing in water.
-- [x] Replace the shapeshifter mirror boss path.
-  - [x] Replace the first boss with the Xeno Queen.
-  - [x] Add a nest arena loop with xenos emerging from wall cracks.
-  - [x] Seed the arena with alien eggs.
-  - [x] Drop the boss key when the queen dies.
-- [x] Add room and breaker lighting mechanics.
-  - [x] Light rooms on entry.
-  - [x] Remove gameplay dependency on floor lights.
-  - [x] Add random dark levels.
-  - [x] Place a breaker on dark levels that restores lights.
-  - [x] Place a breaker on every level so lights can be toggled off later.
-- [x] Rework floor lights into dislodged/exposed floor tiles.
-  - [x] Rename floor-light terrain/messages to exposed or dislodged floor panels.
-  - [x] Update floor-light art to damaged flooring or exposed wall/floor infrastructure.
-  - [x] Convert floor-light gameplay from visibility support to loot/hazard discovery.
-  - [x] Let exposed panels reveal hidden pickups or trigger electric/burn hazards.
-  - [x] Keep room lighting controlled by the floor breaker state instead of tile lights.
-- [x] Add generic storage/reveal behavior so the container opens before the tech/biogenetic item identity is known.
-- [x] Add ambient crew survivor NPCs.
-- [x] Add cat follower NPC.
-  - [x] Implement cat following behavior.
-  - [x] Decide whether petting is blocked, punished, or only warned against.
-- [x] Replace garden with a one-square healing tank booth.
-  - [x] Remove or disable garden room generation.
-  - [x] Add one-square healing tank booth placement.
-  - [x] Define healing tank interaction behavior.
-- [x] Security levels should start with the piercing alarm sound from the trap.
-- [x] Positive-effect mines should become automatically applied stimulants.
-- [x] Fix chest state after lower-level warp.
-  - [x] Reproduce the case where being warped back down empties chests irrecoverably.
-  - [x] Preserve unopened chest contents across lower-level warps.
-- [x] Rework makerbot workshop progression.
-  - [x] Limit early makerbot stock to essential items.
-  - [x] Keep a small chance for rare or high-strength stock in lower-tier workshops.
-  - [x] Add makerbot upgrades that unlock better items over time.
-  - [x] Increase basic item level by zone regardless of makerbot upgrade state.
-- [x] Persist player-owned items across workshops in the same area.
-- [x] Add alien egg step event.
-  - [x] Fade the screen briefly to black when stepping on an alien egg.
-  - [x] Show a "what happened" dialog when the screen returns.
-- [x] Falling needs to be fixed so it falls to the level below - not up. The locked room needs to appear on the (next) level above.
-- [x] Y should appear 3 times in the maze before the masked prisoner battle (hero to seek him out). If hero finds Y all 3 times, he will look in heros backpack and compare against the prisoner's stats. If the hero seems to be under equipped - Y even the odds and will provide an offensive ranged weapon with at least 3 charges. If the hero seems to be overequipped - Y will even the odds and remove one random weapon and place it to be found in one of the cells after the battle.
-  - [x] Place three Y maze encounters with mischievous ambiguous dialogue.
-  - [x] Track whether the hero found all three encounters.
-  - [x] Compare the backpack against the masked prisoner's stats before the arena.
-  - [x] Give or remove a ranged weapon based on that comparison.
-- [x] facehugger should die on infection. Also remove the sticky web effects.
-- [x] Restore release-mode hero start.
-  - [x] Return hero starting strength to normal.
-  - [x] Disable dev/test invulnerability.
-  - [x] Remove the depth-1 starter chest and injected test items.
-  - [x] Document the hero dev/test setup for next sprint.
+## Mechanics
 
-## Refactorial Changes and Small Adjustments
-
-- [x] Rename legacy fantasy concepts to spacebase equivalents.
-  - [x] Clean high-priority player-visible fantasy labels in item/enhancement/subclass text.
-  - [x] Clean medium-priority player-visible fantasy labels in signs, windows, quests, and enemy text.
-  - [x] Clean low-priority visible fantasy labels and release-plan wording.
-  - [x] Rename central run, tilemap, and seed internals to spacebase terms.
-  - [x] Rename monarch, ruptured-suit, raider commander, Security Block, and Engineering internals.
-- [x] Reorganize tech and biogenetics by use.
-  - [x] Classify offensive pickups into Ordnance.
-  - [x] Classify defensive, repair, and shield pickups into Utility.
-  - [x] Keep genetic alterations in Plasmids and leave sealed capsules in the main backpack until opened.
-  - [x] Convert offensive biogenetics presentation toward grenade-style items.
-- [x] Rename Xeno-booster to align with the x-port concept.
-- [x] Add an option to open and scroll the full log.
-- [x] Floor lighting overhall
-  - [x] Lighting that contains a trap, should be invisible - so it's a real trap
-  - [x] Traps shouldn't ever look like a light - they should look like a blown panel after being set off.
-  - [x] Adjust terrain features so that only one type appears on each zone/area
-  - [x] Adjust terrain features to look less like ruins and more like different types of lighting.
-  - [x] Set mines should look a bit more obvious like mines
-- [x] Shuriken need to be updated to something suitably sci-fi 
-- [x] Sealed Cache should automatically consume.
-- [x] Level 5 boss - should be alien queen for shapeshifter, but everyone else gets the standard shapeshifter boss.
-- [x] Level 5 alien queen boss needs to be tougher and also use the alien queen sprite.
-- [x] Level 5 alien queen boss should be in the dark (but not the shapeshifter boss)
-- [x] Stims should not require the hero to stay fixed - they should offer a temporary boost.
+- [x] Cat rescue route after the final boss.
+    - [x] Add a pet carrier item with placeholder icon, equip behavior, save data, and text.
+    - [x] On defeating the final boss, drop the pet carrier.
+    - [x] Track whether the station cat is following, dead, gone, or carried in the pet carrier.
+    - [x] On clicking a found cat with an equipped empty pet carrier, put the cat in the carrier.
+    - [x] If a carrier holding the cat is dropped, the cat pops out.
+    - [x] Cat moves between levels only when following, then waits to be petted again before continuing.
+    - [x] Allow returning through Operations decks to re-find the cat when the carrier is available and the cat is alive.
+    - [x] Allow the pet carrier item to be found earlier in-game and equipped before the final boss.
+- [ ] Endings:
+    - [x] Standard escape pod
+    - [x] Escape pod with cat
+    - [x] Fix core (save NPCs, remain on station) - possible time-based challenge, work back through station levels - unstable shaking.
 
 ## Graphical Changes
 
-- [x] Remove the 3D effect/overlay from floor lights.
-- [x] Replace the chain graphic with a force-themed visual.
-- [x] Add a generic storage icon for unrevealed tech/biogenetics.
-- [x] Add or update grenade icons for offensive biogenetics.
-- [x] Add healing tank booth tile/art.
-- [x] Add cat sprite or reuse/update an existing follower sprite.
-- [x] Add visual treatment for dark levels and breaker-restored lighting.
-- [x] Change Xeno-booster to an x-port icon.
-- [x] Masked prisoner battle arena needs to be more like an alien planet (think Star Trek TOS).
-- [x] Siphon drone sprite needs updating.
+- [x] Deep containment - change this to Bridge.
+- [x] Should be made clear that Y is taking or giving something to hero for Tengu battle.
+- [x] Fix ugly HP bar
+- [x] Modal dialogs still need fixing (border size) - Start of game intro.
+- [x] Rot lasher/heart sci-fi rework
+- [x] Weak forcefield shouldn't rumble the ground.
+- [x] If a bridge and chasm is in a room, then space suit isn't needed.
+- [x] Convert makerbot to a workdesk. No sprite, no character.
+- [x] Hoverpod should also offer protection in vacuum.
+
+## Graphical Changes
+
+- [x] Manual work (Not for codex)
+    - [x] Pet carrier (needs new sprite and codex for mapping)
+    - [x] Tengu sprite
+    - [x] Alien egg
+    - [x] Fix prison floor alignment
+    - [x] Broken floor tiles
+    - [x] NPC appearances
+    - [x] Terminals
+    - [x] Breaker
+    - [x] Jawar
+    - [x] Floating terrain traps need to be remapped.
+    - [x] Music
+        - [x] Engineering Boss
+        - [x] Habitation
+        - [x] Habitation Boss
+        - [x] Bridge
+        - [x] Bridge Boss
+        - [x] Completion/credits
+- [x] Replace leaf particles with sparks.
 
 ## Bugs
 
-- [x] Target sometimes doesn't dissapear after certain actions.
-- [x] Guardian Floor Lighting causes a game crash when walking over it.
-- [x] One of the modules is just called 'Item 1'
-- [x] Fix the backpack tab icon (currenty is a battery)
-- [x] Internal bridge (room filled with water) warns about the vacuum, this is not needed.
-- [x] Stepping on a falling trap still sends me up, rather than down
-- [x] If an item appears over the breaker switch, it can't be picked up. Breaker switch could be incorporated into a wall.
+- [x] No text found picking up medigel
+- [x] Flock trigger - the log says alien: No text found
+- [x] Feral shapeshifter's last words are DIE!, this shouldd be the "Thankyou" line.
+- [x] Cat crash when touching the Maker Bench in the workshop.
+- [x] Enhancement chip says You enhanced your %s
+- [x] Hologram says thankyou %s
+- [x] Shield is just called item - no texts found in description.
+- [x] The mastery scripts book has no text found for all buttons, and description
+
+## Code Quality / Stability
+
+- [x] #22 Save failures can be silently accepted.
+- [x] #23 Bound randomRespawnCell to avoid infinite loops.
+- [x] #24 Fix Android lint failure for vibrator permission in pd-classes.
+- [x] #25 Replace sniper DR unit test with production-code coverage.
+- [x] #26 Make optional NDK build task portable without local.properties.
+- [x] #27 Reduce static Android context and activity leaks.
+- [x] #28 Clean up low-risk Android lint warnings.
+
+## Refactorial Changes and Small Adjustments
+
+- [x] If petted, cat always follows hero to next level. before ascending to boss level, a dialogue will warn do you want to bring the cat or not? If no is selected, the cat will wander off, and will not be found if the hero returns.
+- [x] DM3000 reconfiguration
+    - [x] Weapon handling
+        - [x] Cannot equip ordinary melee weapons.
+        - [x] Melee weapons can be melted down to missile bolts.
+    - [x] Core body rules
+        - [x] Is immune to gases.
+        - [x] Doesn't require food.
+        - [x] Can't use health packs.
+        - [x] Siphons water to recover.
+        - [x] Can eat batteries.
+    - [x] Has automatic light in the darkness.
+    - [x] Is immune to the alien egg effects.
+    - [x] Jawars will disable DM3000 and steal any worn armor.
+- [x] Chestburster should have a blood effect when appearing.
+- [x] After alien infection hero should be caught in the sticky effect for 1 turn.
+- [x] Workshop same size each level.
+- [x] Renames (classes)
+    - [x] crab
+    - [x] bat
+    - [x] brute
+    - [x] guard
+    - [x] gunsmith
+    - [x] thief
+    - [x] arp
+    - [x] Operations Level = Maintenance
+    - [x] Wraith
+- [x] Stims, plasmids - should stay in effect whilst hero moving.
+- [x] Lights breaker turns lights on and off for any level.
+- [x] Torch needs a switch off option when it is on.
+- [x] Yendor sheild has no text found
+- [x] Turning on the breaker doesn't actually make the level back to normal brightness.
+- [x] Alien Queen doesn't actually attack, also should not have 2 alien queens on the level (queen should only attack shapeshifter hero)
+- [x] The healing booth should be a permanent healing feature (like the previous garden) - can return any time and slowly restore health.
+- [x] The polymer plasmid, you should be able to throw this and it will instead nuetralise any gases in the air, but can still be injested for immunity.
+- [x] If the cat dies, there should be a log indicator, and a sad meow.
+- [x] If the shapeshifter equips a non-consumable item (e.g. blaster) it should act like a missile when clicked (option to throw)
+- [x] Shapeshifter throws need to be better the more strength he has (like Hunters disk)
+- [x] Falling trap should send you to the floor below.
+- [x] Default action with fire grenade when quickslotted should be throw.
+- [x] Shapeshifter should be able to quickslot weapons for throwing.
+- [x] Restore specific sprites for Y, Quartermaster and Leonard.
+- [x] Falling down a chasm should send you down a level (already visited), not up (unexplored)
+
+## Release Prep
+
+- [x] Remove temporary hero invulnerability, boosted starting Strength, and starter chest.
+- [ ] Update release notes and version (on plan completion)
+- [x] Run `./gradlew :core:testDebugUnitTest`.
+- [x] Run `./gradlew :core:assembleDebug`.
+
+## v1.0.4
+
+- [ ] Cat should always go to eat meat (restores cat health)
+- [ ] Cat is playful and should throw/bounce items the hero comes across (apart from pet carrier)
+- [ ] Code cleanup and refactor
+- [ ] Alter torch to be equipped in quickslots to activate
+- [x] Workbench icon/sprite
+- [ ] Chasms/black should have a subtle starry background, with potentially a planet and nearby star.
+- [ ] Small wormhole generator - can active and select any visible tile on the map.
+- [ ] Fire sprites on walls should be replaced with electrical fizzes.
+- [ ] A battery doused with medigel can explode (locked doors, blockage)
+- [ ] The lazer gun quest- make holodeck look like the offline holodeck, make the 'bodies' be something else, make the lazer be something else.
+- [x] Tripping the breaker should be an active task, not trip just by running over it.
+- [ ] Be able to render the drone controller.
+- [x] Still need to fix intro text box.
+- [x] Fix health bar.
+- [ ] Have a 'now playing' for music.
+- [ ] Challenges Icon update
+- [x] UI Health bar cleanup
+- [x] Tiles overlay fix
+- [ ] Download/Upload save files.
+- [ ] Custom skin tiles
+- [ ] Armor Kit needs icon sci-fi upgrade
+- [ ] Refactor code and suggest improvements.
+- [ ] What could replace Yog Duza? Maybe a giant angel.
+- [ ] Rename of icon files
+- [ ] Fix swarm sprite - crap
+- [ ] DM3000 reskin
+- [ ] Hunter suit reskin
+- [ ] Heavy loader reskin
+- [ ] New Suit Mechanics
+- [ ] Swap wall tiles in security
+- [ ] Update common tiles across sets
+  - [ ] Hunter suit to detect <sci-fi term> signatures (lights off, can visualise all enemies/npcs on a level in the dark)
+  - [ ] Hunter can fly
+  - [ ] Hoverpod will protect adventurer but has it's own HP an will breakdown
+  - [ ] Hoverpod can fly
+  - [ ] Heavy loader high protection but can't fire weapons

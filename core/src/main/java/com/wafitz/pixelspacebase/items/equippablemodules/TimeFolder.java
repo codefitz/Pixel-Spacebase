@@ -28,6 +28,8 @@ import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.DM3000Power;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
@@ -369,6 +371,11 @@ public class TimeFolder extends EquippableModule {
                 hero.spendAndNext(TIME_TO_PICK_UP);
                 return true;
             } else {
+                if (hero.heroClass == HeroClass.DM3000) {
+                    DM3000Power.consumeBattery(hero);
+                    hero.spendAndNext(TIME_TO_PICK_UP);
+                    return true;
+                }
                 GLog.w(Messages.get(this, "no_timefolder"));
                 return false;
             }

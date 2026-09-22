@@ -156,7 +156,7 @@ public class GameScene extends PixelScene {
         PixelSpacebase.lastClass(SpacebaseRun.hero.heroClass.ordinal());
 
         super.create();
-        Camera.main.zoom(GameMath.gate(minZoom, defaultZoom + PixelSpacebase.zoom(), maxZoom));
+        Camera.main.zoom(GameMath.gate(minZoom, defaultGameZoom() + PixelSpacebase.zoom(), maxZoom));
 
         scene = this;
 
@@ -405,6 +405,16 @@ public class GameScene extends PixelScene {
             return Assets.LOCKDOWN;
         } else if (SpacebaseRun.depth >= 11 && SpacebaseRun.depth <= 14) {
             return Assets.PROTOCOL;
+        } else if (SpacebaseRun.depth == 15) {
+            return Assets.ENGINEERING_BOSS;
+        } else if (SpacebaseRun.depth >= 16 && SpacebaseRun.depth <= 19) {
+            return Assets.HABITATION;
+        } else if (SpacebaseRun.depth == 20) {
+            return Assets.HABITATION_BOSS;
+        } else if (SpacebaseRun.depth >= 21 && SpacebaseRun.depth <= 24) {
+            return Assets.BRIDGE;
+        } else if (SpacebaseRun.depth == 25) {
+            return Assets.BRIDGE_BOSS;
         } else {
             return Assets.TUNE;
         }
@@ -715,6 +725,7 @@ public class GameScene extends PixelScene {
 
     public static void resetMap() {
         if (scene != null) {
+            scene.tiles.useTileset(SpacebaseRun.level.tilesTex());
             scene.tiles.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
             scene.terrainFeatures.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
         }

@@ -29,6 +29,8 @@ import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Group;
 
+import java.util.Locale;
+
 public class WndClass extends WndTabbed {
 
     private static final int WIDTH = 110;
@@ -49,7 +51,7 @@ public class WndClass extends WndTabbed {
         tabPerks = new PerksTab();
         add(tabPerks);
 
-        Tab tab = new RankingTab(cl.title().toUpperCase(), tabPerks);
+        Tab tab = new RankingTab(cl.title().toUpperCase(Locale.ROOT), tabPerks);
         tab.setSize(TAB_WIDTH, tabHeight());
         add(tab);
 

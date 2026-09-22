@@ -31,6 +31,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Frost;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.ConfusedShapeshifter;
 import com.wafitz.pixelspacebase.actors.mobs.Turret;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.MakerBot;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.Splash;
@@ -81,6 +82,7 @@ public class Heap implements Bundlable {
         TO_MAKE,
         WORKSHOP_STORAGE,
         WORKSHOP_UPGRADE,
+        MAKER_BENCH,
         CHEST,
         LOCKED_CHEST,
         JAMMED_CHEST,
@@ -115,6 +117,9 @@ public class Heap implements Bundlable {
             case CRYSTAL_CHEST:
                 return ItemSpriteSheet.CRYSTAL_CHEST;
             case WORKSHOP_UPGRADE:
+                return ItemSpriteSheet.UPGRADE_BENCH;
+            case MAKER_BENCH:
+                return ItemSpriteSheet.BREAKDOWN_BENCH;
             case CMD_TERMINAL:
                 return ItemSpriteSheet.REDTERMINAL;
             case EMPTY_SPACESUIT:
@@ -144,10 +149,13 @@ public class Heap implements Bundlable {
                 return;
             case WORKSHOP_UPGRADE:
                 GameScene.show(new WndLeonard(
-                        new ItemSprite(ItemSpriteSheet.REDTERMINAL, null),
+                        new ItemSprite(ItemSpriteSheet.UPGRADE_BENCH, null),
                         Messages.titleCase(Messages.get(this, "workshop_upgrade")),
                         hero,
                         false));
+                return;
+            case MAKER_BENCH:
+                MakerBot.render();
                 return;
             case CMD_TERMINAL:
                 Turret.spawnAround(hero.pos);
@@ -386,7 +394,7 @@ public class Heap implements Bundlable {
     public void explode() {
 
         //breaks open most standard containers, mimics die.
-        if (type == Type.CONFUSEDSHAPESHIFTER || type == Type.CHEST || type == Type.WORKSHOP_STORAGE || type == Type.WORKSHOP_UPGRADE || type == Type.EMPTY_SPACESUIT) {
+        if (type == Type.CONFUSEDSHAPESHIFTER || type == Type.CHEST || type == Type.WORKSHOP_STORAGE || type == Type.WORKSHOP_UPGRADE || type == Type.MAKER_BENCH || type == Type.EMPTY_SPACESUIT) {
             type = Type.HEAP;
             sprite.link();
             sprite.drop();
@@ -590,6 +598,8 @@ public class Heap implements Bundlable {
                 return Messages.get(this, "workshop_storage");
             case WORKSHOP_UPGRADE:
                 return Messages.get(this, "workshop_upgrade");
+            case MAKER_BENCH:
+                return Messages.get(this, "maker_bench");
             case LOCKED_CHEST:
                 return Messages.get(this, "locked_chest");
             case JAMMED_CHEST:
@@ -616,6 +626,8 @@ public class Heap implements Bundlable {
                 return Messages.get(this, "workshop_storage_desc");
             case WORKSHOP_UPGRADE:
                 return Messages.get(this, "workshop_upgrade_desc");
+            case MAKER_BENCH:
+                return Messages.get(this, "maker_bench_desc");
             case LOCKED_CHEST:
                 return Messages.get(this, "locked_chest_desc");
             case JAMMED_CHEST:

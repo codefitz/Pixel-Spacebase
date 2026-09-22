@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.effects.Beam;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.BloodParticle;
-import com.wafitz.pixelspacebase.effects.particles.LeafParticle;
+import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
 import com.wafitz.pixelspacebase.effects.particles.ShadowParticle;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
@@ -149,7 +149,7 @@ public class VampiricBlaster extends Blaster {
             //regrow one lightedvent tile, suuuuuper useful...
             Level.set(cell, Terrain.OFFVENT);
             GameScene.updateMap(cell);
-            CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 4);
+            CellEmitter.get(cell).burst(SparkParticle.FACTORY, 4);
 
             //If we find embers...
         } else if (SpacebaseRun.level.map[cell] == Terrain.EMBERS) {
@@ -157,12 +157,12 @@ public class VampiricBlaster extends Blaster {
             //30% + 3%*lvl chance to grow a random mines, or just regrow lightedvent.
             if (Random.Float() <= 0.3f + level() * 0.03f) {
                 SpacebaseRun.level.mine((Mine.Device) Generator.random(Generator.Category.DEVICE), cell);
-                CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 8);
+                CellEmitter.get(cell).burst(SparkParticle.FACTORY, 8);
                 GameScene.updateMap(cell);
             } else {
                 Level.set(cell, Terrain.OFFVENT);
                 GameScene.updateMap(cell);
-                CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 4);
+                CellEmitter.get(cell).burst(SparkParticle.FACTORY, 4);
             }
 
         } else

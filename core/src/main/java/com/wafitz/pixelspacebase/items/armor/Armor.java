@@ -195,11 +195,7 @@ public class Armor extends EquipableItem {
     public boolean doUnequip(Hero hero, boolean collect, boolean single) {
         if (super.doUnequip(hero, collect, single)) {
 
-            hero.belongings.armor = null;
-            ((HeroSprite) hero.sprite).updateArmor();
-
-            WeakForcefield.CommanderShield forcefieldBuff = hero.buff(WeakForcefield.CommanderShield.class);
-            if (forcefieldBuff != null) forcefieldBuff.setArmor(null);
+            detachFromHero(hero);
 
             return true;
 
@@ -208,6 +204,21 @@ public class Armor extends EquipableItem {
             return false;
 
         }
+    }
+
+    public void forceUnequip(Hero hero) {
+        onDetach();
+        SpacebaseRun.quickslot.clearItem(this);
+        updateQuickslot();
+        detachFromHero(hero);
+    }
+
+    private void detachFromHero(Hero hero) {
+        hero.belongings.armor = null;
+        ((HeroSprite) hero.sprite).updateArmor();
+
+        WeakForcefield.CommanderShield forcefieldBuff = hero.buff(WeakForcefield.CommanderShield.class);
+        if (forcefieldBuff != null) forcefieldBuff.setArmor(null);
     }
 
     @Override

@@ -26,8 +26,10 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.mobs.SiphonDrone;
 import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.quest.DroneParts;
 import com.wafitz.pixelspacebase.items.quest.ScrewDriver;
 import com.wafitz.pixelspacebase.items.quest.SpareBaseParts;
 import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
@@ -37,7 +39,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.LeonardSprite;
 import com.wafitz.pixelspacebase.utils.GLog;
-import com.wafitz.pixelspacebase.windows.WndLeonard;
+import com.wafitz.pixelspacebase.windows.WndLeonardReward;
 import com.wafitz.pixelspacebase.windows.WndQuest;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -82,6 +84,10 @@ public class Leonard extends NPC {
                     } else {
                         SpacebaseRun.level.drop(pick, SpacebaseRun.hero.pos).sprite.drop();
                     }
+
+                    if (Quest.alternative) {
+                        Quest.spawnDroneTargets();
+                    }
                 }
             });
 
@@ -91,19 +97,14 @@ public class Leonard extends NPC {
             if (Quest.alternative) {
 
                 ScrewDriver pick = SpacebaseRun.hero.belongings.getItem(ScrewDriver.class);
+                DroneParts parts = SpacebaseRun.hero.belongings.getItem(DroneParts.class);
                 if (pick == null) {
                     tell(Messages.get(this, "lost_screw"));
-                } else if (!pick.bloodStained) {
+                } else if (parts == null || parts.quantity() < Quest.DRONE_PARTS_REQUIRED) {
                     tell(Messages.get(this, "bats_2", SpacebaseRun.hero.givenName()));
                 } else {
-                    if (pick.isEquipped(SpacebaseRun.hero)) {
-                        pick.doUnequip(SpacebaseRun.hero, false);
-                    }
-                    pick.detach(SpacebaseRun.hero.belongings.backpack);
-                    tell(Messages.get(this, "completed", SpacebaseRun.hero.givenName()));
-
-                    Quest.completed = true;
-                    Quest.reforged = false;
+                    parts.detachAll(SpacebaseRun.hero.belongings.backpack);
+                    completeQuest(pick);
                 }
 
             } else {
@@ -115,21 +116,14 @@ public class Leonard extends NPC {
                 } else if (parts == null || parts.quantity() < 15) {
                     tell(Messages.get(this, "parts_2"));
                 } else {
-                    if (pick.isEquipped(SpacebaseRun.hero)) {
-                        pick.doUnequip(SpacebaseRun.hero, false);
-                    }
-                    pick.detach(SpacebaseRun.hero.belongings.backpack);
                     parts.detachAll(SpacebaseRun.hero.belongings.backpack);
-                    tell(Messages.get(this, "completed", SpacebaseRun.hero.givenName()));
-
-                    Quest.completed = true;
-                    Quest.reforged = false;
+                    completeQuest(pick);
                 }
 
             }
         } else if (!Quest.reforged) {
 
-            GameScene.show(new WndLeonard(this, SpacebaseRun.hero));
+            GameScene.show(new WndLeonardReward(this));
 
         } else {
 
@@ -142,6 +136,25 @@ public class Leonard extends NPC {
 
     private void tell(String text) {
         GameScene.show(new WndQuest(this, text));
+    }
+
+    private void completeQuest(ScrewDriver tool) {
+        if (tool.isEquipped(SpacebaseRun.hero)) {
+            tool.doUnequip(SpacebaseRun.hero, false);
+        }
+        tool.detach(SpacebaseRun.hero.belongings.backpack);
+
+        Quest.completed = true;
+        Quest.reforged = false;
+
+        GameScene.show(new WndQuest(this,
+                Messages.get(this, "completed", SpacebaseRun.hero.givenName())) {
+            @Override
+            public void hide() {
+                super.hide();
+                GameScene.show(new WndLeonardReward(Leonard.this));
+            }
+        });
     }
 
     public static String verify(Item item1, Item item2) {
@@ -230,6 +243,8 @@ public class Leonard extends NPC {
 
     public static class Quest {
 
+        public static final int DRONE_PARTS_REQUIRED = 4;
+
         private static boolean spawned;
 
         private static boolean alternative;
@@ -242,6 +257,28 @@ public class Leonard extends NPC {
             given = false;
             completed = false;
             reforged = false;
+        }
+
+        public static boolean collectingDroneParts() {
+            return spawned && alternative && given && !completed;
+        }
+
+        public static void rewardCollected() {
+            reforged = true;
+            Journal.remove(Journal.Feature.TROLL);
+        }
+
+        private static void spawnDroneTargets() {
+            for (int i = 0; i < DRONE_PARTS_REQUIRED; i++) {
+                int cell = SpacebaseRun.level.randomRespawnCell();
+                if (cell == -1) {
+                    return;
+                }
+
+                SiphonDrone drone = new SiphonDrone();
+                drone.pos = cell;
+                GameScene.add(drone);
+            }
         }
 
         private static final String NODE = "blacksmith";

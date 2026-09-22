@@ -24,7 +24,6 @@ import android.util.Log;
 
 import com.wafitz.pixelspacebase.PixelSpacebase;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -86,15 +85,6 @@ public class Messages {
             while (keys.hasMoreElements()) {
                 String key = keys.nextElement();
                 String value = bundle.getString(key);
-
-                //android 2.2 doesn't use UTF-8 by default, need to force it.
-                if (android.os.Build.VERSION.SDK_INT == 8) {
-                    try {
-                        value = new String(value.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
-                    } catch (Exception e) {
-                        PixelSpacebase.reportException(e);
-                    }
-                }
 
                 strings.put(key, value);
             }
