@@ -36,6 +36,19 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
     private static final String TXT_Update =
+            "_v1.0.3:_\n" +
+                    "_-_ Added a pet carrier and a station cat rescue route that can change the escape pod ending.\n" +
+                    "_-_ Added a core stabilization ending after reopening the station's rescue cradles.\n" +
+                    "_-_ Reworked DM3000 equipment, power, healing, lighting, and Jawar encounters.\n" +
+                    "_-_ Reworked the Chief Engineer's drone-parts mission, tool, and reward choices.\n" +
+                    "_-_ Gave Y's encounters and the Security boss arena a new alien-planet presentation.\n" +
+                    "_-_ Improved the health and shield display, story panels, and terrain-feature rendering.\n" +
+                    "_-_ Updated floor panels, exposed cabling, traps, breakers, and terrain changes after stepping or searching.\n" +
+                    "_-_ Enlarged sprite and tile artwork, adjusted default zoom, and preserved zoom settings.\n" +
+                    "_-_ Refreshed enemy, NPC, tile, and soundtrack assets across the station.\n" +
+                    "_-_ Fixed save-write handling and level spawn searches, and improved Android build reliability.\n" +
+                    "_-_ Renamed internal enemies, NPCs, and Maintenance levels to match the spacebase story while keeping old saves loadable.\n" +
+                    "\n" +
             "_v1.0.2:_\n" +
                     "_-_ Added the alien egg blackout and recovery message sequence.\n" +
                     "_-_ Made facehugger infection consume the attacker and made alien emergence more dangerous.\n" +
