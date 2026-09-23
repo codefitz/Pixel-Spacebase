@@ -68,15 +68,18 @@ public class Torch extends MeleeWeapon {
     }
 
     @Override
+    public void execute(Hero hero) {
+        // Quickslots invoke an item's default action. Choose the inverse of the
+        // current light state so successive taps switch the torch on and off.
+        execute(hero, hero.buff(Light.class) == null ? AC_LIGHT : AC_EXTINGUISH);
+    }
+
+    @Override
     public void execute(Hero hero, String action) {
 
         super.execute(hero, action);
 
         if (action.equals(AC_LIGHT)) {
-            if (!isEquipped(hero)) {
-                GLog.w(Messages.get(this, "need_equip"));
-                return;
-            }
             if (hero.buff(Light.class) != null) {
                 GLog.i(Messages.get(this, "already_lit"));
                 return;

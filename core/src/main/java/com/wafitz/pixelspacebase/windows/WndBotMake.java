@@ -25,6 +25,7 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.MakerBot;
 import com.wafitz.pixelspacebase.items.EquipableItem;
+import com.wafitz.pixelspacebase.items.DroneController;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
@@ -233,6 +234,10 @@ public class WndBotMake extends Window {
         if (item.isEquipped(hero) && !((EquipableItem) item).doUnequip(hero, false)) {
             return;
         }
+
+        if (item instanceof DroneController.ActivatedDrone) {
+            ((DroneController.ActivatedDrone) item).releaseDrone();
+        }
         item.detachAll(hero.belongings.backpack);
 
         int price = item.cost();
@@ -249,6 +254,9 @@ public class WndBotMake extends Window {
             Hero hero = SpacebaseRun.hero;
 
             item = item.detach(hero.belongings.backpack);
+            if (item instanceof DroneController.ActivatedDrone) {
+                ((DroneController.ActivatedDrone) item).releaseDrone();
+            }
             int price = item.cost();
 
             new Parts(price).doPickUp(hero);

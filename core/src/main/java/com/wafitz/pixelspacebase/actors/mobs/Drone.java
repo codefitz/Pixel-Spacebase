@@ -90,6 +90,19 @@ public class Drone extends Mob {
             this.potHolder = potHolder.id();
     }
 
+    /**
+     * Used when a live controller is rendered for parts. The drone remains
+     * intact, but falls back to the normal hostile-mob behaviour.
+     */
+    public void becomeHostile() {
+        hostile = true;
+        ally = false;
+        setPotInfo(-1, null);
+        if (SpacebaseRun.hero != null) {
+            aggro(SpacebaseRun.hero);
+        }
+    }
+
     @Override
     public int attackSkill(Char target) {
         return defenseSkill;
@@ -110,6 +123,10 @@ public class Drone extends Mob {
 
     @Override
     protected Char chooseEnemy() {
+        if (hostile) {
+            return super.chooseEnemy();
+        }
+
         //if the controller is no longer present, clear mines or idle.
         if (potHolder == -1 && potPos == -1) {
             int mineTarget = findMineTarget(pos);
