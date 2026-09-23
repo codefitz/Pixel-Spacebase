@@ -95,8 +95,8 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Mines / Devices | Placeable or environmental charges. Can be triggered from floors, fabricated, combined, or cleared by drones. |
 | Parts | Currency/material used in workshops and Maker-Bot/recycling flows. |
 | Keys | Floor/depth access control for locked doors, chests, and boss exits. Security Block floors also place a reusable max-security override keycard in the entrance room; it opens normal locked detention doors on that floor without being consumed. |
-| Medigel Droplet | Small healing resource from station emergency systems. Can fill air tank-style storage. |
-| Air Tank | Stores medigel droplets and can heal; a full tank has stronger restorative/stabilizing utility. |
+| Medigel Droplet | Small healing resource from station emergency systems. Can fill a medigel container. |
+| Medigel Container | Rare equipable storage for medigel droplets. Only one can be equipped at a time; a full container has stronger restorative/stabilizing utility and can explode if combined with a battery on the floor. |
 | Escape Pod Override | Command override needed to access sealed evacuation systems. It can launch the final pod immediately, or justify returning to reopen sealed rescue cradles for survivors. |
 
 ## Notable Blasters

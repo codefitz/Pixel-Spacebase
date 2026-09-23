@@ -200,6 +200,30 @@ public class Heap implements Bundlable {
         return item;
     }
 
+    /**
+     * Removes one item from this heap without placing it in an inventory.
+     * Stackable items retain the remaining quantity on the ground.
+     */
+    public boolean removeOne(Item item) {
+        if (item == null || !items.contains(item)) {
+            return false;
+        }
+
+        if (item.quantity() > 1) {
+            item.quantity(item.quantity() - 1);
+        } else {
+            items.remove(item);
+        }
+
+        if (items.isEmpty()) {
+            destroy();
+        } else if (sprite != null) {
+            sprite.view(image(), glowing());
+        }
+
+        return true;
+    }
+
     public Item peek() {
         return items.peek();
     }

@@ -6,11 +6,12 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Mechanics
 
-- [ ] Cat should always go to eat meat (restores cat health)
-- [ ] Cat is playful and should throw/bounce items the hero comes across (apart from pet carrier)
+- [x] Cat should always go to eat meat (restores cat health)
+- [x] Cat is playful and should throw/bounce items the hero comes across (apart from pet carrier)
+- [ ] Cat scares one powerful late level mob.
 - [x] Alter torch to be equipped in quickslots to activate
 - [ ] Small wormhole generator - can active and select any visible tile on the map.
-- [ ] A battery doused with medigel can explode (locked doors, blockage)
+- [x] A battery doused with medigel can explode (locked doors, blockage)
 - [ ] The lazer gun quest - make holodeck look like the offline holodeck, make the 'bodies' be something else, make the 'lazer' be something else.
 - [x] Be able to render the drone controller.
 - [ ] Download/Upload save files.
@@ -35,14 +36,16 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] DM3000 reskin
 - [ ] Hunter suit reskin
 - [ ] Heavy loader reskin
-- [ ] Swap wall tiles in security
+- [x] Swap wall tiles in security
 - [ ] Update common tiles across sets
-- [ ] Security alternate tiles are too abundant
+- [ ] Door in security blood spot is too ubiquitous, needs to be more subtle
+- [ ] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
+- [ ] When Y removes a weapon, hero should exclaim "Hey- give that back!" or "Where's my _____?!"
+- [ ] When Y gives a weapon, hero should say "Thanks, I guess?" or "Nice, a _____!"
 
 ## Code Quality / Stability
 
-- [ ] Code cleanup and refactor
-- [ ] Refactor code and suggest improvements.
+- [ ] Code cleanup, refactor and suggest improvements.
 
 ## Release Prep
 

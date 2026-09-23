@@ -42,7 +42,7 @@ public class MedigelDroplet extends Item {
     @Override
     public boolean doPickUp(Hero hero) {
 
-        AirTank vial = hero.belongings.getItem(AirTank.class);
+        MedigelContainer vial = hero.belongings.getItem(MedigelContainer.class);
 
         if (hero.HP < hero.HT || vial == null || vial.isFull()) {
 

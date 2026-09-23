@@ -25,8 +25,15 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.items.Heap;
+import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.PetCarrier;
+import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
+import com.wafitz.pixelspacebase.items.food.FrozenCarpaccio;
+import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.levels.Level;
+import com.wafitz.pixelspacebase.levels.RegularLevel;
+import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.StationCatSprite;
@@ -65,7 +72,35 @@ public class StationCat extends NPC {
 
     @Override
     protected boolean act() {
-        throwItem();
+        Heap meatHeap = meatHeap();
+        if (meatHeap != null && (!following || !heroLeftRoom(meatHeap))) {
+            if (meatHeap.pos == pos) {
+                eat(meatHeap);
+                spend(TICK);
+                return true;
+            }
+
+            int oldPos = pos;
+            if (getCloser(meatHeap.pos)) {
+                spend(1 / speed());
+                return moveSprite(oldPos, pos);
+            }
+        }
+
+        Heap itemHeap = itemHeap();
+        if (itemHeap != null && (!following || !heroLeftRoom(itemHeap))) {
+            if (itemHeap.pos == pos) {
+                throwItem();
+                spend(TICK);
+                return true;
+            }
+
+            int oldPos = pos;
+            if (getCloser(itemHeap.pos)) {
+                spend(1 / speed());
+                return moveSprite(oldPos, pos);
+            }
+        }
 
         if (!following) {
             spend(TICK);
@@ -81,6 +116,88 @@ public class StationCat extends NPC {
 
         spend(TICK);
         return true;
+    }
+
+    private Heap meatHeap() {
+        Heap closest = null;
+        int closestDistance = Integer.MAX_VALUE;
+
+        for (Heap heap : SpacebaseRun.level.heaps.values()) {
+            if (heap.type != Heap.Type.HEAP || isWorkshopCell(heap.pos) || !containsMeat(heap)) {
+                continue;
+            }
+
+            int distance = SpacebaseRun.level.distance(pos, heap.pos);
+            if (distance < closestDistance) {
+                closest = heap;
+                closestDistance = distance;
+            }
+        }
+
+        return closest;
+    }
+
+    private Heap itemHeap() {
+        Heap closest = null;
+        int closestDistance = Integer.MAX_VALUE;
+
+        for (Heap heap : SpacebaseRun.level.heaps.values()) {
+            if (heap.type != Heap.Type.HEAP || isWorkshopCell(heap.pos) || heap.isEmpty()) {
+                continue;
+            }
+
+            int distance = SpacebaseRun.level.distance(pos, heap.pos);
+            if (distance < closestDistance) {
+                closest = heap;
+                closestDistance = distance;
+            }
+        }
+
+        return closest;
+    }
+
+    private boolean heroLeftRoom(Heap heap) {
+        if (!(SpacebaseRun.level instanceof RegularLevel)) {
+            return false;
+        }
+
+        Room itemRoom = ((RegularLevel) SpacebaseRun.level).room(heap.pos);
+        return itemRoom != null && !itemRoom.inside(SpacebaseRun.level.cellToPoint(SpacebaseRun.hero.pos));
+    }
+
+    private boolean isWorkshopCell(int cell) {
+        if (!(SpacebaseRun.level instanceof RegularLevel)) {
+            return false;
+        }
+
+        Room room = ((RegularLevel) SpacebaseRun.level).room(cell);
+        return room != null && room.type == Room.Type.WORKSHOP;
+    }
+
+    private boolean containsMeat(Heap heap) {
+        for (Item item : heap.items) {
+            if (isMeat(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void eat(Heap heap) {
+        for (Item item : heap.items) {
+            if (isMeat(item)) {
+                if (heap.removeOne(item)) {
+                    HP = HT;
+                }
+                return;
+            }
+        }
+    }
+
+    private boolean isMeat(Item item) {
+        return item instanceof MysteryMeat
+                || item instanceof ChargrilledMeat
+                || item instanceof FrozenCarpaccio;
     }
 
     private int followTarget() {

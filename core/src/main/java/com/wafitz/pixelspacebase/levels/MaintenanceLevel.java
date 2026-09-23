@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.effects.Ripple;
-import com.wafitz.pixelspacebase.items.AirTank;
+import com.wafitz.pixelspacebase.items.MedigelContainer;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.PetCarrier;
@@ -237,8 +237,10 @@ public class MaintenanceLevel extends RegularLevel {
             addItemToSpawn(new PetCarrier());
         }
 
-        if (!SpacebaseRun.limitedDrops.airTank.dropped() && Random.Int(4 - SpacebaseRun.depth) == 0) {
-            addItemToSpawn(new AirTank());
+        // Medigel canisters are valuable equipment: at most one can appear in a run,
+        // with a flat rare chance on each maintenance deck.
+        if (!SpacebaseRun.limitedDrops.airTank.dropped() && Random.Int(4) == 0) {
+            addItemToSpawn(new MedigelContainer());
             SpacebaseRun.limitedDrops.airTank.drop();
         }
 

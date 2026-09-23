@@ -42,6 +42,8 @@ import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.particles.FlowParticle;
 import com.wafitz.pixelspacebase.effects.particles.WindParticle;
 import com.wafitz.pixelspacebase.items.MedigelDroplet;
+import com.wafitz.pixelspacebase.items.MedigelContainer;
+import com.wafitz.pixelspacebase.items.Bomb;
 import com.wafitz.pixelspacebase.items.EnhancementChip;
 import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.plasmids.TitanPlasmid;
@@ -887,11 +889,31 @@ public abstract class Level implements Bundlable {
         }
         heap.drop(item);
 
+        if (hasMedigelBatteryReaction(heap)) {
+            new Bomb().explode(cell);
+            return heap;
+        }
+
         if (SpacebaseRun.level != null) {
             press(cell, null);
         }
 
         return heap;
+    }
+
+    private boolean hasMedigelBatteryReaction(Heap heap) {
+        boolean battery = false;
+        boolean medigel = false;
+
+        for (Item item : heap.items) {
+            battery |= item instanceof TorchBattery
+                    || item instanceof HoloPad.HoloBattery
+                    || item instanceof TimeFolder.TimeBattery;
+            medigel |= item instanceof MedigelDroplet
+                    || item instanceof MedigelContainer && ((MedigelContainer) item).hasMedigel();
+        }
+
+        return battery && medigel;
     }
 
     public Mine mine(Mine.Device device, int pos) {

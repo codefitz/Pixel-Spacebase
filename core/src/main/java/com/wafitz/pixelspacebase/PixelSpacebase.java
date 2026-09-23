@@ -250,6 +250,7 @@ public class PixelSpacebase extends Game {
                 {"actors.mobs.npcs.YTrader", "actors.mobs.npcs.ImpMakerBot"},
                 {"actors.buffs.CombatFocus", "actors.buffs.Upgrade"},
                 {"items.EscapePodOverride", "items.Amulet"},
+                {"items.MedigelContainer", "items.AirTank"},
                 {"items.MedigelDroplet", "items.Dewdrop"},
                 {"items.TrainingManual", "items.TomeOfMastery"},
                 {"items.WeaponTuner", "items.Weightstone"},

@@ -59,7 +59,7 @@ public class Clone extends Item {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        AirTank vial = hero.belongings.getItem(AirTank.class);
+        MedigelContainer vial = hero.belongings.getItem(MedigelContainer.class);
         if (vial != null && vial.isFull() && !upgraded)
             actions.add(AC_UPGRADE);
         return actions;
@@ -72,7 +72,7 @@ public class Clone extends Item {
 
         if (action.equals(AC_UPGRADE)) {
 
-            AirTank vial = hero.belongings.getItem(AirTank.class);
+        MedigelContainer vial = hero.belongings.getItem(MedigelContainer.class);
             if (vial != null) {
                 upgraded = true;
                 vial.empty();
