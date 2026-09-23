@@ -8,11 +8,11 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 - [ ] Cat should always go to eat meat (restores cat health)
 - [ ] Cat is playful and should throw/bounce items the hero comes across (apart from pet carrier)
-- [ ] Alter torch to be equipped in quickslots to activate
+- [x] Alter torch to be equipped in quickslots to activate
 - [ ] Small wormhole generator - can active and select any visible tile on the map.
 - [ ] A battery doused with medigel can explode (locked doors, blockage)
 - [ ] The lazer gun quest - make holodeck look like the offline holodeck, make the 'bodies' be something else, make the 'lazer' be something else.
-- [ ] Be able to render the drone controller.
+- [x] Be able to render the drone controller.
 - [ ] Download/Upload save files.
 - [ ] New Suit Mechanics:
     - [ ] Hunter suit to detect <sci-fi term> signatures (lights off, can visualise all enemies/npcs on a level in the dark)
@@ -37,6 +37,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Heavy loader reskin
 - [ ] Swap wall tiles in security
 - [ ] Update common tiles across sets
+- [ ] Security alternate tiles are too abundant
 
 ## Code Quality / Stability
 
