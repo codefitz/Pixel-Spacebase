@@ -22,6 +22,8 @@ package com.wafitz.pixelspacebase;
 
 import android.util.SparseIntArray;
 
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
+import com.wafitz.pixelspacebase.levels.HolodeckBossLevel;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.watabou.noosa.Image;
@@ -213,6 +215,16 @@ public class SpacebaseTilemap extends Tilemap {
     }
 
     private int getTileVisual(int pos, int tile) {
+        if (SpacebaseRun.level instanceof HolodeckBossLevel
+                && Y.Quest.isHolodeckPoweredDown()) {
+            HolodeckBossLevel holodeck = (HolodeckBossLevel) SpacebaseRun.level;
+            if (holodeck.isEntranceRoom(pos) || holodeck.isArenaDoor(pos)) {
+                // The arrival chamber and its terminal remain physical habitat rooms.
+                return 64 + defaultVisuals.get(tile);
+            }
+            int padVisual = holodeck.exitPadVisual(pos, tile);
+            if (padVisual >= 0) return padVisual;
+        }
         int visual = defaultVisuals.get(tile);
 
         if (tile == Terrain.INACTIVE_VENT) {

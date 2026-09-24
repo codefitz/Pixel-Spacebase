@@ -25,6 +25,8 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.actors.mobs.SignalSiren;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.PetCarrier;
@@ -94,6 +96,11 @@ public class StationCat extends NPC {
             return true;
         }
 
+        if (scareNearbySignalSiren()) {
+            spend(TICK);
+            return true;
+        }
+
         Heap itemHeap = itemHeap();
         if (itemHeap != null && !heroLeftRoom(itemHeap)) {
             if (itemHeap.pos == pos) {
@@ -118,6 +125,25 @@ public class StationCat extends NPC {
 
         spend(TICK);
         return true;
+    }
+
+    private boolean scareNearbySignalSiren() {
+        if (SpacebaseRun.visible == null) {
+            return false;
+        }
+
+        for (Mob mob : SpacebaseRun.level.mobs) {
+            if (mob instanceof SignalSiren
+                    && mob.isAlive()
+                    && SpacebaseRun.visible[mob.pos]
+                    && SpacebaseRun.level.distance(pos, mob.pos) <= 3
+                    && ((SignalSiren) mob).scareByStationCat(id())) {
+                GLog.n(Messages.get(this, "scares_siren", Messages.get(mob, "name")));
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private Heap itemHeap() {

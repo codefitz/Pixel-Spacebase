@@ -8,7 +8,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 - [x] Station cat waits on every level until touched, letting the player choose whether it follows and takes risks.
 - [x] Following station cat bats one module, equippable module, or tech upgrade per regular room; it leaves ordinary loot and food alone.
-- [ ] Cat scares one powerful late level mob.
+- [x] A following station cat can scare a nearby signal siren into fleeing.
 - [x] Alter torch to be equipped in quickslots to activate
 - [ ] Small wormhole generator - can active and select any visible tile on the map.
 - [x] A battery doused with medigel can explode (locked doors, blockage)
@@ -20,6 +20,9 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [x] At shutdown, stop future patrol spawns, remove patrol projections when their saved floors are revisited, and switch the holodeck to a black field with yellow grid boxes.
     - [x] Persist the shutdown state across saves and make newly generated and already-generated holodeck areas show the correct phase.
     - [x] Keep Y's existing six-emitter reward exchange available after shutdown.
+    - [x] Let roaming Roman holograms drop emitters on normal habitat levels.
+    - [x] Open Y's workshop floor only when six emitters were collected before the boss.
+    - [x] Give the boss a Caesar sprite and its summons Roman legionary sprites.
     - [ ] Verify the 5-to-6 emitter transition, save/restore in both phases, projection cleanup, reward exchange, and both visual states.
 - [x] Be able to render the drone controller.
 - [ ] Download/Upload save files.
@@ -36,7 +39,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Chasms/black should have a subtle starry background, with potentially a planet and nearby star.
 - [ ] Fire sprites on walls should be replaced with electrical fizzes.
 - [ ] Have a 'now playing' for music.
-- [ ] Challenges Icon update
+- [x] Challenges Icon update
 - [ ] Custom skin tiles
 - [ ] Armor Kit needs icon sci-fi upgrade
 - [ ] What could replace Yog Duza? Maybe a giant angel.
@@ -52,8 +55,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Hero reacts when Y confiscates a weapon during the security maze and when it is recovered after the Masked Prisoner fight.
 - [ ] Add room with no doors. These can be accessed by dropping into them, they may contain a high-value item or nothing. However there is no escape unless you have an item that can teleport you out.
 - [x] Show the initial Xeno infection reaction only once per run; retain the warning and burst reactions for later infections.
-- [ ] Y Sprite on habitat level needs to be replaced with correct Y sprite - the NPC sprite is an NPC alternative.
-  - [ ] Roman Holograms need to drop emitters to bring back to Y.
+- [x] Y's habitat and workshop sprites match his security boss appearance.
 
 ## Code Quality / Stability
 

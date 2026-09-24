@@ -152,6 +152,35 @@ public class HolodeckBossLevel extends Level {
         }
     }
 
+    public boolean isEntranceRoom(int cell) {
+        int x = cell % width();
+        int y = cell / width();
+        return x >= LEFT && x < LEFT + HALL_WIDTH
+                && y > TOP + HALL_HEIGHT && y <= TOP + HALL_HEIGHT + CHAMBER_HEIGHT;
+    }
+
+    public boolean isArenaDoor(int cell) {
+        return cell == arenaDoor;
+    }
+
+    /** Tile frames reserved in the powered-down atlas for the departure pad. */
+    public int exitPadVisual(int cell, int terrain) {
+        if (terrain != Terrain.EMPTY && terrain != Terrain.EMPTY_SP
+                && terrain != Terrain.EMPTY_DECO && terrain != Terrain.EXIT
+                && terrain != Terrain.LOCKED_EXIT
+                && terrain != Terrain.UNLOCKED_EXIT) {
+            return -1;
+        }
+
+        if (Math.abs(cell % width() - exit % width()) > 1
+                || Math.abs(cell / width() - exit / width()) > 1) return -1;
+
+        if (cell == exit) return 58;
+        int dx = cell % width() - exit % width();
+        int dy = cell / width() - exit / width();
+        return 48 + (dy + 1) * 3 + dx + 1;
+    }
+
     @Override
     protected void createMobs() {
     }

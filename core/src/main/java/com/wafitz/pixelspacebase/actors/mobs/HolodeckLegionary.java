@@ -8,7 +8,11 @@
  */
 package com.wafitz.pixelspacebase.actors.mobs;
 
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
+import com.wafitz.pixelspacebase.items.quest.HardLightEmitter;
+import com.wafitz.pixelspacebase.levels.HabitationRingLevel;
 import com.wafitz.pixelspacebase.sprites.HolodeckLegionarySprite;
 import com.watabou.utils.Random;
 
@@ -37,5 +41,14 @@ public class HolodeckLegionary extends Mob {
     @Override
     public int drRoll() {
         return Random.NormalIntRange(0, 4);
+    }
+
+    @Override
+    public void die(Object cause) {
+        if (SpacebaseRun.level instanceof HabitationRingLevel
+                && !Y.Quest.isHolodeckPoweredDown()) {
+            SpacebaseRun.level.drop(new HardLightEmitter(), pos).sprite.drop();
+        }
+        super.die(cause);
     }
 }

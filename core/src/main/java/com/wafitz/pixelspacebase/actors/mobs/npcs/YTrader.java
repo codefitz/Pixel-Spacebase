@@ -26,12 +26,12 @@ import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.sprites.ImpSprite;
+import com.wafitz.pixelspacebase.sprites.YSprite;
 
 public class YTrader extends MakerBot {
 
     {
-        spriteClass = ImpSprite.class;
+        spriteClass = YSprite.class;
     }
 
     private boolean seenBefore = false;

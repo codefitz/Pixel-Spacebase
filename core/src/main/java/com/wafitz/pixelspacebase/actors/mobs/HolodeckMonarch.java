@@ -45,7 +45,7 @@ import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.HolodeckMonarchSprite;
-import com.wafitz.pixelspacebase.sprites.UndeadSprite;
+import com.wafitz.pixelspacebase.sprites.HolodeckLegionarySprite;
 import com.wafitz.pixelspacebase.ui.BossHealthBar;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -261,7 +261,7 @@ public class HolodeckMonarch extends Mob {
         public static int count = 0;
 
         {
-            spriteClass = UndeadSprite.class;
+            spriteClass = HolodeckLegionarySprite.class;
 
             HP = HT = 28;
             defenseSkill = 15;
@@ -319,7 +319,7 @@ public class HolodeckMonarch extends Mob {
             super.die(cause);
 
             if (SpacebaseRun.visible[pos]) {
-                Sample.INSTANCE.play(Assets.SND_BONES);
+                Sample.INSTANCE.play(Assets.SND_HOLOGRAM);
             }
         }
 

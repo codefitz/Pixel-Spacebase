@@ -28,6 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Hypnotise;
 import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Sleep;
+import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.upgrades.KnockoutUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
@@ -35,6 +36,7 @@ import com.wafitz.pixelspacebase.items.weapon.enhancements.Vampiric;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.sprites.SignalSirenSprite;
+import com.watabou.utils.Bundle;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -42,11 +44,13 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-class SignalSiren extends Mob {
+public class SignalSiren extends Mob {
 
     private static final int BLINK_DELAY = 5;
+    private static final String SCARED_BY_STATION_CAT = "scaredByStationCat";
 
     private int delay = 0;
+    private boolean scaredByStationCat;
 
     {
         spriteClass = SignalSirenSprite.class;
@@ -135,6 +139,28 @@ class SignalSiren extends Mob {
     @Override
     public int drRoll() {
         return Random.NormalIntRange(0, 10);
+    }
+
+    public boolean scareByStationCat(int catId) {
+        if (scaredByStationCat || buff(Terror.class) != null) {
+            return false;
+        }
+
+        scaredByStationCat = true;
+        Buff.affect(this, Terror.class, Terror.DURATION).object = catId;
+        return true;
+    }
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(SCARED_BY_STATION_CAT, scaredByStationCat);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        scaredByStationCat = bundle.getBoolean(SCARED_BY_STATION_CAT);
     }
 
     private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();

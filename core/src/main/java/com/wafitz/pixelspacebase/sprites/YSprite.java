@@ -21,10 +21,17 @@
 package com.wafitz.pixelspacebase.sprites;
 
 import com.wafitz.pixelspacebase.Assets;
+import com.wafitz.pixelspacebase.actors.Char;
 
 public class YSprite extends ImpSprite {
 
     public YSprite() {
         super(Assets.Y);
+    }
+
+    @Override
+    public void link(Char ch) {
+        super.link(ch);
+        alpha(1f);
     }
 }

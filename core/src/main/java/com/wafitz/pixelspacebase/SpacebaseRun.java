@@ -208,7 +208,7 @@ public class SpacebaseRun {
         SpacebaseRun.level = null;
         Actor.clear();
 
-        depth++;
+        depth = nextDepth(depth);
         if (depth > Statistics.deepestFloor) {
             Statistics.deepestFloor = depth;
             Statistics.completedWithNoKilling = Statistics.qualifiedForNoKilling;
@@ -313,6 +313,18 @@ public class SpacebaseRun {
         return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
     }
 
+    public static boolean canVisitDepth(int targetDepth) {
+        return targetDepth != 21 || Y.Quest.hasSecretWorkshopAccess();
+    }
+
+    public static int nextDepth(int currentDepth) {
+        return currentDepth == 20 && !canVisitDepth(21) ? 22 : currentDepth + 1;
+    }
+
+    public static int previousDepth(int currentDepth) {
+        return currentDepth == 22 && !canVisitDepth(21) ? 20 : currentDepth - 1;
+    }
+
     /**
      * Plans weak-floor chasms independently of generation order. In Spacebase,
      * falling travels to the previous (lower) depth, so that level can create
@@ -389,7 +401,7 @@ public class SpacebaseRun {
     }
 
     static int fallTargetDepth(int currentDepth) {
-        return currentDepth > 1 ? currentDepth - 1 : currentDepth + 1;
+        return currentDepth > 1 ? previousDepth(currentDepth) : currentDepth + 1;
     }
 
     public static void dropHeapToDepth(Heap heap, int depth) {
@@ -708,12 +720,13 @@ public class SpacebaseRun {
 
         hero = null;
         hero = (Hero) bundle.get(HERO);
-        Y.Quest.reconcileHolodeckState(hero);
-
         parts = bundle.getInt(PARTS);
         depth = bundle.getInt(DEPTH);
 
         Statistics.restoreFromBundle(bundle);
+        if (fullLoad) {
+            Y.Quest.reconcileHolodeckState(hero, depth, Statistics.deepestFloor);
+        }
         Journal.restoreFromBundle(bundle);
         Generator.restoreFromBundle(bundle);
 
@@ -757,9 +770,8 @@ public class SpacebaseRun {
         Game.instance.deleteFile(gameFile(cl));
 
         if (deleteLevels) {
-            int depth = 1;
-            while (Game.instance.deleteFile(Messages.format(depthFile(cl), depth))) {
-                depth++;
+            for (int depth = 1; depth <= 26; depth++) {
+                Game.instance.deleteFile(Messages.format(depthFile(cl), depth));
             }
         }
 

@@ -222,7 +222,7 @@ public class InterlevelScene extends PixelScene {
         if (SpacebaseRun.depth >= Statistics.deepestFloor) {
             level = SpacebaseRun.newLevel();
         } else {
-            SpacebaseRun.depth++;
+            SpacebaseRun.depth = SpacebaseRun.nextDepth(SpacebaseRun.depth);
             level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
             Workshop.deliverStorageTo(level);
         }
@@ -254,7 +254,7 @@ public class InterlevelScene extends PixelScene {
         Workshop.carryStockFrom(SpacebaseRun.level);
         StationCat.carryFollowerFrom(SpacebaseRun.level);
         SpacebaseRun.saveAll();
-        SpacebaseRun.depth--;
+        SpacebaseRun.depth = SpacebaseRun.previousDepth(SpacebaseRun.depth);
         Level level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
         Workshop.deliverStorageTo(level);
         SpacebaseRun.switchLevel(level, level.exit);
@@ -295,7 +295,7 @@ public class InterlevelScene extends PixelScene {
 
         if (SpacebaseRun.level.locked) {
             SpacebaseRun.hero.resurrect(SpacebaseRun.depth);
-            SpacebaseRun.depth--;
+            SpacebaseRun.depth = SpacebaseRun.previousDepth(SpacebaseRun.depth);
             Level level = SpacebaseRun.newLevel();
             SpacebaseRun.switchLevel(level, level.entrance);
         } else {
@@ -308,7 +308,7 @@ public class InterlevelScene extends PixelScene {
 
         Actor.fixTime();
 
-        SpacebaseRun.depth--;
+        SpacebaseRun.depth = SpacebaseRun.previousDepth(SpacebaseRun.depth);
         Level level = SpacebaseRun.newLevel();
         SpacebaseRun.switchLevel(level, level.entrance);
     }

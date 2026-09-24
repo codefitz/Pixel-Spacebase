@@ -36,7 +36,7 @@ import com.wafitz.pixelspacebase.levels.HabitationRingLevel;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.sprites.ImpSprite;
+import com.wafitz.pixelspacebase.sprites.YSprite;
 import com.wafitz.pixelspacebase.windows.WndY;
 import com.wafitz.pixelspacebase.windows.WndQuest;
 import com.watabou.utils.Bundle;
@@ -48,7 +48,7 @@ public class Y extends NPC {
     private static final int REQUIRED_EMITTERS = 6;
 
     {
-        spriteClass = ImpSprite.class;
+        spriteClass = YSprite.class;
 
         properties.add(Property.IMMOVABLE);
     }
@@ -135,6 +135,8 @@ public class Y extends NPC {
         private static boolean given;
         private static boolean completed;
         private static boolean holodeckPoweredDown;
+        private static boolean secretWorkshopUnlocked;
+        private static boolean secretWorkshopStateSaved;
 
         public static Module reward;
 
@@ -144,6 +146,8 @@ public class Y extends NPC {
             given = false;
             completed = false;
             holodeckPoweredDown = false;
+            secretWorkshopUnlocked = false;
+            secretWorkshopStateSaved = false;
 
             reward = null;
         }
@@ -155,6 +159,7 @@ public class Y extends NPC {
         private static final String GIVEN = "given";
         private static final String COMPLETED = "completed";
         private static final String POWERED_DOWN = "holodeckPoweredDown";
+        private static final String SECRET_WORKSHOP = "secretWorkshopUnlocked";
         private static final String REWARD = "reward";
 
         public static void storeInBundle(Bundle bundle) {
@@ -163,6 +168,7 @@ public class Y extends NPC {
 
             node.put(SPAWNED, spawned);
             node.put(POWERED_DOWN, holodeckPoweredDown);
+            node.put(SECRET_WORKSHOP, secretWorkshopUnlocked);
 
             if (spawned) {
                 node.put(ALTERNATIVE, alternative);
@@ -183,6 +189,8 @@ public class Y extends NPC {
             if (!node.isNull()) {
                 spawned = node.getBoolean(SPAWNED);
                 holodeckPoweredDown = node.getBoolean(POWERED_DOWN);
+                secretWorkshopStateSaved = node.contains(SECRET_WORKSHOP);
+                secretWorkshopUnlocked = node.getBoolean(SECRET_WORKSHOP);
                 if (spawned) {
                     alternative = node.getBoolean(ALTERNATIVE);
                     given = node.getBoolean(GIVEN);
@@ -196,20 +204,36 @@ public class Y extends NPC {
             return holodeckPoweredDown;
         }
 
+        public static boolean hasSecretWorkshopAccess() {
+            return secretWorkshopUnlocked;
+        }
+
         /** Called after the hero is restored, to keep old saves consistent. */
-        public static void reconcileHolodeckState(Hero hero) {
+        public static void reconcileHolodeckState(Hero hero, int depth, int deepestFloor) {
             if (hero != null) {
                 HardLightEmitter emitters = hero.belongings.getItem(HardLightEmitter.class);
                 if (emitters != null && emitters.quantity() >= REQUIRED_EMITTERS) {
                     holodeckPoweredDown = true;
+                    if (!secretWorkshopStateSaved && depth < 20) {
+                        secretWorkshopUnlocked = true;
+                    }
                 }
             }
+            // Older saves always generated floor 21. Preserve access if it was
+            // reached already, or if shutdown happened before this rule existed.
+            if (!secretWorkshopStateSaved && (deepestFloor >= 21
+                    || depth <= 20 && holodeckPoweredDown)) {
+                secretWorkshopUnlocked = true;
+            }
+            secretWorkshopStateSaved = true;
         }
 
         public static void onEmitterAcquired(Hero hero) {
-            if (!holodeckPoweredDown && hero != null) {
+            if (hero != null) {
                 HardLightEmitter emitters = hero.belongings.getItem(HardLightEmitter.class);
                 if (emitters != null && emitters.quantity() >= REQUIRED_EMITTERS) {
+                    if (SpacebaseRun.depth < 20) secretWorkshopUnlocked = true;
+                    if (holodeckPoweredDown) return;
                     holodeckPoweredDown = true;
                     discardProjections(SpacebaseRun.level);
                     if (SpacebaseRun.level != null) {
