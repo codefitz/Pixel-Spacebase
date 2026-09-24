@@ -49,6 +49,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.Bundle;
@@ -286,9 +287,61 @@ public class MaintenanceLevel extends RegularLevel {
     static void addSewerVisuals(Level level, Group group) {
         for (int i = 0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WALL_DECO) {
-                // wafitz.v4: Lights don't leak!
-                //group.add(new Sink(i));
+                group.add(new MaintenanceLamp(level, i));
             }
+        }
+    }
+
+    private static class MaintenanceLamp extends Group {
+
+        private final Level level;
+        private final int pos;
+        private final ColorBlock left;
+        private final ColorBlock right;
+        private float phase;
+        private float nextFlicker;
+        private float flickerLeft;
+
+        MaintenanceLamp(Level level, int pos) {
+            this.level = level;
+            this.pos = pos;
+            phase = pos * 0.73f;
+            nextFlicker = Random.Float(1.5f, 4.5f);
+
+            PointF p = SpacebaseTilemap.tileToWorld(pos);
+            left = new ColorBlock(2.5f, 3f, 0xFFD5F7FF);
+            left.x = p.x + 4f;
+            left.y = p.y + 5f;
+            add(left);
+
+            right = new ColorBlock(2.5f, 3f, 0xFFD5F7FF);
+            right.x = p.x + 10f;
+            right.y = p.y + 5f;
+            add(right);
+        }
+
+        @Override
+        public void update() {
+            if (level.map[pos] != Terrain.WALL_DECO) {
+                killAndErase();
+                return;
+            }
+            visible = SpacebaseRun.visible[pos];
+            if (!visible) return;
+
+            super.update();
+            phase += Game.elapsed;
+            if (flickerLeft > 0) {
+                flickerLeft -= Game.elapsed;
+            } else if ((nextFlicker -= Game.elapsed) <= 0) {
+                flickerLeft = Random.Float(0.08f, 0.2f);
+                nextFlicker = Random.Float(2.5f, 6f);
+            }
+
+            float glow = flickerLeft > 0 ? 0.12f :
+                    0.38f + 0.08f * (float) Math.sin(phase * 2.2f);
+            left.am = glow;
+            right.am = glow * 0.9f;
         }
     }
 

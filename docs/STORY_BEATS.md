@@ -117,9 +117,9 @@ Open story need:
 
 - Decide why this unit treats the player as unauthorized despite their class identity.
 
-### Floors 16-19: Habitation and Command Sector
+### Floors 16-19: Habitation Ring
 
-Current chapter text, terminal copy, and terrain descriptions now frame this area as the Habitation and Command Sector: crew quarters, civic decks, command offices, and simulation suites overrun by old command systems, rogue holograms, raiders, and defense machines.
+Current chapter text, terminal copy, and terrain descriptions frame this area as the Habitation Ring: crew quarters, civic decks, offices, and simulation suites overrun by rogue holograms, raiders, and defense machines.
 
 Primary story function:
 
@@ -156,9 +156,9 @@ Story function:
 
 - Signal that the player is leaving salvageable station space and entering the deepest contaminated zone.
 
-### Floors 22-24: Deep Containment
+### Floors 22-24: Command
 
-Current chapter text and tile descriptions now frame this area as Deep Containment: sealed experiments, alien growths, containment fluid, and breach hardware above the mapped station.
+The final three regular decks are Command: damaged control systems, sealed experiments, alien growths, and breach hardware above the mapped station. Their coolant and fire artwork are temporary until the Command hazard treatment is decided.
 
 Primary story function:
 
@@ -278,7 +278,7 @@ Story role:
 
 ## Current Continuity Gaps
 
-- Security Block, Lower Engineering, Habitation/Command, and Deep Containment chapter text now use sci-fi framing; individual tiles, enemies, and boss lore in those areas still need follow-up conversion.
+- Security Block, Lower Engineering, Habitation Ring, and Command chapter text use sci-fi framing; individual tiles, enemies, and boss lore in those areas still need follow-up conversion.
 - The Escape Pod Override item now owns the end artifact role, but surrounding flow may still need cleanup if inherited Yendor assumptions surface.
 - Yendor remains a raider faction and may still appear in inherited story/item names outside the updated end artifact text.
 - DM-300 is the unstable floor-15 boss machine; DM-3000 is the playable robot class brought back into service after that encounter.
@@ -292,5 +292,5 @@ Use the existing mechanics as the skeleton:
 2. Security reveals that command knew a containment breach was inevitable.
 3. Lower engineering reveals the breach is tied to old station experiments and surviving engineers.
 4. Command/habitation reveals historical corruption, Yendor involvement, or a failed ruling/AI faction.
-5. Deep containment reveals the Containment Mass or the final anomaly as the root cause.
+5. Command reveals the Containment Mass or the final anomaly as the root cause.
 6. The finale uses the end artifact to either reclaim the station, seal the breach, or escape with proof of what happened.

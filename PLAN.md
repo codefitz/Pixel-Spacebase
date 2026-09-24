@@ -37,11 +37,15 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 ## Cosmetic / Narrative
 
 - [x] Chasms/black should have a subtle starry background, with potentially a planet and nearby star.
-- [ ] Fire sprites on walls should be replaced with electrical fizzes.
+- [x] Give Maintenance wall lamps a subtle flicker.
+- [x] Refresh Engineering's salvageable wall panels.
+- [x] Upgrade the Habitation Ring terrain tileset.
+- [x] Name the later area Command in documentation and player-facing chapter copy.
+- [ ] Decide on Command's lava and fire-particle replacement.
 - [ ] Have a 'now playing' for music.
 - [x] Challenges Icon update
 - [ ] Custom skin tiles
-- [ ] Armor Kit needs icon sci-fi upgrade
+- [x] Armor Kit needs icon sci-fi upgrade
 - [ ] What could replace Yog Duza? Maybe a giant angel.
 - [x] Rename of icon files
 - [ ] Fix swarm sprite - crap

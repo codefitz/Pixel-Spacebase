@@ -46,8 +46,8 @@ For a visual grid with frame numbers and labels, see [TILE_SHEET_LAYOUT.md](TILE
 | Maintenance / Operations | Water is maintenance coolant. Decorative floors are dark stains and scrape marks. Shelves are technical binders and maintenance logs. |
 | Security Block | Water is security runoff from detention washdown systems. Decorative floors have old blood and scuffed drag marks. Shelves are security binders, intake records, and confiscation logs. |
 | Lower Engineering | Tiles use a colder steel/teal palette with amber service markings. Floor lighting can still appear as fluorescent conduit growth. Off floor lighting becomes dormant conduit growth. Water is freezing coolant. Wall deco can be ore/parts. |
-| Habitation / Command Sector | Water is recycled civic fountain water. Off floor lighting becomes dormant atrium planters. Special floor is command-suite carpet. Statues depict old war bots and training-sim figures. |
-| Deep Containment | Water is containment fluid. Floor lighting can appear as bioluminescent growth. Off floor lighting becomes dormant spore columns. Statues become sealed specimen pillars. |
+| Habitation Ring | Water is recycled civic fountain water. Off floor lighting becomes dormant atrium planters. Special floor is command-suite carpet. Statues depict old war bots and training-sim figures. |
+| Command | Water currently uses the containment-fluid treatment. Floor lighting can appear as bioluminescent growth. Off floor lighting becomes dormant spore columns. Statues become sealed specimen pillars. The lava/fire treatment is awaiting a separate decision. |
 
 ## Generic ASCII Tile Legend
 
