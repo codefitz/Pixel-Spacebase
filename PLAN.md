@@ -49,10 +49,9 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Update common tiles across sets
 - [ ] Door in security blood spot is too ubiquitous, needs to be more subtle
 - [ ] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
-- [ ] When Y removes a weapon, hero should exclaim "Hey- give that back!" or "Where's my _____?!"
-- [ ] When Y gives a weapon, hero should say "Thanks, I guess?" or "Nice, a _____!"
+- [x] Hero reacts when Y confiscates a weapon during the security maze and when it is recovered after the Masked Prisoner fight.
 - [ ] Add room with no doors. These can be accessed by dropping into them, they may contain a high-value item or nothing. However there is no escape unless you have an item that can teleport you out.
-- [ ] After the first 'ugh what happened' the hero doesn't need to keep saying it.
+- [x] Show the initial Xeno infection reaction only once per run; retain the warning and burst reactions for later infections.
 - [ ] Y Sprite on habitat level needs to be replaced with correct Y sprite - the NPC sprite is an NPC alternative.
   - [ ] Roman Holograms need to drop emitters to bring back to Y.
 

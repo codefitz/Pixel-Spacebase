@@ -223,6 +223,7 @@ public class Hero extends Char {
     private static final String STRENGTH = "STR";
     private static final String LEVEL = "lvl";
     private static final String EXPERIENCE = "exp";
+    private static final String XENO_INFECTION_REACTION_SHOWN = "xenoInfectionReactionShown";
     private static final String VACUUM_WARNING_ACTIVE = "vacuumWarningActive";
     private static final String VACUUM_RETURN_CELL = "vacuumReturnCell";
     private static final String SHAPESHIFTER_WATER_RECOVERY = "shapeshifterWaterRecovery";
@@ -230,6 +231,13 @@ public class Hero extends Char {
 
     private float shapeshifterWaterRecovery;
     private int shapeshifterStrengthProgression;
+    private boolean xenoInfectionReactionShown;
+
+    public boolean markXenoInfectionReactionShown() {
+        if (xenoInfectionReactionShown) return false;
+        xenoInfectionReactionShown = true;
+        return true;
+    }
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -246,6 +254,7 @@ public class Hero extends Char {
 
         bundle.put(LEVEL, lvl);
         bundle.put(EXPERIENCE, exp);
+        bundle.put(XENO_INFECTION_REACTION_SHOWN, xenoInfectionReactionShown);
         bundle.put(VACUUM_WARNING_ACTIVE, vacuumWarningActive);
         bundle.put(VACUUM_RETURN_CELL, vacuumReturnCell);
         bundle.put(SHAPESHIFTER_WATER_RECOVERY, shapeshifterWaterRecovery);
@@ -269,6 +278,7 @@ public class Hero extends Char {
 
         lvl = bundle.getInt(LEVEL);
         exp = bundle.getInt(EXPERIENCE);
+        xenoInfectionReactionShown = bundle.getBoolean(XENO_INFECTION_REACTION_SHOWN);
         vacuumWarningActive = bundle.getBoolean(VACUUM_WARNING_ACTIVE);
         vacuumReturnCell = bundle.contains(VACUUM_RETURN_CELL) ? bundle.getInt(VACUUM_RETURN_CELL) : -1;
         shapeshifterWaterRecovery = bundle.getFloat(SHAPESHIFTER_WATER_RECOVERY);
