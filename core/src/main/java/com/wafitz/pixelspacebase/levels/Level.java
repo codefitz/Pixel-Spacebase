@@ -1177,7 +1177,7 @@ public abstract class Level implements Bundlable {
                 (tile % width == 0 || tile % width == width - 1));
     }
 
-    Point cellToPoint(int cell) {
+    public Point cellToPoint(int cell) {
         return new Point(cell % width(), cell / width());
     }
 

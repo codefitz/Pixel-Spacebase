@@ -6,8 +6,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Mechanics
 
-- [x] Cat should always go to eat meat (restores cat health)
-- [x] Cat is playful and should throw/bounce items the hero comes across (apart from pet carrier)
+- [x] Station cat waits on every level until touched, letting the player choose whether it follows and takes risks.
+- [x] Following station cat bats one module, equippable module, or tech upgrade per regular room; it leaves ordinary loot and food alone.
 - [ ] Cat scares one powerful late level mob.
 - [x] Alter torch to be equipped in quickslots to activate
 - [ ] Small wormhole generator - can active and select any visible tile on the map.

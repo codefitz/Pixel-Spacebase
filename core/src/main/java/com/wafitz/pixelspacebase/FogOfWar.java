@@ -30,8 +30,14 @@ import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.utils.Rect;
 
+import com.wafitz.pixelspacebase.levels.Level;
+import com.wafitz.pixelspacebase.levels.Terrain;
+
 
 public class FogOfWar extends Image {
+
+    private static final int TRANSPARENT = 0x00000000;
+    private static final int HULL_EDGE = 0x66000000;
 
     private static final int VISIBLE[] = new int[]{0xAA000000, 0x55000000, //-2 and -1 brightness
             0x00000000, //0 brightness
@@ -119,7 +125,17 @@ public class FogOfWar extends Image {
             int cell = (pWidth - 1) * i + updating.left;
             fog.pixels.position((width2) * i + updating.left);
             for (int j = updating.left; j < updating.right; j++) {
-                if (cell < pWidth || cell >= SpacebaseRun.level.length() || j == 0 || j == pWidth - 1) {
+                if (!touchesDiscoverableCell(j, i, pWidth - 1, pHeight - 1, Level.discoverable)) {
+                    // The level is stored as a rectangle, but most cells outside the
+                    // generated station are unused. Do not let fog turn that space
+                    // into an opaque black box; the station's outer walls form its edge.
+                    fog.pixels.put(TRANSPARENT);
+                } else if (touchesHullEdge(j, i, pWidth - 1, pHeight - 1,
+                        Level.discoverable, SpacebaseRun.level.map)) {
+                    // Keep the unexplored interior concealed, but let the outside face
+                    // of the station wall remain visible as a subtle hull outline.
+                    fog.pixels.put(HULL_EDGE);
+                } else if (cell < pWidth || cell >= SpacebaseRun.level.length() || j == 0 || j == pWidth - 1) {
                     fog.pixels.put(INVISIBLE[brightness]);
                 } else if (visible[cell] && visible[cell - (pWidth - 1)] &&
                         visible[cell - 1] && visible[cell - (pWidth - 1) - 1]) {
@@ -142,6 +158,45 @@ public class FogOfWar extends Image {
         else
             fog.update(updating.top, updating.bottom);
 
+    }
+
+    static boolean touchesDiscoverableCell(int vertexX, int vertexY, int mapWidth, int mapHeight,
+                                           boolean[] discoverable) {
+        for (int y = vertexY - 1; y <= vertexY; y++) {
+            if (y < 0 || y >= mapHeight) continue;
+            for (int x = vertexX - 1; x <= vertexX; x++) {
+                if (x >= 0 && x < mapWidth && discoverable[x + y * mapWidth]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    static boolean touchesHullEdge(int vertexX, int vertexY, int mapWidth, int mapHeight,
+                                   boolean[] discoverable, int[] map) {
+        boolean touchesOutside = false;
+        boolean touchesWall = false;
+
+        for (int y = vertexY - 1; y <= vertexY; y++) {
+            for (int x = vertexX - 1; x <= vertexX; x++) {
+                if (x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) {
+                    touchesOutside = true;
+                    continue;
+                }
+
+                int cell = x + y * mapWidth;
+                if (!discoverable[cell]) {
+                    touchesOutside = true;
+                } else if (map[cell] == Terrain.WALL || map[cell] == Terrain.WALL_DECO) {
+                    touchesWall = true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return touchesOutside && touchesWall;
     }
 
 

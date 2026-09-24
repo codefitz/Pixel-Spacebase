@@ -23,7 +23,6 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.SpacebaseTilemap;
-import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
@@ -147,20 +146,16 @@ public class MaintenanceLevel extends RegularLevel {
             }
 
         placeSign();
-        placeDevTestStarterChest();
+        placeStarterChest();
     }
 
-    private void placeDevTestStarterChest() {
-        if (!Hero.devTestInvulnerable() || SpacebaseRun.depth > 1 || roomEntrance == null) {
+    private void placeStarterChest() {
+        if (SpacebaseRun.depth != 1 || roomEntrance == null) {
             return;
         }
 
-        int pos = pointToCell(roomEntrance.random());
-        if (pos == entrance
-                || !insideMap(pos)
-                || vents.get(pos) != null
-                || findMob(pos) != null
-                || map[pos] == Terrain.SIGN) {
+        int pos = starterChestCell();
+        if (pos == -1) {
             return;
         }
 
@@ -172,6 +167,38 @@ public class MaintenanceLevel extends RegularLevel {
         drop(new SpaceSuit().identify(), pos);
         drop(new Wrench().identify(), pos);
         drop(new Wrench().identify(), pos);
+    }
+
+    private int starterChestCell() {
+        // Prefer a varied position, but never let one unlucky random choice cancel
+        // this guaranteed floor-one feature.
+        for (int tries = 0; tries < 30; tries++) {
+            int pos = pointToCell(roomEntrance.random());
+            if (canPlaceStarterChest(pos)) {
+                return pos;
+            }
+        }
+
+        for (int y = roomEntrance.top + 1; y < roomEntrance.bottom; y++) {
+            for (int x = roomEntrance.left + 1; x < roomEntrance.right; x++) {
+                int pos = x + y * width();
+                if (canPlaceStarterChest(pos)) {
+                    return pos;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private boolean canPlaceStarterChest(int pos) {
+        return pos != entrance
+                && insideMap(pos)
+                && (Terrain.flags[map[pos]] & Terrain.PASSABLE) != 0
+                && map[pos] != Terrain.SIGN
+                && vents.get(pos) == null
+                && findMob(pos) == null
+                && heaps.get(pos) == null;
     }
 
     @Override

@@ -24,6 +24,8 @@ public class Assets {
 
     public static final String ARCS_BG = "space1.png";
     public static final String ARCS_FG = "space2.png";
+    public static final String SPACEBASE_PLANET = "spacebase_planet.png";
+    public static final String SPACEBASE_STARFIELD = "spacebase_starfield.png";
     public static final String DASHBOARD = "dashboard.png";
 
     public static final String BANNERS = "banners.png";

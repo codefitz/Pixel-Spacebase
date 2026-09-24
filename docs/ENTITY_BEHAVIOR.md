@@ -19,6 +19,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Hologram Distress Call | Princess Pixel of Yendor projection. Gives one of several optional hunt quests: evolved xenomorph, Dark Lord of Yendor, or armored maintenance crawler. Rewards the player after completion. |
 | Quartermaster | Requests a specific material or quest item, then offers blaster rewards. Reinforces the station reclamation/resistance theme. |
 | Maker Bench | Wall-mounted workshop matter-recycling station. Can break items down into parts. Internally still uses the MakerBot interaction flow. |
+| Station Cat | Waits in place whenever it arrives on a new level, including after a level transition, until the player touches it to make it follow. A following cat stays with the player and may bat exactly one module, equippable module, or tech upgrade in each regular room while the player remains there. It ignores food and ordinary loot, so players can choose whether the cat accepts the added risk. |
 | Y | Optional meta/anomaly quest NPC. Addresses the player directly, references game systems, asks the player to recover hologram emitters from the Holodeck Monarch's hard-light retainers, and trades them for a reward. Also appears as a brief floor 10 interlude after the Sleeper is defeated, then vanishes once the hero moves. |
 | Y Trader | Follow-up/trader variant of Y. Acknowledges survival with the same game-aware tone. |
 | Queen Xenomorph | Nonstandard xenomorph personality/encounter. Implied cause of excessive xenomorph breeding on Pixel Spacebase. |

@@ -69,6 +69,7 @@ import com.wafitz.pixelspacebase.ui.LootIndicator;
 import com.wafitz.pixelspacebase.ui.QuickSlotButton;
 import com.wafitz.pixelspacebase.ui.ResumeIndicator;
 import com.wafitz.pixelspacebase.ui.StatusPane;
+import com.wafitz.pixelspacebase.ui.SpacebaseBackdrop;
 import com.wafitz.pixelspacebase.ui.TerrainFeaturesTilemap;
 import com.wafitz.pixelspacebase.ui.Toast;
 import com.wafitz.pixelspacebase.ui.Toolbar;
@@ -125,6 +126,7 @@ public class GameScene extends PixelScene {
     private static CellSelector cellSelector;
 
     private Group terrain;
+    private SpacebaseBackdrop spaceBackdrop;
     private Group customTiles;
     private Group levelVisuals;
     private Group ripples;
@@ -182,6 +184,9 @@ public class GameScene extends PixelScene {
             }
         };
         terrain.add(water);
+
+        spaceBackdrop = new SpacebaseBackdrop();
+        terrain.add(spaceBackdrop);
 
         tiles = new SpacebaseTilemap();
         terrain.add(tiles);

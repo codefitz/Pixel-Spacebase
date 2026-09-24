@@ -301,10 +301,10 @@ public class SpacebaseTilemap extends Tilemap {
         return true;
     }
 
-    // wafitz.v4: Found it! Put translucent water tile back in!
     @Override
     protected boolean needsRender(int pos) {
-        return (Level.discoverable[pos] || data[pos] == defaultVisuals.get(Terrain.CHASM))
-                /*&& data[pos] != defaultVisuals.get(Terrain.WATER)*/;
+        // Chasm cells represent open space outside and between station rooms.
+        // Leave them transparent so the space backdrop beneath the level is visible.
+        return map[pos] != Terrain.CHASM && Level.discoverable[pos];
     }
 }
