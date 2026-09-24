@@ -20,8 +20,6 @@
  */
 package com.wafitz.pixelspacebase.scenes;
 
-import android.opengl.GLES20;
-
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.SpacebaseRun;
@@ -71,6 +69,7 @@ import com.wafitz.pixelspacebase.ui.ResumeIndicator;
 import com.wafitz.pixelspacebase.ui.StatusPane;
 import com.wafitz.pixelspacebase.ui.SpacebaseBackdrop;
 import com.wafitz.pixelspacebase.ui.TerrainFeaturesTilemap;
+import com.wafitz.pixelspacebase.ui.WaterLayer;
 import com.wafitz.pixelspacebase.ui.Toast;
 import com.wafitz.pixelspacebase.ui.Toolbar;
 import com.wafitz.pixelspacebase.ui.Window;
@@ -92,9 +91,6 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
-import com.watabou.noosa.NoosaScript;
-import com.watabou.noosa.NoosaScriptNoLighting;
-import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
@@ -111,7 +107,7 @@ public class GameScene extends PixelScene {
 
     static GameScene scene;
 
-    private SkinnedBlock water;
+    private WaterLayer water;
     private SpacebaseTilemap tiles;
     private TerrainFeaturesTilemap terrainFeatures;
     private FogOfWar fog;
@@ -165,28 +161,13 @@ public class GameScene extends PixelScene {
         terrain = new Group();
         add(terrain);
 
-        water = new SkinnedBlock(
-                SpacebaseRun.level.width() * SpacebaseTilemap.SIZE,
-                SpacebaseRun.level.height() * SpacebaseTilemap.SIZE,
-                SpacebaseRun.level.waterTex()) {
-
-            @Override
-            protected NoosaScript script() {
-                return NoosaScriptNoLighting.get();
-            }
-
-            @Override
-            public void draw() {
-                //water has no alpha component, this improves performance
-                GLES20.glBlendFunc(GLES20.GL_ONE, GLES20.GL_ZERO);
-                super.draw();
-                GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-            }
-        };
-        terrain.add(water);
-
+        // Space is visible only where the terrain has no station tile.
         spaceBackdrop = new SpacebaseBackdrop();
         terrain.add(spaceBackdrop);
+
+        water = new WaterLayer(SpacebaseRun.level.waterTex(),
+                SpacebaseRun.level.map, SpacebaseRun.level.width());
+        terrain.add(water);
 
         tiles = new SpacebaseTilemap();
         terrain.add(tiles);
@@ -468,7 +449,7 @@ public class GameScene extends PixelScene {
 
         super.update();
 
-        if (!freezeEmitters) water.offset(0, -5 * Game.elapsed);
+        if (!freezeEmitters) water.offset(-5 * Game.elapsed);
 
         if (!Actor.processing() && SpacebaseRun.hero.isAlive()) {
             if (!t.isAlive()) {
@@ -731,6 +712,7 @@ public class GameScene extends PixelScene {
 
     public static void resetMap() {
         if (scene != null) {
+            scene.water.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
             scene.tiles.useTileset(SpacebaseRun.level.tilesTex());
             scene.tiles.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
             scene.terrainFeatures.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
@@ -741,6 +723,7 @@ public class GameScene extends PixelScene {
     //updates the whole map
     public static void updateMap() {
         if (scene != null) {
+            scene.water.updateMap();
             scene.tiles.updateMap();
             scene.terrainFeatures.updateMap();
         }
@@ -748,6 +731,7 @@ public class GameScene extends PixelScene {
 
     public static void updateMap(int cell) {
         if (scene != null) {
+            scene.water.updateMapCell(cell);
             scene.tiles.updateMapCell(cell);
             scene.terrainFeatures.updateMapCell(cell);
         }

@@ -303,8 +303,16 @@ public class SpacebaseTilemap extends Tilemap {
 
     @Override
     protected boolean needsRender(int pos) {
-        // Chasm cells represent open space outside and between station rooms.
-        // Leave them transparent so the space backdrop beneath the level is visible.
+        if (Assets.TILES_ENGINEERING.equals(tilesTexturePath)) {
+            // Preserve the pre-backdrop tiles2 behavior. Engineering uses
+            // default-visual CHASM cells as part of its normal floor plan,
+            // including cells outside the discoverable mask.
+            return Level.discoverable[pos]
+                    || data[pos] == defaultVisuals.get(Terrain.CHASM);
+        }
+
+        // On the other level sets, chasm cells are open space; keep them
+        // transparent so the space backdrop remains visible.
         return map[pos] != Terrain.CHASM && Level.discoverable[pos];
     }
 }

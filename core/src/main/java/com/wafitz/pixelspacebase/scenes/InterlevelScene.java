@@ -192,9 +192,11 @@ public class InterlevelScene extends PixelScene {
                     error = null;
                 } else if ((int) waitingTime == 10) {
                     waitingTime = 11f;
-                    PixelSpacebase.reportException(
-                            new RuntimeException("waited more than 10 seconds on levelgen. Device:" + SpacebaseRun.seed + " depth:" + SpacebaseRun.depth)
-                    );
+                    RuntimeException timeout = new RuntimeException(
+                            "waited more than 10 seconds on levelgen. Device:" + SpacebaseRun.seed + " depth:" + SpacebaseRun.depth);
+                    // Report the generation worker's stack, not this loading-screen update.
+                    timeout.setStackTrace(thread.getStackTrace());
+                    PixelSpacebase.reportException(timeout);
                 }
                 break;
         }

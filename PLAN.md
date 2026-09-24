@@ -29,6 +29,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [ ] Hoverpod will protect adventurer but has its own HP and will breakdown
     - [ ] Hoverpod can fly
     - [ ] Heavy loader high protection but can't fire weapons
+    - [ ] Repair blaster can lock doors as well as open locked ones.
 
 ## Cosmetic / Narrative
 
@@ -50,6 +51,10 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
 - [ ] When Y removes a weapon, hero should exclaim "Hey- give that back!" or "Where's my _____?!"
 - [ ] When Y gives a weapon, hero should say "Thanks, I guess?" or "Nice, a _____!"
+- [ ] Add room with no doors. These can be accessed by dropping into them, they may contain a high-value item or nothing. However there is no escape unless you have an item that can teleport you out.
+- [ ] After the first 'ugh what happened' the hero doesn't need to keep saying it.
+- [ ] Y Sprite on habitat level needs to be replaced with correct Y sprite - the NPC sprite is an NPC alternative.
+  - [ ] Roman Holograms need to drop emitters to bring back to Y.
 
 ## Code Quality / Stability
 

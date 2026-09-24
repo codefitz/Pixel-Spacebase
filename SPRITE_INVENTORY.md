@@ -44,7 +44,7 @@ Column notes:
 | `BithAcolyteSprite` | `bith_acolyte.png` | 1024x64 | 48x64 | 21x1 | 21 | 15 | Sheet dimensions are not an exact multiple of frame size. |
 | `QuartermasterSprite` | `quartermaster.png` | 256x64 | 48x56 | 5x1 | 5 | 4 | Sheet dimensions are not an exact multiple of frame size. |
 | `HolodeckMonarchSprite` | `holodeck_monarch.png` | 1024x64 | 64x64 | 16x1 | 16 | 16 |  |
-| `HolodeckLegionarySprite` | `holodeck_legionary.png` | 72x48 | 24x24 | 3x2 | 6 | 6 | Roman-style hard-light projection. |
+| `HolodeckLegionarySprite` | `holodeck_legionary.png` | 288x192 | 96x96 | 3x2 | 6 | 6 | Roman-style hard-light projection; 24x24 logical frames at 4x pixel scale. |
 | `HologramSprite` | `hologram.png` | 512x64 | 56x60 | 9x1 | 9 | 8 | Sheet dimensions are not an exact multiple of frame size. |
 | `HoodedRaiderCommanderSprite` | `outer_colony_scout.png` | 1024x128 | 48x60 | 21x2 | 42 | 11 | Shared sheet with `OuterColonyScoutSprite`. |
 | `ImpSprite` | `npc2.png` | 288x64 | 48x56 | 6x1 | 6 | 5 | Sheet dimensions are not an exact multiple of frame size. |

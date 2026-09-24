@@ -58,7 +58,8 @@ import javax.microedition.khronos.opengles.GL10;
 public class DeepContainmentDeckLevel extends RegularLevel {
 
     {
-        minRoomSize = 6;
+        // Each regular deck needs a room large enough for its 7x7 workshop.
+        minRoomSize = 7;
 
         viewDistance = Math.max(25 - SpacebaseRun.depth, 1);
 
