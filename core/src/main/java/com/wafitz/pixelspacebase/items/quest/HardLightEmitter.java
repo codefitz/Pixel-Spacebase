@@ -21,6 +21,8 @@
 package com.wafitz.pixelspacebase.items.quest;
 
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
 public class HardLightEmitter extends Item {
@@ -40,5 +42,14 @@ public class HardLightEmitter extends Item {
     @Override
     public boolean isIdentified() {
         return true;
+    }
+
+    @Override
+    public boolean doPickUp(Hero hero) {
+        boolean pickedUp = super.doPickUp(hero);
+        if (pickedUp) {
+            Y.Quest.onEmitterAcquired(hero);
+        }
+        return pickedUp;
     }
 }

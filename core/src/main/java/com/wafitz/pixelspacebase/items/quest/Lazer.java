@@ -41,7 +41,7 @@ import java.util.ArrayList;
 public class Lazer extends Item {
 
     {
-        image = ItemSpriteSheet.DUST;
+        image = ItemSpriteSheet.HOLOBATTERY;
 
         malfunctioning = true;
         malfunctioningKnown = true;

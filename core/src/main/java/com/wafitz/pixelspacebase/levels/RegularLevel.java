@@ -26,6 +26,8 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.actors.mobs.HolodeckLegionary;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Survivor;
 import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Generator;
@@ -685,6 +687,25 @@ public abstract class RegularLevel extends Level {
         }
 
         createSurvivor();
+
+        if (SpacebaseRun.depth >= 16 && SpacebaseRun.depth <= 19
+                && !Y.Quest.isHolodeckPoweredDown()) {
+            int projections = 1 + Random.Int(2);
+            int attempts = 0;
+            while (projections > 0 && attempts++ < 40) {
+                Room room = randomRoom(Room.Type.STANDARD, 10);
+                if (room == null) continue;
+
+                int cell = pointToCell(room.random());
+                if (findMob(cell) == null && Level.passable[cell]) {
+                    HolodeckLegionary legionary = new HolodeckLegionary();
+                    legionary.pos = cell;
+                    legionary.state = legionary.WANDERING;
+                    mobs.add(legionary);
+                    projections--;
+                }
+            }
+        }
     }
 
     private void createSurvivor() {

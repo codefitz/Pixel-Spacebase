@@ -21,13 +21,14 @@
 package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.Assets;
-import com.wafitz.pixelspacebase.actors.mobs.RupturedCrewSuit;
+import com.wafitz.pixelspacebase.actors.mobs.HolodeckLegionary;
 import com.wafitz.pixelspacebase.items.plasmids.FireGrenade;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.items.quest.Lazer;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -51,16 +52,16 @@ public class MassGravePainter extends Painter {
 
         addHolodeckTiles(level, room, entrance);
 
-        //50% 1 skeleton, 50% 2 skeletons
+        //50% 1 fallen projection, 50% 2 fallen projections
         for (int i = 0; i <= Random.Int(2); i++) {
-            RupturedCrewSuit skele = new RupturedCrewSuit();
+            HolodeckLegionary projection = new HolodeckLegionary();
 
             int pos;
             do {
                 pos = level.pointToCell(room.random());
             } while (level.map[pos] != Terrain.EMPTY_SP || level.findMob(pos) != null);
-            skele.pos = pos;
-            level.mobs.add(skele);
+            projection.pos = pos;
+            level.mobs.add(projection);
         }
 
         ArrayList<Item> items = new ArrayList<>();
@@ -124,6 +125,14 @@ public class MassGravePainter extends Painter {
         void offset(int x, int y) {
             ofsX = x;
             ofsY = y;
+        }
+
+        @Override
+        public CustomTileVisual create() {
+            tx = Y.Quest.isHolodeckPoweredDown()
+                    ? Assets.HOLODECK_GRID
+                    : Assets.HOLODECK_RETAINER_TILES;
+            return super.create();
         }
 
         @Override

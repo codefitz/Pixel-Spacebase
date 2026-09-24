@@ -27,6 +27,7 @@ import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
@@ -62,7 +63,9 @@ public class HolodeckBossLevel extends Level {
 
     @Override
     public String tilesTex() {
-        return Assets.TILES_HABITATION_RING;
+        return Y.Quest.isHolodeckPoweredDown()
+                ? Assets.HOLODECK_TILES_POWERED_DOWN
+                : Assets.HOLODECK_TILES_ACTIVE;
     }
 
     @Override

@@ -569,10 +569,11 @@ public class GameScene extends PixelScene {
         customTiles.add(visual.create());
     }
 
-    public void resetCustomTiles() {
-        customTiles.clear();
+    public static void resetCustomTiles() {
+        if (scene == null || SpacebaseRun.level == null) return;
+        scene.customTiles.clear();
         for (CustomTileVisual visual : SpacebaseRun.level.customTiles) {
-            addCustomTile(visual);
+            scene.addCustomTile(visual);
         }
     }
 

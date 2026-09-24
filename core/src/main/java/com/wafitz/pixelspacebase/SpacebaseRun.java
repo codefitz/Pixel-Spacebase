@@ -348,6 +348,10 @@ public class SpacebaseRun {
         SpacebaseRun.level = level;
         Actor.init();
 
+        if (Y.Quest.isHolodeckPoweredDown()) {
+            Y.Quest.discardProjections(level);
+        }
+
         PathFinder.setMapSize(level.width(), level.height());
         visible = new boolean[level.length()];
 
@@ -704,6 +708,7 @@ public class SpacebaseRun {
 
         hero = null;
         hero = (Hero) bundle.get(HERO);
+        Y.Quest.reconcileHolodeckState(hero);
 
         parts = bundle.getInt(PARTS);
         depth = bundle.getInt(DEPTH);

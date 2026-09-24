@@ -12,7 +12,15 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Alter torch to be equipped in quickslots to activate
 - [ ] Small wormhole generator - can active and select any visible tile on the map.
 - [x] A battery doused with medigel can explode (locked doors, blockage)
-- [ ] The lazer gun quest - make holodeck look like the offline holodeck, make the 'bodies' be something else, make the 'lazer' be something else.
+- [ ] Holodeck / Lazer quest shutdown sequence:
+    - [x] Use the attached legacy `old_tiles/tiles3.png` as the active boss-level holodeck atlas, enlarged 4x with nearest-neighbour scaling.
+    - [x] Re-theme the current corpse-room bodies and Lazer quest prop as convincing holodeck projections/equipment while preserving the room's reward and pickup flow.
+    - [x] Add Roman-style holographic patrol mobs to eligible habitation-ring levels while the holodeck remains active.
+    - [x] Treat collection of the sixth `HardLightEmitter` (Y's existing requirement) as the shutdown moment, independently of handing the emitters to Y.
+    - [x] At shutdown, stop future patrol spawns, remove patrol projections when their saved floors are revisited, and switch the holodeck to a black field with yellow grid boxes.
+    - [x] Persist the shutdown state across saves and make newly generated and already-generated holodeck areas show the correct phase.
+    - [x] Keep Y's existing six-emitter reward exchange available after shutdown.
+    - [ ] Verify the 5-to-6 emitter transition, save/restore in both phases, projection cleanup, reward exchange, and both visual states.
 - [x] Be able to render the drone controller.
 - [ ] Download/Upload save files.
 - [ ] New Suit Mechanics:
@@ -24,14 +32,14 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Cosmetic / Narrative
 
-- [ ] Chasms/black should have a subtle starry background, with potentially a planet and nearby star.
+- [x] Chasms/black should have a subtle starry background, with potentially a planet and nearby star.
 - [ ] Fire sprites on walls should be replaced with electrical fizzes.
 - [ ] Have a 'now playing' for music.
 - [ ] Challenges Icon update
 - [ ] Custom skin tiles
 - [ ] Armor Kit needs icon sci-fi upgrade
 - [ ] What could replace Yog Duza? Maybe a giant angel.
-- [ ] Rename of icon files
+- [x] Rename of icon files
 - [ ] Fix swarm sprite - crap
 - [ ] DM3000 reskin
 - [ ] Hunter suit reskin

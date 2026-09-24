@@ -67,7 +67,7 @@ public class Assets {
     public static final String JAWAR = "jawar.png";
     public static final String MASKED_PRISONER = "masked_prisoner.png";
     public static final String CONTAINMENT_ECHO = "containment_echo.png";
-    public static final String MAKERBOT = "makerbot.png";
+    public static final String MAKER_BOT = "maker_bot.png";
     public static final String SIPHON_DRONE = "siphon_drone.png";
     public static final String OUTER_COLONY_SHOCK_TROOPER = "outer_colony_shock_trooper.png";
     public static final String FACEHUGGER = "facehugger.png";
@@ -79,6 +79,9 @@ public class Assets {
     public static final String WAR_MACHINE = "war_machine.png";
     public static final String UNDEAD = "undead.png";
     public static final String HOLODECK_MONARCH = "holodeck_monarch.png";
+    public static final String HOLODECK_LEGIONARY = "holodeck_legionary.png";
+    public static final String HOLODECK_TILES_ACTIVE = "holodeck_tiles_active.png";
+    public static final String HOLODECK_TILES_POWERED_DOWN = "holodeck_tiles_powered_down.png";
     public static final String OLDWARBOT = "old_war_bot.png";
     public static final String WATERTHING = "water_thing.png";
     public static final String EYE = "eye.png";
@@ -123,6 +126,7 @@ public class Assets {
     public static final String SECURITY_QUEST = "custom_tiles/security_quests.png";
     public static final String SECURITY_EXIT = "custom_tiles/security_exit.png";
     public static final String HOLODECK_RETAINER_TILES = "custom_tiles/holodeck_halls.png";
+    public static final String HOLODECK_GRID = "custom_tiles/holodeck_grid.png";
     public static final String ALIEN_PLANET_TILES = "custom_tiles/alien_planet_tiles.png";
     public static final String TILES_SECURITY_ARENA = "tiles_security_arena.png";
 
