@@ -21,6 +21,7 @@
 package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
 import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.Actor;
@@ -36,12 +37,16 @@ import com.wafitz.pixelspacebase.levels.HabitationRingLevel;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
+import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.wafitz.pixelspacebase.sprites.YSprite;
 import com.wafitz.pixelspacebase.windows.WndY;
 import com.wafitz.pixelspacebase.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import com.watabou.noosa.Game;
 import com.wafitz.pixelspacebase.utils.GLog;
+
+import java.util.ArrayList;
 
 public class Y extends NPC {
 
@@ -54,6 +59,44 @@ public class Y extends NPC {
     }
 
     private boolean seenBefore = false;
+
+    public static void rescueStrandedHero() {
+        Level level = SpacebaseRun.level;
+        Hero hero = SpacebaseRun.hero;
+        if (level == null || hero == null || level.doorlessRoomLandingCell() < 0) return;
+
+        Y y = new Y();
+        int center = level.doorlessRoomLandingCell();
+        y.pos = center;
+        for (int offset : new int[]{1, -1, level.width(), -level.width()}) {
+            int cell = center + offset;
+            if (level.isDoorlessRoomCell(cell) && Actor.findChar(cell) == null && cell != hero.pos) {
+                y.pos = cell;
+                break;
+            }
+        }
+        GameScene.add(y);
+        GameScene.show(new WndQuest(y, Messages.get(Y.class, "stranded_rescue", hero.givenName())) {
+            @Override
+            public void hide() {
+                super.hide();
+                y.destroy();
+                if (y.sprite != null) y.sprite.killAndErase();
+                int maxDepth = Math.min(26, Statistics.deepestFloor);
+                ArrayList<Integer> destinations = new ArrayList<>();
+                for (int depth = 1; depth <= maxDepth; depth++) {
+                    if (SpacebaseRun.canVisitDepth(depth)) destinations.add(depth);
+                }
+                if (destinations.isEmpty()) destinations.add(SpacebaseRun.depth);
+
+                InterlevelScene.mode = InterlevelScene.Mode.RETURN;
+                InterlevelScene.returnDepth = Random.element(destinations);
+                InterlevelScene.returnPos = -1;
+                InterlevelScene.returnAtEntrance = true;
+                Game.switchScene(InterlevelScene.class);
+            }
+        });
+    }
 
     @Override
     protected boolean act() {

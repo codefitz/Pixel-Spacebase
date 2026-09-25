@@ -49,11 +49,11 @@ import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.plasmids.TitanPlasmid;
 import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
 import com.wafitz.pixelspacebase.items.Generator;
+import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Torch;
 import com.wafitz.pixelspacebase.items.TorchBattery;
-import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.equippablemodules.HoloPad;
 import com.wafitz.pixelspacebase.items.equippablemodules.TechToolkit;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
@@ -179,6 +179,11 @@ public abstract class Level implements Bundlable {
     private static final String FEELING = "feeling";
     private static final String FLOOR_BREAKER_ON = "floorBreakerOn";
     private static final String LIT_VIEW_DISTANCE = "litViewDistance";
+    private static final String DOORLESS_ROOM_CENTER = "doorlessRoomCenter";
+    private static final String DOORLESS_ROOM_RADIUS = "doorlessRoomRadius";
+
+    private int doorlessRoomCenter = -1;
+    private int doorlessRoomRadius = 1;
 
     public void create() {
 
@@ -293,11 +298,14 @@ public abstract class Level implements Bundlable {
         } while (!build());
         decorate();
 
+        createDoorlessRoom();
+
         buildFlagMaps();
         cleanWalls();
 
         createMobs();
         createItems();
+        createDoorlessRoomReward();
 
         Random.seed();
     }
@@ -431,6 +439,15 @@ public abstract class Level implements Bundlable {
             viewDistance = litViewDistance;
         }
 
+        if (bundle.contains(DOORLESS_ROOM_CENTER)) {
+            doorlessRoomCenter = bundle.getInt(DOORLESS_ROOM_CENTER);
+            doorlessRoomRadius = bundle.contains(DOORLESS_ROOM_RADIUS)
+                    ? bundle.getInt(DOORLESS_ROOM_RADIUS) : 1;
+        } else {
+            // Existing saves predate this room; add it to their current level too.
+            createDoorlessRoom();
+        }
+
         buildFlagMaps();
         cleanWalls();
     }
@@ -457,6 +474,86 @@ public abstract class Level implements Bundlable {
         bundle.put(FEELING, feeling);
         bundle.put(FLOOR_BREAKER_ON, floorBreakerOn);
         bundle.put(LIT_VIEW_DISTANCE, litViewDistance);
+        bundle.put(DOORLESS_ROOM_CENTER, doorlessRoomCenter);
+        bundle.put(DOORLESS_ROOM_RADIUS, doorlessRoomRadius);
+    }
+
+    private void createDoorlessRoom() {
+        ArrayList<Integer> candidates = doorlessRoomCandidates(1);
+        doorlessRoomRadius = 1;
+        if (candidates.isEmpty()) {
+            // Rare compact/fixed maps still get a one-cell chamber with a sealed wall border.
+            candidates = doorlessRoomCandidates(0);
+            doorlessRoomRadius = 0;
+        }
+        if (candidates.isEmpty()) {
+            throw new IllegalStateException("Unable to place a sealed fall chamber on level " + SpacebaseRun.depth);
+        }
+
+        int topLeft = Random.element(candidates);
+        int size = doorlessRoomRadius * 2 + 3;
+        int left = topLeft % width();
+        int top = topLeft / width();
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                int cell = (top + y) * width() + left + x;
+                boolean interior = x > 0 && y > 0 && x < size - 1 && y < size - 1;
+                map[cell] = interior ? Terrain.EMPTY : Terrain.WALL;
+            }
+        }
+        doorlessRoomCenter = (top + size / 2) * width() + left + size / 2;
+    }
+
+    private ArrayList<Integer> doorlessRoomCandidates(int radius) {
+        ArrayList<Integer> candidates = new ArrayList<>();
+        int size = radius * 2 + 3;
+        for (int y = 1; y + size < height(); y++) {
+            for (int x = 1; x + size < width(); x++) {
+                boolean clear = true;
+                for (int dy = 0; dy < size && clear; dy++) {
+                    for (int dx = 0; dx < size; dx++) {
+                        int terrain = map[(y + dy) * width() + x + dx];
+                        if (terrain != Terrain.WALL && terrain != Terrain.CHASM) {
+                            clear = false;
+                            break;
+                        }
+                    }
+                }
+                if (clear) candidates.add(y * width() + x);
+            }
+        }
+        return candidates;
+    }
+
+    private void createDoorlessRoomReward() {
+        if (doorlessRoomCenter < 0 || Random.Int(5) != 0) return;
+
+        Item reward;
+        if (SpacebaseRun.isChallenged(Challenges.NO_ARMOR) || Random.Int(2) == 0) {
+            reward = Generator.randomWeapon(SpacebaseRun.depth / 5 + 1);
+        } else {
+            reward = Generator.randomArmor(SpacebaseRun.depth / 5 + 1);
+        }
+        if (reward != null) drop(reward, doorlessRoomCenter);
+    }
+
+    public boolean isDoorlessRoomCell(int cell) {
+        if (doorlessRoomCenter < 0 || !insideMap(cell)) return false;
+        int dx = Math.abs(cell % width() - doorlessRoomCenter % width());
+        int dy = Math.abs(cell / width() - doorlessRoomCenter / width());
+        return dx <= doorlessRoomRadius && dy <= doorlessRoomRadius;
+    }
+
+    private boolean isDoorlessRoomBoundaryCell(int cell) {
+        if (doorlessRoomCenter < 0 || !insideMap(cell)) return false;
+        int dx = Math.abs(cell % width() - doorlessRoomCenter % width());
+        int dy = Math.abs(cell / width() - doorlessRoomCenter / width());
+        return dx <= doorlessRoomRadius + 1 && dy <= doorlessRoomRadius + 1
+                && !isDoorlessRoomCell(cell);
+    }
+
+    public int doorlessRoomLandingCell() {
+        return doorlessRoomCenter;
     }
 
     public void restoreFloorLighting() {
@@ -676,7 +773,8 @@ public abstract class Level implements Bundlable {
 
         while (attempts-- > 0) {
             int cell = Random.Int(length());
-            if (passable[cell] && !SpacebaseRun.visible[cell] && Actor.findChar(cell) == null) {
+            if (passable[cell] && !isDoorlessRoomCell(cell)
+                    && !SpacebaseRun.visible[cell] && Actor.findChar(cell) == null) {
                 return cell;
             }
         }
@@ -684,7 +782,8 @@ public abstract class Level implements Bundlable {
         int candidate = -1;
         int validCells = 0;
         for (int i = 0; i < length(); i++) {
-            if (passable[i] && !SpacebaseRun.visible[i] && Actor.findChar(i) == null) {
+            if (passable[i] && !isDoorlessRoomCell(i)
+                    && !SpacebaseRun.visible[i] && Actor.findChar(i) == null) {
                 validCells++;
                 // Reservoir sampling keeps each valid cell equally likely without extra allocations.
                 if (Random.Int(validCells) == 0) {
@@ -700,7 +799,7 @@ public abstract class Level implements Bundlable {
         int cell;
         do {
             cell = Random.Int(length());
-        } while (!passable[cell]);
+        } while (!passable[cell] || isDoorlessRoomCell(cell));
         return cell;
     }
 
@@ -771,6 +870,9 @@ public abstract class Level implements Bundlable {
     }
 
     public void destroy(int pos) {
+
+        // The chamber's sealed wall ring must remain intact; teleportation is its only exit.
+        if (isDoorlessRoomBoundaryCell(pos)) return;
 
         if (!SpacebaseTilemap.waterStitcheable.contains(map[pos])) {
             for (int j = 0; j < PathFinder.NEIGHBOURS4.length; j++) {

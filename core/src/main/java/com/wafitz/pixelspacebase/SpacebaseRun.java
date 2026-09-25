@@ -26,6 +26,8 @@ import com.wafitz.pixelspacebase.actors.buffs.Awareness;
 import com.wafitz.pixelspacebase.actors.buffs.IntruderAlert;
 import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
+import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.StrandedRoomRescue;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
@@ -376,6 +378,11 @@ public class SpacebaseRun {
         }
 
         hero.pos = pos != -1 ? pos : level.exit;
+        if (level.isDoorlessRoomCell(hero.pos)) {
+            Buff.affect(hero, StrandedRoomRescue.class);
+        } else {
+            Buff.detach(hero, StrandedRoomRescue.class);
+        }
         StationCat.placeFollowerOn(level);
 
         hero.viewDistance = heroViewDistance();

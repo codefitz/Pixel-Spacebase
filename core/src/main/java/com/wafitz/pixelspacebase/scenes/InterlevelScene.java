@@ -38,6 +38,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -54,6 +55,7 @@ public class InterlevelScene extends PixelScene {
 
     public static int returnDepth;
     public static int returnPos;
+    public static boolean returnAtEntrance;
 
     public static boolean noStory = false;
 
@@ -245,7 +247,11 @@ public class InterlevelScene extends PixelScene {
             level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
             Workshop.deliverStorageTo(level);
         }
-        SpacebaseRun.switchLevel(level, fallIntoPit ? level.pitCell() : level.randomRespawnCell());
+        int landingCell = Random.Int(4) == 0
+                ? level.doorlessRoomLandingCell()
+                : (fallIntoPit ? level.pitCell() : level.randomRespawnCell());
+        SpacebaseRun.switchLevel(level, landingCell);
+        fallIntoPit = false;
     }
 
     private void ascend() throws IOException {
@@ -270,7 +276,8 @@ public class InterlevelScene extends PixelScene {
         SpacebaseRun.depth = returnDepth;
         Level level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
         Workshop.deliverStorageTo(level);
-        SpacebaseRun.switchLevel(level, returnPos);
+        SpacebaseRun.switchLevel(level, returnAtEntrance ? level.entrance : returnPos);
+        returnAtEntrance = false;
     }
 
     private void restore() throws IOException {

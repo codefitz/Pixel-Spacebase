@@ -76,6 +76,7 @@ public class WormholeGenerator extends EquippableModule {
         for (int cell = 0; cell < SpacebaseRun.level.length(); cell++) {
             int terrain = SpacebaseRun.level.map[cell];
             if (cell == hero.pos || !Level.passable[cell] || Level.solid[cell]
+                    || SpacebaseRun.level.isDoorlessRoomCell(cell)
                     || terrain == Terrain.ENTRANCE || terrain == Terrain.EXIT
                     || terrain == Terrain.UNLOCKED_EXIT || Actor.findChar(cell) != null) {
                 continue;

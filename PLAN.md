@@ -25,20 +25,20 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [x] Give the boss a Caesar sprite and its summons Roman legionary sprites.
     - [ ] Verify the 5-to-6 emitter transition, save/restore in both phases, projection cleanup, reward exchange, and both visual states.
 - [x] Be able to render the drone controller.
-- [ ] New Suit Mechanics:
+- [x] New Suit Mechanics:
     - [x] Hunter Suit signature scanner shows moving red silhouettes for enemies and NPCs while floor lights are off, without revealing terrain or extending targeting sight.
     - [x] Hunter Suit jetpack can be switched on or off for unlimited flight while equipped.
     - [x] Hunter has +1 accuracy with ranged weapons.
     - [x] Hoverpod absorbs hits and non-explosive traps, has visible integrity, and breaks down after 15 hits. Repair Blaster restores it; combining two strengthens it by one hit.
-    - [ ] Heavy loader high HP, smash locked/damaged doors, can fire weapon but whilst wearing weapon slot is equipped with loader arm (upgradeable).
-      - [ ] Create loader arm item
+    - [x] Heavy loader high HP, smash locked/damaged doors, can fire weapon but whilst wearing weapon slot is equipped with loader arm (upgradeable).
+      - [x] Create loader arm item
     - [x] Space suit and Hunter Suit are immune to harmful gases.
     - [x] Being unarmored grants 50% faster movement and 25% greater dodge.
     - [x] Unprovoked robots ignore a hero in uniform; each remembers a hero attack across saves.
-    - [ ] Only space suit, hunter, hoverpod and the special suit allow breathing in space.
-      - [ ] Exception: DM3000 doesn't need to breath so can wear anything.
+    - [x] Only space suit, hunter, hoverpod and the special suit allow breathing in space.
+      - [x] Exception: DM3000 doesn't need to breath so can wear anything.
   - [x] Repair blaster can lock doors as well as open locked ones.
-  - [ ] Have a rare item (x2 per game) that will upgrade everything currently carried or equipped.
+  - [x] Have a rare item (x2 per game) that will upgrade everything currently carried or equipped.
 
 ## Cosmetic / Narrative
 
@@ -51,10 +51,10 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Challenges Icon update
 - [x] Armor Kit needs icon sci-fi upgrade
 - [x] Rename of icon files
-- [ ] Fix swarm sprite - crap
+- [x] Fix swarm sprite - crap
 - [x] Swap wall tiles in security
 - [x] Hero reacts when Y confiscates a weapon during the security maze and when it is recovered after the Masked Prisoner fight.
-- [ ] Add room with no doors. These can be accessed by dropping into them, they may contain a high-value item or nothing. However there is no escape unless you have an item that can teleport you out.
+- [x] Add room with no doors. These can be accessed by dropping into them, they may contain a high-value item or nothing. However there is no escape unless you have an item that can teleport you out.
 - [x] Show the initial Xeno infection reaction only once per run; retain the warning and burst reactions for later infections.
 - [x] Y's habitat and workshop sprites match his security boss appearance.
 - [x] A Shapeshifter throwing a blaster discharges an energy beam at every hostile target in the impact room, reducing each to 0 HP. The blaster is consumed.
