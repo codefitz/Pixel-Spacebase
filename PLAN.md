@@ -38,6 +38,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [ ] Only space suit, hunter, hoverpod and the special suit allow breathing in space.
       - [ ] Exception: DM3000 doesn't need to breath so can wear anything.
   - [ ] Repair blaster can lock doors as well as open locked ones.
+  - [ ] Fix: Cat is not going or meat.
+  - [ ] Have a rare item (x2 per game) that will upgrade everything currently carried or equipped.
 
 ## Cosmetic / Narrative
 
