@@ -47,7 +47,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Refresh Engineering's salvageable wall panels.
 - [x] Upgrade the Habitation Ring terrain tileset.
 - [x] Name the later area Command in documentation and player-facing chapter copy.
-- [ ] Have a 'now playing' for music.
+- [x] Have an optional 'now playing' message for level music, controlled from Audio settings.
 - [x] Challenges Icon update
 - [x] Armor Kit needs icon sci-fi upgrade
 - [x] Rename of icon files

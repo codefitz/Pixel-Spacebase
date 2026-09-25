@@ -381,6 +381,8 @@ public class GameScene extends PixelScene {
                 GLog.w(Messages.get(this, "secrets"));
             }
 
+            announceNowPlaying();
+
             InterlevelScene.mode = InterlevelScene.Mode.NONE;
 
             fadeIn();
@@ -410,6 +412,25 @@ public class GameScene extends PixelScene {
         } else {
             return Assets.TUNE;
         }
+    }
+
+    public void announceNowPlaying() {
+        if (PixelSpacebase.nowPlaying()) {
+            GLog.i(Messages.get(this, "now_playing", musicTitle(musicForDepth())));
+        }
+    }
+
+    private String musicTitle(String track) {
+        if (Assets.OXYGEN_WARNING.equals(track)) return Messages.get(this, "track_oxygen_warning");
+        if (Assets.LOCKDOWN.equals(track)) return Messages.get(this, "track_lockdown");
+        if (Assets.SECTOR_9.equals(track)) return Messages.get(this, "track_sector_9");
+        if (Assets.PROTOCOL.equals(track)) return Messages.get(this, "track_protocol");
+        if (Assets.ENGINEERING_BOSS.equals(track)) return Messages.get(this, "track_engineering_boss");
+        if (Assets.HABITATION.equals(track)) return Messages.get(this, "track_habitation");
+        if (Assets.HABITATION_BOSS.equals(track)) return Messages.get(this, "track_habitation_boss");
+        if (Assets.BRIDGE.equals(track)) return Messages.get(this, "track_bridge");
+        if (Assets.BRIDGE_BOSS.equals(track)) return Messages.get(this, "track_bridge_boss");
+        return Messages.get(this, "track_pursuit");
     }
 
     private int freeRespawnCell() {

@@ -40,7 +40,7 @@ import com.watabou.noosa.audio.Sample;
 public class WndSettings extends WndTabbed {
 
     private static final int WIDTH = 112;
-    private static final int HEIGHT = 124;
+    private static final int HEIGHT = 144;
     private static final int SLIDER_HEIGHT = 25;
     private static final int BTN_HEIGHT = 20;
     private static final int GAP_TINY = 2;
@@ -323,6 +323,19 @@ public class WndSettings extends WndTabbed {
             musicMute.checked(!PixelSpacebase.music());
             add(musicMute);
 
+            CheckBox nowPlaying = new CheckBox(Messages.get(this, "now_playing")) {
+                @Override
+                protected void onClick() {
+                    super.onClick();
+                    PixelSpacebase.nowPlaying(checked());
+                    if (checked() && PixelSpacebase.scene() instanceof GameScene) {
+                        ((GameScene) PixelSpacebase.scene()).announceNowPlaying();
+                    }
+                }
+            };
+            nowPlaying.setRect(0, musicMute.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
+            nowPlaying.checked(PixelSpacebase.nowPlaying());
+            add(nowPlaying);
 
             OptionSlider SFXVol = new OptionSlider(Messages.get(this, "sfx_vol"), "0", "10", 0, 10) {
                 @Override
@@ -332,7 +345,7 @@ public class WndSettings extends WndTabbed {
                 }
             };
             SFXVol.setSelectedValue(PixelSpacebase.SFXVol());
-            SFXVol.setRect(0, musicMute.bottom() + GAP_LRG, WIDTH, SLIDER_HEIGHT);
+            SFXVol.setRect(0, nowPlaying.bottom() + GAP_LRG, WIDTH, SLIDER_HEIGHT);
             add(SFXVol);
 
             CheckBox btnSound = new CheckBox(Messages.get(this, "sfx_mute")) {

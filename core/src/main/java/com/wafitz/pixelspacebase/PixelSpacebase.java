@@ -638,6 +638,14 @@ public class PixelSpacebase extends Game {
         return Preferences.INSTANCE.getBoolean(Preferences.KEY_MUSIC, true);
     }
 
+    public static void nowPlaying(boolean value) {
+        Preferences.INSTANCE.put(Preferences.KEY_NOW_PLAYING, value);
+    }
+
+    public static boolean nowPlaying() {
+        return Preferences.INSTANCE.getBoolean(Preferences.KEY_NOW_PLAYING, true);
+    }
+
     public static void musicVol(int value) {
         Preferences.INSTANCE.put(Preferences.KEY_MUSIC_VOL, value);
     }
