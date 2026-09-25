@@ -27,7 +27,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Be able to render the drone controller.
 - [ ] Download/Upload save files.
 - [ ] New Suit Mechanics:
-    - [ ] Hunter suit to detect <sci-fi term> signatures (lights off, can visualise all enemies/npcs on a level in the dark)
+    - [x] Hunter Suit signature scanner shows moving red silhouettes for enemies and NPCs while floor lights are off, without revealing terrain or extending targeting sight.
     - [ ] Hunter can fly
     - [ ] Hoverpod will protect adventurer but has its own HP and will breakdown
     - [ ] Hoverpod can fly

@@ -20,6 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.armor;
 
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.scenes.StartScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -38,6 +39,12 @@ public class HunterSpaceSuit extends Armor {
 
     public HunterSpaceSuit() {
         super(3);
+    }
+
+    public static boolean signatureScannerActive() {
+        return SpacebaseRun.hero != null && SpacebaseRun.level != null
+                && SpacebaseRun.hero.belongings.armor instanceof HunterSpaceSuit
+                && !SpacebaseRun.level.floorBreakerOn;
     }
 
 }

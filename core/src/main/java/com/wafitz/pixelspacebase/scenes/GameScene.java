@@ -63,6 +63,7 @@ import com.wafitz.pixelspacebase.ui.BusyIndicator;
 import com.wafitz.pixelspacebase.ui.CustomTileVisual;
 import com.wafitz.pixelspacebase.ui.GameLog;
 import com.wafitz.pixelspacebase.ui.HealthIndicator;
+import com.wafitz.pixelspacebase.ui.HunterSignature;
 import com.wafitz.pixelspacebase.ui.LootIndicator;
 import com.wafitz.pixelspacebase.ui.QuickSlotButton;
 import com.wafitz.pixelspacebase.ui.ResumeIndicator;
@@ -130,6 +131,7 @@ public class GameScene extends PixelScene {
     private Group vents;
     private Group heaps;
     private Group mobs;
+    private Group hunterSignatures;
     private Group emitters;
     private Group effects;
     private Group gases;
@@ -203,6 +205,8 @@ public class GameScene extends PixelScene {
         mobs = new Group();
         add(mobs);
 
+        hunterSignatures = new Group();
+
         for (Mob mob : SpacebaseRun.level.mobs) {
             addMobSprite(mob);
             if (Statistics.amuletObtained) {
@@ -223,6 +227,8 @@ public class GameScene extends PixelScene {
 
         fog = new FogOfWar(SpacebaseRun.level.width(), SpacebaseRun.level.height());
         add(fog);
+
+        add(hunterSignatures);
 
         spells = new Group();
         add(spells);
@@ -591,6 +597,7 @@ public class GameScene extends PixelScene {
         sprite.visible = SpacebaseRun.visible[mob.pos];
         mobs.add(sprite);
         sprite.link(mob);
+        hunterSignatures.add(new HunterSignature(mob));
     }
 
     private synchronized void prompt(String text) {
