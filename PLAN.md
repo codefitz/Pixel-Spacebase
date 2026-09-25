@@ -10,7 +10,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Following station cat bats one module, equippable module, or tech upgrade per regular room; it leaves ordinary loot and food alone.
 - [x] A following station cat can scare a nearby signal siren into fleeing.
 - [x] Alter torch to be equipped in quickslots to activate
-- [ ] Small wormhole generator - can active and select any visible tile on the map.
+- [x] Wormhole generator: equip it and spend one utility battery to teleport to a random unoccupied location on the current level; the device has no recharge.
 - [x] A battery doused with medigel can explode (locked doors, blockage)
 - [ ] Holodeck / Lazer quest shutdown sequence:
     - [x] Use the attached legacy `old_tiles/tiles3.png` as the active boss-level holodeck atlas, enlarged 4x with nearest-neighbour scaling.
@@ -41,25 +41,32 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Refresh Engineering's salvageable wall panels.
 - [x] Upgrade the Habitation Ring terrain tileset.
 - [x] Name the later area Command in documentation and player-facing chapter copy.
-- [ ] Decide on Command's lava and fire-particle replacement.
 - [ ] Have a 'now playing' for music.
 - [x] Challenges Icon update
 - [ ] Custom skin tiles
 - [x] Armor Kit needs icon sci-fi upgrade
-- [ ] What could replace Yog Duza? Maybe a giant angel.
 - [x] Rename of icon files
 - [ ] Fix swarm sprite - crap
-- [ ] DM3000 reskin
-- [ ] Hunter suit reskin
-- [ ] Heavy loader reskin
 - [x] Swap wall tiles in security
-- [ ] Update common tiles across sets
-- [ ] Door in security blood spot is too ubiquitous, needs to be more subtle
-- [ ] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
 - [x] Hero reacts when Y confiscates a weapon during the security maze and when it is recovered after the Masked Prisoner fight.
 - [ ] Add room with no doors. These can be accessed by dropping into them, they may contain a high-value item or nothing. However there is no escape unless you have an item that can teleport you out.
 - [x] Show the initial Xeno infection reaction only once per run; retain the warning and burst reactions for later infections.
 - [x] Y's habitat and workshop sprites match his security boss appearance.
+- [ ] Shapeshifter throwing a blaster should explode and do full HP damage. Reflecting the power of blasters which the shapeshifter is not able to use.
+
+## Art
+
+- [ ] DM3000 reskin
+- [ ] Hunter suit reskin
+- [ ] Heavy loader reskin
+- [ ] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
+- [ ] Update common tiles across sets
+- [ ] Door in security blood spot is too ubiquitous, needs to be more subtle
+
+## Decisions
+
+- [ ] Decide on Command's lava and fire-particle replacement.
+- [ ] What could replace Yog Duza? Maybe a giant angel.
 
 ## Code Quality / Stability
 

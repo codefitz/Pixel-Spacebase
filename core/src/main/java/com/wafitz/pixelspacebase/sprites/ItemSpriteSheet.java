@@ -192,6 +192,7 @@ public class ItemSpriteSheet {
     public static final int HOLOPAD_1 = ARTIFACTS + 20;
     public static final int HOLOPAD_2 = ARTIFACTS + 21;
     public static final int HOLOPAD_3 = ARTIFACTS + 22;
+    public static final int WORMHOLE_GENERATOR = ARTIFACTS + 23;
 
     //32 free slots
 
