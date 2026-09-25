@@ -126,6 +126,9 @@ public class EMP extends Blaster {
                 return true;
             case Terrain.LOCKED_DOOR:
                 return repairLock(cell);
+            case Terrain.DOOR:
+            case Terrain.OPEN_DOOR:
+                return lockDoor(cell);
             default:
                 return false;
         }
@@ -140,6 +143,8 @@ public class EMP extends Blaster {
             case Terrain.HIDDEN_VENT:
             case Terrain.OFFVENT:
             case Terrain.LOCKED_DOOR:
+            case Terrain.DOOR:
+            case Terrain.OPEN_DOOR:
                 return true;
             default:
                 return false;
@@ -168,6 +173,18 @@ public class EMP extends Blaster {
         if (unlockRoll()) {
             Level.set(cell, Terrain.DOOR);
             GLog.p(Messages.get(this, "lock_opened"));
+        } else {
+            Level.set(cell, Terrain.BARRICADE);
+            GLog.w(Messages.get(this, "lock_jammed"));
+        }
+        GameScene.updateMap(cell);
+        return true;
+    }
+
+    private boolean lockDoor(int cell) {
+        if (unlockRoll()) {
+            Level.set(cell, Terrain.LOCKED_DOOR);
+            GLog.p(Messages.get(this, "door_locked"));
         } else {
             Level.set(cell, Terrain.BARRICADE);
             GLog.w(Messages.get(this, "lock_jammed"));

@@ -27,10 +27,12 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.SignalSiren;
+import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.PetCarrier;
 import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
+import com.wafitz.pixelspacebase.items.food.MysteryMeat;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -101,6 +103,21 @@ public class StationCat extends NPC {
             return true;
         }
 
+        Heap meatHeap = meatHeap();
+        if (meatHeap != null && !heroLeftRoom(meatHeap)) {
+            if (meatHeap.pos == pos) {
+                eatMeat(meatHeap);
+                spend(TICK);
+                return true;
+            }
+
+            int oldPos = pos;
+            if (getCloser(meatHeap.pos)) {
+                spend(1 / speed());
+                return moveSprite(oldPos, pos);
+            }
+        }
+
         Heap itemHeap = itemHeap();
         if (itemHeap != null && !heroLeftRoom(itemHeap)) {
             if (itemHeap.pos == pos) {
@@ -165,6 +182,48 @@ public class StationCat extends NPC {
         }
 
         return closest;
+    }
+
+    private Heap meatHeap() {
+        if (HP >= HT) {
+            return null;
+        }
+
+        Heap closest = null;
+        int closestDistance = Integer.MAX_VALUE;
+        for (Heap heap : SpacebaseRun.level.heaps.values()) {
+            Room room = roomAt(heap.pos);
+            if (heap.type != Heap.Type.HEAP || room == null || isWorkshopCell(heap.pos)
+                    || rawMeat(heap) == null || heroLeftRoom(heap)) {
+                continue;
+            }
+
+            int distance = SpacebaseRun.level.distance(pos, heap.pos);
+            if (distance < closestDistance) {
+                closest = heap;
+                closestDistance = distance;
+            }
+        }
+        return closest;
+    }
+
+    private MysteryMeat rawMeat(Heap heap) {
+        for (Item item : heap.items) {
+            if (item instanceof MysteryMeat) {
+                return (MysteryMeat) item;
+            }
+        }
+        return null;
+    }
+
+    private void eatMeat(Heap heap) {
+        MysteryMeat meat = rawMeat(heap);
+        if (meat != null && heap.removeOne(meat)) {
+            HP = Math.min(HT, HP + Math.max(1, HT / 2));
+            if (sprite != null) {
+                sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+            }
+        }
     }
 
     private void batItem(Heap heap) {

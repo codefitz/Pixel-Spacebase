@@ -7,7 +7,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 ## Mechanics
 
 - [x] Station cat waits on every level until touched, letting the player choose whether it follows and takes risks.
-- [x] Following station cat bats one module, equippable module, or tech upgrade per regular room; it leaves ordinary loot and food alone.
+- [x] Following station cat bats one module, equippable module, or tech upgrade per regular room; it leaves ordinary loot alone and eats dropped raw meat to restore HP while the hero stays in the room.
 - [x] A following station cat can scare a nearby signal siren into fleeing.
 - [x] Alter torch to be equipped in quickslots to activate
 - [x] Wormhole generator: equip it and spend one utility battery to teleport to a random unoccupied location on the current level; the device has no recharge.
@@ -30,14 +30,14 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [x] Hunter Suit jetpack can be switched on or off for unlimited flight while equipped.
     - [x] Hunter has +1 accuracy with ranged weapons.
     - [x] Hoverpod absorbs hits and non-explosive traps, has visible integrity, and breaks down after 15 hits. Repair Blaster restores it; combining two strengthens it by one hit.
-    - [ ] Heavy loader high protection, smash locked/damaged doors, can fire weapon but whilst wearing weapon slot is equipped with loader arm (upgradeable).
+    - [ ] Heavy loader high HP, smash locked/damaged doors, can fire weapon but whilst wearing weapon slot is equipped with loader arm (upgradeable).
+      - [ ] Create loader arm item
     - [x] Space suit and Hunter Suit are immune to harmful gases.
     - [x] Being unarmored grants 50% faster movement and 25% greater dodge.
     - [x] Unprovoked robots ignore a hero in uniform; each remembers a hero attack across saves.
     - [ ] Only space suit, hunter, hoverpod and the special suit allow breathing in space.
       - [ ] Exception: DM3000 doesn't need to breath so can wear anything.
-  - [ ] Repair blaster can lock doors as well as open locked ones.
-  - [ ] Fix: Cat is not going or meat.
+  - [x] Repair blaster can lock doors as well as open locked ones.
   - [ ] Have a rare item (x2 per game) that will upgrade everything currently carried or equipped.
 
 ## Cosmetic / Narrative
