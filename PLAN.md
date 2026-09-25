@@ -25,7 +25,6 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [x] Give the boss a Caesar sprite and its summons Roman legionary sprites.
     - [ ] Verify the 5-to-6 emitter transition, save/restore in both phases, projection cleanup, reward exchange, and both visual states.
 - [x] Be able to render the drone controller.
-- [ ] Download/Upload save files.
 - [ ] New Suit Mechanics:
     - [x] Hunter Suit signature scanner shows moving red silhouettes for enemies and NPCs while floor lights are off, without revealing terrain or extending targeting sight.
     - [x] Hunter Suit jetpack can be switched on or off for unlimited flight while equipped.
@@ -50,7 +49,6 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Name the later area Command in documentation and player-facing chapter copy.
 - [ ] Have a 'now playing' for music.
 - [x] Challenges Icon update
-- [ ] Custom skin tiles
 - [x] Armor Kit needs icon sci-fi upgrade
 - [x] Rename of icon files
 - [ ] Fix swarm sprite - crap
@@ -77,6 +75,11 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 - [ ] Decide on Command's lava and fire-particle replacement.
 - [ ] What could replace Yog Duza? Maybe a giant angel.
+
+## Future Paid Feature
+
+- [ ] Download/Upload save files.
+- [ ] Custom asset skins upload
 
 ## Code Quality / Stability
 
