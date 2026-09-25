@@ -58,7 +58,8 @@ public abstract class Upgrade extends Item {
             KnockoutUpgrade.class,
             EnhancementUpgrade.class,
             PsionicBlastUpgrade.class,
-            WeakCloneUpgrade.class
+            WeakCloneUpgrade.class,
+            AllGearUpgrade.class
     };
 
     private static final HashMap<String, Integer> runes = new HashMap<String, Integer>() {
@@ -75,6 +76,7 @@ public abstract class Upgrade extends Item {
             put("BERKANAN", ItemSpriteSheet.BERKANAN_UPGRADE);
             put("ODAL", ItemSpriteSheet.ODAL_UPGRADE);
             put("TIWAZ", ItemSpriteSheet.TIWAZ_UPGRADE);
+            put("DAGAZ", ItemSpriteSheet.DAGAZ_UPGRADE);
         }
     };
 

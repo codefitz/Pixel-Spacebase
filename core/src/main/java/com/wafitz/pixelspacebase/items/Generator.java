@@ -97,6 +97,7 @@ import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.PanicUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
+import com.wafitz.pixelspacebase.items.upgrades.AllGearUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.WeakCloneUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.BrightHammer;
@@ -223,8 +224,9 @@ public class Generator {
                 KnockoutUpgrade.class,
                 EnhancementUpgrade.class,
                 PsionicBlastUpgrade.class,
-                WeakCloneUpgrade.class};
-        Category.UPGRADE.probs = new float[]{30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 4, 10};
+                WeakCloneUpgrade.class,
+                AllGearUpgrade.class};
+        Category.UPGRADE.probs = new float[]{30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 4, 10, 2};
 
         Category.PLASMID.classes = new Class<?>[]{
                 HealingPlasmid.class,
@@ -402,7 +404,12 @@ public class Generator {
                     //if we're out of artifacts, return a ring instead.
                     return item != null ? item : random(Category.MODULE);
                 default:
-                    return ((Item) cat.classes[Random.chances(cat.probs)].newInstance()).random();
+                    float[] probabilities = cat.probs;
+                    if (cat == Category.UPGRADE && SpacebaseRun.limitedDrops.allGearUpgrade.count >= 2) {
+                        probabilities = cat.probs.clone();
+                        probabilities[probabilities.length - 1] = 0;
+                    }
+                    return ((Item) cat.classes[Random.chances(probabilities)].newInstance()).random();
             }
 
         } catch (Exception e) {

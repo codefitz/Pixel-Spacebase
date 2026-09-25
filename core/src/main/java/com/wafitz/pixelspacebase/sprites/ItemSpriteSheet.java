@@ -209,6 +209,8 @@ public class ItemSpriteSheet {
     public static final int BERKANAN_UPGRADE = UPGRADES + 9;
     public static final int ODAL_UPGRADE = UPGRADES + 10;
     public static final int TIWAZ_UPGRADE = UPGRADES + 11;
+    // Reuse the final existing upgrade rune until the atlas gets a new sprite.
+    public static final int DAGAZ_UPGRADE = UPGRADES + 11;
 
     private static final int PLASMID = xy(1, 21);  //16 slots
     public static final int CRIMSON_PLASMID = PLASMID;

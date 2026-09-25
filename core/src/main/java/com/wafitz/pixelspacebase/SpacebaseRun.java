@@ -108,7 +108,10 @@ public class SpacebaseRun {
         plasmidKit,
         blasterHolster,
 
-        guardHP;
+        guardHP,
+
+        //append-only: limited drop ordinals are persisted in saves
+        allGearUpgrade;
 
         public int count = 0;
 
