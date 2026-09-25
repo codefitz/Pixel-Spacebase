@@ -65,10 +65,10 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] DM3000 reskin
 - [ ] Hunter suit reskin
 - [ ] Heavy loader reskin
-- [ ] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
+- [x] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
 - [ ] Update common tiles across sets
-- [ ] Door in security blood spot is too ubiquitous, needs to be more subtle
-- [ ] Habitation graphic overhaul
+- [x] Door in security blood spot is too ubiquitous, needs to be more subtle
+- [x] Habitation graphic overhaul
 - [ ] Hologram emitter token reskin
 
 ## Decisions
