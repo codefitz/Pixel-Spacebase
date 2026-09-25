@@ -29,6 +29,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.mobs.SiphonDrone;
 import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.quest.DroneParts;
 import com.wafitz.pixelspacebase.items.quest.ScrewDriver;
 import com.wafitz.pixelspacebase.items.quest.SpareBaseParts;
@@ -209,6 +210,7 @@ public class Leonard extends NPC {
             ((EquipableItem) first).doUnequip(SpacebaseRun.hero, true);
         }
         first.level(first.level() + 1); //prevents on-upgrade effects like enhance/enhancement removal
+        if (first instanceof HoverPod) ((HoverPod) first).reinforce();
         SpacebaseRun.hero.spendAndNext(2f);
         Badges.validateItemLevelAquired(first);
 

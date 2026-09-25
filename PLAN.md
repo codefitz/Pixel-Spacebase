@@ -29,10 +29,15 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] New Suit Mechanics:
     - [x] Hunter Suit signature scanner shows moving red silhouettes for enemies and NPCs while floor lights are off, without revealing terrain or extending targeting sight.
     - [x] Hunter Suit jetpack can be switched on or off for unlimited flight while equipped.
-    - [ ] Hoverpod will protect adventurer but has its own HP and will breakdown
-    - [ ] Hoverpod can fly
-    - [ ] Heavy loader high protection but can't fire weapons
-    - [ ] Repair blaster can lock doors as well as open locked ones.
+    - [ ] Hunter has +1 accuracy ranged weapons.
+    - [x] Hoverpod absorbs hits and non-explosive traps, has visible integrity, and breaks down after 15 hits. Repair Blaster restores it; combining two strengthens it by one hit.
+    - [ ] Heavy loader high protection, smash locked/damaged doors, can fire weapon but whilst wearing weapon slot is equipped with loader arm (upgradeable).
+    - [ ] Space suit is immune to gasses.
+    - [ ] Being naked is +1 to speed and greater dodge.
+    - [ ] Robots won't attack (unless attacked first) if wearing the uniform.
+    - [ ] Only space suit, hunter, hoverpod and the special suit allow breathing in space.
+      - [ ] Exception: DM3000 doesn't need to breath so can wear anything.
+  - [ ] Repair blaster can lock doors as well as open locked ones.
 
 ## Cosmetic / Narrative
 

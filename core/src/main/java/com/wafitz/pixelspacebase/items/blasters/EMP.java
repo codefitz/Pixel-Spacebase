@@ -25,9 +25,12 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.EnergyBeam;
 import com.wafitz.pixelspacebase.items.Heap;
+import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -42,8 +45,11 @@ import com.watabou.utils.ColorMath;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
+import java.util.ArrayList;
 
 public class EMP extends Blaster {
+
+    private static final String AC_REPAIR_POD = "REPAIR_POD";
 
     // Compatibility note: player-facing text presents this as the Repair Blaster.
     // Keep the internal EMP class name for saves, generator tables, and message keys.
@@ -59,6 +65,37 @@ public class EMP extends Blaster {
 
     private static final int BASE_UNLOCK_CHANCE = 45;
     private static final int UNLOCK_CHANCE_PER_LEVEL = 10;
+
+    @Override
+    public ArrayList<String> actions(Hero hero) {
+        ArrayList<String> actions = super.actions(hero);
+        HoverPod pod = HoverPod.equipped(hero);
+        if (hero.heroClass != HeroClass.SHAPESHIFTER && pod != null
+                && pod.integrity() < pod.maxIntegrity()) actions.add(AC_REPAIR_POD);
+        return actions;
+    }
+
+    @Override
+    public void execute(Hero hero, String action) {
+        super.execute(hero, action);
+        if (!AC_REPAIR_POD.equals(action)) return;
+
+        HoverPod pod = HoverPod.equipped(hero);
+        if (hero.heroClass == HeroClass.SHAPESHIFTER || pod == null
+                || pod.integrity() >= pod.maxIntegrity()) return;
+        if (curCharges < (malfunctioning ? 1 : chargesPerCast())) {
+            GLog.w(Messages.get(Blaster.class, "fizzles"));
+            return;
+        }
+
+        if (pod.repair()) {
+            hero.sprite.operate(hero.pos);
+            hero.sprite.emitter().burst(Speck.factory(Speck.STEAM), 3);
+            Sample.INSTANCE.play(Assets.SND_ZAP);
+            GLog.p(Messages.get(this, "pod_repaired"));
+            blasterUsed();
+        }
+    }
 
     @Override
     protected void onZap(Ballistica bolt) {

@@ -1110,6 +1110,12 @@ public class Hero extends Char {
         if (buff(TimeFolder.timeStasis.class) != null)
             return;
 
+        HoverPod pod = HoverPod.equipped(this);
+        if (dmg > 0 && pod != null && HoverPod.blocksImpact(src)) {
+            pod.absorbHit(this);
+            return;
+        }
+
         if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage) && damageInterrupt) {
             interrupt();
             resting = false;
