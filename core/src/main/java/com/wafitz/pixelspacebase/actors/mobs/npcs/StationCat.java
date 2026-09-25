@@ -192,9 +192,7 @@ public class StationCat extends NPC {
         Heap closest = null;
         int closestDistance = Integer.MAX_VALUE;
         for (Heap heap : SpacebaseRun.level.heaps.values()) {
-            Room room = roomAt(heap.pos);
-            if (heap.type != Heap.Type.HEAP || room == null || isWorkshopCell(heap.pos)
-                    || rawMeat(heap) == null || heroLeftRoom(heap)) {
+            if (heap.type != Heap.Type.HEAP || rawMeat(heap) == null || heroLeftRoom(heap)) {
                 continue;
             }
 

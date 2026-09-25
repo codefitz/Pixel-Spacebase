@@ -24,7 +24,9 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
+import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
+import com.wafitz.pixelspacebase.items.weapon.melee.LoaderArm;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -41,6 +43,11 @@ abstract public class KindOfWeapon extends EquipableItem {
 
     @Override
     public boolean doEquip(Hero hero) {
+
+        if (hero.belongings.armor instanceof Loader && !(this instanceof LoaderArm)) {
+            GLog.w(Messages.get(Loader.class, "arm_locked"));
+            return false;
+        }
 
         if (hero.heroClass == HeroClass.DM3000
                 && this instanceof MeleeWeapon

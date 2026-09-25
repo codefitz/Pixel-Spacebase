@@ -101,6 +101,7 @@ import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
+import com.wafitz.pixelspacebase.items.weapon.melee.LoaderArm;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.SecurityBlockLevel;
@@ -685,6 +686,14 @@ public class Hero extends Char {
             return true;
 
         } else {
+            if (SpacebaseRun.level.adjacent(pos, action.dst)
+                    && (SpacebaseRun.level.map[action.dst] == Terrain.BARRICADE
+                    || SpacebaseRun.level.map[action.dst] == Terrain.BOOKSHELF)
+                    && loaderArmEquipped()) {
+                smashLoaderObstacle(action.dst, Terrain.EMPTY);
+                return false;
+            }
+
             if (SpacebaseRun.level.map[pos] == Terrain.SIGN) {
                 Sign.read(pos);
             }
@@ -891,6 +900,11 @@ public class Hero extends Char {
             boolean hasKey = false;
             int door = SpacebaseRun.level.map[doorCell];
 
+            if (door == Terrain.LOCKED_DOOR && loaderArmEquipped()) {
+                smashLoaderObstacle(doorCell, Terrain.OPEN_DOOR);
+                return false;
+            }
+
             if (door == Terrain.LOCKED_DOOR
                     && belongings.ironKeys[SpacebaseRun.depth] > 0) {
 
@@ -925,6 +939,19 @@ public class Hero extends Char {
             ready();
             return false;
         }
+    }
+
+    private boolean loaderArmEquipped() {
+        return belongings.armor instanceof Loader && belongings.weapon instanceof LoaderArm;
+    }
+
+    private void smashLoaderObstacle(int cell, int replacement) {
+        curAction = null;
+        sprite.turnTo(pos, cell);
+        Sample.INSTANCE.play(Assets.SND_HIT);
+        Level.set(cell, replacement);
+        GameScene.updateMap(cell);
+        spendAndNext(1f);
     }
 
     private boolean actDescend(HeroAction.Descend action) {
