@@ -26,6 +26,7 @@ import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
+import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Camera;
@@ -54,6 +55,9 @@ public class HeroSprite extends CharSprite {
 
         texture(SpacebaseRun.hero.heroClass.spritesheet());
         updateArmor();
+
+        if (HunterSpaceSuit.jetpackEnabled(SpacebaseRun.hero))
+            add(State.LEVITATING);
 
         if (ch.isAlive())
             idle();

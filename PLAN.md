@@ -28,7 +28,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Download/Upload save files.
 - [ ] New Suit Mechanics:
     - [x] Hunter Suit signature scanner shows moving red silhouettes for enemies and NPCs while floor lights are off, without revealing terrain or extending targeting sight.
-    - [ ] Hunter can fly
+    - [x] Hunter Suit jetpack can be switched on or off for unlimited flight while equipped.
     - [ ] Hoverpod will protect adventurer but has its own HP and will breakdown
     - [ ] Hoverpod can fly
     - [ ] Heavy loader high protection but can't fire weapons

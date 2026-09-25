@@ -22,6 +22,7 @@ package com.wafitz.pixelspacebase.actors.buffs;
 
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.CharSprite;
 import com.wafitz.pixelspacebase.ui.BuffIndicator;
@@ -43,9 +44,10 @@ public class JetPack extends FlavourBuff {
 
     @Override
     public void detach() {
-        target.flying = false;
-        SpacebaseRun.level.press(target.pos, target);
+        Char wearer = target;
         super.detach();
+        wearer.flying = HunterSpaceSuit.jetpackEnabled(wearer);
+        if (!wearer.flying) SpacebaseRun.level.press(wearer.pos, wearer);
     }
 
     @Override
@@ -55,8 +57,10 @@ public class JetPack extends FlavourBuff {
 
     @Override
     public void fx(boolean on) {
-        if (on) target.sprite.add(CharSprite.State.LEVITATING);
-        else target.sprite.remove(CharSprite.State.LEVITATING);
+        if (on && !HunterSpaceSuit.jetpackEnabled(target))
+            target.sprite.add(CharSprite.State.LEVITATING);
+        else if (!on && !HunterSpaceSuit.jetpackEnabled(target))
+            target.sprite.remove(CharSprite.State.LEVITATING);
     }
 
     @Override
