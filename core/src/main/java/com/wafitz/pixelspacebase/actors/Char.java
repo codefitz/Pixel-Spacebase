@@ -38,6 +38,7 @@ import com.wafitz.pixelspacebase.actors.buffs.CombatFocus;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
+import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -124,6 +125,11 @@ public abstract class Char extends Actor {
     public boolean attack(Char enemy) {
 
         if (enemy == null || !enemy.isAlive()) return false;
+
+        // Even a missed attack reveals the hero's intent to a disguised machine.
+        if (this == SpacebaseRun.hero && enemy instanceof Mob) {
+            ((Mob) enemy).provokeByHero();
+        }
 
         boolean visibleFight = SpacebaseRun.visible[pos] || SpacebaseRun.visible[enemy.pos];
 

@@ -332,10 +332,11 @@ public class Hero extends Char {
         }
 
         KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
+        int skill = attackSkill + (rangedWeapon != null && belongings.armor instanceof HunterSpaceSuit ? 1 : 0);
         if (wep != null) {
-            return (int) (attackSkill * accuracy * wep.accuracyFactor(this));
+            return (int) (skill * accuracy * wep.accuracyFactor(this));
         } else {
-            return (int) (attackSkill * accuracy);
+            return (int) (skill * accuracy);
         }
     }
 
@@ -345,6 +346,7 @@ public class Hero extends Char {
         int bonus = EvasionModule.getBonus(this, EvasionModule.Evasion.class);
 
         float evasion = (float) Math.pow(1.125, bonus);
+        if (belongings.armor == null) evasion *= 1.25f;
         if (paralysed > 0) {
             evasion /= 2;
         }
@@ -1110,6 +1112,11 @@ public class Hero extends Char {
         if (buff(TimeFolder.timeStasis.class) != null)
             return;
 
+        // Toxic gas deals direct damage; stop it before shields or damage procs are spent.
+        if (src instanceof ToxicGas
+                && (belongings.armor instanceof SpaceSuit || belongings.armor instanceof HunterSpaceSuit))
+            return;
+
         HoverPod pod = HoverPod.equipped(this);
         if (dmg > 0 && pod != null && HoverPod.blocksImpact(src)) {
             pod.absorbHit(this);
@@ -1330,7 +1337,8 @@ public class Hero extends Char {
             sprite.move(pos, step);
             move(step);
 
-            spend(moveTime / speed());
+            // Unarmored movement is faster, but attacks and other timed actions are unchanged.
+            spend(moveTime / (speed() * (belongings.armor == null ? 1.5f : 1f)));
 
             return true;
 
@@ -1971,6 +1979,13 @@ public class Hero extends Char {
         }
         if (belongings.armor instanceof Loader) {
             immunities.add(Burning.class);
+        }
+        if (belongings.armor instanceof SpaceSuit || belongings.armor instanceof HunterSpaceSuit) {
+            immunities.add(ConfusionGas.class);
+            immunities.add(ParalyticGas.class);
+            immunities.add(StenchGas.class);
+            immunities.add(ToxicGas.class);
+            immunities.add(VenomGas.class);
         }
         if (heroClass == HeroClass.DM3000) {
             immunities.add(Poison.class);

@@ -41,6 +41,8 @@ import com.wafitz.pixelspacebase.effects.Surprise;
 import com.wafitz.pixelspacebase.effects.Wound;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.armor.Uniform;
+import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.items.modules.AccuracyModule;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
@@ -87,6 +89,7 @@ public abstract class Mob extends Char {
     protected Char enemy;
     boolean enemySeen;
     private boolean alerted = false;
+    private boolean uniformProvoked = false;
 
     private static final float TIME_TO_WAKE_UP = 1f;
 
@@ -96,6 +99,7 @@ public abstract class Mob extends Char {
     private static final String STATE = "state";
     private static final String SEEN = "seen";
     private static final String TARGET = "target";
+    private static final String UNIFORM_PROVOKED = "uniformProvoked";
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -115,6 +119,7 @@ public abstract class Mob extends Char {
         }
         bundle.put(SEEN, enemySeen);
         bundle.put(TARGET, target);
+        bundle.put(UNIFORM_PROVOKED, uniformProvoked);
     }
 
     @Override
@@ -144,6 +149,7 @@ public abstract class Mob extends Char {
         enemySeen = bundle.getBoolean(SEEN);
 
         target = bundle.getInt(TARGET);
+        uniformProvoked = bundle.getBoolean(UNIFORM_PROVOKED);
     }
 
     public CharSprite sprite() {
@@ -172,6 +178,12 @@ public abstract class Mob extends Char {
             return true;
         }
 
+        if (ignoresUniformedHero() && enemy == SpacebaseRun.hero) {
+            enemy = null;
+            target = -1;
+            if (state == HUNTING) state = WANDERING;
+        }
+
         enemy = chooseEnemy();
 
         boolean enemyInFOV = seesEnemy(enemy);
@@ -180,7 +192,27 @@ public abstract class Mob extends Char {
     }
 
     protected boolean seesEnemy(Char enemy) {
-        return enemy != null && enemy.isAlive() && Level.fieldOfView[enemy.pos] && enemy.invisible <= 0;
+        return enemy != null && !(enemy == SpacebaseRun.hero && ignoresUniformedHero())
+                && enemy.isAlive() && Level.fieldOfView[enemy.pos] && enemy.invisible <= 0;
+    }
+
+    private boolean ignoresUniformedHero() {
+        return shouldIgnoreUniformedHero(hostile, properties.contains(Property.MACHINE), uniformProvoked,
+                SpacebaseRun.hero != null && SpacebaseRun.hero.belongings.armor instanceof Uniform);
+    }
+
+    static boolean shouldIgnoreUniformedHero(boolean hostile, boolean machine, boolean provoked,
+                                             boolean wearingUniform) {
+        return hostile && machine && !provoked && wearingUniform;
+    }
+
+    public void provokeByHero() {
+        if (hostile && SpacebaseRun.hero != null
+                && properties.contains(Property.MACHINE) && !uniformProvoked) {
+            uniformProvoked = true;
+            aggro(SpacebaseRun.hero);
+            target = SpacebaseRun.hero.pos;
+        }
     }
 
     protected Char chooseEnemy() {
@@ -196,7 +228,8 @@ public abstract class Mob extends Char {
         //find a new enemy if..
         boolean newEnemy = false;
         //we have no enemy, or the current one is dead
-        if (enemy == null || !enemy.isAlive() || state == WANDERING)
+        if (enemy == null || !enemy.isAlive() || state == WANDERING
+                || (enemy == SpacebaseRun.hero && ignoresUniformedHero()))
             newEnemy = true;
             //We are corrupted, and current enemy is either the hero or another corrupted character.
         else if (buff(Domination.class) != null && (enemy == SpacebaseRun.hero || enemy.buff(Domination.class) != null))
@@ -237,7 +270,7 @@ public abstract class Mob extends Char {
                 if (enemies.size() > 0) return Random.element(enemies);
 
                     //if there is nothing, go for the hero
-                else return SpacebaseRun.hero;
+                else return ignoresUniformedHero() ? null : SpacebaseRun.hero;
 
             } else {
 
@@ -247,10 +280,10 @@ public abstract class Mob extends Char {
                         enemies.add(mob);
 
                 //and add the hero to the list of targets.
-                enemies.add(SpacebaseRun.hero);
+                if (!ignoresUniformedHero()) enemies.add(SpacebaseRun.hero);
 
                 //target one at random.
-                return Random.element(enemies);
+                return enemies.isEmpty() ? null : Random.element(enemies);
 
             }
 
@@ -500,6 +533,10 @@ public abstract class Mob extends Char {
 
     @Override
     public void damage(int dmg, Object src) {
+
+        if (dmg > 0 && (src == SpacebaseRun.hero || src instanceof Blaster)) {
+            provokeByHero();
+        }
 
         Terror.recover(this);
 

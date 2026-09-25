@@ -29,12 +29,12 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] New Suit Mechanics:
     - [x] Hunter Suit signature scanner shows moving red silhouettes for enemies and NPCs while floor lights are off, without revealing terrain or extending targeting sight.
     - [x] Hunter Suit jetpack can be switched on or off for unlimited flight while equipped.
-    - [ ] Hunter has +1 accuracy ranged weapons.
+    - [x] Hunter has +1 accuracy with ranged weapons.
     - [x] Hoverpod absorbs hits and non-explosive traps, has visible integrity, and breaks down after 15 hits. Repair Blaster restores it; combining two strengthens it by one hit.
     - [ ] Heavy loader high protection, smash locked/damaged doors, can fire weapon but whilst wearing weapon slot is equipped with loader arm (upgradeable).
-    - [ ] Space suit is immune to gasses.
-    - [ ] Being naked is +1 to speed and greater dodge.
-    - [ ] Robots won't attack (unless attacked first) if wearing the uniform.
+    - [x] Space suit and Hunter Suit are immune to harmful gases.
+    - [x] Being unarmored grants 50% faster movement and 25% greater dodge.
+    - [x] Unprovoked robots ignore a hero in uniform; each remembers a hero attack across saves.
     - [ ] Only space suit, hunter, hoverpod and the special suit allow breathing in space.
       - [ ] Exception: DM3000 doesn't need to breath so can wear anything.
   - [ ] Repair blaster can lock doors as well as open locked ones.
