@@ -213,6 +213,10 @@ public class Torch extends MeleeWeapon {
         updateQuickslot();
     }
 
+    public int batteryCharge() {
+        return charge;
+    }
+
     @Override
     public int min(int lvl) {
         return 1 + lvl;

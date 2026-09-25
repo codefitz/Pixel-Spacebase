@@ -24,6 +24,7 @@ import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.Torch;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.keys.Key;
 import com.wafitz.pixelspacebase.items.keys.MasterKeycard;
@@ -35,6 +36,7 @@ import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 
@@ -54,6 +56,10 @@ public class ItemSlot extends Button {
     private BitmapText topRight;
     private BitmapText bottomRight;
     private Image bottomRightIcon;
+    private ColorBlock batteryBody;
+    private ColorBlock batteryInterior;
+    private ColorBlock batteryTerminal;
+    private ColorBlock[] batterySegments;
     private boolean iconVisible = true;
 
     private static final String TXT_STRENGTH = ":%d";
@@ -160,6 +166,21 @@ public class ItemSlot extends Button {
             bottomRightIcon.x = x + (width - bottomRightIcon.width()) - 1;
             bottomRightIcon.y = y + (height - bottomRightIcon.height());
         }
+
+        if (batteryBody != null) {
+            float bx = x + 1;
+            float by = y + height - 5;
+            batteryBody.x = bx;
+            batteryBody.y = by;
+            batteryInterior.x = bx + 1;
+            batteryInterior.y = by + 1;
+            batteryTerminal.x = bx + 11;
+            batteryTerminal.y = by + 1;
+            for (int i = 0; i < batterySegments.length; i++) {
+                batterySegments[i].x = bx + 2 + i * 3;
+                batterySegments[i].y = by + 1;
+            }
+        }
     }
 
     public void item(Item item) {
@@ -197,12 +218,14 @@ public class ItemSlot extends Button {
 
         if (item == null) {
             topLeft.visible = topRight.visible = bottomRight.visible = false;
+            updateBatteryIndicator();
             return;
         } else {
             topLeft.visible = topRight.visible = bottomRight.visible = true;
         }
 
         topLeft.text(item.status());
+        updateBatteryIndicator();
 
         boolean isArmor = item instanceof Armor;
         boolean isWeapon = item instanceof Weapon;
@@ -277,6 +300,44 @@ public class ItemSlot extends Button {
         topRight.alpha(alpha);
         bottomRight.alpha(alpha);
         if (bottomRightIcon != null) bottomRightIcon.alpha(alpha);
+        updateBatteryIndicator();
+    }
+
+    private void updateBatteryIndicator() {
+        boolean torch = item instanceof Torch;
+        if (torch && batteryBody == null) {
+            batteryBody = new ColorBlock(11, 4, 0xFF9DBEC2);
+            batteryInterior = new ColorBlock(9, 2, 0xFF172B34);
+            batteryTerminal = new ColorBlock(1, 2, 0xFF9DBEC2);
+            add(batteryBody);
+            add(batteryInterior);
+            add(batteryTerminal);
+            batterySegments = new ColorBlock[3];
+            for (int i = 0; i < batterySegments.length; i++) {
+                batterySegments[i] = new ColorBlock(2, 2, 0xFFFFFFFF);
+                add(batterySegments[i]);
+            }
+        }
+        if (batteryBody == null) return;
+
+        batteryBody.visible = batteryInterior.visible = batteryTerminal.visible = torch;
+        if (!torch) {
+            for (ColorBlock segment : batterySegments) segment.visible = false;
+            return;
+        }
+
+        int remaining = ((Torch) item).batteryCharge();
+        int color = remaining == 1 ? 0xFF7256 : remaining == 2 ? 0xFFC77C : 0x55DDC5;
+        float alpha = active ? ENABLED : DISABLED;
+        batteryBody.alpha(alpha);
+        batteryInterior.alpha(alpha);
+        batteryTerminal.alpha(alpha);
+        for (int i = 0; i < batterySegments.length; i++) {
+            ColorBlock segment = batterySegments[i];
+            segment.visible = true;
+            segment.hardlight(i < remaining ? color : 0x40525A);
+            segment.alpha(i < remaining ? alpha : alpha * 0.55f);
+        }
     }
 
     void showParams(boolean TL, boolean TR, boolean BR) {

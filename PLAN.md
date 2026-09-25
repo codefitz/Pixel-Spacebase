@@ -52,7 +52,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Add room with no doors. These can be accessed by dropping into them, they may contain a high-value item or nothing. However there is no escape unless you have an item that can teleport you out.
 - [x] Show the initial Xeno infection reaction only once per run; retain the warning and burst reactions for later infections.
 - [x] Y's habitat and workshop sprites match his security boss appearance.
-- [ ] Shapeshifter throwing a blaster should explode and do full HP damage. Reflecting the power of blasters which the shapeshifter is not able to use.
+- [x] A Shapeshifter throwing a blaster discharges an energy beam at every hostile target in the impact room, reducing each to 0 HP. The blaster is consumed.
+- [x] Torch battery indicator.
 
 ## Art
 
@@ -62,6 +63,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
 - [ ] Update common tiles across sets
 - [ ] Door in security blood spot is too ubiquitous, needs to be more subtle
+- [ ] Habitation graphic overhaul
+- [ ] Hologram emitter token reskin
 
 ## Decisions
 
