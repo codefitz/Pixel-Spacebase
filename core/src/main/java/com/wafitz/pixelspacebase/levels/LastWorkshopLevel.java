@@ -182,6 +182,10 @@ public class LastWorkshopLevel extends RegularLevel {
     @Override
     public String tileName(int tile) {
         switch (tile) {
+            case Terrain.ENTRANCE:
+                return Messages.get(HabitationRingLevel.class, "entrance_name");
+            case Terrain.EXIT:
+                return Messages.get(HabitationRingLevel.class, "exit_name");
             case Terrain.WATER:
                 return Messages.get(HabitationRingLevel.class, "water_name");
             case Terrain.OFFVENT:

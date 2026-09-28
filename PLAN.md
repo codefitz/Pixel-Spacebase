@@ -39,6 +39,10 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
       - [x] Exception: DM3000 doesn't need to breath so can wear anything.
   - [x] Repair blaster can lock doors as well as open locked ones.
   - [x] Have a rare item (x2 per game) that will upgrade everything currently carried or equipped.
+- [ ] Command levels the water is actual lava (make up some sci-fi term - plasma)
+  - [ ] if the hero steps on it he starts losing HP - like 25 at a time. He can fly, teleport, or we need a new item which converts the plasma to a solid.
+  - [ ] Explosion can leave a hole in the floor.
+  - [ ] The floor itself has holes in places all over.
 
 ## Cosmetic / Narrative
 
@@ -59,6 +63,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Y's habitat and workshop sprites match his security boss appearance.
 - [x] A Shapeshifter throwing a blaster discharges an energy beam at every hostile target in the impact room, reducing each to 0 HP. The blaster is consumed.
 - [x] Torch battery indicator.
+- [x] Habitat entry/exit transporter disks, with cyan/down and amber/up markers and dedicated room floors and walls.
+- [ ] Update storage chests in workshop - only 1 - different colour or signal that it's perma.
 
 ## Art
 
@@ -70,10 +76,11 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Door in security blood spot is too ubiquitous, needs to be more subtle
 - [x] Habitation graphic overhaul
 - [ ] Hologram emitter token reskin
+- [x] Facehugger reskin - live ivory creature matching the dead alien bug item, with crawling, lunging, and death poses
+- [ ] Romans a bit too jittery
 
 ## Decisions
 
-- [ ] Decide on Command's lava and fire-particle replacement.
 - [ ] What could replace Yog Duza? Maybe a giant angel.
 
 ## Future Paid Feature

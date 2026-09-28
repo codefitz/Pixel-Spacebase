@@ -262,7 +262,7 @@ public class ItemSpriteSheet {
     public static final int CANDLE = QUEST + 2;
     public static final int EMBER = QUEST + 3;
     public static final int PICKAXE = QUEST + 4;
-    public static final int ORE = QUEST + 5;
+    public static final int SALVAGED_PARTS = QUEST + 5;
     public static final int TOKEN = QUEST + 6;
     public static final int BLACK_GOO = QUEST + 7;
 

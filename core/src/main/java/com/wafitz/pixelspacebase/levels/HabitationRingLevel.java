@@ -52,6 +52,37 @@ import com.watabou.utils.Random;
 
 public class HabitationRingLevel extends RegularLevel {
 
+    public static final int TRANSPORTER_FLOOR_VISUAL = 64;
+    public static final int TRANSPORTER_WALL_VISUAL = 65;
+
+    /** Visual-only room treatment, derived from room bounds restored with existing saves. */
+    public static int transporterRoomVisual(Level level, int pos, int terrain) {
+        if (!(level instanceof RegularLevel)
+                || !Assets.TILES_HABITATION_RING.equals(level.tilesTex())) return -1;
+        RegularLevel regular = (RegularLevel) level;
+        int x = pos % level.width();
+        int y = pos / level.width();
+        if (!containsRoomCell(regular.roomEntrance, x, y)
+                && !containsRoomCell(regular.roomExit, x, y)) return -1;
+
+        switch (terrain) {
+            case Terrain.EMPTY:
+            case Terrain.EMPTY_DECO:
+                return TRANSPORTER_FLOOR_VISUAL;
+            case Terrain.WALL:
+            case Terrain.WALL_DECO:
+                return TRANSPORTER_WALL_VISUAL;
+            default:
+                // Keep pads, doors, water, hazards and usable fixtures recognisable.
+                return -1;
+        }
+    }
+
+    private static boolean containsRoomCell(Room room, int x, int y) {
+        return room != null && x >= room.left && x <= room.right
+                && y >= room.top && y <= room.bottom;
+    }
+
     {
         color1 = 0x4b6636;
         color2 = 0xf2f2f2;
@@ -128,6 +159,10 @@ public class HabitationRingLevel extends RegularLevel {
     @Override
     public String tileName(int tile) {
         switch (tile) {
+            case Terrain.ENTRANCE:
+                return Messages.get(HabitationRingLevel.class, "entrance_name");
+            case Terrain.EXIT:
+                return Messages.get(HabitationRingLevel.class, "exit_name");
             case Terrain.WATER:
                 return Messages.get(HabitationRingLevel.class, "water_name");
             case Terrain.OFFVENT:
@@ -170,7 +205,8 @@ public class HabitationRingLevel extends RegularLevel {
 
     public static void addHabitationVisuals(Level level, Group group) {
         for (int i = 0; i < level.length(); i++) {
-            if (level.map[i] == Terrain.WALL_DECO) {
+            if (level.map[i] == Terrain.WALL_DECO
+                    && transporterRoomVisual(level, i, level.map[i]) < 0) {
                 group.add(new Smoke(i));
             }
         }

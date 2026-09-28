@@ -24,6 +24,7 @@ import android.util.SparseIntArray;
 
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.levels.HolodeckBossLevel;
+import com.wafitz.pixelspacebase.levels.HabitationRingLevel;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.watabou.noosa.Image;
@@ -215,6 +216,8 @@ public class SpacebaseTilemap extends Tilemap {
     }
 
     private int getTileVisual(int pos, int tile) {
+        int transporterVisual = HabitationRingLevel.transporterRoomVisual(SpacebaseRun.level, pos, tile);
+        if (transporterVisual >= 0) return transporterVisual;
         if (SpacebaseRun.level instanceof HolodeckBossLevel
                 && Y.Quest.isHolodeckPoweredDown()) {
             HolodeckBossLevel holodeck = (HolodeckBossLevel) SpacebaseRun.level;
