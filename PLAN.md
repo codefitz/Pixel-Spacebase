@@ -65,6 +65,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Torch battery indicator.
 - [x] Habitat entry/exit transporter disks, with cyan/down and amber/up markers and dedicated room floors and walls.
 - [ ] Update storage chests in workshop - only 1 - different colour or signal that it's perma.
+- [ ] Optional reconfigure Hunter suit to detect items instead of enemies, but this is perm unless another tool found.
 
 ## Art
 
