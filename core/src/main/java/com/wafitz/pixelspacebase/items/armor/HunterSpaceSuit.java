@@ -71,6 +71,10 @@ public class HunterSpaceSuit extends Armor {
         jetpackOn = bundle.getBoolean(JETPACK_ON);
     }
 
+    boolean jetpackOn() {
+        return jetpackOn;
+    }
+
     @Override
     public void reset() {
         super.reset();
@@ -137,6 +141,10 @@ public class HunterSpaceSuit extends Armor {
     }
 
     private void updateFlight(Hero hero, boolean checkLanding) {
+        updateFlight(hero, jetpackOn, checkLanding);
+    }
+
+    static void updateFlight(Hero hero, boolean jetpackOn, boolean checkLanding) {
         boolean timedJetPack = hero.buff(JetPack.class) != null;
         hero.flying = jetpackOn || timedJetPack;
         if (hero.sprite != null && !timedJetPack) {
@@ -149,9 +157,15 @@ public class HunterSpaceSuit extends Armor {
     }
 
     public static boolean jetpackEnabled(Char ch) {
-        return SpacebaseRun.hero != null && ch == SpacebaseRun.hero
-                && SpacebaseRun.hero.belongings.armor instanceof HunterSpaceSuit
-                && ((HunterSpaceSuit) SpacebaseRun.hero.belongings.armor).jetpackOn;
+        if (SpacebaseRun.hero == null || ch != SpacebaseRun.hero) return false;
+
+        Armor armor = SpacebaseRun.hero.belongings.armor;
+        if (armor instanceof HunterSpaceSuit) {
+            return ((HunterSpaceSuit) armor).jetpackOn;
+        } else if (armor instanceof ClassArmor) {
+            return ((ClassArmor) armor).hunterJetpackOn();
+        }
+        return false;
     }
 
     public static boolean signatureScannerActive() {

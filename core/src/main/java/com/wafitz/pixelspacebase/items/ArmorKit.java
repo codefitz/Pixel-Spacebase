@@ -25,7 +25,6 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.armor.ClassArmor;
-import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.HeroSprite;
@@ -91,12 +90,11 @@ public class ArmorKit extends Item {
         GLog.w(Messages.get(this, "upgraded", armor.name()));
 
         ClassArmor classArmor = ClassArmor.upgrade(curUser, armor);
-        boolean replacedHunterSuit = curUser.belongings.armor == armor
-                && armor instanceof HunterSpaceSuit;
         if (curUser.belongings.armor == armor) {
 
             curUser.belongings.armor = classArmor;
             ((HeroSprite) curUser.sprite).updateArmor();
+            classArmor.activate(curUser);
 
         } else {
 
@@ -107,8 +105,6 @@ public class ArmorKit extends Item {
 
         curUser.sprite.operate(curUser.pos);
         Sample.INSTANCE.play(Assets.SND_EVOKE);
-        if (replacedHunterSuit)
-            ((HunterSpaceSuit) armor).powerDown(curUser);
     }
 
     private final WndContainer.Listener itemSelector = new WndContainer.Listener() {

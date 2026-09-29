@@ -23,7 +23,9 @@ public class HolodeckLegionarySprite extends MobSprite {
         idle = new Animation(8, true);
         idle.frames(frames, 0, 1);
 
-        run = new Animation(12, true);
+        // The full-body Roman frames look harsh at this speed; slow the gait to
+        // match the idle rhythm and make movement less jittery.
+        run = new Animation(8, true);
         run.frames(frames, 0, 1, 2, 3, 4, 5);
 
         attack = new Animation(12, false);

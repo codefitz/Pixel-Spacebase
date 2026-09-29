@@ -20,6 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items.armor;
 
+import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.items.WeakForcefield;
@@ -32,6 +33,11 @@ import java.util.ArrayList;
 abstract public class ClassArmor extends Armor {
 
     private static final String AC_SPECIAL = "SPECIAL";
+    private static final String AC_JETPACK_ON = "JETPACK_ON";
+    private static final String AC_JETPACK_OFF = "JETPACK_OFF";
+    private static final float TIME_TO_SWITCH_JETPACK = 1f;
+    private static final String HUNTER_JETPACK = "hunterJetpack";
+    private static final String JETPACK_ON = "jetpackOn";
 
     {
         levelKnown = true;
@@ -42,6 +48,8 @@ abstract public class ClassArmor extends Armor {
     }
 
     private int armorTier;
+    private boolean hunterJetpack;
+    private boolean jetpackOn;
 
     ClassArmor() {
         super(6);
@@ -70,6 +78,12 @@ abstract public class ClassArmor extends Armor {
                 break;
         }
 
+        if (armor instanceof HunterSpaceSuit) {
+            HunterSpaceSuit hunterSuit = (HunterSpaceSuit) armor;
+            classArmor.hunterJetpack = true;
+            classArmor.jetpackOn = hunterSuit.jetpackOn();
+        }
+
         classArmor.level(armor.level());
         classArmor.armorTier = armor.tier;
         classArmor.enhance(armor.enhancement);
@@ -83,6 +97,8 @@ abstract public class ClassArmor extends Armor {
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
         bundle.put(ARMOR_TIER, armorTier);
+        bundle.put(HUNTER_JETPACK, hunterJetpack);
+        bundle.put(JETPACK_ON, jetpackOn);
     }
 
     @Override
@@ -102,6 +118,8 @@ abstract public class ClassArmor extends Armor {
         } else {
             armorTier = bundle.getInt(ARMOR_TIER);
         }
+        hunterJetpack = bundle.getBoolean(HUNTER_JETPACK);
+        jetpackOn = hunterJetpack && bundle.getBoolean(JETPACK_ON);
     }
 
     @Override
@@ -111,11 +129,33 @@ abstract public class ClassArmor extends Armor {
         if (hero.HP >= 3 && isEquipped(hero)) {
             actions.add(AC_SPECIAL);
         }
+        if (hunterJetpack && isEquipped(hero)) {
+            actions.add(jetpackOn ? AC_JETPACK_OFF : AC_JETPACK_ON);
+        }
         return actions;
     }
 
     @Override
+    public void execute(Hero hero) {
+        if (isEquipped(hero) && hunterJetpack) {
+            execute(hero, jetpackOn ? AC_JETPACK_OFF : AC_JETPACK_ON);
+        } else {
+            super.execute(hero);
+        }
+    }
+
+    @Override
     public void execute(Hero hero, String action) {
+
+        if (isEquipped(hero) && hunterJetpack
+                && (AC_JETPACK_ON.equals(action) || AC_JETPACK_OFF.equals(action))) {
+            jetpackOn = AC_JETPACK_ON.equals(action);
+            GLog.i(Messages.get(HunterSpaceSuit.class, jetpackOn ? "jetpack_started" : "jetpack_stopped"));
+            hero.spendAndNext(TIME_TO_SWITCH_JETPACK);
+            updateQuickslot();
+            HunterSpaceSuit.updateFlight(hero, jetpackOn, !jetpackOn);
+            return;
+        }
 
         super.execute(hero, action);
 
@@ -132,6 +172,46 @@ abstract public class ClassArmor extends Armor {
             }
 
         }
+    }
+
+    @Override
+    public void activate(Char ch) {
+        super.activate(ch);
+        if (hunterJetpack) {
+            HunterSpaceSuit.updateFlight((Hero) ch, jetpackOn, false);
+        }
+    }
+
+    @Override
+    public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+        if (!super.doUnequip(hero, collect, single)) return false;
+        if (hunterJetpack) {
+            jetpackOn = false;
+            HunterSpaceSuit.updateFlight(hero, false, true);
+        }
+        return true;
+    }
+
+    @Override
+    public void forceUnequip(Hero hero) {
+        super.forceUnequip(hero);
+        if (hunterJetpack) {
+            jetpackOn = false;
+            HunterSpaceSuit.updateFlight(hero, false, true);
+        }
+    }
+
+    boolean hunterJetpackOn() {
+        return hunterJetpack && jetpackOn;
+    }
+
+    @Override
+    public String desc() {
+        String description = super.desc();
+        if (hunterJetpack) {
+            description += "\n\n" + Messages.get(this, "hunter_jetpack_desc");
+        }
+        return description;
     }
 
     abstract public void doSpecial();

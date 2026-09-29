@@ -68,7 +68,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Habitat entry/exit transporter disks, with cyan/down and amber/up markers and dedicated room floors and walls.
 - [x] Replace the duplicate workshop storage chests with one marked quantum chest and a two-way inventory transfer screen.
 - [ ] Optional reconfigure Hunter suit to detect items instead of enemies, but this is perm unless another tool found.
-- [ ] The special armor kit overrides the Hunter jetpack button - ensure both exist.
+- [x] A Hunter suit upgraded with the Armor Kit keeps its jetpack toggle alongside the class-armor special ability.
 - [ ] Habitat - no water outside of special changing room with showers and steam.
 - [ ] Each floor has a door leading to a small outer platform (can jump from).
 - [ ] Signal leach - some kind of plasma/lava bug spits plasma
@@ -88,7 +88,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Habitation graphic overhaul
 - [ ] Hologram emitter token reskin
 - [x] Facehugger reskin - live ivory creature matching the dead alien bug item, with crawling, lunging, and death poses
-- [ ] Romans a bit too jittery
+- [x] Slow the Roman running animation to reduce jitter.
 - [ ] NPC1 and NPC2 random dist.
 
 ## Decisions
