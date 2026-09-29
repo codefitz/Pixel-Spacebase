@@ -226,6 +226,60 @@ public class Workshop extends Painter {
         storedItems.clear();
     }
 
+    /**
+     * Older saves can contain both workshop storage chests. Merge them into
+     * one chest when the level is loaded so no stored items are lost.
+     */
+    public static void reconcileStorageChest(Level level) {
+        if (level == null || level.heaps == null) {
+            return;
+        }
+
+        int preferredCell = -1;
+        boolean[] cells = storageCells(level);
+        for (int cell = 0; cell < cells.length; cell++) {
+            if (cells[cell]) {
+                preferredCell = cell;
+                break;
+            }
+        }
+
+        Heap primary = preferredCell == -1 ? null : level.heaps.get(preferredCell);
+        if (primary != null && primary.type != Heap.Type.WORKSHOP_STORAGE) {
+            primary = null;
+        }
+
+        for (int cell : level.heaps.keyArray()) {
+            Heap heap = level.heaps.get(cell);
+            if (heap == null || heap.type != Heap.Type.WORKSHOP_STORAGE) {
+                continue;
+            }
+
+            if (primary == null) {
+                primary = heap;
+            } else if (heap != primary) {
+                if (heap.items != null) {
+                    for (Item item : heap.items.toArray(new Item[0])) {
+                        primary.drop(item);
+                    }
+                    heap.items.clear();
+                    heap.items = null;
+                }
+                level.heaps.remove(cell);
+                if (heap.sprite != null) {
+                    heap.sprite.kill();
+                }
+            }
+        }
+
+        if (primary != null) {
+            primary.type = Heap.Type.WORKSHOP_STORAGE;
+            if (primary.sprite != null) {
+                primary.sprite.view(primary.image(), primary.glowing());
+            }
+        }
+    }
+
     private static boolean[] workshopCells(Level level) {
         boolean[] cells = new boolean[level.length()];
         int start = workshopAnchor(level);
@@ -269,16 +323,13 @@ public class Workshop extends Painter {
         }
 
         int left = Integer.MAX_VALUE;
-        int right = -1;
         for (int cell = 0; cell < workshopCells.length; cell++) {
             if (workshopCells[cell] && cell / level.width() == bottom) {
                 left = Math.min(left, cell % level.width());
-                right = Math.max(right, cell % level.width());
             }
         }
 
         storageCells[left + bottom * level.width()] = true;
-        storageCells[right + bottom * level.width()] = true;
         return storageCells;
     }
 
@@ -634,8 +685,7 @@ public class Workshop extends Painter {
 
     private static int[] storageCells(Level level, Rect workshop) {
         return new int[]{
-                workshop.left + 1 + (workshop.bottom - 1) * level.width(),
-                workshop.right - 1 + (workshop.bottom - 1) * level.width()
+                workshop.left + 1 + (workshop.bottom - 1) * level.width()
         };
     }
 

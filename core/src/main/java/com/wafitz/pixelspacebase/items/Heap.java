@@ -46,7 +46,6 @@ import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
 import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
 import com.wafitz.pixelspacebase.items.equippablemodules.TechToolkit;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
-import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.items.food.ChargrilledMeat;
 import com.wafitz.pixelspacebase.items.food.FrozenCarpaccio;
@@ -60,10 +59,8 @@ import com.wafitz.pixelspacebase.mines.Mine.Device;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
-import com.wafitz.pixelspacebase.utils.GLog;
-import com.wafitz.pixelspacebase.windows.WndContainer;
+import com.wafitz.pixelspacebase.windows.WndQuantumStorage;
 import com.wafitz.pixelspacebase.windows.WndLeonard;
-import com.wafitz.pixelspacebase.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -108,6 +105,7 @@ public class Heap implements Bundlable {
             case TO_MAKE:
                 return size() > 0 ? items.peek().image() : 0;
             case WORKSHOP_STORAGE:
+                return ItemSpriteSheet.QUANTUM_CHEST;
             case CHEST:
             case CONFUSEDSHAPESHIFTER:
                 return ItemSpriteSheet.CHEST;
@@ -229,96 +227,7 @@ public class Heap implements Bundlable {
     }
 
     private void showWorkshopStorage(final Hero hero) {
-        GameScene.show(new WndOptions(
-                Messages.get(this, "workshop_storage"),
-                Messages.get(this, "workshop_storage_prompt", size()),
-                Messages.get(this, "workshop_storage_store"),
-                Messages.get(this, "workshop_storage_take"),
-                Messages.get(this, "workshop_storage_store_all"),
-                Messages.get(this, "workshop_storage_take_all")) {
-            @Override
-            protected void onSelect(int index) {
-                if (index == 0) {
-                    selectItemToStore(hero);
-                } else if (index == 1) {
-                    selectItemToTake(hero);
-                } else if (index == 2) {
-                    for (Item item : hero.belongings.backpack.items.toArray(new Item[0])) {
-                        if (canStore(hero, item)) {
-                            drop(item.detachAll(hero.belongings.backpack));
-                        }
-                    }
-                    updateStorageSprite();
-                } else {
-                    takeAll(hero);
-                }
-            }
-        });
-    }
-
-    private void selectItemToStore(final Hero hero) {
-        GameScene.selectItem(new WndContainer.Listener() {
-            @Override
-            public void onSelect(Item item) {
-                if (item == null) {
-                    return;
-                }
-                if (!canStore(hero, item)) {
-                    GLog.w(Messages.get(Heap.class, "workshop_storage_cant_store"));
-                    return;
-                }
-
-                drop(item.detachAll(hero.belongings.backpack));
-                updateStorageSprite();
-            }
-        }, WndContainer.Mode.ALL, Messages.get(Heap.class, "workshop_storage_select"));
-    }
-
-    private void selectItemToTake(final Hero hero) {
-        if (items.isEmpty()) {
-            GLog.w(Messages.get(Heap.class, "workshop_storage_empty"));
-            return;
-        }
-
-        String[] names = new String[items.size()];
-        for (int i = 0; i < items.size(); i++) {
-            names[i] = items.get(i).toString();
-        }
-
-        GameScene.show(new WndOptions(
-                Messages.get(this, "workshop_storage"),
-                Messages.get(this, "workshop_storage_take_prompt"),
-                names) {
-            @Override
-            protected void onSelect(int index) {
-                Item item = items.remove(index);
-                if (!item.collect(hero.belongings.backpack)) {
-                    drop(item);
-                    GLog.w(Messages.get(Heap.class, "workshop_storage_full"));
-                }
-                updateStorageSprite();
-            }
-        });
-    }
-
-    private void takeAll(Hero hero) {
-        for (Item item : items.toArray(new Item[0])) {
-            items.remove(item);
-            if (!item.collect(hero.belongings.backpack)) {
-                drop(item);
-            }
-        }
-        updateStorageSprite();
-    }
-
-    private boolean canStore(Hero hero, Item item) {
-        return item != null && !item.isEquipped(hero) && !(item instanceof Parts) && !(item instanceof Container);
-    }
-
-    private void updateStorageSprite() {
-        if (sprite != null) {
-            sprite.view(image(), glowing());
-        }
+        GameScene.show(new WndQuantumStorage(this, hero, true, 0));
     }
 
     public void drop(Item item) {

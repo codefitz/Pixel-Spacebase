@@ -56,6 +56,7 @@ public class ItemSpriteSheet {
     public static final int PET_CARRIER = CONTAINERS + 7;
     public static final int UPGRADE_BENCH = CONTAINERS + 8;
     public static final int BREAKDOWN_BENCH = CONTAINERS + 9;
+    public static final int QUANTUM_CHEST = CONTAINERS + 10;
 
     private static final int SINGLE_USE = xy(1, 3);   //32 slots
     public static final int CLONE = SINGLE_USE;

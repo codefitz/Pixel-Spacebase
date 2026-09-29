@@ -37,7 +37,6 @@ import com.wafitz.pixelspacebase.levels.Terrain;
 public class FogOfWar extends Image {
 
     private static final int TRANSPARENT = 0x00000000;
-    private static final int HULL_EDGE = 0x66000000;
 
     private static final int VISIBLE[] = new int[]{0xAA000000, 0x55000000, //-2 and -1 brightness
             0x00000000, //0 brightness
@@ -132,9 +131,9 @@ public class FogOfWar extends Image {
                     fog.pixels.put(TRANSPARENT);
                 } else if (touchesHullEdge(j, i, pWidth - 1, pHeight - 1,
                         Level.discoverable, SpacebaseRun.level.map)) {
-                    // Keep the unexplored interior concealed, but let the outside face
-                    // of the station wall remain visible as a subtle hull outline.
-                    fog.pixels.put(HULL_EDGE);
+                    // The station hull is part of the level's known boundary, not
+                    // unexplored space. Leave its outer edge clear from level start.
+                    fog.pixels.put(TRANSPARENT);
                 } else if (cell < pWidth || cell >= SpacebaseRun.level.length() || j == 0 || j == pWidth - 1) {
                     fog.pixels.put(INVISIBLE[brightness]);
                 } else if (visible[cell] && visible[cell - (pWidth - 1)] &&

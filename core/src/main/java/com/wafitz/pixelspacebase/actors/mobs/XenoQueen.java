@@ -97,7 +97,7 @@ public class XenoQueen extends Mob {
             prepareArena();
         }
 
-        if (SpacebaseRun.hero != null && SpacebaseRun.hero.heroClass == HeroClass.SHAPESHIFTER) {
+        if (SpacebaseRun.hero != null) {
             state = HUNTING;
             target = SpacebaseRun.hero.pos;
         }
@@ -113,9 +113,7 @@ public class XenoQueen extends Mob {
 
     @Override
     protected Char chooseEnemy() {
-        return SpacebaseRun.hero != null && SpacebaseRun.hero.heroClass == HeroClass.SHAPESHIFTER
-                ? SpacebaseRun.hero
-                : null;
+        return SpacebaseRun.hero;
     }
 
     @Override

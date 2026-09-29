@@ -57,6 +57,7 @@ import com.wafitz.pixelspacebase.levels.MaintenanceLevel;
 import com.wafitz.pixelspacebase.levels.SecurityBossLevel;
 import com.wafitz.pixelspacebase.levels.SecurityBlockLevel;
 import com.wafitz.pixelspacebase.levels.Room;
+import com.wafitz.pixelspacebase.levels.painters.Workshop;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.StartScene;
@@ -363,6 +364,7 @@ public class SpacebaseRun {
     public static void switchLevel(final Level level, int pos) {
 
         SpacebaseRun.level = level;
+        Workshop.reconcileStorageChest(level);
         Actor.init();
 
         if (Y.Quest.isHolodeckPoweredDown()) {
