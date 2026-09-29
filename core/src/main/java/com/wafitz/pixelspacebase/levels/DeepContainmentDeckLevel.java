@@ -140,7 +140,7 @@ public class DeepContainmentDeckLevel extends RegularLevel {
     public String tileName(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(DeepContainmentDeckLevel.class, "water_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "plasma_name");
             case Terrain.LIGHTEDVENT:
                 return Messages.get(DeepContainmentDeckLevel.class, "lighted_name");
             case Terrain.OFFVENT:
@@ -157,7 +157,7 @@ public class DeepContainmentDeckLevel extends RegularLevel {
     public String tileDesc(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(DeepContainmentDeckLevel.class, "water_desc");
+                return Messages.get(DeepContainmentDeckLevel.class, "plasma_desc");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
                 return Messages.get(DeepContainmentDeckLevel.class, "statue_desc");
@@ -178,7 +178,7 @@ public class DeepContainmentDeckLevel extends RegularLevel {
     public static void addContainmentVisuals(Level level, Group group) {
         for (int i = 0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WATER) {
-                group.add(new Stream(i));
+                group.add(new Stream(level, i));
             }
         }
     }
@@ -187,12 +187,15 @@ public class DeepContainmentDeckLevel extends RegularLevel {
 
         private int pos;
 
+        private boolean plasma;
+
         private float delay;
 
-        public Stream(int pos) {
+        public Stream(Level level, int pos) {
             super();
 
             this.pos = pos;
+            plasma = level.isPlasmaCell(pos);
 
             delay = Random.Float(2);
         }
@@ -209,9 +212,11 @@ public class DeepContainmentDeckLevel extends RegularLevel {
                     delay = Random.Float(2);
 
                     PointF p = SpacebaseTilemap.tileToWorld(pos);
-                    ((FireParticle) recycle(FireParticle.class)).reset(
+                    FireParticle particle = (FireParticle) recycle(FireParticle.class);
+                    particle.reset(
                             p.x + Random.Float(SpacebaseTilemap.SIZE),
                             p.y + Random.Float(SpacebaseTilemap.SIZE));
+                    particle.color(plasma ? 0x66DDFF : 0xEE7722);
                 }
             }
         }

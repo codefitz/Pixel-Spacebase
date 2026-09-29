@@ -85,7 +85,9 @@ public class FrontierTechShield extends EquippableModule {
             else if (charge == 0) GLog.i(Messages.get(this, "no_charge"));
             else {
                 Buff.prolong(hero, LockedDown.class, 5);
-                Buff.affect(hero, WeakForcefield.Armor.class).level(charge);
+                // The five-turn lock is the startup cost; after it releases, the
+                // generated field travels with the hero until its charge is spent.
+                Buff.affect(hero, WeakForcefield.Armor.class).level(charge, false);
                 CellEmitter.bottom(hero.pos).start(EarthParticle.FACTORY, 0.05f, 8);
                 Camera.main.shake(1, 0.4f);
                 charge = 0;

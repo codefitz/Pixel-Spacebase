@@ -154,22 +154,24 @@ public class DeepContainmentCoreLevel extends Level {
     protected void createItems() {
         Item item = Bones.get();
         if (item != null) {
-            int pos;
-            do {
+            int pos = -1;
+            for (int attempt = 0; attempt < 100; attempt++) {
                 pos = Random.IntRange(ROOM_LEFT, ROOM_RIGHT) + Random.IntRange(ROOM_TOP + 1, ROOM_BOTTOM) * width();
-            } while (pos == entrance || map[pos] == Terrain.SIGN);
-            drop(item, pos).type = Heap.Type.REMAINS;
+                if (pos != entrance && map[pos] != Terrain.SIGN && !isPlasmaCell(pos)) break;
+                pos = -1;
+            }
+            if (pos >= 0) drop(item, pos).type = Heap.Type.REMAINS;
         }
     }
 
     @Override
     public int randomRespawnCell() {
         if (entrance == -1) return entrance;
-        int cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
-        while (!passable[cell]) {
-            cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
+        for (int attempts = 0; attempts < 32; attempts++) {
+            int cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
+            if (passable[cell] && !isPlasmaCell(cell)) return cell;
         }
-        return cell;
+        return -1;
     }
 
     @Override
@@ -200,6 +202,7 @@ public class DeepContainmentCoreLevel extends Level {
                 boss.pos = Random.Int(length());
             } while (
                     !passable[boss.pos] ||
+                            isPlasmaCell(boss.pos) ||
                             SpacebaseRun.visible[boss.pos]);
             GameScene.add(boss);
             boss.spawnFists();
@@ -233,7 +236,7 @@ public class DeepContainmentCoreLevel extends Level {
     public String tileName(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(DeepContainmentDeckLevel.class, "water_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "plasma_name");
             case Terrain.LIGHTEDVENT:
                 return Messages.get(DeepContainmentDeckLevel.class, "lightedvent_name");
             case Terrain.OFFVENT:
@@ -250,7 +253,7 @@ public class DeepContainmentCoreLevel extends Level {
     public String tileDesc(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(DeepContainmentDeckLevel.class, "water_desc");
+                return Messages.get(DeepContainmentDeckLevel.class, "plasma_desc");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
                 return Messages.get(DeepContainmentDeckLevel.class, "statue_desc");

@@ -54,6 +54,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.NPC;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
+import com.wafitz.pixelspacebase.actors.blobs.Plasma;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.CheckedCell;
 import com.wafitz.pixelspacebase.effects.Flare;
@@ -545,6 +546,7 @@ public class Hero extends Char {
                 || HP >= HT
                 || isStarving()
                 || pos < 0
+                || SpacebaseRun.level.isPlasmaCell(pos)
                 || !Level.water[pos]) {
             shapeshifterWaterRecovery = 0;
             return;
@@ -1148,6 +1150,16 @@ public class Hero extends Char {
         if (dmg > 0 && pod != null && HoverPod.blocksImpact(src)) {
             pod.absorbHit(this);
             return;
+        }
+
+        // Command plasma cuts through ordinary armor; Loader plating is the exception.
+        if (src instanceof Plasma) {
+            if (belongings.armor instanceof Loader) return;
+
+            // The Frontier shield's active forcefield can absorb some of a plasma strike.
+            WeakForcefield.Armor field = buff(WeakForcefield.Armor.class);
+            if (field != null) dmg = field.absorbPlasma(dmg);
+            if (dmg <= 0) return;
         }
 
         if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage) && damageInterrupt) {

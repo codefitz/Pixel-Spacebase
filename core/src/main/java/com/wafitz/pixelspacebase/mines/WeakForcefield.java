@@ -99,6 +99,14 @@ public class WeakForcefield extends Mine {
             }
         }
 
+        /** The forcefield can fully ground plasma while its stored field strength lasts. */
+        public int absorbPlasma(int damage) {
+            int absorbed = Math.min(level, damage);
+            level -= absorbed;
+            if (level <= 0) detach();
+            return damage - absorbed;
+        }
+
         public void level(int value, boolean stationary) {
             if (level < value) {
                 level = value;

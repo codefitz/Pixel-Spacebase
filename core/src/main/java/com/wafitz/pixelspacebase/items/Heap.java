@@ -323,6 +323,18 @@ public class Heap implements Bundlable {
         }
     }
 
+    /** Plasma consumes every loose item in a heap rather than merely cooking food. */
+    public void burnAway() {
+        if (isEmpty()) {
+            destroy();
+            return;
+        }
+        if (SpacebaseRun.visible != null && pos < SpacebaseRun.visible.length && SpacebaseRun.visible[pos]) {
+            burnFX(pos);
+        }
+        destroy();
+    }
+
     //Note: should not be called to initiate an explosion, but rather by an explosion that is happening.
     public void explode() {
 

@@ -28,6 +28,7 @@ import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.Craft;
+import com.wafitz.pixelspacebase.actors.blobs.Plasma;
 import com.wafitz.pixelspacebase.actors.blobs.WellWater;
 import com.wafitz.pixelspacebase.actors.buffs.Awareness;
 import com.wafitz.pixelspacebase.actors.buffs.Blindness;
@@ -61,6 +62,7 @@ import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
 import com.wafitz.pixelspacebase.items.containers.UtilityKit;
 import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.items.food.Food;
+import com.wafitz.pixelspacebase.items.keys.Key;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
 import com.wafitz.pixelspacebase.items.upgrades.EnhancementUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
@@ -301,6 +303,7 @@ public abstract class Level implements Bundlable {
         createDoorlessRoom();
 
         buildFlagMaps();
+        Plasma.seed(this);
         cleanWalls();
 
         createMobs();
@@ -449,6 +452,7 @@ public abstract class Level implements Bundlable {
         }
 
         buildFlagMaps();
+        Plasma.seed(this);
         cleanWalls();
     }
 
@@ -688,6 +692,35 @@ public abstract class Level implements Bundlable {
         return null;
     }
 
+    /** Command coolant is plasma only on the Command decks, not on other water levels. */
+    public boolean isPlasmaCell(int cell) {
+        return insideMap(cell)
+                && (this instanceof DeepContainmentDeckLevel || this instanceof DeepContainmentCoreLevel)
+                && map[cell] == Terrain.WATER;
+    }
+
+    /** Stabilises one Command plasma cell into ordinary, traversable flooring. */
+    public boolean stabilisePlasma(int cell) {
+        if (!isPlasmaCell(cell)) return false;
+
+        Plasma plasma = blobs == null ? null : (Plasma) blobs.get(Plasma.class);
+        if (plasma != null) plasma.clear(cell);
+        set(cell, Terrain.EMPTY);
+        GameScene.updateMap(cell);
+        return true;
+    }
+
+    /** A blast ruptures the plasma conduit and leaves an open chasm in its place. */
+    public boolean rupturePlasmaFloor(int cell) {
+        if (!isPlasmaCell(cell)) return false;
+
+        Plasma plasma = blobs == null ? null : (Plasma) blobs.get(Plasma.class);
+        if (plasma != null) plasma.clear(cell);
+        set(cell, Terrain.CHASM);
+        GameScene.updateMap(cell);
+        return true;
+    }
+
     abstract protected boolean build();
 
     abstract protected void decorate();
@@ -799,7 +832,7 @@ public abstract class Level implements Bundlable {
         int cell;
         do {
             cell = Random.Int(length());
-        } while (!passable[cell] || isDoorlessRoomCell(cell));
+        } while (!passable[cell] || isDoorlessRoomCell(cell) || isPlasmaCell(cell));
         return cell;
     }
 
@@ -954,6 +987,24 @@ public abstract class Level implements Bundlable {
 
         }
 
+        // Quest keys cannot be allowed to soft-lock the run if a boss dies in plasma.
+        if (isPlasmaCell(cell) && item instanceof Key) {
+            int safeCell = nearestSafeDropCell(cell);
+            if (safeCell >= 0) cell = safeCell;
+        }
+
+        if (isPlasmaCell(cell)) {
+            if (SpacebaseRun.visible != null && cell < SpacebaseRun.visible.length && SpacebaseRun.visible[cell]) {
+                Heap.burnFX(cell);
+                GLog.w(Messages.get(Plasma.class, "item_burned"));
+            }
+            Heap ignored = new Heap();
+            ignored.pos = cell;
+            ItemSprite sprite = ignored.sprite = new ItemSprite();
+            sprite.link(ignored);
+            return ignored;
+        }
+
         if ((map[cell] == Terrain.CRAFTING) && (
                 !(item instanceof Mine.Device || item instanceof AlienPod) ||
                         item instanceof AlienEgg.Device ||
@@ -1001,6 +1052,22 @@ public abstract class Level implements Bundlable {
         }
 
         return heap;
+    }
+
+    private int nearestSafeDropCell(int origin) {
+        int best = -1;
+        int bestDistance = Integer.MAX_VALUE;
+        int originX = origin % width();
+        int originY = origin / width();
+        for (int cell = 0; cell < length(); cell++) {
+            if (!passable[cell] || pit[cell] || map[cell] == Terrain.CHASM || isPlasmaCell(cell)) continue;
+            int distance = Math.abs(cell % width() - originX) + Math.abs(cell / width() - originY);
+            if (distance < bestDistance) {
+                best = cell;
+                bestDistance = distance;
+            }
+        }
+        return best;
     }
 
     private boolean hasMedigelBatteryReaction(Heap heap) {

@@ -12,7 +12,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Alter torch to be equipped in quickslots to activate
 - [x] Wormhole generator: equip it and spend one utility battery to teleport to a random unoccupied location on the current level; the device has no recharge.
 - [x] A battery doused with medigel can explode (locked doors, blockage)
-- [ ] Holodeck / Lazer quest shutdown sequence:
+- [x] Holodeck / Lazer quest shutdown sequence:
     - [x] Use the attached legacy `old_tiles/tiles3.png` as the active boss-level holodeck atlas, enlarged 4x with nearest-neighbour scaling.
     - [x] Re-theme the current corpse-room bodies and Lazer quest prop as convincing holodeck projections/equipment while preserving the room's reward and pickup flow.
     - [x] Add Roman-style holographic patrol mobs to eligible habitation-ring levels while the holodeck remains active.
@@ -23,7 +23,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
     - [x] Let roaming Roman holograms drop emitters on normal habitat levels.
     - [x] Open Y's workshop floor only when six emitters were collected before the boss.
     - [x] Give the boss a Caesar sprite and its summons Roman legionary sprites.
-    - [ ] Verify the 5-to-6 emitter transition, save/restore in both phases, projection cleanup, reward exchange, and both visual states.
+    - [x] Verify the 5-to-6 emitter transition, save/restore in both phases, projection cleanup, reward exchange, and both visual states.
 - [x] Be able to render the drone controller.
 - [x] New Suit Mechanics:
     - [x] Hunter Suit signature scanner shows moving red silhouettes for enemies and NPCs while floor lights are off, without revealing terrain or extending targeting sight.
@@ -39,10 +39,12 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
       - [x] Exception: DM3000 doesn't need to breath so can wear anything.
   - [x] Repair blaster can lock doors as well as open locked ones.
   - [x] Have a rare item (x2 per game) that will upgrade everything currently carried or equipped.
-- [ ] Command levels the water is actual lava (make up some sci-fi term - plasma)
-  - [ ] if the hero steps on it he starts losing HP - like 25 at a time. He can fly, teleport, or we need a new item which converts the plasma to a solid.
-  - [ ] Explosion can leave a hole in the floor.
+- [x] Command coolant is hazardous plasma; loose items burn up, and generated drops, quest keys, and teleport destinations avoid it.
+  - [x] Plasma deals 25 damage per turn to grounded characters; Hunter flight, Hoverpod, Loader armor, the Frontier forcefield, teleportation, cryo effects, and the Plasma Stabiliser provide ways through or across it.
+  - [x] Bomb explosions can rupture plasma flooring into a chasm.
+  - [x] Put a Plasma Stabiliser in the depth 22 workshop and include it as a rare random blaster.
   - [ ] The floor itself has holes in places all over.
+  - [ ] Playtest Command plasma routes and safe-spawn/drop edge cases.
 
 ## Cosmetic / Narrative
 
@@ -66,6 +68,9 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Habitat entry/exit transporter disks, with cyan/down and amber/up markers and dedicated room floors and walls.
 - [x] Replace the duplicate workshop storage chests with one marked quantum chest and a two-way inventory transfer screen.
 - [ ] Optional reconfigure Hunter suit to detect items instead of enemies, but this is perm unless another tool found.
+- [ ] The special armor kit overrides the Hunter jetpack button - ensure both exist.
+- [ ] Habitat - no water outside of special changing room with showers and steam.
+- [ ] Each floor has a door leading to a small outer platform (can jump from).
 
 ## Art
 

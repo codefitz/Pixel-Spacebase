@@ -45,6 +45,7 @@ import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
+import com.wafitz.pixelspacebase.items.blasters.PlasmaStabiliser;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
 import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
 import com.wafitz.pixelspacebase.items.containers.UtilityKit;
@@ -463,6 +464,10 @@ public class Workshop extends Painter {
             itemsToSpawn.add(new WeaponTuner());
             itemsToSpawn.add(rareWorkshopItem(false));
             itemsToSpawn.add(new TorchBattery().quantity(2));
+            if (SpacebaseRun.depth == 22) {
+                // Give the player one dependable non-equipment route across Command plasma.
+                itemsToSpawn.add(new PlasmaStabiliser());
+            }
         } else if (rareSurpriseChance(makerTier)) {
             itemsToSpawn.add(rareWorkshopItem(true));
         }
@@ -765,7 +770,8 @@ public class Workshop extends Painter {
     private static boolean isEssentialStock(Item item) {
         return isBackpackExtension(item)
                 || item instanceof SpaceSuit
-                || item instanceof HunterSpaceSuit;
+                || item instanceof HunterSpaceSuit
+                || item instanceof PlasmaStabiliser;
     }
 
     private static boolean contains(int[] cells, int cell) {

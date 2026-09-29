@@ -21,6 +21,7 @@
 package com.wafitz.pixelspacebase.items.armor;
 
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.blobs.Plasma;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.RupturedCrewSuit;
 import com.wafitz.pixelspacebase.items.Bomb;
@@ -127,6 +128,7 @@ public class HoverPod extends Armor {
     public static boolean blocksImpact(Object source) {
         if (source instanceof Bomb || source instanceof RupturedCrewSuit) return false;
         return source instanceof Char || source instanceof Item || source instanceof Vent
+                || source instanceof Plasma
                 || source instanceof Mine || source == LightningVent.LIGHTNING;
     }
 

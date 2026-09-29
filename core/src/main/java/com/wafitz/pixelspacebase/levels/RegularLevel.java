@@ -784,7 +784,8 @@ public abstract class RegularLevel extends Level {
             }
 
             cell = pointToCell(room.random());
-            if (!SpacebaseRun.visible[cell] && Actor.findChar(cell) == null && Level.passable[cell]) {
+            if (!SpacebaseRun.visible[cell] && Actor.findChar(cell) == null && Level.passable[cell]
+                    && !isPlasmaCell(cell)) {
                 return cell;
             }
 
@@ -804,7 +805,7 @@ public abstract class RegularLevel extends Level {
             }
 
             cell = pointToCell(room.random());
-            if (Level.passable[cell]) {
+            if (Level.passable[cell] && !isPlasmaCell(cell)) {
                 return cell;
             }
 
@@ -889,15 +890,30 @@ public abstract class RegularLevel extends Level {
     }
 
     private int randomDropCell() {
-        while (true) {
-            Room room = randomRoom(Room.Type.STANDARD, 1);
+        for (int attempt = 0; attempt < 500; attempt++) {
+            Room room = randomRoom(Room.Type.STANDARD, rooms.size());
             if (room != null) {
                 int pos = pointToCell(room.random());
-                if (passable[pos]) {
+                if (passable[pos] && !isPlasmaCell(pos)) {
                     return pos;
                 }
             }
         }
+
+        // Keep generated loot safe even on compact Command maps with heavily flooded rooms.
+        for (Room room : rooms) {
+            if (room.type != Room.Type.STANDARD) continue;
+            for (int y = room.top + 1; y < room.bottom; y++) {
+                for (int x = room.left + 1; x < room.right; x++) {
+                    int pos = x + y * width();
+                    if (passable[pos] && !isPlasmaCell(pos)) return pos;
+                }
+            }
+        }
+
+        int safeCell = super.randomDestination();
+        if (safeCell >= 0) return safeCell;
+        throw new IllegalStateException("No safe item spawn cell on level " + SpacebaseRun.depth);
     }
 
     @Override
