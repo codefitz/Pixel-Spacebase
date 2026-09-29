@@ -71,6 +71,11 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] The special armor kit overrides the Hunter jetpack button - ensure both exist.
 - [ ] Habitat - no water outside of special changing room with showers and steam.
 - [ ] Each floor has a door leading to a small outer platform (can jump from).
+- [ ] Signal leach - some kind of plasma/lava bug spits plasma
+- [ ] Signal siren - replace with a floating creature that teleports the hero randomly in room - including plasma or chasm.
+- [ ] Update outer colony psion - reuse the hunter sprite
+- [ ] Update ruptured crew suit - describe more as an entity using the suit - use spacesuit sprite
+- [ ] scorpio - make into a kind of predator character sprite
 
 ## Art
 
@@ -84,6 +89,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Hologram emitter token reskin
 - [x] Facehugger reskin - live ivory creature matching the dead alien bug item, with crawling, lunging, and death poses
 - [ ] Romans a bit too jittery
+- [ ] NPC1 and NPC2 random dist.
 
 ## Decisions
 
