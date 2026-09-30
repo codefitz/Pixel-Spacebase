@@ -699,23 +699,27 @@ public abstract class Level implements Bundlable {
                 && map[cell] == Terrain.WATER;
     }
 
-    /** Stabilises one Command plasma cell into ordinary, traversable flooring. */
+    /** Stabilises one Command plasma cell into weak, traversable, scorched plating. */
     public boolean stabilisePlasma(int cell) {
         if (!isPlasmaCell(cell)) return false;
 
         Plasma plasma = blobs == null ? null : (Plasma) blobs.get(Plasma.class);
         if (plasma != null) plasma.clear(cell);
-        set(cell, Terrain.EMPTY);
+        set(cell, Terrain.STABILIZED_PLASMA);
         GameScene.updateMap(cell);
         return true;
     }
 
-    /** A blast ruptures the plasma conduit and leaves an open chasm in its place. */
+    /** A blast ruptures plasma or weakened stabilised plating, leaving an open chasm. */
     public boolean rupturePlasmaFloor(int cell) {
-        if (!isPlasmaCell(cell)) return false;
+        boolean plasmaCell = isPlasmaCell(cell);
+        boolean weakPlating = insideMap(cell) && map[cell] == Terrain.STABILIZED_PLASMA;
+        if (!plasmaCell && !weakPlating) return false;
 
-        Plasma plasma = blobs == null ? null : (Plasma) blobs.get(Plasma.class);
-        if (plasma != null) plasma.clear(cell);
+        if (plasmaCell) {
+            Plasma plasma = blobs == null ? null : (Plasma) blobs.get(Plasma.class);
+            if (plasma != null) plasma.clear(cell);
+        }
         set(cell, Terrain.CHASM);
         GameScene.updateMap(cell);
         return true;
@@ -953,7 +957,8 @@ public abstract class Level implements Bundlable {
     public static void set(int cell, int terrain) {
         Painter.set(SpacebaseRun.level, cell, terrain);
 
-        if (terrain != Terrain.VENT && terrain != Terrain.HIDDEN_VENT && terrain != Terrain.INACTIVE_VENT) {
+        if (SpacebaseRun.level.vents != null
+                && terrain != Terrain.VENT && terrain != Terrain.HIDDEN_VENT && terrain != Terrain.INACTIVE_VENT) {
             SpacebaseRun.level.vents.remove(cell);
         }
 
@@ -965,7 +970,7 @@ public abstract class Level implements Bundlable {
         solid[cell] = (flags & Terrain.SOLID) != 0;
         avoid[cell] = (flags & Terrain.AVOID) != 0;
         pit[cell] = (flags & Terrain.PIT) != 0;
-        water[cell] = (flags & Terrain.WATER) != 0;
+        water[cell] = (flags & Terrain.LIQUID) != 0;
     }
 
     public Heap drop(Item item, int cell) {
@@ -1364,6 +1369,8 @@ public abstract class Level implements Bundlable {
             case Terrain.EMPTY_DECO:
             case Terrain.HIDDEN_VENT:
                 return Messages.get(Level.class, "floor_name");
+            case Terrain.STABILIZED_PLASMA:
+                return Messages.get(DeepContainmentDeckLevel.class, "stabilised_plating_name");
             case Terrain.BREAKER:
                 return Messages.get(Level.class, "breaker_name");
             case Terrain.LIGHTEDVENT:
@@ -1424,6 +1431,8 @@ public abstract class Level implements Bundlable {
         switch (tile) {
             case Terrain.CHASM:
                 return Messages.get(Level.class, "chasm_desc");
+            case Terrain.STABILIZED_PLASMA:
+                return Messages.get(DeepContainmentDeckLevel.class, "stabilised_plating_desc");
             case Terrain.WATER:
                 return Messages.get(Level.class, "water_desc");
             case Terrain.ENTRANCE:

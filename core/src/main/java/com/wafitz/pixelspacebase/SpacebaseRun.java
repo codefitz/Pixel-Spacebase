@@ -143,6 +143,11 @@ public class SpacebaseRun {
     // Hero's field of view
     public static boolean[] visible;
 
+    /** Visibility is transient, so a newly loaded floor starts with a correctly sized empty field. */
+    static void resetVisibilityForLevel(Level level) {
+        visible = new boolean[level.length()];
+    }
+
     public static SparseArray<ArrayList<Item>> droppedItems;
     public static SparseArray<ArrayList<Heap>> droppedHeaps;
 
@@ -151,6 +156,8 @@ public class SpacebaseRun {
     public static long seed;
 
     public static void init() {
+
+        Workshop.resetStorage();
 
         version = Game.versionCode;
         challenges = PixelSpacebase.challenges();
@@ -277,7 +284,7 @@ public class SpacebaseRun {
                 Statistics.deepestFloor--;
         }
 
-        visible = new boolean[level.length()];
+        resetVisibilityForLevel(level);
         level.create();
 
         Statistics.qualifiedForNoKilling = !bossLevel();
@@ -372,7 +379,7 @@ public class SpacebaseRun {
         }
 
         PathFinder.setMapSize(level.width(), level.height());
-        visible = new boolean[level.length()];
+        resetVisibilityForLevel(level);
 
         Actor respawner = level.respawner();
         if (respawner != null) {
@@ -615,6 +622,7 @@ public class SpacebaseRun {
             Upgrade.save(bundle);
             Plasmid.save(bundle);
             Module.save(bundle);
+            Workshop.storeInBundle(bundle);
 
             Actor.storeNextID(bundle);
 
@@ -690,6 +698,8 @@ public class SpacebaseRun {
         quickslot.restorePlaceholders(bundle);
 
         if (fullLoad) {
+            Workshop.restoreFromBundle(bundle);
+
             transmutation = bundle.getInt(WT);
 
             int[] dropValues = bundle.getIntArray(LIMDROPS);
@@ -774,7 +784,9 @@ public class SpacebaseRun {
         Bundle bundle = Bundle.read(input);
         input.close();
 
-        return (Level) bundle.get("level");
+        Level level = (Level) bundle.get("level");
+        resetVisibilityForLevel(level);
+        return level;
     }
 
     public static void deleteGame(HeroClass cl, boolean deleteLevels) {

@@ -43,7 +43,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
   - [x] Plasma deals 25 damage per turn to grounded characters; Hunter flight, Hoverpod, Loader armor, the Frontier forcefield, teleportation, cryo effects, and the Plasma Stabiliser provide ways through or across it.
   - [x] Bomb explosions can rupture plasma flooring into a chasm.
   - [x] Put a Plasma Stabiliser in the depth 22 workshop and include it as a rare random blaster.
-  - [ ] The floor itself has holes in places all over.
+  - [x] The floor itself has holes in places all over.
   - [ ] Playtest Command plasma routes and safe-spawn/drop edge cases.
 
 ## Cosmetic / Narrative
@@ -67,21 +67,34 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Torch battery indicator.
 - [x] Habitat entry/exit transporter disks, with cyan/down and amber/up markers and dedicated room floors and walls.
 - [x] Replace the duplicate workshop storage chests with one marked quantum chest and a two-way inventory transfer screen.
-- [ ] Optional reconfigure Hunter suit to detect items instead of enemies, but this is perm unless another tool found.
+- [x] Added expensive, workshop-only Hunter modules that mark unseen items or active traps through fog while the Hunter scanner is active.
 - [x] A Hunter suit upgraded with the Armor Kit keeps its jetpack toggle alongside the class-armor special ability.
-- [ ] Habitat - no water outside of special changing room with showers and steam.
+- [x] Each generated Habitat deck has one changing room with showers, lockers, harmless steaming vents and water patches; water is confined to that room.
 - [ ] Each floor has a door leading to a small outer platform (can jump from).
 - [ ] Signal leach - some kind of plasma/lava bug spits plasma
 - [ ] Signal siren - replace with a floating creature that teleports the hero randomly in room - including plasma or chasm.
 - [ ] Update outer colony psion - reuse the hunter sprite
 - [ ] Update ruptured crew suit - describe more as an entity using the suit - use spacesuit sprite
 - [ ] scorpio - make into a kind of predator character sprite
+- [ ] No longer need a chasm room or locked room below it.
+- [ ] Y should randomly place you in a random any level in the game if he bails you out of a the sealed room. If on a high level, he should be available somewhere to reluctantly send the hero back to current level with convincing.
+- [x] Quantum chest doesn't keep items after boss.
+- [x] Make it so shapeshifter can find hunters disk, but it does not break and returns.
+- [ ] Darksaber and Brightaber can be combined to create something a bit more epic.
+- [ ] Clicking on the drone should swap places unless hostile.
+- [x] Fix: Holodeck boss starts with holodeck black/yellow pattern rather than the hologram.
+- [x] The plasma stabiliser should do a small amount of damage on an enemy. It also should start by affecting only one tile at a time.
+- [x] ArmorKit retains inherited suit properties, including Hunter signatures in darkness and life support.
+- [x] Molton sparks from plasma should disappear when cleared by stabilizer.
+- [x] Floor tiling from plasma stabiser should be darkened and scorched (and weak)
+- [ ] Final boss level doesn't need a sealed room.
 
 ## Art
 
 - [ ] DM3000 reskin
 - [ ] Hunter suit reskin
-- [ ] Heavy loader reskin
+- [ ] Heavy loader reskin - larger
+- [ ] Hoverpod reskin - larger
 - [x] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
 - [ ] Update common tiles across sets
 - [x] Door in security blood spot is too ubiquitous, needs to be more subtle

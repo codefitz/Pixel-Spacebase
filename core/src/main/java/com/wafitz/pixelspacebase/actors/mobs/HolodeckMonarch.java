@@ -155,6 +155,7 @@ public class HolodeckMonarch extends Mob {
         Y.Quest.processMonarchDefeat(pos);
 
         super.die(cause);
+        Y.Quest.onHolodeckEnemyDefeated();
 
         Badges.validateBossSlain();
 
@@ -317,6 +318,7 @@ public class HolodeckMonarch extends Mob {
             Y.Quest.process(this);
 
             super.die(cause);
+            Y.Quest.onHolodeckEnemyDefeated();
 
             if (SpacebaseRun.visible[pos]) {
                 Sample.INSTANCE.play(Assets.SND_HOLOGRAM);

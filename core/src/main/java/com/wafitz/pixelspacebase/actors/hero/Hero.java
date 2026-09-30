@@ -71,9 +71,7 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
-import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
-import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.enhancements.EMP;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Flow;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Forcefield;
@@ -334,7 +332,8 @@ public class Hero extends Char {
         }
 
         KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
-        int skill = attackSkill + (rangedWeapon != null && belongings.armor instanceof HunterSpaceSuit ? 1 : 0);
+        int skill = attackSkill + (rangedWeapon != null && belongings.armor != null
+                && belongings.armor.hasHunterTracking() ? 1 : 0);
         if (wep != null) {
             return (int) (skill * accuracy * wep.accuracyFactor(this));
         } else {
@@ -1142,8 +1141,8 @@ public class Hero extends Char {
             return;
 
         // Toxic gas deals direct damage; stop it before shields or damage procs are spent.
-        if (src instanceof ToxicGas
-                && (belongings.armor instanceof SpaceSuit || belongings.armor instanceof HunterSpaceSuit))
+        if (src instanceof ToxicGas && belongings.armor != null
+                && belongings.armor.providesLifeSupport())
             return;
 
         HoverPod pod = HoverPod.equipped(this);
@@ -1809,8 +1808,7 @@ public class Hero extends Char {
         return heroClass == HeroClass.DM3000
                 || heroClass == HeroClass.SHAPESHIFTER
                 || belongings.armor instanceof HoverPod
-                || belongings.armor instanceof SpaceSuit
-                || belongings.armor instanceof HunterSpaceSuit;
+                || belongings.armor != null && belongings.armor.providesLifeSupport();
     }
 
     @Override
@@ -2019,7 +2017,7 @@ public class Hero extends Char {
         if (belongings.armor instanceof Loader) {
             immunities.add(Burning.class);
         }
-        if (belongings.armor instanceof SpaceSuit || belongings.armor instanceof HunterSpaceSuit) {
+        if (belongings.armor != null && belongings.armor.providesLifeSupport()) {
             immunities.add(ConfusionGas.class);
             immunities.add(ParalyticGas.class);
             immunities.add(StenchGas.class);

@@ -50,5 +50,6 @@ public class HolodeckLegionary extends Mob {
             SpacebaseRun.level.drop(new HardLightEmitter(), pos).sprite.drop();
         }
         super.die(cause);
+        Y.Quest.onHolodeckEnemyDefeated();
     }
 }

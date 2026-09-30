@@ -64,6 +64,7 @@ import com.wafitz.pixelspacebase.ui.CustomTileVisual;
 import com.wafitz.pixelspacebase.ui.GameLog;
 import com.wafitz.pixelspacebase.ui.HealthIndicator;
 import com.wafitz.pixelspacebase.ui.HunterSignature;
+import com.wafitz.pixelspacebase.ui.HunterSensorMarkers;
 import com.wafitz.pixelspacebase.ui.LootIndicator;
 import com.wafitz.pixelspacebase.ui.QuickSlotButton;
 import com.wafitz.pixelspacebase.ui.ResumeIndicator;
@@ -132,6 +133,7 @@ public class GameScene extends PixelScene {
     private Group heaps;
     private Group mobs;
     private Group hunterSignatures;
+    private HunterSensorMarkers hunterSensorMarkers;
     private Group emitters;
     private Group effects;
     private Group gases;
@@ -227,6 +229,9 @@ public class GameScene extends PixelScene {
 
         fog = new FogOfWar(SpacebaseRun.level.width(), SpacebaseRun.level.height());
         add(fog);
+
+        hunterSensorMarkers = new HunterSensorMarkers();
+        add(hunterSensorMarkers);
 
         add(hunterSignatures);
 

@@ -43,6 +43,8 @@ import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.HunterItemScanner;
+import com.wafitz.pixelspacebase.items.equippablemodules.HunterTrapScanner;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.blasters.PlasmaStabiliser;
@@ -74,6 +76,8 @@ import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.scenes.GameScene;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Bundlable;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -87,13 +91,32 @@ public class Workshop extends Painter {
 
     private static final int TEMPLATE_WIDTH = 7;
     private static final int TEMPLATE_HEIGHT = 7;
+    private static final String STORED_ITEMS = "quantumChestItems";
 
     private static ArrayList<Item> itemsToSpawn;
     private static ArrayList<Item> carriedStock;
     private static ArrayList<Item> storedItems;
     private static int stockArea = -1;
     private static int stockDepth = -1;
-    private static int storedArea = -1;
+
+    public static void resetStorage() {
+        storedItems = new ArrayList<>();
+    }
+
+    public static void storeInBundle(Bundle bundle) {
+        bundle.put(STORED_ITEMS, storedItems == null ? new ArrayList<Item>() : storedItems);
+    }
+
+    public static void restoreFromBundle(Bundle bundle) {
+        storedItems = new ArrayList<>();
+        if (bundle.contains(STORED_ITEMS)) {
+            for (Bundlable item : bundle.getCollection(STORED_ITEMS)) {
+                if (item instanceof Item) {
+                    storedItems.add((Item) item);
+                }
+            }
+        }
+    }
 
     public static void paint(Level level, Room room) {
 
@@ -139,12 +162,7 @@ public class Workshop extends Painter {
         }
 
         prepareCarriedStock(SpacebaseRun.depth);
-        int area = areaForDepth(SpacebaseRun.depth);
-
-        if (area != storedArea) {
-            storedItems = new ArrayList<>();
-            storedArea = area;
-        } else if (storedItems == null) {
+        if (storedItems == null) {
             storedItems = new ArrayList<>();
         } else {
             storedItems.clear();
@@ -185,10 +203,6 @@ public class Workshop extends Painter {
 
     public static void deliverStorageTo(Level level) {
         if (level == null || level.heaps == null || storedItems == null || storedItems.isEmpty()) {
-            return;
-        }
-        if (storedArea != areaForDepth(SpacebaseRun.depth)) {
-            storedItems.clear();
             return;
         }
 
@@ -356,11 +370,9 @@ public class Workshop extends Painter {
         }
     }
 
-    private static ArrayList<Item> storageForCurrentDepth() {
-        int area = areaForDepth(SpacebaseRun.depth);
-        if (storedItems == null || storedArea != area || areaStart(SpacebaseRun.depth) && stockDepth != SpacebaseRun.depth) {
+    static ArrayList<Item> storageForCurrentDepth() {
+        if (storedItems == null) {
             storedItems = new ArrayList<>();
-            storedArea = area;
         }
         return storedItems;
     }
@@ -411,6 +423,12 @@ public class Workshop extends Painter {
         }
 
         if (makerTier >= 2) {
+            if (!hasOwnedModule(HunterItemScanner.class)) {
+                itemsToSpawn.add(new HunterItemScanner().identify());
+            }
+            if (!hasOwnedModule(HunterTrapScanner.class)) {
+                itemsToSpawn.add(new HunterTrapScanner().identify());
+            }
             itemsToSpawn.add(new Bomb().random());
             switch (Random.Int(5)) {
                 case 1:
@@ -771,7 +789,17 @@ public class Workshop extends Painter {
         return isBackpackExtension(item)
                 || item instanceof SpaceSuit
                 || item instanceof HunterSpaceSuit
+                || item instanceof HunterItemScanner
+                || item instanceof HunterTrapScanner
                 || item instanceof PlasmaStabiliser;
+    }
+
+    private static boolean hasOwnedModule(Class<? extends Item> moduleClass) {
+        if (SpacebaseRun.hero == null) return false;
+        for (Item item : SpacebaseRun.hero.belongings) {
+            if (moduleClass.isInstance(item)) return true;
+        }
+        return false;
     }
 
     private static boolean contains(int[] cells, int cell) {

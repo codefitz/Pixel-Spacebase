@@ -38,6 +38,8 @@ abstract public class ClassArmor extends Armor {
     private static final float TIME_TO_SWITCH_JETPACK = 1f;
     private static final String HUNTER_JETPACK = "hunterJetpack";
     private static final String JETPACK_ON = "jetpackOn";
+    private static final String HUNTER_TRACKING = "hunterTracking";
+    private static final String LIFE_SUPPORT = "lifeSupport";
 
     {
         levelKnown = true;
@@ -50,6 +52,8 @@ abstract public class ClassArmor extends Armor {
     private int armorTier;
     private boolean hunterJetpack;
     private boolean jetpackOn;
+    private boolean hunterTracking;
+    private boolean lifeSupport;
 
     ClassArmor() {
         super(6);
@@ -78,11 +82,10 @@ abstract public class ClassArmor extends Armor {
                 break;
         }
 
-        if (armor instanceof HunterSpaceSuit) {
-            HunterSpaceSuit hunterSuit = (HunterSpaceSuit) armor;
-            classArmor.hunterJetpack = true;
-            classArmor.jetpackOn = hunterSuit.jetpackOn();
-        }
+        classArmor.hunterJetpack = armor.hasHunterJetpack();
+        classArmor.jetpackOn = classArmor.hunterJetpack && armor.hunterJetpackOn();
+        classArmor.hunterTracking = armor.hasHunterTracking();
+        classArmor.lifeSupport = armor.providesLifeSupport();
 
         classArmor.level(armor.level());
         classArmor.armorTier = armor.tier;
@@ -99,6 +102,8 @@ abstract public class ClassArmor extends Armor {
         bundle.put(ARMOR_TIER, armorTier);
         bundle.put(HUNTER_JETPACK, hunterJetpack);
         bundle.put(JETPACK_ON, jetpackOn);
+        bundle.put(HUNTER_TRACKING, hunterTracking);
+        bundle.put(LIFE_SUPPORT, lifeSupport);
     }
 
     @Override
@@ -120,6 +125,11 @@ abstract public class ClassArmor extends Armor {
         }
         hunterJetpack = bundle.getBoolean(HUNTER_JETPACK);
         jetpackOn = hunterJetpack && bundle.getBoolean(JETPACK_ON);
+        // Existing class-armor saves only recorded this state as a Hunter jetpack.
+        hunterTracking = bundle.contains(HUNTER_TRACKING)
+                ? bundle.getBoolean(HUNTER_TRACKING) : hunterJetpack;
+        lifeSupport = bundle.contains(LIFE_SUPPORT)
+                ? bundle.getBoolean(LIFE_SUPPORT) : hunterJetpack;
     }
 
     @Override
@@ -201,7 +211,23 @@ abstract public class ClassArmor extends Armor {
         }
     }
 
-    boolean hunterJetpackOn() {
+    @Override
+    public boolean providesLifeSupport() {
+        return lifeSupport;
+    }
+
+    @Override
+    public boolean hasHunterTracking() {
+        return hunterTracking;
+    }
+
+    @Override
+    public boolean hasHunterJetpack() {
+        return hunterJetpack;
+    }
+
+    @Override
+    public boolean hunterJetpackOn() {
         return hunterJetpack && jetpackOn;
     }
 
@@ -210,6 +236,12 @@ abstract public class ClassArmor extends Armor {
         String description = super.desc();
         if (hunterJetpack) {
             description += "\n\n" + Messages.get(this, "hunter_jetpack_desc");
+        }
+        if (hunterTracking) {
+            description += "\n\n" + Messages.get(this, "hunter_tracking_desc");
+        }
+        if (lifeSupport) {
+            description += "\n\n" + Messages.get(this, "life_support_desc");
         }
         return description;
     }

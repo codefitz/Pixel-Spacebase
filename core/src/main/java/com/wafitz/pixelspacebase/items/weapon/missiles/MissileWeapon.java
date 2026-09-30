@@ -70,10 +70,9 @@ abstract public class MissileWeapon extends Weapon {
     protected void onThrow(int cell) {
         Char enemy = Actor.findChar(cell);
         if (enemy == null || enemy == curUser) {
-            if (this instanceof HunterDisc)
-                super.onThrow(cell);
-            else
-                miss(cell);
+            // HunterDisc overrides miss() to circle back, including throws that
+            // land on an empty tile. Other missiles keep their normal miss rules.
+            miss(cell);
         } else {
             if (!curUser.shoot(enemy, this)) {
                 miss(cell);

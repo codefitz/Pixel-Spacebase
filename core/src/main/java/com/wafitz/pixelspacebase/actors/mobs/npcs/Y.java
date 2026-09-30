@@ -34,6 +34,7 @@ import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.quest.HardLightEmitter;
 import com.wafitz.pixelspacebase.levels.HabitationRingLevel;
+import com.wafitz.pixelspacebase.levels.HolodeckBossLevel;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -256,7 +257,6 @@ public class Y extends NPC {
             if (hero != null) {
                 HardLightEmitter emitters = hero.belongings.getItem(HardLightEmitter.class);
                 if (emitters != null && emitters.quantity() >= REQUIRED_EMITTERS) {
-                    holodeckPoweredDown = true;
                     if (!secretWorkshopStateSaved && depth < 20) {
                         secretWorkshopUnlocked = true;
                     }
@@ -275,17 +275,31 @@ public class Y extends NPC {
             if (hero != null) {
                 HardLightEmitter emitters = hero.belongings.getItem(HardLightEmitter.class);
                 if (emitters != null && emitters.quantity() >= REQUIRED_EMITTERS) {
+                    // Collecting the emitters unlocks Y's workshop; the boss arena
+                    // remains active until its final hologram enemy is defeated.
                     if (SpacebaseRun.depth < 20) secretWorkshopUnlocked = true;
-                    if (holodeckPoweredDown) return;
-                    holodeckPoweredDown = true;
-                    discardProjections(SpacebaseRun.level);
-                    if (SpacebaseRun.level != null) {
-                        GameScene.resetMap();
-                        GameScene.resetCustomTiles();
-                    }
-                    GLog.p(Messages.get(Y.class, "holodeck_shutdown"));
                 }
             }
+        }
+
+        /** Powers down the simulation after the last boss-level hologram is defeated. */
+        public static void onHolodeckEnemyDefeated() {
+            Level level = SpacebaseRun.level;
+            if (holodeckPoweredDown || !(level instanceof HolodeckBossLevel)) return;
+
+            for (Mob mob : level.mobs) {
+                if (mob instanceof HolodeckMonarch
+                        || mob instanceof HolodeckMonarch.Undead
+                        || mob instanceof HolodeckLegionary) {
+                    return;
+                }
+            }
+
+            holodeckPoweredDown = true;
+            discardProjections(level);
+            GameScene.resetMap();
+            GameScene.resetCustomTiles();
+            GLog.p(Messages.get(Y.class, "holodeck_shutdown"));
         }
 
         /** Removes stored holograms without treating shutdown as killing them. */

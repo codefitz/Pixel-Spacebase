@@ -71,7 +71,23 @@ public class HunterSpaceSuit extends Armor {
         jetpackOn = bundle.getBoolean(JETPACK_ON);
     }
 
-    boolean jetpackOn() {
+    @Override
+    public boolean providesLifeSupport() {
+        return true;
+    }
+
+    @Override
+    public boolean hasHunterTracking() {
+        return true;
+    }
+
+    @Override
+    public boolean hasHunterJetpack() {
+        return true;
+    }
+
+    @Override
+    public boolean hunterJetpackOn() {
         return jetpackOn;
     }
 
@@ -160,18 +176,16 @@ public class HunterSpaceSuit extends Armor {
         if (SpacebaseRun.hero == null || ch != SpacebaseRun.hero) return false;
 
         Armor armor = SpacebaseRun.hero.belongings.armor;
-        if (armor instanceof HunterSpaceSuit) {
-            return ((HunterSpaceSuit) armor).jetpackOn;
-        } else if (armor instanceof ClassArmor) {
-            return ((ClassArmor) armor).hunterJetpackOn();
-        }
-        return false;
+        return armor != null && armor.hasHunterJetpack() && armor.hunterJetpackOn();
     }
 
     public static boolean signatureScannerActive() {
         return SpacebaseRun.hero != null && SpacebaseRun.level != null
-                && SpacebaseRun.hero.belongings.armor instanceof HunterSpaceSuit
-                && !SpacebaseRun.level.floorBreakerOn;
+                && signatureScannerActive(SpacebaseRun.hero.belongings.armor, SpacebaseRun.level.floorBreakerOn);
+    }
+
+    static boolean signatureScannerActive(Armor armor, boolean floorBreakerOn) {
+        return armor != null && armor.hasHunterTracking() && !floorBreakerOn;
     }
 
 }

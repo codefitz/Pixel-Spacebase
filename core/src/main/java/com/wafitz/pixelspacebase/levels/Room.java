@@ -25,6 +25,7 @@ import com.wafitz.pixelspacebase.levels.painters.AltarPainter;
 import com.wafitz.pixelspacebase.levels.painters.ArmoryPainter;
 import com.wafitz.pixelspacebase.levels.painters.BossExitPainter;
 import com.wafitz.pixelspacebase.levels.painters.CryptPainter;
+import com.wafitz.pixelspacebase.levels.painters.ChangingRoomPainter;
 import com.wafitz.pixelspacebase.levels.painters.EntrancePainter;
 import com.wafitz.pixelspacebase.levels.painters.ExitPainter;
 import com.wafitz.pixelspacebase.levels.painters.LaboratoryPainter;
@@ -100,7 +101,9 @@ public class Room extends Rect implements Graph.Node, Bundlable {
         //security block quests
         MASS_GRAVE(MassGravePainter.class),
         ROT_GARDEN(RotGardenPainter.class),
-        RITUAL_SITE(RitualSitePainter.class);
+        RITUAL_SITE(RitualSitePainter.class),
+
+        CHANGING_ROOM(ChangingRoomPainter.class);
 
         private Method paint;
 

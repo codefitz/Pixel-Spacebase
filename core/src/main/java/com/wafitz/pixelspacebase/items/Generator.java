@@ -274,7 +274,7 @@ public class Generator {
                 HunterDisc.class,
                 Dart.class
         };
-        Category.WEP_T1.probs = new float[]{1, 1, 1, 0, 0, 1};
+        Category.WEP_T1.probs = new float[]{1, 1, 1, 0, 0.5f, 1};
 
         Category.WEP_T2.classes = new Class<?>[]{
                 Wrench.class,

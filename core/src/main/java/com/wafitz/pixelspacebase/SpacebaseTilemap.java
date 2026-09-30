@@ -87,6 +87,8 @@ public class SpacebaseTilemap extends Tilemap {
         defaultVisuals.put(Terrain.HEALING_TANK, 27);
 
         defaultVisuals.put(Terrain.WATER, 63);
+        // A dark, worn floor tile used for newly stabilised plasma.
+        defaultVisuals.put(Terrain.STABILIZED_PLASMA, 16);
     }
 
     //These alt visuals will mines 50% of the time
@@ -118,6 +120,7 @@ public class SpacebaseTilemap extends Tilemap {
             Terrain.BARRICADE, Terrain.OFFVENT, Terrain.HIDDEN_VENT,
             Terrain.VENT, Terrain.INACTIVE_VENT, Terrain.TRAMPLED_OFFVENT,
             Terrain.SPENT_MINE, Terrain.EMPTY_DECO,
+            Terrain.STABILIZED_PLASMA,
             Terrain.SIGN, Terrain.WELL, Terrain.STATUE, Terrain.CRAFTING,
             Terrain.BREAKER, Terrain.HEALING_TANK
     );
@@ -134,6 +137,7 @@ public class SpacebaseTilemap extends Tilemap {
         chasmStitcheable.put(Terrain.TRAMPLED_OFFVENT, 32);
         chasmStitcheable.put(Terrain.SPENT_MINE, 32);
         chasmStitcheable.put(Terrain.EMPTY_DECO, 32);
+        chasmStitcheable.put(Terrain.STABILIZED_PLASMA, 32);
         chasmStitcheable.put(Terrain.SIGN, 32);
         chasmStitcheable.put(Terrain.EMPTY_WELL, 32);
         chasmStitcheable.put(Terrain.STATUE, 32);
@@ -249,6 +253,10 @@ public class SpacebaseTilemap extends Tilemap {
 
         } else if (tile == Terrain.CHASM && pos >= mapWidth) {
             return chasmStitcheable.get(map[pos - mapWidth], visual);
+
+        } else if (tile == Terrain.STABILIZED_PLASMA) {
+            // Keep its scorched texture consistent rather than applying random floor variants.
+            return visual;
 
         } else if (tileVariance[pos] > 0.9f
                 && rareAltVisuals.indexOfKey(visual) >= 0) {

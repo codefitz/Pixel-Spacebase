@@ -11,26 +11,22 @@ package com.wafitz.pixelspacebase.items.blasters;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.EnergyBeam;
 import com.wafitz.pixelspacebase.effects.particles.SnowParticle;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
-import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
-import com.wafitz.pixelspacebase.utils.BArray;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
 
-/** Converts a small area of Command plasma into safe, solid deck plating. */
-public class PlasmaStabiliser extends Blaster {
-
-    private static final int BASE_RADIUS = 2;
+/** Converts one targeted Command plasma tile into safe, solid deck plating. */
+public class PlasmaStabiliser extends DamageBlaster {
 
     {
         // The existing cryogenic emitter art also communicates this stabiliser's effect.
@@ -39,31 +35,40 @@ public class PlasmaStabiliser extends Blaster {
 
     @Override
     protected void onZap(Ballistica bolt) {
-        int radius = Math.min(4, BASE_RADIUS + level() / 2);
-        PathFinder.buildDistanceMap(bolt.collisionPos, BArray.not(Level.solid, null), radius);
+        int cell = bolt.collisionPos;
+        Char target = Actor.findChar(cell);
+        boolean stabilised = SpacebaseRun.level.stabilisePlasma(cell);
 
-        int stabilised = 0;
-        for (int cell = 0; cell < SpacebaseRun.level.length(); cell++) {
-            if (PathFinder.distance[cell] <= radius && SpacebaseRun.level.stabilisePlasma(cell)) {
-                stabilised++;
-                if (SpacebaseRun.visible[cell]) {
-                    CellEmitter.get(cell).start(SnowParticle.FACTORY, 0.2f, 6);
-                }
-            }
+        if (target != null) {
+            processSoulMark(target, chargesPerCast());
+            target.damage(damageRoll(), this);
         }
 
-        if (stabilised > 0) {
-            GLog.p(Messages.get(this, "stabilised", stabilised));
+        if (stabilised) {
+            if (SpacebaseRun.visible[cell]) {
+                CellEmitter.get(cell).start(SnowParticle.FACTORY, 0.2f, 6);
+            }
+            GLog.p(Messages.get(this, "stabilised"));
             SpacebaseRun.observe();
             GameScene.updateFog();
-        } else {
+        } else if (target == null) {
             GLog.i(Messages.get(this, "no_plasma"));
         }
     }
 
     @Override
+    public int min(int lvl) {
+        return Math.max(1, 1 + lvl);
+    }
+
+    @Override
+    public int max(int lvl) {
+        return Math.max(min(lvl), 3 + lvl);
+    }
+
+    @Override
     public void onHit(DM3000Launcher launcher, Char attacker, Char defender, int damage) {
-        // This is a terrain-control tool rather than a damage effect.
+        // Direct-shot damage is handled in onZap; the launcher hit has no added effect.
     }
 
     @Override

@@ -39,6 +39,8 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class DeepContainmentCoreLevel extends Level {
 
     {
@@ -140,6 +142,43 @@ public class DeepContainmentCoreLevel extends Level {
                 map[i] = Terrain.EMPTY_DECO;
             }
         }
+
+        addFloorHoles();
+    }
+
+    private void addFloorHoles() {
+        for (int lane = 0; lane < 5; lane++) {
+            ArrayList<Integer> candidates = new ArrayList<>();
+            int left = 2 + lane * 4;
+            for (int y = 2; y < 23; y++) {
+                for (int x = left; x < left + 4; x++) {
+                    int cell = x + y * width();
+                    if (map[cell] != Terrain.EMPTY && map[cell] != Terrain.EMPTY_DECO) continue;
+                    if (insideBossArenaOrApproach(x, y) || nearCriticalTile(cell)) continue;
+                    candidates.add(cell);
+                }
+            }
+
+            // One hole per corridor keeps the gaps distributed instead of clustered.
+            CommandFloorHoles.scatter(this, candidates, 1);
+        }
+    }
+
+    private boolean insideBossArenaOrApproach(int x, int y) {
+        return x >= ROOM_LEFT - 2 && x <= ROOM_RIGHT + 2
+                && y >= ROOM_TOP - 2 && y <= ROOM_BOTTOM + 2;
+    }
+
+    private boolean nearCriticalTile(int cell) {
+        int x = cell % width();
+        int y = cell / width();
+        return manhattanDistance(x, y, entrance) <= 2
+                || manhattanDistance(x, y, exit) <= 2;
+    }
+
+    private int manhattanDistance(int x, int y, int cell) {
+        if (cell < 0 || cell >= length()) return Integer.MAX_VALUE;
+        return Math.abs(x - cell % width()) + Math.abs(y - cell / width());
     }
 
     @Override
