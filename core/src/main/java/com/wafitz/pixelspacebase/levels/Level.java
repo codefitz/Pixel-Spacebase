@@ -566,6 +566,12 @@ public abstract class Level implements Bundlable {
         return doorlessRoomCenter;
     }
 
+    public int fallLandingCell(boolean intoDoorlessRoom, boolean intoPit) {
+        int cell = intoDoorlessRoom || Random.Int(4) == 0
+                ? doorlessRoomLandingCell() : (intoPit ? pitCell() : randomRespawnCell());
+        return cell >= 0 ? cell : randomRespawnCell();
+    }
+
     public void restoreFloorLighting() {
         floorBreakerOn = true;
         viewDistance = litViewDistance;

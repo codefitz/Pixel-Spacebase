@@ -27,6 +27,7 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
+import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Camera;
@@ -67,6 +68,12 @@ public class HeroSprite extends CharSprite {
 
     public void updateArmor() {
         itemForm = false;
+        Hero hero = (Hero) ch;
+        if (hero.belongings.armor instanceof Loader) {
+            updateLoader(hero.heroClass);
+            return;
+        }
+        texture(hero.heroClass.spritesheet());
 
         TextureFilm film = new TextureFilm(tiers(), ((Hero) ch).tier(), FRAME_WIDTH, FRAME_HEIGHT);
 
@@ -92,6 +99,35 @@ public class HeroSprite extends CharSprite {
 
         read = new Animation(20, false);
         read.frames(film, 19, 20, 20, 20, 20, 20, 20, 20, 20, 19);
+        idle();
+        place(ch.pos);
+    }
+
+    private void updateLoader(HeroClass heroClass) {
+        switch (heroClass) {
+            case COMMANDER: texture(Assets.LOADER_COMMANDER); break;
+            case DM3000: texture(Assets.LOADER_DM3000); break;
+            case CAPTAIN: texture(Assets.LOADER_CAPTAIN); break;
+            default: texture(Assets.LOADER_SHAPESHIFTER); break;
+        }
+        // The wide transparent frame leaves room for the claw extension; the chassis is ~24px wide.
+        TextureFilm film = new TextureFilm(texture, 48, 28);
+        idle = new Animation(4, true);
+        idle.frames(film, 0, 1);
+        run = new Animation(8, true);
+        run.frames(film, 2, 3, 4, 5);
+        attack = new Animation(10, false);
+        attack.frames(film, 6, 7, 0);
+        zap = attack.clone();
+        operate = new Animation(8, false);
+        operate.frames(film, 8, 9, 8, 9);
+        die = new Animation(10, false);
+        die.frames(film, 10, 11);
+        fly = new Animation(1, true);
+        fly.frames(film, 0);
+        read = operate.clone();
+        idle();
+        place(ch.pos);
     }
 
     public void shapeshiftToItem(int itemImage) {

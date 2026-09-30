@@ -28,6 +28,7 @@ import com.wafitz.pixelspacebase.levels.painters.CryptPainter;
 import com.wafitz.pixelspacebase.levels.painters.ChangingRoomPainter;
 import com.wafitz.pixelspacebase.levels.painters.EntrancePainter;
 import com.wafitz.pixelspacebase.levels.painters.ExitPainter;
+import com.wafitz.pixelspacebase.levels.painters.ExteriorPlatformPainter;
 import com.wafitz.pixelspacebase.levels.painters.LaboratoryPainter;
 import com.wafitz.pixelspacebase.levels.painters.LeonardPainter;
 import com.wafitz.pixelspacebase.levels.painters.LibraryPainter;
@@ -103,7 +104,8 @@ public class Room extends Rect implements Graph.Node, Bundlable {
         ROT_GARDEN(RotGardenPainter.class),
         RITUAL_SITE(RitualSitePainter.class),
 
-        CHANGING_ROOM(ChangingRoomPainter.class);
+        CHANGING_ROOM(ChangingRoomPainter.class),
+        EXTERIOR_PLATFORM(ExteriorPlatformPainter.class);
 
         private Method paint;
 

@@ -65,7 +65,6 @@ public abstract class RegularLevel extends Level {
 
     public int secretDoors;
 
-    private static final int[] SURVIVOR_DEPTHS = {2, 7, 12, 17, 22};
 
     @Override
     protected boolean build() {
@@ -162,6 +161,8 @@ public abstract class RegularLevel extends Level {
         }
         if (!assignRoomType())
             return false;
+        if (!SpacebaseRun.bossLevel() && SpacebaseRun.depth != 21
+                && !assignExteriorPlatform(rooms)) return false;
 
         paint();
         paintWater();
@@ -172,6 +173,28 @@ public abstract class RegularLevel extends Level {
         placeVents();
 
         return true;
+    }
+
+    static boolean assignExteriorPlatform(List<Room> rooms) {
+        for (Room room : rooms) {
+            if (room.type != Type.NULL || !room.connected.isEmpty()
+                    || room.width() < 5 || room.height() < 5) continue;
+            for (Room neighbor : room.neigbours) {
+                if (neighbor.type != Type.STANDARD && neighbor.type != Type.ENTRANCE
+                        && neighbor.type != Type.EXIT) continue;
+                Rect border = room.intersect(neighbor);
+                if (Math.max(border.width(), border.height()) < 3) continue;
+                room.connect(neighbor);
+                room.type = Type.EXTERIOR_PLATFORM;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isExteriorPlatformJump(int cell) {
+        Room room = room(cell);
+        return room != null && room.type == Type.EXTERIOR_PLATFORM && map[cell] == Terrain.CHASM;
     }
 
     private Room workshopRoom() {
@@ -713,45 +736,38 @@ public abstract class RegularLevel extends Level {
             return;
         }
 
-        if (placeSurvivorInRoom(roomExit, 40)) {
-            return;
-        }
-
-        if (placeSurvivorInRoom(roomEntrance, 20)) {
-            return;
-        }
-
-        for (int tries = 0; tries < 40; tries++) {
-            Room room = randomRoom(Room.Type.STANDARD, 10);
-            if (placeSurvivorInRoom(room, 1)) {
-                return;
+        for (Mob mob : mobs) if (mob instanceof Survivor) return;
+        ArrayList<Integer> candidates = new ArrayList<>();
+        for (Room room : rooms) {
+            if (room.type != Type.STANDARD && room.type != Type.ENTRANCE && room.type != Type.EXIT) continue;
+            for (int y = room.top + 1; y < room.bottom; y++) {
+                for (int x = room.left + 1; x < room.right; x++) {
+                    int cell = x + y * width();
+                    if (canPlaceSurvivor(cell)) candidates.add(cell);
+                }
             }
+        }
+        if (!candidates.isEmpty()) {
+            Survivor survivor = new Survivor();
+            survivor.pos = Random.element(candidates);
+            mobs.add(survivor);
         }
     }
 
-    private boolean placeSurvivorInRoom(Room room, int tries) {
-        if (room == null) {
-            return false;
-        }
-
-        for (int i = 0; i < tries; i++) {
-            int cell = pointToCell(room.random());
-            if (canPlaceSurvivor(cell)) {
-                Survivor survivor = new Survivor();
-                survivor.pos = cell;
-                mobs.add(survivor);
-                return true;
-            }
-        }
-
-        return false;
+    static int survivorDepth(long seed, int chapter) {
+        // Derive the floor from the run seed so revisiting/generation order cannot change it.
+        long mixed = seed ^ (0x9E3779B97F4A7C15L * (chapter + 1));
+        mixed ^= mixed >>> 33;
+        mixed *= 0xFF51AFD7ED558CCDL;
+        mixed ^= mixed >>> 33;
+        int start = chapter == 4 ? 22 : chapter * 5 + 1;
+        int floors = chapter == 4 ? 3 : 4;
+        return start + (int) ((mixed & Long.MAX_VALUE) % floors);
     }
 
     private boolean hasSurvivorForDepth() {
-        for (int depth : SURVIVOR_DEPTHS) {
-            if (SpacebaseRun.depth == depth) {
-                return true;
-            }
+        for (int chapter = 0; chapter < 5; chapter++) {
+            if (SpacebaseRun.depth == survivorDepth(SpacebaseRun.seed, chapter)) return true;
         }
         return false;
     }
@@ -764,6 +780,9 @@ public abstract class RegularLevel extends Level {
                 && vents.get(cell) == null
                 && mines.get(cell) == null
                 && heaps.get(cell) == null
+                && !isVacuum(cell)
+                && !isPlasmaCell(cell)
+                && findMob(cell) == null
                 && Actor.findChar(cell) == null;
     }
 

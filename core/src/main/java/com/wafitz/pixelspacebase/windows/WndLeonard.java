@@ -25,6 +25,7 @@ import com.wafitz.pixelspacebase.Chrome;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Leonard;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.weapon.melee.EclipseSaber;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
@@ -113,6 +114,8 @@ public class WndLeonard extends Window {
                 btnPressed.item(item);
 
                 if (btnItem1.item != null && btnItem2.item != null) {
+                    btnReforge.text(Messages.get(WndLeonard.class,
+                            EclipseSaber.canCombine(btnItem1.item, btnItem2.item) ? "fuse_sabers" : "reforge"));
                     String result = Leonard.verify(btnItem1.item, btnItem2.item);
                     if (result != null) {
                         GameScene.show(new WndMessage(result));

@@ -24,8 +24,23 @@ import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.SurvivorSprite;
 import com.watabou.utils.Random;
+import com.watabou.utils.Bundle;
 
 public class Survivor extends NPC {
+    private int appearance = Random.Int(2);
+
+    public int appearance() { return appearance; }
+
+    @Override public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put("survivorAppearance", appearance);
+    }
+
+    @Override public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        // Older saves retain the original survivor appearance.
+        appearance = bundle.getInt("survivorAppearance") == 1 ? 1 : 0;
+    }
 
     private static final String[] LINE_KEYS = {
             "line_1",

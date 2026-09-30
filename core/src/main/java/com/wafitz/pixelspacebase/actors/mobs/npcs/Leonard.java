@@ -30,6 +30,8 @@ import com.wafitz.pixelspacebase.actors.mobs.SiphonDrone;
 import com.wafitz.pixelspacebase.items.EquipableItem;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
+import com.wafitz.pixelspacebase.items.weapon.melee.EclipseSaber;
+import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.items.quest.DroneParts;
 import com.wafitz.pixelspacebase.items.quest.ScrewDriver;
 import com.wafitz.pixelspacebase.items.quest.SpareBaseParts;
@@ -164,7 +166,7 @@ public class Leonard extends NPC {
             return Messages.get(Leonard.class, "same_item");
         }
 
-        if (item1.getClass() != item2.getClass()) {
+        if (item1.getClass() != item2.getClass() && !EclipseSaber.canCombine(item1, item2)) {
             return Messages.get(Leonard.class, "diff_type");
         }
 
@@ -206,18 +208,32 @@ public class Leonard extends NPC {
         UpgradePatch.upgrade(SpacebaseRun.hero);
         Item.evoke(SpacebaseRun.hero);
 
-        if (first.isEquipped(SpacebaseRun.hero)) {
-            ((EquipableItem) first).doUnequip(SpacebaseRun.hero, true);
-        }
-        first.level(first.level() + 1); //prevents on-upgrade effects like enhance/enhancement removal
-        if (first instanceof HoverPod) ((HoverPod) first).reinforce();
-        SpacebaseRun.hero.spendAndNext(2f);
-        Badges.validateItemLevelAquired(first);
+        if (EclipseSaber.canCombine(first, second)) {
+            EclipseSaber result = EclipseSaber.combine((MeleeWeapon) first, (MeleeWeapon) second);
+            for (Item input : new Item[]{first, second}) {
+                if (input.isEquipped(SpacebaseRun.hero)) {
+                    ((EquipableItem) input).doUnequip(SpacebaseRun.hero, false);
+                }
+                input.detachAll(SpacebaseRun.hero.belongings.backpack);
+            }
+            if (!result.collect(SpacebaseRun.hero.belongings.backpack)) {
+                SpacebaseRun.level.drop(result, SpacebaseRun.hero.pos).sprite.drop();
+            }
+            Badges.validateItemLevelAquired(result);
+        } else {
+            if (first.isEquipped(SpacebaseRun.hero)) {
+                ((EquipableItem) first).doUnequip(SpacebaseRun.hero, true);
+            }
+            first.level(first.level() + 1); //prevents on-upgrade effects like enhance/enhancement removal
+            if (first instanceof HoverPod) ((HoverPod) first).reinforce();
+            Badges.validateItemLevelAquired(first);
 
-        if (second.isEquipped(SpacebaseRun.hero)) {
-            ((EquipableItem) second).doUnequip(SpacebaseRun.hero, false);
+            if (second.isEquipped(SpacebaseRun.hero)) {
+                ((EquipableItem) second).doUnequip(SpacebaseRun.hero, false);
+            }
+            second.detachAll(SpacebaseRun.hero.belongings.backpack);
         }
-        second.detachAll(SpacebaseRun.hero.belongings.backpack);
+        SpacebaseRun.hero.spendAndNext(2f);
 
         if (completeQuest) {
             Quest.reforged = true;

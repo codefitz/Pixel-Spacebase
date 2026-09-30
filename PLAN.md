@@ -71,6 +71,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] A Hunter suit upgraded with the Armor Kit keeps its jetpack toggle alongside the class-armor special ability.
 - [x] Each generated Habitat deck has one changing room with showers, lockers, harmless steaming vents and water patches; water is confined to that room.
 - [ ] Each floor has a door leading to a small outer platform (can jump from).
+  - [x] Newly generated regular floors reserve a small exterior platform behind a door; jumping off uses the existing downward fall route and always lands in the destination deck's sealed room.
+  - [ ] Playtest platform generation, vacuum exposure, jumping and save/restore; decide placement on fixed boss and workshop floors.
 - [ ] Signal leach - some kind of plasma/lava bug spits plasma
 - [ ] Signal siren - replace with a floating creature that teleports the hero randomly in room - including plasma or chasm.
 - [x] Outer-colony psion uses Hunter animations with alien violet armour and acid-green accents.
@@ -80,7 +82,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Y should randomly place you in a random any level in the game if he bails you out of a the sealed room. If on a high level, he should be available somewhere to reluctantly send the hero back to current level with convincing.
 - [x] Quantum chest doesn't keep items after boss.
 - [x] Make it so shapeshifter can find hunters disk, but it does not break and returns.
-- [ ] Darksaber and Brightaber can be combined to create something a bit more epic.
+- [x] Darksaber and Brightsaber can be reforged into a tier-5 Eclipse Saber, retaining the stronger input's enhancement and weight conversion, adding one upgrade level, and keeping surprise-attack damage.
 - [x] Clicking a friendly drone swaps places, respecting movement hazards; hostile drones retain combat behaviour.
 - [x] Fix: Holodeck boss starts with holodeck black/yellow pattern rather than the hologram.
 - [x] The plasma stabiliser should do a small amount of damage on an enemy. It also should start by affecting only one tile at a time.
@@ -93,16 +95,16 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 - [ ] DM3000 reskin
 - [x] Hunter suit reskinned as charcoal/bronze bounty-hunter armour with a T-shaped visor and compact jetpack, across player animations and inventory icons.
-- [ ] Heavy loader reskin - larger
+- [x] Heavy Loader uses larger orange industrial power-loader animations on the level, with the selected hero's head visible in the cockpit.
 - [ ] Hoverpod reskin - larger
 - [x] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
-- [ ] Update common tiles across sets
+- [x] Update common tiles across sets
 - [x] Door in security blood spot is too ubiquitous, needs to be more subtle
 - [x] Habitation graphic overhaul
 - [x] Hologram emitter token replaced with a compact cyan-lens projector icon, preserving its quest behaviour and item slot.
 - [x] Facehugger reskin - live ivory creature matching the dead alien bug item, with crawling, lunging, and death poses
 - [x] Slow the Roman running animation to reduce jitter.
-- [ ] NPC1 and NPC2 random dist.
+- [x] Survivors use either NPC appearance, saved per character, and appear on a seed-selected regular floor in each chapter at a random safe position.
 
 ## Decisions
 

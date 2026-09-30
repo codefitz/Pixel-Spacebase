@@ -87,6 +87,9 @@ public class Chasm {
         if (SpacebaseRun.hero.isAlive()) {
             SpacebaseRun.hero.interrupt();
             InterlevelScene.mode = InterlevelScene.Mode.FALL;
+            InterlevelScene.fallIntoDoorlessRoom = !forcePitLanding
+                    && SpacebaseRun.level instanceof RegularLevel
+                    && ((RegularLevel) SpacebaseRun.level).isExteriorPlatformJump(pos);
             if (forcePitLanding) {
                 InterlevelScene.fallIntoPit = true;
             } else if (SpacebaseRun.level instanceof RegularLevel) {

@@ -326,6 +326,10 @@ public class SpacebaseTilemap extends Tilemap {
 
     @Override
     protected boolean needsRender(int pos) {
+        if (map[pos] == Terrain.CHASM && SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.RegularLevel
+                && ((com.wafitz.pixelspacebase.levels.RegularLevel) SpacebaseRun.level).isExteriorPlatformJump(pos)) {
+            return false;
+        }
         if (Assets.TILES_ENGINEERING.equals(tilesTexturePath)) {
             // Preserve the pre-backdrop tiles2 behavior. Engineering uses
             // default-visual CHASM cells as part of its normal floor plan,

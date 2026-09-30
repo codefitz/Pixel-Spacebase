@@ -60,6 +60,7 @@ public class InterlevelScene extends PixelScene {
     public static boolean noStory = false;
 
     public static boolean fallIntoPit;
+    public static boolean fallIntoDoorlessRoom;
 
     private enum Phase {
         FADE_IN, STATIC, FADE_OUT
@@ -247,11 +248,10 @@ public class InterlevelScene extends PixelScene {
             level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
             Workshop.deliverStorageTo(level);
         }
-        int landingCell = Random.Int(4) == 0
-                ? level.doorlessRoomLandingCell()
-                : (fallIntoPit ? level.pitCell() : level.randomRespawnCell());
+        int landingCell = level.fallLandingCell(fallIntoDoorlessRoom, fallIntoPit);
         SpacebaseRun.switchLevel(level, landingCell);
         fallIntoPit = false;
+        fallIntoDoorlessRoom = false;
     }
 
     private void ascend() throws IOException {
