@@ -161,7 +161,6 @@ public abstract class Level implements Bundlable {
     public int color1 = 0x004400;
     public int color2 = 0x88CC44;
 
-    static boolean pitRoomNeeded = false;
 
     private static final String VERSION = "version";
     private static final String MAP = "map";
@@ -282,12 +281,10 @@ public abstract class Level implements Bundlable {
             }
         }
 
-        boolean pitNeeded = SpacebaseRun.needsPitRoomAtDepth(SpacebaseRun.depth);
 
         do {
             Arrays.fill(map, feeling == Feeling.CHASM ? Terrain.CHASM : Terrain.WALL);
 
-            pitRoomNeeded = pitNeeded;
             mobs = new HashSet<>();
             heaps = new SparseArray<>();
             blobs = new HashMap<>();
@@ -566,9 +563,9 @@ public abstract class Level implements Bundlable {
         return doorlessRoomCenter;
     }
 
-    public int fallLandingCell(boolean intoDoorlessRoom, boolean intoPit) {
+    public int fallLandingCell(boolean intoDoorlessRoom) {
         int cell = intoDoorlessRoom || Random.Int(4) == 0
-                ? doorlessRoomLandingCell() : (intoPit ? pitCell() : randomRespawnCell());
+                ? doorlessRoomLandingCell() : randomRespawnCell();
         return cell >= 0 ? cell : randomRespawnCell();
     }
 
@@ -1149,10 +1146,6 @@ public abstract class Level implements Bundlable {
         if (vent != null)
             vent.reveal();
         GameScene.updateMap(cell);
-    }
-
-    public int pitCell() {
-        return randomRespawnCell();
     }
 
     public void press(int cell, Char ch) {

@@ -9,8 +9,15 @@ public class ExteriorPlatformTest {
     @Test public void platformFallsAlwaysLandInSealedRoom() {
         TestLevel level = new TestLevel();
         for (int attempt = 0; attempt < 100; attempt++) {
-            assertEquals(85, level.fallLandingCell(true, false));
-            assertEquals(85, level.fallLandingCell(true, true));
+            assertEquals(85, level.fallLandingCell(true));
+        }
+    }
+
+    @Test public void ordinaryFallsUseSealedRoomChanceOrSafeFloorOnly() {
+        TestLevel level = new TestLevel();
+        for (int attempt = 0; attempt < 100; attempt++) {
+            int cell = level.fallLandingCell(false);
+            assertTrue(cell == 85 || cell == 17);
         }
     }
 
@@ -76,6 +83,5 @@ public class ExteriorPlatformTest {
         @Override protected void createItems() { }
         @Override public int doorlessRoomLandingCell() { return 85; }
         @Override public int randomRespawnCell() { return 17; }
-        @Override public int pitCell() { return 34; }
     }
 }

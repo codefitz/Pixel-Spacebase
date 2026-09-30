@@ -63,7 +63,7 @@ public class PitfallVent extends Vent {
         Char ch = Actor.findChar(pos);
 
         if (ch == SpacebaseRun.hero) {
-            Chasm.heroFallIntoPit(pos);
+            Chasm.heroFall(pos);
         } else if (ch != null) {
             Chasm.mobFall((Mob) ch);
         }

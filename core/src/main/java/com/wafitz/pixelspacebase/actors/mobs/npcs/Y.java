@@ -21,7 +21,6 @@
 package com.wafitz.pixelspacebase.actors.mobs.npcs;
 
 import com.wafitz.pixelspacebase.SpacebaseRun;
-import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.Actor;
@@ -47,7 +46,7 @@ import com.watabou.utils.Random;
 import com.watabou.noosa.Game;
 import com.wafitz.pixelspacebase.utils.GLog;
 
-import java.util.ArrayList;
+import com.wafitz.pixelspacebase.actors.buffs.YRescueJourney;
 
 public class Y extends NPC {
 
@@ -83,17 +82,16 @@ public class Y extends NPC {
                 super.hide();
                 y.destroy();
                 if (y.sprite != null) y.sprite.killAndErase();
-                int maxDepth = Math.min(26, Statistics.deepestFloor);
-                ArrayList<Integer> destinations = new ArrayList<>();
-                for (int depth = 1; depth <= maxDepth; depth++) {
-                    if (SpacebaseRun.canVisitDepth(depth)) destinations.add(depth);
-                }
-                if (destinations.isEmpty()) destinations.add(SpacebaseRun.depth);
+                YRescueJourney ticket = Buff.affect(hero, YRescueJourney.class);
+                // Old saves did not record the fall origin; infer the adjacent upper deck.
+                if (ticket.sourceDepth < 1) ticket.sourceDepth = SpacebaseRun.nextDepth(SpacebaseRun.depth);
+                ticket.rescueDepth = Random.element(YRescuer.rescueDestinations(SpacebaseRun.depth));
 
                 InterlevelScene.mode = InterlevelScene.Mode.RETURN;
-                InterlevelScene.returnDepth = Random.element(destinations);
+                InterlevelScene.returnDepth = ticket.rescueDepth;
                 InterlevelScene.returnPos = -1;
-                InterlevelScene.returnAtEntrance = true;
+                InterlevelScene.returnAtEntrance = false;
+                InterlevelScene.rescueScatter = true;
                 Game.switchScene(InterlevelScene.class);
             }
         });

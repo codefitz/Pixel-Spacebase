@@ -25,6 +25,9 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.Statistics;
 import com.wafitz.pixelspacebase.actors.Actor;
+import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.YRescueJourney;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.YRescuer;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.levels.Level;
@@ -56,10 +59,10 @@ public class InterlevelScene extends PixelScene {
     public static int returnDepth;
     public static int returnPos;
     public static boolean returnAtEntrance;
+    public static boolean rescueScatter;
 
     public static boolean noStory = false;
 
-    public static boolean fallIntoPit;
     public static boolean fallIntoDoorlessRoom;
 
     private enum Phase {
@@ -226,7 +229,7 @@ public class InterlevelScene extends PixelScene {
             level = SpacebaseRun.newLevel();
         } else {
             SpacebaseRun.depth = SpacebaseRun.nextDepth(SpacebaseRun.depth);
-            level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
+            level = SpacebaseRun.loadOrCreateLevel(SpacebaseRun.depth);
             Workshop.deliverStorageTo(level);
         }
         SpacebaseRun.switchLevel(level, level.entrance);
@@ -236,6 +239,7 @@ public class InterlevelScene extends PixelScene {
 
         Actor.fixTime();
         int targetDepth = SpacebaseRun.fallTargetDepth();
+        Buff.affect(SpacebaseRun.hero, YRescueJourney.class).recordFall(SpacebaseRun.depth);
         Workshop.carryStockFrom(SpacebaseRun.level);
         StationCat.carryFollowerFrom(SpacebaseRun.level);
         SpacebaseRun.saveAll();
@@ -245,12 +249,11 @@ public class InterlevelScene extends PixelScene {
             level = SpacebaseRun.newLevel();
         } else {
             SpacebaseRun.depth = targetDepth;
-            level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
+            level = SpacebaseRun.loadOrCreateLevel(targetDepth);
             Workshop.deliverStorageTo(level);
         }
-        int landingCell = level.fallLandingCell(fallIntoDoorlessRoom, fallIntoPit);
+        int landingCell = level.fallLandingCell(fallIntoDoorlessRoom);
         SpacebaseRun.switchLevel(level, landingCell);
-        fallIntoPit = false;
         fallIntoDoorlessRoom = false;
     }
 
@@ -261,7 +264,7 @@ public class InterlevelScene extends PixelScene {
         StationCat.carryFollowerFrom(SpacebaseRun.level);
         SpacebaseRun.saveAll();
         SpacebaseRun.depth = SpacebaseRun.previousDepth(SpacebaseRun.depth);
-        Level level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
+        Level level = SpacebaseRun.loadOrCreateLevel(SpacebaseRun.depth);
         Workshop.deliverStorageTo(level);
         SpacebaseRun.switchLevel(level, level.exit);
     }
@@ -274,10 +277,14 @@ public class InterlevelScene extends PixelScene {
         StationCat.carryFollowerFrom(SpacebaseRun.level);
         SpacebaseRun.saveAll();
         SpacebaseRun.depth = returnDepth;
-        Level level = SpacebaseRun.loadLevel(SpacebaseRun.hero.heroClass);
+        Level level = SpacebaseRun.loadOrCreateLevel(returnDepth);
         Workshop.deliverStorageTo(level);
-        SpacebaseRun.switchLevel(level, returnAtEntrance ? level.entrance : returnPos);
+        int landing = rescueScatter
+                ? YRescuer.randomReachableCell(level, -1)
+                : returnAtEntrance ? level.entrance : returnPos;
+        SpacebaseRun.switchLevel(level, landing);
         returnAtEntrance = false;
+        rescueScatter = false;
     }
 
     private void restore() throws IOException {

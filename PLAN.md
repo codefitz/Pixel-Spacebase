@@ -73,13 +73,13 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Each floor has a door leading to a small outer platform (can jump from).
   - [x] Newly generated regular floors reserve a small exterior platform behind a door; jumping off uses the existing downward fall route and always lands in the destination deck's sealed room.
   - [ ] Playtest platform generation, vacuum exposure, jumping and save/restore; decide placement on fixed boss and workshop floors.
-- [ ] Signal leach - some kind of plasma/lava bug spits plasma
-- [ ] Signal siren - replace with a floating creature that teleports the hero randomly in room - including plasma or chasm.
+- [x] Signal Leech: plasma/lava bug artwork and orange plasma spit that burns on a ranged hit, replacing the old weakness beam. Fire/plasma immunity; existing stats, melee and loot retained. Suit/shield protections apply; no permanent plasma terrain created.
+- [x] Signal Siren: floating alien jellyfish artwork; one-in-three successful hits teleport a surviving hero within their current room, including plasma/chasm tiles. Walls, occupied tiles and the current cell are excluded; landing hazards trigger normally. Cat scare-away behaviour retained; saved Sirens become flying too.
 - [x] Outer-colony psion uses Hunter animations with alien violet armour and acid-green accents.
 - [x] Ruptured crew suit uses spacesuit animations with a visorless, empty helmet; description identifies an unseen entity inhabiting it.
 - [x] Scorpio appears as a masked alien predator with armour, tendrils and a shoulder launcher; existing ranged combat is preserved.
-- [ ] No longer need a chasm room or locked room below it.
-- [ ] Y should randomly place you in a random any level in the game if he bails you out of a the sealed room. If on a high level, he should be available somewhere to reluctantly send the hero back to current level with convincing.
+- [x] Retire the paired weak-floor chasm and locked pit reward rooms from new generation; falls no longer target legacy locked pit rooms. Preserve sealed rooms and exterior-platform jumps.
+- [x] After twenty turns stranded, Y sends the hero to a random entrance-connected position on any non-boss gameplay deck (including unexplored decks; secret workshop still requires unlock). Find rescue Y on that deck to request a reluctant return to the entrance of the deck last fallen from. Return ticket and Y persist across saves; skipped decks generate on demand.
 - [x] Quantum chest doesn't keep items after boss.
 - [x] Make it so shapeshifter can find hunters disk, but it does not break and returns.
 - [x] Darksaber and Brightsaber can be reforged into a tier-5 Eclipse Saber, retaining the stronger input's enhancement and weight conversion, adding one upgrade level, and keeping surprise-attack damage.
@@ -96,7 +96,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] DM3000 reskin
 - [x] Hunter suit reskinned as charcoal/bronze bounty-hunter armour with a T-shaped visor and compact jetpack, across player animations and inventory icons.
 - [x] Heavy Loader uses larger orange industrial power-loader animations on the level, with the selected hero's head visible in the cockpit.
-- [ ] Hoverpod reskin - larger
+- [x] Hoverpod refreshed as a silver/navy capsule with a blue canopy, cyan hover jets, orange hazard tabs and each hero visible inside; matching inventory icon.
   - [x] Enlarge the existing on-level Hoverpod sprite by one third, keeping it smaller than the Heavy Loader and centred on its tile.
 - [x] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
 - [x] Update common tiles across sets

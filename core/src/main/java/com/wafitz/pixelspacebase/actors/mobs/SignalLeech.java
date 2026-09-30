@@ -23,7 +23,12 @@ package com.wafitz.pixelspacebase.actors.mobs;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
-import com.wafitz.pixelspacebase.actors.buffs.Weakness;
+import com.wafitz.pixelspacebase.actors.buffs.Burning;
+import com.wafitz.pixelspacebase.actors.blobs.Fire;
+import com.wafitz.pixelspacebase.actors.blobs.Plasma;
+import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.items.armor.HoverPod;
+import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
@@ -55,7 +60,6 @@ public class SignalLeech extends Mob implements Callback {
         loot = Generator.Category.PLASMID;
         lootChance = 0.83f;
 
-        properties.add(Property.UNDEAD);
     }
 
     @Override
@@ -101,12 +105,8 @@ public class SignalLeech extends Mob implements Callback {
         spend(TIME_TO_ZAP);
 
         if (hit(this, enemy, true)) {
-            if (enemy == SpacebaseRun.hero && Random.Int(2) == 0) {
-                Buff.prolong(enemy, Weakness.class, Weakness.duration(enemy));
-            }
-
             int dmg = Random.Int(12, 18);
-            enemy.damage(dmg, this);
+            spitAt(enemy, dmg);
 
             if (!enemy.isAlive() && enemy == SpacebaseRun.hero) {
                 SpacebaseRun.fail(getClass());
@@ -120,6 +120,18 @@ public class SignalLeech extends Mob implements Callback {
     public void onZapComplete() {
         zap();
         next();
+    }
+
+    /** Plasma spit uses the existing suit/shield damage rules, without altering the floor. */
+    public static void spitAt(Char target, int damage) {
+        boolean protectedFromBurn = target instanceof Hero
+                && (((Hero) target).belongings.armor instanceof Loader
+                || HoverPod.equipped((Hero) target) != null);
+        target.damage(damage, new Plasma());
+        if (target.isAlive() && !protectedFromBurn) {
+            Burning burning = Buff.affect(target, Burning.class);
+            if (burning != null) burning.reignite(target);
+        }
     }
 
     @Override
@@ -154,4 +166,13 @@ public class SignalLeech extends Mob implements Callback {
     public HashSet<Class<?>> resistances() {
         return RESISTANCES;
     }
+
+    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
+    static {
+        IMMUNITIES.add(Burning.class);
+        IMMUNITIES.add(Fire.class);
+        IMMUNITIES.add(Plasma.class);
+    }
+
+    @Override public HashSet<Class<?>> immunities() { return IMMUNITIES; }
 }

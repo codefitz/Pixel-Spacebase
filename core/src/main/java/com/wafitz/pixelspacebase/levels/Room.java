@@ -131,12 +131,12 @@ public class Room extends Rect implements Graph.Node, Bundlable {
     }
 
     private static final ArrayList<Type> ALL_SPEC = new ArrayList<>(Arrays.asList(
-            Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
+            Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
             Type.TREASURY, Type.VENTS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
     ));
 
     static ArrayList<Type> SPECIALS = new ArrayList<>(Arrays.asList(
-            Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
+            Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
             Type.TREASURY, Type.VENTS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
     ));
 
@@ -253,7 +253,9 @@ public class Room extends Rect implements Graph.Node, Bundlable {
         if (bundle.contains(ROOMS)) {
             SPECIALS.clear();
             for (String type : bundle.getStringArray(ROOMS)) {
-                SPECIALS.add(Type.valueOf(type));
+                Type restored = Type.valueOf(type);
+                // Retain the enum names for old maps, not their retired generation rules.
+                if (restored != Type.WEAK_FLOOR && restored != Type.PIT) SPECIALS.add(restored);
             }
         } else {
             shuffleTypes();

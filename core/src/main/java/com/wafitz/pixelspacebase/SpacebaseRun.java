@@ -31,6 +31,7 @@ import com.wafitz.pixelspacebase.actors.buffs.StrandedRoomRescue;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.YRescuer;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Leonard;
@@ -217,11 +218,15 @@ public class SpacebaseRun {
     }
 
     public static Level newLevel() {
+        return newLevel(nextDepth(depth));
+    }
+
+    private static Level newLevel(int targetDepth) {
 
         SpacebaseRun.level = null;
         Actor.clear();
 
-        depth = nextDepth(depth);
+        depth = targetDepth;
         if (depth > Statistics.deepestFloor) {
             Statistics.deepestFloor = depth;
             Statistics.completedWithNoKilling = Statistics.qualifiedForNoKilling;
@@ -338,35 +343,6 @@ public class SpacebaseRun {
         return currentDepth == 22 && !canVisitDepth(21) ? 20 : currentDepth - 1;
     }
 
-    /**
-     * Plans weak-floor chasms independently of generation order. In Spacebase,
-     * falling travels to the previous (lower) depth, so that level can create
-     * its locked pit room before this level is generated.
-     */
-    public static boolean hasWeakFloorAtDepth(int depth) {
-        if (depth <= 1 || depth > 25 || bossLevel(depth) || !hasRegularLevelAtDepth(depth - 1)) {
-            return false;
-        }
-
-        long value = seed ^ (0x9E3779B97F4A7C15L * depth);
-        value ^= value >>> 33;
-        value *= 0xFF51AFD7ED558CCDL;
-        value ^= value >>> 33;
-        return (value & 0x07) == 0;
-    }
-
-    public static boolean needsPitRoomAtDepth(int depth) {
-        return hasRegularLevelAtDepth(depth) && hasWeakFloorAtDepth(depth + 1);
-    }
-
-    private static boolean hasRegularLevelAtDepth(int depth) {
-        return (depth >= 1 && depth <= 4)
-                || (depth >= 6 && depth <= 9)
-                || (depth >= 11 && depth <= 14)
-                || (depth >= 16 && depth <= 19)
-                || (depth >= 22 && depth <= 24);
-    }
-
     @SuppressWarnings("deprecation")
     public static void switchLevel(final Level level, int pos) {
 
@@ -387,6 +363,7 @@ public class SpacebaseRun {
         }
 
         hero.pos = pos != -1 ? pos : level.exit;
+        YRescuer.placeOn(level);
         if (level.isDoorlessRoomCell(hero.pos)) {
             Buff.affect(hero, StrandedRoomRescue.class);
         } else {
@@ -787,6 +764,15 @@ public class SpacebaseRun {
         Level level = (Level) bundle.get("level");
         resetVisibilityForLevel(level);
         return level;
+    }
+
+    /** Rescue travel can create gaps below deepestFloor; never overwrite an existing deck. */
+    public static Level loadOrCreateLevel(int targetDepth) throws IOException {
+        depth = targetDepth;
+        if (Game.instance.getFileStreamPath(Messages.format(depthFile(hero.heroClass), depth)).exists()) {
+            return loadLevel(hero.heroClass);
+        }
+        return newLevel(targetDepth);
     }
 
     public static void deleteGame(HeroClass cl, boolean deleteLevels) {
