@@ -28,7 +28,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class HardLightEmitter extends Item {
 
     {
-        image = ItemSpriteSheet.TOKEN;
+        image = ItemSpriteSheet.HARD_LIGHT_EMITTER;
 
         stackable = true;
         unique = true;

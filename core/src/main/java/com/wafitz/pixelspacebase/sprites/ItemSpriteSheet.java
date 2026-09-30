@@ -265,6 +265,7 @@ public class ItemSpriteSheet {
     public static final int PICKAXE = QUEST + 4;
     public static final int SALVAGED_PARTS = QUEST + 5;
     public static final int TOKEN = QUEST + 6;
+    public static final int HARD_LIGHT_EMITTER = TOKEN;
     public static final int BLACK_GOO = QUEST + 7;
 
     private static final int BAGS = xy(1, 28);  //16 slots

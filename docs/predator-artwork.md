@@ -1,0 +1,11 @@
+# Alien predator sprite
+
+Scorpio retains its saved class identity and combat behaviour. Its player-facing name is now **alien predator**, and `ScorpioSprite` uses `predator.png`. The acidic variant continues to use the unchanged `scorpio.png` sheet.
+
+The new sheet has four columns and three rows of 18x17 logical-pixel frames, enlarged four times (288x204 physical pixels). Frames 0-2 are idle, 3-4 attack, 5-6 movement, and 7-10 death. The final cell is unused. The existing dart projectile and attack-completion callback remain unchanged.
+
+Artwork was generated with the built-in image tool. The installed image-generation skill's chroma-key helper removes the magenta background; `scripts/PreparePredatorSprites.java` fits it to the native animation grid and checks that all eleven used frames contain visible pixels and transparency.
+
+## Generation prompt
+
+Use case: stylized-concept. Asset: pixel-art roguelike enemy animation sprite sheet. Replace a scorpion enemy with a humanoid alien predator hunter: silver angular full-face hunting mask, black cable-like dreadlocks, bronze and olive segmented armour over dark teal undersuit, clawed hands, two-legged stance, small shoulder-mounted spike launcher. Strong recognizable silhouette at 18x17 logical pixels per frame. No scorpion tail or extra legs. Classic compact hard-edged pixel art, limited palette, no tiny subpixel detail or antialiasing. EXACT layout 4 equal columns by 3 equal rows, zero outer margins, each cell has same size and contains ONE fully visible character facing slightly right, feet on a consistent baseline. Frames row-major: row1 relaxed idle, breathing idle, alert idle, aim shoulder launcher; row2 fire shoulder launcher with one cyan muzzle pixel, walking left foot forward, walking right foot forward, kneeling wounded; row3 collapsing sideways, fallen low, motionless corpse, BLANK empty cell. Keep character identity and scale identical across frames. Each frame has transparent padding equivalent to 1 logical pixel around edges. Draw sheet on perfectly uniform solid #ff00ff chroma-key background, including all spaces between figures and last blank cell. No magenta in characters, no shadows/floor/reflections, no text or labels, no grid lines, no extra characters. Final aspect ratio 72:51, as 4x3 cells measuring18x17 logical pixels enlarged nearest-neighbour.

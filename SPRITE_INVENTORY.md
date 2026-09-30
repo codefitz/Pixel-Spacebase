@@ -12,6 +12,8 @@ Column notes:
 
 ## Shared / Dynamic Sheets
 
+Hunter tier row 3 in all four hero sheets uses enclosed charcoal/bronze bounty-hunter armour with a T-shaped visor and compact jetpack. Inventory slots 162 and 170 match. Native frame dimensions and animation indexes are unchanged; see `docs/hunter-suit-artwork.md` for generation and preservation details.
+
 | Sprite use | Asset | Sheet px | Frame px | Grid | Frames in sheet | Notes |
 |---|---:|---:|---:|---:|---:|---|
 | `HeroSprite` commander | `commander.png` | 1024x512 | 48x60 | 21x8 | 168 | Uses hero tier row offsets. |
@@ -63,7 +65,7 @@ Column notes:
 | `RotLasherSprite` | `rot_lasher.png` | 512x64 | 48x64 | 10x1 | 10 | 7 | Sheet dimensions are not an exact multiple of frame size. |
 | `RottingFistSprite` | `rotting_fist.png` | 512x128 | 96x68 | 5x1 | 5 | 5 | Sheet dimensions are not an exact multiple of frame size. |
 | `RupturedCrewSuitSprite` | `ruptured_crew_suit.png` | 1008x60 | 48x60 | 21x1 | 21 | 16 | Spacesuit poses with empty, visorless helmet. |
-| `ScorpioSprite` | `scorpio.png` | 1024x256 | 72x68 | 14x3 | 42 | 11 | Sheet dimensions are not an exact multiple of frame size. |
+| `ScorpioSprite` | `predator.png` | 288x204 | 72x68 | 4x3 | 12 | 11 | Masked alien predator; idle, shoulder-launcher attack, walk and death poses. Acidic variant retains the old sheet. |
 | `SeniorSprite` | `jeda_knight.png` | 1024x128 | 60x56 | 17x2 | 34 | 17 | Sheet dimensions are not an exact multiple of frame size. |
 | `ShieldedShockTrooperSprite` | `outer_colony_shock_trooper.png` | 528x128 | 48x64 | 11x2 | 22 | 11 | Shared sheet with `OuterColonyShockTrooperSprite`. |
 | `SignalLeechSprite` | `signal_leech.png` | 1024x64 | 48x60 | 21x1 | 21 | 11 | Sheet dimensions are not an exact multiple of frame size. |

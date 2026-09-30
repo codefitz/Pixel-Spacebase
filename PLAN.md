@@ -75,7 +75,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Signal siren - replace with a floating creature that teleports the hero randomly in room - including plasma or chasm.
 - [x] Outer-colony psion uses Hunter animations with alien violet armour and acid-green accents.
 - [x] Ruptured crew suit uses spacesuit animations with a visorless, empty helmet; description identifies an unseen entity inhabiting it.
-- [ ] scorpio - make into a kind of predator character sprite
+- [x] Scorpio appears as a masked alien predator with armour, tendrils and a shoulder launcher; existing ranged combat is preserved.
 - [ ] No longer need a chasm room or locked room below it.
 - [ ] Y should randomly place you in a random any level in the game if he bails you out of a the sealed room. If on a high level, he should be available somewhere to reluctantly send the hero back to current level with convincing.
 - [x] Quantum chest doesn't keep items after boss.
@@ -92,14 +92,14 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 ## Art
 
 - [ ] DM3000 reskin
-- [ ] Hunter suit reskin
+- [x] Hunter suit reskinned as charcoal/bronze bounty-hunter armour with a T-shaped visor and compact jetpack, across player animations and inventory icons.
 - [ ] Heavy loader reskin - larger
 - [ ] Hoverpod reskin - larger
 - [x] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
 - [ ] Update common tiles across sets
 - [x] Door in security blood spot is too ubiquitous, needs to be more subtle
 - [x] Habitation graphic overhaul
-- [ ] Hologram emitter token reskin
+- [x] Hologram emitter token replaced with a compact cyan-lens projector icon, preserving its quest behaviour and item slot.
 - [x] Facehugger reskin - live ivory creature matching the dead alien bug item, with crawling, lunging, and death poses
 - [x] Slow the Roman running animation to reduce jitter.
 - [ ] NPC1 and NPC2 random dist.
