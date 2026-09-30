@@ -97,6 +97,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Hunter suit reskinned as charcoal/bronze bounty-hunter armour with a T-shaped visor and compact jetpack, across player animations and inventory icons.
 - [x] Heavy Loader uses larger orange industrial power-loader animations on the level, with the selected hero's head visible in the cockpit.
 - [ ] Hoverpod reskin - larger
+  - [x] Enlarge the existing on-level Hoverpod sprite by one third, keeping it smaller than the Heavy Loader and centred on its tile.
 - [x] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
 - [x] Update common tiles across sets
 - [x] Door in security blood spot is too ubiquitous, needs to be more subtle

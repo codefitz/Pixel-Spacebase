@@ -27,6 +27,7 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
+import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
@@ -42,6 +43,7 @@ public class HeroSprite extends CharSprite {
     private static final int FRAME_HEIGHT = 15;
 
     private static final int RUN_FRAMERATE = 20;
+    private static final float HOVERPOD_SCALE = 4f / 3f;
 
     private static TextureFilm tiers;
 
@@ -68,6 +70,7 @@ public class HeroSprite extends CharSprite {
 
     public void updateArmor() {
         itemForm = false;
+        resetSuitScale();
         Hero hero = (Hero) ch;
         if (hero.belongings.armor instanceof Loader) {
             updateLoader(hero.heroClass);
@@ -100,7 +103,17 @@ public class HeroSprite extends CharSprite {
         read = new Animation(20, false);
         read.frames(film, 19, 20, 20, 20, 20, 20, 20, 20, 20, 19);
         idle();
+        if (hero.belongings.armor instanceof HoverPod) {
+            // Grow around the bottom centre so the pod stays aligned with its map cell.
+            origin.set(width * 0.5f, height);
+            scale.set(HOVERPOD_SCALE);
+        }
         place(ch.pos);
+    }
+
+    private void resetSuitScale() {
+        scale.set(1f);
+        origin.set(0f, 0f);
     }
 
     private void updateLoader(HeroClass heroClass) {
@@ -132,6 +145,7 @@ public class HeroSprite extends CharSprite {
 
     public void shapeshiftToItem(int itemImage) {
         itemForm = true;
+        resetSuitScale();
 
         texture(Assets.ITEMS);
         TextureFilm film = new TextureFilm(texture, ItemSprite.SIZE, ItemSprite.SIZE);
@@ -148,6 +162,7 @@ public class HeroSprite extends CharSprite {
         read = idle.clone();
 
         idle();
+        place(ch.pos);
     }
 
     public void restoreHeroForm() {
