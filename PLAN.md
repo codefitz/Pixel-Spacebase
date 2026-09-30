@@ -107,6 +107,11 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Slow the Roman running animation to reduce jitter.
 - [x] Survivors use either NPC appearance, saved per character, and appear on a seed-selected regular floor in each chapter at a random safe position.
 
+## Issues
+
+- [ ] Level 1 shouldn't have a jump off platform.
+- [x] Y return crashed.
+
 ## Decisions
 
 - [ ] What could replace Yog Duza? Maybe a giant angel.

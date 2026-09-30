@@ -51,6 +51,24 @@ public class WndRanking extends WndTabbed {
     private static final int WIDTH = 115;
     private static final int HEIGHT = 144;
 
+    interface TextWidth {
+        float measure(String text);
+    }
+
+    /** Fit labels without overrunning empty strings or splitting a Unicode code point. */
+    static String fitItemName(String text, float availableWidth, TextWidth measure) {
+        if (text == null || text.isEmpty() || availableWidth <= 0) return "";
+        if (measure.measure(text) <= availableWidth) return text;
+        String suffix = "...";
+        if (measure.measure(suffix) > availableWidth) return "";
+        while (!text.isEmpty()) {
+            text = text.substring(0, text.offsetByCodePoints(text.length(), -1));
+            String shortened = text + suffix;
+            if (measure.measure(shortened) <= availableWidth) return shortened;
+        }
+        return suffix;
+    }
+
     private Thread thread;
     private String error = null;
 
@@ -249,7 +267,8 @@ public class WndRanking extends WndTabbed {
 
         private void addItem(Item item) {
             ItemButton slot = new ItemButton(item);
-            slot.setRect(0, pos, width, ItemButton.HEIGHT);
+            // Group.width is zero here; use the ranking window's actual content width.
+            slot.setRect(0, pos, WndRanking.WIDTH, ItemButton.HEIGHT);
             add(slot);
 
             pos += slot.height() + 1;
@@ -324,14 +343,12 @@ public class WndRanking extends WndTabbed {
             name.y = y + (height - name.baseLine()) / 2;
             PixelScene.align(name);
 
-            String str = Messages.titleCase(item.name());
+            String str = fitItemName(Messages.titleCase(item.name()), right() - name.x,
+                    text -> {
+                        name.text(text);
+                        return name.width();
+                    });
             name.text(str);
-            if (name.width() > width - name.x) {
-                do {
-                    str = str.substring(0, str.length() - 1);
-                    name.text(str + "...");
-                } while (name.width() > width - name.x);
-            }
 
             super.layout();
         }

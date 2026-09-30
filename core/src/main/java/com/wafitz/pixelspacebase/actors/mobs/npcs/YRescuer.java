@@ -113,8 +113,9 @@ public class YRescuer extends NPC {
                 InterlevelScene.rescueScatter = false;
                 InterlevelScene.mode = InterlevelScene.Mode.RETURN;
                 ticket.detach();
-                destroy();
-                if (sprite != null) sprite.killAndErase();
+                // WndOptions already destroyed itself before calling onSelect().
+                YRescuer.this.destroy();
+                if (YRescuer.this.sprite != null) YRescuer.this.sprite.killAndErase();
                 Game.switchScene(InterlevelScene.class);
             }
         });
