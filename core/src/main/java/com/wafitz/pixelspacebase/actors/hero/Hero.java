@@ -52,6 +52,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.buffs.CombatFocus;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.actors.mobs.Drone;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.NPC;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.actors.blobs.Plasma;
@@ -605,6 +606,10 @@ public class Hero extends Char {
 
                 return actMove((HeroAction.Move) curAction);
 
+            } else if (curAction instanceof HeroAction.SwapDrone) {
+
+                return actSwapDrone((HeroAction.SwapDrone) curAction);
+
             } else if (curAction instanceof HeroAction.Interact) {
 
                 return actInteract((HeroAction.Interact) curAction);
@@ -702,6 +707,41 @@ public class Hero extends Char {
 
             return false;
         }
+    }
+
+    private boolean actSwapDrone(HeroAction.SwapDrone action) {
+        Drone drone = action.drone;
+        // Recheck the target: a controller can be scrapped while approaching it.
+        if (!drone.isAlive() || !drone.ally || drone.hostile
+                || Actor.findChar(drone.pos) != drone) {
+            ready();
+            return false;
+        }
+        if (!SpacebaseRun.level.adjacent(pos, drone.pos)) {
+            if (Level.fieldOfView[drone.pos] && getCloser(drone.pos)) return true;
+            ready();
+            return false;
+        }
+        // A flying drone can occupy a chasm or wall that the hero cannot enter.
+        // Vertigo could redirect either move and leave the two actors overlapping.
+        if (rooted || drone.rooted || buff(Vertigo.class) != null
+                || drone.buff(Vertigo.class) != null
+                || Level.solid[drone.pos]
+                || !(Level.passable[drone.pos] || (flying && Level.avoid[drone.pos]))
+                || (!flying && Level.pit[drone.pos])) {
+            ready();
+            return false;
+        }
+        int heroCell = pos;
+        int droneCell = drone.pos;
+        ready();
+        drone.move(heroCell);
+        drone.sprite.move(droneCell, heroCell);
+        sprite.move(heroCell, droneCell);
+        move(droneCell); // Normal movement applies vents, plasma and vacuum rules.
+        spend(1 / speed());
+        busy();
+        return true;
     }
 
     private boolean actInteract(HeroAction.Interact action) {
@@ -1405,7 +1445,9 @@ public class Hero extends Char {
 
         } else if (Level.fieldOfView[cell] && (ch = Actor.findChar(cell)) instanceof Mob) {
 
-            if (ch instanceof NPC) {
+            if (ch instanceof Drone && ((Drone) ch).ally && !((Drone) ch).hostile) {
+                curAction = new HeroAction.SwapDrone((Drone) ch);
+            } else if (ch instanceof NPC) {
                 curAction = new HeroAction.Interact((NPC) ch);
             } else {
                 curAction = new HeroAction.Attack(ch);

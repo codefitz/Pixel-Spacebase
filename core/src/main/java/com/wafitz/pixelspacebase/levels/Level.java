@@ -482,7 +482,13 @@ public abstract class Level implements Bundlable {
         bundle.put(DOORLESS_ROOM_RADIUS, doorlessRoomRadius);
     }
 
+    protected boolean needsDoorlessRoom() {
+        return true;
+    }
+
     private void createDoorlessRoom() {
+        // Also applies when loading older saves that do not contain a chamber.
+        if (!needsDoorlessRoom()) return;
         ArrayList<Integer> candidates = doorlessRoomCandidates(1);
         doorlessRoomRadius = 1;
         if (candidates.isEmpty()) {

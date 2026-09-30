@@ -73,21 +73,21 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Each floor has a door leading to a small outer platform (can jump from).
 - [ ] Signal leach - some kind of plasma/lava bug spits plasma
 - [ ] Signal siren - replace with a floating creature that teleports the hero randomly in room - including plasma or chasm.
-- [ ] Update outer colony psion - reuse the hunter sprite
-- [ ] Update ruptured crew suit - describe more as an entity using the suit - use spacesuit sprite
+- [x] Outer-colony psion uses Hunter animations with alien violet armour and acid-green accents.
+- [x] Ruptured crew suit uses spacesuit animations with a visorless, empty helmet; description identifies an unseen entity inhabiting it.
 - [ ] scorpio - make into a kind of predator character sprite
 - [ ] No longer need a chasm room or locked room below it.
 - [ ] Y should randomly place you in a random any level in the game if he bails you out of a the sealed room. If on a high level, he should be available somewhere to reluctantly send the hero back to current level with convincing.
 - [x] Quantum chest doesn't keep items after boss.
 - [x] Make it so shapeshifter can find hunters disk, but it does not break and returns.
 - [ ] Darksaber and Brightaber can be combined to create something a bit more epic.
-- [ ] Clicking on the drone should swap places unless hostile.
+- [x] Clicking a friendly drone swaps places, respecting movement hazards; hostile drones retain combat behaviour.
 - [x] Fix: Holodeck boss starts with holodeck black/yellow pattern rather than the hologram.
 - [x] The plasma stabiliser should do a small amount of damage on an enemy. It also should start by affecting only one tile at a time.
 - [x] ArmorKit retains inherited suit properties, including Hunter signatures in darkness and life support.
 - [x] Molton sparks from plasma should disappear when cleared by stabilizer.
 - [x] Floor tiling from plasma stabiser should be darkened and scorched (and weak)
-- [ ] Final boss level doesn't need a sealed room.
+- [x] Final boss level no longer generates a sealed room (including older saves without one).
 
 ## Art
 

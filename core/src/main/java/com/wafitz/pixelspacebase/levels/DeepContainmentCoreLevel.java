@@ -43,6 +43,11 @@ import java.util.ArrayList;
 
 public class DeepContainmentCoreLevel extends Level {
 
+    @Override
+    protected boolean needsDoorlessRoom() {
+        return false;
+    }
+
     {
         color1 = 0x801500;
         color2 = 0xa68521;

@@ -55,14 +55,14 @@ Column notes:
 | `MaskedPrisonerSprite` | `masked_prisoner.png` | 1024x64 | 56x64 | 18x1 | 18 | 11 | Sheet dimensions are not an exact multiple of frame size. |
 | `NewbornElementalSprite` | `elemental.png` | 1024x128 | 48x56 | 21x2 | 42 | 14 | Sheet dimensions are not an exact multiple of frame size. |
 | `OldWarBotSprite` | `old_war_bot.png` | 864x180 | 48x60 | 18x3 | 54 | 16 | Sheet dimensions are not an exact multiple of frame size. |
-| `OuterColonyPsionSprite` | `outer_colony_psion.png` | 1024x64 | 48x60 | 21x1 | 21 | 11 | Sheet dimensions are not an exact multiple of frame size. |
+| `OuterColonyPsionSprite` | `outer_colony_psion.png` | 1008x60 | 48x60 | 21x1 | 21 | 16 | Hunter poses, alien violet armour and acid-green accents. |
 | `OuterColonyScoutSprite` | `outer_colony_scout.png` | 1024x128 | 48x60 | 21x2 | 42 | 11 | Sheet dimensions are not an exact multiple of frame size. |
 | `QueenXenoSprite` | `queen_xeno.png` | 512x256 | 64x68 | 8x3 | 24 | 7 | Sheet dimensions are not an exact multiple of frame size. |
 | `ReplicatorSwarmSprite` | `replicator_swarm.png` | 1024x64 | 64x64 | 16x1 | 16 | 15 |  |
 | `RotHeartSprite` | `rot_heart.png` | 512x64 | 64x64 | 8x1 | 8 | 8 |  |
 | `RotLasherSprite` | `rot_lasher.png` | 512x64 | 48x64 | 10x1 | 10 | 7 | Sheet dimensions are not an exact multiple of frame size. |
 | `RottingFistSprite` | `rotting_fist.png` | 512x128 | 96x68 | 5x1 | 5 | 5 | Sheet dimensions are not an exact multiple of frame size. |
-| `RupturedCrewSuitSprite` | `ruptured_crew_suit.png` | 1024x64 | 48x60 | 21x1 | 21 | 17 | Sheet dimensions are not an exact multiple of frame size. |
+| `RupturedCrewSuitSprite` | `ruptured_crew_suit.png` | 1008x60 | 48x60 | 21x1 | 21 | 16 | Spacesuit poses with empty, visorless helmet. |
 | `ScorpioSprite` | `scorpio.png` | 1024x256 | 72x68 | 14x3 | 42 | 11 | Sheet dimensions are not an exact multiple of frame size. |
 | `SeniorSprite` | `jeda_knight.png` | 1024x128 | 60x56 | 17x2 | 34 | 17 | Sheet dimensions are not an exact multiple of frame size. |
 | `ShieldedShockTrooperSprite` | `outer_colony_shock_trooper.png` | 528x128 | 48x64 | 11x2 | 22 | 11 | Shared sheet with `OuterColonyShockTrooperSprite`. |
