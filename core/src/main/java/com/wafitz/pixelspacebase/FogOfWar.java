@@ -31,7 +31,6 @@ import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.utils.Rect;
 
 import com.wafitz.pixelspacebase.levels.Level;
-import com.wafitz.pixelspacebase.levels.Terrain;
 
 
 public class FogOfWar extends Image {
@@ -174,28 +173,13 @@ public class FogOfWar extends Image {
 
     static boolean touchesHullEdge(int vertexX, int vertexY, int mapWidth, int mapHeight,
                                    boolean[] discoverable, int[] map) {
-        boolean touchesOutside = false;
-        boolean touchesWall = false;
-
         for (int y = vertexY - 1; y <= vertexY; y++) {
             for (int x = vertexX - 1; x <= vertexX; x++) {
-                if (x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) {
-                    touchesOutside = true;
-                    continue;
-                }
-
-                int cell = x + y * mapWidth;
-                if (!discoverable[cell]) {
-                    touchesOutside = true;
-                } else if (map[cell] == Terrain.WALL || map[cell] == Terrain.WALL_DECO) {
-                    touchesWall = true;
-                } else {
-                    return false;
-                }
+                if (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight
+                        && Level.isHullCell(x + y * mapWidth, mapWidth, mapHeight, discoverable)) return true;
             }
         }
-
-        return touchesOutside && touchesWall;
+        return false;
     }
 
 

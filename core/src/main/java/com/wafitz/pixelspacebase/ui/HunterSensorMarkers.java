@@ -29,8 +29,9 @@ import java.util.Map;
 /** Shows scanner pings above fog without revealing map cells or changing trap state. */
 public class HunterSensorMarkers extends Group {
 
-    private static final int ITEM_SIGNAL = 0x40E8FF;
-    private static final int TRAP_SIGNAL = 0xFF5A4E;
+    // ColorBlock creates an ARGB texture: RGB-only values make the texture invisible.
+    static final int ITEM_SIGNAL = 0xFF408CFF;
+    static final int TRAP_SIGNAL = 0xFFFF5A4E;
     private static final float MARKER_SIZE = 6f;
 
     private final Map<Integer, ColorBlock> itemMarkers = new HashMap<>();

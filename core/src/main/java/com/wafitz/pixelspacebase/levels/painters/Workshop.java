@@ -730,7 +730,6 @@ public class Workshop extends Painter {
     }
 
     private static void placeStorageChests(Level level, int[] storageCells) {
-        ArrayList<Item> stored = storageForCurrentDepth();
         for (int cell : storageCells) {
             Heap heap = level.heaps.get(cell);
             if (heap == null) {
@@ -745,11 +744,9 @@ public class Workshop extends Painter {
             }
         }
 
-        int index = 0;
-        for (Item item : stored) {
-            level.drop(item, storageCells[index % storageCells.length]).type = Heap.Type.WORKSHOP_STORAGE;
-            index++;
-        }
+        // A generated workshop must consume the transfer buffer just like a loaded one.
+        // Otherwise the same contents remain in both the level save and the run save.
+        deliverStorageTo(level);
     }
 
     private static void placeUpgradeBench(Level level, int cell) {

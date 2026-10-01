@@ -551,7 +551,7 @@ public abstract class Level implements Bundlable {
         return dx <= doorlessRoomRadius && dy <= doorlessRoomRadius;
     }
 
-    private boolean isDoorlessRoomBoundaryCell(int cell) {
+    protected boolean isDoorlessRoomBoundaryCell(int cell) {
         if (doorlessRoomCenter < 0 || !insideMap(cell)) return false;
         int dx = Math.abs(cell % width() - doorlessRoomCenter % width());
         int dy = Math.abs(cell / width() - doorlessRoomCenter / width());
@@ -962,30 +962,40 @@ public abstract class Level implements Bundlable {
 
         for (int i = 0; i < length(); i++) {
 
-            boolean d = false;
-
-            for (int j = 0; j < PathFinder.NEIGHBOURS9.length; j++) {
-                int n = i + PathFinder.NEIGHBOURS9[j];
-                if (n >= 0 && n < length() && map[n] != Terrain.WALL && map[n] != Terrain.WALL_DECO) {
-                    d = true;
-                    break;
+            boolean touchesOpenCell = false;
+            boolean touchesGround = false;
+            int cx = i % width();
+            int cy = i / width();
+            for (int y = Math.max(0, cy - 1); y <= Math.min(height() - 1, cy + 1); y++) {
+                for (int x = Math.max(0, cx - 1); x <= Math.min(width() - 1, cx + 1); x++) {
+                    int n = x + y * width();
+                    touchesOpenCell |= map[n] != Terrain.WALL && map[n] != Terrain.WALL_DECO;
+                    touchesGround |= !pit[n];
                 }
             }
-
-            if (d) {
-                d = false;
-
-                for (int j = 0; j < PathFinder.NEIGHBOURS9.length; j++) {
-                    int n = i + PathFinder.NEIGHBOURS9[j];
-                    if (n >= 0 && n < length() && !pit[n]) {
-                        d = true;
-                        break;
-                    }
-                }
-            }
-
-            discoverable[i] = d;
+            discoverable[i] = touchesOpenCell && touchesGround && map[i] != Terrain.CHASM;
         }
+        revealHull();
+    }
+
+    protected void revealHull() {
+        if (mapped == null) return;
+        for (int cell = 0; cell < length(); cell++) {
+            if (isHullCell(cell, width(), height(), discoverable)) mapped[cell] = true;
+        }
+    }
+
+    public static boolean isHullCell(int cell, int width, int height, boolean[] footprint) {
+        if (cell < 0 || cell >= footprint.length || !footprint[cell]) return false;
+        int cx = cell % width;
+        int cy = cell / width;
+        for (int y = cy - 1; y <= cy + 1; y++) {
+            for (int x = cx - 1; x <= cx + 1; x++) {
+                if (x < 0 || x >= width || y < 0 || y >= height
+                        || !footprint[x + y * width]) return true;
+            }
+        }
+        return false;
     }
 
     public static void set(int cell, int terrain) {

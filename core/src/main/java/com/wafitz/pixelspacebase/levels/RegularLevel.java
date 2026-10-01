@@ -504,10 +504,6 @@ public abstract class RegularLevel extends Level {
             if (r.type != Type.NULL) {
                 placeDoors(r);
                 r.type.paint(this, r);
-            } else {
-                if (feeling == Feeling.CHASM && Random.Int(2) == 0) {
-                    Painter.fill(this, r, Terrain.WALL);
-                }
             }
         }
 
@@ -955,6 +951,43 @@ public abstract class RegularLevel extends Level {
                 roomExit = r;
             }
         }
+        // Room geometry is loaded after Level's initial wall cleanup.
+        cleanWalls();
+    }
+
+    @Override
+    void cleanWalls() {
+        if (rooms == null) {
+            super.cleanWalls();
+            return;
+        }
+
+        boolean[] footprint = new boolean[length()];
+        for (Room room : rooms) {
+            if (room.type == Type.NULL) continue;
+            for (int y = Math.max(0, room.top); y <= Math.min(height() - 1, room.bottom); y++) {
+                for (int x = Math.max(0, room.left); x <= Math.min(width() - 1, room.right); x++) {
+                    footprint[x + y * width()] = true;
+                }
+            }
+        }
+
+        boolean changed = false;
+        for (int cell = 0; cell < length(); cell++) {
+            // Preserve the intentional sealed fall chamber and its wall ring.
+            footprint[cell] |= isDoorlessRoomCell(cell) || isDoorlessRoomBoundaryCell(cell);
+            if (!footprint[cell] && (map[cell] == Terrain.WALL || map[cell] == Terrain.WALL_DECO)) {
+                map[cell] = Terrain.CHASM;
+                changed = true;
+            }
+            // Preserve deliberate terrain outside room rectangles (e.g. a bridge).
+            if (map[cell] != Terrain.CHASM && map[cell] != Terrain.WALL
+                    && map[cell] != Terrain.WALL_DECO) footprint[cell] = true;
+            if (map[cell] == Terrain.CHASM) footprint[cell] = false;
+        }
+        if (changed) buildFlagMaps();
+        discoverable = footprint;
+        revealHull();
     }
 
 }

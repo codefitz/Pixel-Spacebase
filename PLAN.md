@@ -115,11 +115,11 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Falling down to boss level lands outside of arena and can't move — boss falls now use a walkable, unoccupied landing nearest the entrance and exclude sealed chambers; regression tests pass, awaiting playthrough confirmation.
 - [x] No Text Found for jetpack when upgrading hunter armor using armor kit (button works) — added inherited JETPACK ON/OFF labels for class armor and corrected the kit's retained-capabilities description.
 - [x] Main menu corner says v1.0.2 — updated Android package metadata to version 1.0.3 (10003); the menu reads the installed package version.
-- [ ] When the shapeshifter throws a blaster, it kills the enemies but causes them to become part of the tile, and can be walked over whilst doing the standing still animation. — fixed dead sleeping mobs restarting idle animations; death clears pauses and stale callbacks. Three regression tests pass; awaiting playthrough confirmation.
-- [ ] Game menu buttons appear to be off center or just odd. — replaced overwritten checkbox atlas slots with independent cyan-frame/yellow-tick graphics; fixed label and indicator padding. Build and artwork preview verified; awaiting in-game confirmation.
-- [ ] Edge of spacebase still has odd shadows with random wall generation
-- [ ] Quantum chest is duplicating items placed (after level transition)
-- [ ] Hunter item module is not highlighting the items. Make the item overlay blue.
+- [x] When the shapeshifter throws a blaster, it kills the enemies but causes them to become part of the tile, and can be walked over whilst doing the standing still animation. — fixed dead sleeping mobs restarting idle animations; death clears pauses and stale callbacks. Three regression tests pass; awaiting playthrough confirmation.
+- [x] Game menu buttons appear to be off center or just odd. — replaced overwritten checkbox atlas slots with independent cyan-frame/yellow-tick graphics; fixed label and indicator padding. Build and artwork preview verified; awaiting in-game confirmation.
+- [x] Edge of spacebase still has odd shadows with random wall generation — hull edges mapped and cleared of fog, open space excluded from the fog footprint, unused exterior wall partitions removed on generation and saved-level load. Nineteen regression tests and debug build pass; awaiting visual confirmation.
+- [x] Quantum chest is duplicating items placed (after level transition) — fixed generated workshops retaining the already-delivered storage buffer; regression tested, awaiting playthrough confirmation.
+- [x] Hunter item module is not highlighting the items. Make the item overlay blue. — corrected transparent ARGB marker textures for both scanners and changed item pings to blue; awaiting in-game visual confirmation.
 
 ## Decisions
 
@@ -141,6 +141,8 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [ ] Jumping platform should not be surrounded by walls (like a room) - more like a bridge
 - [ ] Y shouldn't say "you'll have to find me" after rescuing the hero. So the player has no idea what's going on. Y should not give an option to stay if the Hero clicks on him - should just be like oh alright then.
 - [ ] Expand on Y rescue - random throw into next boss fight, random alien planet, random completely black/white open space (wander around to reveal tiles and find the exit)
+- [ ] Reduce flamethrower spread to single directional line
+- [ ] Shrink Roman Soldier.
 
 ## Future Paid Feature
 
