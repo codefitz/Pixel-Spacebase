@@ -44,7 +44,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
   - [x] Bomb explosions can rupture plasma flooring into a chasm.
   - [x] Put a Plasma Stabiliser in the depth 22 workshop and include it as a rare random blaster.
   - [x] The floor itself has holes in places all over.
-  - [ ] Playtest Command plasma routes and safe-spawn/drop edge cases.
+  - [x] Playtest Command plasma routes and safe-spawn/drop edge cases.
 
 ## Cosmetic / Narrative
 
@@ -70,9 +70,9 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Added expensive, workshop-only Hunter modules that mark unseen items or active traps through fog while the Hunter scanner is active.
 - [x] A Hunter suit upgraded with the Armor Kit keeps its jetpack toggle alongside the class-armor special ability.
 - [x] Each generated Habitat deck has one changing room with showers, lockers, harmless steaming vents and water patches; water is confined to that room.
-- [ ] Each floor has a door leading to a small outer platform (can jump from).
+- [x] Each floor has a door leading to a small outer platform (can jump from).
   - [x] Newly generated regular floors reserve a small exterior platform behind a door; jumping off uses the existing downward fall route and always lands in the destination deck's sealed room.
-  - [ ] Playtest platform generation, vacuum exposure, jumping and save/restore; decide placement on fixed boss and workshop floors.
+  - [x] Playtest platform generation, vacuum exposure, jumping and save/restore; decide placement on fixed boss and workshop floors.
 - [x] Signal Leech: plasma/lava bug artwork and orange plasma spit that burns on a ranged hit, replacing the old weakness beam. Fire/plasma immunity; existing stats, melee and loot retained. Suit/shield protections apply; no permanent plasma terrain created.
 - [x] Signal Siren: floating alien jellyfish artwork; one-in-three successful hits teleport a surviving hero within their current room, including plasma/chasm tiles. Walls, occupied tiles and the current cell are excluded; landing hazards trigger normally. Cat scare-away behaviour retained; saved Sirens become flying too.
 - [x] Outer-colony psion uses Hunter animations with alien violet armour and acid-green accents.
@@ -93,7 +93,6 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Art
 
-- [ ] DM3000 reskin
 - [x] Hunter suit reskinned as charcoal/bronze bounty-hunter armour with a T-shaped visor and compact jetpack, across player animations and inventory icons.
 - [x] Heavy Loader uses larger orange industrial power-loader animations on the level, with the selected hero's head visible in the cockpit.
 - [x] Hoverpod refreshed as a silver/navy capsule with a blue canopy, cyan hover jets, orange hazard tabs and each hero visible inside; matching inventory icon.
@@ -109,12 +108,39 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Issues
 
-- [ ] Level 1 shouldn't have a jump off platform.
+- [x] Level 1 shouldn't have a jump off platform.
 - [x] Y return crashed.
+- [x] Menu popups are misaligned at the border
+- [ ] Text spilling from popups and buttons
+- [ ] Falling down to boss level lands outside of arena and can't move
+- [ ] No Text Found for jetpack when upgrading hunter armor using armor kit (button works)
+- [ ] Main menu corner says v1.0.2
+- [ ] When the shapeshifter throws a blaster, it kills the enemies but causes them to become part of the tile, and can be walked over whilst doing the standing still animation.
+- [ ] Game menu buttons appear to be off center or just odd.
+- [ ] Edge of spacebase still has odd shadows with random wall generation
+- [ ] Quantum chest is duplicating items placed (after level transition)
+- [ ] Hunter item module is not highlighting the items. Make the item overlay blue.
 
 ## Decisions
 
 - [ ] What could replace Yog Duza? Maybe a giant angel.
+
+## Version 1.0.5
+
+- [ ] Jada Knight reskin
+- [ ] DM3000 reskin
+- [ ] Update the custom room/quest for the unstable holo-projector
+- [ ] Update all ordinace items to be grenades or mines - no consuming
+- [ ] Update all plasmids to have the injection style icon
+- [ ] Holodeck boss - the entrance should be the spacebase tileset
+- [ ] Plastma stabliser can just be taken out - give it's function to the freeze blaster
+- [ ] Update spade and drill for more attractive weapons
+- [ ] Reskin hero armorkit suits
+- [ ] The shapeshifter should be able to quickslot any item (for throwing)
+- [ ] Hunter armor reskin - a bit too small
+- [ ] Jumping platform should not be surrounded by walls (like a room) - more like a bridge
+- [ ] Y shouldn't say "you'll have to find me" after rescuing the hero. So the player has no idea what's going on. Y should not give an option to stay if the Hero clicks on him - should just be like oh alright then.
+- [ ] Expand on Y rescue - random throw into next boss fight, random alien planet, random completely black/white open space (wander around to reveal tiles and find the exit)
 
 ## Future Paid Feature
 

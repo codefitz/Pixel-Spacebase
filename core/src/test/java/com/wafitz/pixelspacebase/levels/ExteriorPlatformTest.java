@@ -6,6 +6,13 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 public class ExteriorPlatformTest {
+    @Test public void skipsFirstFloorAndBossLevels() {
+        assertFalse(RegularLevel.shouldAssignExteriorPlatform(1, false));
+        assertFalse(RegularLevel.shouldAssignExteriorPlatform(21, false));
+        assertFalse(RegularLevel.shouldAssignExteriorPlatform(5, true));
+        assertTrue(RegularLevel.shouldAssignExteriorPlatform(2, false));
+    }
+
     @Test public void platformFallsAlwaysLandInSealedRoom() {
         TestLevel level = new TestLevel();
         for (int attempt = 0; attempt < 100; attempt++) {

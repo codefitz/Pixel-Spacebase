@@ -90,7 +90,7 @@ public class WndTabbed extends Window {
         shadow.boxRect(
                 camera.x / camera.zoom,
                 camera.y / camera.zoom,
-                chrome.width(), chrome.height);
+                chrome.width(), camera.height);
         // <- super.resize(...)
 
         for (Tab tab : tabs) {
@@ -106,8 +106,9 @@ public class WndTabbed extends Window {
     }
 
     public void layoutTabs() {
-        //subract two as there's extra horizontal space for those nobs on the top.
-        int fullWidth = width + chrome.marginHor() - 2;
+        // Start one pixel inside the left edge and allow one pixel of the tab's
+        // right-cap shadow past the camera edge to align the visible borders.
+        int fullWidth = width + chrome.marginHor();
         int numTabs = tabs.size();
 
         if (numTabs == 0)
@@ -118,22 +119,22 @@ public class WndTabbed extends Window {
         }
 
         int spaces = numTabs - 1;
-        int spacing = -1;
+        int spacing = 1;
 
-        while (spacing == -1) {
-            for (int i = 0; i <= 3; i++) {
-                if ((fullWidth - i * (spaces)) % numTabs == 0) {
-                    spacing = i;
-                    break;
-                }
+        for (int i = 0; i <= 3; i++) {
+            if ((fullWidth - i * spaces) % numTabs == 0) {
+                spacing = i;
+                break;
             }
-            if (spacing == -1) fullWidth--;
         }
 
-        int tabWidth = (fullWidth - spacing * (numTabs - 1)) / numTabs;
+        int availableWidth = fullWidth - spacing * spaces;
+        int tabWidth = availableWidth / numTabs;
+        int remainder = availableWidth % numTabs;
 
         for (int i = 0; i < tabs.size(); i++) {
-            tabs.get(i).setSize(tabWidth, tabHeight());
+            // Distribute spare pixels instead of pulling the right edge inward.
+            tabs.get(i).setSize(tabWidth + (i < remainder ? 1 : 0), tabHeight());
             tabs.get(i).setPos(i == 0 ?
                     -chrome.marginLeft() + 1 :
                     tabs.get(i - 1).right() + spacing, height);

@@ -168,6 +168,7 @@ public class RenderedTextMultiline extends Component {
     @Override
     protected synchronized void layout() {
         super.layout();
+        width = 0;
         float x = this.x;
         float y = this.y;
         float height = 0;

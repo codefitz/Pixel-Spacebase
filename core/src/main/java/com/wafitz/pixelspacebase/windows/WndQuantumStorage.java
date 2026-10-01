@@ -31,6 +31,7 @@ import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.ui.ItemSlot;
 import com.wafitz.pixelspacebase.ui.RedButton;
+import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.RenderedText;
@@ -77,17 +78,20 @@ public class WndQuantumStorage extends WndTabbed {
         title.y = 1;
         add(title);
 
-        RenderedText hint = PixelScene.renderText(Messages.get(Heap.class, "workshop_storage_hint"), 6);
-        hint.x = (slotsWidth - hint.width()) / 2;
-        hint.y = 12;
+        RenderedTextMultiline hint = PixelScene.renderMultiline(
+                Messages.get(Heap.class, "workshop_storage_hint"), 6);
+        hint.maxWidth(slotsWidth - 12);
+        hint.setPos((slotsWidth - hint.width()) / 2, 12);
         add(hint);
+
+        int slotsTop = Math.max(TITLE_HEIGHT, (int) Math.ceil(hint.bottom() + 2));
 
         int first = this.page * pageSize;
         for (int i = 0; i < pageSize; i++) {
             int index = first + i;
             Item item = index < contents.size() ? contents.get(index) : null;
             int x = (i % columns) * (SLOT_SIZE + SLOT_MARGIN);
-            int y = TITLE_HEIGHT + (i / columns) * (SLOT_SIZE + SLOT_MARGIN);
+            int y = slotsTop + (i / columns) * (SLOT_SIZE + SLOT_MARGIN);
             add(new TransferSlot(item).setPos(x, y));
         }
 
@@ -95,11 +99,11 @@ public class WndQuantumStorage extends WndTabbed {
             RenderedText empty = PixelScene.renderText(Messages.get(Heap.class,
                     backpackTab ? "workshop_storage_pack_empty" : "workshop_storage_empty"), 6);
             empty.x = (slotsWidth - empty.width()) / 2;
-            empty.y = TITLE_HEIGHT + (slotsHeight - empty.height()) / 2;
+            empty.y = slotsTop + (slotsHeight - empty.height()) / 2;
             add(empty);
         }
 
-        int pagesTextY = TITLE_HEIGHT + slotsHeight + 1;
+        int pagesTextY = slotsTop + slotsHeight + 1;
         RenderedText pageText = PixelScene.renderText(Messages.get(Heap.class,
                 "workshop_storage_page", this.page + 1, pages), 6);
         pageText.x = (slotsWidth - pageText.width()) / 2;

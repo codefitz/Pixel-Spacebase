@@ -158,7 +158,7 @@ public abstract class RegularLevel extends Level {
         }
         if (!assignRoomType())
             return false;
-        if (!SpacebaseRun.bossLevel() && SpacebaseRun.depth != 21
+        if (shouldAssignExteriorPlatform(SpacebaseRun.depth, SpacebaseRun.bossLevel())
                 && !assignExteriorPlatform(rooms)) return false;
 
         paint();
@@ -187,6 +187,10 @@ public abstract class RegularLevel extends Level {
             }
         }
         return false;
+    }
+
+    static boolean shouldAssignExteriorPlatform(int depth, boolean bossLevel) {
+        return depth > 1 && depth != 21 && !bossLevel;
     }
 
     public boolean isExteriorPlatformJump(int cell) {
