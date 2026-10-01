@@ -36,6 +36,9 @@ public class CheckBox extends RedButton {
     protected void layout() {
         super.layout();
 
+        float iconMargin = (height - icon.height()) / 2;
+        // Reserve the right-hand checkbox and the largest possible left inset.
+        fitText(width - height / 2 - iconMargin - icon.width() - 2);
         float margin = (height - text.baseLine()) / 2;
 
         text.x = x + margin;

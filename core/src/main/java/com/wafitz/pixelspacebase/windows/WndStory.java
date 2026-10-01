@@ -36,7 +36,8 @@ public class WndStory extends Window {
 
     private static final int WIDTH_P = 132;
     private static final int WIDTH_L = 156;
-    private static final int MARGIN = 10;
+    // The script artwork's inner border extends into the content area.
+    private static final int MARGIN = 14;
 
     private static final float bgR = 0.77f;
     private static final float bgG = 0.73f;
@@ -80,7 +81,7 @@ public class WndStory extends Window {
             }
         });
 
-        resize(width, (int) Math.min(tf.height() + MARGIN * 2, 180));
+        resize(width, (int) Math.ceil(tf.height() + MARGIN * 2));
     }
 
     @Override

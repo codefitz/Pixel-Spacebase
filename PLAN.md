@@ -111,7 +111,7 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Level 1 shouldn't have a jump off platform.
 - [x] Y return crashed.
 - [x] Menu popups are misaligned at the border
-- [ ] Text spilling from popups and buttons
+- [x] Text spilling from popups and buttons — automatic button label fitting, icon spacing, and story padding implemented; awaiting visual confirmation.
 - [ ] Falling down to boss level lands outside of arena and can't move
 - [ ] No Text Found for jetpack when upgrading hunter armor using armor kit (button works)
 - [ ] Main menu corner says v1.0.2
