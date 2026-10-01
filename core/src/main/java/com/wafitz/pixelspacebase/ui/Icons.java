@@ -20,8 +20,12 @@
  */
 package com.wafitz.pixelspacebase.ui;
 
+import android.graphics.Bitmap;
+
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
+import com.watabou.gltextures.SmartTexture;
+import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Image;
 
 public enum Icons {
@@ -139,10 +143,10 @@ public enum Icons {
                 icon.frame(icon.texture.uvRect(98, 0, 108, 10));
                 break;
             case CHECKED:
-                icon.frame(icon.texture.uvRect(54, 12, 66, 24));
+                icon.texture(checkBoxTexture(true));
                 break;
             case UNCHECKED:
-                icon.frame(icon.texture.uvRect(66, 12, 78, 24));
+                icon.texture(checkBoxTexture(false));
                 break;
             case EXIT:
                 icon.frame(icon.texture.uvRect(108, 0, 124, 16));
@@ -164,6 +168,16 @@ public enum Icons {
                 break;
         }
         return icon;
+    }
+
+    private static SmartTexture checkBoxTexture(boolean checked) {
+        String key = checked ? "ui-checkbox-checked" : "ui-checkbox-unchecked";
+        if (!TextureCache.contains(key)) {
+            Bitmap bitmap = Bitmap.createBitmap(CheckBoxArtwork.pixels(checked),
+                    CheckBoxArtwork.SIZE, CheckBoxArtwork.SIZE, Bitmap.Config.ARGB_8888);
+            TextureCache.add(key, new SmartTexture(bitmap));
+        }
+        return TextureCache.get(key);
     }
 
     public static Image get(HeroClass cl) {

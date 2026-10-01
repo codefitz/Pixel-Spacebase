@@ -564,9 +564,34 @@ public abstract class Level implements Bundlable {
     }
 
     public int fallLandingCell(boolean intoDoorlessRoom) {
+        if (SpacebaseRun.bossLevel()) {
+            return bossFallLandingCell();
+        }
         int cell = intoDoorlessRoom || Random.Int(4) == 0
                 ? doorlessRoomLandingCell() : randomRespawnCell();
         return cell >= 0 ? cell : randomRespawnCell();
+    }
+
+    private int bossFallLandingCell() {
+        // Fall placement happens before switchLevel updates PathFinder's map
+        // size. Use this map's coordinates rather than respawn neighbour offsets.
+        int origin = insideMap(entrance) ? entrance : 0;
+        int best = -1;
+        int bestDistance = Integer.MAX_VALUE;
+        for (int cell = 0; cell < length(); cell++) {
+            if (!passable[cell] || map[cell] == Terrain.CHASM || isPlasmaCell(cell)
+                    || isDoorlessRoomCell(cell) || findMob(cell) != null) continue;
+            int distance = Math.abs(cell % width() - origin % width())
+                    + Math.abs(cell / width() - origin / width());
+            if (distance < bestDistance) {
+                best = cell;
+                bestDistance = distance;
+            }
+        }
+        if (best < 0) {
+            throw new IllegalStateException("No valid boss fall landing on level " + SpacebaseRun.depth);
+        }
+        return best;
     }
 
     public void restoreFloorLighting() {

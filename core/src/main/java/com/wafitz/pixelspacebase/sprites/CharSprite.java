@@ -146,6 +146,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
     }
 
     public void idle() {
+        if (ch != null && !ch.isAlive()) return;
         play(idle);
     }
 
@@ -216,6 +217,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
     public void die() {
         sleeping = false;
+        paused = false;
+        animCallback = null;
         play(die);
 
         if (emo != null) {

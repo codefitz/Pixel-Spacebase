@@ -112,11 +112,11 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 - [x] Y return crashed.
 - [x] Menu popups are misaligned at the border
 - [x] Text spilling from popups and buttons — automatic button label fitting, icon spacing, and story padding implemented; awaiting visual confirmation.
-- [ ] Falling down to boss level lands outside of arena and can't move
-- [ ] No Text Found for jetpack when upgrading hunter armor using armor kit (button works)
-- [ ] Main menu corner says v1.0.2
-- [ ] When the shapeshifter throws a blaster, it kills the enemies but causes them to become part of the tile, and can be walked over whilst doing the standing still animation.
-- [ ] Game menu buttons appear to be off center or just odd.
+- [x] Falling down to boss level lands outside of arena and can't move — boss falls now use a walkable, unoccupied landing nearest the entrance and exclude sealed chambers; regression tests pass, awaiting playthrough confirmation.
+- [x] No Text Found for jetpack when upgrading hunter armor using armor kit (button works) — added inherited JETPACK ON/OFF labels for class armor and corrected the kit's retained-capabilities description.
+- [x] Main menu corner says v1.0.2 — updated Android package metadata to version 1.0.3 (10003); the menu reads the installed package version.
+- [ ] When the shapeshifter throws a blaster, it kills the enemies but causes them to become part of the tile, and can be walked over whilst doing the standing still animation. — fixed dead sleeping mobs restarting idle animations; death clears pauses and stale callbacks. Three regression tests pass; awaiting playthrough confirmation.
+- [ ] Game menu buttons appear to be off center or just odd. — replaced overwritten checkbox atlas slots with independent cyan-frame/yellow-tick graphics; fixed label and indicator padding. Build and artwork preview verified; awaiting in-game confirmation.
 - [ ] Edge of spacebase still has odd shadows with random wall generation
 - [ ] Quantum chest is duplicating items placed (after level transition)
 - [ ] Hunter item module is not highlighting the items. Make the item overlay blue.

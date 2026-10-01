@@ -24,6 +24,10 @@ import com.wafitz.pixelspacebase.scenes.PixelScene;
 
 public class CheckBox extends RedButton {
 
+    private static final float LABEL_MARGIN = 4;
+    private static final float ICON_MARGIN = 3;
+    private static final float LABEL_GAP = 3;
+
     private boolean checked = false;
 
     public CheckBox(String label) {
@@ -36,19 +40,13 @@ public class CheckBox extends RedButton {
     protected void layout() {
         super.layout();
 
-        float iconMargin = (height - icon.height()) / 2;
-        // Reserve the right-hand checkbox and the largest possible left inset.
-        fitText(width - height / 2 - iconMargin - icon.width() - 2);
-        float margin = (height - text.baseLine()) / 2;
-
-        text.x = x + margin;
-        text.y = y + margin;
+        fitText(width - LABEL_MARGIN - ICON_MARGIN - icon.width() - LABEL_GAP);
+        text.x = x + LABEL_MARGIN;
+        text.y = y + (height - text.baseLine()) / 2;
         PixelScene.align(text);
 
-        margin = (height - icon.height) / 2;
-
-        icon.x = x + width - margin - icon.width;
-        icon.y = y + margin;
+        icon.x = x + width - ICON_MARGIN - icon.width();
+        icon.y = y + (height - icon.height()) / 2;
         PixelScene.align(icon);
     }
 
@@ -60,6 +58,7 @@ public class CheckBox extends RedButton {
         if (checked != value) {
             checked = value;
             icon.copy(Icons.get(checked ? Icons.CHECKED : Icons.UNCHECKED));
+            layout();
         }
     }
 
