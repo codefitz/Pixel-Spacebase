@@ -44,6 +44,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
 
     private int[] map;
     private float[] tileVariance;
+    private int zoneFeatureVariant;
 
     private SparseArray<Mine> mines;
     private SparseArray<Vent> vents;
@@ -59,6 +60,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
         for (int i = 0; i < tileVariance.length; i++)
             tileVariance[i] = Random.Float();
         Random.seed();
+        zoneFeatureVariant = (int) Math.floorMod(SpacebaseRun.seed + ((SpacebaseRun.depth - 1) / 5) * 31L, 2L);
 
         map(SpacebaseRun.level.map, SpacebaseRun.level.width());
 
