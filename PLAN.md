@@ -155,4 +155,4 @@ Use this as the working backlog for the next sprint. Put rough ideas in Suggesti
 
 ## Release Prep
 
-- [ ] Update release notes and version (on plan completion)
+- [x] Update release notes and version — Android version 1.0.4 (10004), welcome summary and in-game changelog updated for implemented changes; remaining visual/playthrough checks are still noted above.
