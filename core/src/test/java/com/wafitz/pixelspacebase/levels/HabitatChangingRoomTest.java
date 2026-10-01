@@ -9,6 +9,7 @@ import com.watabou.utils.Random;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -17,6 +18,21 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class HabitatChangingRoomTest {
+
+    @Test
+    public void bathroomFloorUsesDedicatedSlotWithoutReplacingFixturesOrOtherRooms() {
+        HabitationRingLevel level = new HabitationRingLevel();
+        level.rooms = new ArrayList<>(Arrays.asList(room(2, 2, 8, 8, Room.Type.CHANGING_ROOM)));
+        int inside = 3 + 3 * level.width();
+        for (int terrain : new int[]{Terrain.EMPTY, Terrain.EMPTY_DECO, Terrain.EMPTY_SP}) {
+            assertEquals(66, level.changingRoomFloorVisual(inside, terrain));
+        }
+        for (int terrain : new int[]{Terrain.WATER, Terrain.INACTIVE_VENT, Terrain.DOOR, Terrain.WALL}) {
+            assertEquals(-1, level.changingRoomFloorVisual(inside, terrain));
+        }
+        assertEquals(-1, level.changingRoomFloorVisual(2 + 3 * level.width(), Terrain.EMPTY));
+        assertEquals(-1, level.changingRoomFloorVisual(9 + 3 * level.width(), Terrain.EMPTY));
+    }
 
     @Test
     public void assignsExactlyOneConnectedRoomWithoutReplacingImportantRooms() {

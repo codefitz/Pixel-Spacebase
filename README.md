@@ -50,15 +50,16 @@ The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/E
 
 ### Changes planned:
 
-The active backlog is tracked in [`PLAN.md`](PLAN.md). Current work is sorted into:
+The active v1.0.5 backlog is tracked in [`PLAN.md`](PLAN.md). Completed v1.0.4 work is preserved in the [archived plan](docs/PLAN_v1.0.4_ARCHIVE.md). Current work is sorted into:
 
-* Suggestions - unsettled ideas and design options before they become implementation tasks.
-* Sprites - character, enemy, item, and equipment sprite work.
-* Tiles - tileset, terrain, water, ladder, and floor-feature art or tile behavior.
-* Mechanics - gameplay, persistence, quest, workshop, combat, and UI behavior changes.
-* Cosmetic / Narrative - lore, naming, dialogue, area framing, and story polish.
+* Mechanics - equipment, combat and quest changes.
+* Rooms and Narrative - room layouts, rescue destinations and dialogue.
+* Art - character, enemy, item and equipment artwork.
+* Carried-over Verification - implemented fixes awaiting playthrough checks and outstanding test failures.
+* Decisions and Longer-term Backlog - unsettled ideas and future features.
+* Release Prep - compatibility, verification, versioning and release packaging.
 
-When adding new work, put rough ideas in the Suggestions section first. Once the direction is chosen, move the item into the relevant work category and keep implementation batches small enough to test and rebuild quickly.
+When adding new work, put rough ideas in Decisions first. Once the direction is chosen, move the item into the relevant work category and keep implementation batches small enough to test and rebuild quickly.
 
 ## Development Setup
 

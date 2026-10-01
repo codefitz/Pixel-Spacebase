@@ -15,7 +15,7 @@ public class ChangingRoomPainter extends Painter {
 
     public static void paint(Level level, Room room) {
         fill(level, room, Terrain.WALL);
-        fill(level, room, 1, Terrain.EMPTY_SP);
+        fill(level, room, 1, Terrain.EMPTY);
         for (Room.Door door : room.connected.values()) {
             door.set(Room.Door.Type.REGULAR);
         }
@@ -58,13 +58,12 @@ public class ChangingRoomPainter extends Painter {
         for (int y = room.bottom - 1; y > room.top; y--) {
             for (int x = room.left + 1; x < room.right; x++) {
                 int cell = x + y * level.width();
-                if (steamVents < 2 && level.map[cell] == Terrain.EMPTY_SP) {
+                if (steamVents < 2 && level.map[cell] == Terrain.EMPTY) {
                     level.map[cell] = Terrain.INACTIVE_VENT;
                     steamVents++;
                 }
-                if (level.map[cell] != Terrain.WATER) {
-                    addTile(level, x, y, level.map[cell] == Terrain.INACTIVE_VENT
-                            ? ChangingRoomTile.VENT : ChangingRoomTile.FLOOR);
+                if (level.map[cell] == Terrain.INACTIVE_VENT) {
+                    addTile(level, x, y, ChangingRoomTile.VENT);
                 }
             }
         }

@@ -220,6 +220,10 @@ public class SpacebaseTilemap extends Tilemap {
     }
 
     private int getTileVisual(int pos, int tile) {
+        if (SpacebaseRun.level instanceof HabitationRingLevel) {
+            int bathroomVisual = ((HabitationRingLevel) SpacebaseRun.level).changingRoomFloorVisual(pos, tile);
+            if (bathroomVisual >= 0) return bathroomVisual;
+        }
         int transporterVisual = HabitationRingLevel.transporterRoomVisual(SpacebaseRun.level, pos, tile);
         if (transporterVisual >= 0) return transporterVisual;
         if (SpacebaseRun.level instanceof HolodeckBossLevel

@@ -59,7 +59,19 @@ import java.util.List;
 public class HabitationRingLevel extends RegularLevel {
 
     public static final int TRANSPORTER_FLOOR_VISUAL = 64;
+    public static final int CHANGING_ROOM_FLOOR_VISUAL = 66;
     public static final int TRANSPORTER_WALL_VISUAL = 65;
+
+    /** Keep the bathroom floor independent of the deck floor and its random variants. */
+    public int changingRoomFloorVisual(int pos, int terrain) {
+        if (terrain != Terrain.EMPTY && terrain != Terrain.EMPTY_DECO
+                && terrain != Terrain.EMPTY_SP) return -1;
+        Room room = changingRoom();
+        int x = pos % width();
+        int y = pos / width();
+        return room != null && x > room.left && x < room.right
+                && y > room.top && y < room.bottom ? CHANGING_ROOM_FLOOR_VISUAL : -1;
+    }
 
     /** Visual-only room treatment, derived from room bounds restored with existing saves. */
     public static int transporterRoomVisual(Level level, int pos, int terrain) {
