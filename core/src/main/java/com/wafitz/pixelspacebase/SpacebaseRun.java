@@ -807,12 +807,6 @@ public class SpacebaseRun {
     }
 
     public static void fail(Class cause) {
-        if (Hero.devTestInvulnerable()) {
-            if (hero != null) {
-                hero.restoreDevTestHealth();
-            }
-            return;
-        }
         if (hero.belongings.getItem(Clone.class) == null) {
             Rankings.INSTANCE.submit(false, cause);
         }

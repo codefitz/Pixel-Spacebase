@@ -37,6 +37,7 @@ public class ChangesScene extends PixelScene {
 
     private static final String TXT_Update =
             "_v1.0.4:_\n" +
+                    "_-_ Removed development invulnerability and restored normal new-game strength, damage, death and game-over behaviour.\n" +
                     "_-_ Added a floating station backdrop with sparse stars, a large orbiting planet and revealed hull edges; removed stray exterior walls.\n" +
                     "_-_ Station cats wait until touched on each deck, bat one suitable item per room, eat raw meat when injured and scare away Signal Sirens.\n" +
                     "_-_ Torches toggle from quickslots and show battery charge; added a battery-powered Wormhole Generator.\n" +
