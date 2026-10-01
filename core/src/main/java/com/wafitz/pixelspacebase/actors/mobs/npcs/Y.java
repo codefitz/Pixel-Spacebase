@@ -23,32 +23,79 @@ package com.wafitz.pixelspacebase.actors.mobs.npcs;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.Actor;
+import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.mobs.HolodeckMonarch;
+import com.wafitz.pixelspacebase.actors.mobs.HolodeckLegionary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.modules.Module;
 import com.wafitz.pixelspacebase.items.quest.HardLightEmitter;
 import com.wafitz.pixelspacebase.levels.HabitationRingLevel;
+import com.wafitz.pixelspacebase.levels.HolodeckBossLevel;
+import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.sprites.ImpSprite;
+import com.wafitz.pixelspacebase.scenes.InterlevelScene;
+import com.wafitz.pixelspacebase.sprites.YSprite;
 import com.wafitz.pixelspacebase.windows.WndY;
 import com.wafitz.pixelspacebase.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import com.watabou.noosa.Game;
+import com.wafitz.pixelspacebase.utils.GLog;
+
+import com.wafitz.pixelspacebase.actors.buffs.YRescueJourney;
 
 public class Y extends NPC {
 
     private static final int REQUIRED_EMITTERS = 6;
 
     {
-        spriteClass = ImpSprite.class;
+        spriteClass = YSprite.class;
 
         properties.add(Property.IMMOVABLE);
     }
 
     private boolean seenBefore = false;
+
+    public static void rescueStrandedHero() {
+        Level level = SpacebaseRun.level;
+        Hero hero = SpacebaseRun.hero;
+        if (level == null || hero == null || level.doorlessRoomLandingCell() < 0) return;
+
+        Y y = new Y();
+        int center = level.doorlessRoomLandingCell();
+        y.pos = center;
+        for (int offset : new int[]{1, -1, level.width(), -level.width()}) {
+            int cell = center + offset;
+            if (level.isDoorlessRoomCell(cell) && Actor.findChar(cell) == null && cell != hero.pos) {
+                y.pos = cell;
+                break;
+            }
+        }
+        GameScene.add(y);
+        GameScene.show(new WndQuest(y, Messages.get(Y.class, "stranded_rescue", hero.givenName())) {
+            @Override
+            public void hide() {
+                super.hide();
+                y.destroy();
+                if (y.sprite != null) y.sprite.killAndErase();
+                YRescueJourney ticket = Buff.affect(hero, YRescueJourney.class);
+                // Old saves did not record the fall origin; infer the adjacent upper deck.
+                if (ticket.sourceDepth < 1) ticket.sourceDepth = SpacebaseRun.nextDepth(SpacebaseRun.depth);
+                ticket.rescueDepth = Random.element(YRescuer.rescueDestinations(SpacebaseRun.depth));
+
+                InterlevelScene.mode = InterlevelScene.Mode.RETURN;
+                InterlevelScene.returnDepth = ticket.rescueDepth;
+                InterlevelScene.returnPos = -1;
+                InterlevelScene.returnAtEntrance = false;
+                InterlevelScene.rescueScatter = true;
+                Game.switchScene(InterlevelScene.class);
+            }
+        });
+    }
 
     @Override
     protected boolean act() {
@@ -129,11 +176,20 @@ public class Y extends NPC {
         private static boolean spawned;
         private static boolean given;
         private static boolean completed;
+        private static boolean holodeckPoweredDown;
+        private static boolean secretWorkshopUnlocked;
+        private static boolean secretWorkshopStateSaved;
 
         public static Module reward;
 
         public static void reset() {
+            alternative = false;
             spawned = false;
+            given = false;
+            completed = false;
+            holodeckPoweredDown = false;
+            secretWorkshopUnlocked = false;
+            secretWorkshopStateSaved = false;
 
             reward = null;
         }
@@ -144,6 +200,8 @@ public class Y extends NPC {
         private static final String SPAWNED = "spawned";
         private static final String GIVEN = "given";
         private static final String COMPLETED = "completed";
+        private static final String POWERED_DOWN = "holodeckPoweredDown";
+        private static final String SECRET_WORKSHOP = "secretWorkshopUnlocked";
         private static final String REWARD = "reward";
 
         public static void storeInBundle(Bundle bundle) {
@@ -151,6 +209,8 @@ public class Y extends NPC {
             Bundle node = new Bundle();
 
             node.put(SPAWNED, spawned);
+            node.put(POWERED_DOWN, holodeckPoweredDown);
+            node.put(SECRET_WORKSHOP, secretWorkshopUnlocked);
 
             if (spawned) {
                 node.put(ALTERNATIVE, alternative);
@@ -167,12 +227,88 @@ public class Y extends NPC {
 
             Bundle node = bundle.getBundle(NODE);
 
-            if (!node.isNull() && (spawned = node.getBoolean(SPAWNED))) {
-                alternative = node.getBoolean(ALTERNATIVE);
+            reset();
+            if (!node.isNull()) {
+                spawned = node.getBoolean(SPAWNED);
+                holodeckPoweredDown = node.getBoolean(POWERED_DOWN);
+                secretWorkshopStateSaved = node.contains(SECRET_WORKSHOP);
+                secretWorkshopUnlocked = node.getBoolean(SECRET_WORKSHOP);
+                if (spawned) {
+                    alternative = node.getBoolean(ALTERNATIVE);
+                    given = node.getBoolean(GIVEN);
+                    completed = node.getBoolean(COMPLETED);
+                    reward = (Module) node.get(REWARD);
+                }
+            }
+        }
 
-                given = node.getBoolean(GIVEN);
-                completed = node.getBoolean(COMPLETED);
-                reward = (Module) node.get(REWARD);
+        public static boolean isHolodeckPoweredDown() {
+            return holodeckPoweredDown;
+        }
+
+        public static boolean hasSecretWorkshopAccess() {
+            return secretWorkshopUnlocked;
+        }
+
+        /** Called after the hero is restored, to keep old saves consistent. */
+        public static void reconcileHolodeckState(Hero hero, int depth, int deepestFloor) {
+            if (hero != null) {
+                HardLightEmitter emitters = hero.belongings.getItem(HardLightEmitter.class);
+                if (emitters != null && emitters.quantity() >= REQUIRED_EMITTERS) {
+                    if (!secretWorkshopStateSaved && depth < 20) {
+                        secretWorkshopUnlocked = true;
+                    }
+                }
+            }
+            // Older saves always generated floor 21. Preserve access if it was
+            // reached already, or if shutdown happened before this rule existed.
+            if (!secretWorkshopStateSaved && (deepestFloor >= 21
+                    || depth <= 20 && holodeckPoweredDown)) {
+                secretWorkshopUnlocked = true;
+            }
+            secretWorkshopStateSaved = true;
+        }
+
+        public static void onEmitterAcquired(Hero hero) {
+            if (hero != null) {
+                HardLightEmitter emitters = hero.belongings.getItem(HardLightEmitter.class);
+                if (emitters != null && emitters.quantity() >= REQUIRED_EMITTERS) {
+                    // Collecting the emitters unlocks Y's workshop; the boss arena
+                    // remains active until its final hologram enemy is defeated.
+                    if (SpacebaseRun.depth < 20) secretWorkshopUnlocked = true;
+                }
+            }
+        }
+
+        /** Powers down the simulation after the last boss-level hologram is defeated. */
+        public static void onHolodeckEnemyDefeated() {
+            Level level = SpacebaseRun.level;
+            if (holodeckPoweredDown || !(level instanceof HolodeckBossLevel)) return;
+
+            for (Mob mob : level.mobs) {
+                if (mob instanceof HolodeckMonarch
+                        || mob instanceof HolodeckMonarch.Undead
+                        || mob instanceof HolodeckLegionary) {
+                    return;
+                }
+            }
+
+            holodeckPoweredDown = true;
+            discardProjections(level);
+            GameScene.resetMap();
+            GameScene.resetCustomTiles();
+            GLog.p(Messages.get(Y.class, "holodeck_shutdown"));
+        }
+
+        /** Removes stored holograms without treating shutdown as killing them. */
+        public static void discardProjections(Level level) {
+            if (level == null || level.mobs == null) return;
+            for (Mob mob : level.mobs.toArray(new Mob[0])) {
+                if (mob instanceof HolodeckLegionary) {
+                    level.mobs.remove(mob);
+                    Actor.remove(mob);
+                    if (mob.sprite != null) mob.sprite.killAndErase();
+                }
             }
         }
 

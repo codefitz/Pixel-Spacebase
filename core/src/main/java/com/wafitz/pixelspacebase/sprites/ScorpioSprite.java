@@ -33,7 +33,8 @@ public class ScorpioSprite extends MobSprite {
     public ScorpioSprite() {
         super();
 
-        texture(Assets.SCORPIO);
+        // AcidicSprite retains the original shared sheet and its second-row frames.
+        texture(Assets.PREDATOR);
 
         TextureFilm frames = new TextureFilm(texture, 18, 17);
 

@@ -30,7 +30,7 @@ import com.wafitz.pixelspacebase.effects.BlobEmitter;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ShaftParticle;
-import com.wafitz.pixelspacebase.items.AirTank;
+import com.wafitz.pixelspacebase.items.MedigelContainer;
 import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -61,8 +61,8 @@ public class MedicalTerminal extends WellWater {
 
     @Override
     protected Item affectItem(Item item) {
-        if (item instanceof AirTank && !((AirTank) item).isFull()) {
-            ((AirTank) item).fill();
+        if (item instanceof MedigelContainer && !((MedigelContainer) item).isFull()) {
+            ((MedigelContainer) item).fill();
             Journal.remove(Feature.HEALTH_TERMINAL);
             return item;
         }

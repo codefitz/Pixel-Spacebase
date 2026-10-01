@@ -56,7 +56,9 @@ public class WarpingVent extends Vent {
 
             //each depth has 1 more weight than the previous depth.
             float[] depths = new float[SpacebaseRun.depth - 1];
-            for (int i = 1; i < SpacebaseRun.depth; i++) depths[i - 1] = i;
+            for (int i = 1; i < SpacebaseRun.depth; i++) {
+                depths[i - 1] = SpacebaseRun.canVisitDepth(i) ? i : 0;
+            }
             int depth = 1 + Random.chances(depths);
 
             Heap heap = SpacebaseRun.level.heaps.get(pos);

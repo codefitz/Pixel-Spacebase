@@ -34,6 +34,7 @@ enum Preferences {
     public static final String KEY_POWER_SAVER = "power_saver";
     public static final String KEY_SCALE = "scale";
     public static final String KEY_MUSIC = "music";
+    public static final String KEY_NOW_PLAYING = "now_playing";
     public static final String KEY_MUSIC_VOL = "music_vol";
     public static final String KEY_SOUND_FX = "soundfx";
     public static final String KEY_SFX_VOL = "sfx_vol";

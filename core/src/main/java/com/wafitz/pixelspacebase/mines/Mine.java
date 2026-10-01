@@ -34,6 +34,7 @@ import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
 import com.wafitz.pixelspacebase.items.MedigelDroplet;
 import com.wafitz.pixelspacebase.items.Generator;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.equippablemodules.FrontierTechShield;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -57,6 +58,7 @@ public abstract class Mine implements Bundlable {
     public void mine() {
 
         Char ch = Actor.findChar(pos);
+        if (ch == SpacebaseRun.hero && HoverPod.equipped(SpacebaseRun.hero) != null) return;
 
         if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN) {
             Buff.affect(ch, Shielding.class).level(ch.HT / 3);

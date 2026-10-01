@@ -52,8 +52,10 @@ import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.buffs.CombatFocus;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.actors.mobs.Drone;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.NPC;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
+import com.wafitz.pixelspacebase.actors.blobs.Plasma;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.CheckedCell;
 import com.wafitz.pixelspacebase.effects.Flare;
@@ -70,9 +72,7 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
-import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
-import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.enhancements.EMP;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Flow;
 import com.wafitz.pixelspacebase.items.armor.enhancements.Forcefield;
@@ -101,6 +101,7 @@ import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
+import com.wafitz.pixelspacebase.items.weapon.melee.LoaderArm;
 import com.wafitz.pixelspacebase.items.weapon.missiles.MissileWeapon;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.SecurityBlockLevel;
@@ -139,6 +140,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
+import static com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid.heal;
+
 public class Hero extends Char {
 
     {
@@ -148,7 +151,6 @@ public class Hero extends Char {
     public static final int MAX_LEVEL = 30;
 
     private static final int STARTING_STR = 10;
-    private static final boolean DEV_TEST_INVULNERABLE = false;
 
     private static final float TIME_TO_REST = 1f;
     private static final float TIME_TO_SEARCH = 2f;
@@ -221,6 +223,7 @@ public class Hero extends Char {
     private static final String STRENGTH = "STR";
     private static final String LEVEL = "lvl";
     private static final String EXPERIENCE = "exp";
+    private static final String XENO_INFECTION_REACTION_SHOWN = "xenoInfectionReactionShown";
     private static final String VACUUM_WARNING_ACTIVE = "vacuumWarningActive";
     private static final String VACUUM_RETURN_CELL = "vacuumReturnCell";
     private static final String SHAPESHIFTER_WATER_RECOVERY = "shapeshifterWaterRecovery";
@@ -228,6 +231,13 @@ public class Hero extends Char {
 
     private float shapeshifterWaterRecovery;
     private int shapeshifterStrengthProgression;
+    private boolean xenoInfectionReactionShown;
+
+    public boolean markXenoInfectionReactionShown() {
+        if (xenoInfectionReactionShown) return false;
+        xenoInfectionReactionShown = true;
+        return true;
+    }
 
     @Override
     public void storeInBundle(Bundle bundle) {
@@ -244,6 +254,7 @@ public class Hero extends Char {
 
         bundle.put(LEVEL, lvl);
         bundle.put(EXPERIENCE, exp);
+        bundle.put(XENO_INFECTION_REACTION_SHOWN, xenoInfectionReactionShown);
         bundle.put(VACUUM_WARNING_ACTIVE, vacuumWarningActive);
         bundle.put(VACUUM_RETURN_CELL, vacuumReturnCell);
         bundle.put(SHAPESHIFTER_WATER_RECOVERY, shapeshifterWaterRecovery);
@@ -267,6 +278,7 @@ public class Hero extends Char {
 
         lvl = bundle.getInt(LEVEL);
         exp = bundle.getInt(EXPERIENCE);
+        xenoInfectionReactionShown = bundle.getBoolean(XENO_INFECTION_REACTION_SHOWN);
         vacuumWarningActive = bundle.getBoolean(VACUUM_WARNING_ACTIVE);
         vacuumReturnCell = bundle.contains(VACUUM_RETURN_CELL) ? bundle.getInt(VACUUM_RETURN_CELL) : -1;
         shapeshifterWaterRecovery = bundle.getFloat(SHAPESHIFTER_WATER_RECOVERY);
@@ -320,10 +332,12 @@ public class Hero extends Char {
         }
 
         KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
+        int skill = attackSkill + (rangedWeapon != null && belongings.armor != null
+                && belongings.armor.hasHunterTracking() ? 1 : 0);
         if (wep != null) {
-            return (int) (attackSkill * accuracy * wep.accuracyFactor(this));
+            return (int) (skill * accuracy * wep.accuracyFactor(this));
         } else {
-            return (int) (attackSkill * accuracy);
+            return (int) (skill * accuracy);
         }
     }
 
@@ -333,6 +347,7 @@ public class Hero extends Char {
         int bonus = EvasionModule.getBonus(this, EvasionModule.Evasion.class);
 
         float evasion = (float) Math.pow(1.125, bonus);
+        if (belongings.armor == null) evasion *= 1.25f;
         if (paralysed > 0) {
             evasion /= 2;
         }
@@ -530,6 +545,7 @@ public class Hero extends Char {
                 || HP >= HT
                 || isStarving()
                 || pos < 0
+                || SpacebaseRun.level.isPlasmaCell(pos)
                 || !Level.water[pos]) {
             shapeshifterWaterRecovery = 0;
             return;
@@ -588,6 +604,10 @@ public class Hero extends Char {
             if (curAction instanceof HeroAction.Move) {
 
                 return actMove((HeroAction.Move) curAction);
+
+            } else if (curAction instanceof HeroAction.SwapDrone) {
+
+                return actSwapDrone((HeroAction.SwapDrone) curAction);
 
             } else if (curAction instanceof HeroAction.Interact) {
 
@@ -671,6 +691,14 @@ public class Hero extends Char {
             return true;
 
         } else {
+            if (SpacebaseRun.level.adjacent(pos, action.dst)
+                    && (SpacebaseRun.level.map[action.dst] == Terrain.BARRICADE
+                    || SpacebaseRun.level.map[action.dst] == Terrain.BOOKSHELF)
+                    && loaderArmEquipped()) {
+                smashLoaderObstacle(action.dst, Terrain.EMPTY);
+                return false;
+            }
+
             if (SpacebaseRun.level.map[pos] == Terrain.SIGN) {
                 Sign.read(pos);
             }
@@ -678,6 +706,41 @@ public class Hero extends Char {
 
             return false;
         }
+    }
+
+    private boolean actSwapDrone(HeroAction.SwapDrone action) {
+        Drone drone = action.drone;
+        // Recheck the target: a controller can be scrapped while approaching it.
+        if (!drone.isAlive() || !drone.ally || drone.hostile
+                || Actor.findChar(drone.pos) != drone) {
+            ready();
+            return false;
+        }
+        if (!SpacebaseRun.level.adjacent(pos, drone.pos)) {
+            if (Level.fieldOfView[drone.pos] && getCloser(drone.pos)) return true;
+            ready();
+            return false;
+        }
+        // A flying drone can occupy a chasm or wall that the hero cannot enter.
+        // Vertigo could redirect either move and leave the two actors overlapping.
+        if (rooted || drone.rooted || buff(Vertigo.class) != null
+                || drone.buff(Vertigo.class) != null
+                || Level.solid[drone.pos]
+                || !(Level.passable[drone.pos] || (flying && Level.avoid[drone.pos]))
+                || (!flying && Level.pit[drone.pos])) {
+            ready();
+            return false;
+        }
+        int heroCell = pos;
+        int droneCell = drone.pos;
+        ready();
+        drone.move(heroCell);
+        drone.sprite.move(droneCell, heroCell);
+        sprite.move(heroCell, droneCell);
+        move(droneCell); // Normal movement applies vents, plasma and vacuum rules.
+        spend(1 / speed());
+        busy();
+        return true;
     }
 
     private boolean actInteract(HeroAction.Interact action) {
@@ -877,6 +940,11 @@ public class Hero extends Char {
             boolean hasKey = false;
             int door = SpacebaseRun.level.map[doorCell];
 
+            if (door == Terrain.LOCKED_DOOR && loaderArmEquipped()) {
+                smashLoaderObstacle(doorCell, Terrain.OPEN_DOOR);
+                return false;
+            }
+
             if (door == Terrain.LOCKED_DOOR
                     && belongings.ironKeys[SpacebaseRun.depth] > 0) {
 
@@ -911,6 +979,19 @@ public class Hero extends Char {
             ready();
             return false;
         }
+    }
+
+    private boolean loaderArmEquipped() {
+        return belongings.armor instanceof Loader && belongings.weapon instanceof LoaderArm;
+    }
+
+    private void smashLoaderObstacle(int cell, int replacement) {
+        curAction = null;
+        sprite.turnTo(pos, cell);
+        Sample.INSTANCE.play(Assets.SND_HIT);
+        Level.set(cell, replacement);
+        GameScene.updateMap(cell);
+        spendAndNext(1f);
     }
 
     private boolean actDescend(HeroAction.Descend action) {
@@ -1093,6 +1174,27 @@ public class Hero extends Char {
         if (buff(TimeFolder.timeStasis.class) != null)
             return;
 
+        // Toxic gas deals direct damage; stop it before shields or damage procs are spent.
+        if (src instanceof ToxicGas && belongings.armor != null
+                && belongings.armor.providesLifeSupport())
+            return;
+
+        HoverPod pod = HoverPod.equipped(this);
+        if (dmg > 0 && pod != null && HoverPod.blocksImpact(src)) {
+            pod.absorbHit(this);
+            return;
+        }
+
+        // Command plasma cuts through ordinary armor; Loader plating is the exception.
+        if (src instanceof Plasma) {
+            if (belongings.armor instanceof Loader) return;
+
+            // The Frontier shield's active forcefield can absorb some of a plasma strike.
+            WeakForcefield.Armor field = buff(WeakForcefield.Armor.class);
+            if (field != null) dmg = field.absorbPlasma(dmg);
+            if (dmg <= 0) return;
+        }
+
         if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage) && damageInterrupt) {
             interrupt();
             resting = false;
@@ -1101,11 +1203,6 @@ public class Hero extends Char {
         if (this.buff(Knockout.class) != null) {
             Buff.detach(this, Knockout.class);
             GLog.w(Messages.get(this, "pain_resist"));
-        }
-
-        if (DEV_TEST_INVULNERABLE) {
-            restoreDevTestHealth();
-            return;
         }
 
         StrongForcefield.Shield shield = buff(StrongForcefield.Shield.class);
@@ -1307,7 +1404,8 @@ public class Hero extends Char {
             sprite.move(pos, step);
             move(step);
 
-            spend(moveTime / speed());
+            // Unarmored movement is faster, but attacks and other timed actions are unchanged.
+            spend(moveTime / (speed() * (belongings.armor == null ? 1.5f : 1f)));
 
             return true;
 
@@ -1336,7 +1434,9 @@ public class Hero extends Char {
 
         } else if (Level.fieldOfView[cell] && (ch = Actor.findChar(cell)) instanceof Mob) {
 
-            if (ch instanceof NPC) {
+            if (ch instanceof Drone && ((Drone) ch).ally && !((Drone) ch).hostile) {
+                curAction = new HeroAction.SwapDrone((Drone) ch);
+            } else if (ch instanceof NPC) {
                 curAction = new HeroAction.Interact((NPC) ch);
             } else {
                 curAction = new HeroAction.Attack(ch);
@@ -1526,12 +1626,6 @@ public class Hero extends Char {
 
         curAction = null;
 
-        if (DEV_TEST_INVULNERABLE) {
-            restoreDevTestHealth();
-            new Flare(8, 32).color(0xFFFF66, true).show(sprite, 2f);
-            return;
-        }
-
         Clone clone = null;
 
         //look for revival items in player inventory, prioritize stabilized ones.
@@ -1642,30 +1736,12 @@ public class Hero extends Char {
 
     @Override
     public boolean isAlive() {
-        if (DEV_TEST_INVULNERABLE) {
-            if (HP <= 0) {
-                restoreDevTestHealth();
-            }
-            return true;
-        }
         if (subClass == HeroSubClass.BERSERKER
                 && berserk != null
                 && berserk.berserking()) {
             return true;
         }
         return super.isAlive();
-    }
-
-    public static boolean devTestInvulnerable() {
-        return DEV_TEST_INVULNERABLE;
-    }
-
-    public void restoreDevTestHealth() {
-        if (sprite != null && HP < HT) {
-            heal(this);
-        } else {
-            HP = HT;
-        }
     }
 
     @Override
@@ -1739,8 +1815,7 @@ public class Hero extends Char {
         return heroClass == HeroClass.DM3000
                 || heroClass == HeroClass.SHAPESHIFTER
                 || belongings.armor instanceof HoverPod
-                || belongings.armor instanceof SpaceSuit
-                || belongings.armor instanceof HunterSpaceSuit;
+                || belongings.armor != null && belongings.armor.providesLifeSupport();
     }
 
     @Override
@@ -1948,6 +2023,13 @@ public class Hero extends Char {
         }
         if (belongings.armor instanceof Loader) {
             immunities.add(Burning.class);
+        }
+        if (belongings.armor != null && belongings.armor.providesLifeSupport()) {
+            immunities.add(ConfusionGas.class);
+            immunities.add(ParalyticGas.class);
+            immunities.add(StenchGas.class);
+            immunities.add(ToxicGas.class);
+            immunities.add(VenomGas.class);
         }
         if (heroClass == HeroClass.DM3000) {
             immunities.add(Poison.class);

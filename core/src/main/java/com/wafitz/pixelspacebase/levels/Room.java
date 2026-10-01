@@ -25,8 +25,10 @@ import com.wafitz.pixelspacebase.levels.painters.AltarPainter;
 import com.wafitz.pixelspacebase.levels.painters.ArmoryPainter;
 import com.wafitz.pixelspacebase.levels.painters.BossExitPainter;
 import com.wafitz.pixelspacebase.levels.painters.CryptPainter;
+import com.wafitz.pixelspacebase.levels.painters.ChangingRoomPainter;
 import com.wafitz.pixelspacebase.levels.painters.EntrancePainter;
 import com.wafitz.pixelspacebase.levels.painters.ExitPainter;
+import com.wafitz.pixelspacebase.levels.painters.ExteriorPlatformPainter;
 import com.wafitz.pixelspacebase.levels.painters.LaboratoryPainter;
 import com.wafitz.pixelspacebase.levels.painters.LeonardPainter;
 import com.wafitz.pixelspacebase.levels.painters.LibraryPainter;
@@ -100,7 +102,10 @@ public class Room extends Rect implements Graph.Node, Bundlable {
         //security block quests
         MASS_GRAVE(MassGravePainter.class),
         ROT_GARDEN(RotGardenPainter.class),
-        RITUAL_SITE(RitualSitePainter.class);
+        RITUAL_SITE(RitualSitePainter.class),
+
+        CHANGING_ROOM(ChangingRoomPainter.class),
+        EXTERIOR_PLATFORM(ExteriorPlatformPainter.class);
 
         private Method paint;
 
@@ -126,12 +131,12 @@ public class Room extends Rect implements Graph.Node, Bundlable {
     }
 
     private static final ArrayList<Type> ALL_SPEC = new ArrayList<>(Arrays.asList(
-            Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
+            Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
             Type.TREASURY, Type.VENTS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
     ));
 
     static ArrayList<Type> SPECIALS = new ArrayList<>(Arrays.asList(
-            Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
+            Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
             Type.TREASURY, Type.VENTS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
     ));
 
@@ -248,7 +253,9 @@ public class Room extends Rect implements Graph.Node, Bundlable {
         if (bundle.contains(ROOMS)) {
             SPECIALS.clear();
             for (String type : bundle.getStringArray(ROOMS)) {
-                SPECIALS.add(Type.valueOf(type));
+                Type restored = Type.valueOf(type);
+                // Retain the enum names for old maps, not their retired generation rules.
+                if (restored != Type.WEAK_FLOOR && restored != Type.PIT) SPECIALS.add(restored);
             }
         } else {
             shuffleTypes();

@@ -20,8 +20,6 @@
  */
 package com.wafitz.pixelspacebase.scenes;
 
-import android.opengl.GLES20;
-
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.SpacebaseRun;
@@ -65,11 +63,15 @@ import com.wafitz.pixelspacebase.ui.BusyIndicator;
 import com.wafitz.pixelspacebase.ui.CustomTileVisual;
 import com.wafitz.pixelspacebase.ui.GameLog;
 import com.wafitz.pixelspacebase.ui.HealthIndicator;
+import com.wafitz.pixelspacebase.ui.HunterSignature;
+import com.wafitz.pixelspacebase.ui.HunterSensorMarkers;
 import com.wafitz.pixelspacebase.ui.LootIndicator;
 import com.wafitz.pixelspacebase.ui.QuickSlotButton;
 import com.wafitz.pixelspacebase.ui.ResumeIndicator;
 import com.wafitz.pixelspacebase.ui.StatusPane;
+import com.wafitz.pixelspacebase.ui.SpacebaseBackdrop;
 import com.wafitz.pixelspacebase.ui.TerrainFeaturesTilemap;
+import com.wafitz.pixelspacebase.ui.WaterLayer;
 import com.wafitz.pixelspacebase.ui.Toast;
 import com.wafitz.pixelspacebase.ui.Toolbar;
 import com.wafitz.pixelspacebase.ui.Window;
@@ -91,9 +93,6 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
-import com.watabou.noosa.NoosaScript;
-import com.watabou.noosa.NoosaScriptNoLighting;
-import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
@@ -110,7 +109,7 @@ public class GameScene extends PixelScene {
 
     static GameScene scene;
 
-    private SkinnedBlock water;
+    private WaterLayer water;
     private SpacebaseTilemap tiles;
     private TerrainFeaturesTilemap terrainFeatures;
     private FogOfWar fog;
@@ -125,6 +124,7 @@ public class GameScene extends PixelScene {
     private static CellSelector cellSelector;
 
     private Group terrain;
+    private SpacebaseBackdrop spaceBackdrop;
     private Group customTiles;
     private Group levelVisuals;
     private Group ripples;
@@ -132,6 +132,8 @@ public class GameScene extends PixelScene {
     private Group vents;
     private Group heaps;
     private Group mobs;
+    private Group hunterSignatures;
+    private HunterSensorMarkers hunterSensorMarkers;
     private Group emitters;
     private Group effects;
     private Group gases;
@@ -163,24 +165,12 @@ public class GameScene extends PixelScene {
         terrain = new Group();
         add(terrain);
 
-        water = new SkinnedBlock(
-                SpacebaseRun.level.width() * SpacebaseTilemap.SIZE,
-                SpacebaseRun.level.height() * SpacebaseTilemap.SIZE,
-                SpacebaseRun.level.waterTex()) {
+        // Space is visible only where the terrain has no station tile.
+        spaceBackdrop = new SpacebaseBackdrop();
+        terrain.add(spaceBackdrop);
 
-            @Override
-            protected NoosaScript script() {
-                return NoosaScriptNoLighting.get();
-            }
-
-            @Override
-            public void draw() {
-                //water has no alpha component, this improves performance
-                GLES20.glBlendFunc(GLES20.GL_ONE, GLES20.GL_ZERO);
-                super.draw();
-                GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-            }
-        };
+        water = new WaterLayer(SpacebaseRun.level.waterTex(),
+                SpacebaseRun.level.map, SpacebaseRun.level.width());
         terrain.add(water);
 
         tiles = new SpacebaseTilemap();
@@ -217,6 +207,8 @@ public class GameScene extends PixelScene {
         mobs = new Group();
         add(mobs);
 
+        hunterSignatures = new Group();
+
         for (Mob mob : SpacebaseRun.level.mobs) {
             addMobSprite(mob);
             if (Statistics.amuletObtained) {
@@ -237,6 +229,11 @@ public class GameScene extends PixelScene {
 
         fog = new FogOfWar(SpacebaseRun.level.width(), SpacebaseRun.level.height());
         add(fog);
+
+        hunterSensorMarkers = new HunterSensorMarkers();
+        add(hunterSensorMarkers);
+
+        add(hunterSignatures);
 
         spells = new Group();
         add(spells);
@@ -389,6 +386,8 @@ public class GameScene extends PixelScene {
                 GLog.w(Messages.get(this, "secrets"));
             }
 
+            announceNowPlaying();
+
             InterlevelScene.mode = InterlevelScene.Mode.NONE;
 
             fadeIn();
@@ -418,6 +417,25 @@ public class GameScene extends PixelScene {
         } else {
             return Assets.TUNE;
         }
+    }
+
+    public void announceNowPlaying() {
+        if (PixelSpacebase.nowPlaying()) {
+            GLog.i(Messages.get(this, "now_playing", musicTitle(musicForDepth())));
+        }
+    }
+
+    private String musicTitle(String track) {
+        if (Assets.OXYGEN_WARNING.equals(track)) return Messages.get(this, "track_oxygen_warning");
+        if (Assets.LOCKDOWN.equals(track)) return Messages.get(this, "track_lockdown");
+        if (Assets.SECTOR_9.equals(track)) return Messages.get(this, "track_sector_9");
+        if (Assets.PROTOCOL.equals(track)) return Messages.get(this, "track_protocol");
+        if (Assets.ENGINEERING_BOSS.equals(track)) return Messages.get(this, "track_engineering_boss");
+        if (Assets.HABITATION.equals(track)) return Messages.get(this, "track_habitation");
+        if (Assets.HABITATION_BOSS.equals(track)) return Messages.get(this, "track_habitation_boss");
+        if (Assets.BRIDGE.equals(track)) return Messages.get(this, "track_bridge");
+        if (Assets.BRIDGE_BOSS.equals(track)) return Messages.get(this, "track_bridge_boss");
+        return Messages.get(this, "track_pursuit");
     }
 
     private int freeRespawnCell() {
@@ -463,7 +481,7 @@ public class GameScene extends PixelScene {
 
         super.update();
 
-        if (!freezeEmitters) water.offset(0, -5 * Game.elapsed);
+        if (!freezeEmitters) water.offset(-5 * Game.elapsed);
 
         if (!Actor.processing() && SpacebaseRun.hero.isAlive()) {
             if (!t.isAlive()) {
@@ -564,10 +582,11 @@ public class GameScene extends PixelScene {
         customTiles.add(visual.create());
     }
 
-    public void resetCustomTiles() {
-        customTiles.clear();
+    public static void resetCustomTiles() {
+        if (scene == null || SpacebaseRun.level == null) return;
+        scene.customTiles.clear();
         for (CustomTileVisual visual : SpacebaseRun.level.customTiles) {
-            addCustomTile(visual);
+            scene.addCustomTile(visual);
         }
     }
 
@@ -604,6 +623,7 @@ public class GameScene extends PixelScene {
         sprite.visible = SpacebaseRun.visible[mob.pos];
         mobs.add(sprite);
         sprite.link(mob);
+        hunterSignatures.add(new HunterSignature(mob));
     }
 
     private synchronized void prompt(String text) {
@@ -725,6 +745,7 @@ public class GameScene extends PixelScene {
 
     public static void resetMap() {
         if (scene != null) {
+            scene.water.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
             scene.tiles.useTileset(SpacebaseRun.level.tilesTex());
             scene.tiles.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
             scene.terrainFeatures.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
@@ -735,6 +756,7 @@ public class GameScene extends PixelScene {
     //updates the whole map
     public static void updateMap() {
         if (scene != null) {
+            scene.water.updateMap();
             scene.tiles.updateMap();
             scene.terrainFeatures.updateMap();
         }
@@ -742,6 +764,7 @@ public class GameScene extends PixelScene {
 
     public static void updateMap(int cell) {
         if (scene != null) {
+            scene.water.updateMapCell(cell);
             scene.tiles.updateMapCell(cell);
             scene.terrainFeatures.updateMapCell(cell);
         }

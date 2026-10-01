@@ -26,6 +26,8 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.actors.mobs.HolodeckLegionary;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Survivor;
 import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.Generator;
@@ -63,7 +65,6 @@ public abstract class RegularLevel extends Level {
 
     public int secretDoors;
 
-    private static final int[] SURVIVOR_DEPTHS = {2, 7, 12, 17, 22};
 
     @Override
     protected boolean build() {
@@ -147,9 +148,6 @@ public abstract class RegularLevel extends Level {
         }
 
         specials = new ArrayList<>(Room.SPECIALS);
-        if (SpacebaseRun.bossLevel(SpacebaseRun.depth + 1)) {
-            specials.remove(Room.Type.WEAK_FLOOR);
-        }
         if (SpacebaseRun.isChallenged(Challenges.NO_ARMOR)) {
             //no sense in giving an armor reward room on a run with no armor.
             specials.remove(Room.Type.CRYPT);
@@ -160,6 +158,8 @@ public abstract class RegularLevel extends Level {
         }
         if (!assignRoomType())
             return false;
+        if (shouldAssignExteriorPlatform(SpacebaseRun.depth, SpacebaseRun.bossLevel())
+                && !assignExteriorPlatform(rooms)) return false;
 
         paint();
         paintWater();
@@ -170,6 +170,32 @@ public abstract class RegularLevel extends Level {
         placeVents();
 
         return true;
+    }
+
+    static boolean assignExteriorPlatform(List<Room> rooms) {
+        for (Room room : rooms) {
+            if (room.type != Type.NULL || !room.connected.isEmpty()
+                    || room.width() < 5 || room.height() < 5) continue;
+            for (Room neighbor : room.neigbours) {
+                if (neighbor.type != Type.STANDARD && neighbor.type != Type.ENTRANCE
+                        && neighbor.type != Type.EXIT) continue;
+                Rect border = room.intersect(neighbor);
+                if (Math.max(border.width(), border.height()) < 3) continue;
+                room.connect(neighbor);
+                room.type = Type.EXTERIOR_PLATFORM;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static boolean shouldAssignExteriorPlatform(int depth, boolean bossLevel) {
+        return depth > 1 && depth != 21 && !bossLevel;
+    }
+
+    public boolean isExteriorPlatformJump(int cell) {
+        Room room = room(cell);
+        return room != null && room.type == Type.EXTERIOR_PLATFORM && map[cell] == Terrain.CHASM;
     }
 
     private Room workshopRoom() {
@@ -265,7 +291,6 @@ public abstract class RegularLevel extends Level {
     protected boolean assignRoomType() {
 
         int specialRooms = 0;
-        boolean pitMade = false;
 
         for (Room r : rooms) {
             if (r.type == Type.NULL &&
@@ -275,21 +300,7 @@ public abstract class RegularLevel extends Level {
                         r.width() > 3 && r.height() > 3 &&
                         Random.Int(specialRooms * specialRooms + 2) == 0) {
 
-                    if (pitRoomNeeded && !pitMade) {
-
-                        r.type = Type.PIT;
-                        pitMade = true;
-
-                        specials.remove(Type.ARMORY);
-                        specials.remove(Type.CRYPT);
-                        specials.remove(Type.LABORATORY);
-                        specials.remove(Type.LIBRARY);
-                        specials.remove(Type.STATUE);
-                        specials.remove(Type.TREASURY);
-                        specials.remove(Type.VAULT);
-                        specials.remove(Type.WEAK_FLOOR);
-
-                    } else if (SpacebaseRun.depth % 5 == 2 && specials.contains(Type.LABORATORY)) {
+                    if (SpacebaseRun.depth % 5 == 2 && specials.contains(Type.LABORATORY)) {
 
                         r.type = Type.LABORATORY;
 
@@ -301,10 +312,6 @@ public abstract class RegularLevel extends Level {
 
                         int n = specials.size();
                         r.type = specials.get(Math.min(Random.Int(n), Random.Int(n)));
-                        if (r.type == Type.WEAK_FLOOR) {
-                            weakFloorCreated = true;
-                        }
-
                     }
 
                     Room.useType(r.type);
@@ -329,7 +336,6 @@ public abstract class RegularLevel extends Level {
             }
         }
 
-        if (pitRoomNeeded && !pitMade) return false;
 
         int count = 0;
         for (Room r : rooms) {
@@ -498,10 +504,6 @@ public abstract class RegularLevel extends Level {
             if (r.type != Type.NULL) {
                 placeDoors(r);
                 r.type.paint(this, r);
-            } else {
-                if (feeling == Feeling.CHASM && Random.Int(2) == 0) {
-                    Painter.fill(this, r, Terrain.WALL);
-                }
             }
         }
 
@@ -682,6 +684,25 @@ public abstract class RegularLevel extends Level {
         }
 
         createSurvivor();
+
+        if (SpacebaseRun.depth >= 16 && SpacebaseRun.depth <= 19
+                && !Y.Quest.isHolodeckPoweredDown()) {
+            int projections = 1 + Random.Int(2);
+            int attempts = 0;
+            while (projections > 0 && attempts++ < 40) {
+                Room room = randomRoom(Room.Type.STANDARD, 10);
+                if (room == null) continue;
+
+                int cell = pointToCell(room.random());
+                if (findMob(cell) == null && Level.passable[cell]) {
+                    HolodeckLegionary legionary = new HolodeckLegionary();
+                    legionary.pos = cell;
+                    legionary.state = legionary.WANDERING;
+                    mobs.add(legionary);
+                    projections--;
+                }
+            }
+        }
     }
 
     private void createSurvivor() {
@@ -689,45 +710,38 @@ public abstract class RegularLevel extends Level {
             return;
         }
 
-        if (placeSurvivorInRoom(roomExit, 40)) {
-            return;
-        }
-
-        if (placeSurvivorInRoom(roomEntrance, 20)) {
-            return;
-        }
-
-        for (int tries = 0; tries < 40; tries++) {
-            Room room = randomRoom(Room.Type.STANDARD, 10);
-            if (placeSurvivorInRoom(room, 1)) {
-                return;
+        for (Mob mob : mobs) if (mob instanceof Survivor) return;
+        ArrayList<Integer> candidates = new ArrayList<>();
+        for (Room room : rooms) {
+            if (room.type != Type.STANDARD && room.type != Type.ENTRANCE && room.type != Type.EXIT) continue;
+            for (int y = room.top + 1; y < room.bottom; y++) {
+                for (int x = room.left + 1; x < room.right; x++) {
+                    int cell = x + y * width();
+                    if (canPlaceSurvivor(cell)) candidates.add(cell);
+                }
             }
+        }
+        if (!candidates.isEmpty()) {
+            Survivor survivor = new Survivor();
+            survivor.pos = Random.element(candidates);
+            mobs.add(survivor);
         }
     }
 
-    private boolean placeSurvivorInRoom(Room room, int tries) {
-        if (room == null) {
-            return false;
-        }
-
-        for (int i = 0; i < tries; i++) {
-            int cell = pointToCell(room.random());
-            if (canPlaceSurvivor(cell)) {
-                Survivor survivor = new Survivor();
-                survivor.pos = cell;
-                mobs.add(survivor);
-                return true;
-            }
-        }
-
-        return false;
+    static int survivorDepth(long seed, int chapter) {
+        // Derive the floor from the run seed so revisiting/generation order cannot change it.
+        long mixed = seed ^ (0x9E3779B97F4A7C15L * (chapter + 1));
+        mixed ^= mixed >>> 33;
+        mixed *= 0xFF51AFD7ED558CCDL;
+        mixed ^= mixed >>> 33;
+        int start = chapter == 4 ? 22 : chapter * 5 + 1;
+        int floors = chapter == 4 ? 3 : 4;
+        return start + (int) ((mixed & Long.MAX_VALUE) % floors);
     }
 
     private boolean hasSurvivorForDepth() {
-        for (int depth : SURVIVOR_DEPTHS) {
-            if (SpacebaseRun.depth == depth) {
-                return true;
-            }
+        for (int chapter = 0; chapter < 5; chapter++) {
+            if (SpacebaseRun.depth == survivorDepth(SpacebaseRun.seed, chapter)) return true;
         }
         return false;
     }
@@ -740,6 +754,9 @@ public abstract class RegularLevel extends Level {
                 && vents.get(cell) == null
                 && mines.get(cell) == null
                 && heaps.get(cell) == null
+                && !isVacuum(cell)
+                && !isPlasmaCell(cell)
+                && findMob(cell) == null
                 && Actor.findChar(cell) == null;
     }
 
@@ -760,7 +777,8 @@ public abstract class RegularLevel extends Level {
             }
 
             cell = pointToCell(room.random());
-            if (!SpacebaseRun.visible[cell] && Actor.findChar(cell) == null && Level.passable[cell]) {
+            if (!SpacebaseRun.visible[cell] && Actor.findChar(cell) == null && Level.passable[cell]
+                    && !isPlasmaCell(cell)) {
                 return cell;
             }
 
@@ -780,7 +798,7 @@ public abstract class RegularLevel extends Level {
             }
 
             cell = pointToCell(room.random());
-            if (Level.passable[cell]) {
+            if (Level.passable[cell] && !isPlasmaCell(cell)) {
                 return cell;
             }
 
@@ -865,35 +883,30 @@ public abstract class RegularLevel extends Level {
     }
 
     private int randomDropCell() {
-        while (true) {
-            Room room = randomRoom(Room.Type.STANDARD, 1);
+        for (int attempt = 0; attempt < 500; attempt++) {
+            Room room = randomRoom(Room.Type.STANDARD, rooms.size());
             if (room != null) {
                 int pos = pointToCell(room.random());
-                if (passable[pos]) {
+                if (passable[pos] && !isPlasmaCell(pos)) {
                     return pos;
                 }
             }
         }
-    }
 
-    @Override
-    public int pitCell() {
+        // Keep generated loot safe even on compact Command maps with heavily flooded rooms.
         for (Room room : rooms) {
-            if (room.type == Type.PIT) {
-                return pointToCell(room.random());
+            if (room.type != Room.Type.STANDARD) continue;
+            for (int y = room.top + 1; y < room.bottom; y++) {
+                for (int x = room.left + 1; x < room.right; x++) {
+                    int pos = x + y * width();
+                    if (passable[pos] && !isPlasmaCell(pos)) return pos;
+                }
             }
         }
 
-        return super.pitCell();
-    }
-
-    public boolean hasWeakFloor() {
-        for (Room room : rooms) {
-            if (room.type == Type.WEAK_FLOOR) {
-                return true;
-            }
-        }
-        return false;
+        int safeCell = super.randomDestination();
+        if (safeCell >= 0) return safeCell;
+        throw new IllegalStateException("No safe item spawn cell on level " + SpacebaseRun.depth);
     }
 
     @Override
@@ -938,6 +951,43 @@ public abstract class RegularLevel extends Level {
                 roomExit = r;
             }
         }
+        // Room geometry is loaded after Level's initial wall cleanup.
+        cleanWalls();
+    }
+
+    @Override
+    void cleanWalls() {
+        if (rooms == null) {
+            super.cleanWalls();
+            return;
+        }
+
+        boolean[] footprint = new boolean[length()];
+        for (Room room : rooms) {
+            if (room.type == Type.NULL) continue;
+            for (int y = Math.max(0, room.top); y <= Math.min(height() - 1, room.bottom); y++) {
+                for (int x = Math.max(0, room.left); x <= Math.min(width() - 1, room.right); x++) {
+                    footprint[x + y * width()] = true;
+                }
+            }
+        }
+
+        boolean changed = false;
+        for (int cell = 0; cell < length(); cell++) {
+            // Preserve the intentional sealed fall chamber and its wall ring.
+            footprint[cell] |= isDoorlessRoomCell(cell) || isDoorlessRoomBoundaryCell(cell);
+            if (!footprint[cell] && (map[cell] == Terrain.WALL || map[cell] == Terrain.WALL_DECO)) {
+                map[cell] = Terrain.CHASM;
+                changed = true;
+            }
+            // Preserve deliberate terrain outside room rectangles (e.g. a bridge).
+            if (map[cell] != Terrain.CHASM && map[cell] != Terrain.WALL
+                    && map[cell] != Terrain.WALL_DECO) footprint[cell] = true;
+            if (map[cell] == Terrain.CHASM) footprint[cell] = false;
+        }
+        if (changed) buildFlagMaps();
+        discoverable = footprint;
+        revealHull();
     }
 
 }

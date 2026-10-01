@@ -189,6 +189,22 @@ public class DroneController extends Item {
             updateDrone(-1, null);
         }
 
+        /**
+         * Permanently severs the controller link before this spent controller
+         * is rendered. An active drone is left operational, but no longer
+         * regards the hero as its owner.
+         */
+        public void releaseDrone() {
+            if (SpacebaseRun.depth != droneDepth) {
+                return;
+            }
+
+            Actor actor = Actor.findById(myDrone);
+            if (actor instanceof Drone) {
+                ((Drone) actor).becomeHostile();
+            }
+        }
+
         private void updateDrone(int cell, Char holder) {
             //important, as ids are not unique between depths.
             if (SpacebaseRun.depth != droneDepth)
@@ -207,6 +223,11 @@ public class DroneController extends Item {
         @Override
         public boolean isIdentified() {
             return true;
+        }
+
+        @Override
+        public int cost() {
+            return 30;
         }
 
         private static final String MYDRONE = "mydrone";

@@ -26,9 +26,12 @@ import com.wafitz.pixelspacebase.actors.buffs.Awareness;
 import com.wafitz.pixelspacebase.actors.buffs.IntruderAlert;
 import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
+import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.StrandedRoomRescue;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.YRescuer;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Quartermaster;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Leonard;
@@ -55,6 +58,7 @@ import com.wafitz.pixelspacebase.levels.MaintenanceLevel;
 import com.wafitz.pixelspacebase.levels.SecurityBossLevel;
 import com.wafitz.pixelspacebase.levels.SecurityBlockLevel;
 import com.wafitz.pixelspacebase.levels.Room;
+import com.wafitz.pixelspacebase.levels.painters.Workshop;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.StartScene;
@@ -108,7 +112,10 @@ public class SpacebaseRun {
         plasmidKit,
         blasterHolster,
 
-        guardHP;
+        guardHP,
+
+        //append-only: limited drop ordinals are persisted in saves
+        allGearUpgrade;
 
         public int count = 0;
 
@@ -137,6 +144,11 @@ public class SpacebaseRun {
     // Hero's field of view
     public static boolean[] visible;
 
+    /** Visibility is transient, so a newly loaded floor starts with a correctly sized empty field. */
+    static void resetVisibilityForLevel(Level level) {
+        visible = new boolean[level.length()];
+    }
+
     public static SparseArray<ArrayList<Item>> droppedItems;
     public static SparseArray<ArrayList<Heap>> droppedHeaps;
 
@@ -145,6 +157,8 @@ public class SpacebaseRun {
     public static long seed;
 
     public static void init() {
+
+        Workshop.resetStorage();
 
         version = Game.versionCode;
         challenges = PixelSpacebase.challenges();
@@ -204,11 +218,15 @@ public class SpacebaseRun {
     }
 
     public static Level newLevel() {
+        return newLevel(nextDepth(depth));
+    }
+
+    private static Level newLevel(int targetDepth) {
 
         SpacebaseRun.level = null;
         Actor.clear();
 
-        depth++;
+        depth = targetDepth;
         if (depth > Statistics.deepestFloor) {
             Statistics.deepestFloor = depth;
             Statistics.completedWithNoKilling = Statistics.qualifiedForNoKilling;
@@ -271,7 +289,7 @@ public class SpacebaseRun {
                 Statistics.deepestFloor--;
         }
 
-        visible = new boolean[level.length()];
+        resetVisibilityForLevel(level);
         level.create();
 
         Statistics.qualifiedForNoKilling = !bossLevel();
@@ -313,14 +331,31 @@ public class SpacebaseRun {
         return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
     }
 
+    public static boolean canVisitDepth(int targetDepth) {
+        return targetDepth != 21 || Y.Quest.hasSecretWorkshopAccess();
+    }
+
+    public static int nextDepth(int currentDepth) {
+        return currentDepth == 20 && !canVisitDepth(21) ? 22 : currentDepth + 1;
+    }
+
+    public static int previousDepth(int currentDepth) {
+        return currentDepth == 22 && !canVisitDepth(21) ? 20 : currentDepth - 1;
+    }
+
     @SuppressWarnings("deprecation")
     public static void switchLevel(final Level level, int pos) {
 
         SpacebaseRun.level = level;
+        Workshop.reconcileStorageChest(level);
         Actor.init();
 
+        if (Y.Quest.isHolodeckPoweredDown()) {
+            Y.Quest.discardProjections(level);
+        }
+
         PathFinder.setMapSize(level.width(), level.height());
-        visible = new boolean[level.length()];
+        resetVisibilityForLevel(level);
 
         Actor respawner = level.respawner();
         if (respawner != null) {
@@ -328,6 +363,12 @@ public class SpacebaseRun {
         }
 
         hero.pos = pos != -1 ? pos : level.exit;
+        YRescuer.placeOn(level);
+        if (level.isDoorlessRoomCell(hero.pos)) {
+            Buff.affect(hero, StrandedRoomRescue.class);
+        } else {
+            Buff.detach(hero, StrandedRoomRescue.class);
+        }
         StationCat.placeFollowerOn(level);
 
         hero.viewDistance = heroViewDistance();
@@ -356,7 +397,7 @@ public class SpacebaseRun {
     }
 
     static int fallTargetDepth(int currentDepth) {
-        return currentDepth > 1 ? currentDepth - 1 : currentDepth + 1;
+        return currentDepth > 1 ? previousDepth(currentDepth) : currentDepth + 1;
     }
 
     public static void dropHeapToDepth(Heap heap, int depth) {
@@ -558,6 +599,7 @@ public class SpacebaseRun {
             Upgrade.save(bundle);
             Plasmid.save(bundle);
             Module.save(bundle);
+            Workshop.storeInBundle(bundle);
 
             Actor.storeNextID(bundle);
 
@@ -633,6 +675,8 @@ public class SpacebaseRun {
         quickslot.restorePlaceholders(bundle);
 
         if (fullLoad) {
+            Workshop.restoreFromBundle(bundle);
+
             transmutation = bundle.getInt(WT);
 
             int[] dropValues = bundle.getIntArray(LIMDROPS);
@@ -675,17 +719,19 @@ public class SpacebaseRun {
 
         hero = null;
         hero = (Hero) bundle.get(HERO);
-
         parts = bundle.getInt(PARTS);
         depth = bundle.getInt(DEPTH);
 
         Statistics.restoreFromBundle(bundle);
+        if (fullLoad) {
+            Y.Quest.reconcileHolodeckState(hero, depth, Statistics.deepestFloor);
+        }
         Journal.restoreFromBundle(bundle);
         Generator.restoreFromBundle(bundle);
 
         droppedItems = new SparseArray<>();
         droppedHeaps = new SparseArray<>();
-        for (int i = 2; i <= Statistics.deepestFloor + 1; i++) {
+        for (int i = 1; i <= Statistics.deepestFloor + 1; i++) {
             ArrayList<Item> dropped = new ArrayList<>();
             if (bundle.contains(Messages.format(DROPPED, i)))
                 for (Bundlable b : bundle.getCollection(Messages.format(DROPPED, i))) {
@@ -715,7 +761,18 @@ public class SpacebaseRun {
         Bundle bundle = Bundle.read(input);
         input.close();
 
-        return (Level) bundle.get("level");
+        Level level = (Level) bundle.get("level");
+        resetVisibilityForLevel(level);
+        return level;
+    }
+
+    /** Rescue travel can create gaps below deepestFloor; never overwrite an existing deck. */
+    public static Level loadOrCreateLevel(int targetDepth) throws IOException {
+        depth = targetDepth;
+        if (Game.instance.getFileStreamPath(Messages.format(depthFile(hero.heroClass), depth)).exists()) {
+            return loadLevel(hero.heroClass);
+        }
+        return newLevel(targetDepth);
     }
 
     public static void deleteGame(HeroClass cl, boolean deleteLevels) {
@@ -723,9 +780,8 @@ public class SpacebaseRun {
         Game.instance.deleteFile(gameFile(cl));
 
         if (deleteLevels) {
-            int depth = 1;
-            while (Game.instance.deleteFile(Messages.format(depthFile(cl), depth))) {
-                depth++;
+            for (int depth = 1; depth <= 26; depth++) {
+                Game.instance.deleteFile(Messages.format(depthFile(cl), depth));
             }
         }
 
@@ -751,12 +807,6 @@ public class SpacebaseRun {
     }
 
     public static void fail(Class cause) {
-        if (Hero.devTestInvulnerable()) {
-            if (hero != null) {
-                hero.restoreDevTestHealth();
-            }
-            return;
-        }
         if (hero.belongings.getItem(Clone.class) == null) {
             Rankings.INSTANCE.submit(false, cause);
         }

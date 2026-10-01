@@ -31,9 +31,13 @@ import com.watabou.noosa.ui.Button;
 
 public class RedButton extends Button {
 
+    private static final float TEXT_PADDING = 3;
+
     protected NinePatch bg;
     protected RenderedText text;
     protected Image icon;
+    private final float textScale;
+    private final int textSize;
 
     public RedButton(String label) {
         this(label, 9);
@@ -43,6 +47,8 @@ public class RedButton extends Button {
         super();
 
         text = PixelScene.renderText(size);
+        textScale = text.scale.x;
+        textSize = size;
         text.text(label);
         add(text);
     }
@@ -64,15 +70,32 @@ public class RedButton extends Button {
         bg.y = y;
         bg.size(width, height);
 
-        text.x = x + (width - text.width()) / 2;
+        float iconWidth = icon == null ? 0 : icon.width() + 2;
+        fitText(width - TEXT_PADDING * 2 - iconWidth);
+        float contentWidth = text.width() + iconWidth;
+        text.x = x + (width - contentWidth) / 2 + iconWidth;
         text.y = y + (height - text.baseLine()) / 2;
         PixelScene.align(text);
 
         if (icon != null) {
-            icon.x = x + text.x - icon.width() - 2;
+            icon.x = text.x - icon.width() - 2;
             icon.y = y + (height - icon.height()) / 2;
             PixelScene.align(icon);
         }
+    }
+
+    protected void fitText(float availableWidth) {
+        // Always start at the requested size, including after resizing or a
+        // label change, so a previously shortened label can grow back.
+        text.scale.set(textScale);
+        float fit = 1;
+        if (text.width() > 0) {
+            fit = Math.min(fit, Math.max(0, availableWidth) / text.width());
+        }
+        if (text.height() > 0) {
+            fit = Math.min(fit, Math.max(0, height - 4) / text.height());
+        }
+        text.scale.set(textScale * fit);
     }
 
     @Override
@@ -112,10 +135,11 @@ public class RedButton extends Button {
     }
 
     public float reqWidth() {
-        return text.width() + 2f;
+        return text.width * textScale + TEXT_PADDING * 2
+                + (icon == null ? 0 : icon.width() + 2);
     }
 
     public float reqHeight() {
-        return text.baseLine() + 4;
+        return textSize + 4;
     }
 }

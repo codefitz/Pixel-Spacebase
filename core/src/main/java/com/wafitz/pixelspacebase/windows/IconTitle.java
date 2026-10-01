@@ -81,7 +81,7 @@ public class IconTitle extends Component {
         imIcon.x = x;
         imIcon.y = y;
 
-        tfLabel.maxWidth((int) (width - (imIcon.x + imIcon.width() + GAP)));
+        tfLabel.maxWidth(Math.max(1, (int) (width - imIcon.width() - GAP)));
         tfLabel.setPos(imIcon.x + imIcon.width() + GAP, imIcon.height > tfLabel.height() ?
                 imIcon.y + (imIcon.height() - tfLabel.height()) / 2 :
                 imIcon.y);

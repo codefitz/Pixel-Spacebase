@@ -15,4 +15,5 @@ public class FallTargetDepthTest {
     public void fallFromFirstDepthUsesDeeperFallback() {
         assertEquals(2, SpacebaseRun.fallTargetDepth(1));
     }
+
 }

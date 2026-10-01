@@ -25,8 +25,19 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.actors.mobs.SignalSiren;
+import com.wafitz.pixelspacebase.effects.Speck;
+import com.wafitz.pixelspacebase.items.Heap;
+import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.PetCarrier;
+import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
+import com.wafitz.pixelspacebase.items.food.MysteryMeat;
+import com.wafitz.pixelspacebase.items.modules.Module;
+import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.levels.Level;
+import com.wafitz.pixelspacebase.levels.RegularLevel;
+import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.StationCatSprite;
@@ -36,12 +47,20 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.Arrays;
+
 public class StationCat extends NPC {
 
     private boolean following;
     private static StationCat carriedCat;
 
+    //A cat gets one worthwhile thing to bat around in each room, not every item it sees.
+    private int rummagedDepth = -1;
+    private int[] rummagedRooms = new int[0];
+
     private static final String FOLLOWING = "following";
+    private static final String RUMMAGED_DEPTH = "rummagedDepth";
+    private static final String RUMMAGED_ROOMS = "rummagedRooms";
 
     {
         spriteClass = StationCatSprite.class;
@@ -53,23 +72,65 @@ public class StationCat extends NPC {
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
         bundle.put(FOLLOWING, following);
+        bundle.put(RUMMAGED_DEPTH, rummagedDepth);
+        bundle.put(RUMMAGED_ROOMS, rummagedRooms);
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
         following = bundle.getBoolean(FOLLOWING);
+        rummagedDepth = bundle.getInt(RUMMAGED_DEPTH);
+        rummagedRooms = bundle.getIntArray(RUMMAGED_ROOMS);
+        if (rummagedRooms == null) {
+            rummagedRooms = new int[0];
+        }
         ally = following;
         Quest.following = Quest.following || following;
     }
 
     @Override
     protected boolean act() {
-        throwItem();
-
+        //A cat arriving on a new level waits until the player chooses to touch it.
+        //This keeps it out of danger unless the player deliberately asks it to follow.
         if (!following) {
             spend(TICK);
             return true;
+        }
+
+        if (scareNearbySignalSiren()) {
+            spend(TICK);
+            return true;
+        }
+
+        Heap meatHeap = meatHeap();
+        if (meatHeap != null && !heroLeftRoom(meatHeap)) {
+            if (meatHeap.pos == pos) {
+                eatMeat(meatHeap);
+                spend(TICK);
+                return true;
+            }
+
+            int oldPos = pos;
+            if (getCloser(meatHeap.pos)) {
+                spend(1 / speed());
+                return moveSprite(oldPos, pos);
+            }
+        }
+
+        Heap itemHeap = itemHeap();
+        if (itemHeap != null && !heroLeftRoom(itemHeap)) {
+            if (itemHeap.pos == pos) {
+                batItem(itemHeap);
+                spend(TICK);
+                return true;
+            }
+
+            int oldPos = pos;
+            if (getCloser(itemHeap.pos)) {
+                spend(1 / speed());
+                return moveSprite(oldPos, pos);
+            }
         }
 
         int target = followTarget();
@@ -81,6 +142,171 @@ public class StationCat extends NPC {
 
         spend(TICK);
         return true;
+    }
+
+    private boolean scareNearbySignalSiren() {
+        if (SpacebaseRun.visible == null) {
+            return false;
+        }
+
+        for (Mob mob : SpacebaseRun.level.mobs) {
+            if (mob instanceof SignalSiren
+                    && mob.isAlive()
+                    && SpacebaseRun.visible[mob.pos]
+                    && SpacebaseRun.level.distance(pos, mob.pos) <= 3
+                    && ((SignalSiren) mob).scareByStationCat(id())) {
+                GLog.n(Messages.get(this, "scares_siren", Messages.get(mob, "name")));
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private Heap itemHeap() {
+        Heap closest = null;
+        int closestDistance = Integer.MAX_VALUE;
+
+        for (Heap heap : SpacebaseRun.level.heaps.values()) {
+            Room room = roomAt(heap.pos);
+            if (heap.type != Heap.Type.HEAP || room == null || isWorkshopCell(heap.pos)
+                    || !containsCatToy(heap) || roomHasBeenRummaged(room)) {
+                continue;
+            }
+
+            int distance = SpacebaseRun.level.distance(pos, heap.pos);
+            if (distance < closestDistance) {
+                closest = heap;
+                closestDistance = distance;
+            }
+        }
+
+        return closest;
+    }
+
+    private Heap meatHeap() {
+        if (HP >= HT) {
+            return null;
+        }
+
+        Heap closest = null;
+        int closestDistance = Integer.MAX_VALUE;
+        for (Heap heap : SpacebaseRun.level.heaps.values()) {
+            if (heap.type != Heap.Type.HEAP || rawMeat(heap) == null || heroLeftRoom(heap)) {
+                continue;
+            }
+
+            int distance = SpacebaseRun.level.distance(pos, heap.pos);
+            if (distance < closestDistance) {
+                closest = heap;
+                closestDistance = distance;
+            }
+        }
+        return closest;
+    }
+
+    private MysteryMeat rawMeat(Heap heap) {
+        for (Item item : heap.items) {
+            if (item instanceof MysteryMeat) {
+                return (MysteryMeat) item;
+            }
+        }
+        return null;
+    }
+
+    private void eatMeat(Heap heap) {
+        MysteryMeat meat = rawMeat(heap);
+        if (meat != null && heap.removeOne(meat)) {
+            HP = Math.min(HT, HP + Math.max(1, HT / 2));
+            if (sprite != null) {
+                sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+            }
+        }
+    }
+
+    private void batItem(Heap heap) {
+        Room room = roomAt(heap.pos);
+        Item toy = catToy(heap);
+        if (room == null || toy == null) {
+            return;
+        }
+
+        markRoomRummaged(room);
+
+        int target;
+        do {
+            target = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
+        } while (!Level.passable[target] && !Level.avoid[target]);
+
+        if (heap.removeOne(toy)) {
+            SpacebaseRun.level.drop(toy, target).sprite.drop(pos);
+        }
+    }
+
+    private boolean heroLeftRoom(Heap heap) {
+        if (!(SpacebaseRun.level instanceof RegularLevel)) {
+            return false;
+        }
+
+        Room itemRoom = ((RegularLevel) SpacebaseRun.level).room(heap.pos);
+        return itemRoom != null && !itemRoom.inside(SpacebaseRun.level.cellToPoint(SpacebaseRun.hero.pos));
+    }
+
+    private boolean isWorkshopCell(int cell) {
+        if (!(SpacebaseRun.level instanceof RegularLevel)) {
+            return false;
+        }
+
+        Room room = ((RegularLevel) SpacebaseRun.level).room(cell);
+        return room != null && room.type == Room.Type.WORKSHOP;
+    }
+
+    private Room roomAt(int cell) {
+        if (!(SpacebaseRun.level instanceof RegularLevel)) {
+            return null;
+        }
+        return ((RegularLevel) SpacebaseRun.level).room(cell);
+    }
+
+    private boolean containsCatToy(Heap heap) {
+        return catToy(heap) != null;
+    }
+
+    private Item catToy(Heap heap) {
+        for (Item item : heap.items) {
+            if (item instanceof Module || item instanceof EquippableModule || item instanceof Upgrade) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    private boolean roomHasBeenRummaged(Room room) {
+        resetRummagedRoomsForCurrentDepth();
+        int roomKey = roomKey(room);
+        for (int key : rummagedRooms) {
+            if (key == roomKey) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void markRoomRummaged(Room room) {
+        resetRummagedRoomsForCurrentDepth();
+        rummagedRooms = Arrays.copyOf(rummagedRooms, rummagedRooms.length + 1);
+        rummagedRooms[rummagedRooms.length - 1] = roomKey(room);
+    }
+
+    private void resetRummagedRoomsForCurrentDepth() {
+        if (rummagedDepth != SpacebaseRun.depth) {
+            rummagedDepth = SpacebaseRun.depth;
+            rummagedRooms = new int[0];
+        }
+    }
+
+    private int roomKey(Room room) {
+        return room.left | room.top << 6 | room.right << 12 | room.bottom << 18;
     }
 
     private int followTarget() {

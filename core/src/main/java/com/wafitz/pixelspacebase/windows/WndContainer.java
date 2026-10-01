@@ -50,6 +50,7 @@ import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
+import com.wafitz.pixelspacebase.ui.Icons;
 import com.wafitz.pixelspacebase.ui.ItemSlot;
 import com.wafitz.pixelspacebase.ui.QuickSlotButton;
 import com.watabou.gltextures.TextureCache;
@@ -279,6 +280,9 @@ public class WndContainer extends WndTabbed {
         }
 
         private Image icon() {
+            if (container == SpacebaseRun.hero.belongings.backpack) {
+                return Icons.get(Icons.BACKPACK);
+            }
             return new ItemSprite(container.image(), null);
         }
     }

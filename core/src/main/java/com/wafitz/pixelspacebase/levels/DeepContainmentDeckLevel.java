@@ -45,6 +45,7 @@ import com.wafitz.pixelspacebase.levels.vents.TeleportationVent;
 import com.wafitz.pixelspacebase.levels.vents.VenomVent;
 import com.wafitz.pixelspacebase.levels.vents.WarpingVent;
 import com.wafitz.pixelspacebase.levels.vents.WeakeningVent;
+import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -54,11 +55,13 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import javax.microedition.khronos.opengles.GL10;
+import java.util.ArrayList;
 
 public class DeepContainmentDeckLevel extends RegularLevel {
 
     {
-        minRoomSize = 6;
+        // Each regular deck needs a room large enough for its 7x7 workshop.
+        minRoomSize = 7;
 
         viewDistance = Math.max(25 - SpacebaseRun.depth, 1);
 
@@ -133,13 +136,35 @@ public class DeepContainmentDeckLevel extends RegularLevel {
         }
 
         placeSign();
+        addFloorHoles();
+    }
+
+    private void addFloorHoles() {
+        ArrayList<Integer> candidates = new ArrayList<>();
+        for (Room room : rooms) {
+            if (room.type != Room.Type.STANDARD) continue;
+
+            ArrayList<Integer> roomCandidates = new ArrayList<>();
+            for (int y = room.top + 2; y < room.bottom - 1; y++) {
+                for (int x = room.left + 2; x < room.right - 1; x++) {
+                    int cell = x + y * width();
+                    if (map[cell] == Terrain.EMPTY || map[cell] == Terrain.EMPTY_DECO) {
+                        roomCandidates.add(cell);
+                    }
+                }
+            }
+            if (!roomCandidates.isEmpty()) candidates.add(Random.element(roomCandidates));
+        }
+
+        int holes = Math.min(candidates.size(), 3 + Random.Int(4));
+        CommandFloorHoles.scatter(this, candidates, holes);
     }
 
     @Override
     public String tileName(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(DeepContainmentDeckLevel.class, "water_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "plasma_name");
             case Terrain.LIGHTEDVENT:
                 return Messages.get(DeepContainmentDeckLevel.class, "lighted_name");
             case Terrain.OFFVENT:
@@ -156,7 +181,7 @@ public class DeepContainmentDeckLevel extends RegularLevel {
     public String tileDesc(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(DeepContainmentDeckLevel.class, "water_desc");
+                return Messages.get(DeepContainmentDeckLevel.class, "plasma_desc");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
                 return Messages.get(DeepContainmentDeckLevel.class, "statue_desc");
@@ -177,27 +202,40 @@ public class DeepContainmentDeckLevel extends RegularLevel {
     public static void addContainmentVisuals(Level level, Group group) {
         for (int i = 0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WATER) {
-                group.add(new Stream(i));
+                group.add(new Stream(level, i));
             }
         }
     }
 
     private static class Stream extends Group {
 
-        private int pos;
+        private final Level level;
+
+        private final int pos;
+
+        private final boolean plasma;
 
         private float delay;
 
-        public Stream(int pos) {
+        public Stream(Level level, int pos) {
             super();
 
+            this.level = level;
             this.pos = pos;
+            plasma = level.isPlasmaCell(pos);
 
             delay = Random.Float(2);
         }
 
         @Override
         public void update() {
+
+            // The stream visual is created with the level, so remove it if its plasma tile
+            // is later stabilised or ruptured instead of continuing to emit sparks there.
+            if (plasma && !level.isPlasmaCell(pos)) {
+                killAndErase();
+                return;
+            }
 
             if (visible = SpacebaseRun.visible[pos]) {
 
@@ -208,9 +246,11 @@ public class DeepContainmentDeckLevel extends RegularLevel {
                     delay = Random.Float(2);
 
                     PointF p = SpacebaseTilemap.tileToWorld(pos);
-                    ((FireParticle) recycle(FireParticle.class)).reset(
+                    FireParticle particle = (FireParticle) recycle(FireParticle.class);
+                    particle.reset(
                             p.x + Random.Float(SpacebaseTilemap.SIZE),
                             p.y + Random.Float(SpacebaseTilemap.SIZE));
+                    particle.color(plasma ? 0x66DDFF : 0xEE7722);
                 }
             }
         }

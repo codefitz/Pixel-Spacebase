@@ -56,6 +56,7 @@ public class ItemSpriteSheet {
     public static final int PET_CARRIER = CONTAINERS + 7;
     public static final int UPGRADE_BENCH = CONTAINERS + 8;
     public static final int BREAKDOWN_BENCH = CONTAINERS + 9;
+    public static final int QUANTUM_CHEST = CONTAINERS + 10;
 
     private static final int SINGLE_USE = xy(1, 3);   //32 slots
     public static final int CLONE = SINGLE_USE;
@@ -71,14 +72,14 @@ public class ItemSpriteSheet {
     public static final int GOLDEN_KEYCARD = SINGLE_USE + 10;
     public static final int SECURITY_KEYCARD = SINGLE_USE + 11;
     public static final int MASTERY = SINGLE_USE + 12;
-    public static final int KIT = SINGLE_USE + 13;
+    public static final int ARMOR_KIT = SINGLE_USE + 13;
     public static final int ESCAPE_POD_OVERRIDE = SINGLE_USE + 14;
 
     //32 free slots
 
     private static final int WEP_TIER1 = xy(1, 7);   //8 slots
     public static final int SPANNER = WEP_TIER1;
-    //public static final int CUDGEL = WEP_TIER1 + 1;
+    public static final int LOADER_ARM = WEP_TIER1 + 1;
     public static final int KNUCKLEDUSTER = WEP_TIER1 + 2;
     //public static final int RAPIER = WEP_TIER1 + 3;
     public static final int DAGGER = WEP_TIER1 + 4;
@@ -192,6 +193,7 @@ public class ItemSpriteSheet {
     public static final int HOLOPAD_1 = ARTIFACTS + 20;
     public static final int HOLOPAD_2 = ARTIFACTS + 21;
     public static final int HOLOPAD_3 = ARTIFACTS + 22;
+    public static final int WORMHOLE_GENERATOR = ARTIFACTS + 23;
 
     //32 free slots
 
@@ -208,6 +210,8 @@ public class ItemSpriteSheet {
     public static final int BERKANAN_UPGRADE = UPGRADES + 9;
     public static final int ODAL_UPGRADE = UPGRADES + 10;
     public static final int TIWAZ_UPGRADE = UPGRADES + 11;
+    // Reuse the final existing upgrade rune until the atlas gets a new sprite.
+    public static final int DAGAZ_UPGRADE = UPGRADES + 11;
 
     private static final int PLASMID = xy(1, 21);  //16 slots
     public static final int CRIMSON_PLASMID = PLASMID;
@@ -259,8 +263,9 @@ public class ItemSpriteSheet {
     public static final int CANDLE = QUEST + 2;
     public static final int EMBER = QUEST + 3;
     public static final int PICKAXE = QUEST + 4;
-    public static final int ORE = QUEST + 5;
+    public static final int SALVAGED_PARTS = QUEST + 5;
     public static final int TOKEN = QUEST + 6;
+    public static final int HARD_LIGHT_EMITTER = TOKEN;
     public static final int BLACK_GOO = QUEST + 7;
 
     private static final int BAGS = xy(1, 28);  //16 slots

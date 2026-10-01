@@ -43,8 +43,11 @@ import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.Loader;
 import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
 import com.wafitz.pixelspacebase.items.equippablemodules.EquippableModule;
+import com.wafitz.pixelspacebase.items.equippablemodules.HunterItemScanner;
+import com.wafitz.pixelspacebase.items.equippablemodules.HunterTrapScanner;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
+import com.wafitz.pixelspacebase.items.blasters.PlasmaStabiliser;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
 import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
 import com.wafitz.pixelspacebase.items.containers.UtilityKit;
@@ -73,6 +76,8 @@ import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.scenes.GameScene;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Bundlable;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -86,13 +91,32 @@ public class Workshop extends Painter {
 
     private static final int TEMPLATE_WIDTH = 7;
     private static final int TEMPLATE_HEIGHT = 7;
+    private static final String STORED_ITEMS = "quantumChestItems";
 
     private static ArrayList<Item> itemsToSpawn;
     private static ArrayList<Item> carriedStock;
     private static ArrayList<Item> storedItems;
     private static int stockArea = -1;
     private static int stockDepth = -1;
-    private static int storedArea = -1;
+
+    public static void resetStorage() {
+        storedItems = new ArrayList<>();
+    }
+
+    public static void storeInBundle(Bundle bundle) {
+        bundle.put(STORED_ITEMS, storedItems == null ? new ArrayList<Item>() : storedItems);
+    }
+
+    public static void restoreFromBundle(Bundle bundle) {
+        storedItems = new ArrayList<>();
+        if (bundle.contains(STORED_ITEMS)) {
+            for (Bundlable item : bundle.getCollection(STORED_ITEMS)) {
+                if (item instanceof Item) {
+                    storedItems.add((Item) item);
+                }
+            }
+        }
+    }
 
     public static void paint(Level level, Room room) {
 
@@ -138,12 +162,7 @@ public class Workshop extends Painter {
         }
 
         prepareCarriedStock(SpacebaseRun.depth);
-        int area = areaForDepth(SpacebaseRun.depth);
-
-        if (area != storedArea) {
-            storedItems = new ArrayList<>();
-            storedArea = area;
-        } else if (storedItems == null) {
+        if (storedItems == null) {
             storedItems = new ArrayList<>();
         } else {
             storedItems.clear();
@@ -186,10 +205,6 @@ public class Workshop extends Painter {
         if (level == null || level.heaps == null || storedItems == null || storedItems.isEmpty()) {
             return;
         }
-        if (storedArea != areaForDepth(SpacebaseRun.depth)) {
-            storedItems.clear();
-            return;
-        }
 
         ArrayList<Integer> cells = new ArrayList<>();
         for (int key : level.heaps.keyArray()) {
@@ -224,6 +239,60 @@ public class Workshop extends Painter {
             index++;
         }
         storedItems.clear();
+    }
+
+    /**
+     * Older saves can contain both workshop storage chests. Merge them into
+     * one chest when the level is loaded so no stored items are lost.
+     */
+    public static void reconcileStorageChest(Level level) {
+        if (level == null || level.heaps == null) {
+            return;
+        }
+
+        int preferredCell = -1;
+        boolean[] cells = storageCells(level);
+        for (int cell = 0; cell < cells.length; cell++) {
+            if (cells[cell]) {
+                preferredCell = cell;
+                break;
+            }
+        }
+
+        Heap primary = preferredCell == -1 ? null : level.heaps.get(preferredCell);
+        if (primary != null && primary.type != Heap.Type.WORKSHOP_STORAGE) {
+            primary = null;
+        }
+
+        for (int cell : level.heaps.keyArray()) {
+            Heap heap = level.heaps.get(cell);
+            if (heap == null || heap.type != Heap.Type.WORKSHOP_STORAGE) {
+                continue;
+            }
+
+            if (primary == null) {
+                primary = heap;
+            } else if (heap != primary) {
+                if (heap.items != null) {
+                    for (Item item : heap.items.toArray(new Item[0])) {
+                        primary.drop(item);
+                    }
+                    heap.items.clear();
+                    heap.items = null;
+                }
+                level.heaps.remove(cell);
+                if (heap.sprite != null) {
+                    heap.sprite.kill();
+                }
+            }
+        }
+
+        if (primary != null) {
+            primary.type = Heap.Type.WORKSHOP_STORAGE;
+            if (primary.sprite != null) {
+                primary.sprite.view(primary.image(), primary.glowing());
+            }
+        }
     }
 
     private static boolean[] workshopCells(Level level) {
@@ -269,16 +338,13 @@ public class Workshop extends Painter {
         }
 
         int left = Integer.MAX_VALUE;
-        int right = -1;
         for (int cell = 0; cell < workshopCells.length; cell++) {
             if (workshopCells[cell] && cell / level.width() == bottom) {
                 left = Math.min(left, cell % level.width());
-                right = Math.max(right, cell % level.width());
             }
         }
 
         storageCells[left + bottom * level.width()] = true;
-        storageCells[right + bottom * level.width()] = true;
         return storageCells;
     }
 
@@ -304,11 +370,9 @@ public class Workshop extends Painter {
         }
     }
 
-    private static ArrayList<Item> storageForCurrentDepth() {
-        int area = areaForDepth(SpacebaseRun.depth);
-        if (storedItems == null || storedArea != area || areaStart(SpacebaseRun.depth) && stockDepth != SpacebaseRun.depth) {
+    static ArrayList<Item> storageForCurrentDepth() {
+        if (storedItems == null) {
             storedItems = new ArrayList<>();
-            storedArea = area;
         }
         return storedItems;
     }
@@ -359,6 +423,12 @@ public class Workshop extends Painter {
         }
 
         if (makerTier >= 2) {
+            if (!hasOwnedModule(HunterItemScanner.class)) {
+                itemsToSpawn.add(new HunterItemScanner().identify());
+            }
+            if (!hasOwnedModule(HunterTrapScanner.class)) {
+                itemsToSpawn.add(new HunterTrapScanner().identify());
+            }
             itemsToSpawn.add(new Bomb().random());
             switch (Random.Int(5)) {
                 case 1:
@@ -412,6 +482,10 @@ public class Workshop extends Painter {
             itemsToSpawn.add(new WeaponTuner());
             itemsToSpawn.add(rareWorkshopItem(false));
             itemsToSpawn.add(new TorchBattery().quantity(2));
+            if (SpacebaseRun.depth == 22) {
+                // Give the player one dependable non-equipment route across Command plasma.
+                itemsToSpawn.add(new PlasmaStabiliser());
+            }
         } else if (rareSurpriseChance(makerTier)) {
             itemsToSpawn.add(rareWorkshopItem(true));
         }
@@ -634,8 +708,7 @@ public class Workshop extends Painter {
 
     private static int[] storageCells(Level level, Rect workshop) {
         return new int[]{
-                workshop.left + 1 + (workshop.bottom - 1) * level.width(),
-                workshop.right - 1 + (workshop.bottom - 1) * level.width()
+                workshop.left + 1 + (workshop.bottom - 1) * level.width()
         };
     }
 
@@ -657,7 +730,6 @@ public class Workshop extends Painter {
     }
 
     private static void placeStorageChests(Level level, int[] storageCells) {
-        ArrayList<Item> stored = storageForCurrentDepth();
         for (int cell : storageCells) {
             Heap heap = level.heaps.get(cell);
             if (heap == null) {
@@ -672,11 +744,9 @@ public class Workshop extends Painter {
             }
         }
 
-        int index = 0;
-        for (Item item : stored) {
-            level.drop(item, storageCells[index % storageCells.length]).type = Heap.Type.WORKSHOP_STORAGE;
-            index++;
-        }
+        // A generated workshop must consume the transfer buffer just like a loaded one.
+        // Otherwise the same contents remain in both the level save and the run save.
+        deliverStorageTo(level);
     }
 
     private static void placeUpgradeBench(Level level, int cell) {
@@ -715,7 +785,18 @@ public class Workshop extends Painter {
     private static boolean isEssentialStock(Item item) {
         return isBackpackExtension(item)
                 || item instanceof SpaceSuit
-                || item instanceof HunterSpaceSuit;
+                || item instanceof HunterSpaceSuit
+                || item instanceof HunterItemScanner
+                || item instanceof HunterTrapScanner
+                || item instanceof PlasmaStabiliser;
+    }
+
+    private static boolean hasOwnedModule(Class<? extends Item> moduleClass) {
+        if (SpacebaseRun.hero == null) return false;
+        for (Item item : SpacebaseRun.hero.belongings) {
+            if (moduleClass.isInstance(item)) return true;
+        }
+        return false;
     }
 
     private static boolean contains(int[] cells, int cell) {

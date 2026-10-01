@@ -38,6 +38,9 @@ import com.wafitz.pixelspacebase.actors.buffs.CombatFocus;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
+import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.items.armor.HoverPod;
+import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.levels.features.Door;
@@ -123,9 +126,24 @@ public abstract class Char extends Actor {
 
         if (enemy == null || !enemy.isAlive()) return false;
 
+        // Even a missed attack reveals the hero's intent to a disguised machine.
+        if (this == SpacebaseRun.hero && enemy instanceof Mob) {
+            ((Mob) enemy).provokeByHero();
+        }
+
         boolean visibleFight = SpacebaseRun.visible[pos] || SpacebaseRun.visible[enemy.pos];
 
         if (hit(this, enemy, false)) {
+
+            if (enemy instanceof Hero) {
+                HoverPod pod = HoverPod.equipped((Hero) enemy);
+                if (pod != null && enemy.buff(TimeFolder.timeStasis.class) == null) {
+                    if (visibleFight) Sample.INSTANCE.play(Assets.SND_HIT);
+                    pod.absorbHit((Hero) enemy);
+                    enemy.sprite.flash();
+                    return true;
+                }
+            }
 
             // Snipers ignore enemy damage reduction when attacking with a ranged weapon
             int dr = enemy.drRoll();

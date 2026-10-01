@@ -39,7 +39,14 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class DeepContainmentCoreLevel extends Level {
+
+    @Override
+    protected boolean needsDoorlessRoom() {
+        return false;
+    }
 
     {
         color1 = 0x801500;
@@ -140,6 +147,43 @@ public class DeepContainmentCoreLevel extends Level {
                 map[i] = Terrain.EMPTY_DECO;
             }
         }
+
+        addFloorHoles();
+    }
+
+    private void addFloorHoles() {
+        for (int lane = 0; lane < 5; lane++) {
+            ArrayList<Integer> candidates = new ArrayList<>();
+            int left = 2 + lane * 4;
+            for (int y = 2; y < 23; y++) {
+                for (int x = left; x < left + 4; x++) {
+                    int cell = x + y * width();
+                    if (map[cell] != Terrain.EMPTY && map[cell] != Terrain.EMPTY_DECO) continue;
+                    if (insideBossArenaOrApproach(x, y) || nearCriticalTile(cell)) continue;
+                    candidates.add(cell);
+                }
+            }
+
+            // One hole per corridor keeps the gaps distributed instead of clustered.
+            CommandFloorHoles.scatter(this, candidates, 1);
+        }
+    }
+
+    private boolean insideBossArenaOrApproach(int x, int y) {
+        return x >= ROOM_LEFT - 2 && x <= ROOM_RIGHT + 2
+                && y >= ROOM_TOP - 2 && y <= ROOM_BOTTOM + 2;
+    }
+
+    private boolean nearCriticalTile(int cell) {
+        int x = cell % width();
+        int y = cell / width();
+        return manhattanDistance(x, y, entrance) <= 2
+                || manhattanDistance(x, y, exit) <= 2;
+    }
+
+    private int manhattanDistance(int x, int y, int cell) {
+        if (cell < 0 || cell >= length()) return Integer.MAX_VALUE;
+        return Math.abs(x - cell % width()) + Math.abs(y - cell / width());
     }
 
     @Override
@@ -154,22 +198,24 @@ public class DeepContainmentCoreLevel extends Level {
     protected void createItems() {
         Item item = Bones.get();
         if (item != null) {
-            int pos;
-            do {
+            int pos = -1;
+            for (int attempt = 0; attempt < 100; attempt++) {
                 pos = Random.IntRange(ROOM_LEFT, ROOM_RIGHT) + Random.IntRange(ROOM_TOP + 1, ROOM_BOTTOM) * width();
-            } while (pos == entrance || map[pos] == Terrain.SIGN);
-            drop(item, pos).type = Heap.Type.REMAINS;
+                if (pos != entrance && map[pos] != Terrain.SIGN && !isPlasmaCell(pos)) break;
+                pos = -1;
+            }
+            if (pos >= 0) drop(item, pos).type = Heap.Type.REMAINS;
         }
     }
 
     @Override
     public int randomRespawnCell() {
         if (entrance == -1) return entrance;
-        int cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
-        while (!passable[cell]) {
-            cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
+        for (int attempts = 0; attempts < 32; attempts++) {
+            int cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
+            if (passable[cell] && !isPlasmaCell(cell)) return cell;
         }
-        return cell;
+        return -1;
     }
 
     @Override
@@ -200,6 +246,7 @@ public class DeepContainmentCoreLevel extends Level {
                 boss.pos = Random.Int(length());
             } while (
                     !passable[boss.pos] ||
+                            isPlasmaCell(boss.pos) ||
                             SpacebaseRun.visible[boss.pos]);
             GameScene.add(boss);
             boss.spawnFists();
@@ -233,7 +280,7 @@ public class DeepContainmentCoreLevel extends Level {
     public String tileName(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(DeepContainmentDeckLevel.class, "water_name");
+                return Messages.get(DeepContainmentDeckLevel.class, "plasma_name");
             case Terrain.LIGHTEDVENT:
                 return Messages.get(DeepContainmentDeckLevel.class, "lightedvent_name");
             case Terrain.OFFVENT:
@@ -250,7 +297,7 @@ public class DeepContainmentCoreLevel extends Level {
     public String tileDesc(int tile) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(DeepContainmentDeckLevel.class, "water_desc");
+                return Messages.get(DeepContainmentDeckLevel.class, "plasma_desc");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
                 return Messages.get(DeepContainmentDeckLevel.class, "statue_desc");

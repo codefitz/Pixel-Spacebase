@@ -28,6 +28,7 @@ import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.actors.blobs.Craft;
+import com.wafitz.pixelspacebase.actors.blobs.Plasma;
 import com.wafitz.pixelspacebase.actors.blobs.WellWater;
 import com.wafitz.pixelspacebase.actors.buffs.Awareness;
 import com.wafitz.pixelspacebase.actors.buffs.Blindness;
@@ -42,16 +43,18 @@ import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.particles.FlowParticle;
 import com.wafitz.pixelspacebase.effects.particles.WindParticle;
 import com.wafitz.pixelspacebase.items.MedigelDroplet;
+import com.wafitz.pixelspacebase.items.MedigelContainer;
+import com.wafitz.pixelspacebase.items.Bomb;
 import com.wafitz.pixelspacebase.items.EnhancementChip;
 import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.plasmids.TitanPlasmid;
 import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
 import com.wafitz.pixelspacebase.items.Generator;
+import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Torch;
 import com.wafitz.pixelspacebase.items.TorchBattery;
-import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.equippablemodules.HoloPad;
 import com.wafitz.pixelspacebase.items.equippablemodules.TechToolkit;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
@@ -59,13 +62,13 @@ import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
 import com.wafitz.pixelspacebase.items.containers.UtilityKit;
 import com.wafitz.pixelspacebase.items.food.AlienPod;
 import com.wafitz.pixelspacebase.items.food.Food;
+import com.wafitz.pixelspacebase.items.keys.Key;
 import com.wafitz.pixelspacebase.items.modules.TechModule;
 import com.wafitz.pixelspacebase.items.upgrades.EnhancementUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
 import com.wafitz.pixelspacebase.levels.features.Door;
-import com.wafitz.pixelspacebase.levels.features.FloorBreaker;
 import com.wafitz.pixelspacebase.levels.features.OffVent;
 import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
@@ -158,9 +161,6 @@ public abstract class Level implements Bundlable {
     public int color1 = 0x004400;
     public int color2 = 0x88CC44;
 
-    //FIXME this is sloppy. Should be able to keep track of this without static variables
-    static boolean pitRoomNeeded = false;
-    public static boolean weakFloorCreated = false;
 
     private static final String VERSION = "version";
     private static final String MAP = "map";
@@ -180,6 +180,11 @@ public abstract class Level implements Bundlable {
     private static final String FEELING = "feeling";
     private static final String FLOOR_BREAKER_ON = "floorBreakerOn";
     private static final String LIT_VIEW_DISTANCE = "litViewDistance";
+    private static final String DOORLESS_ROOM_CENTER = "doorlessRoomCenter";
+    private static final String DOORLESS_ROOM_RADIUS = "doorlessRoomRadius";
+
+    private int doorlessRoomCenter = -1;
+    private int doorlessRoomRadius = 1;
 
     public void create() {
 
@@ -276,13 +281,9 @@ public abstract class Level implements Bundlable {
             }
         }
 
-        boolean pitNeeded = SpacebaseRun.depth > 1 && weakFloorCreated;
 
         do {
             Arrays.fill(map, feeling == Feeling.CHASM ? Terrain.CHASM : Terrain.WALL);
-
-            pitRoomNeeded = pitNeeded;
-            weakFloorCreated = false;
 
             mobs = new HashSet<>();
             heaps = new SparseArray<>();
@@ -296,11 +297,15 @@ public abstract class Level implements Bundlable {
         } while (!build());
         decorate();
 
+        createDoorlessRoom();
+
         buildFlagMaps();
+        Plasma.seed(this);
         cleanWalls();
 
         createMobs();
         createItems();
+        createDoorlessRoomReward();
 
         Random.seed();
     }
@@ -372,8 +377,6 @@ public abstract class Level implements Bundlable {
 
         locked = bundle.getBoolean(LOCKED);
 
-        weakFloorCreated = false;
-
         //for pre-0.3.0c saves
         /*if (version < 44) {
             map = Terrain.convertTrapsFrom43(map, vents);
@@ -436,7 +439,17 @@ public abstract class Level implements Bundlable {
             viewDistance = litViewDistance;
         }
 
+        if (bundle.contains(DOORLESS_ROOM_CENTER)) {
+            doorlessRoomCenter = bundle.getInt(DOORLESS_ROOM_CENTER);
+            doorlessRoomRadius = bundle.contains(DOORLESS_ROOM_RADIUS)
+                    ? bundle.getInt(DOORLESS_ROOM_RADIUS) : 1;
+        } else {
+            // Existing saves predate this room; add it to their current level too.
+            createDoorlessRoom();
+        }
+
         buildFlagMaps();
+        Plasma.seed(this);
         cleanWalls();
     }
 
@@ -462,6 +475,123 @@ public abstract class Level implements Bundlable {
         bundle.put(FEELING, feeling);
         bundle.put(FLOOR_BREAKER_ON, floorBreakerOn);
         bundle.put(LIT_VIEW_DISTANCE, litViewDistance);
+        bundle.put(DOORLESS_ROOM_CENTER, doorlessRoomCenter);
+        bundle.put(DOORLESS_ROOM_RADIUS, doorlessRoomRadius);
+    }
+
+    protected boolean needsDoorlessRoom() {
+        return true;
+    }
+
+    private void createDoorlessRoom() {
+        // Also applies when loading older saves that do not contain a chamber.
+        if (!needsDoorlessRoom()) return;
+        ArrayList<Integer> candidates = doorlessRoomCandidates(1);
+        doorlessRoomRadius = 1;
+        if (candidates.isEmpty()) {
+            // Rare compact/fixed maps still get a one-cell chamber with a sealed wall border.
+            candidates = doorlessRoomCandidates(0);
+            doorlessRoomRadius = 0;
+        }
+        if (candidates.isEmpty()) {
+            throw new IllegalStateException("Unable to place a sealed fall chamber on level " + SpacebaseRun.depth);
+        }
+
+        int topLeft = Random.element(candidates);
+        int size = doorlessRoomRadius * 2 + 3;
+        int left = topLeft % width();
+        int top = topLeft / width();
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                int cell = (top + y) * width() + left + x;
+                boolean interior = x > 0 && y > 0 && x < size - 1 && y < size - 1;
+                map[cell] = interior ? Terrain.EMPTY : Terrain.WALL;
+            }
+        }
+        doorlessRoomCenter = (top + size / 2) * width() + left + size / 2;
+    }
+
+    private ArrayList<Integer> doorlessRoomCandidates(int radius) {
+        ArrayList<Integer> candidates = new ArrayList<>();
+        int size = radius * 2 + 3;
+        for (int y = 1; y + size < height(); y++) {
+            for (int x = 1; x + size < width(); x++) {
+                boolean clear = true;
+                for (int dy = 0; dy < size && clear; dy++) {
+                    for (int dx = 0; dx < size; dx++) {
+                        int terrain = map[(y + dy) * width() + x + dx];
+                        if (terrain != Terrain.WALL && terrain != Terrain.CHASM) {
+                            clear = false;
+                            break;
+                        }
+                    }
+                }
+                if (clear) candidates.add(y * width() + x);
+            }
+        }
+        return candidates;
+    }
+
+    private void createDoorlessRoomReward() {
+        if (doorlessRoomCenter < 0 || Random.Int(5) != 0) return;
+
+        Item reward;
+        if (SpacebaseRun.isChallenged(Challenges.NO_ARMOR) || Random.Int(2) == 0) {
+            reward = Generator.randomWeapon(SpacebaseRun.depth / 5 + 1);
+        } else {
+            reward = Generator.randomArmor(SpacebaseRun.depth / 5 + 1);
+        }
+        if (reward != null) drop(reward, doorlessRoomCenter);
+    }
+
+    public boolean isDoorlessRoomCell(int cell) {
+        if (doorlessRoomCenter < 0 || !insideMap(cell)) return false;
+        int dx = Math.abs(cell % width() - doorlessRoomCenter % width());
+        int dy = Math.abs(cell / width() - doorlessRoomCenter / width());
+        return dx <= doorlessRoomRadius && dy <= doorlessRoomRadius;
+    }
+
+    protected boolean isDoorlessRoomBoundaryCell(int cell) {
+        if (doorlessRoomCenter < 0 || !insideMap(cell)) return false;
+        int dx = Math.abs(cell % width() - doorlessRoomCenter % width());
+        int dy = Math.abs(cell / width() - doorlessRoomCenter / width());
+        return dx <= doorlessRoomRadius + 1 && dy <= doorlessRoomRadius + 1
+                && !isDoorlessRoomCell(cell);
+    }
+
+    public int doorlessRoomLandingCell() {
+        return doorlessRoomCenter;
+    }
+
+    public int fallLandingCell(boolean intoDoorlessRoom) {
+        if (SpacebaseRun.bossLevel()) {
+            return bossFallLandingCell();
+        }
+        int cell = intoDoorlessRoom || Random.Int(4) == 0
+                ? doorlessRoomLandingCell() : randomRespawnCell();
+        return cell >= 0 ? cell : randomRespawnCell();
+    }
+
+    private int bossFallLandingCell() {
+        // Fall placement happens before switchLevel updates PathFinder's map
+        // size. Use this map's coordinates rather than respawn neighbour offsets.
+        int origin = insideMap(entrance) ? entrance : 0;
+        int best = -1;
+        int bestDistance = Integer.MAX_VALUE;
+        for (int cell = 0; cell < length(); cell++) {
+            if (!passable[cell] || map[cell] == Terrain.CHASM || isPlasmaCell(cell)
+                    || isDoorlessRoomCell(cell) || findMob(cell) != null) continue;
+            int distance = Math.abs(cell % width() - origin % width())
+                    + Math.abs(cell / width() - origin / width());
+            if (distance < bestDistance) {
+                best = cell;
+                bestDistance = distance;
+            }
+        }
+        if (best < 0) {
+            throw new IllegalStateException("No valid boss fall landing on level " + SpacebaseRun.depth);
+        }
+        return best;
     }
 
     public void restoreFloorLighting() {
@@ -596,6 +726,39 @@ public abstract class Level implements Bundlable {
         return null;
     }
 
+    /** Command coolant is plasma only on the Command decks, not on other water levels. */
+    public boolean isPlasmaCell(int cell) {
+        return insideMap(cell)
+                && (this instanceof DeepContainmentDeckLevel || this instanceof DeepContainmentCoreLevel)
+                && map[cell] == Terrain.WATER;
+    }
+
+    /** Stabilises one Command plasma cell into weak, traversable, scorched plating. */
+    public boolean stabilisePlasma(int cell) {
+        if (!isPlasmaCell(cell)) return false;
+
+        Plasma plasma = blobs == null ? null : (Plasma) blobs.get(Plasma.class);
+        if (plasma != null) plasma.clear(cell);
+        set(cell, Terrain.STABILIZED_PLASMA);
+        GameScene.updateMap(cell);
+        return true;
+    }
+
+    /** A blast ruptures plasma or weakened stabilised plating, leaving an open chasm. */
+    public boolean rupturePlasmaFloor(int cell) {
+        boolean plasmaCell = isPlasmaCell(cell);
+        boolean weakPlating = insideMap(cell) && map[cell] == Terrain.STABILIZED_PLASMA;
+        if (!plasmaCell && !weakPlating) return false;
+
+        if (plasmaCell) {
+            Plasma plasma = blobs == null ? null : (Plasma) blobs.get(Plasma.class);
+            if (plasma != null) plasma.clear(cell);
+        }
+        set(cell, Terrain.CHASM);
+        GameScene.updateMap(cell);
+        return true;
+    }
+
     abstract protected boolean build();
 
     abstract protected void decorate();
@@ -681,7 +844,8 @@ public abstract class Level implements Bundlable {
 
         while (attempts-- > 0) {
             int cell = Random.Int(length());
-            if (passable[cell] && !SpacebaseRun.visible[cell] && Actor.findChar(cell) == null) {
+            if (passable[cell] && !isDoorlessRoomCell(cell)
+                    && !SpacebaseRun.visible[cell] && Actor.findChar(cell) == null) {
                 return cell;
             }
         }
@@ -689,7 +853,8 @@ public abstract class Level implements Bundlable {
         int candidate = -1;
         int validCells = 0;
         for (int i = 0; i < length(); i++) {
-            if (passable[i] && !SpacebaseRun.visible[i] && Actor.findChar(i) == null) {
+            if (passable[i] && !isDoorlessRoomCell(i)
+                    && !SpacebaseRun.visible[i] && Actor.findChar(i) == null) {
                 validCells++;
                 // Reservoir sampling keeps each valid cell equally likely without extra allocations.
                 if (Random.Int(validCells) == 0) {
@@ -705,7 +870,7 @@ public abstract class Level implements Bundlable {
         int cell;
         do {
             cell = Random.Int(length());
-        } while (!passable[cell]);
+        } while (!passable[cell] || isDoorlessRoomCell(cell) || isPlasmaCell(cell));
         return cell;
     }
 
@@ -777,6 +942,9 @@ public abstract class Level implements Bundlable {
 
     public void destroy(int pos) {
 
+        // The chamber's sealed wall ring must remain intact; teleportation is its only exit.
+        if (isDoorlessRoomBoundaryCell(pos)) return;
+
         if (!SpacebaseTilemap.waterStitcheable.contains(map[pos])) {
             for (int j = 0; j < PathFinder.NEIGHBOURS4.length; j++) {
                 if (water[pos + PathFinder.NEIGHBOURS4[j]]) {
@@ -794,36 +962,47 @@ public abstract class Level implements Bundlable {
 
         for (int i = 0; i < length(); i++) {
 
-            boolean d = false;
-
-            for (int j = 0; j < PathFinder.NEIGHBOURS9.length; j++) {
-                int n = i + PathFinder.NEIGHBOURS9[j];
-                if (n >= 0 && n < length() && map[n] != Terrain.WALL && map[n] != Terrain.WALL_DECO) {
-                    d = true;
-                    break;
+            boolean touchesOpenCell = false;
+            boolean touchesGround = false;
+            int cx = i % width();
+            int cy = i / width();
+            for (int y = Math.max(0, cy - 1); y <= Math.min(height() - 1, cy + 1); y++) {
+                for (int x = Math.max(0, cx - 1); x <= Math.min(width() - 1, cx + 1); x++) {
+                    int n = x + y * width();
+                    touchesOpenCell |= map[n] != Terrain.WALL && map[n] != Terrain.WALL_DECO;
+                    touchesGround |= !pit[n];
                 }
             }
-
-            if (d) {
-                d = false;
-
-                for (int j = 0; j < PathFinder.NEIGHBOURS9.length; j++) {
-                    int n = i + PathFinder.NEIGHBOURS9[j];
-                    if (n >= 0 && n < length() && !pit[n]) {
-                        d = true;
-                        break;
-                    }
-                }
-            }
-
-            discoverable[i] = d;
+            discoverable[i] = touchesOpenCell && touchesGround && map[i] != Terrain.CHASM;
         }
+        revealHull();
+    }
+
+    protected void revealHull() {
+        if (mapped == null) return;
+        for (int cell = 0; cell < length(); cell++) {
+            if (isHullCell(cell, width(), height(), discoverable)) mapped[cell] = true;
+        }
+    }
+
+    public static boolean isHullCell(int cell, int width, int height, boolean[] footprint) {
+        if (cell < 0 || cell >= footprint.length || !footprint[cell]) return false;
+        int cx = cell % width;
+        int cy = cell / width;
+        for (int y = cy - 1; y <= cy + 1; y++) {
+            for (int x = cx - 1; x <= cx + 1; x++) {
+                if (x < 0 || x >= width || y < 0 || y >= height
+                        || !footprint[x + y * width]) return true;
+            }
+        }
+        return false;
     }
 
     public static void set(int cell, int terrain) {
         Painter.set(SpacebaseRun.level, cell, terrain);
 
-        if (terrain != Terrain.VENT && terrain != Terrain.HIDDEN_VENT && terrain != Terrain.INACTIVE_VENT) {
+        if (SpacebaseRun.level.vents != null
+                && terrain != Terrain.VENT && terrain != Terrain.HIDDEN_VENT && terrain != Terrain.INACTIVE_VENT) {
             SpacebaseRun.level.vents.remove(cell);
         }
 
@@ -835,7 +1014,7 @@ public abstract class Level implements Bundlable {
         solid[cell] = (flags & Terrain.SOLID) != 0;
         avoid[cell] = (flags & Terrain.AVOID) != 0;
         pit[cell] = (flags & Terrain.PIT) != 0;
-        water[cell] = (flags & Terrain.WATER) != 0;
+        water[cell] = (flags & Terrain.LIQUID) != 0;
     }
 
     public Heap drop(Item item, int cell) {
@@ -855,6 +1034,24 @@ public abstract class Level implements Bundlable {
             sprite.link(heap);
             return heap;
 
+        }
+
+        // Quest keys cannot be allowed to soft-lock the run if a boss dies in plasma.
+        if (isPlasmaCell(cell) && item instanceof Key) {
+            int safeCell = nearestSafeDropCell(cell);
+            if (safeCell >= 0) cell = safeCell;
+        }
+
+        if (isPlasmaCell(cell)) {
+            if (SpacebaseRun.visible != null && cell < SpacebaseRun.visible.length && SpacebaseRun.visible[cell]) {
+                Heap.burnFX(cell);
+                GLog.w(Messages.get(Plasma.class, "item_burned"));
+            }
+            Heap ignored = new Heap();
+            ignored.pos = cell;
+            ItemSprite sprite = ignored.sprite = new ItemSprite();
+            sprite.link(ignored);
+            return ignored;
         }
 
         if ((map[cell] == Terrain.CRAFTING) && (
@@ -894,11 +1091,47 @@ public abstract class Level implements Bundlable {
         }
         heap.drop(item);
 
+        if (hasMedigelBatteryReaction(heap)) {
+            new Bomb().explode(cell);
+            return heap;
+        }
+
         if (SpacebaseRun.level != null) {
             press(cell, null);
         }
 
         return heap;
+    }
+
+    private int nearestSafeDropCell(int origin) {
+        int best = -1;
+        int bestDistance = Integer.MAX_VALUE;
+        int originX = origin % width();
+        int originY = origin / width();
+        for (int cell = 0; cell < length(); cell++) {
+            if (!passable[cell] || pit[cell] || map[cell] == Terrain.CHASM || isPlasmaCell(cell)) continue;
+            int distance = Math.abs(cell % width() - originX) + Math.abs(cell / width() - originY);
+            if (distance < bestDistance) {
+                best = cell;
+                bestDistance = distance;
+            }
+        }
+        return best;
+    }
+
+    private boolean hasMedigelBatteryReaction(Heap heap) {
+        boolean battery = false;
+        boolean medigel = false;
+
+        for (Item item : heap.items) {
+            battery |= item instanceof TorchBattery
+                    || item instanceof HoloPad.HoloBattery
+                    || item instanceof TimeFolder.TimeBattery;
+            medigel |= item instanceof MedigelDroplet
+                    || item instanceof MedigelContainer && ((MedigelContainer) item).hasMedigel();
+        }
+
+        return battery && medigel;
     }
 
     public Mine mine(Mine.Device device, int pos) {
@@ -950,10 +1183,6 @@ public abstract class Level implements Bundlable {
         GameScene.updateMap(cell);
     }
 
-    public int pitCell() {
-        return randomRespawnCell();
-    }
-
     public void press(int cell, Char ch) {
 
         if (ch != null && pit[cell] && !ch.flying) {
@@ -987,12 +1216,6 @@ public abstract class Level implements Bundlable {
             case Terrain.CRAFTING:
                 if (ch == null) {
                     Craft.transmute(cell);
-                }
-                break;
-
-            case Terrain.BREAKER:
-                if (ch == SpacebaseRun.hero) {
-                    FloorBreaker.operate(cell);
                 }
                 break;
 
@@ -1168,7 +1391,7 @@ public abstract class Level implements Bundlable {
                 (tile % width == 0 || tile % width == width - 1));
     }
 
-    Point cellToPoint(int cell) {
+    public Point cellToPoint(int cell) {
         return new Point(cell % width(), cell / width());
     }
 
@@ -1186,6 +1409,8 @@ public abstract class Level implements Bundlable {
             case Terrain.EMPTY_DECO:
             case Terrain.HIDDEN_VENT:
                 return Messages.get(Level.class, "floor_name");
+            case Terrain.STABILIZED_PLASMA:
+                return Messages.get(DeepContainmentDeckLevel.class, "stabilised_plating_name");
             case Terrain.BREAKER:
                 return Messages.get(Level.class, "breaker_name");
             case Terrain.LIGHTEDVENT:
@@ -1246,6 +1471,8 @@ public abstract class Level implements Bundlable {
         switch (tile) {
             case Terrain.CHASM:
                 return Messages.get(Level.class, "chasm_desc");
+            case Terrain.STABILIZED_PLASMA:
+                return Messages.get(DeepContainmentDeckLevel.class, "stabilised_plating_desc");
             case Terrain.WATER:
                 return Messages.get(Level.class, "water_desc");
             case Terrain.ENTRANCE:

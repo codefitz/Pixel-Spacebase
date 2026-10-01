@@ -56,9 +56,11 @@ public class XenoInfection extends Buff {
             infection.spend(TICK);
             Buff.prolong(hero, LockedDown.class, STICKY_DURATION);
             CellEmitter.bottom(hero.pos).start(EarthParticle.FACTORY, 0.05f, 8);
-            String message = Messages.get(XenoInfection.class, "start");
-            GLog.w(message);
-            GameScene.flashThenShowMessage(0x000000, message);
+            if (hero.markXenoInfectionReactionShown()) {
+                String message = Messages.get(XenoInfection.class, "start");
+                GLog.w(message);
+                GameScene.flashThenShowMessage(0x000000, message);
+            }
             return true;
         }
         return false;

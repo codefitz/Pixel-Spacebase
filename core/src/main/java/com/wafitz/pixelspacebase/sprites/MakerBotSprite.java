@@ -28,7 +28,7 @@ public class MakerBotSprite extends MobSprite {
     public MakerBotSprite() {
         super();
 
-        texture(Assets.MAKERBOT);
+        texture(Assets.MAKER_BOT);
         TextureFilm film = new TextureFilm(texture, 14, 14);
 
         idle = new Animation(1, true);

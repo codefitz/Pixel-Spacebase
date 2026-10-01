@@ -12,7 +12,22 @@ I started out with the original build of PD but ran into unending complications 
 
 Still, massive credit to Evan for reworking level generation - I stand on the shoulders of tiny pixel giants.
 
-![Pixel Spacebase title art](core/src/main/assets/banners.png)
+## Current Art
+
+Here is a small selection of current in-game art: the orbital backdrop, the powered-down holodeck, and some of the station's characters.
+
+<table>
+  <tr>
+    <td align="center" bgcolor="#080b16"><img src="core/src/main/assets/spacebase_planet.png" width="180" alt="Planet backdrop" /><br />Planet backdrop</td>
+    <td align="center" bgcolor="#080b16"><img src="core/src/main/assets/spacebase_starfield.png" width="180" alt="Starfield backdrop" /><br />Starfield</td>
+    <td align="center" bgcolor="#080b16"><img src="core/src/main/assets/holodeck_tiles_powered_down.png" width="180" alt="Powered-down holodeck floor" /><br />Powered-down holodeck</td>
+  </tr>
+  <tr>
+    <td align="center" bgcolor="#080b16"><img src="core/src/main/assets/captain.png" width="180" alt="Captain character sprite sheet" /><br />Captain</td>
+    <td align="center" bgcolor="#080b16"><img src="core/src/main/assets/holodeck_legionary.png" width="180" alt="Holodeck legionary sprite sheet" /><br />Holodeck legionary</td>
+    <td align="center" bgcolor="#080b16"><img src="core/src/main/assets/station_cat.png" width="180" alt="Station cat sprite sheet" /><br />Station cat</td>
+  </tr>
+</table>
 
 ## What's Different?
 

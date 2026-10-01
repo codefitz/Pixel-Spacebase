@@ -36,6 +36,9 @@ public class Freezing {
     // Returns true, if this cell is visible
     public static boolean affect(int cell, Fire fire) {
 
+        // Cryogenic effects solidify plasma into walkable deck plating.
+        SpacebaseRun.level.stabilisePlasma(cell);
+
         Char ch = Actor.findChar(cell);
         if (ch != null) {
             if (Level.water[ch.pos]) {

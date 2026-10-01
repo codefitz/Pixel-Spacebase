@@ -27,8 +27,16 @@ import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.effects.Ripple;
-import com.wafitz.pixelspacebase.items.AirTank;
+import com.wafitz.pixelspacebase.items.MedigelContainer;
+import com.wafitz.pixelspacebase.items.Generator;
+import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.PetCarrier;
+import com.wafitz.pixelspacebase.items.WeakForcefield;
+import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
+import com.wafitz.pixelspacebase.items.armor.Uniform;
+import com.wafitz.pixelspacebase.items.food.Food;
+import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
+import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
 import com.wafitz.pixelspacebase.levels.vents.AlarmVent;
 import com.wafitz.pixelspacebase.levels.vents.ChillingVent;
 import com.wafitz.pixelspacebase.levels.vents.FlockVent;
@@ -41,6 +49,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.Bundle;
@@ -138,6 +147,59 @@ public class MaintenanceLevel extends RegularLevel {
             }
 
         placeSign();
+        placeStarterChest();
+    }
+
+    private void placeStarterChest() {
+        if (SpacebaseRun.depth != 1 || roomEntrance == null) {
+            return;
+        }
+
+        int pos = starterChestCell();
+        if (pos == -1) {
+            return;
+        }
+
+        drop(Generator.random(), pos).type = Heap.Type.CHEST;
+        drop(new Uniform().identify(), pos);
+        drop(new Food().identify(), pos);
+        drop(new MappingUpgrade().identify(), pos);
+        drop(new WeakForcefield().identify(), pos);
+        drop(new SpaceSuit().identify(), pos);
+        drop(new Wrench().identify(), pos);
+        drop(new Wrench().identify(), pos);
+    }
+
+    private int starterChestCell() {
+        // Prefer a varied position, but never let one unlucky random choice cancel
+        // this guaranteed floor-one feature.
+        for (int tries = 0; tries < 30; tries++) {
+            int pos = pointToCell(roomEntrance.random());
+            if (canPlaceStarterChest(pos)) {
+                return pos;
+            }
+        }
+
+        for (int y = roomEntrance.top + 1; y < roomEntrance.bottom; y++) {
+            for (int x = roomEntrance.left + 1; x < roomEntrance.right; x++) {
+                int pos = x + y * width();
+                if (canPlaceStarterChest(pos)) {
+                    return pos;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private boolean canPlaceStarterChest(int pos) {
+        return pos != entrance
+                && insideMap(pos)
+                && (Terrain.flags[map[pos]] & Terrain.PASSABLE) != 0
+                && map[pos] != Terrain.SIGN
+                && vents.get(pos) == null
+                && findMob(pos) == null
+                && heaps.get(pos) == null;
     }
 
     @Override
@@ -203,8 +265,10 @@ public class MaintenanceLevel extends RegularLevel {
             addItemToSpawn(new PetCarrier());
         }
 
-        if (!SpacebaseRun.limitedDrops.airTank.dropped() && Random.Int(4 - SpacebaseRun.depth) == 0) {
-            addItemToSpawn(new AirTank());
+        // Medigel canisters are valuable equipment: at most one can appear in a run,
+        // with a flat rare chance on each maintenance deck.
+        if (!SpacebaseRun.limitedDrops.airTank.dropped() && Random.Int(4) == 0) {
+            addItemToSpawn(new MedigelContainer());
             SpacebaseRun.limitedDrops.airTank.drop();
         }
 
@@ -223,9 +287,61 @@ public class MaintenanceLevel extends RegularLevel {
     static void addSewerVisuals(Level level, Group group) {
         for (int i = 0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WALL_DECO) {
-                // wafitz.v4: Lights don't leak!
-                //group.add(new Sink(i));
+                group.add(new MaintenanceLamp(level, i));
             }
+        }
+    }
+
+    private static class MaintenanceLamp extends Group {
+
+        private final Level level;
+        private final int pos;
+        private final ColorBlock left;
+        private final ColorBlock right;
+        private float phase;
+        private float nextFlicker;
+        private float flickerLeft;
+
+        MaintenanceLamp(Level level, int pos) {
+            this.level = level;
+            this.pos = pos;
+            phase = pos * 0.73f;
+            nextFlicker = Random.Float(1.5f, 4.5f);
+
+            PointF p = SpacebaseTilemap.tileToWorld(pos);
+            left = new ColorBlock(2.5f, 3f, 0xFFD5F7FF);
+            left.x = p.x + 4f;
+            left.y = p.y + 5f;
+            add(left);
+
+            right = new ColorBlock(2.5f, 3f, 0xFFD5F7FF);
+            right.x = p.x + 10f;
+            right.y = p.y + 5f;
+            add(right);
+        }
+
+        @Override
+        public void update() {
+            if (level.map[pos] != Terrain.WALL_DECO) {
+                killAndErase();
+                return;
+            }
+            visible = SpacebaseRun.visible[pos];
+            if (!visible) return;
+
+            super.update();
+            phase += Game.elapsed;
+            if (flickerLeft > 0) {
+                flickerLeft -= Game.elapsed;
+            } else if ((nextFlicker -= Game.elapsed) <= 0) {
+                flickerLeft = Random.Float(0.08f, 0.2f);
+                nextFlicker = Random.Float(2.5f, 6f);
+            }
+
+            float glow = flickerLeft > 0 ? 0.12f :
+                    0.38f + 0.08f * (float) Math.sin(phase * 2.2f);
+            left.am = glow;
+            right.am = glow * 0.9f;
         }
     }
 

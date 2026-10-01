@@ -34,7 +34,7 @@ import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
-public class AirTank extends Item {
+public class MedigelContainer extends KindofMisc {
 
     private static final int MAX_VOLUME = 10;
 
@@ -75,6 +75,17 @@ public class AirTank extends Item {
             actions.add(AC_DRINK);
         }
         return actions;
+    }
+
+    @Override
+    public boolean doEquip(Hero hero) {
+        if ((hero.belongings.misc1 instanceof MedigelContainer && hero.belongings.misc1 != this)
+                || (hero.belongings.misc2 instanceof MedigelContainer && hero.belongings.misc2 != this)) {
+            GLog.w(Messages.get(this, "already_equipped"));
+            return false;
+        }
+
+        return super.doEquip(hero);
     }
 
     @Override
@@ -133,6 +144,13 @@ public class AirTank extends Item {
 
     public boolean isFull() {
         return volume >= MAX_VOLUME;
+    }
+
+    /**
+     * Indicates whether a dropped canister can react with a battery.
+     */
+    public boolean hasMedigel() {
+        return volume > 0;
     }
 
     void collectDew(MedigelDroplet dew) {

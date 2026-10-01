@@ -22,6 +22,8 @@ package com.wafitz.pixelspacebase.levels.vents;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.actors.Actor;
+import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
@@ -78,6 +80,9 @@ public abstract class Vent implements Bundlable {
     }
 
     public void mine() {
+        if (!(this instanceof ExplosiveVent)
+                && HoverPod.equipped(SpacebaseRun.hero) != null
+                && Actor.findChar(pos) == SpacebaseRun.hero) return;
         if (active) {
             if (SpacebaseRun.visible[pos]) {
                 Sample.INSTANCE.play(Assets.SND_TRAP);

@@ -21,10 +21,10 @@
 package com.wafitz.pixelspacebase.levels;
 
 import com.wafitz.pixelspacebase.Assets;
+import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.Bones;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
-import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.FeralShapeshifter;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.XenoQueen;
@@ -64,7 +64,7 @@ public class MaintenanceBossLevel extends RegularLevel {
     @Override
     protected boolean build() {
 
-        if (isShapeshifterQueenFight()) {
+        if (isAlienQueenFight()) {
             feeling = Feeling.DARK;
             viewDistance = Math.max(2, darkViewDistance(litViewDistance));
             floorBreakerOn = false;
@@ -146,7 +146,7 @@ public class MaintenanceBossLevel extends RegularLevel {
                 if (candidates.size() > 0) {
                     Room kingsRoom = Random.element(candidates);
                     kingsRoom.connect(lastRoom);
-                    kingsRoom.type = isShapeshifterQueenFight() ? Room.Type.STANDARD : Room.Type.RAT_KING;
+                    kingsRoom.type = isAlienQueenFight() ? Room.Type.STANDARD : Room.Type.RAT_KING;
 
                     //unacceptable! make a new level...
                 } else {
@@ -223,7 +223,7 @@ public class MaintenanceBossLevel extends RegularLevel {
 
     @Override
     protected void createMobs() {
-        Mob mob = isShapeshifterQueenFight()
+        Mob mob = isAlienQueenFight()
                 ? new XenoQueen()
                 : new FeralShapeshifter();
         Room room;
@@ -234,8 +234,8 @@ public class MaintenanceBossLevel extends RegularLevel {
         mobs.add(mob);
     }
 
-    private boolean isShapeshifterQueenFight() {
-        return SpacebaseRun.hero != null && SpacebaseRun.hero.heroClass == HeroClass.SHAPESHIFTER;
+    private boolean isAlienQueenFight() {
+        return Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1);
     }
 
     public Actor respawner() {

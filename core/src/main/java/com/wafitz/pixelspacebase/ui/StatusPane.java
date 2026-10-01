@@ -24,6 +24,7 @@ import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Item;
+import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.sprites.HeroSprite;
@@ -68,9 +69,12 @@ public class StatusPane extends Component {
     private ColorBlock hpTrack;
     private ColorBlock hpFill;
     private ColorBlock hpShield;
+    private ColorBlock podTrack;
+    private ColorBlock podFill;
     private ColorBlock expTrack;
     private ColorBlock exp;
     private BitmapText hpText;
+    private BitmapText podText;
 
     private BossHealthBar bossHP;
 
@@ -132,6 +136,14 @@ public class StatusPane extends Component {
         hpShield = new ColorBlock(1, 1, HP_SHIELD_FILL);
         add(hpShield);
 
+        podTrack = new ColorBlock(1, 1, 0xFF243337);
+        add(podTrack);
+        podFill = new ColorBlock(1, 1, 0xFF55DDC5);
+        add(podFill);
+        podText = new BitmapText(PixelScene.pixelFont);
+        podText.hardlight(0xFF55DDC5);
+        add(podText);
+
         hpText = new BitmapText(PixelScene.pixelFont);
         hpText.hardlight(0xF2FFFF);
         add(hpText);
@@ -185,6 +197,12 @@ public class StatusPane extends Component {
         hpTrack.y = hpFill.y = hpShield.y = HP_BAR_Y + 1;
         hpTrack.size(HP_BAR_WIDTH - 2, HP_BAR_HEIGHT - 2);
 
+        podTrack.x = podFill.x = HP_BAR_X;
+        podTrack.y = podFill.y = HP_BAR_Y - 2;
+        podTrack.size(HP_BAR_WIDTH, 2);
+        podText.x = HP_BAR_X + HP_BAR_WIDTH + 2;
+        podText.y = HP_BAR_Y - 3;
+
         expTrack.x = exp.x = HP_BAR_X;
         expTrack.y = exp.y = HP_BAR_Y + HP_BAR_HEIGHT + 2;
         expTrack.size(HP_BAR_WIDTH, 1);
@@ -233,6 +251,14 @@ public class StatusPane extends Component {
         hpShield.x = hpTrack.x;
         hpShield.y = hpTrack.y + HP_BAR_HEIGHT - 3;
         hpShield.visible = shield > 0;
+
+        HoverPod pod = HoverPod.equipped(SpacebaseRun.hero);
+        podTrack.visible = podFill.visible = podText.visible = pod != null;
+        if (pod != null) {
+            podFill.size(HP_BAR_WIDTH * (float) pod.integrity() / pod.maxIntegrity(), 2);
+            podText.text(pod.integrity() + "/" + pod.maxIntegrity());
+            podText.measure();
+        }
 
         hpText.text(shield > 0 ?
                 (int) health + "+" + (int) shield + "/" + (int) max :

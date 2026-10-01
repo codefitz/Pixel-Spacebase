@@ -127,6 +127,10 @@ public class Bomb extends Item {
                     CellEmitter.get(c).burst(SmokeParticle.FACTORY, 4);
                 }
 
+                if (SpacebaseRun.level.rupturePlasmaFloor(c)) {
+                    terrainAffected = true;
+                }
+
                 if (Level.flamable[c]) {
                     SpacebaseRun.level.destroy(c);
                     GameScene.updateMap(c);

@@ -9,8 +9,8 @@ The image is generated from the canonical Maintenance / Operations sheet, `core/
 - `tiles0.png` - Maintenance / Operations
 - `tiles1.png` - Security Block
 - `tiles2.png` - Lower Engineering
-- `tiles3.png` - Habitation / Command Sector
-- `tiles4.png` - Deep Containment
+- `tiles3.png` - Habitation Ring
+- `tiles4.png` - Command
 
 ## Important Notes
 

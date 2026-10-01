@@ -27,7 +27,7 @@ These are low-risk because they are mostly resource strings, docs, or small alia
 - Journal feature labels that still mention inherited NPC names.
 - Entity catalogue entries that no longer match current mechanics.
 - Message comments with stale TODO wording, once the actual behavior has moved on.
-- Player-facing area names in docs: prefer Security Block, Lower Engineering, Habitation/Command, Deep Containment, and Evacuation Cradle.
+- Player-facing area names in docs: prefer Security Block, Lower Engineering, Habitation Ring, Command, and Evacuation Cradle. The `DeepContainment*Level` class names and message keys remain internal save-compatible identifiers.
 
 ## Higher-Risk Refactor Targets
 

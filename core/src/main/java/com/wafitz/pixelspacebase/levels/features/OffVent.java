@@ -28,6 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Shielding;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
+import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.particles.ElmoParticle;
@@ -48,6 +49,8 @@ import com.watabou.utils.Random;
 public class OffVent {
 
     public static void trample(Level level, int pos, Char ch) {
+
+        if (ch == SpacebaseRun.hero && HoverPod.equipped(SpacebaseRun.hero) != null) return;
 
         boolean damaged = false;
         if (ch instanceof Hero) {

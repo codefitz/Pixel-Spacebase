@@ -26,7 +26,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class SpareBaseParts extends Item {
 
     {
-        image = ItemSpriteSheet.ORE;
+        image = ItemSpriteSheet.SALVAGED_PARTS;
 
         stackable = true;
         unique = true;

@@ -27,6 +27,7 @@ import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
+import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.MaskedPrisoner;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.YInterlude;
@@ -431,6 +432,8 @@ public class SecurityBossLevel extends Level {
         KindOfWeapon equipped = SpacebaseRun.hero.belongings.weapon;
         Item target = weaponToHold(equipped, SpacebaseRun.hero.belongings.backpack);
         if (target != null && offensiveScore(target) > BOSS_DAMAGE_CAP) {
+            target.markTakenByY();
+            GLog.n(Messages.get(Hero.class, "weapon_taken", target.name()));
             if (target == equipped) {
                 equipped.unequipForConfiscation(SpacebaseRun.hero);
                 storedItems.add(equipped);

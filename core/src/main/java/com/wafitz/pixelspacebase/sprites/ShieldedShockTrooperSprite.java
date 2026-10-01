@@ -33,16 +33,18 @@ public class ShieldedShockTrooperSprite extends MobSprite {
         TextureFilm frames = new TextureFilm(texture, 12, 16);
 
         idle = new Animation(2, true);
-        idle.frames(frames, 21, 21, 21, 22, 21, 21, 22, 22);
+        // The sheet is 11 frames wide, so the shielded trooper's second row
+        // starts at frame 11 (not 21).
+        idle.frames(frames, 11, 11, 11, 12, 11, 11, 12, 12);
 
         run = new Animation(12, true);
-        run.frames(frames, 25, 26, 27, 28);
+        run.frames(frames, 15, 16, 17, 18);
 
         attack = new Animation(12, false);
-        attack.frames(frames, 23, 24);
+        attack.frames(frames, 13, 14);
 
         die = new Animation(12, false);
-        die.frames(frames, 29, 30, 31);
+        die.frames(frames, 19, 20, 21);
 
         play(idle);
     }

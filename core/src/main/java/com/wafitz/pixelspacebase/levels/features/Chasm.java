@@ -31,7 +31,6 @@ import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.items.equippablemodules.HoloPad;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
-import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.scenes.InterlevelScene;
@@ -65,14 +64,6 @@ public class Chasm {
     }
 
     public static void heroFall(int pos) {
-        heroFall(pos, false);
-    }
-
-    public static void heroFallIntoPit(int pos) {
-        heroFall(pos, true);
-    }
-
-    private static void heroFall(int pos, boolean forcePitLanding) {
 
         jumpConfirmed = false;
 
@@ -87,14 +78,8 @@ public class Chasm {
         if (SpacebaseRun.hero.isAlive()) {
             SpacebaseRun.hero.interrupt();
             InterlevelScene.mode = InterlevelScene.Mode.FALL;
-            if (forcePitLanding) {
-                InterlevelScene.fallIntoPit = true;
-            } else if (SpacebaseRun.level instanceof RegularLevel) {
-                Room room = ((RegularLevel) SpacebaseRun.level).room(pos);
-                InterlevelScene.fallIntoPit = room != null && room.type == Room.Type.WEAK_FLOOR;
-            } else {
-                InterlevelScene.fallIntoPit = false;
-            }
+            InterlevelScene.fallIntoDoorlessRoom = SpacebaseRun.level instanceof RegularLevel
+                    && ((RegularLevel) SpacebaseRun.level).isExteriorPlatformJump(pos);
             Game.switchScene(InterlevelScene.class);
         } else {
             SpacebaseRun.hero.sprite.visible = false;

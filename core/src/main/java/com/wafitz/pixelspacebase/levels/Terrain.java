@@ -60,6 +60,8 @@ public class Terrain {
 
     // wafitz.v4 Changed to default, doesn't affect game tiles though...
     public static final int WATER = 63;
+    /** Dark, passable plating created by stabilising plasma; explosives can rupture it. */
+    public static final int STABILIZED_PLASMA = 64;
 
     static final int PASSABLE = 0x01;
     static final int LOS_BLOCKING = 0x02;
@@ -109,6 +111,7 @@ public class Terrain {
         flags[CRAFTING] = PASSABLE;
         flags[BREAKER] = PASSABLE;
         flags[HEALING_TANK] = AVOID;
+        flags[STABILIZED_PLASMA] = flags[EMPTY];
 
     }
 

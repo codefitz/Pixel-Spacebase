@@ -52,7 +52,7 @@ public class SignalSirenSprite extends MobSprite {
     @Override
     public void die() {
         super.die();
-        emitter().burst(Speck.factory(Speck.HEART), 6);
+        emitter().burst(Speck.factory(Speck.LIGHT), 6);
         emitter().burst(ShadowParticle.UP, 8);
     }
 }

@@ -24,7 +24,7 @@ import com.wafitz.pixelspacebase.Journal;
 import com.wafitz.pixelspacebase.Journal.Feature;
 import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.wafitz.pixelspacebase.effects.BlobEmitter;
-import com.wafitz.pixelspacebase.effects.Speck;
+import com.wafitz.pixelspacebase.effects.particles.CodeParticle;
 import com.wafitz.pixelspacebase.items.plasmids.Plasmid;
 import com.wafitz.pixelspacebase.items.plasmids.TitanPlasmid;
 import com.wafitz.pixelspacebase.items.plasmids.MyoFiberPlasmid;
@@ -80,7 +80,7 @@ public class DiffusionalTerminal extends WellWater {
     @Override
     public void use(BlobEmitter emitter) {
         super.use(emitter);
-        emitter.start(Speck.factory(Speck.CHANGE), 0.2f, 0);
+        emitter.start(CodeParticle.FACTORY, 0.2f, 0);
     }
 
     private DM3000Launcher changeLauncher(DM3000Launcher launcher) {

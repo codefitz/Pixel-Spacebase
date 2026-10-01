@@ -80,6 +80,7 @@ public class Item implements Bundlable {
     protected int quantity = 1;
 
     private int level = 0;
+    private boolean takenByY;
 
     public boolean levelKnown = false;
 
@@ -115,6 +116,10 @@ public class Item implements Bundlable {
             GameScene.pickUp(this);
             Sample.INSTANCE.play(Assets.SND_ITEM);
             hero.spendAndNext(TIME_TO_PICK_UP);
+            if (takenByY) {
+                takenByY = false;
+                GLog.n(Messages.get(Hero.class, "weapon_returned", name()));
+            }
             return true;
 
         } else {
@@ -505,6 +510,7 @@ public class Item implements Bundlable {
     private static final String LEVEL_KNOWN = "levelKnown";
     private static final String MALFUNCTIONING = "malfunctioning";
     private static final String MALFUNCTIONING_KNOWN = "malfunctioningKnown";
+    private static final String TAKEN_BY_Y = "takenByY";
     private static final String OLDSLOT = "quickslot";
     private static final String QUICKSLOT = "quickslotpos";
 
@@ -515,6 +521,7 @@ public class Item implements Bundlable {
         bundle.put(LEVEL_KNOWN, levelKnown);
         bundle.put(MALFUNCTIONING, malfunctioning);
         bundle.put(MALFUNCTIONING_KNOWN, malfunctioningKnown);
+        bundle.put(TAKEN_BY_Y, takenByY);
         if (SpacebaseRun.quickslot.contains(this)) {
             bundle.put(QUICKSLOT, SpacebaseRun.quickslot.getSlot(this));
         }
@@ -534,6 +541,7 @@ public class Item implements Bundlable {
         }
 
         malfunctioning = bundle.getBoolean(MALFUNCTIONING);
+        takenByY = bundle.getBoolean(TAKEN_BY_Y);
 
         //only want to populate slot on first load.
         if (SpacebaseRun.hero == null) {
@@ -544,6 +552,10 @@ public class Item implements Bundlable {
                 SpacebaseRun.quickslot.setSlot(bundle.getInt(QUICKSLOT), this);
             }
         }
+    }
+
+    public void markTakenByY() {
+        takenByY = true;
     }
 
     public int throwPos(Hero user, int dst) {

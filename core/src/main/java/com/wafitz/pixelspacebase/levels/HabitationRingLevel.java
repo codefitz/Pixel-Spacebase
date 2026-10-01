@@ -25,6 +25,7 @@ import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.levels.Room.Type;
+import com.wafitz.pixelspacebase.levels.painters.ChangingRoomPainter;
 import com.wafitz.pixelspacebase.levels.vents.BlazingVent;
 import com.wafitz.pixelspacebase.levels.vents.DisarmingVent;
 import com.wafitz.pixelspacebase.levels.vents.ExplosiveVent;
@@ -44,13 +45,49 @@ import com.wafitz.pixelspacebase.levels.vents.VenomVent;
 import com.wafitz.pixelspacebase.levels.vents.WarpingVent;
 import com.wafitz.pixelspacebase.levels.vents.WeakeningVent;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.ui.ChangingRoomTile;
+import com.wafitz.pixelspacebase.ui.CustomTileVisual;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HabitationRingLevel extends RegularLevel {
+
+    public static final int TRANSPORTER_FLOOR_VISUAL = 64;
+    public static final int TRANSPORTER_WALL_VISUAL = 65;
+
+    /** Visual-only room treatment, derived from room bounds restored with existing saves. */
+    public static int transporterRoomVisual(Level level, int pos, int terrain) {
+        if (!(level instanceof RegularLevel)
+                || !Assets.TILES_HABITATION_RING.equals(level.tilesTex())) return -1;
+        RegularLevel regular = (RegularLevel) level;
+        int x = pos % level.width();
+        int y = pos / level.width();
+        if (!containsRoomCell(regular.roomEntrance, x, y)
+                && !containsRoomCell(regular.roomExit, x, y)) return -1;
+
+        switch (terrain) {
+            case Terrain.EMPTY:
+            case Terrain.EMPTY_DECO:
+                return TRANSPORTER_FLOOR_VISUAL;
+            case Terrain.WALL:
+            case Terrain.WALL_DECO:
+                return TRANSPORTER_WALL_VISUAL;
+            default:
+                // Keep pads, doors, water, hazards and usable fixtures recognisable.
+                return -1;
+        }
+    }
+
+    private static boolean containsRoomCell(Room room, int x, int y) {
+        return room != null && x >= room.left && x <= room.right
+                && y >= room.top && y <= room.bottom;
+    }
 
     {
         color1 = 0x4b6636;
@@ -67,8 +104,16 @@ public class HabitationRingLevel extends RegularLevel {
         return Assets.WATER_HABITATION_RING;
     }
 
+    @Override
+    protected boolean build() {
+        // Habitat decks are no longer flooded, including the flooded-deck announcement.
+        if (feeling == Feeling.WATER) feeling = Feeling.NONE;
+        return super.build();
+    }
+
     protected boolean[] water() {
-        return Patch.generate(this, feeling == Feeling.WATER ? 0.65f : 0.45f, 4);
+        // Shower basins are painted by ChangingRoomPainter, never across the deck.
+        return new boolean[length()];
     }
 
     protected boolean[] lightedvent() {
@@ -98,14 +143,43 @@ public class HabitationRingLevel extends RegularLevel {
         for (Room r : rooms) {
             if (r.type == Type.TUNNEL) {
                 r.type = Type.PASSAGE;
+            } else if (r.type == Type.POOL) {
+                // Avoid creating aquatic enemies in a pool that will become dry floor.
+                r.type = Type.STANDARD;
             }
         }
 
+        return assignChangingRoom(rooms);
+    }
+
+    static boolean assignChangingRoom(List<Room> rooms) {
+        ArrayList<Room> candidates = new ArrayList<>();
+        for (Room room : rooms) {
+            if (room.type == Type.CHANGING_ROOM) return true;
+            if (room.type == Type.STANDARD && room.width() >= 4 && room.height() >= 4
+                    && !room.connected.isEmpty()) {
+                candidates.add(room);
+            }
+        }
+        if (candidates.isEmpty()) return false;
+        Random.element(candidates).type = Type.CHANGING_ROOM;
         return true;
+    }
+
+    public Room changingRoom() {
+        if (rooms != null) {
+            for (Room room : rooms) {
+                if (room.type == Type.CHANGING_ROOM) return room;
+            }
+        }
+        return null;
     }
 
     @Override
     protected void decorate() {
+
+        // Other room painters (including bridge variants) can also lay water.
+        ChangingRoomPainter.confineWater(this, changingRoom());
 
         for (int i = 0; i < length(); i++) {
             if (map[i] == Terrain.EMPTY && Random.Int(10) == 0) {
@@ -128,6 +202,10 @@ public class HabitationRingLevel extends RegularLevel {
     @Override
     public String tileName(int tile) {
         switch (tile) {
+            case Terrain.ENTRANCE:
+                return Messages.get(HabitationRingLevel.class, "entrance_name");
+            case Terrain.EXIT:
+                return Messages.get(HabitationRingLevel.class, "exit_name");
             case Terrain.WATER:
                 return Messages.get(HabitationRingLevel.class, "water_name");
             case Terrain.OFFVENT:
@@ -169,10 +247,62 @@ public class HabitationRingLevel extends RegularLevel {
     }
 
     public static void addHabitationVisuals(Level level, Group group) {
+        for (CustomTileVisual tile : level.customTiles) {
+            if (tile instanceof ChangingRoomTile
+                    && ((ChangingRoomTile) tile).kind() == ChangingRoomTile.VENT) {
+                group.add(new ShowerSteam(tile.tileX + tile.tileY * level.width()));
+            }
+        }
         for (int i = 0; i < level.length(); i++) {
-            if (level.map[i] == Terrain.WALL_DECO) {
+            if (level.map[i] == Terrain.WALL_DECO
+                    && transporterRoomVisual(level, i, level.map[i]) < 0) {
                 group.add(new Smoke(i));
             }
+        }
+    }
+
+    private static class ShowerSteam extends Emitter {
+        private final int cell;
+
+        private static final Factory factory = new Factory() {
+            @Override
+            public void emit(Emitter emitter, int index, float x, float y) {
+                SteamParticle particle = (SteamParticle) emitter.recycle(SteamParticle.class);
+                particle.reset(x, y);
+            }
+        };
+
+        ShowerSteam(int cell) {
+            this.cell = cell;
+            PointF point = SpacebaseTilemap.tileCenterToWorld(cell);
+            pos(point.x - 2, point.y - 1, 4, 2);
+            pour(factory, 0.18f);
+        }
+
+        @Override
+        public void update() {
+            visible = SpacebaseRun.visible[cell]
+                    && SpacebaseRun.level.map[cell] == Terrain.INACTIVE_VENT;
+            if (visible) super.update();
+        }
+    }
+
+    public static class SteamParticle extends PixelParticle {
+        public void reset(float x, float y) {
+            revive();
+            this.x = x;
+            this.y = y;
+            color(0xD9F1F3);
+            speed.set(Random.Float(-2f, 2f), -Random.Float(5f, 9f));
+            left = lifespan = 1.6f;
+        }
+
+        @Override
+        public void update() {
+            super.update();
+            float remaining = left / lifespan;
+            am = Math.min(1f - remaining, remaining) * 0.65f;
+            size(2f + (1f - remaining) * 5f);
         }
     }
 

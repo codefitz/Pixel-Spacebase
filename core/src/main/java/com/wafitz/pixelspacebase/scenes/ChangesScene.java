@@ -36,6 +36,34 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
     private static final String TXT_Update =
+            "_v1.0.4:_\n" +
+                    "_-_ Removed development invulnerability and restored normal new-game strength, damage, death and game-over behaviour.\n" +
+                    "_-_ Added a floating station backdrop with sparse stars, a large orbiting planet and revealed hull edges; removed stray exterior walls.\n" +
+                    "_-_ Station cats wait until touched on each deck, bat one suitable item per room, eat raw meat when injured and scare away Signal Sirens.\n" +
+                    "_-_ Torches toggle from quickslots and show battery charge; added a battery-powered Wormhole Generator.\n" +
+                    "_-_ Drone controllers can be rendered for parts, releasing active drones as enemies; friendly drones swap places with the hero.\n" +
+                    "_-_ Reworked the holodeck quest with Roman patrols, emitter drops, Caesar and Roman summons, and a persistent black/yellow shutdown state.\n" +
+                    "_-_ Y's holodeck workshop unlocks only when enough emitters are collected before the boss; restored visible transport rooms, terminals and disabled obstacles.\n" +
+                    "_-_ Hunter suits gain red signatures in darkness, a ranged accuracy bonus, gas protection and switchable unlimited flight.\n" +
+                    "_-_ Added Hunter item and trap scanner modules with blue item and red trap pings through fog; upgraded class armor retains Hunter tracking, flight and life support.\n" +
+                    "_-_ Hoverpods absorb hits and non-explosive traps, display integrity, and can be repaired or reinforced by combining pods.\n" +
+                    "_-_ Heavy Loaders equip an integrated arm and smash obstacles; revised suit vacuum/gas protection, uniform robot behaviour and unarmored movement/dodge bonuses.\n" +
+                    "_-_ Added a rare all-gear upgrade item; Repair Blasters can lock doors as well as open them.\n" +
+                    "_-_ Command decks now contain hazardous plasma that burns loose items; added traversal protections, cryo clearing, rupturable flooring and a Plasma Stabiliser.\n" +
+                    "_-_ Added sealed fall chambers and Y's stranded-player rescue and return route, with safe non-boss rescue destinations and saved return tickets.\n" +
+                    "_-_ Added exterior jump platforms except on the first deck; retired paired chasm/locked reward rooms and removed the final boss sealed room.\n" +
+                    "_-_ Unified workshop storage into one marked quantum chest with two-way transfers; fixed cross-chapter persistence and duplicate delivery.\n" +
+                    "_-_ Added Habitat transporter rooms and changing rooms with showers, steam and localized water; corrected water rendering without covering floors or doors.\n" +
+                    "_-_ Shapeshifters consume thrown blasters to discharge lethal room-wide energy beams; fixed lingering dead-enemy animations.\n" +
+                    "_-_ The first boss remains the Shapeshifter until that hero is unlocked, then becomes the Alien Queen; its hidden-room eggs replace chests.\n" +
+                    "_-_ Hunter Discs can be found and used by Shapeshifters; Darksabers and Brightsabers can be reforged into an Eclipse Saber.\n" +
+                    "_-_ Reworked Signal Leech plasma spit, flying Signal Siren room teleports, and survivor placement and appearance.\n" +
+                    "_-_ Refreshed Hunter, Loader, Hoverpod, predator, psion, ruptured suit, swarm, facehugger, Roman and item artwork; standardized asset filenames.\n" +
+                    "_-_ Refreshed station tiles, Maintenance lamp flicker, Engineering panels and Habitat rooms; renamed the late-game area Command.\n" +
+                    "_-_ Added optional Now Playing announcements and updated suit descriptions, hero reactions and quest presentation.\n" +
+                    "_-_ Fixed popup/tab alignment, text overflow, checkbox graphics, missing item/action labels and menu version display.\n" +
+                    "_-_ Fixed boss fall landings, Y return travel, achievement/ranking crashes and level-transition generation failures.\n" +
+                    "\n" +
             "_v1.0.3:_\n" +
                     "_-_ Added a pet carrier and a station cat rescue route that can change the escape pod ending.\n" +
                     "_-_ Added a core stabilization ending after reopening the station's rescue cradles.\n" +

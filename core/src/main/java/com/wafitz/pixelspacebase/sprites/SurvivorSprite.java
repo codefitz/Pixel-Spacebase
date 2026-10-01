@@ -21,6 +21,8 @@
 package com.wafitz.pixelspacebase.sprites;
 
 import com.wafitz.pixelspacebase.Assets;
+import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.Survivor;
 import com.watabou.noosa.TextureFilm;
 
 public class SurvivorSprite extends MobSprite {
@@ -28,9 +30,19 @@ public class SurvivorSprite extends MobSprite {
     public SurvivorSprite() {
         super();
 
-        texture(Assets.NPC);
+        setupAnimations(Assets.NPC);
+    }
 
-        TextureFilm frames = new TextureFilm(texture, 12, 14);
+    @Override public void link(Char ch) {
+        setupAnimations(ch instanceof Survivor && ((Survivor) ch).appearance() == 1
+                ? Assets.NPC2 : Assets.NPC);
+        super.link(ch);
+    }
+
+    private void setupAnimations(String asset) {
+        texture(asset);
+
+        TextureFilm frames = new TextureFilm(texture, Assets.NPC2.equals(asset) ? 12 : 13, 16);
 
         idle = new Animation(10, true);
         idle.frames(frames, 0, 0, 0, 0, 1, 2, 3, 3, 2, 1);

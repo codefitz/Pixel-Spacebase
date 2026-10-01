@@ -21,6 +21,7 @@
 package com.wafitz.pixelspacebase.actors.hero;
 
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.mobs.Drone;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.NPC;
 
 public class HeroAction {
@@ -56,6 +57,14 @@ public class HeroAction {
 
         public Interact(NPC npc) {
             this.npc = npc;
+        }
+    }
+
+    public static class SwapDrone extends HeroAction {
+        public final Drone drone;
+
+        public SwapDrone(Drone drone) {
+            this.drone = drone;
         }
     }
 

@@ -58,7 +58,7 @@ public class SignalLeechSprite extends MobSprite {
         turnTo(ch.pos, cell);
         play(zap);
 
-        EnergyBeam.shadow(parent, ch.pos, cell,
+        EnergyBeam.fire(parent, ch.pos, cell,
                 new Callback() {
                     @Override
                     public void call() {

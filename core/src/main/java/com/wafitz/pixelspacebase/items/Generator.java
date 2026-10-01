@@ -56,6 +56,7 @@ import com.wafitz.pixelspacebase.items.equippablemodules.SurveyorModule;
 import com.wafitz.pixelspacebase.items.equippablemodules.SurvivalModule;
 import com.wafitz.pixelspacebase.items.equippablemodules.TechToolkit;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
+import com.wafitz.pixelspacebase.items.equippablemodules.WormholeGenerator;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.blasters.Disintegrator;
 import com.wafitz.pixelspacebase.items.blasters.DominationBlaster;
@@ -64,6 +65,7 @@ import com.wafitz.pixelspacebase.items.blasters.FlameThrower;
 import com.wafitz.pixelspacebase.items.blasters.FreezeThrower;
 import com.wafitz.pixelspacebase.items.blasters.LazerGun;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
+import com.wafitz.pixelspacebase.items.blasters.PlasmaStabiliser;
 import com.wafitz.pixelspacebase.items.blasters.ShockBlaster;
 import com.wafitz.pixelspacebase.items.blasters.VampiricBlaster;
 import com.wafitz.pixelspacebase.items.blasters.VenomBlaster;
@@ -96,6 +98,7 @@ import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.PanicUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
+import com.wafitz.pixelspacebase.items.upgrades.AllGearUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.WeakCloneUpgrade;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
 import com.wafitz.pixelspacebase.items.weapon.melee.BrightHammer;
@@ -202,7 +205,7 @@ public class Generator {
 
     private static HashMap<Category, Float> categoryProbs = new HashMap<>();
 
-    private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
+    private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1};
 
     static {
 
@@ -222,8 +225,9 @@ public class Generator {
                 KnockoutUpgrade.class,
                 EnhancementUpgrade.class,
                 PsionicBlastUpgrade.class,
-                WeakCloneUpgrade.class};
-        Category.UPGRADE.probs = new float[]{30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 4, 10};
+                WeakCloneUpgrade.class,
+                AllGearUpgrade.class};
+        Category.UPGRADE.probs = new float[]{30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 4, 10, 2};
 
         Category.PLASMID.classes = new Class<?>[]{
                 HealingPlasmid.class,
@@ -254,8 +258,9 @@ public class Generator {
                 //WandOfWarding.class,
                 VampiricBlaster.class,
                 DominationBlaster.class,
-                EMP.class};
-        Category.BLASTER.probs = new float[]{5, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, 3, 3};
+                EMP.class,
+                PlasmaStabiliser.class};
+        Category.BLASTER.probs = new float[]{5, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, 3, 3, 1};
 
         //see generator.randomWeapon
         Category.WEAPON.classes = new Class<?>[]{};
@@ -269,7 +274,7 @@ public class Generator {
                 HunterDisc.class,
                 Dart.class
         };
-        Category.WEP_T1.probs = new float[]{1, 1, 1, 0, 0, 1};
+        Category.WEP_T1.probs = new float[]{1, 1, 1, 0, 0.5f, 1};
 
         Category.WEP_T2.classes = new Class<?>[]{
                 Wrench.class,
@@ -355,7 +360,8 @@ public class Generator {
                 TechToolkit.class, //currently removed from drop tables, pending rework.
                 HoloPad.class, //starts with no chance of spawning, chance is set directly after the hologram quest.
                 PortableMaker.class,
-                GravityGun.class
+                GravityGun.class,
+                WormholeGenerator.class
         };
         Category.EQUIPPABLE_MODULE.probs = INITIAL_ARTIFACT_PROBS.clone();
 
@@ -400,7 +406,12 @@ public class Generator {
                     //if we're out of artifacts, return a ring instead.
                     return item != null ? item : random(Category.MODULE);
                 default:
-                    return ((Item) cat.classes[Random.chances(cat.probs)].newInstance()).random();
+                    float[] probabilities = cat.probs;
+                    if (cat == Category.UPGRADE && SpacebaseRun.limitedDrops.allGearUpgrade.count >= 2) {
+                        probabilities = cat.probs.clone();
+                        probabilities[probabilities.length - 1] = 0;
+                    }
+                    return ((Item) cat.classes[Random.chances(probabilities)].newInstance()).random();
             }
 
         } catch (Exception e) {

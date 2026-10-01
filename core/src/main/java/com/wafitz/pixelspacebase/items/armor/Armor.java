@@ -69,6 +69,26 @@ public class Armor extends EquipableItem {
 
     public int tier;
 
+    /** Whether this armor provides a sealed life-support system in vacuum and harmful gas. */
+    public boolean providesLifeSupport() {
+        return false;
+    }
+
+    /** Whether this armor retains the Hunter suit's signature scanner and ranged targeting bonus. */
+    public boolean hasHunterTracking() {
+        return false;
+    }
+
+    /** Whether this armor includes the Hunter suit's switchable jetpack. */
+    public boolean hasHunterJetpack() {
+        return false;
+    }
+
+    /** Whether the Hunter jetpack is currently enabled. */
+    public boolean hunterJetpackOn() {
+        return false;
+    }
+
     private int hitsToKnow = HITS_TO_KNOW;
 
     public Enhancement enhancement;

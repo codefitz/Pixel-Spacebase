@@ -21,12 +21,10 @@
 package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.actors.mobs.npcs.QueenXeno;
-import com.wafitz.pixelspacebase.items.Heap;
-import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
+import com.wafitz.pixelspacebase.mines.QueenNestEgg;
 import com.watabou.utils.Random;
 
 public class QueenXenoPainter extends Painter {
@@ -41,13 +39,13 @@ public class QueenXenoPainter extends Painter {
         int door = entrance.x + entrance.y * level.width();
 
         for (int i = room.left + 1; i < room.right; i++) {
-            addChest(level, (room.top + 1) * level.width() + i, door);
-            addChest(level, (room.bottom - 1) * level.width() + i, door);
+            addEgg(level, (room.top + 1) * level.width() + i, door);
+            addEgg(level, (room.bottom - 1) * level.width() + i, door);
         }
 
         for (int i = room.top + 2; i < room.bottom - 1; i++) {
-            addChest(level, i * level.width() + room.left + 1, door);
-            addChest(level, i * level.width() + room.right - 1, door);
+            addEgg(level, i * level.width() + room.left + 1, door);
+            addEgg(level, i * level.width() + room.right - 1, door);
         }
 
         QueenXeno king = new QueenXeno();
@@ -55,7 +53,7 @@ public class QueenXenoPainter extends Painter {
         level.mobs.add(king);
     }
 
-    private static void addChest(Level level, int pos, int door) {
+    private static void addEgg(Level level, int pos, int door) {
 
         if (pos == door - 1 ||
                 pos == door + 1 ||
@@ -64,8 +62,8 @@ public class QueenXenoPainter extends Painter {
             return;
         }
 
-        Item prize = new Parts(Random.IntRange(1, 25));
-
-        level.drop(prize, pos).type = Heap.Type.CHEST;
+        QueenNestEgg egg = new QueenNestEgg();
+        egg.pos = pos;
+        level.mines.put(pos, egg);
     }
 }

@@ -44,4 +44,9 @@ public class SpaceSuit extends Armor {
         super(2);
     }
 
+    @Override
+    public boolean providesLifeSupport() {
+        return true;
+    }
+
 }

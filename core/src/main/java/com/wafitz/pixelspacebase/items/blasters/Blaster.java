@@ -28,15 +28,19 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.LockedFloor;
 import com.wafitz.pixelspacebase.actors.buffs.Recharging;
+import com.wafitz.pixelspacebase.actors.buffs.Shapeshifted;
 import com.wafitz.pixelspacebase.actors.buffs.SoulMark;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
+import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.effects.EnergyBeam;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
 import com.wafitz.pixelspacebase.items.containers.Container;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
+import com.wafitz.pixelspacebase.levels.RegularLevel;
+import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.mechanics.Ballistica;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.CellSelector;
@@ -106,6 +110,55 @@ public abstract class Blaster extends Item {
 
     public int targetPos(Hero user, int dst) {
         return new Ballistica(user.pos, dst, collisionProperties).collisionPos;
+    }
+
+    @Override
+    protected void onThrow(int cell) {
+        if (curUser.heroClass != HeroClass.SHAPESHIFTER) {
+            super.onThrow(cell);
+            return;
+        }
+
+        Room impactRoom = SpacebaseRun.level instanceof RegularLevel
+                ? ((RegularLevel) SpacebaseRun.level).room(cell) : null;
+        ArrayList<Mob> targets = new ArrayList<>();
+        for (Mob mob : new ArrayList<>(SpacebaseRun.level.mobs)) {
+            if (!mob.isAlive() || !mob.hostile || mob.ally) {
+                continue;
+            }
+            if (impactRoom != null) {
+                if (((RegularLevel) SpacebaseRun.level).room(mob.pos) == impactRoom) {
+                    targets.add(mob);
+                }
+            } else if (SpacebaseRun.level instanceof RegularLevel) {
+                // A corridor or wall impact is not a room-sized blast.
+                if (mob.pos == cell) targets.add(mob);
+            } else if (new Ballistica(cell, mob.pos,
+                    Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN).collisionPos == mob.pos) {
+                // Hand-built boss arenas have no Room objects; reach every target in sight.
+                targets.add(mob);
+            }
+        }
+
+        if (targets.isEmpty()) {
+            super.onThrow(cell);
+            return;
+        }
+
+        Sample.INSTANCE.play(Assets.SND_ZAP);
+        for (Mob mob : targets) {
+            int beamStart = cell == mob.pos ? curUser.pos : cell;
+            EnergyBeam.whiteLight(curUser.sprite.parent, beamStart, mob.pos, null);
+        }
+        Buff.detach(curUser, Shapeshifted.class);
+        // The thrown blaster is consumed by the discharge. Set HP directly so
+        // shields, resistance and evasion cannot leave a target standing.
+        for (Mob mob : targets) {
+            if (mob.isAlive()) {
+                mob.HP = 0;
+                mob.die(this);
+            }
+        }
     }
 
     protected abstract void onZap(Ballistica attack);
@@ -178,6 +231,9 @@ public abstract class Blaster extends Item {
         String desc = desc();
 
         desc += "\n\n" + statsDesc();
+
+        if (SpacebaseRun.hero != null && SpacebaseRun.hero.heroClass == HeroClass.SHAPESHIFTER)
+            desc += "\n\n" + Messages.get(Blaster.class, "shapeshifter_throw");
 
         if (malfunctioning && malfunctioningKnown)
             desc += "\n\n" + Messages.get(Blaster.class, "malfunctioning");
