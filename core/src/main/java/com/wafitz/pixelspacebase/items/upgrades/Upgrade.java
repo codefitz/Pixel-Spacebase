@@ -20,6 +20,8 @@
  */
 package com.wafitz.pixelspacebase.items.upgrades;
 
+import com.wafitz.pixelspacebase.SpacebaseRun;
+
 import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.actors.buffs.Blindness;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -223,6 +225,10 @@ public abstract class Upgrade extends Item {
         }
 
         Badges.validateAllUpgradesIdentified();
+        if (SpacebaseRun.hero != null) {
+            SpacebaseRun.hero.belongings.backpack.sortOrdnanceItems();
+            updateQuickslot();
+        }
     }
 
     @Override

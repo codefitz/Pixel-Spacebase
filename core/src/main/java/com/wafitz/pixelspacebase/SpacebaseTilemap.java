@@ -340,16 +340,8 @@ public class SpacebaseTilemap extends Tilemap {
                 && ((com.wafitz.pixelspacebase.levels.RegularLevel) SpacebaseRun.level).isExteriorPlatformJump(pos)) {
             return false;
         }
-        if (Assets.TILES_ENGINEERING.equals(tilesTexturePath)) {
-            // Preserve the pre-backdrop tiles2 behavior. Engineering uses
-            // default-visual CHASM cells as part of its normal floor plan,
-            // including cells outside the discoverable mask.
-            return Level.discoverable[pos]
-                    || data[pos] == defaultVisuals.get(Terrain.CHASM);
-        }
-
-        // On the other level sets, chasm cells are open space; keep them
-        // transparent so the space backdrop remains visible.
+        // Chasm cells are open space on every station deck, including Engineering.
+        // Never draw the atlas's opaque chasm tile over the space backdrop.
         return map[pos] != Terrain.CHASM && Level.discoverable[pos];
     }
 }

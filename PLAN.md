@@ -34,13 +34,13 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [x] Count 20 hero actions in the stranded chamber before Y rescues; corrected world-tick counting and immediate landing tick. In-game confirmation pending.
 - [x] Keep skipped boss decks ready after Y rescues to later floors. Deck saves now identify their run, new games clear their own old decks, and travel from below enters unfinished arenas through their normal approach. Legacy completed decks at floors 5–20 require a victory badge from the current run. In-game confirmation pending.
 - [x] Items aren't appearing normally on level 6 and above. Reused explored decks from earlier games are a suspected cause. New runs now reject other-run and unmarked deck files; four save-ownership checks passed. Confirm loot in game; older unmarked ordinary decks are retained to preserve progress.
-- [ ] Escape pod (old amulet ending) has NO TEXT FOUND (screenshot)
+- [x] Fix missing escape pod ending text: dialogue, cat variant, launch and stay buttons now use the renamed EscapePodScene resource keys. In-game confirmation pending.
 - [x] Quantum chest duplication resolved; confirmed by the player.
-- [ ] The shadow now is too small - it shows the outlines inside the rooms and base (screenshot)
-- [ ] The life bar should not show a calculation - just a HP number
-- [ ] On boss level 5 - eggs are spawning outside of the rooms and corridors (screenshot)
-- [ ] On the maintenance levels, large parts of the level have pitch black tiles (screenshot).
-- [ ] Grenades didn't immediately get stored in ordinance (only after level transition)
+- [x] Correct hull fog coverage: keep interior floors covered at shared wall corners, reveal only hull walls, and exclude enclosed wall gaps from exterior space. Reviewed the supplied screenshots; in-game confirmation pending.
+- [x] Show only current HP on the life bar, removing the shield calculation and maximum-HP fraction. In-game confirmation pending.
+- [x] Keep level-5 queen eggs and xenomorph spawns on walkable ground. Removed chasm/avoid-cell eligibility and excluded the sealed rescue chamber. In-game confirmation pending.
+- [x] Remove black exterior rectangles on Engineering decks (the supplied screenshot shows floor 11). Removed the tiles2 exception that drew opaque chasm tiles outside the station. In-game confirmation pending.
+- [x] Sort revealed grenades into ordnance immediately when their cache type becomes known. Preserve quantities and quickslots, merge matching stacks, and leave items in place when the kit is full. Three focused sorting checks passed; in-game confirmation pending.
 
 ## Art
 

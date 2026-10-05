@@ -205,7 +205,7 @@ public class XenoQueen extends Mob {
         for (int offset : PathFinder.NEIGHBOURS4) {
             if (cell + offset >= 0
                     && cell + offset < SpacebaseRun.level.length()
-                    && (Level.passable[cell + offset] || Level.avoid[cell + offset])) {
+                    && isArenaGroundCell(cell + offset)) {
                 return true;
             }
         }
@@ -213,14 +213,19 @@ public class XenoQueen extends Mob {
     }
 
     private boolean canPlaceEgg(int cell) {
-        return cell >= 0
-                && cell < SpacebaseRun.level.length()
-                && (Level.passable[cell] || Level.avoid[cell])
+        return isArenaGroundCell(cell)
                 && SpacebaseRun.level.distance(cell, pos) <= 10
                 && SpacebaseRun.level.distance(cell, SpacebaseRun.hero.pos) > 2
                 && Actor.findChar(cell) == null
                 && SpacebaseRun.level.heaps.get(cell) == null
                 && SpacebaseRun.level.mines.get(cell) == null;
+    }
+
+    private boolean isArenaGroundCell(int cell) {
+        return SpacebaseRun.level.insideMap(cell)
+                && Level.passable[cell]
+                && !Level.pit[cell]
+                && !SpacebaseRun.level.isDoorlessRoomCell(cell);
     }
 
     private int countXenos() {
@@ -260,7 +265,7 @@ public class XenoQueen extends Mob {
     private boolean canSpawnFromCrack(int cell) {
         if (cell <= SpacebaseRun.level.width()
                 || cell >= SpacebaseRun.level.length() - SpacebaseRun.level.width()
-                || !(Level.passable[cell] || Level.avoid[cell])
+                || !isArenaGroundCell(cell)
                 || Actor.findChar(cell) != null
                 || SpacebaseRun.level.distance(cell, SpacebaseRun.hero.pos) < 4) {
             return false;

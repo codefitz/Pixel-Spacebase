@@ -260,9 +260,7 @@ public class StatusPane extends Component {
             podText.measure();
         }
 
-        hpText.text(shield > 0 ?
-                (int) health + "+" + (int) shield + "/" + (int) max :
-                (int) health + "/" + (int) max);
+        hpText.text(Integer.toString((int) health));
         hpText.measure();
         layoutHealthText();
 

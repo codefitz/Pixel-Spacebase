@@ -287,6 +287,10 @@ public class Plasmid extends Item {
             }
 
             Badges.validateAllPlasmidIdentified();
+            if (SpacebaseRun.hero != null) {
+                SpacebaseRun.hero.belongings.backpack.sortOrdnanceItems();
+                updateQuickslot();
+            }
         }
     }
 

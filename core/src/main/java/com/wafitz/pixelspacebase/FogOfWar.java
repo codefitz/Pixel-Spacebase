@@ -179,13 +179,20 @@ public class FogOfWar extends Image {
 
     static boolean touchesHullEdge(int vertexX, int vertexY, int mapWidth, int mapHeight,
                                    boolean[] discoverable, int[] map) {
+        boolean touchesHull = false;
         for (int y = vertexY - 1; y <= vertexY; y++) {
             for (int x = vertexX - 1; x <= vertexX; x++) {
-                if (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight
-                        && Level.isHullCell(x + y * mapWidth, mapWidth, mapHeight, discoverable)) return true;
+                if (x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) continue;
+                int cell = x + y * mapWidth;
+                if (!discoverable[cell]) continue;
+                // A shared corner must stay dark when it also covers interior terrain.
+                if ((map[cell] != com.wafitz.pixelspacebase.levels.Terrain.WALL
+                        && map[cell] != com.wafitz.pixelspacebase.levels.Terrain.WALL_DECO)
+                        || !Level.isHullCell(cell, mapWidth, mapHeight, discoverable)) return false;
+                touchesHull = true;
             }
         }
-        return false;
+        return touchesHull;
     }
 
 

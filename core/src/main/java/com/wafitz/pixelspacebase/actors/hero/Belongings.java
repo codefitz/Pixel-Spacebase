@@ -163,7 +163,10 @@ public class Belongings implements Iterable<Item> {
     }
 
     public void identify() {
-        for (Item item : this) {
+        java.util.ArrayList<Item> carried = new java.util.ArrayList<>();
+        for (Item item : this) carried.add(item);
+        // Identification can now move revealed grenades between containers.
+        for (Item item : carried) {
             item.identify();
         }
     }

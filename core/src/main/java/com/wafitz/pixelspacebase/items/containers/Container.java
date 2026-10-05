@@ -139,6 +139,47 @@ public class Container extends Item implements Iterable<Item> {
         return false;
     }
 
+    /** Move newly revealed ordnance without detaching it or losing its quickslot. */
+    public void sortOrdnanceItems() {
+        OrdnanceKit kit = null;
+        ArrayList<Item> carried = new ArrayList<>();
+        for (Item item : this) {
+            carried.add(item);
+            if (item instanceof OrdnanceKit && kit == null) kit = (OrdnanceKit) item;
+        }
+        if (kit == null) return;
+        for (Item item : carried) {
+            if (!kit.grab(item) || kit.contains(item)) continue;
+            Item merge = null;
+            if (item.stackable) {
+                for (Item stored : kit.items) {
+                    if (item.isSimilar(stored)) { merge = stored; break; }
+                }
+            }
+            if (merge == null && kit.items.size() >= kit.size) continue;
+            Container source = containerHolding(item);
+            if (source == null) continue;
+            int slot = SpacebaseRun.quickslot.getSlot(item);
+            source.items.remove(item);
+            if (item.collect(kit)) {
+                if (slot >= 0 && merge != null) SpacebaseRun.quickslot.setSlot(slot, merge);
+            } else {
+                source.items.add(item);
+            }
+        }
+    }
+
+    private Container containerHolding(Item item) {
+        if (items.contains(item)) return this;
+        for (Item stored : items) {
+            if (stored instanceof Container) {
+                Container source = ((Container) stored).containerHolding(item);
+                if (source != null) return source;
+            }
+        }
+        return null;
+    }
+
     @Override
     public Iterator<Item> iterator() {
         return new ItemIterator();

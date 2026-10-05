@@ -137,6 +137,8 @@ public abstract class Level implements Bundlable {
     public static boolean[] pit;
 
     public static boolean[] discoverable;
+    private static boolean[] hullFootprint;
+    private static boolean[] exteriorSpace;
 
     public Feeling feeling = Feeling.NONE;
     public boolean floorBreakerOn = true;
@@ -980,13 +982,16 @@ public abstract class Level implements Bundlable {
             }
             discoverable[i] = touchesOpenCell && touchesGround && map[i] != Terrain.CHASM;
         }
+        hullFootprint = discoverable;
+        exteriorSpace = findExteriorSpace(width(), height(), discoverable);
         revealHull();
     }
 
     protected void revealHull() {
         if (mapped == null) return;
         for (int cell = 0; cell < length(); cell++) {
-            if (isHullCell(cell, width(), height(), discoverable)) mapped[cell] = true;
+            if ((map[cell] == Terrain.WALL || map[cell] == Terrain.WALL_DECO)
+                    && isHullCell(cell, width(), height(), discoverable)) mapped[cell] = true;
         }
     }
 
@@ -994,13 +999,44 @@ public abstract class Level implements Bundlable {
         if (cell < 0 || cell >= footprint.length || !footprint[cell]) return false;
         int cx = cell % width;
         int cy = cell / width;
+        boolean[] exterior = footprint == hullFootprint ? exteriorSpace
+                : findExteriorSpace(width, height, footprint);
         for (int y = cy - 1; y <= cy + 1; y++) {
             for (int x = cx - 1; x <= cx + 1; x++) {
                 if (x < 0 || x >= width || y < 0 || y >= height
-                        || !footprint[x + y * width]) return true;
+                        || exterior[x + y * width]) return true;
             }
         }
         return false;
+    }
+
+    /** Only unused cells reachable from the map border belong to outer space. */
+    private static boolean[] findExteriorSpace(int width, int height, boolean[] footprint) {
+        boolean[] exterior = new boolean[footprint.length];
+        int[] queue = new int[footprint.length];
+        int head = 0, tail = 0;
+        for (int cell = 0; cell < footprint.length; cell++) {
+            int x = cell % width, y = cell / width;
+            if (!footprint[cell] && (x == 0 || x == width - 1 || y == 0 || y == height - 1)) {
+                exterior[cell] = true;
+                queue[tail++] = cell;
+            }
+        }
+        while (head < tail) {
+            int cell = queue[head++];
+            int x = cell % width, y = cell / width;
+            for (int direction = 0; direction < 4; direction++) {
+                int nx = x + (direction == 0 ? -1 : direction == 1 ? 1 : 0);
+                int ny = y + (direction == 2 ? -1 : direction == 3 ? 1 : 0);
+                if (nx < 0 || nx >= width || ny < 0 || ny >= height) continue;
+                int next = nx + ny * width;
+                if (!footprint[next] && !exterior[next]) {
+                    exterior[next] = true;
+                    queue[tail++] = next;
+                }
+            }
+        }
+        return exterior;
     }
 
     public static void set(int cell, int terrain) {
