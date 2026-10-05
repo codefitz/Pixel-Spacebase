@@ -33,7 +33,8 @@ public class HunterSignature extends Image {
             return;
         }
 
-        visible = HunterSpaceSuit.signatureScannerActive() && !SpacebaseRun.visible[mob.pos];
+        visible = !(SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel)
+                && HunterSpaceSuit.signatureScannerActive() && !SpacebaseRun.visible[mob.pos];
         if (!visible) return;
 
         RectF sourceFrame = source.frame();

@@ -51,15 +51,17 @@ public class YRescueJourney extends Buff {
         choices.remove(Integer.valueOf(sourceDepth));
         if (choices.isEmpty()) return false;
         boolean first = Statistics.yRescueDepartures == 0;
-        destination = !first && (preferred == Destination.STATION || preferred == Destination.ALIEN_PLANET || preferred == Destination.BOSS)
+        destination = !first && (preferred == Destination.STATION || preferred == Destination.ALIEN_PLANET
+                || preferred == Destination.BOSS || preferred == Destination.DARK_MAZE)
                 ? preferred : chooseDestination(first);
         int boss = destination == Destination.BOSS ? SpacebaseRun.nextRescueBoss(sourceDepth) : -1;
         if (destination == Destination.BOSS && boss < 0) destination = Destination.STATION;
         rescueDepth = destination == Destination.BOSS ? boss
-                : destination == Destination.ALIEN_PLANET ? sourceDepth : Random.element(choices);
+                : destination == Destination.ALIEN_PLANET || destination == Destination.DARK_MAZE ? sourceDepth : Random.element(choices);
         journeyId = ++Statistics.yRescueDepartures;
         destinationIdentity = destination == Destination.ALIEN_PLANET ? "alien_" + journeyId
-                : destination == Destination.BOSS ? "boss_" + journeyId : "";
+                : destination == Destination.BOSS ? "boss_" + journeyId
+                : destination == Destination.DARK_MAZE ? "maze_" + journeyId : "";
         phase = Phase.DEPARTING;
         transferPrepared = false;
         return true;
@@ -68,7 +70,8 @@ public class YRescueJourney extends Buff {
     private static Destination chooseDestination(boolean firstRescue) {
         if (firstRescue) return Destination.STATION;
         int roll = Random.Int(100);
-        return roll < 15 ? Destination.ALIEN_PLANET : roll < 20 ? Destination.BOSS : Destination.STATION;
+        return roll < 15 ? Destination.ALIEN_PLANET : roll < 20 ? Destination.BOSS
+                : roll < 30 ? Destination.DARK_MAZE : Destination.STATION;
     }
 
     public boolean pendingTravel() {

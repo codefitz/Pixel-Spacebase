@@ -1,6 +1,6 @@
 # Y rescue expansion
 
-Status: Stages 1–3 implemented; compilation passed. In-game acceptance checks remain pending. Stages 4–5 are planned.
+Status: Stages 1–4 implemented; compilation passed. In-game acceptance checks remain pending. Stage 5 is planned.
 
 ## Agreed behaviour
 
@@ -53,7 +53,7 @@ For the Pixel Dungeon visit, propose finding Y near the downstairs exit to retur
 - A rescue's game save includes the hero and current deck in one atomic checkpoint. Pending travel also saves an untouched destination and landing cell before cargo is delivered. Reload resumes the pending transfer and avoids collecting cargo twice.
 - Completion is saved before the ticket is detached. Return prefers an unoccupied, passable entrance and otherwise an entrance-connected floor tile. No usable landing leaves the transition pending and reports an error rather than placing the hero incorrectly.
 - A legacy ticket with a destination migrates to an active visit and proves at least one departure. A save without a departure count or active destination remains first-rescue-eligible.
-- Ordinary station stairs and return items retain their existing behaviour while preserving the origin. Reaching that origin finishes the rescue. Stage 2 enabled the alien planet weight; Stage 3 also enables boss detours. Maze and Dungeon visits remain disabled.
+- Ordinary station stairs and return items retain their existing behaviour while preserving the origin. Reaching that origin finishes the rescue. Stages 2–4 enable alien planets, boss detours and dark mazes. Dungeon visits remain disabled.
 - The existing rescue persistence fixture was adjusted for the new active-origin rule. No tests were added or executed. Java compilation passed; save/reload, cargo and follower behaviour still require the acceptance checks below.
 
 Acceptance: a first rescue, a normal later rescue, and reloads before departure, during a visit and after return all preserve the source deck and a single journey. Normal station travel remains intact. Review old active tickets and saves without new fields.
@@ -90,7 +90,7 @@ This is the first new destination because it exercises shared side-level travel,
 
 ### Stage 3 implementation notes
 
-- Later rescues now roll 80% ordinary station, 15% alien planet and 5% boss. The first rescue remains ordinary. The eventual proposed weights above still include the two unfinished destinations.
+- Stage 3 enabled 80% ordinary station, 15% alien planet and 5% boss. Stage 4 reallocates 10% from ordinary station to the maze. The first rescue remains ordinary.
 - The next undefeated boss is selected from depths 5, 10, 15, 20 and 25. Existing arena metadata is read without constructing actors. A started next encounter causes fallback rather than skipping ahead to another undefeated boss.
 - The fight runs under `boss_<journeyId>`. Campaign files remain untouched during combat. Arrival enters the arena's normal encounter logic without advancing deepest-floor progress or consuming stored bones.
 - Victory writes the resolved arena to its campaign depth. Rewards already collected remain with the hero; remaining drops wait in that arena for a normal visit. Y appears after the current action finishes, including the security encounter's final drops.
@@ -103,12 +103,25 @@ Acceptance: win and lose against each supported boss, then revisit normally. Vic
 
 ## Stage 4 — Dark maze and Hunter mapping
 
-- [ ] Generate a bounded maze with a guaranteed route from spawn to exit. No ordinary stairs or unreachable exit.
-- [ ] Mark the exit through darkness without revealing the route. Keep unexplored walls and corridors black; decide whether explored cells remain visible or fade again and document it.
-- [ ] Let active torch light reveal local terrain using existing light duration and battery mechanics. Preserve tactile movement feedback so the maze remains completable without a torch.
-- [ ] Prevent auto-pathfinding, minimaps and normal sensor overlays from exposing hidden maze topology unintentionally.
-- [ ] With Hunter capability equipped, render a projected 3D wireframe of scanned nearby maze geometry, aligned with movement and walls. This is a visual navigation aid over the existing grid. Define scan radius and accumulated-map behaviour; extend existing upgraded-suit Hunter capability handling consistently.
-- [ ] Trigger return on the exit tile, with the same saved return flow as other journeys.
+- [x] Generate a bounded maze with a guaranteed route from spawn to exit, without campaign stairs or unreachable exit.
+- [x] Keep an exit beacon visible above darkness and provide a direction indicator when it is outside the view. Unlit terrain, including previously explored cells, stays black.
+- [x] Reveal local terrain with the existing active torch light, duration and batteries. Provide individual cardinal movement and wall feedback for travel without a torch.
+- [x] Prevent automatic hero pathfinding, ordinary mapping, awareness and sensor overlays from revealing hidden topology.
+- [x] With Hunter capability equipped, show a projected 3D wireframe of nearby scanned geometry. Use the shared armor capability so upgraded suits retaining Hunter tracking qualify too.
+- [x] Trigger the saved return flow on reaching the exit, after the current actor action and movement finish.
+
+### Stage 4 implementation notes
+
+- Later rescues now roll 70% ordinary station, 15% alien planet, 10% dark maze and 5% boss. The Pixel Dungeon outcome remains disabled. Development selection accepts `DARK_MAZE` after the first rescue.
+- A 25×19 maze is carved as a connected tree of narrow corridors. The exit is the farthest floor cell from the entrance by cardinal traversal. Its map and scans use a separate `maze_<journeyId>` save. Creation bypasses limited station drops, bones, enemy spawning and campaign progress.
+- The maze is breathable and has no generated enemies or traps. Hunger, supplies, carried companions and normal death/clone rules still apply. A torch is useful but is not required to move or reach the exit.
+- Fog ignores explored terrain, mapping flags, brightness overrides and the normal station hull reveal. Without active light only the hero and exit beacon are drawn above it. The exit direction indicator provides a bearing, without a route or distance.
+- Torch light reveals the normal four-cell radius with line of sight. Terrain goes black again outside that radius or when light expires; torch detachment now removes the light buff before refreshing sight. Innate robot vision, room lighting, awareness and mind vision do not illuminate the maze.
+- Movement uses single north/south/east/west steps, including under torchlight. Distant clicks cannot calculate a hidden route; diagonal movement cannot cut corridor corners. Hitting a wall gives tactile feedback. Normal station movement is unchanged.
+- The Hunter display projects a local isometric floor grid and raised wall outlines, with the hero in yellow at the centre. Its four-cell scan radius can penetrate nearby walls. Scan history is saved separately from terrain visibility and retained when equipment is removed; the overlay hides immediately, then restores when qualifying armor is equipped again. The viewport shows retained cells up to five cells from the hero, without a whole-maze overview or automatic navigation.
+- Ordinary mapping upgrades report scrambled signals and consume their usual read; the Surveyor's active scan reports the interference without spending its charge. Ordinary item/trap markers and signature overlays are disabled during the maze visit. Hidden cells cannot be examined remotely.
+- The exit works while walking, flying or being repositioned. It pauses further actor actions and returns through the original journey ticket once movement finishes. Saved exit arrivals resume the same return after reload. No rescue Y is spawned inside the maze; recall retains the shared early-return behaviour.
+- Java compilation passed. No tests or in-game sessions were run; torch expiry, equip/unequip, overlay readability, exit travel and reload behaviour still require the acceptance review below.
 
 Acceptance: exit visible without torch, no hidden route leaks, maze solvable without equipment, torch on/off and battery exhaustion behave correctly. Hunter equip/unequip and reload preserve the agreed map rules. Inspect the overlay in game for readability.
 
@@ -128,4 +141,4 @@ Acceptance: visit and reload with each hero appearance, fight and collect items 
 
 Ship and review one stage at a time. Each destination should be force-selectable through development tooling for review without changing release probabilities. Gameplay checks above are planned acceptance work, not checks already executed. Update release scope after each stage; all five stages need not ship in 1.0.5.
 
-**Next:** Stage 4 — the dark maze and Hunter mapping overlay. The implemented stages still need their in-game acceptance checks.
+**Next:** Stage 5 — the rare Pixel Dungeon first-floor visit. The implemented stages still need their in-game acceptance checks.

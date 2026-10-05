@@ -46,6 +46,7 @@ public class HunterSensorMarkers extends Group {
 
         Level level = SpacebaseRun.level;
         if (level == null || SpacebaseRun.visible == null) return;
+        if (level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) return;
 
         boolean itemScannerActive = HunterItemScanner.active();
         boolean trapScannerActive = HunterTrapScanner.active();

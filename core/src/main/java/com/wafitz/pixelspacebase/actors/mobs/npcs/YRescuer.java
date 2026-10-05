@@ -96,7 +96,8 @@ public class YRescuer extends NPC {
         boolean needed = ticket != null && ticket.sourceDepth > 0
                 && ticket.atDestination(SpacebaseRun.depth)
                 && ticket.phase == YRescueJourney.Phase.VISITING
-                && ticket.destination != YRescueJourney.Destination.BOSS;
+                && ticket.destination != YRescueJourney.Destination.BOSS
+                && ticket.destination != YRescueJourney.Destination.DARK_MAZE;
         boolean present = false;
         for (Mob mob : level.mobs.toArray(new Mob[0])) {
             if (mob instanceof YRescuer) {

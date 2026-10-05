@@ -123,7 +123,13 @@ public class FogOfWar extends Image {
             int cell = (pWidth - 1) * i + updating.left;
             fog.pixels.position((width2) * i + updating.left);
             for (int j = updating.left; j < updating.right; j++) {
-                if (!touchesDiscoverableCell(j, i, pWidth - 1, pHeight - 1, Level.discoverable)) {
+                if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
+                    // Ignore explored/mapped terrain, brightness and the station's hull exemption.
+                    boolean lit = cell >= pWidth && cell < SpacebaseRun.level.length() && j > 0 && j < pWidth - 1
+                            && visible[cell] && visible[cell - (pWidth - 1)]
+                            && visible[cell - 1] && visible[cell - (pWidth - 1) - 1];
+                    fog.pixels.put(lit ? VISIBLE[brightness] : 0xFF000000);
+                } else if (!touchesDiscoverableCell(j, i, pWidth - 1, pHeight - 1, Level.discoverable)) {
                     // The level is stored as a rectangle, but most cells outside the
                     // generated station are unused. Do not let fog turn that space
                     // into an opaque black box; the station's outer walls form its edge.

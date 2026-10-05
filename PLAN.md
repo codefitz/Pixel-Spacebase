@@ -19,7 +19,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
   - [x] Stage 1: saved journey state, first-rescue guarantee, and return recovery implemented; in-game reload checks pending.
   - [x] Stage 2: alien planet, friendly NPCs, and a parts trader implemented; in-game visit and purchase checks pending.
   - [x] Stage 3: next-boss detour, persistent victory, and reset after defeat implemented; in-game win, loss, and reload checks pending.
-  - [ ] Stage 4: dark maze, visible exit, torch exploration, and Hunter mapping overlay.
+  - [x] Stage 4: dark maze, visible exit, torch exploration, and Hunter mapping implemented; in-game visibility, equipment, and reload checks pending.
   - [ ] Stage 5: very rare Pixel Dungeon first-floor visit with original artwork.
 - [x] On habitat level, if there's a fire, or the hero is on fire, have sprinklers trigger after 1 turn to put it out.
 - [x] Replace Spade with the accurate Phase Cutter and Drill with the defensive Repulsor Baton, with new sprites and save compatibility.

@@ -231,6 +231,8 @@ public abstract class Actor implements Bundlable {
                     // Finish the current action, including drops and experience, before extraction saves it.
                     doNext = false;
                 }
+                if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel
+                        && ((com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level).exitReached) doNext = false;
                 if (doNext && !SpacebaseRun.hero.isAlive()) {
                     doNext = false;
                     current = null;

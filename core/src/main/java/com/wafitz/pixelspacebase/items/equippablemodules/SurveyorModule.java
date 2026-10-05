@@ -68,6 +68,11 @@ public class SurveyorModule extends EquippableModule {
 
         if (action.equals(AC_SURVEY)) {
 
+            if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
+                GLog.i(Messages.get(SpacebaseRun.level, "mapping_blocked"));
+                return;
+            }
+
             if (!isEquipped(hero)) GLog.i(Messages.get(EquippableModule.class, "need_to_equip"));
             else if (charge != chargeCap) GLog.i(Messages.get(this, "no_charge"));
             else {

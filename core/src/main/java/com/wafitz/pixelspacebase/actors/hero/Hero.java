@@ -571,6 +571,8 @@ public class Hero extends Char {
 
     @Override
     public boolean act() {
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel
+                && ((com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level).exitReached) return false;
         com.wafitz.pixelspacebase.actors.buffs.YRescueJourney journey = buff(
                 com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
         if (journey != null && journey.phase == com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.Phase.RESOLVING) return false;
@@ -1330,6 +1332,12 @@ public class Hero extends Char {
 
     private boolean getCloser(final int target) {
 
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel
+                && !((com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level).canStep(pos, target)) {
+            path = null;
+            return false;
+        }
+
         if (target == pos)
             return false;
 
@@ -1441,6 +1449,18 @@ public class Hero extends Char {
 
         if (cell == -1) {
             return false;
+        }
+
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel && cell != pos) {
+            com.wafitz.pixelspacebase.levels.DarkMazeLevel maze = (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level;
+            if (!maze.canStep(pos, cell)) {
+                GLog.i(Messages.get(maze, "one_step"));
+                return false;
+            }
+            if (!Level.passable[cell]) {
+                GLog.i(Messages.get(maze, "blocked"));
+                return false;
+            }
         }
 
         Char ch;
@@ -1806,6 +1826,8 @@ public class Hero extends Char {
             SpacebaseRun.level.press(pos, this);
         }
         checkVacuumExposure(previousPos);
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel)
+            ((com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level).checkExit(pos);
     }
 
     private void checkVacuumExposure(int previousPos) {

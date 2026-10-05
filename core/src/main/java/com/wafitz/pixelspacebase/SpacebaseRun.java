@@ -389,10 +389,11 @@ public class SpacebaseRun {
             arena.create();
             return arena;
         }
-        if (!identity.startsWith("alien_")) throw new IOException("Rescue destination is not available");
+        if (!identity.startsWith("alien_") && !identity.startsWith("maze_")) throw new IOException("Rescue destination is not available");
         Actor.clear();
         level = null;
-        Level planet = new com.wafitz.pixelspacebase.levels.AlienPlanetLevel();
+        Level planet = identity.startsWith("maze_") ? new com.wafitz.pixelspacebase.levels.DarkMazeLevel()
+                : new com.wafitz.pixelspacebase.levels.AlienPlanetLevel();
         resetVisibilityForLevel(planet);
         planet.create();
         return planet;
@@ -992,6 +993,12 @@ public class SpacebaseRun {
 
         level.updateFieldOfView(hero, visible);
 
+        if (level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
+            GameScene.updateFog();
+            GameScene.afterObserve();
+            return;
+        }
+
         int cx = hero.pos % level.width();
         int cy = hero.pos / level.width();
 
@@ -1026,6 +1033,8 @@ public class SpacebaseRun {
 
     public static PathFinder.Path findPath(Char ch, int from, int to, boolean[] pass, boolean[] visible) {
 
+        if (ch == hero && level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) return null;
+
         setupPassable();
         if (ch.flying || ch.buff(Paranoid.class) != null) {
             BArray.or(pass, Level.avoid, passable);
@@ -1044,6 +1053,9 @@ public class SpacebaseRun {
     }
 
     public static int findStep(Char ch, int from, int to, boolean[] pass, boolean[] visible) {
+
+        if (ch == hero && level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel
+                && !((com.wafitz.pixelspacebase.levels.DarkMazeLevel) level).canStep(from, to)) return -1;
 
         if (level.adjacent(from, to)) {
             return Actor.findChar(to) == null && (pass[to] || Level.avoid[to]) ? to : -1;

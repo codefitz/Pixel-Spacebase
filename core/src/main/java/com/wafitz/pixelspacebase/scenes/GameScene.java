@@ -167,6 +167,7 @@ public class GameScene extends PixelScene {
 
         // Space is visible only where the terrain has no station tile.
         spaceBackdrop = new SpacebaseBackdrop();
+        spaceBackdrop.visible = !(SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel);
         terrain.add(spaceBackdrop);
 
         water = new WaterLayer(SpacebaseRun.level.waterTex(),
@@ -247,6 +248,10 @@ public class GameScene extends PixelScene {
         hero.place(SpacebaseRun.hero.pos);
         hero.updateArmor();
         mobs.add(hero);
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
+            add(new com.wafitz.pixelspacebase.ui.MazeNavigationMarkers(
+                    (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level, hero));
+        }
 
         add(new HealthIndicator());
 
@@ -256,6 +261,17 @@ public class GameScene extends PixelScene {
         pane.camera = uiCamera;
         pane.setSize(uiCamera.width, 0);
         add(pane);
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
+            com.wafitz.pixelspacebase.ui.HunterMazeOverlay map = new com.wafitz.pixelspacebase.ui.HunterMazeOverlay(
+                    (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level,
+                    Math.max(0, uiCamera.width - 100), pane.bottom() + 4);
+            map.camera = uiCamera;
+            add(map);
+            com.wafitz.pixelspacebase.ui.MazeExitCompass compass = new com.wafitz.pixelspacebase.ui.MazeExitCompass(
+                    (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level, 4, pane.bottom() + 12);
+            compass.camera = uiCamera;
+            add(compass);
+        }
 
         toolbar = new Toolbar();
         toolbar.camera = uiCamera;
@@ -364,6 +380,8 @@ public class GameScene extends PixelScene {
         if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
             if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.AlienPlanetLevel) {
                 GLog.h(Messages.get(com.wafitz.pixelspacebase.levels.AlienPlanetLevel.class, "arrival"));
+            } else if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
+                GLog.h(Messages.get(com.wafitz.pixelspacebase.levels.DarkMazeLevel.class, "arrival"));
             } else if (SpacebaseRun.depth < Statistics.deepestFloor) {
                 GLog.h(Messages.get(this, "welcome_back"), SpacebaseRun.depth, SpacebaseRun.hero.givenName());
             } else {
@@ -401,6 +419,7 @@ public class GameScene extends PixelScene {
     }
 
     private String musicForDepth() {
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) return Assets.OXYGEN_WARNING;
         if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.AlienPlanetLevel) return Assets.HABITATION;
         if (SpacebaseRun.depth >= 1 && SpacebaseRun.depth <= 4) {
             return Assets.OXYGEN_WARNING;
@@ -491,9 +510,21 @@ public class GameScene extends PixelScene {
         if (rescue != null && rescue.phase == com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.Phase.RESOLVING)
             rescue.showBossExtraction();
 
+        boolean mazeExit = false;
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
+            com.wafitz.pixelspacebase.levels.DarkMazeLevel maze = (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level;
+            maze.checkExit(SpacebaseRun.hero.pos);
+            mazeExit = maze.exitReached;
+            if (mazeExit && SpacebaseRun.hero.isAlive() && !Actor.isActing() && !hero.isMoving && rescue != null
+                    && rescue.phase == com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.Phase.VISITING) {
+                rescue.requestReturn();
+                return;
+            }
+        }
+
         if (!freezeEmitters) water.offset(-5 * Game.elapsed);
 
-        if (!Actor.processing() && SpacebaseRun.hero.isAlive()
+        if (!Actor.processing() && SpacebaseRun.hero.isAlive() && !mazeExit
                 && (rescue == null || rescue.phase != com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.Phase.RESOLVING)) {
             if (!t.isAlive()) {
                 //if cpu time is limited, game should prefer drawing the current frame
@@ -961,7 +992,12 @@ public class GameScene extends PixelScene {
             return;
         }
 
-        if (cell < 0 || cell > SpacebaseRun.level.length() || (!SpacebaseRun.level.visited[cell] && !SpacebaseRun.level.mapped[cell])) {
+        boolean hiddenMazeCell = SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel
+                && cell != SpacebaseRun.level.exit && cell >= 0 && cell < SpacebaseRun.level.length()
+                && !SpacebaseRun.visible[cell];
+        if (cell < 0 || cell >= SpacebaseRun.level.length() || hiddenMazeCell
+                || (!(SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel && cell == SpacebaseRun.level.exit)
+                && !SpacebaseRun.level.visited[cell] && !SpacebaseRun.level.mapped[cell])) {
             GameScene.show(new WndMessage(Messages.get(GameScene.class, "dont_know")));
             return;
         }
