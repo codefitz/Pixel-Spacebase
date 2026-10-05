@@ -149,6 +149,12 @@ Acceptance: visit and reload with each hero appearance, fight and collect items 
 
 ## Delivery boundaries
 
+### Rescue travel crash correction (5 October 2026)
+
+- The connected device reported a crash after closing Y's rescue dialogue. The destination checkpoint serialized `YRescueJourney.arrivalLevel`, and `Blob.storeInBundle()` dereferenced the active level while travel had cleared it.
+- Environmental effects now serialize using their own cell-array length. This also handles saved destination levels whose dimensions differ from the active level, without changing the save format. Empty effect arrays are omitted safely.
+- `:core:assembleDebug` passed. No tests or in-game rescue/reload checks were run for this correction; recovery of the interrupted journey remains unverified.
+
 Ship and review one stage at a time. Each destination should be force-selectable through development tooling for review without changing release probabilities. Gameplay checks above are planned acceptance work, not checks already executed. Update release scope after each stage; all five stages need not ship in 1.0.5.
 
 **Next:** in-game acceptance review across all five rescue stages, especially appearance changes, save/reload, purchases, boss win/loss rollback, torch/scan behaviour and station return.
