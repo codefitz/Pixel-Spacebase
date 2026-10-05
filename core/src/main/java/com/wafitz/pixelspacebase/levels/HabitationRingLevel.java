@@ -23,6 +23,8 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.SpacebaseTilemap;
+import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.actors.buffs.HabitatSprinklers;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.levels.Room.Type;
 import com.wafitz.pixelspacebase.levels.painters.ChangingRoomPainter;
@@ -50,6 +52,7 @@ import com.wafitz.pixelspacebase.ui.CustomTileVisual;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -209,6 +212,24 @@ public class HabitationRingLevel extends RegularLevel {
         super.createItems();
 
         Y.Quest.spawn(this);
+    }
+
+    @Override
+    protected void createMobs() {
+        super.createMobs();
+        installSprinklers();
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        installSprinklers();
+    }
+
+    private void installSprinklers() {
+        if (SpacebaseRun.hero != null) {
+            Buff.affect(SpacebaseRun.hero, HabitatSprinklers.class);
+        }
     }
 
     @Override

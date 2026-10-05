@@ -173,6 +173,18 @@ public class Item implements Bundlable {
         execute(hero, action);
     }
 
+    public boolean canBeThrown(Hero hero) {
+        return actions(hero).contains(AC_THROW);
+    }
+
+    public void executeQuickslot(Hero hero) {
+        if (hero.heroClass == HeroClass.SHAPESHIFTER && canBeThrown(hero)) {
+            execute(hero, AC_THROW);
+        } else {
+            execute(hero);
+        }
+    }
+
     protected boolean shapeshifterThrowsByDefault(Hero hero) {
         return false;
     }

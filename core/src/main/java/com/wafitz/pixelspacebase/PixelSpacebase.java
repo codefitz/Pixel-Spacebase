@@ -84,6 +84,10 @@ public class PixelSpacebase extends Game {
         com.watabou.utils.Bundle.addAlias(
                 FreezeThrower.class,
                 "com.wafitz.pixelspacebase.items.blasters.FreezeThrower");
+        // Existing Stabiliser items retain their charges and become Freeze Blasters in old saves.
+        com.watabou.utils.Bundle.addAlias(
+                FreezeThrower.class,
+                "com.wafitz.pixelspacebase.items.blasters.PlasmaStabiliser");
         com.watabou.utils.Bundle.addAlias(
                 FlameThrower.class,
                 "com.wafitz.pixelspacebase.items.blasters.FlameThrower");

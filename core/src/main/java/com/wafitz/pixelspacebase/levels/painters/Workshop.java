@@ -47,7 +47,7 @@ import com.wafitz.pixelspacebase.items.equippablemodules.HunterItemScanner;
 import com.wafitz.pixelspacebase.items.equippablemodules.HunterTrapScanner;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
-import com.wafitz.pixelspacebase.items.blasters.PlasmaStabiliser;
+import com.wafitz.pixelspacebase.items.blasters.FreezeThrower;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
 import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
 import com.wafitz.pixelspacebase.items.containers.UtilityKit;
@@ -483,8 +483,8 @@ public class Workshop extends Painter {
             itemsToSpawn.add(rareWorkshopItem(false));
             itemsToSpawn.add(new TorchBattery().quantity(2));
             if (SpacebaseRun.depth == 22) {
-                // Give the player one dependable non-equipment route across Command plasma.
-                itemsToSpawn.add(new PlasmaStabiliser());
+                // Guarantee one Freeze Blaster for a dependable route across Command plasma.
+                itemsToSpawn.add(new FreezeThrower());
             }
         } else if (rareSurpriseChance(makerTier)) {
             itemsToSpawn.add(rareWorkshopItem(true));
@@ -788,7 +788,7 @@ public class Workshop extends Painter {
                 || item instanceof HunterSpaceSuit
                 || item instanceof HunterItemScanner
                 || item instanceof HunterTrapScanner
-                || item instanceof PlasmaStabiliser;
+                || item instanceof FreezeThrower;
     }
 
     private static boolean hasOwnedModule(Class<? extends Item> moduleClass) {

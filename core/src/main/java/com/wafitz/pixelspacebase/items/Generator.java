@@ -65,7 +65,6 @@ import com.wafitz.pixelspacebase.items.blasters.FlameThrower;
 import com.wafitz.pixelspacebase.items.blasters.FreezeThrower;
 import com.wafitz.pixelspacebase.items.blasters.LazerGun;
 import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
-import com.wafitz.pixelspacebase.items.blasters.PlasmaStabiliser;
 import com.wafitz.pixelspacebase.items.blasters.ShockBlaster;
 import com.wafitz.pixelspacebase.items.blasters.VampiricBlaster;
 import com.wafitz.pixelspacebase.items.blasters.VenomBlaster;
@@ -258,9 +257,8 @@ public class Generator {
                 //WandOfWarding.class,
                 VampiricBlaster.class,
                 DominationBlaster.class,
-                EMP.class,
-                PlasmaStabiliser.class};
-        Category.BLASTER.probs = new float[]{5, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, 3, 3, 1};
+                EMP.class};
+        Category.BLASTER.probs = new float[]{5, 4, 4, 4, 4, 3, /*3,*/ 4, 3, /*3,*/ 3, 3, 3};
 
         //see generator.randomWeapon
         Category.WEAPON.classes = new Class<?>[]{};

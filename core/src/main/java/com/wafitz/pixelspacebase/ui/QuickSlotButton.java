@@ -93,7 +93,7 @@ public class QuickSlotButton extends Button implements WndContainer.Listener {
                     Item item = select(slotNum);
                     if (item.usesTargeting)
                         useTargeting();
-                    item.execute(SpacebaseRun.hero);
+                    item.executeQuickslot(SpacebaseRun.hero);
                 }
             }
 

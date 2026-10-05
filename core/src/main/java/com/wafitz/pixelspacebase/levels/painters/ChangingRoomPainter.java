@@ -37,14 +37,18 @@ public class ChangingRoomPainter extends Painter {
             if (showers == 2) break;
             int wallCell = level.pointToCell(wall);
             if (isDoor(room, wall.x, wall.y) || fixtures.contains(wallCell)) continue;
-            int wetX = Math.max(room.left + 1, Math.min(room.right - 1, wall.x));
-            int wetY = Math.max(room.top + 1, Math.min(room.bottom - 1, wall.y));
-            int basin = wetX + wetY * level.width();
-            if (level.map[basin] == Terrain.WATER) continue;
-            level.map[basin] = Terrain.WATER;
             fixtures.add(wallCell);
             addTile(level, wall.x, wall.y, ChangingRoomTile.SHOWER);
             showers++;
+        }
+
+        // Pool runoff in two adjacent floor cells centered in the changing room.
+        int poolX = room.left + room.width() / 2;
+        poolX = Math.max(room.left + 1, Math.min(room.right - 2, poolX));
+        int poolY = room.top + room.height() / 2;
+        poolY = Math.max(room.top + 1, Math.min(room.bottom - 1, poolY));
+        for (int x = poolX; x < poolX + 2; x++) {
+            level.map[x + poolY * level.width()] = Terrain.WATER;
         }
 
         for (int x = room.left + 1; x < room.right; x++) {

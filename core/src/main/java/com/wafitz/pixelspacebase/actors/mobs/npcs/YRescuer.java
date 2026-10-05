@@ -104,9 +104,8 @@ public class YRescuer extends NPC {
         sprite.turnTo(pos, SpacebaseRun.hero.pos);
         GameScene.show(new WndOptions(Messages.get(Y.class, "name"),
                 Messages.get(Y.class, "rescue_return", ticket.sourceDepth),
-                Messages.get(Y.class, "rescue_ask"), Messages.get(Y.class, "rescue_stay")) {
+                Messages.get(Y.class, "rescue_ask")) {
             @Override protected void onSelect(int index) {
-                if (index != 0) return;
                 InterlevelScene.returnDepth = ticket.sourceDepth;
                 InterlevelScene.returnPos = -1;
                 InterlevelScene.returnAtEntrance = true;

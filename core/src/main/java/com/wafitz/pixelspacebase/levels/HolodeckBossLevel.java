@@ -23,6 +23,7 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Bones;
 import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
@@ -35,6 +36,8 @@ import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -304,7 +307,63 @@ public class HolodeckBossLevel extends Level {
     @Override
     public Group addVisuals() {
         super.addVisuals();
+        if (!Y.Quest.isHolodeckPoweredDown()) {
+            TextureFilm spacebaseTiles = new TextureFilm(
+                    Assets.TILES_HABITATION_RING, SpacebaseTilemap.SIZE, SpacebaseTilemap.SIZE);
+            for (int y = TOP + HALL_HEIGHT + 1; y <= TOP + HALL_HEIGHT + CHAMBER_HEIGHT; y++) {
+                for (int x = LEFT; x < LEFT + HALL_WIDTH; x++) {
+                    int cell = x + y * width();
+                    visuals.add(new SpacebaseEntranceTile(cell, spacebaseTiles));
+                }
+            }
+        }
         HabitationRingLevel.addHabitationVisuals(this, visuals);
         return visuals;
+    }
+
+    private static class SpacebaseEntranceTile extends Image {
+        private final int cell;
+        private final TextureFilm tileset;
+        private int terrain = Integer.MIN_VALUE;
+        private boolean hasVisual;
+
+        SpacebaseEntranceTile(int cell, TextureFilm tileset) {
+            super(Assets.TILES_HABITATION_RING);
+            this.cell = cell;
+            this.tileset = tileset;
+            x = cell % SpacebaseRun.level.width() * SpacebaseTilemap.SIZE;
+            y = cell / SpacebaseRun.level.width() * SpacebaseTilemap.SIZE;
+            updateTerrain();
+            visible = hasVisual && Level.discoverable[cell];
+        }
+
+        @Override
+        public void update() {
+            super.update();
+            if (SpacebaseRun.level.map[cell] != terrain) updateTerrain();
+            visible = hasVisual && Level.discoverable[cell];
+        }
+
+        private void updateTerrain() {
+            terrain = SpacebaseRun.level.map[cell];
+            int visual;
+            switch (terrain) {
+                case Terrain.EMPTY:
+                case Terrain.EMPTY_DECO:
+                case Terrain.EMPTY_SP:
+                    visual = HabitationRingLevel.TRANSPORTER_FLOOR_VISUAL;
+                    break;
+                case Terrain.WALL:
+                case Terrain.WALL_DECO:
+                    visual = HabitationRingLevel.TRANSPORTER_WALL_VISUAL;
+                    break;
+                default:
+                    visual = SpacebaseTilemap.defaultVisuals.get(terrain, -1);
+            }
+            if (visual >= 0) {
+                frame(tileset.get(visual));
+            }
+            hasVisual = visual >= 0;
+        }
     }
 }

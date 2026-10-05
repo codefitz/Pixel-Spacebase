@@ -4,22 +4,22 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 
 ## Mechanics
 
-- [ ] Let the Shapeshifter quickslot any item for throwing.
+- [x] Let the Shapeshifter quickslot any throwable item and use the quickslot to throw it.
 - [ ] Convert all ordnance items to grenades or mines rather than consumable-use actions and update sprites.
-- [ ] Remove the Plasma Stabiliser and give its plasma-clearing function to the Freeze Blaster.
-- [ ] Reduce Flamethrower spread to a single directional line.
+- [x] Remove the Plasma Stabiliser and give its plasma-clearing function to the Freeze Blaster.
+- [x] Reduce Flamethrower spread to a single directional line.
 - [ ] Update the custom room and quest for the unstable holo-projector.
 
 ## Rooms and Narrative
 
-- [ ] Use spacebase tiles for the Holodeck boss entrance.
-- [ ] Make jumping platforms look like exposed bridges rather than rooms enclosed by walls.
-- [ ] Revise Y's rescue dialogue: remove the advance "you'll have to find me" explanation and the option to stay; clicking rescue Y should lead to a reluctant return.
+- [x] Use spacebase tiles for the Holodeck boss entrance.
+- [x] Make jumping platforms look like exposed bridges rather than rooms enclosed by walls.
+- [x] Revise Y's rescue dialogue: remove the advance "you'll have to find me" explanation and the option to stay; clicking rescue Y should lead to a reluctant return.
 - [ ] Expand Y rescue destinations to include the next boss fight, an alien planet, and a black/white open-space exploration area with a discoverable exit.
   - [ ] Decide destination and return-travel behaviour before implementation. Boss destinations deliberately change the current non-boss rescue rule.
-  - [ ] On habitat level, if there's a fire, or the hero is on fire, have sprinklers trigger after 1 turn to put it out.
+  - [x] On habitat level, if there's a fire, or the hero is on fire, have sprinklers trigger after 1 turn to put it out.
 - [ ] Replace Spade and Drill with something else a bit more fitting.
-- [ ] Habitit bathroom - water should pool in the center.
+- [x] In Habitat changing rooms, water always pools in the center.
 
 ## Art
 
