@@ -35,11 +35,15 @@ public class YRescuer extends NPC {
      * Nearby enemies are deliberately NOT excluded: rescue is not a safe haven.
      */
     public static int randomReachableCell(Level level, int exclude) {
+        return randomReachableCell(level, exclude, level.entrance);
+    }
+
+    private static int randomReachableCell(Level level, int exclude, int start) {
         boolean[] reached = new boolean[level.length()];
         ArrayList<Integer> queue = new ArrayList<>();
         ArrayList<Integer> candidates = new ArrayList<>();
-        queue.add(level.entrance);
-        reached[level.entrance] = true;
+        queue.add(start);
+        reached[start] = true;
         for (int i = 0; i < queue.size(); i++) {
             int cell = queue.get(i);
             boolean occupied = false;
@@ -73,11 +77,26 @@ public class YRescuer extends NPC {
         return randomReachableCell(level, -1);
     }
 
+    /** Sealed boss arenas can remove their entrance; use the saved origin area in that case. */
+    public static int safeReturnCell(Level level, int origin) {
+        int landing = safeReturnCell(level);
+        if (landing >= 0 || origin < 0 || origin >= level.length()) return landing;
+        int start = -1, distance = Integer.MAX_VALUE;
+        for (int cell = 0; cell < level.length(); cell++) {
+            if (!Level.passable[cell] || level.isPlasmaCell(cell) || level.isDoorlessRoomCell(cell)) continue;
+            int delta = Math.abs(cell % level.width() - origin % level.width())
+                    + Math.abs(cell / level.width() - origin / level.width());
+            if (delta < distance) { start = cell; distance = delta; }
+        }
+        return start < 0 ? -1 : randomReachableCell(level, -1, start);
+    }
+
     public static void placeOn(Level level) {
         YRescueJourney ticket = SpacebaseRun.hero.buff(YRescueJourney.class);
         boolean needed = ticket != null && ticket.sourceDepth > 0
-                && ticket.rescueDepth == SpacebaseRun.depth
-                && ticket.phase == YRescueJourney.Phase.VISITING;
+                && ticket.atDestination(SpacebaseRun.depth)
+                && ticket.phase == YRescueJourney.Phase.VISITING
+                && ticket.destination != YRescueJourney.Destination.BOSS;
         boolean present = false;
         for (Mob mob : level.mobs.toArray(new Mob[0])) {
             if (mob instanceof YRescuer) {
@@ -86,7 +105,9 @@ public class YRescuer extends NPC {
             }
         }
         if (needed && !present) {
-            int cell = randomReachableCell(level, SpacebaseRun.hero.pos);
+            int cell = level instanceof com.wafitz.pixelspacebase.levels.AlienPlanetLevel
+                    ? ((com.wafitz.pixelspacebase.levels.AlienPlanetLevel) level).rescueCell()
+                    : randomReachableCell(level, SpacebaseRun.hero.pos);
             if (cell >= 0) {
                 YRescuer y = new YRescuer();
                 y.pos = cell;

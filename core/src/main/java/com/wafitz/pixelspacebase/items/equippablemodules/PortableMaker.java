@@ -155,6 +155,12 @@ public class PortableMaker extends EquippableModule {
 
         } else if (action == AC_RETURN) {
 
+            if (SpacebaseRun.isRescueSideLevel()) {
+                com.wafitz.pixelspacebase.actors.buffs.YRescueJourney ticket = hero.buff(
+                        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+                if (ticket != null) ticket.requestReturn();
+                return;
+            }
             if (returnDepth == SpacebaseRun.depth) {
                 PhaseShiftUpgrade.appear(hero, returnPos);
                 SpacebaseRun.level.press(returnPos, hero);

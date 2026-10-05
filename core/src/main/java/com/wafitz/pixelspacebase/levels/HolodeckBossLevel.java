@@ -215,6 +215,13 @@ public class HolodeckBossLevel extends Level {
         return cell;
     }
 
+    @Override public int rescueBossLandingCell() {
+        for (int cell = 0; cell < length(); cell++) {
+            if (passable[cell] && outsideEntraceRoom(cell) && !isDoorlessRoomCell(cell)) return cell;
+        }
+        return super.rescueBossLandingCell();
+    }
+
     @Override
     public void press(int cell, Char hero) {
 

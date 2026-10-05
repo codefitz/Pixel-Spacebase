@@ -571,6 +571,9 @@ public class Hero extends Char {
 
     @Override
     public boolean act() {
+        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney journey = buff(
+                com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+        if (journey != null && journey.phase == com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.Phase.RESOLVING) return false;
 
         super.act();
 
@@ -838,6 +841,9 @@ public class Hero extends Char {
             if (heap != null) {
                 Item item = heap.peek();
                 if (item.doPickUp(this)) {
+                    com.wafitz.pixelspacebase.actors.buffs.YRescueJourney journey = buff(
+                            com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+                    if (journey != null) journey.recordArenaLoot(item);
                     heap.pickUp();
 
                     if (item instanceof MedigelDroplet
@@ -1177,6 +1183,9 @@ public class Hero extends Char {
 
     @Override
     public void damage(int dmg, Object src) {
+        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney journey = buff(
+                com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+        if (journey != null && journey.phase == com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.Phase.RESOLVING) return;
         if (buff(TimeFolder.timeStasis.class) != null)
             return;
 
@@ -1477,11 +1486,11 @@ public class Hero extends Char {
 
             curAction = new HeroAction.Unlock(cell);
 
-        } else if (cell == SpacebaseRun.level.exit && SpacebaseRun.depth < 26) {
+        } else if (!SpacebaseRun.isRescueSideLevel() && cell == SpacebaseRun.level.exit && SpacebaseRun.depth < 26) {
 
             curAction = new HeroAction.Descend(cell);
 
-        } else if (cell == SpacebaseRun.level.entrance) {
+        } else if (!SpacebaseRun.isRescueSideLevel() && cell == SpacebaseRun.level.entrance) {
 
             curAction = new HeroAction.Ascend(cell);
 
@@ -1636,6 +1645,9 @@ public class Hero extends Char {
     public void die(Object cause) {
 
         curAction = null;
+        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney journey = buff(
+                com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+        if (journey != null && journey.rescueLethalDefeat()) return;
 
         if (DEV_TEST_INVULNERABLE) {
             restoreDevTestHealth();

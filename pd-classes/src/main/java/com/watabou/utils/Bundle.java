@@ -238,6 +238,16 @@ public class Bundle {
 		return list;
 	}
 	
+    /** Reads serialized objects as data without constructing actors or attaching their buffs. */
+    public ArrayList<Bundle> getBundleArray(String key) {
+        ArrayList<Bundle> result = new ArrayList<>();
+        try {
+            JSONArray array = data.getJSONArray(key);
+            for (int i = 0; i < array.length(); i++) result.add(new Bundle(array.getJSONObject(i)));
+        } catch (JSONException error) { reportException(error); }
+        return result;
+    }
+
 	public void put( String key, boolean value ) {
 		try {
 			data.put( key, value );

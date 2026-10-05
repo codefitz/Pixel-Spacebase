@@ -238,6 +238,17 @@ public class MaintenanceBossLevel extends RegularLevel {
         return Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1);
     }
 
+    @Override public int rescueBossLandingCell() {
+        for (Mob boss : mobs) {
+            if (!(boss instanceof XenoQueen) && !(boss instanceof FeralShapeshifter)) continue;
+            for (int offset : new int[]{-1, 1, -width(), width()}) {
+                int cell = boss.pos + offset;
+                if (insideMap(cell) && passable[cell] && !isDoorlessRoomCell(cell)) return cell;
+            }
+        }
+        return super.rescueBossLandingCell();
+    }
+
     public Actor respawner() {
         return null;
     }

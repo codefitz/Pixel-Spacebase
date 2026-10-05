@@ -326,7 +326,7 @@ public class GameScene extends PixelScene {
             default:
         }
 
-        ArrayList<Item> dropped = SpacebaseRun.droppedItems.get(SpacebaseRun.depth);
+        ArrayList<Item> dropped = SpacebaseRun.isRescueSideLevel() ? null : SpacebaseRun.droppedItems.get(SpacebaseRun.depth);
         if (dropped != null) {
             for (Item item : dropped) {
                 int pos = SpacebaseRun.level.randomRespawnCell();
@@ -343,7 +343,7 @@ public class GameScene extends PixelScene {
             SpacebaseRun.droppedItems.remove(SpacebaseRun.depth);
         }
 
-        ArrayList<Heap> droppedHeaps = SpacebaseRun.droppedHeaps.get(SpacebaseRun.depth);
+        ArrayList<Heap> droppedHeaps = SpacebaseRun.isRescueSideLevel() ? null : SpacebaseRun.droppedHeaps.get(SpacebaseRun.depth);
         if (droppedHeaps != null) {
             for (Heap heap : droppedHeaps) {
                 int pos = freeRespawnCell();
@@ -354,12 +354,17 @@ public class GameScene extends PixelScene {
             SpacebaseRun.droppedHeaps.remove(SpacebaseRun.depth);
         }
 
+        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney journey = SpacebaseRun.hero.buff(
+                com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+        if (journey != null && journey.activeBossFight()) SpacebaseRun.level.press(SpacebaseRun.hero.pos, SpacebaseRun.hero);
         SpacebaseRun.hero.next();
 
         Camera.main.target = hero;
 
         if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
-            if (SpacebaseRun.depth < Statistics.deepestFloor) {
+            if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.AlienPlanetLevel) {
+                GLog.h(Messages.get(com.wafitz.pixelspacebase.levels.AlienPlanetLevel.class, "arrival"));
+            } else if (SpacebaseRun.depth < Statistics.deepestFloor) {
                 GLog.h(Messages.get(this, "welcome_back"), SpacebaseRun.depth, SpacebaseRun.hero.givenName());
             } else {
                 GLog.h(Messages.get(this, "welcome"), SpacebaseRun.depth, SpacebaseRun.hero.givenName());
@@ -396,6 +401,7 @@ public class GameScene extends PixelScene {
     }
 
     private String musicForDepth() {
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.AlienPlanetLevel) return Assets.HABITATION;
         if (SpacebaseRun.depth >= 1 && SpacebaseRun.depth <= 4) {
             return Assets.OXYGEN_WARNING;
         } else if (SpacebaseRun.depth == 10) {
@@ -480,10 +486,15 @@ public class GameScene extends PixelScene {
         }
 
         super.update();
+        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney rescue = SpacebaseRun.hero.buff(
+                com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+        if (rescue != null && rescue.phase == com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.Phase.RESOLVING)
+            rescue.showBossExtraction();
 
         if (!freezeEmitters) water.offset(-5 * Game.elapsed);
 
-        if (!Actor.processing() && SpacebaseRun.hero.isAlive()) {
+        if (!Actor.processing() && SpacebaseRun.hero.isAlive()
+                && (rescue == null || rescue.phase != com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.Phase.RESOLVING)) {
             if (!t.isAlive()) {
                 //if cpu time is limited, game should prefer drawing the current frame
                 t.setPriority(Thread.NORM_PRIORITY - 1);
@@ -877,6 +888,7 @@ public class GameScene extends PixelScene {
     }
 
     public static void bossSlain() {
+        SpacebaseRun.level.rescueBossDefeated = true;
         if (SpacebaseRun.hero.isAlive()) {
             Banner bossSlain = new Banner(BannerSprites.get(BannerSprites.Type.BOSS_SLAIN));
             bossSlain.show(0xFFFFFF, 0.3f, 5f);

@@ -305,10 +305,97 @@ public class SpacebaseRun {
     private static Level restoredRescueLevel;
 
     public static void selectRescueLevel(String identity) {
-        if (identity == null || (!identity.isEmpty() && !identity.matches("(alien|maze|dungeon)_[1-9][0-9]*"))) {
+        if (identity == null || (!identity.isEmpty() && !identity.matches("(alien|maze|dungeon|boss)_[1-9][0-9]*"))) {
             throw new IllegalArgumentException("Invalid rescue level identity");
         }
         rescueLevelIdentity = identity;
+    }
+
+    public static boolean isRescueSideLevel() { return !rescueLevelIdentity.isEmpty(); }
+
+    public static boolean matchesRescueLevel(String identity) {
+        return isRescueSideLevel() && rescueLevelIdentity.equals(identity);
+    }
+
+    /** Next undefeated arena ahead of the origin; never replace an encounter already underway. */
+    public static int nextRescueBoss(int origin) {
+        for (int candidate : new int[]{5, 10, 15, 20, 25}) {
+            if (candidate <= origin) continue;
+            if (candidate == 20 && Y.Quest.isHolodeckPoweredDown()) continue;
+            String file = Messages.format(depthFile(hero.heroClass), candidate);
+            if (!Game.instance.getFileStreamPath(file).exists()) return candidate;
+            try (InputStream input = Game.instance.openFileInput(file)) {
+                Bundle arena = Bundle.read(input).getBundle(LEVEL);
+                if (arena.getBoolean("rescueBossDefeated") || arena.getBoolean("droppped")) continue;
+                if (candidate == 10) {
+                    String state = arena.getString("state");
+                    if ("WON".equals(state)) continue;
+                    return "START".equals(state) ? candidate : -1;
+                }
+                if (candidate == 5) {
+                    boolean bossPresent = false;
+                    for (Bundle mob : arena.getBundleArray("mobs")) {
+                        String type = mob.getString("__className");
+                        if (type != null && (type.endsWith(".XenoQueen") || type.endsWith(".FeralShapeshifter"))) {
+                            bossPresent = true;
+                            if (mob.getInt("HP") < mob.getInt("HT")) return -1;
+                        }
+                    }
+                    if (!bossPresent) continue;
+                }
+                return arena.getBoolean("locked") || arena.getBoolean("entered") ? -1 : candidate;
+            } catch (IOException error) {
+                PixelSpacebase.reportException(error);
+                return -1;
+            }
+        }
+        return -1;
+    }
+
+    /** Idempotent commit of a resolved detour to its real campaign deck. */
+    public static void saveRescueBossArena(int bossDepth, Level arena) throws IOException {
+        if (!bossLevel(bossDepth)) throw new IOException("Invalid boss arena");
+        Bundle saved = new Bundle(); saved.put(LEVEL, arena);
+        writeBundleAtomically(Messages.format(depthFile(hero.heroClass), bossDepth), saved);
+    }
+
+    public static Level loadOrCreateRescueLevel(String identity) throws IOException {
+        selectRescueLevel(identity);
+        restoredRescueLevel = null;
+        if (Game.instance.getFileStreamPath(currentLevelFile(hero.heroClass)).exists()) {
+            return loadLevel(hero.heroClass);
+        }
+        if (identity.startsWith("boss_")) {
+            Actor.clear();
+            level = null;
+            String file = Messages.format(depthFile(hero.heroClass), depth);
+            if (Game.instance.getFileStreamPath(file).exists()) {
+                try (InputStream input = Game.instance.openFileInput(file)) {
+                    Level arena = (Level) Bundle.read(input).get(LEVEL);
+                    resetVisibilityForLevel(arena);
+                    return arena;
+                }
+            }
+            Level arena;
+            switch (depth) {
+                case 5: arena = new MaintenanceBossLevel(); break;
+                case 10: arena = new SecurityBossLevel(); break;
+                case 15: arena = new EngineeringBossLevel(); break;
+                case 20: arena = new HolodeckBossLevel(); break;
+                case 25: arena = new DeepContainmentCoreLevel(); break;
+                default: throw new IOException("Invalid boss destination");
+            }
+            resetVisibilityForLevel(arena);
+            arena.create();
+            return arena;
+        }
+        if (!identity.startsWith("alien_")) throw new IOException("Rescue destination is not available");
+        Actor.clear();
+        level = null;
+        Level planet = new com.wafitz.pixelspacebase.levels.AlienPlanetLevel();
+        resetVisibilityForLevel(planet);
+        planet.create();
+        return planet;
     }
 
     private static String currentLevelFile(HeroClass cl) {
@@ -344,7 +431,7 @@ public class SpacebaseRun {
 
     // wafitz.v1 - You get a shop, you get a shop, every level get's a shop!
     public static boolean workshopOnLevel() {
-        return !bossLevel();
+        return !isRescueSideLevel() && !bossLevel();
     }
 
     public static boolean bossLevel() {
@@ -763,7 +850,7 @@ public class SpacebaseRun {
         if (journey != null && journey.rescueDepth > 0) {
             Statistics.yRescueDepartures = Math.max(1, Math.max(Statistics.yRescueDepartures, journey.journeyId));
         }
-        if (fullLoad) {
+        if (fullLoad && !isRescueSideLevel()) {
             Y.Quest.reconcileHolodeckState(hero, depth, Statistics.deepestFloor);
         }
         Journal.restoreFromBundle(bundle);

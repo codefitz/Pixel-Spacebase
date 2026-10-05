@@ -175,6 +175,7 @@ public class ContainmentMass extends Mob {
         super.die(cause);
 
         yell(Messages.get(this, "defeated"));
+        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.bossVictory();
     }
 
     @Override

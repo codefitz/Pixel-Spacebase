@@ -176,6 +176,11 @@ public abstract class Actor implements Bundlable {
         return current != null;
     }
 
+    /** Whether the actor thread is executing, rather than waiting for input or animation. */
+    public static boolean isActing() {
+        return processing;
+    }
+
     public static void process() {
 
         if (current != null) {
@@ -185,6 +190,7 @@ public abstract class Actor implements Bundlable {
         boolean doNext;
 
         do {
+            processing = true;
             now = Float.MAX_VALUE;
             current = null;
 
@@ -219,6 +225,12 @@ public abstract class Actor implements Bundlable {
                 }
 
                 doNext = acting.act();
+                com.wafitz.pixelspacebase.actors.buffs.YRescueJourney rescue = SpacebaseRun.hero.buff(
+                        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+                if (rescue != null && rescue.phase == com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.Phase.RESOLVING) {
+                    // Finish the current action, including drops and experience, before extraction saves it.
+                    doNext = false;
+                }
                 if (doNext && !SpacebaseRun.hero.isAlive()) {
                     doNext = false;
                     current = null;
@@ -228,6 +240,7 @@ public abstract class Actor implements Bundlable {
             }
 
             if (!doNext) {
+                processing = false;
                 synchronized (Thread.currentThread()) {
                     try {
                         Thread.currentThread().wait();

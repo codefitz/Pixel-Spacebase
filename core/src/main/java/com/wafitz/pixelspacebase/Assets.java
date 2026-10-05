@@ -105,6 +105,8 @@ public class Assets {
     public static final String QUARTERMASTER = "quartermaster.png";
     public static final String LEONARD = "leonard.png";
     public static final String Y = "y.png";
+    public static final String ALIEN_COLONY_TILES = "alien_planet_tiles.png";
+    public static final String ALIEN_COLONIST = "alien_colonist.png";
     public static final String XQUEEN = "queen_xeno.png";
     public static final String DRONE = "drone.png";
     public static final String CONFUSEDSHAPESHIFTER = "confused_shapeshifter.png";

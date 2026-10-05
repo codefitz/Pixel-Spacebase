@@ -209,6 +209,7 @@ public class InterlevelScene extends PixelScene {
     }
 
     private void descend() throws IOException {
+        if (returnFromSideLevel()) return;
 
         Actor.fixTime();
         if (SpacebaseRun.hero == null) {
@@ -236,6 +237,7 @@ public class InterlevelScene extends PixelScene {
     }
 
     private void fall() throws IOException {
+        if (returnFromSideLevel()) return;
 
         Actor.fixTime();
         int targetDepth = SpacebaseRun.fallTargetDepth();
@@ -258,6 +260,7 @@ public class InterlevelScene extends PixelScene {
     }
 
     private void ascend() throws IOException {
+        if (returnFromSideLevel()) return;
         Actor.fixTime();
 
         Workshop.carryStockFrom(SpacebaseRun.level);
@@ -269,16 +272,33 @@ public class InterlevelScene extends PixelScene {
         SpacebaseRun.switchLevel(level, level.exit);
     }
 
+    private boolean returnFromSideLevel() throws IOException {
+        if (!SpacebaseRun.isRescueSideLevel() || SpacebaseRun.hero == null) return false;
+        YRescueJourney ticket = SpacebaseRun.hero.buff(YRescueJourney.class);
+        if (ticket == null) throw new IOException("Side journey has no return ticket");
+        ticket.prepareReturn();
+        returnTo();
+        return true;
+    }
+
     private void returnTo() throws IOException {
 
         Actor.fixTime();
 
         YRescueJourney ticket = SpacebaseRun.hero.buff(YRescueJourney.class);
+        if (SpacebaseRun.isRescueSideLevel() && ticket != null && !ticket.pendingTravel()) ticket.prepareReturn();
         boolean journeyTravel = ticket != null && ticket.pendingTravel();
+        boolean toPlanet = journeyTravel && ticket.phase == YRescueJourney.Phase.DEPARTING
+                && ticket.destination == YRescueJourney.Destination.ALIEN_PLANET;
+        boolean toBoss = journeyTravel && ticket.phase == YRescueJourney.Phase.DEPARTING
+                && ticket.destination == YRescueJourney.Destination.BOSS;
+
         if (journeyTravel) ticket.configureTravel();
         if (!journeyTravel || !ticket.transferPrepared) {
             Workshop.carryStockFrom(SpacebaseRun.level);
             StationCat.carryFollowerFrom(SpacebaseRun.level);
+            if (journeyTravel && ticket.destination == YRescueJourney.Destination.BOSS
+                    && ticket.phase == YRescueJourney.Phase.RETURNING) ticket.commitBossArena();
             if (journeyTravel) ticket.transferPrepared = true;
             SpacebaseRun.saveAll();
         }
@@ -287,12 +307,16 @@ public class InterlevelScene extends PixelScene {
         if (journeyTravel && ticket.arrivalLevel != null) {
             Actor.clear();
             SpacebaseRun.depth = returnDepth;
+            SpacebaseRun.selectRescueLevel(toPlanet || toBoss ? ticket.destinationIdentity : "");
             level = ticket.arrivalLevel;
             landing = ticket.landingPos;
         } else {
-            level = SpacebaseRun.loadOrCreateLevel(returnDepth);
-            landing = rescueScatter ? YRescuer.randomReachableCell(level, -1)
-                    : returnAtEntrance ? YRescuer.safeReturnCell(level) : returnPos;
+            SpacebaseRun.depth = returnDepth;
+            level = toPlanet || toBoss ? SpacebaseRun.loadOrCreateRescueLevel(ticket.destinationIdentity)
+                    : SpacebaseRun.loadOrCreateLevel(returnDepth);
+            if (toBoss) ticket.captureBossBaseline(level);
+            landing = toBoss ? level.rescueBossLandingCell() : toPlanet ? level.entrance : rescueScatter ? YRescuer.randomReachableCell(level, -1)
+                    : returnAtEntrance ? YRescuer.safeReturnCell(level, ticket == null ? -1 : ticket.sourcePos) : returnPos;
             if (landing < 0 && journeyTravel) throw new IOException("No usable Y rescue landing cell");
             if (journeyTravel) {
                 ticket.arrivalLevel = level;
@@ -346,6 +370,7 @@ public class InterlevelScene extends PixelScene {
     }
 
     private void reset() throws IOException {
+        if (returnFromSideLevel()) return;
 
         Actor.fixTime();
 

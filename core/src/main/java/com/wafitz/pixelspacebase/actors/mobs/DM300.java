@@ -162,6 +162,7 @@ public class DM300 extends Mob {
         GLog.i(Messages.get(SpacebaseRun.hero, "dm300_rebuild"));
 
         yell(Messages.get(this, "defeated"));
+        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.bossVictory();
     }
 
     @Override

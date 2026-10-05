@@ -218,6 +218,14 @@ public class DeepContainmentCoreLevel extends Level {
         return -1;
     }
 
+    @Override public int rescueBossLandingCell() {
+        for (int offset : new int[]{-1, 1, -width(), width()}) {
+            int cell = entrance + offset;
+            if (insideMap(cell) && passable[cell] && !isPlasmaCell(cell)) return cell;
+        }
+        return super.rescueBossLandingCell();
+    }
+
     @Override
     public void press(int cell, Char hero) {
 

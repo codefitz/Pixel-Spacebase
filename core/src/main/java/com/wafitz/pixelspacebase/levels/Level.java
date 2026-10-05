@@ -146,6 +146,7 @@ public abstract class Level implements Bundlable {
 
     //when a boss level has become locked.
     public boolean locked = false;
+    public boolean rescueBossDefeated;
 
     public HashSet<Mob> mobs;
     public SparseArray<Heap> heaps;
@@ -376,6 +377,7 @@ public abstract class Level implements Bundlable {
         exit = bundle.getInt(EXIT);
 
         locked = bundle.getBoolean(LOCKED);
+        rescueBossDefeated = bundle.getBoolean("rescueBossDefeated");
 
         //for pre-0.3.0c saves
         /*if (version < 44) {
@@ -466,6 +468,7 @@ public abstract class Level implements Bundlable {
         bundle.put(ENTRANCE, entrance);
         bundle.put(EXIT, exit);
         bundle.put(LOCKED, locked);
+        bundle.put("rescueBossDefeated", rescueBossDefeated);
         bundle.put(HEAPS, heaps.values());
         bundle.put(MINES, mines.values());
         bundle.put(VENTS, vents.values());
@@ -571,6 +574,8 @@ public abstract class Level implements Bundlable {
                 ? doorlessRoomLandingCell() : randomRespawnCell();
         return cell >= 0 ? cell : randomRespawnCell();
     }
+
+    public int rescueBossLandingCell() { return bossFallLandingCell(); }
 
     private int bossFallLandingCell() {
         // Fall placement happens before switchLevel updates PathFinder's map

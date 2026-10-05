@@ -110,8 +110,14 @@ public class Item implements Bundlable {
         return actions;
     }
 
+    public int rescueLootJourney;
+    public int rescueLootId;
+
     public boolean doPickUp(Hero hero) {
         if (collect(hero.belongings.backpack)) {
+            com.wafitz.pixelspacebase.actors.buffs.YRescueJourney journey = hero.buff(
+                    com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+            if (journey != null) journey.recordArenaLoot(this);
 
             GameScene.pickUp(this);
             Sample.INSTANCE.play(Assets.SND_ITEM);
@@ -534,6 +540,10 @@ public class Item implements Bundlable {
         bundle.put(MALFUNCTIONING, malfunctioning);
         bundle.put(MALFUNCTIONING_KNOWN, malfunctioningKnown);
         bundle.put(TAKEN_BY_Y, takenByY);
+        if (rescueLootJourney > 0) {
+            bundle.put("rescueLootJourney", rescueLootJourney);
+            bundle.put("rescueLootId", rescueLootId);
+        }
         if (SpacebaseRun.quickslot.contains(this)) {
             bundle.put(QUICKSLOT, SpacebaseRun.quickslot.getSlot(this));
         }
@@ -554,6 +564,8 @@ public class Item implements Bundlable {
 
         malfunctioning = bundle.getBoolean(MALFUNCTIONING);
         takenByY = bundle.getBoolean(TAKEN_BY_Y);
+        rescueLootJourney = bundle.getInt("rescueLootJourney");
+        rescueLootId = bundle.getInt("rescueLootId");
 
         //only want to populate slot on first load.
         if (SpacebaseRun.hero == null) {

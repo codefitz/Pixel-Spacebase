@@ -126,6 +126,7 @@ public class Bones {
     }
 
     public static Item get() {
+        if (SpacebaseRun.isRescueSideLevel()) return null;
         if (depth == -1) {
 
             try {

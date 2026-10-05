@@ -165,6 +165,7 @@ public class HolodeckMonarch extends Mob {
         }
 
         yell(Messages.get(this, "defeated", SpacebaseRun.hero.givenName()));
+        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.bossVictory();
     }
 
     @Override

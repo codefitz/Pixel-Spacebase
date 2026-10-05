@@ -17,8 +17,8 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [x] Revise Y's rescue dialogue: remove the advance "you'll have to find me" explanation and the option to stay; clicking rescue Y should lead to a reluctant return.
 - [ ] Expand Y rescues using [the staged rescue plan](docs/Y_RESCUE_PLAN.md).
   - [x] Stage 1: saved journey state, first-rescue guarantee, and return recovery implemented; in-game reload checks pending.
-  - [ ] Stage 2: alien planet, friendly NPCs, and a parts trader.
-  - [ ] Stage 3: next-boss detour with persistent victory and reset after defeat.
+  - [x] Stage 2: alien planet, friendly NPCs, and a parts trader implemented; in-game visit and purchase checks pending.
+  - [x] Stage 3: next-boss detour, persistent victory, and reset after defeat implemented; in-game win, loss, and reload checks pending.
   - [ ] Stage 4: dark maze, visible exit, torch exploration, and Hunter mapping overlay.
   - [ ] Stage 5: very rare Pixel Dungeon first-floor visit with original artwork.
 - [x] On habitat level, if there's a fire, or the hero is on fire, have sprinklers trigger after 1 turn to put it out.
