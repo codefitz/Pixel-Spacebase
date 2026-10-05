@@ -9,6 +9,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [x] Remove the Plasma Stabiliser and give its plasma-clearing function to the Freeze Blaster.
 - [x] Reduce Flamethrower spread to a single directional line.
 - [ ] Update the custom room and quest for the unstable holo-projector.
+- [ ] Y doesn't quite trigger on 20 skips/turns.
 
 ## Rooms and Narrative
 
