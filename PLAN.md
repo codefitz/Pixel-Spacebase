@@ -9,9 +9,9 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [x] Remove the Plasma Stabiliser and give its plasma-clearing function to the Freeze Blaster.
 - [x] Reduce Flamethrower spread to a single directional line.
 - [ ] Update the custom room and quest for the unstable holo-projector.
-- [ ] Y doesn't quite trigger on 20 skips/turns.
 - [ ] Shapeshifter special items should still activate (so he doesn't throw them e.g. equipable items)
 - [ ] Opening an unknown cache should apply thing directly to self - so a grenade for example should be used on self.
+- [ ] We need a water mechanic for the command levels - in case the hero gets acid attacked
 
 ## Rooms and Narrative
 
@@ -27,6 +27,20 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [x] On habitat level, if there's a fire, or the hero is on fire, have sprinklers trigger after 1 turn to put it out.
 - [x] Replace Spade with the accurate Phase Cutter and Drill with the defensive Repulsor Baton, with new sprites and save compatibility.
 - [x] In Habitat changing rooms, water always pools in the center.
+- [ ] Make the Hunters blue indicator mirror the item, like the red indicator does.
+
+## Issues
+
+- [ ] Y doesn't quite trigger on 20 skips/turns.
+- [ ] Boss level needs to be still active in initial state if the hero is beamed to a later level by Y, unless it's already been defeated. So if the hero is taking to level 6, and decided to go down to level 5 (boss) he will immediately trigger the boss as he would if he had gone from level 4 to 5. Once the boss is defeated, then the level is a normal explored level.
+- [ ] Items aren't appearing normally on level 6 and above.
+- [ ] Escape pod (old amulet ending) has NO TEXT FOUND (screenshot)
+- [ ] Quantum chest still duplicates items
+- [ ] The shadow now is too small - it shows the outlines inside the rooms and base (screenshot)
+- [ ] The life bar should not show a calculation - just a HP number
+- [ ] On boss level 5 - eggs are spawning outside of the rooms and corridors (screenshot)
+- [ ] On the maintenance levels, large parts of the level have pitch black tiles (screenshot).
+- [ ] Grenades didn't immediately get stored in ordinance (only after level transition)
 
 ## Art
 
