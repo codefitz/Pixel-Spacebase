@@ -145,13 +145,8 @@ public class Plasmid extends Item {
     @Override
     public void execute(final Hero hero, String action) {
         if (isSealed() && (action.equals(AC_OPEN) || action.equals(AC_USE))) {
-            if (isGrenade()) {
-                identify();
-                GLog.i(Messages.get(Plasmid.class, "revealed", name()));
-            } else {
-                openStorage();
-                use(hero);
-            }
+            openStorage();
+            use(hero);
             return;
         }
 
@@ -392,7 +387,7 @@ public class Plasmid extends Item {
     }
 
     protected void splash(int cell) {
-        final int color = ItemSprite.pick(image, 8, 10);
+        final int color = ItemSprite.pick(image, 8, 8);
         Splash.at(cell, color, 5);
 
         Fire fire = (Fire) SpacebaseRun.level.blobs.get(Fire.class);

@@ -33,7 +33,7 @@ public class JedaKnightSprite extends MobSprite {
 
         texture(Assets.JEDA_KNIGHT);
 
-        TextureFilm frames = new TextureFilm(texture, 15, 14);
+        TextureFilm frames = new TextureFilm(texture, 16, 16);
 
         idle = new Animation(6, true);
         idle.frames(frames, 1, 0, 1, 2);

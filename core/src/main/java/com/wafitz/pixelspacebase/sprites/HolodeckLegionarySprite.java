@@ -8,10 +8,23 @@
  */
 package com.wafitz.pixelspacebase.sprites;
 
+import android.graphics.RectF;
+
 import com.wafitz.pixelspacebase.Assets;
 import com.watabou.noosa.TextureFilm;
 
 public class HolodeckLegionarySprite extends MobSprite {
+
+    // The source frames are 96px; display them at the standard 64px size.
+    private static final float FRAME_SCALE = 64f / 96f;
+
+    @Override
+    public void frame(RectF frame) {
+        super.frame(frame);
+        width *= FRAME_SCALE;
+        height *= FRAME_SCALE;
+        updateVertices();
+    }
 
     public HolodeckLegionarySprite() {
         super();

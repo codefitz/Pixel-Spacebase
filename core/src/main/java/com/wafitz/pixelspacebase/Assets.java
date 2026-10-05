@@ -56,6 +56,10 @@ public class Assets {
     public static final String LOADER_DM3000 = "loader_dm3000.png";
     public static final String LOADER_SHAPESHIFTER = "loader_shapeshifter.png";
     public static final String LOADER_CAPTAIN = "loader_captain.png";
+    public static final String HOVERPOD_COMMANDER = "hoverpod_commander.png";
+    public static final String HOVERPOD_DM3000 = "hoverpod_dm3000.png";
+    public static final String HOVERPOD_SHAPESHIFTER = "hoverpod_shapeshifter.png";
+    public static final String HOVERPOD_CAPTAIN = "hoverpod_captain.png";
     public static final String AVATARS = "avatars.png";
     public static final String PET = "station_cat.png";
 

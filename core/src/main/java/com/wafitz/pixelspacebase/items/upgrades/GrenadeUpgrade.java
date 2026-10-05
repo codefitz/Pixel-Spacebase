@@ -55,15 +55,13 @@ public abstract class GrenadeUpgrade extends Upgrade {
 
     @Override
     public void execute(Hero hero, String action) {
-        if (isSealed() && (action.equals(AC_OPEN) || action.equals(AC_RUN))) {
-            identify();
-            GLog.i(Messages.get(Upgrade.class, "revealed", name()));
-            return;
-        }
+        boolean openingCache = isSealed() && (action.equals(AC_OPEN) || action.equals(AC_RUN));
+        if (openingCache) action = AC_USE;
         if (action.equals(AC_USE)) {
             super.execute(hero, action);
             curItem = detach(hero.belongings.backpack);
             ((GrenadeUpgrade) curItem).doRead();
+            if (openingCache) GLog.i(Messages.get(Upgrade.class, "revealed", name()));
             return;
         }
         // Legacy activation requests use the default throw action.

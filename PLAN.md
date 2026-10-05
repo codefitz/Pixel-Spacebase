@@ -9,8 +9,8 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [x] Remove the Plasma Stabiliser and give its plasma-clearing function to the Freeze Blaster.
 - [x] Reduce Flamethrower spread to a single directional line.
 - [ ] Update the custom room and quest for the unstable holo-projector.
-- [ ] Shapeshifter special items should still activate (so he doesn't throw them e.g. equipable items)
-- [ ] Opening an unknown cache should apply thing directly to self - so a grenade for example should be used on self.
+- [x] Shapeshifter quickslots retain special-item activation and equipment actions instead of forcing throws. Dynamic cache actions refresh first; ordinary weapons and blasters remain throwable. In-game confirmation pending.
+- [x] Opening an unknown cache applies its effect to the hero immediately, including both grenade families. Consume one item and the normal use time; remaining revealed grenades sort into ordnance. In-game confirmation pending.
 - [ ] We need a water mechanic for the command levels - in case the hero gets acid attacked
 
 ## Rooms and Narrative
@@ -27,7 +27,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [x] On habitat level, if there's a fire, or the hero is on fire, have sprinklers trigger after 1 turn to put it out.
 - [x] Replace Spade with the accurate Phase Cutter and Drill with the defensive Repulsor Baton, with new sprites and save compatibility.
 - [x] In Habitat changing rooms, water always pools in the center.
-- [ ] Make the Hunters blue indicator mirror the item, like the red indicator does.
+- [x] Make the Hunter blue item indicator use the detected heap item's sprite silhouette, including unidentified cache and Pixel Dungeon visit artwork. In-game confirmation pending.
 
 ## Issues
 
@@ -44,13 +44,14 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 
 ## Art
 
-- [ ] Reskin the Jada Knight.
+- [x] Match the Loader arm and equipment icons to the orange hydraulic chassis, refresh its cockpit portraits, and reduce the on-level sprite by about 29% to a similar overall size as the Hoverpod while preserving proportions and claw clearance. In-game confirmation pending.
+- [x] Reskin the Jeda Knight with an uncovered head, cream/tan robes and blue energy blade; give the shared Master variant a green blade. Repacked both into 64×64 animation frames. In-game confirmation pending.
 - [ ] Reskin DM3000.
-- [ ] Hoverpod needs making larger - also window shield
-- [ ] Give all plasmids injection-style icons.
+- [x] Enlarge the Hoverpod with dedicated 80×80 animation frames, a broad blue glass canopy and each hero visible behind the screen. Refreshed portraits and inventory icon. In-game confirmation pending.
+- [x] Give all 12 plasmid colours matching injector icons with a shared silhouette and coloured liquid reservoir. Updated splash colour sampling for the new artwork. In-game confirmation pending.
 - [ ] Reskin hero Armor Kit suits.
-- [ ] Enlarge the Hunter armor appearance.
-- [ ] Shrink the Roman Soldier sprite.
+- [x] Enlarge the Hunter suit proportionally to a 64px-tall frame, trimming transparent padding when displayed and preserving animation alignment. In-game confirmation pending.
+- [x] Shrink Roman Soldiers from 96×96 to a displayed 64×64 frame, preserving the artwork and animations. In-game confirmation pending.
 
 ## Carried-over Verification
 

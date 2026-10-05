@@ -19,6 +19,7 @@ import com.wafitz.pixelspacebase.items.equippablemodules.HunterItemScanner;
 import com.wafitz.pixelspacebase.items.equippablemodules.HunterTrapScanner;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
+import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Group;
 import com.watabou.utils.SparseArray;
@@ -34,7 +35,7 @@ public class HunterSensorMarkers extends Group {
     static final int TRAP_SIGNAL = 0xFFFF5A4E;
     private static final float MARKER_SIZE = 6f;
 
-    private final Map<Integer, ColorBlock> itemMarkers = new HashMap<>();
+    private final Map<Integer, ItemSprite> itemMarkers = new HashMap<>();
     private final Map<Integer, ColorBlock> trapMarkers = new HashMap<>();
 
     @Override
@@ -56,7 +57,7 @@ public class HunterSensorMarkers extends Group {
                 Heap heap = level.heaps.get(cell);
                 if (heap != null && heap.type == Heap.Type.HEAP && !heap.isEmpty()
                         && shouldDisplayMarker(itemScannerActive, isVisible(cell))) {
-                    showMarker(itemMarkers, cell, ITEM_SIGNAL);
+                    showItemMarker(heap, cell);
                 }
             }
         }
@@ -82,10 +83,26 @@ public class HunterSensorMarkers extends Group {
         return cell >= 0 && cell < SpacebaseRun.visible.length && SpacebaseRun.visible[cell];
     }
 
-    private void setAllHidden(Map<Integer, ColorBlock> markers) {
-        for (ColorBlock marker : markers.values()) {
+    private void setAllHidden(Map<Integer, ? extends com.watabou.noosa.Visual> markers) {
+        for (com.watabou.noosa.Visual marker : markers.values()) {
             marker.visible = false;
         }
+    }
+
+    private void showItemMarker(Heap heap, int cell) {
+        ItemSprite marker = itemMarkers.get(cell);
+        if (marker == null) {
+            marker = new ItemSprite();
+            itemMarkers.put(cell, marker);
+            add(marker);
+        }
+        // Use the same frame as the heap, including unidentified caches and visit art.
+        // Solid blue retains its alpha silhouette without showing item colors or glows.
+        marker.view(heap.image(), null);
+        marker.color(ITEM_SIGNAL);
+        marker.alpha(0.9f);
+        marker.center(SpacebaseTilemap.tileCenterToWorld(cell));
+        marker.visible = true;
     }
 
     private void showMarker(Map<Integer, ColorBlock> markers, int cell, int color) {

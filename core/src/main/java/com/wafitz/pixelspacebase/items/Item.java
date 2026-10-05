@@ -184,10 +184,21 @@ public class Item implements Bundlable {
     }
 
     public void executeQuickslot(Hero hero) {
-        if (hero.heroClass == HeroClass.SHAPESHIFTER && canBeThrown(hero)) {
-            execute(hero, AC_THROW);
-        } else {
+        if (hero.heroClass != HeroClass.SHAPESHIFTER) {
             execute(hero);
+            return;
+        }
+        // Refresh dynamic cache/ability actions before deciding what the slot does.
+        ArrayList<String> available = actions(hero);
+        boolean specialAction = defaultAction != null && !AC_THROW.equals(defaultAction)
+                && !(this instanceof com.wafitz.pixelspacebase.items.blasters.Blaster);
+        if (specialAction) {
+            if (available.contains(defaultAction)) execute(hero, defaultAction);
+            else if (this instanceof EquipableItem && available.contains("EQUIP")) execute(hero, "EQUIP");
+        } else if (this instanceof EquipableItem && !(this instanceof Weapon)) {
+            if (available.contains("EQUIP")) execute(hero, "EQUIP");
+        } else if (available.contains(AC_THROW)) {
+            execute(hero, AC_THROW);
         }
     }
 

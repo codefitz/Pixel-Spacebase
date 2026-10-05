@@ -61,7 +61,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Plasma Anomaly (`Elemental`) | Former fire elemental. Reactor/containment leak enemy with special damage flavor. |
 | Plasma Spark (`Newborn Elemental`) | Quest-related discharge source for a faulty core module ejected by the restart sequence. |
 | Jeda Knight | Fast late-mid disciplined melee enemy. |
-| Jeda Master (`Senior`) | Rare Jeda Knight variant with stronger strikes and brief paralysis. Text conversion is done; sprite remains future work. |
+| Jeda Master (`Senior`) | Rare Jeda Knight variant with stronger strikes and brief paralysis. Shares the uncovered-head, cream-robed Knight artwork, with a green energy blade. |
 | Signal Leech | Armoured molten alien bug. Uses a line-of-sight orange plasma projectile at range (12–17 direct damage, then Burning on a surviving unprotected target), bites in melee, and is immune to Burning, fire and plasma. Loader/hoverpod protections and the active Frontier forcefield use existing plasma damage rules. Spit does not create permanent floor pools. Previous stats and gene-mod loot remain unchanged. |
 | War Machine | Heavy corridor-suppression machine from command-sector defense systems. |
 | Signal Siren | Floating jellyfish-like intrusion organism. Keeps its blink approach, melee stats and loot; replaces Hypnotise with a one-in-three chance after a successful hit to teleport a surviving hero to a different unoccupied tile within the hero's current room. Plasma and chasm tiles are eligible, with normal landing hazards and flight protections. No displacement outside rooms or on non-room-based maps. The following station cat can still scare it away once. Old saved Sirens become flying. |

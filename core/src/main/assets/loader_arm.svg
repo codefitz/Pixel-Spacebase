@@ -1,17 +1,71 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 16 16" shape-rendering="crispEdges">
-  <!-- Pixel-grid source for the Loader arm item icon; transparent background. -->
-  <!-- Arm silhouette and powered cuff. -->
-  <path fill="#17252d" d="M1 11h2V9h3V8h2V6h2V4h2V2h3v2h-1v2h-1v2h-2v2h-2v2H7v2H4v1H2v-1H1z"/>
-  <path fill="#536c76" d="M2 11h2V9h3V8h2V6h2V4h2V3h1v2h-1v2h-2v2H9v2H7v2H4v1H3v-1H2z"/>
-  <path fill="#a9c4c5" d="M4 10h2V9h2V7h2V5h2V4h1v1h-1v2h-2v2H8v2H6v2H4z"/>
-  <path fill="#31d8e7" d="M3 11h2v1H4v1H3zM7 8h2v1H8v1H7zM11 4h1v1h-1z"/>
-  <!-- Reinforced elbow joint. -->
-  <path fill="#182a34" d="M7 7h3v3H7z"/>
-  <path fill="#e0b84f" d="M8 7h2v2H8z"/>
-  <path fill="#f6e08a" d="M8 7h1v1H8z"/>
-  <!-- Claw housing and opposing gripper fingers. -->
-  <path fill="#17252d" d="M11 2h4v2h-1v2h-2V5h-1zM12 6h2v2h-2z"/>
-  <path fill="#879da3" d="M12 2h2v2h-1v1h-1zM13 6h1v1h-1z"/>
-  <path fill="#d1e2df" d="M12 2h1v1h-1z"/>
-  <path fill="#31d8e7" d="M14 3h1v1h-1z"/>
+  <!-- Pixel-grid source matching the installed orange hydraulic Loader claw. -->
+  <rect x="11" y="4" width="1" height="1" fill="#030202"/>
+  <rect x="12" y="4" width="1" height="1" fill="#c0b8bf"/>
+  <rect x="9" y="5" width="1" height="1" fill="#040302"/>
+  <rect x="10" y="5" width="1" height="1" fill="#bab2b8"/>
+  <rect x="11" y="5" width="1" height="1" fill="#fbf5f1"/>
+  <rect x="12" y="5" width="1" height="1" fill="#161719"/>
+  <rect x="13" y="5" width="1" height="1" fill="#45455c"/>
+  <rect x="8" y="6" width="1" height="1" fill="#fd9c04"/>
+  <rect x="9" y="6" width="1" height="1" fill="#fd9801"/>
+  <rect x="10" y="6" width="1" height="1" fill="#fdcc01"/>
+  <rect x="11" y="6" width="1" height="1" fill="#facb03"/>
+  <rect x="12" y="6" width="1" height="1" fill="#000000"/>
+  <rect x="13" y="6" width="1" height="1" fill="#000000"/>
+  <rect x="8" y="7" width="1" height="1" fill="#920f00"/>
+  <rect x="9" y="7" width="1" height="1" fill="#ff9302"/>
+  <rect x="10" y="7" width="1" height="1" fill="#f9ca00"/>
+  <rect x="6" y="8" width="1" height="1" fill="#020100"/>
+  <rect x="7" y="8" width="1" height="1" fill="#000001"/>
+  <rect x="8" y="8" width="1" height="1" fill="#ff6f01"/>
+  <rect x="9" y="8" width="1" height="1" fill="#fd7001"/>
+  <rect x="10" y="8" width="1" height="1" fill="#000001"/>
+  <rect x="13" y="8" width="1" height="1" fill="#030102"/>
+  <rect x="14" y="8" width="1" height="1" fill="#b8b1b6"/>
+  <rect x="4" y="9" width="1" height="1" fill="#000100"/>
+  <rect x="5" y="9" width="1" height="1" fill="#f94100"/>
+  <rect x="6" y="9" width="1" height="1" fill="#39394e"/>
+  <rect x="7" y="9" width="1" height="1" fill="#fcc302"/>
+  <rect x="8" y="9" width="1" height="1" fill="#9b1100"/>
+  <rect x="9" y="9" width="1" height="1" fill="#fd6d00"/>
+  <rect x="10" y="9" width="1" height="1" fill="#a41200"/>
+  <rect x="11" y="9" width="1" height="1" fill="#0d0f14"/>
+  <rect x="12" y="9" width="1" height="1" fill="#fdfbfa"/>
+  <rect x="13" y="9" width="1" height="1" fill="#f9c800"/>
+  <rect x="14" y="9" width="1" height="1" fill="#414157"/>
+  <rect x="2" y="10" width="1" height="1" fill="#5e5f7a"/>
+  <rect x="3" y="10" width="1" height="1" fill="#fc6d01"/>
+  <rect x="4" y="10" width="1" height="1" fill="#991200"/>
+  <rect x="5" y="10" width="1" height="1" fill="#757487"/>
+  <rect x="6" y="10" width="1" height="1" fill="#343446"/>
+  <rect x="7" y="10" width="1" height="1" fill="#272839"/>
+  <rect x="8" y="10" width="1" height="1" fill="#ec3800"/>
+  <rect x="9" y="10" width="1" height="1" fill="#fb4101"/>
+  <rect x="10" y="10" width="1" height="1" fill="#fda201"/>
+  <rect x="11" y="10" width="1" height="1" fill="#151417"/>
+  <rect x="12" y="10" width="1" height="1" fill="#161519"/>
+  <rect x="13" y="10" width="1" height="1" fill="#000000"/>
+  <rect x="1" y="11" width="1" height="1" fill="#575876"/>
+  <rect x="2" y="11" width="1" height="1" fill="#050200"/>
+  <rect x="3" y="11" width="1" height="1" fill="#fd7301"/>
+  <rect x="4" y="11" width="1" height="1" fill="#fda902"/>
+  <rect x="5" y="11" width="1" height="1" fill="#fb6b00"/>
+  <rect x="6" y="11" width="1" height="1" fill="#57576f"/>
+  <rect x="9" y="11" width="1" height="1" fill="#010000"/>
+  <rect x="10" y="11" width="1" height="1" fill="#f83700"/>
+  <rect x="11" y="11" width="1" height="1" fill="#040001"/>
+  <rect x="1" y="12" width="1" height="1" fill="#262738"/>
+  <rect x="2" y="12" width="1" height="1" fill="#07070a"/>
+  <rect x="3" y="12" width="1" height="1" fill="#f76d07"/>
+  <rect x="4" y="12" width="1" height="1" fill="#fd7000"/>
+  <rect x="5" y="12" width="1" height="1" fill="#ce1d01"/>
+  <rect x="6" y="12" width="1" height="1" fill="#d71f00"/>
+  <rect x="2" y="13" width="1" height="1" fill="#0d0d14"/>
+  <rect x="3" y="13" width="1" height="1" fill="#222332"/>
+  <rect x="4" y="13" width="1" height="1" fill="#fd4500"/>
+  <rect x="5" y="13" width="1" height="1" fill="#ff8500"/>
+  <rect x="2" y="14" width="1" height="1" fill="#010001"/>
+  <rect x="3" y="14" width="1" height="1" fill="#b41800"/>
+  <rect x="4" y="14" width="1" height="1" fill="#0b0200"/>
 </svg>
