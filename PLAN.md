@@ -16,7 +16,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [x] Make jumping platforms look like exposed bridges rather than rooms enclosed by walls.
 - [x] Revise Y's rescue dialogue: remove the advance "you'll have to find me" explanation and the option to stay; clicking rescue Y should lead to a reluctant return.
 - [ ] Expand Y rescues using [the staged rescue plan](docs/Y_RESCUE_PLAN.md).
-  - [ ] Stage 1: saved journey state, first-rescue guarantee, and reliable return travel.
+  - [x] Stage 1: saved journey state, first-rescue guarantee, and return recovery implemented; in-game reload checks pending.
   - [ ] Stage 2: alien planet, friendly NPCs, and a parts trader.
   - [ ] Stage 3: next-boss detour with persistent victory and reset after defeat.
   - [ ] Stage 4: dark maze, visible exit, torch exploration, and Hunter mapping overlay.

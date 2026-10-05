@@ -37,13 +37,11 @@ import com.wafitz.pixelspacebase.levels.HolodeckBossLevel;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.wafitz.pixelspacebase.sprites.YSprite;
 import com.wafitz.pixelspacebase.windows.WndY;
 import com.wafitz.pixelspacebase.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
-import com.watabou.noosa.Game;
 import com.wafitz.pixelspacebase.utils.GLog;
 
 import com.wafitz.pixelspacebase.actors.buffs.YRescueJourney;
@@ -85,14 +83,13 @@ public class Y extends NPC {
                 YRescueJourney ticket = Buff.affect(hero, YRescueJourney.class);
                 // Old saves did not record the fall origin; infer the adjacent upper deck.
                 if (ticket.sourceDepth < 1) ticket.sourceDepth = SpacebaseRun.nextDepth(SpacebaseRun.depth);
-                ticket.rescueDepth = Random.element(YRescuer.rescueDestinations(SpacebaseRun.depth));
-
-                InterlevelScene.mode = InterlevelScene.Mode.RETURN;
-                InterlevelScene.returnDepth = ticket.rescueDepth;
-                InterlevelScene.returnPos = -1;
-                InterlevelScene.returnAtEntrance = false;
-                InterlevelScene.rescueScatter = true;
-                Game.switchScene(InterlevelScene.class);
+                if (ticket.phase != YRescueJourney.Phase.STRANDED) {
+                    ticket.requestReturn();
+                } else if (ticket.beginDeparture(SpacebaseRun.depth)) {
+                    ticket.travel();
+                } else {
+                    ticket.requestReturn();
+                }
             }
         });
     }

@@ -105,9 +105,18 @@ public class Workshop extends Painter {
 
     public static void storeInBundle(Bundle bundle) {
         bundle.put(STORED_ITEMS, storedItems == null ? new ArrayList<Item>() : storedItems);
+        bundle.put("carriedWorkshopStock", carriedStock == null ? new ArrayList<Item>() : carriedStock);
+        bundle.put("carriedWorkshopStockArea", stockArea);
     }
 
     public static void restoreFromBundle(Bundle bundle) {
+        carriedStock = new ArrayList<>();
+        if (bundle.contains("carriedWorkshopStock")) for (Bundlable item : bundle.getCollection("carriedWorkshopStock")) {
+            if (item instanceof Item) carriedStock.add((Item) item);
+        }
+        stockArea = bundle.contains("carriedWorkshopStockArea") ? bundle.getInt("carriedWorkshopStockArea") : -1;
+        stockDepth = -1; // Rebuild stock when entering a newly generated workshop after reload.
+        itemsToSpawn = null;
         storedItems = new ArrayList<>();
         if (bundle.contains(STORED_ITEMS)) {
             for (Bundlable item : bundle.getCollection(STORED_ITEMS)) {

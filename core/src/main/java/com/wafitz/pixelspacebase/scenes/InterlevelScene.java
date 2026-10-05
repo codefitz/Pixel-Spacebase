@@ -239,7 +239,7 @@ public class InterlevelScene extends PixelScene {
 
         Actor.fixTime();
         int targetDepth = SpacebaseRun.fallTargetDepth();
-        Buff.affect(SpacebaseRun.hero, YRescueJourney.class).recordFall(SpacebaseRun.depth);
+        Buff.affect(SpacebaseRun.hero, YRescueJourney.class).recordFall(SpacebaseRun.depth, SpacebaseRun.hero.pos);
         Workshop.carryStockFrom(SpacebaseRun.level);
         StationCat.carryFollowerFrom(SpacebaseRun.level);
         SpacebaseRun.saveAll();
@@ -273,15 +273,35 @@ public class InterlevelScene extends PixelScene {
 
         Actor.fixTime();
 
-        Workshop.carryStockFrom(SpacebaseRun.level);
-        StationCat.carryFollowerFrom(SpacebaseRun.level);
-        SpacebaseRun.saveAll();
-        SpacebaseRun.depth = returnDepth;
-        Level level = SpacebaseRun.loadOrCreateLevel(returnDepth);
+        YRescueJourney ticket = SpacebaseRun.hero.buff(YRescueJourney.class);
+        boolean journeyTravel = ticket != null && ticket.pendingTravel();
+        if (journeyTravel) ticket.configureTravel();
+        if (!journeyTravel || !ticket.transferPrepared) {
+            Workshop.carryStockFrom(SpacebaseRun.level);
+            StationCat.carryFollowerFrom(SpacebaseRun.level);
+            if (journeyTravel) ticket.transferPrepared = true;
+            SpacebaseRun.saveAll();
+        }
+        Level level;
+        int landing;
+        if (journeyTravel && ticket.arrivalLevel != null) {
+            Actor.clear();
+            SpacebaseRun.depth = returnDepth;
+            level = ticket.arrivalLevel;
+            landing = ticket.landingPos;
+        } else {
+            level = SpacebaseRun.loadOrCreateLevel(returnDepth);
+            landing = rescueScatter ? YRescuer.randomReachableCell(level, -1)
+                    : returnAtEntrance ? YRescuer.safeReturnCell(level) : returnPos;
+            if (landing < 0 && journeyTravel) throw new IOException("No usable Y rescue landing cell");
+            if (journeyTravel) {
+                ticket.arrivalLevel = level;
+                ticket.landingPos = landing;
+                // Save an untouched destination before moving cargo or followers into it.
+                SpacebaseRun.saveJourneyCheckpoint();
+            }
+        }
         Workshop.deliverStorageTo(level);
-        int landing = rescueScatter
-                ? YRescuer.randomReachableCell(level, -1)
-                : returnAtEntrance ? level.entrance : returnPos;
         SpacebaseRun.switchLevel(level, landing);
         returnAtEntrance = false;
         rescueScatter = false;
@@ -294,6 +314,13 @@ public class InterlevelScene extends PixelScene {
         GameLog.wipe();
 
         SpacebaseRun.loadGame(StartScene.curClass);
+        YRescueJourney ticket = SpacebaseRun.hero.buff(YRescueJourney.class);
+        if (ticket != null && ticket.pendingTravel()) {
+            // Do not carry cargo twice when resuming a prepared departure/return.
+            if (ticket.arrivalLevel == null) SpacebaseRun.level = SpacebaseRun.loadLevel(StartScene.curClass);
+            returnTo();
+            return;
+        }
         if (SpacebaseRun.depth == -1) {
             SpacebaseRun.depth = Statistics.deepestFloor;
             SpacebaseRun.switchLevel(SpacebaseRun.loadLevel(StartScene.curClass), -1);

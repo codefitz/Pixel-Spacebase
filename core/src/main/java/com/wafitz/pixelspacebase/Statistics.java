@@ -40,6 +40,7 @@ public class Statistics {
 
     public static boolean amuletObtained = false;
     public static int rescueCradleDepths = 0;
+    public static int yRescueDepartures = 0;
 
     public static void reset() {
 
@@ -58,6 +59,7 @@ public class Statistics {
 
         amuletObtained = false;
         rescueCradleDepths = 0;
+        yRescueDepartures = 0;
 
     }
 
@@ -85,6 +87,7 @@ public class Statistics {
         bundle.put(DURATION, duration);
         bundle.put(ESCAPE_POD_OVERRIDE, amuletObtained);
         bundle.put(RESCUE_CRADLES, rescueCradleDepths);
+        bundle.put("yRescueDepartures", yRescueDepartures);
     }
 
     public static void restoreFromBundle(Bundle bundle) {
@@ -99,6 +102,7 @@ public class Statistics {
         duration = bundle.getFloat(DURATION);
         amuletObtained = bundle.getBoolean(ESCAPE_POD_OVERRIDE);
         rescueCradleDepths = bundle.getInt(RESCUE_CRADLES);
+        yRescueDepartures = Math.max(0, bundle.getInt("yRescueDepartures"));
     }
 
 }

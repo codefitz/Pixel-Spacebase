@@ -9,10 +9,8 @@ import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
-import com.wafitz.pixelspacebase.scenes.InterlevelScene;
 import com.wafitz.pixelspacebase.sprites.YSprite;
 import com.wafitz.pixelspacebase.windows.WndOptions;
-import com.watabou.noosa.Game;
 import com.watabou.utils.Random;
 import java.util.ArrayList;
 
@@ -66,10 +64,20 @@ public class YRescuer extends NPC {
         return candidates.isEmpty() ? -1 : Random.element(candidates);
     }
 
+    public static int safeReturnCell(Level level) {
+        int cell = level.entrance;
+        boolean occupied = false;
+        for (Mob mob : level.mobs) if (mob.pos == cell) { occupied = true; break; }
+        if (!occupied && Level.passable[cell] && !level.isPlasmaCell(cell)
+                && !level.isDoorlessRoomCell(cell)) return cell;
+        return randomReachableCell(level, -1);
+    }
+
     public static void placeOn(Level level) {
         YRescueJourney ticket = SpacebaseRun.hero.buff(YRescueJourney.class);
         boolean needed = ticket != null && ticket.sourceDepth > 0
-                && ticket.rescueDepth == SpacebaseRun.depth;
+                && ticket.rescueDepth == SpacebaseRun.depth
+                && ticket.phase == YRescueJourney.Phase.VISITING;
         boolean present = false;
         for (Mob mob : level.mobs.toArray(new Mob[0])) {
             if (mob instanceof YRescuer) {
@@ -106,16 +114,8 @@ public class YRescuer extends NPC {
                 Messages.get(Y.class, "rescue_return", ticket.sourceDepth),
                 Messages.get(Y.class, "rescue_ask")) {
             @Override protected void onSelect(int index) {
-                InterlevelScene.returnDepth = ticket.sourceDepth;
-                InterlevelScene.returnPos = -1;
-                InterlevelScene.returnAtEntrance = true;
-                InterlevelScene.rescueScatter = false;
-                InterlevelScene.mode = InterlevelScene.Mode.RETURN;
-                ticket.detach();
-                // WndOptions already destroyed itself before calling onSelect().
-                YRescuer.this.destroy();
-                if (YRescuer.this.sprite != null) YRescuer.this.sprite.killAndErase();
-                Game.switchScene(InterlevelScene.class);
+                // The saved ticket remains attached until arrival is committed.
+                ticket.requestReturn();
             }
         });
         return false;

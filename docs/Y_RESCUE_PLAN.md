@@ -1,6 +1,6 @@
 # Y rescue expansion
 
-Status: design and staged backlog; gameplay implementation has not begun.
+Status: Stage 1 implemented; compilation passed. In-game acceptance checks remain pending. Stages 2–5 are planned.
 
 ## Agreed behaviour
 
@@ -30,7 +30,7 @@ Return at a safe entrance-connected cell on the origin level, rather than the fa
 
 For the Pixel Dungeon visit, propose finding Y near the downstairs exit to return; stairs must not start a separate Dungeon campaign. For planet and maze, ordinary death rules remain in effect unless changed explicitly.
 
-## Current implementation and constraints
+## Starting implementation and constraints (before Stage 1)
 
 - `Y.rescueStrandedHero()` chooses only ordinary station decks through `YRescuer.rescueDestinations()`. Bosses are deliberately excluded today.
 - `YRescueJourney` saves only source and destination depths. `InterlevelScene.fall()` records the pre-fall origin; finding rescue Y returns to that origin entrance and removes the ticket.
@@ -41,12 +41,20 @@ For the Pixel Dungeon visit, propose finding Y near the downstairs exit to retur
 
 ## Stage 1 — Shared journeys and first rescue
 
-- [ ] Add a persistent rescue departure count and versioned journey data: journey identity, destination type, origin level/cell, destination identity, phase and outcome.
-- [ ] Support separately saved side levels alongside campaign decks. Save hero, journey and level state consistently and recover interrupted departure/return operations without duplicating purchases or rewards.
-- [ ] Centralise departure and return behaviour. Keep quest Y and rescue Y distinct and retain the current reluctant-return dialogue.
-- [ ] Make the first rescue always take the ordinary random route; save destination choice so reloading cannot reroll it.
-- [ ] Define handling of falls, return items, followers, carried workshop storage and stairs during a detour. Recommended default: prevent another detour from overwriting the active origin; route escape travel through the same return operation.
-- [ ] Keep later special destinations disabled until each is complete.
+- [x] Add a persistent rescue departure count and versioned journey data: journey identity, destination type, origin level/cell, destination identity, phase and outcome.
+- [x] Add a separate save namespace for future side levels and saved departure/arrival checkpoints. Actual side-level generation and travel will be connected in Stage 2.
+- [x] Centralise departure and return behaviour. Keep quest Y and rescue Y distinct and retain the current reluctant-return dialogue.
+- [x] Make the first rescue always take the ordinary random route; save destination choice so reloading cannot reroll it.
+- [x] Preserve the active origin through falls and ordinary travel. Visiting the origin completes the journey; becoming stranded again returns through Y to the original level. Persist travelling cat and workshop cargo. Side-level escape-item and stair routing will be connected when side levels exist.
+- [x] Keep later special destinations disabled until each is complete.
+
+### Stage 1 implementation notes
+
+- A rescue's game save includes the hero and current deck in one atomic checkpoint. Pending travel also saves an untouched destination and landing cell before cargo is delivered. Reload resumes the pending transfer and avoids collecting cargo twice.
+- Completion is saved before the ticket is detached. Return prefers an unoccupied, passable entrance and otherwise an entrance-connected floor tile. No usable landing leaves the transition pending and reports an error rather than placing the hero incorrectly.
+- A legacy ticket with a destination migrates to an active visit and proves at least one departure. A save without a departure count or active destination remains first-rescue-eligible.
+- Ordinary station stairs and return items retain their existing behaviour while preserving the origin. Reaching that origin finishes the rescue. Special destination weights remain disabled.
+- The existing rescue persistence fixture was adjusted for the new active-origin rule. No tests were added or executed. Java compilation passed; save/reload, cargo and follower behaviour still require the acceptance checks below.
 
 Acceptance: a first rescue, a normal later rescue, and reloads before departure, during a visit and after return all preserve the source deck and a single journey. Normal station travel remains intact. Review old active tickets and saves without new fields.
 
@@ -100,4 +108,4 @@ Acceptance: visit and reload with each hero appearance, fight and collect items 
 
 Ship and review one stage at a time. Each destination should be force-selectable through development tooling for review without changing release probabilities. Gameplay checks above are planned acceptance work, not checks already executed. Update release scope after each stage; all five stages need not ship in 1.0.5.
 
-**Next implementation:** Stage 1, with ordinary rescues only. It makes every later destination safer to add and gives a small, reviewable first change.
+**Next:** review Stage 1's in-game acceptance checks, then implement Stage 2's alien planet.

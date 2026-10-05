@@ -28,6 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.StrandedRoomRescue;
+import com.wafitz.pixelspacebase.actors.buffs.YRescueJourney;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
@@ -187,6 +188,8 @@ public class SpacebaseRun {
         QuickSlotButton.reset();
 
         depth = 0;
+        rescueLevelIdentity = "";
+        restoredRescueLevel = null;
         parts = 0;
 
         droppedItems = new SparseArray<>();
@@ -297,6 +300,27 @@ public class SpacebaseRun {
         return level;
     }
 
+    /** Empty for station decks; future side journeys use a separate save namespace. */
+    private static String rescueLevelIdentity = "";
+    private static Level restoredRescueLevel;
+
+    public static void selectRescueLevel(String identity) {
+        if (identity == null || (!identity.isEmpty() && !identity.matches("(alien|maze|dungeon)_[1-9][0-9]*"))) {
+            throw new IllegalArgumentException("Invalid rescue level identity");
+        }
+        rescueLevelIdentity = identity;
+    }
+
+    private static String currentLevelFile(HeroClass cl) {
+        return rescueLevelIdentity.isEmpty() ? Messages.format(depthFile(cl), depth)
+                : gameFile(cl) + ".rescue." + rescueLevelIdentity;
+    }
+
+    /** Persists a prepared arrival without writing it over the campaign's current deck. */
+    public static void saveJourneyCheckpoint() throws IOException {
+        saveGame(gameFile(hero.heroClass));
+    }
+
     public static void resetLevel() {
 
         Actor.clear();
@@ -363,6 +387,8 @@ public class SpacebaseRun {
         }
 
         hero.pos = pos != -1 ? pos : level.exit;
+        YRescueJourney journey = hero.buff(YRescueJourney.class);
+        if (journey != null) journey.arrived(depth);
         YRescuer.placeOn(level);
         if (level.isDoorlessRoomCell(hero.pos)) {
             Buff.affect(hero, StrandedRoomRescue.class);
@@ -376,6 +402,7 @@ public class SpacebaseRun {
         observe();
         try {
             saveAll();
+            if (journey != null && journey.phase == YRescueJourney.Phase.COMPLETE) journey.detach();
         } catch (IOException e) {
             PixelSpacebase.reportException(e);
             /*This only catches IO errors. Yes, this means things can go wrong, and they can go wrong catastrophically.
@@ -558,6 +585,12 @@ public class SpacebaseRun {
             bundle.put(HERO, hero);
             bundle.put(PARTS, parts);
             bundle.put(DEPTH, depth);
+            bundle.put("rescueLevelIdentity", rescueLevelIdentity);
+            // The hero and current rescue deck are committed in the same atomic game file.
+            // This snapshot also repairs a partially written companion level file on reload.
+            if (hero.buff(YRescueJourney.class) != null && level != null) {
+                bundle.put("rescueCurrentLevel", level);
+            }
 
             for (int d : droppedItems.keyArray()) {
                 bundle.put(Messages.format(DROPPED, d), droppedItems.get(d));
@@ -620,7 +653,7 @@ public class SpacebaseRun {
         Bundle bundle = new Bundle();
         bundle.put(LEVEL, level);
 
-        writeBundleAtomically(Messages.format(depthFile(hero.heroClass), depth), bundle);
+        writeBundleAtomically(currentLevelFile(hero.heroClass), bundle);
     }
 
     public static void saveAll() throws IOException {
@@ -667,6 +700,9 @@ public class SpacebaseRun {
 
         SpacebaseRun.level = null;
         SpacebaseRun.depth = -1;
+        rescueLevelIdentity = bundle.contains("rescueLevelIdentity") ? bundle.getString("rescueLevelIdentity") : "";
+        selectRescueLevel(rescueLevelIdentity);
+        restoredRescueLevel = null;
 
         Upgrade.restore(bundle);
         Plasmid.restore(bundle);
@@ -723,11 +759,16 @@ public class SpacebaseRun {
         depth = bundle.getInt(DEPTH);
 
         Statistics.restoreFromBundle(bundle);
+        YRescueJourney journey = hero.buff(YRescueJourney.class);
+        if (journey != null && journey.rescueDepth > 0) {
+            Statistics.yRescueDepartures = Math.max(1, Math.max(Statistics.yRescueDepartures, journey.journeyId));
+        }
         if (fullLoad) {
             Y.Quest.reconcileHolodeckState(hero, depth, Statistics.deepestFloor);
         }
         Journal.restoreFromBundle(bundle);
         Generator.restoreFromBundle(bundle);
+        restoredRescueLevel = bundle.contains("rescueCurrentLevel") ? (Level) bundle.get("rescueCurrentLevel") : null;
 
         droppedItems = new SparseArray<>();
         droppedHeaps = new SparseArray<>();
@@ -757,7 +798,13 @@ public class SpacebaseRun {
         SpacebaseRun.level = null;
         Actor.clear();
 
-        InputStream input = Game.instance.openFileInput(Messages.format(depthFile(cl), depth));
+        if (restoredRescueLevel != null) {
+            Level restored = restoredRescueLevel;
+            restoredRescueLevel = null;
+            resetVisibilityForLevel(restored);
+            return restored;
+        }
+        InputStream input = Game.instance.openFileInput(currentLevelFile(cl));
         Bundle bundle = Bundle.read(input);
         input.close();
 
@@ -768,6 +815,8 @@ public class SpacebaseRun {
 
     /** Rescue travel can create gaps below deepestFloor; never overwrite an existing deck. */
     public static Level loadOrCreateLevel(int targetDepth) throws IOException {
+        rescueLevelIdentity = "";
+        restoredRescueLevel = null;
         depth = targetDepth;
         if (Game.instance.getFileStreamPath(Messages.format(depthFile(hero.heroClass), depth)).exists()) {
             return loadLevel(hero.heroClass);
@@ -780,6 +829,10 @@ public class SpacebaseRun {
         Game.instance.deleteFile(gameFile(cl));
 
         if (deleteLevels) {
+            File[] saves = Game.instance.getFileStreamPath(gameFile(cl)).getParentFile().listFiles();
+            if (saves != null) for (File save : saves) {
+                if (save.getName().startsWith(gameFile(cl) + ".rescue.")) Game.instance.deleteFile(save.getName());
+            }
             for (int depth = 1; depth <= 26; depth++) {
                 Game.instance.deleteFile(Messages.format(depthFile(cl), depth));
             }

@@ -29,10 +29,11 @@ public class YRescueTest {
         } finally { Statistics.deepestFloor = before; }
     }
 
-    @Test public void ticketPersistsAndAnotherFallReplacesTheOrigin() {
+    @Test public void ticketPersistsAndAnotherFallPreservesAnActiveOrigin() {
         YRescueJourney original = new YRescueJourney();
         original.recordFall(12);
         original.rescueDepth = 24;
+        original.phase = YRescueJourney.Phase.VISITING;
         IntBundle saved = new IntBundle();
         original.storeInBundle(saved);
         YRescueJourney restored = new YRescueJourney();
@@ -40,8 +41,8 @@ public class YRescueTest {
         assertEquals(12, restored.sourceDepth);
         assertEquals(24, restored.rescueDepth);
         restored.recordFall(23);
-        assertEquals(23, restored.sourceDepth);
-        assertEquals(-1, restored.rescueDepth);
+        assertEquals(12, restored.sourceDepth);
+        assertEquals(24, restored.rescueDepth);
     }
 
     @Test public void legacyTicketDoesNotInventDeckZero() {
@@ -77,9 +78,15 @@ public class YRescueTest {
 
     private static class IntBundle extends Bundle {
         private final HashMap<String, Integer> values = new HashMap<>();
+        private final HashMap<String, String> strings = new HashMap<>();
+        private final HashMap<String, Boolean> flags = new HashMap<>();
+        @Override public void put(String key, String value) { strings.put(key, value); }
+        @Override public String getString(String key) { return strings.get(key); }
+        @Override public void put(String key, boolean value) { flags.put(key, value); }
+        @Override public boolean getBoolean(String key) { return Boolean.TRUE.equals(flags.get(key)); }
         @Override public void put(String key, int value) { values.put(key, value); }
         @Override public int getInt(String key) { return values.containsKey(key) ? values.get(key) : 0; }
-        @Override public boolean contains(String key) { return values.containsKey(key); }
+        @Override public boolean contains(String key) { return values.containsKey(key) || strings.containsKey(key) || flags.containsKey(key); }
         @Override public void put(String key, float value) { }
         @Override public float getFloat(String key) { return 0; }
     }
