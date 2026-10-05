@@ -220,6 +220,9 @@ public class SpacebaseTilemap extends Tilemap {
     }
 
     private int getTileVisual(int pos, int tile) {
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.PixelDungeonLevel) {
+            return ((com.wafitz.pixelspacebase.levels.PixelDungeonLevel) SpacebaseRun.level).tileVisual(pos, tile);
+        }
         if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.AlienPlanetLevel) {
             return ((com.wafitz.pixelspacebase.levels.AlienPlanetLevel) SpacebaseRun.level).tileVisual(pos, tile);
         }

@@ -389,10 +389,12 @@ public class SpacebaseRun {
             arena.create();
             return arena;
         }
-        if (!identity.startsWith("alien_") && !identity.startsWith("maze_")) throw new IOException("Rescue destination is not available");
+        if (!identity.startsWith("alien_") && !identity.startsWith("maze_") && !identity.startsWith("dungeon_"))
+            throw new IOException("Rescue destination is not available");
         Actor.clear();
         level = null;
         Level planet = identity.startsWith("maze_") ? new com.wafitz.pixelspacebase.levels.DarkMazeLevel()
+                : identity.startsWith("dungeon_") ? new com.wafitz.pixelspacebase.levels.PixelDungeonLevel()
                 : new com.wafitz.pixelspacebase.levels.AlienPlanetLevel();
         resetVisibilityForLevel(planet);
         planet.create();

@@ -167,7 +167,8 @@ public class GameScene extends PixelScene {
 
         // Space is visible only where the terrain has no station tile.
         spaceBackdrop = new SpacebaseBackdrop();
-        spaceBackdrop.visible = !(SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel);
+        spaceBackdrop.visible = !(SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel)
+                && !(SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.PixelDungeonLevel);
         terrain.add(spaceBackdrop);
 
         water = new WaterLayer(SpacebaseRun.level.waterTex(),
@@ -382,6 +383,8 @@ public class GameScene extends PixelScene {
                 GLog.h(Messages.get(com.wafitz.pixelspacebase.levels.AlienPlanetLevel.class, "arrival"));
             } else if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
                 GLog.h(Messages.get(com.wafitz.pixelspacebase.levels.DarkMazeLevel.class, "arrival"));
+            } else if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.PixelDungeonLevel) {
+                GLog.h(Messages.get(com.wafitz.pixelspacebase.levels.PixelDungeonLevel.class, "arrival"));
             } else if (SpacebaseRun.depth < Statistics.deepestFloor) {
                 GLog.h(Messages.get(this, "welcome_back"), SpacebaseRun.depth, SpacebaseRun.hero.givenName());
             } else {
@@ -419,6 +422,7 @@ public class GameScene extends PixelScene {
     }
 
     private String musicForDepth() {
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.PixelDungeonLevel) return Assets.OXYGEN_WARNING;
         if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) return Assets.OXYGEN_WARNING;
         if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.AlienPlanetLevel) return Assets.HABITATION;
         if (SpacebaseRun.depth >= 1 && SpacebaseRun.depth <= 4) {

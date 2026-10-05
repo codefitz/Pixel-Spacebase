@@ -49,7 +49,9 @@ public class TerrainFeaturesTilemap extends Tilemap {
     private SparseArray<Vent> vents;
 
     public TerrainFeaturesTilemap(SparseArray<Mine> mines, SparseArray<Vent> vents) {
-        super(Assets.TERRAIN_FEATURES, new TextureFilm(Assets.TERRAIN_FEATURES, SIZE, SIZE));
+        super(com.wafitz.pixelspacebase.sprites.PixelDungeonSkins.active() ? Assets.PD_TILES : Assets.TERRAIN_FEATURES,
+                new TextureFilm(com.wafitz.pixelspacebase.sprites.PixelDungeonSkins.active()
+                        ? Assets.PD_TILES : Assets.TERRAIN_FEATURES, SIZE, SIZE));
 
         this.mines = mines;
         this.vents = vents;
@@ -97,6 +99,11 @@ public class TerrainFeaturesTilemap extends Tilemap {
     }
 
     private int getTileVisual(int pos, int tile) {
+        if (com.wafitz.pixelspacebase.sprites.PixelDungeonSkins.active()) {
+            Vent vent = vents.get(pos);
+            if (vent != null && vent.visible && vent.active || mines.get(pos) != null) return 17;
+            return tile == Terrain.SPENT_MINE ? 23 : -1;
+        }
         if (vents.get(pos) != null) {
             Vent vent = vents.get(pos);
             if (!vent.visible || !vent.active) {

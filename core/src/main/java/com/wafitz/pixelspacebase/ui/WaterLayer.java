@@ -86,7 +86,9 @@ public class WaterLayer extends Group {
                 float y = row * SpacebaseTilemap.SIZE;
                 float width = (column - start) * SpacebaseTilemap.SIZE;
 
-                ColorBlock base = new ColorBlock(width, SpacebaseTilemap.SIZE, WATER_BASE_COLOR);
+                ColorBlock base = new ColorBlock(width, SpacebaseTilemap.SIZE,
+                        com.wafitz.pixelspacebase.SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.PixelDungeonLevel
+                                ? 0xFF203B26 : WATER_BASE_COLOR);
                 base.x = x;
                 base.y = y;
                 add(base);

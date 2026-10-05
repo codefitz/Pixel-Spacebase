@@ -1,6 +1,6 @@
 # Y rescue expansion
 
-Status: Stages 1–4 implemented; compilation passed. In-game acceptance checks remain pending. Stage 5 is planned.
+Status: Stages 1–5 implemented; compilation and asset packaging passed. In-game acceptance checks remain pending.
 
 ## Agreed behaviour
 
@@ -53,7 +53,7 @@ For the Pixel Dungeon visit, propose finding Y near the downstairs exit to retur
 - A rescue's game save includes the hero and current deck in one atomic checkpoint. Pending travel also saves an untouched destination and landing cell before cargo is delivered. Reload resumes the pending transfer and avoids collecting cargo twice.
 - Completion is saved before the ticket is detached. Return prefers an unoccupied, passable entrance and otherwise an entrance-connected floor tile. No usable landing leaves the transition pending and reports an error rather than placing the hero incorrectly.
 - A legacy ticket with a destination migrates to an active visit and proves at least one departure. A save without a departure count or active destination remains first-rescue-eligible.
-- Ordinary station stairs and return items retain their existing behaviour while preserving the origin. Reaching that origin finishes the rescue. Stages 2–4 enable alien planets, boss detours and dark mazes. Dungeon visits remain disabled.
+- Ordinary station stairs and return items retain their existing behaviour while preserving the origin. Reaching that origin finishes the rescue. Stages 2–5 enable alien planets, boss detours, dark mazes and Pixel Dungeon visits.
 - The existing rescue persistence fixture was adjusted for the new active-origin rule. No tests were added or executed. Java compilation passed; save/reload, cargo and follower behaviour still require the acceptance checks below.
 
 Acceptance: a first rescue, a normal later rescue, and reloads before departure, during a visit and after return all preserve the source deck and a single journey. Normal station travel remains intact. Review old active tickets and saves without new fields.
@@ -112,7 +112,7 @@ Acceptance: win and lose against each supported boss, then revisit normally. Vic
 
 ### Stage 4 implementation notes
 
-- Later rescues now roll 70% ordinary station, 15% alien planet, 10% dark maze and 5% boss. The Pixel Dungeon outcome remains disabled. Development selection accepts `DARK_MAZE` after the first rescue.
+- Stage 4 enabled 70% ordinary station, 15% alien planet, 10% dark maze and 5% boss. Stage 5 reallocates 1% from ordinary station to Pixel Dungeon. Development selection accepts `DARK_MAZE` after the first rescue.
 - A 25×19 maze is carved as a connected tree of narrow corridors. The exit is the farthest floor cell from the entrance by cardinal traversal. Its map and scans use a separate `maze_<journeyId>` save. Creation bypasses limited station drops, bones, enemy spawning and campaign progress.
 - The maze is breathable and has no generated enemies or traps. Hunger, supplies, carried companions and normal death/clone rules still apply. A torch is useful but is not required to move or reach the exit.
 - Fog ignores explored terrain, mapping flags, brightness overrides and the normal station hull reveal. Without active light only the hero and exit beacon are drawn above it. The exit direction indicator provides a bearing, without a route or distance.
@@ -127,13 +127,23 @@ Acceptance: exit visible without torch, no hidden route leaks, maze solvable wit
 
 ## Stage 5 — Pixel Dungeon easter egg
 
-- [ ] Pin an upstream revision and inventory the first-floor art actually needed. Keep original asset provenance and attribution with imported files.
-- [ ] Create a dedicated first-floor/sewer-style map. Pixel Dungeon's first floor is generated, so recreate its recognisable setting rather than assuming one fixed canonical layout.
-- [ ] Map original terrain cells and sprite animations into this game's formats. Maintain a list of mappings for hero, creatures and displayed items; provide consistent fallbacks for Spacebase-only equipment and effects.
-- [ ] Apply the original art only while on this visit, including after reload. Preserve Spacebase combat, inventory and controls.
-- [ ] Put Y near the exit and return through the shared journey flow. Enable only after all earlier stages are stable.
+- [x] Pin the upstream revision and retain original asset provenance, file hashes and license with the imported art.
+- [x] Generate a dedicated first-floor sewer setting with connected rooms, doors, mossy floors and water.
+- [x] Map original terrain, all four hero appearances, compatible creatures and displayed items. Document consistent fallbacks for Spacebase-only content.
+- [x] Apply the original art only during the saved visit, including after reload. Keep Spacebase combat, inventory, controls, equipment capabilities and death rules.
+- [x] Place Y beside the downstairs exit and return through the shared journey. Enable at 1% of later rescues; first rescues remain ordinary.
 
-Upstream source: [watabou/pixel-dungeon](https://github.com/watabou/pixel-dungeon). Its [Assets.java](https://github.com/watabou/pixel-dungeon/blob/master/src/com/watabou/pixeldungeon/Assets.java) names the sewer atlas `tiles0.png`, water `water0.png`, and separate hero, creature and item sheets. This confirms a useful art starting point; atlas indices and animation compatibility still require inspection before importing.
+### Stage 5 implementation notes
+
+- Later rescues now use the full proposed weights: 69% ordinary station, 15% alien planet, 10% dark maze, 5% next boss and 1% Pixel Dungeon. The destination is saved before travel, and development selection accepts `PIXEL_DUNGEON` after the first rescue.
+- Imported 13 unchanged PNGs from upstream revision `ca458a28f053612973d5d6059dae5f6f2ca4fcb7`. [Artwork mappings, provenance and license](artwork/pixel-dungeon/README.md) accompany the assets, including the original 8-column item atlas and explicit animation frame sizes.
+- The 32×32 sewer visit has nine random rooms joined by a guaranteed connected network, original green water and grass artwork, six low-deck Spacebase enemies rendered as rats and gnolls, and three normal supplies. It recreates the recognisable first-floor setting; upstream first-floor maps are generated rather than one fixed layout.
+- The separate `dungeon_<journeyId>` namespace preserves the origin. Generation bypasses campaign limited drops, bones and deepest-floor progress. No Dungeon campaign, quests or enemy respawner are introduced.
+- Hero skins map Commander to Warrior, DM3000 to Mage, Shapeshifter to Rogue and Captain to Huntress. Armor rows, status avatars and item forms use original art. Loader/HoverPod and upgraded suit capabilities retain their Spacebase behaviour while using the visit appearance.
+- Creature rendering follows original animation layouts while retaining Spacebase actor classes, AI, statistics and rewards. Rescue Y uses the shopkeeper; the travelling cat uses the original ending pet. Compatible other friendlies use sheep and hostiles use gnolls. Specialised boss/quest animation APIs keep native compatible sprites; those actors are not generated here.
+- Item rendering maps native image identities to original weapons, armor, wands, rings, potions, scrolls, supplies and containers. Unmapped Spacebase items use the original unknown-item icon. Glows and combat effects retain their native behaviour. No saved item identity or global artwork constant is rewritten.
+- Y waits adjacent to the downstairs stair and uses a nostalgic reluctant-return line. The stairs cannot start a Dungeon campaign; ordinary side-level recall and attempted interlevel travel return to the saved origin. Equipment, loot, damage and consumed supplies persist.
+- Terrain, hero, creature, item and feature rendering select visit art from the actual saved level type and side namespace. Returning creates the normal station scene with its normal art. Java compilation and Android asset merging passed. No tests or in-game sessions were run.
 
 Acceptance: visit and reload with each hero appearance, fight and collect items using Spacebase behaviour, then return with station art restored. Check that leaving no longer retains any Dungeon texture selections.
 
@@ -141,4 +151,4 @@ Acceptance: visit and reload with each hero appearance, fight and collect items 
 
 Ship and review one stage at a time. Each destination should be force-selectable through development tooling for review without changing release probabilities. Gameplay checks above are planned acceptance work, not checks already executed. Update release scope after each stage; all five stages need not ship in 1.0.5.
 
-**Next:** Stage 5 — the rare Pixel Dungeon first-floor visit. The implemented stages still need their in-game acceptance checks.
+**Next:** in-game acceptance review across all five rescue stages, especially appearance changes, save/reload, purchases, boss win/loss rollback, torch/scan behaviour and station return.

@@ -50,13 +50,14 @@ public class HeroSprite extends CharSprite {
     private Animation fly;
     private Animation read;
     private boolean itemForm;
+    private boolean restoringHeroForm;
 
     public HeroSprite() {
         super();
 
         link(SpacebaseRun.hero);
 
-        texture(SpacebaseRun.hero.heroClass.spritesheet());
+        texture(PixelDungeonSkins.heroSheet(SpacebaseRun.hero.heroClass));
         updateArmor();
 
         if (HunterSpaceSuit.jetpackEnabled(SpacebaseRun.hero))
@@ -72,13 +73,17 @@ public class HeroSprite extends CharSprite {
         itemForm = false;
         resetSuitScale();
         Hero hero = (Hero) ch;
-        if (hero.belongings.armor instanceof Loader) {
+        if (!PixelDungeonSkins.active() && hero.belongings.armor instanceof Loader) {
             updateLoader(hero.heroClass);
+            applySavedItemForm(hero);
             return;
         }
-        texture(hero.heroClass.spritesheet());
+        texture(PixelDungeonSkins.heroSheet(hero.heroClass));
 
-        TextureFilm film = new TextureFilm(tiers(), ((Hero) ch).tier(), FRAME_WIDTH, FRAME_HEIGHT);
+        TextureFilm tierAtlas = PixelDungeonSkins.active()
+                ? new TextureFilm(texture, texture.logicalWidth(), FRAME_HEIGHT) : tiers();
+        int armorTier = PixelDungeonSkins.active() ? Math.max(0, Math.min(6, hero.tier())) : hero.tier();
+        TextureFilm film = new TextureFilm(tierAtlas, armorTier, FRAME_WIDTH, FRAME_HEIGHT);
 
         idle = new Animation(1, true);
         idle.frames(film, 0, 0, 0, 1, 0, 0, 1, 1);
@@ -103,12 +108,20 @@ public class HeroSprite extends CharSprite {
         read = new Animation(20, false);
         read.frames(film, 19, 20, 20, 20, 20, 20, 20, 20, 20, 19);
         idle();
-        if (hero.belongings.armor instanceof HoverPod) {
+        if (!PixelDungeonSkins.active() && hero.belongings.armor instanceof HoverPod) {
             // Grow around the bottom centre so the pod stays aligned with its map cell.
             origin.set(width * 0.5f, height);
             scale.set(HOVERPOD_SCALE);
         }
+        applySavedItemForm(hero);
         place(ch.pos);
+    }
+
+    private void applySavedItemForm(Hero hero) {
+        if (restoringHeroForm) return;
+        com.wafitz.pixelspacebase.actors.buffs.Shapeshifted shifted = hero.buff(
+                com.wafitz.pixelspacebase.actors.buffs.Shapeshifted.class);
+        if (shifted != null) shifted.fx(true);
     }
 
     private void resetSuitScale() {
@@ -147,11 +160,11 @@ public class HeroSprite extends CharSprite {
         itemForm = true;
         resetSuitScale();
 
-        texture(Assets.ITEMS);
+        texture(PixelDungeonSkins.itemSheet());
         TextureFilm film = new TextureFilm(texture, ItemSprite.SIZE, ItemSprite.SIZE);
 
         idle = new Animation(1, true);
-        idle.frames(film, itemImage);
+        idle.frames(film, PixelDungeonSkins.itemFrame(itemImage));
 
         run = idle.clone();
         die = idle.clone();
@@ -167,8 +180,11 @@ public class HeroSprite extends CharSprite {
 
     public void restoreHeroForm() {
         if (itemForm) {
-            texture(SpacebaseRun.hero.heroClass.spritesheet());
-            updateArmor();
+            texture(PixelDungeonSkins.heroSheet(SpacebaseRun.hero.heroClass));
+            // Buff.detach removes the buff after fx(false); do not reapply it during this update.
+            restoringHeroForm = true;
+            try { updateArmor(); }
+            finally { restoringHeroForm = false; }
             idle();
         }
     }
@@ -239,6 +255,15 @@ public class HeroSprite extends CharSprite {
     }
 
     public static Image avatar(HeroClass cl, int armorTier) {
+
+        if (PixelDungeonSkins.active()) {
+            Image avatar = new Image(PixelDungeonSkins.heroSheet(cl));
+            TextureFilm rows = new TextureFilm(avatar.texture, avatar.texture.logicalWidth(), FRAME_HEIGHT);
+            RectF patch = rows.get(Math.max(0, Math.min(6, armorTier)));
+            RectF frame = avatar.texture.uvRect(1, 0, FRAME_WIDTH, FRAME_HEIGHT);
+            frame.offset(patch.left, patch.top); avatar.frame(frame);
+            return avatar;
+        }
 
         RectF patch = tiers().get(armorTier);
         Image avatar = new Image(cl.spritesheet());

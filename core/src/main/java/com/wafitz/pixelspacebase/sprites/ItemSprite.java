@@ -50,6 +50,7 @@ public class ItemSprite extends MovieClip {
     private static final float DROP_INTERVAL = 0.4f;
 
     protected static TextureFilm film;
+    private static TextureFilm dungeonFilm;
 
     public Heap heap;
 
@@ -189,7 +190,7 @@ public class ItemSprite extends MovieClip {
     public ItemSprite view(int image, Glowing glowing) {
         if (this.emitter != null) this.emitter.killAndErase();
         emitter = null;
-        frame(film.get(image));
+        applyVisitFrame(image);
         if ((this.glowing = glowing) == null) {
             resetColor();
         }
@@ -197,7 +198,17 @@ public class ItemSprite extends MovieClip {
     }
 
     public void frame(int image) {
-        frame(film.get(image));
+        applyVisitFrame(image);
+    }
+
+    private void applyVisitFrame(int image) {
+        texture(PixelDungeonSkins.itemSheet());
+        if (PixelDungeonSkins.active()) {
+            if (dungeonFilm == null) dungeonFilm = new TextureFilm(Assets.PD_ITEMS, SIZE, SIZE);
+            frame(dungeonFilm.get(PixelDungeonSkins.itemFrame(image)));
+        } else {
+            frame(film.get(image));
+        }
     }
 
     @Override

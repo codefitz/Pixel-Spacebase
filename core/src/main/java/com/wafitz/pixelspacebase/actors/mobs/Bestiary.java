@@ -24,6 +24,10 @@ import com.wafitz.pixelspacebase.PixelSpacebase;
 import com.watabou.utils.Random;
 
 public class Bestiary {
+    /** Low-deck actors for the first-floor homage; no rare high-tier selection. */
+    public static Mob rescueDungeonMob(int index) {
+        return index < 4 ? new Xenomorph() : new OuterColonyScout();
+    }
 
     public static Mob mob(int depth) {
         @SuppressWarnings("unchecked")

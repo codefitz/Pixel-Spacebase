@@ -294,6 +294,8 @@ public class InterlevelScene extends PixelScene {
                 && ticket.destination == YRescueJourney.Destination.BOSS;
         boolean toMaze = journeyTravel && ticket.phase == YRescueJourney.Phase.DEPARTING
                 && ticket.destination == YRescueJourney.Destination.DARK_MAZE;
+        boolean toDungeon = journeyTravel && ticket.phase == YRescueJourney.Phase.DEPARTING
+                && ticket.destination == YRescueJourney.Destination.PIXEL_DUNGEON;
 
         if (journeyTravel) ticket.configureTravel();
         if (!journeyTravel || !ticket.transferPrepared) {
@@ -309,15 +311,15 @@ public class InterlevelScene extends PixelScene {
         if (journeyTravel && ticket.arrivalLevel != null) {
             Actor.clear();
             SpacebaseRun.depth = returnDepth;
-            SpacebaseRun.selectRescueLevel(toPlanet || toBoss || toMaze ? ticket.destinationIdentity : "");
+            SpacebaseRun.selectRescueLevel(toPlanet || toBoss || toMaze || toDungeon ? ticket.destinationIdentity : "");
             level = ticket.arrivalLevel;
             landing = ticket.landingPos;
         } else {
             SpacebaseRun.depth = returnDepth;
-            level = toPlanet || toBoss || toMaze ? SpacebaseRun.loadOrCreateRescueLevel(ticket.destinationIdentity)
+            level = toPlanet || toBoss || toMaze || toDungeon ? SpacebaseRun.loadOrCreateRescueLevel(ticket.destinationIdentity)
                     : SpacebaseRun.loadOrCreateLevel(returnDepth);
             if (toBoss) ticket.captureBossBaseline(level);
-            landing = toBoss ? level.rescueBossLandingCell() : toPlanet || toMaze ? level.entrance : rescueScatter ? YRescuer.randomReachableCell(level, -1)
+            landing = toBoss ? level.rescueBossLandingCell() : toPlanet || toMaze || toDungeon ? level.entrance : rescueScatter ? YRescuer.randomReachableCell(level, -1)
                     : returnAtEntrance ? YRescuer.safeReturnCell(level, ticket == null ? -1 : ticket.sourcePos) : returnPos;
             if (landing < 0 && journeyTravel) throw new IOException("No usable Y rescue landing cell");
             if (journeyTravel) {

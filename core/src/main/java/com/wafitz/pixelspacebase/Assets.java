@@ -21,6 +21,10 @@
 package com.wafitz.pixelspacebase;
 
 public class Assets {
+    public static final String PD_ART = "pixel_dungeon/";
+    public static final String PD_TILES = PD_ART + "tiles0.png";
+    public static final String PD_WATER = PD_ART + "water0.png";
+    public static final String PD_ITEMS = PD_ART + "items.png";
 
     public static final String ARCS_BG = "space1.png";
     public static final String ARCS_FG = "space2.png";

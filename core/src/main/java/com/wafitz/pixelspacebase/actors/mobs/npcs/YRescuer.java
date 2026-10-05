@@ -108,6 +108,8 @@ public class YRescuer extends NPC {
         if (needed && !present) {
             int cell = level instanceof com.wafitz.pixelspacebase.levels.AlienPlanetLevel
                     ? ((com.wafitz.pixelspacebase.levels.AlienPlanetLevel) level).rescueCell()
+                    : level instanceof com.wafitz.pixelspacebase.levels.PixelDungeonLevel
+                    ? ((com.wafitz.pixelspacebase.levels.PixelDungeonLevel) level).rescueCell()
                     : randomReachableCell(level, SpacebaseRun.hero.pos);
             if (cell >= 0) {
                 YRescuer y = new YRescuer();
@@ -133,7 +135,8 @@ public class YRescuer extends NPC {
         if (ticket == null || ticket.sourceDepth < 1) return false;
         sprite.turnTo(pos, SpacebaseRun.hero.pos);
         GameScene.show(new WndOptions(Messages.get(Y.class, "name"),
-                Messages.get(Y.class, "rescue_return", ticket.sourceDepth),
+                Messages.get(Y.class, ticket.destination == YRescueJourney.Destination.PIXEL_DUNGEON
+                        ? "dungeon_return" : "rescue_return", ticket.sourceDepth),
                 Messages.get(Y.class, "rescue_ask")) {
             @Override protected void onSelect(int index) {
                 // The saved ticket remains attached until arrival is committed.
