@@ -67,5 +67,10 @@ public class AlienEgg extends Mine {
             return com.wafitz.pixelspacebase.messages.Messages.get(this, "info", desc(), minename());
         }
 
+        @Override
+        public boolean goesInOrdnanceKit() {
+            return false;
+        }
+
     }
 }

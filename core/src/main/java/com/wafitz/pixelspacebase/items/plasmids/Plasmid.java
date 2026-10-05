@@ -137,46 +137,34 @@ public class Plasmid extends Item {
     public ArrayList<String> actions(Hero hero) {
         updateDefaultAction();
         ArrayList<String> actions = super.actions(hero);
-        actions.add(isSealed() ? AC_OPEN : AC_USE);
+        if (isSealed()) actions.add(AC_OPEN);
+        else actions.add(AC_USE);
         return actions;
     }
 
     @Override
     public void execute(final Hero hero, String action) {
-
         if (isSealed() && (action.equals(AC_OPEN) || action.equals(AC_USE))) {
-            openStorage();
-            drink(hero);
+            if (isGrenade()) {
+                identify();
+                GLog.i(Messages.get(Plasmid.class, "revealed", name()));
+            } else {
+                openStorage();
+                use(hero);
+            }
             return;
         }
 
-        super.execute(hero, action);
-
-        if (action.equals(AC_USE)) {
-
-            if (isKnown() && (
-                    this instanceof FireGrenade ||
-                            this instanceof ToxicGrenade ||
-                            this instanceof ParalysisGrenade)) {
-
-                GameScene.show(
-                        new WndOptions(Messages.get(Plasmid.class, "harmful"),
-                                Messages.get(Plasmid.class, "sure_plug"),
-                                Messages.get(Plasmid.class, "yes"), Messages.get(Plasmid.class, "no")) {
-                            @Override
-                            protected void onSelect(int index) {
-                                if (index == 0) {
-                                    drink(hero);
-                                }
-                            }
-                        }
-                );
-
-            } else {
-                drink(hero);
-            }
-
+        if (isGrenade() && action.equals(AC_OPEN)) {
+            action = AC_THROW;
         }
+        super.execute(hero, action);
+        if (action.equals(AC_USE)) use(hero);
+    }
+
+    public boolean isGrenade() {
+        return this instanceof FireGrenade || this instanceof ToxicGrenade
+                || this instanceof ParalysisGrenade || this instanceof CryoGrenade;
     }
 
     public boolean isSealed() {
@@ -184,7 +172,8 @@ public class Plasmid extends Item {
     }
 
     private void updateDefaultAction() {
-        defaultAction = isSealed() ? AC_OPEN : this instanceof FireGrenade ? AC_THROW : AC_USE;
+        defaultAction = isSealed() ? AC_OPEN : isGrenade() ? AC_THROW : AC_USE;
+        usesTargeting = !isSealed() && isGrenade();
     }
 
     @Override
@@ -242,7 +231,7 @@ public class Plasmid extends Item {
         }
     }
 
-    private void drink(Hero hero) {
+    private void use(Hero hero) {
 
         detach(hero.belongings.backpack);
 
@@ -251,7 +240,7 @@ public class Plasmid extends Item {
         hero.busy();
         apply(hero);
 
-        Sample.INSTANCE.play(Assets.SND_DRINK);
+        if (!isGrenade()) Sample.INSTANCE.play(Assets.SND_DRINK);
 
         hero.sprite.operate(hero.pos);
     }
@@ -334,13 +323,15 @@ public class Plasmid extends Item {
     public int image() {
         if (isSealed()) {
             return ItemSpriteSheet.SEALED_STORAGE;
-        } else if (isKnown()) {
+        } else if (isGrenade()) {
             if (this instanceof FireGrenade) {
-                return ItemSpriteSheet.FIRE_GRENADE_GENE_MOD;
+                return ItemSpriteSheet.FIRE_GRENADE;
             } else if (this instanceof ToxicGrenade) {
-                return ItemSpriteSheet.TOXIC_GRENADE_GENE_MOD;
+                return ItemSpriteSheet.TOXIC_GRENADE;
             } else if (this instanceof ParalysisGrenade) {
-                return ItemSpriteSheet.PARALYSIS_GRENADE_GENE_MOD;
+                return ItemSpriteSheet.PARALYSIS_GRENADE;
+            } else if (this instanceof CryoGrenade) {
+                return ItemSpriteSheet.CRYO_GRENADE;
             }
         }
         return super.image();
@@ -371,11 +362,7 @@ public class Plasmid extends Item {
 
     @Override
     public boolean goesInOrdnanceKit() {
-        return !isSealed() && (
-                this instanceof FireGrenade
-                        || this instanceof ToxicGrenade
-                        || this instanceof ParalysisGrenade
-                        || this instanceof CryoGrenade);
+        return !isSealed() && isGrenade();
     }
 
     @Override

@@ -133,7 +133,7 @@ public abstract class Mine implements Bundlable {
 
         {
             stackable = true;
-            defaultAction = AC_THROW;
+            defaultAction = AC_SET;
         }
 
         protected Class<? extends Mine> mineClass;
@@ -143,6 +143,7 @@ public abstract class Mine implements Bundlable {
         @Override
         public ArrayList<String> actions(Hero hero) {
             ArrayList<String> actions = super.actions(hero);
+            actions.remove(AC_THROW);
             actions.add(AC_SET);
             return actions;
         }
@@ -158,6 +159,8 @@ public abstract class Mine implements Bundlable {
 
         @Override
         public void execute(Hero hero, String action) {
+
+            if (action.equals(AC_THROW)) action = AC_SET;
 
             super.execute(hero, action);
 

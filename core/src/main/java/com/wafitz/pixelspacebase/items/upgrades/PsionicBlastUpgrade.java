@@ -27,14 +27,15 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.levels.Level;
+import com.wafitz.pixelspacebase.effects.CellEmitter;
+import com.wafitz.pixelspacebase.effects.particles.BlastParticle;
 import com.wafitz.pixelspacebase.messages.Messages;
-import com.wafitz.pixelspacebase.scenes.GameScene;
+import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
-public class PsionicBlastUpgrade extends Upgrade {
+public class PsionicBlastUpgrade extends GrenadeUpgrade {
 
     {
         initials = 5;
@@ -43,32 +44,43 @@ public class PsionicBlastUpgrade extends Upgrade {
     }
 
     @Override
-    protected void doRead() {
+    protected void detonate(int cell) {
+        boolean[] affectedCells = blastArea(cell);
 
-        GameScene.flash(0xFFFFFF);
+        if (SpacebaseRun.visible[cell]) {
+            CellEmitter.center(cell).burst(BlastParticle.FACTORY, 30);
+        }
 
         Sample.INSTANCE.play(Assets.SND_BLAST);
         Camoflage.dispel();
 
         for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0])) {
-            if (Level.fieldOfView[mob.pos]) {
+            if (affectedCells[mob.pos]) {
                 mob.damage(mob.HT, this);
             }
         }
 
-        curUser.damage(Math.max(curUser.HT / 5, curUser.HP / 2), this);
-        Buff.prolong(curUser, Paralysis.class, Random.Int(4, 6));
-        Buff.prolong(curUser, Blindness.class, Random.Int(6, 9));
+        if (affectedCells[curUser.pos]) {
+            curUser.damage(Math.max(curUser.HT / 5, curUser.HP / 2), this);
+            Buff.prolong(curUser, Paralysis.class, Random.Int(4, 6));
+            Buff.prolong(curUser, Blindness.class, Random.Int(6, 9));
+        }
         SpacebaseRun.observe();
-
-        setKnown();
-
-        curUser.spendAndNext(TIME_TO_READ); //no animation here, the flash interrupts it anyway.
 
         if (!curUser.isAlive()) {
             SpacebaseRun.fail(getClass());
             GLog.n(Messages.get(this, "ondeath"));
         }
+    }
+
+    @Override
+    protected int grenadeImage() {
+        return ItemSpriteSheet.PSIONIC_GRENADE;
+    }
+
+    @Override
+    protected int grenadeColor() {
+        return 0xAA66FF;
     }
 
     @Override

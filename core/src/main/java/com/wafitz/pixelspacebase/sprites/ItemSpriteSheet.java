@@ -230,6 +230,16 @@ public class ItemSpriteSheet {
     public static final int TOXIC_GRENADE_GENE_MOD = PLASMID + 13;
     public static final int PARALYSIS_GRENADE_GENE_MOD = PLASMID + 14;
 
+    // Reuse the existing round grenade silhouettes, with effect-specific glows.
+    public static final int FIRE_GRENADE = FIRE_GRENADE_GENE_MOD;
+    public static final int TOXIC_GRENADE = TOXIC_GRENADE_GENE_MOD;
+    public static final int PARALYSIS_GRENADE = PARALYSIS_GRENADE_GENE_MOD;
+    public static final int CRYO_GRENADE = PARALYSIS_GRENADE_GENE_MOD;
+    public static final int PANIC_GRENADE = FIRE_GRENADE_GENE_MOD;
+    public static final int KNOCKOUT_GRENADE = PARALYSIS_GRENADE_GENE_MOD;
+    public static final int PSIONIC_GRENADE = PARALYSIS_GRENADE_GENE_MOD;
+    public static final int ECHO_GRENADE = TOXIC_GRENADE_GENE_MOD;
+
     private static final int DEVICES = xy(1, 22);  //16 slots
     public static final int HUNTER_TRAPPER = DEVICES;
     public static final int EXPLOSIVE_COMPOUND = DEVICES + 1;
@@ -243,6 +253,7 @@ public class ItemSpriteSheet {
     public static final int FORCEFIELD_TECH = DEVICES + 9;
     public static final int TELEPORT_TECH = DEVICES + 10;
     public static final int DEAD_ALIEN = DEVICES + 11;
+    public static final int HUNTER_MINE_DEVICE = ICE;
 
     //32 free slots
 

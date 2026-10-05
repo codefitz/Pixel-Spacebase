@@ -31,6 +31,7 @@ import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.upgrades.RepairUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.DiagnosticScanUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
+import com.wafitz.pixelspacebase.items.upgrades.GrenadeUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
@@ -113,8 +114,17 @@ public class BuggyCompiler extends EquippableModule {
                                 upgrade instanceof RepairUpgrade ||
                                 upgrade instanceof MappingUpgrade) && Random.Int(2) == 0));
 
-                upgrade.ownedByCompiler = true;
-                upgrade.execute(hero, AC_RUN);
+                if (upgrade instanceof GrenadeUpgrade) {
+                    upgrade.identify();
+                    if (!upgrade.collect(hero.belongings.backpack)) {
+                        SpacebaseRun.level.drop(upgrade, hero.pos).sprite.drop();
+                    }
+                    GLog.i(Messages.get(this, "grenade", upgrade.name()));
+                    hero.spendAndNext(1f);
+                } else {
+                    upgrade.ownedByCompiler = true;
+                    upgrade.execute(hero, AC_RUN);
+                }
             }
 
         } else if (action.equals(AC_ADD)) {

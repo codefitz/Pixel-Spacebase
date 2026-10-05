@@ -5,7 +5,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 ## Mechanics
 
 - [x] Let the Shapeshifter quickslot any throwable item and use the quickslot to throw it.
-- [ ] Convert all ordnance items to grenades or mines rather than consumable-use actions and update sprites.
+- [x] Convert all ordnance items to thrown grenades or planted mines and update sprites. Keep grenade self-use; Black Goo stays in the main inventory.
 - [x] Remove the Plasma Stabiliser and give its plasma-clearing function to the Freeze Blaster.
 - [x] Reduce Flamethrower spread to a single directional line.
 - [ ] Update the custom room and quest for the unstable holo-projector.

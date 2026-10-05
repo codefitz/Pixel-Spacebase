@@ -27,10 +27,12 @@ import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.armor.Armor;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.containers.Container;
+import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
 import com.wafitz.pixelspacebase.items.keys.IronKey;
 import com.wafitz.pixelspacebase.items.keys.Key;
 import com.wafitz.pixelspacebase.items.upgrades.RepairUpgrade;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.mines.AlienEgg;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -92,6 +94,19 @@ public class Belongings implements Iterable<Item> {
 
         backpack.clear();
         backpack.restoreFromBundle(bundle);
+
+        // Older saves stored black goo in ordnance. Preserve the stack even if the pack is full.
+        for (Item item : backpack.items.toArray(new Item[0])) {
+            if (item instanceof OrdnanceKit) {
+                Container kit = (Container) item;
+                for (Item stored : kit.items.toArray(new Item[0])) {
+                    if (stored instanceof AlienEgg.Device) {
+                        kit.items.remove(stored);
+                        backpack.items.add(stored);
+                    }
+                }
+            }
+        }
 
         //removing keys, from pre-0.4.1 saves
         for (Item item : backpack.items.toArray(new Item[0])) {

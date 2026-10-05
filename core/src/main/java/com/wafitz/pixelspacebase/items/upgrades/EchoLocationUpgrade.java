@@ -27,25 +27,27 @@ import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.mobs.ConfusedShapeshifter;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.Heap;
-import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
-public class EchoLocationUpgrade extends Upgrade {
+public class EchoLocationUpgrade extends GrenadeUpgrade {
 
     {
         initials = 6;
     }
 
     @Override
-    protected void doRead() {
+    protected void detonate(int cell) {
+        boolean[] affectedCells = blastArea(cell);
 
         for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0])) {
-            mob.beckon(curUser.pos);
-            if (Level.fieldOfView[mob.pos]) {
+            mob.beckon(cell);
+            if (affectedCells[mob.pos]) {
                 Buff.prolong(mob, Paranoid.class, 5f);
             }
         }
@@ -54,20 +56,29 @@ public class EchoLocationUpgrade extends Upgrade {
             if (heap.type == Heap.Type.CONFUSEDSHAPESHIFTER) {
                 ConfusedShapeshifter m = ConfusedShapeshifter.spawnAt(heap.pos, heap.items);
                 if (m != null) {
-                    m.beckon(curUser.pos);
+                    m.beckon(cell);
                     heap.destroy();
                 }
             }
         }
 
         GLog.w(Messages.get(this, "echo"));
-        setKnown();
 
-        curUser.sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.3f, 3);
+        if (SpacebaseRun.visible[cell]) {
+            CellEmitter.center(cell).burst(Speck.factory(Speck.SCREAM), 3);
+        }
         Sample.INSTANCE.play(Assets.SND_CHALLENGE);
         Camoflage.dispel();
+    }
 
-        readAnimation();
+    @Override
+    protected int grenadeImage() {
+        return ItemSpriteSheet.ECHO_GRENADE;
+    }
+
+    @Override
+    protected int grenadeColor() {
+        return 0x66FFFF;
     }
 
     @Override

@@ -26,29 +26,33 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
-import com.wafitz.pixelspacebase.effects.Flare;
-import com.wafitz.pixelspacebase.levels.Level;
+import com.wafitz.pixelspacebase.effects.CellEmitter;
+import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
-public class PanicUpgrade extends Upgrade {
+public class PanicUpgrade extends GrenadeUpgrade {
 
     {
         initials = 10;
     }
 
     @Override
-    protected void doRead() {
+    protected void detonate(int cell) {
+        boolean[] affectedCells = blastArea(cell);
 
-        new Flare(5, 32).color(0xFF0000, true).show(curUser.sprite, 2f);
+        if (SpacebaseRun.visible[cell]) {
+            CellEmitter.center(cell).burst(Speck.factory(Speck.SCREAM), 5);
+        }
         Sample.INSTANCE.play(Assets.SND_READ);
         Camoflage.dispel();
 
         int count = 0;
         Mob affected = null;
         for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0])) {
-            if (Level.fieldOfView[mob.pos]) {
+            if (affectedCells[mob.pos]) {
                 Buff.affect(mob, Terror.class, Terror.DURATION).object = curUser.id();
 
                 if (mob.buff(Terror.class) != null) {
@@ -68,9 +72,16 @@ public class PanicUpgrade extends Upgrade {
             default:
                 GLog.i(Messages.get(this, "many"));
         }
-        setKnown();
+    }
 
-        readAnimation();
+    @Override
+    protected int grenadeImage() {
+        return ItemSpriteSheet.PANIC_GRENADE;
+    }
+
+    @Override
+    protected int grenadeColor() {
+        return 0xFF6633;
     }
 
     @Override

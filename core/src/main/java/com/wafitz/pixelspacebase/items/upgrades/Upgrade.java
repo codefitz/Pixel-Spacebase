@@ -38,8 +38,8 @@ import java.util.HashSet;
 
 public abstract class Upgrade extends Item {
 
-    private static final String AC_OPEN = "OPEN";
-    private static final String AC_RUN = "RUN";
+    protected static final String AC_OPEN = "OPEN";
+    protected static final String AC_RUN = "RUN";
 
     static final float TIME_TO_READ = 1f;
     private static final String SEALED = "sealed";
@@ -182,7 +182,7 @@ public abstract class Upgrade extends Item {
         return sealed && !isKnown();
     }
 
-    private void updateDefaultAction() {
+    protected void updateDefaultAction() {
         defaultAction = isSealed() ? AC_OPEN : AC_RUN;
     }
 
@@ -288,11 +288,7 @@ public abstract class Upgrade extends Item {
 
     @Override
     public boolean goesInOrdnanceKit() {
-        return !isSealed() && (
-                this instanceof PsionicBlastUpgrade
-                        || this instanceof KnockoutUpgrade
-                        || this instanceof PanicUpgrade
-                        || this instanceof EchoLocationUpgrade);
+        return !isSealed() && this instanceof GrenadeUpgrade;
     }
 
     @Override

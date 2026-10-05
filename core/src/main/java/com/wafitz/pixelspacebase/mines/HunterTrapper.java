@@ -37,7 +37,7 @@ public class HunterTrapper extends Mine {
 
     public static class Device extends Mine.Device {
         {
-            image = ItemSpriteSheet.HUNTER_TRAPPER;
+            image = ItemSpriteSheet.HUNTER_MINE_DEVICE;
 
             mineClass = HunterTrapper.class;
             craftingClass = MyoFiberPlasmid.class;
