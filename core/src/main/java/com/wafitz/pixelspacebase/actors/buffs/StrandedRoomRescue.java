@@ -14,6 +14,20 @@ public class StrandedRoomRescue extends Buff {
     private int turns = 0;
     private int roomDepth = -1;
 
+    /** Called once when the hero spends time on an action, regardless of its duration. */
+    public void recordHeroTurn() {
+        if (target == SpacebaseRun.hero
+                && SpacebaseRun.level != null
+                && SpacebaseRun.depth == roomDepth
+                && SpacebaseRun.level.isDoorlessRoomCell(target.pos)) {
+            turns++;
+            if (turns == 20) {
+                // Let the actor loop dispatch the rescue after this action, even for fast actions.
+                spend(-cooldown());
+            }
+        }
+    }
+
     @Override
     public boolean attachTo(com.wafitz.pixelspacebase.actors.Char target) {
         boolean attached = super.attachTo(target);
@@ -31,7 +45,7 @@ public class StrandedRoomRescue extends Buff {
             return true;
         }
 
-        if (++turns >= 20) {
+        if (turns >= 20) {
             detach();
             Y.rescueStrandedHero();
         } else {

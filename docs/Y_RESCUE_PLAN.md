@@ -149,6 +149,16 @@ Acceptance: visit and reload with each hero appearance, fight and collect items 
 
 ## Delivery boundaries
 
+### Skipped campaign boss decks (5 October 2026)
+
+- Device save inspection found floor 5 with no boss and an unlocked exit, despite no first-boss victory in the current run. Rescue travel's file-existence check could reuse decks from an abandoned earlier run.
+- New games clear deck files for their own hero slot. Newly saved decks and committed boss detours include the run seed; gap travel and boss-detour selection reject decks belonging to another run.
+- Legacy completed boss decks at floors 5–20 are accepted only with their corresponding local victory badge. An empty legacy floor-5 arena without that badge is regenerated on the next visit. Legacy final-boss victories are preserved because that encounter has no equivalent local boss badge. Legacy ordinary decks and unfinished arenas retain their existing state.
+- Entering an unfinished boss deck from a later floor uses its normal entrance, with a safe arena landing if the entrance is sealed. Completed decks still use their exit for upward travel.
+- `:core:assembleDebug` passed. Device saves were read without modification; no tests or in-game recovery/travel checks were run.
+- Follow-up ownership audit added the same seed validation to direct reloads, including side-deck files. New runs persist `allowLegacyDecks=false` and reject unmarked files even if old-file cleanup failed. Existing older games persist compatibility mode so their unmarked explored decks remain loadable; ownership of those legacy files cannot be proven retroactively.
+- Four focused `DeckOwnershipTest` cases passed, covering same-run revisits, other-run rejection in both modes, strict rejection of unmarked files, and legacy compatibility. The APK also built successfully. This verifies the ownership policy, not an in-game loot/reload session. Missing items on previously explored reused decks remain a plausible consequence; already contaminated legacy ordinary decks are not automatically reset.
+
 ### Rescue travel crash correction (5 October 2026)
 
 - The connected device reported a crash after closing Y's rescue dialogue. The destination checkpoint serialized `YRescueJourney.arrivalLevel`, and `Blob.storeInBundle()` dereferenced the active level while travel had cleared it.
@@ -156,6 +166,8 @@ Acceptance: visit and reload with each hero appearance, fight and collect items 
 - `:core:assembleDebug` passed. No tests or in-game rescue/reload checks were run for this correction; recovery of the interrupted journey remains unverified.
 - A second device crash occurred during destination scene creation: `Tilemap` could not find frame zero. `TextureCache` was applying the station's four-pixels-per-unit scale to the native 32×32 alien terrain atlas, reducing its logical dimensions below a single 16×16 tile. Native alien terrain, the colonist sprite and original `pixel_dungeon/` art now retain scale one. The existing enlarged Security arena artwork retains scale four.
 - The APK containing both corrections built successfully with `:core:assembleDebug`. The second correction has not been checked in game.
+- The player subsequently confirmed that the rescue crashes are resolved.
+- Stranded-room timing now counts positive-time hero actions rather than periodic world ticks, preventing an immediate landing count and multiple counts for slow actions. The saved `turns` field is retained. In-game timing confirmation remains pending.
 
 Ship and review one stage at a time. Each destination should be force-selectable through development tooling for review without changing release probabilities. Gameplay checks above are planned acceptance work, not checks already executed. Update release scope after each stage; all five stages need not ship in 1.0.5.
 

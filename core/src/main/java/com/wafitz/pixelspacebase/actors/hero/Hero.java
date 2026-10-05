@@ -503,6 +503,11 @@ public class Hero extends Char {
     public void spend(float time) {
         boolean preserveShapeshift = preserveShapeshiftForNextSpend;
         preserveShapeshiftForNextSpend = false;
+        if (time > 0) {
+            com.wafitz.pixelspacebase.actors.buffs.StrandedRoomRescue rescue = buff(
+                    com.wafitz.pixelspacebase.actors.buffs.StrandedRoomRescue.class);
+            if (rescue != null) rescue.recordHeroTurn();
+        }
         TimeFolder.timeFreeze buff = buff(TimeFolder.timeFreeze.class);
         if (!(buff != null && buff.processTime(time))) {
             super.spend(time);

@@ -156,6 +156,7 @@ public class SpacebaseRun {
     public static int version;
 
     public static long seed;
+    private static boolean allowLegacyDecks;
 
     public static void init() {
 
@@ -165,6 +166,7 @@ public class SpacebaseRun {
         challenges = PixelSpacebase.challenges();
 
         seed = SpacebaseSeed.randomSeed();
+        allowLegacyDecks = false;
 
         Actor.clear();
         Actor.resetNextID();
@@ -213,6 +215,8 @@ public class SpacebaseRun {
         Badges.reset();
 
         StartScene.curClass.initHero(hero);
+        // A new run must not inherit decks left behind by an abandoned game.
+        deleteGame(hero.heroClass, true);
 
     }
 
@@ -322,10 +326,10 @@ public class SpacebaseRun {
         for (int candidate : new int[]{5, 10, 15, 20, 25}) {
             if (candidate <= origin) continue;
             if (candidate == 20 && Y.Quest.isHolodeckPoweredDown()) continue;
-            String file = Messages.format(depthFile(hero.heroClass), candidate);
-            if (!Game.instance.getFileStreamPath(file).exists()) return candidate;
-            try (InputStream input = Game.instance.openFileInput(file)) {
-                Bundle arena = Bundle.read(input).getBundle(LEVEL);
+            try {
+                Bundle saved = readCampaignDeck(candidate);
+                if (saved == null) return candidate;
+                Bundle arena = saved.getBundle(LEVEL);
                 if (arena.getBoolean("rescueBossDefeated") || arena.getBoolean("droppped")) continue;
                 if (candidate == 10) {
                     String state = arena.getString("state");
@@ -356,6 +360,7 @@ public class SpacebaseRun {
     public static void saveRescueBossArena(int bossDepth, Level arena) throws IOException {
         if (!bossLevel(bossDepth)) throw new IOException("Invalid boss arena");
         Bundle saved = new Bundle(); saved.put(LEVEL, arena);
+        saved.put(SEED, seed);
         writeBundleAtomically(Messages.format(depthFile(hero.heroClass), bossDepth), saved);
     }
 
@@ -368,13 +373,11 @@ public class SpacebaseRun {
         if (identity.startsWith("boss_")) {
             Actor.clear();
             level = null;
-            String file = Messages.format(depthFile(hero.heroClass), depth);
-            if (Game.instance.getFileStreamPath(file).exists()) {
-                try (InputStream input = Game.instance.openFileInput(file)) {
-                    Level arena = (Level) Bundle.read(input).get(LEVEL);
-                    resetVisibilityForLevel(arena);
-                    return arena;
-                }
+            Bundle saved = readCampaignDeck(depth);
+            if (saved != null) {
+                Level arena = (Level) saved.get(LEVEL);
+                resetVisibilityForLevel(arena);
+                return arena;
             }
             Level arena;
             switch (depth) {
@@ -671,6 +674,7 @@ public class SpacebaseRun {
             version = Game.versionCode;
             bundle.put(VERSION, version);
             bundle.put(SEED, seed);
+            bundle.put("allowLegacyDecks", allowLegacyDecks);
             bundle.put(CHALLENGES, challenges);
             bundle.put(HERO, hero);
             bundle.put(PARTS, parts);
@@ -742,6 +746,7 @@ public class SpacebaseRun {
     private static void saveLevel() throws IOException {
         Bundle bundle = new Bundle();
         bundle.put(LEVEL, level);
+        bundle.put(SEED, seed);
 
         writeBundleAtomically(currentLevelFile(hero.heroClass), bundle);
     }
@@ -778,6 +783,8 @@ public class SpacebaseRun {
         version = bundle.getInt(VERSION);
 
         seed = bundle.contains(SEED) ? bundle.getLong(SEED) : SpacebaseSeed.randomSeed();
+        // Only games predating run ownership may load unmarked deck files.
+        allowLegacyDecks = !bundle.contains("allowLegacyDecks") || bundle.getBoolean("allowLegacyDecks");
 
         Generator.reset();
 
@@ -898,6 +905,10 @@ public class SpacebaseRun {
         Bundle bundle = Bundle.read(input);
         input.close();
 
+        if (!deckBelongsToRun(bundle, seed, allowLegacyDecks)) {
+            throw new IOException("Saved deck belongs to another run: " + currentLevelFile(cl));
+        }
+
         Level level = (Level) bundle.get("level");
         resetVisibilityForLevel(level);
         return level;
@@ -908,10 +919,55 @@ public class SpacebaseRun {
         rescueLevelIdentity = "";
         restoredRescueLevel = null;
         depth = targetDepth;
-        if (Game.instance.getFileStreamPath(Messages.format(depthFile(hero.heroClass), depth)).exists()) {
-            return loadLevel(hero.heroClass);
+        Bundle saved = readCampaignDeck(targetDepth);
+        if (saved != null) {
+            level = null;
+            Actor.clear();
+            Level restored = (Level) saved.get(LEVEL);
+            resetVisibilityForLevel(restored);
+            return restored;
         }
         return newLevel(targetDepth);
+    }
+
+    /** Validate ownership before reusing a deck across gaps created by rescue travel. */
+    private static Bundle readCampaignDeck(int targetDepth) throws IOException {
+        String file = Messages.format(depthFile(hero.heroClass), targetDepth);
+        if (!Game.instance.getFileStreamPath(file).exists()) return null;
+        Bundle saved;
+        try (InputStream input = Game.instance.openFileInput(file)) {
+            saved = Bundle.read(input);
+        }
+        if (!deckBelongsToRun(saved, seed, allowLegacyDecks)) return null;
+        if (saved.contains(SEED)) return saved;
+
+        // Older saves have no run marker. Completed boss decks require evidence
+        // of victory in this run, rather than account-wide unlocked badges.
+        if (bossLevel(targetDepth)) {
+            Bundle arena = saved.getBundle(LEVEL);
+            boolean completed = arena.getBoolean("rescueBossDefeated")
+                    || arena.getBoolean("droppped") || "WON".equals(arena.getString("state"));
+            if (targetDepth == 5) {
+                boolean bossPresent = false;
+                for (Bundle mob : arena.getBundleArray("mobs")) {
+                    String type = mob.getString("__className");
+                    if (type != null && (type.endsWith(".XenoQueen") || type.endsWith(".FeralShapeshifter"))) bossPresent = true;
+                }
+                completed |= !bossPresent;
+            }
+            Badges.Badge victory = targetDepth == 5 ? Badges.Badge.BOSS_SLAIN_1
+                    : targetDepth == 10 ? Badges.Badge.BOSS_SLAIN_2
+                    : targetDepth == 15 ? Badges.Badge.BOSS_SLAIN_3
+                    : targetDepth == 20 ? Badges.Badge.BOSS_SLAIN_4 : Badges.Badge.VICTORY;
+            // The final boss has no local boss badge; preserve legacy victories there.
+            if (completed && targetDepth < 25 && !Badges.earnedInCurrentRun(victory)) return null;
+            if (completed) arena.put("rescueBossDefeated", true);
+        }
+        return saved;
+    }
+
+    static boolean deckBelongsToRun(Bundle saved, long runSeed, boolean acceptLegacy) {
+        return saved.contains(SEED) ? saved.getLong(SEED) == runSeed : acceptLegacy;
     }
 
     public static void deleteGame(HeroClass cl, boolean deleteLevels) {

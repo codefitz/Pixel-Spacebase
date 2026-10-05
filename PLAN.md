@@ -31,11 +31,11 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 
 ## Issues
 
-- [ ] Y doesn't quite trigger on 20 skips/turns.
-- [ ] Boss level needs to be still active in initial state if the hero is beamed to a later level by Y, unless it's already been defeated. So if the hero is taking to level 6, and decided to go down to level 5 (boss) he will immediately trigger the boss as he would if he had gone from level 4 to 5. Once the boss is defeated, then the level is a normal explored level.
-- [ ] Items aren't appearing normally on level 6 and above.
+- [x] Count 20 hero actions in the stranded chamber before Y rescues; corrected world-tick counting and immediate landing tick. In-game confirmation pending.
+- [x] Keep skipped boss decks ready after Y rescues to later floors. Deck saves now identify their run, new games clear their own old decks, and travel from below enters unfinished arenas through their normal approach. Legacy completed decks at floors 5–20 require a victory badge from the current run. In-game confirmation pending.
+- [x] Items aren't appearing normally on level 6 and above. Reused explored decks from earlier games are a suspected cause. New runs now reject other-run and unmarked deck files; four save-ownership checks passed. Confirm loot in game; older unmarked ordinary decks are retained to preserve progress.
 - [ ] Escape pod (old amulet ending) has NO TEXT FOUND (screenshot)
-- [ ] Quantum chest still duplicates items
+- [x] Quantum chest duplication resolved; confirmed by the player.
 - [ ] The shadow now is too small - it shows the outlines inside the rooms and base (screenshot)
 - [ ] The life bar should not show a calculation - just a HP number
 - [ ] On boss level 5 - eggs are spawning outside of the rooms and corridors (screenshot)

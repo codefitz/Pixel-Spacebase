@@ -269,7 +269,11 @@ public class InterlevelScene extends PixelScene {
         SpacebaseRun.depth = SpacebaseRun.previousDepth(SpacebaseRun.depth);
         Level level = SpacebaseRun.loadOrCreateLevel(SpacebaseRun.depth);
         Workshop.deliverStorageTo(level);
-        SpacebaseRun.switchLevel(level, level.exit);
+        // A skipped boss deck may not even have an exit until its encounter ends.
+        // Enter undefeated arenas through their normal approach from either direction.
+        int landing = SpacebaseRun.bossLevel() && !level.rescueBossDefeated
+                ? level.entrance > 0 ? level.entrance : level.rescueBossLandingCell() : level.exit;
+        SpacebaseRun.switchLevel(level, landing);
     }
 
     private boolean returnFromSideLevel() throws IOException {
