@@ -20,21 +20,25 @@
  */
 package com.wafitz.pixelspacebase.items.weapon.melee;
 
+import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
-public class Spade extends MeleeWeapon {
+public class RepulsorBaton extends MeleeWeapon {
 
     {
-        image = ItemSpriteSheet.SPADE;
+        image = ItemSpriteSheet.REPULSOR_BATON;
 
-        tier = 3;
-        ACC = 1.2f; //20% boost to accuracy
+        tier = 2;
     }
 
     @Override
     public int max(int lvl) {
-        return 4 * (tier + 1) +    //16 base, down from 20
+        return 4 * (tier + 1) +    //12 base, down from 15
                 lvl * (tier + 1);   //scaling unchanged
     }
 
+    @Override
+    public int defenseFactor(Hero hero) {
+        return 2;    //2 extra defence
+    }
 }

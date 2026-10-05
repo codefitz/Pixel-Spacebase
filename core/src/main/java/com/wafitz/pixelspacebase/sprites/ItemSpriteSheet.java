@@ -89,12 +89,12 @@ public class ItemSpriteSheet {
     public static final int WRENCH = WEP_TIER2;
     public static final int PICK_AXE = WEP_TIER2 + 1;
     public static final int SPEAR = WEP_TIER2 + 2;
-    public static final int DRILL = WEP_TIER2 + 3;
+    public static final int REPULSOR_BATON = WEP_TIER2 + 3;
     public static final int DIRK = WEP_TIER2 + 4;
 
     private static final int WEP_TIER3 = xy(1, 8);   //8 slots
     public static final int LAZER_SWORD = WEP_TIER3;
-    public static final int SPADE = WEP_TIER3 + 1;
+    public static final int PHASE_CUTTER = WEP_TIER3 + 1;
     public static final int HOLO_SCIMITAR = WEP_TIER3 + 2;
     public static final int ULTON_SHIELD = WEP_TIER3 + 3;
     public static final int SAI = WEP_TIER3 + 4;

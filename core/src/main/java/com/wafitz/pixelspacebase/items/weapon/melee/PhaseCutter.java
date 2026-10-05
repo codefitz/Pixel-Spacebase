@@ -20,25 +20,21 @@
  */
 package com.wafitz.pixelspacebase.items.weapon.melee;
 
-import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 
-public class Drill extends MeleeWeapon {
+public class PhaseCutter extends MeleeWeapon {
 
     {
-        image = ItemSpriteSheet.DRILL;
+        image = ItemSpriteSheet.PHASE_CUTTER;
 
-        tier = 2;
+        tier = 3;
+        ACC = 1.2f; //20% boost to accuracy
     }
 
     @Override
     public int max(int lvl) {
-        return 4 * (tier + 1) +    //12 base, down from 15
+        return 4 * (tier + 1) +    //16 base, down from 20
                 lvl * (tier + 1);   //scaling unchanged
     }
 
-    @Override
-    public int defenseFactor(Hero hero) {
-        return 2;    //2 extra defence
-    }
 }

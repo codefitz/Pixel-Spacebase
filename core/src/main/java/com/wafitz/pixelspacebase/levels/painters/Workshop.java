@@ -63,7 +63,7 @@ import com.wafitz.pixelspacebase.items.weapon.melee.HoloAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.LazerSword;
 import com.wafitz.pixelspacebase.items.weapon.melee.MCPickAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
-import com.wafitz.pixelspacebase.items.weapon.melee.Spade;
+import com.wafitz.pixelspacebase.items.weapon.melee.PhaseCutter;
 import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
 import com.wafitz.pixelspacebase.items.weapon.missiles.CurareDart;
 import com.wafitz.pixelspacebase.items.weapon.missiles.HunterJavelin;
@@ -510,7 +510,7 @@ public class Workshop extends Painter {
                         new CurareDart().quantity(Random.NormalIntRange(1, 3)));
                 break;
             case 2:
-                itemsToSpawn.add(scaleZoneItem(Random.Int(2) == 0 ? new LazerSword().identify() : new Spade().identify()));
+                itemsToSpawn.add(scaleZoneItem(Random.Int(2) == 0 ? new LazerSword().identify() : new PhaseCutter().identify()));
                 itemsToSpawn.add(Random.Int(2) == 0 ?
                         new CurareDart().quantity(Random.NormalIntRange(2, 5)) :
                         new Shuriken().quantity(Random.NormalIntRange(3, 6)));

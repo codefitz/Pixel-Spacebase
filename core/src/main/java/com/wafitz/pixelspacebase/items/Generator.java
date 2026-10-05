@@ -106,7 +106,7 @@ import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dagger;
 import com.wafitz.pixelspacebase.items.weapon.melee.DarkSaber;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dirk;
-import com.wafitz.pixelspacebase.items.weapon.melee.Drill;
+import com.wafitz.pixelspacebase.items.weapon.melee.RepulsorBaton;
 import com.wafitz.pixelspacebase.items.weapon.melee.DualBlade;
 import com.wafitz.pixelspacebase.items.weapon.melee.Flail;
 import com.wafitz.pixelspacebase.items.weapon.melee.RaiderBlade;
@@ -119,7 +119,7 @@ import com.wafitz.pixelspacebase.items.weapon.melee.LazerWhip;
 import com.wafitz.pixelspacebase.items.weapon.melee.MCPickAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.OrbMelder;
 import com.wafitz.pixelspacebase.items.weapon.melee.Sai;
-import com.wafitz.pixelspacebase.items.weapon.melee.Spade;
+import com.wafitz.pixelspacebase.items.weapon.melee.PhaseCutter;
 import com.wafitz.pixelspacebase.items.weapon.melee.Spanner;
 import com.wafitz.pixelspacebase.items.weapon.melee.Spear;
 import com.wafitz.pixelspacebase.items.weapon.melee.UltonAxe;
@@ -278,7 +278,7 @@ public class Generator {
                 Wrench.class,
                 MCPickAxe.class,
                 Spear.class,
-                Drill.class,
+                RepulsorBaton.class,
                 Dirk.class,
                 IncendiaryDart.class
         };
@@ -286,7 +286,7 @@ public class Generator {
 
         Category.WEP_T3.classes = new Class<?>[]{
                 LazerSword.class,
-                Spade.class,
+                PhaseCutter.class,
                 HoloScimitar.class,
                 UltonShield.class,
                 Sai.class,
