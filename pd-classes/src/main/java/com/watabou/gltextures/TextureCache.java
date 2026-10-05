@@ -121,7 +121,11 @@ public class TextureCache {
 			if (src instanceof String && ((String) src).endsWith(".png")
 					&& !((String) src).endsWith("pixel_font.png")
 					&& !((String) src).endsWith("font1x.png")
-					&& !((String) src).endsWith("font2x.png")) {
+					&& !((String) src).endsWith("font2x.png")
+					// Rescue artwork uses native pixels, unlike the enlarged station sheets.
+					&& !((String) src).startsWith("pixel_dungeon/")
+					&& !src.equals("alien_planet_tiles.png")
+					&& !src.equals("alien_colonist.png")) {
 				tx.pixelScale = 4;
 			}
 			all.put( src, tx );

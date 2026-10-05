@@ -154,6 +154,8 @@ Acceptance: visit and reload with each hero appearance, fight and collect items 
 - The connected device reported a crash after closing Y's rescue dialogue. The destination checkpoint serialized `YRescueJourney.arrivalLevel`, and `Blob.storeInBundle()` dereferenced the active level while travel had cleared it.
 - Environmental effects now serialize using their own cell-array length. This also handles saved destination levels whose dimensions differ from the active level, without changing the save format. Empty effect arrays are omitted safely.
 - `:core:assembleDebug` passed. No tests or in-game rescue/reload checks were run for this correction; recovery of the interrupted journey remains unverified.
+- A second device crash occurred during destination scene creation: `Tilemap` could not find frame zero. `TextureCache` was applying the station's four-pixels-per-unit scale to the native 32×32 alien terrain atlas, reducing its logical dimensions below a single 16×16 tile. Native alien terrain, the colonist sprite and original `pixel_dungeon/` art now retain scale one. The existing enlarged Security arena artwork retains scale four.
+- The APK containing both corrections built successfully with `:core:assembleDebug`. The second correction has not been checked in game.
 
 Ship and review one stage at a time. Each destination should be force-selectable through development tooling for review without changing release probabilities. Gameplay checks above are planned acceptance work, not checks already executed. Update release scope after each stage; all five stages need not ship in 1.0.5.
 
