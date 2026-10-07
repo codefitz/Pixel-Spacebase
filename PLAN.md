@@ -11,7 +11,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [ ] Update the custom room and quest for the unstable holo-projector.
 - [x] Shapeshifter quickslots retain special-item activation and equipment actions instead of forcing throws. Dynamic cache actions refresh first; ordinary weapons and blasters remain throwable. In-game confirmation pending.
 - [x] Opening an unknown cache applies its effect to the hero immediately, including both grenade families. Consume one item and the normal use time; remaining revealed grenades sort into ordnance. In-game confirmation pending.
-- [ ] We need a water mechanic for the command levels - in case the hero gets acid attacked
+- [x] Add reusable emergency decontamination stations near the entrance of Command decks, including restored saves. A one-turn rinse removes acid and fire and leaves water on ordinary floors. Medigel now offers separate HEAL and EXTINGUISH actions; extinguishing spends one charge without healing. In-game confirmation pending.
 
 ## Rooms and Narrative
 

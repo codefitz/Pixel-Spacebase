@@ -98,7 +98,8 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Parts | Currency/material used in workshops and Maker-Bot/recycling flows. |
 | Keys | Floor/depth access control for locked doors, chests, and boss exits. Security Block floors also place a reusable max-security override keycard in the entrance room; it opens normal locked detention doors on that floor without being consumed. |
 | Medigel Droplet | Small healing resource from station emergency systems. Can fill a medigel container. |
-| Medigel Container | Rare equipable storage for medigel droplets. Only one can be equipped at a time; a full container has stronger restorative/stabilizing utility and can explode if combined with a battery on the floor. |
+| Medigel Container | Rare equipable storage for medigel droplets. HEAL consumes all stored gel for its existing healing effect. EXTINGUISH uses one charge to remove burning and fire beneath the hero, without healing; it spends nothing when the hero is not burning. Only one container can be equipped at a time; a full container has stronger restorative/stabilizing utility and can explode if combined with a battery on the floor. |
+| Emergency decontamination station | Reusable blue safety fixture placed near the entrance on Command decks, including restored saves. Use from an adjacent cell to wash off acid and burning in one turn. Ordinary flooring under the hero becomes safe rinse water, distinguished from Command plasma in appearance, inspection and saved state. Doors, stairs and vents remain intact. Stations do not heal or refill medigel. |
 | Escape Pod Override | Command override needed to access sealed evacuation systems. It can launch the final pod immediately, or justify returning to reopen sealed rescue cradles for survivors. |
 
 ## Notable Blasters

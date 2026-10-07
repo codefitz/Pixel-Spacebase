@@ -1,5 +1,7 @@
 package com.wafitz.pixelspacebase.ui;
 
+import com.wafitz.pixelspacebase.Assets;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -77,10 +79,12 @@ public class WaterLayer extends Group {
                 }
 
                 int start = column;
+                boolean rinse = SpacebaseRun.level.isRinseWaterCell(cell);
                 do {
                     waterCells[row * mapWidth + column] = true;
                     column++;
-                } while (column < mapWidth && isRenderableWater(row * mapWidth + column));
+                } while (column < mapWidth && isRenderableWater(row * mapWidth + column)
+                        && SpacebaseRun.level.isRinseWaterCell(row * mapWidth + column) == rinse);
 
                 float x = start * SpacebaseTilemap.SIZE;
                 float y = row * SpacebaseTilemap.SIZE;
@@ -93,7 +97,8 @@ public class WaterLayer extends Group {
                 base.y = y;
                 add(base);
 
-                WaterStrip strip = new WaterStrip(width, SpacebaseTilemap.SIZE, texture);
+                WaterStrip strip = new WaterStrip(width, SpacebaseTilemap.SIZE,
+                        rinse ? Assets.WATER_HABITATION_RING : texture);
                 strip.x = x;
                 strip.y = y;
                 strip.offsetTo(x, y + scrollY);

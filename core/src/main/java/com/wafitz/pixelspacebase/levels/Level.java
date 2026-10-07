@@ -156,6 +156,7 @@ public abstract class Level implements Bundlable {
     public SparseArray<Mine> mines;
     public SparseArray<Vent> vents;
     public HashSet<CustomTileVisual> customTiles;
+    private final HashSet<Integer> rinseWaterCells = new HashSet<>();
 
     ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
@@ -190,6 +191,8 @@ public abstract class Level implements Bundlable {
     private int doorlessRoomRadius = 1;
 
     public void create() {
+
+        rinseWaterCells.clear();
 
         Random.seed(SpacebaseRun.seedCurDepth());
 
@@ -310,6 +313,8 @@ public abstract class Level implements Bundlable {
         createItems();
         createDoorlessRoomReward();
 
+        com.wafitz.pixelspacebase.actors.mobs.npcs.DecontaminationStation.install(this);
+
         Random.seed();
     }
 
@@ -358,6 +363,12 @@ public abstract class Level implements Bundlable {
         customTiles = new HashSet<>();
 
         map = bundle.getIntArray(MAP);
+        rinseWaterCells.clear();
+        if (bundle.contains("rinseWaterCells")) {
+            for (int cell : bundle.getIntArray("rinseWaterCells")) {
+                if (cell >= 0 && cell < length() && map[cell] == Terrain.WATER) rinseWaterCells.add(cell);
+            }
+        }
 
         visited = bundle.getBooleanArray(VISITED);
         mapped = bundle.getBooleanArray(MAPPED);
@@ -455,6 +466,7 @@ public abstract class Level implements Bundlable {
         buildFlagMaps();
         Plasma.seed(this);
         cleanWalls();
+        com.wafitz.pixelspacebase.actors.mobs.npcs.DecontaminationStation.install(this);
     }
 
     @Override
@@ -463,6 +475,10 @@ public abstract class Level implements Bundlable {
         bundle.put("width", width);
         bundle.put("height", height);
         bundle.put(MAP, map);
+        int[] rinseCells = new int[rinseWaterCells.size()];
+        int rinseIndex = 0;
+        for (int cell : rinseWaterCells) rinseCells[rinseIndex++] = cell;
+        bundle.put("rinseWaterCells", rinseCells);
         bundle.put(VISITED, visited);
         bundle.put(MAPPED, mapped);
         bundle.put(VACUUM, vacuum);
@@ -737,7 +753,19 @@ public abstract class Level implements Bundlable {
     public boolean isPlasmaCell(int cell) {
         return insideMap(cell)
                 && (this instanceof DeepContainmentDeckLevel || this instanceof DeepContainmentCoreLevel)
-                && map[cell] == Terrain.WATER;
+                && map[cell] == Terrain.WATER && !rinseWaterCells.contains(cell);
+    }
+
+    public boolean isRinseWaterCell(int cell) {
+        return insideMap(cell) && map[cell] == Terrain.WATER && rinseWaterCells.contains(cell);
+    }
+
+    public void makeRinsePuddle(int cell) {
+        if (!insideMap(cell)) return;
+        rinseWaterCells.add(cell);
+        set(cell, Terrain.WATER);
+        Plasma plasma = (Plasma) blobs.get(Plasma.class);
+        if (plasma != null) plasma.clear(cell);
     }
 
     /** Stabilises one Command plasma cell into weak, traversable, scorched plating. */
@@ -1040,6 +1068,7 @@ public abstract class Level implements Bundlable {
     }
 
     public static void set(int cell, int terrain) {
+        if (terrain != Terrain.WATER) SpacebaseRun.level.rinseWaterCells.remove(cell);
         Painter.set(SpacebaseRun.level, cell, terrain);
 
         if (SpacebaseRun.level.vents != null

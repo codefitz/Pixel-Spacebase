@@ -25,6 +25,7 @@ import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
+import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.ui.CustomTileVisual;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
@@ -80,8 +81,13 @@ public class WndInfoCell extends Window {
             } else {*/
                 titlebar.icon(SpacebaseTilemap.tile(cell, tile));
             //}
-            titlebar.label(SpacebaseRun.level.tileName(tile));
-            desc += SpacebaseRun.level.tileDesc(tile);
+            if (SpacebaseRun.level.isRinseWaterCell(cell)) {
+                titlebar.label(Messages.get(Level.class, "rinse_water_name"));
+                desc += Messages.get(Level.class, "rinse_water_desc");
+            } else {
+                titlebar.label(SpacebaseRun.level.tileName(tile));
+                desc += SpacebaseRun.level.tileDesc(tile);
+            }
 
         }
         titlebar.setRect(0, 0, WIDTH, 0);
