@@ -74,9 +74,10 @@ public class MedigelContainer extends KindofMisc {
 
     @Override
     public ArrayList<String> actions(Hero hero) {
+        defaultAction = hero.heroClass == HeroClass.DM3000 ? AC_EXTINGUISH : AC_DRINK;
         ArrayList<String> actions = super.actions(hero);
         if (volume > 0) {
-            actions.add(AC_DRINK);
+            if (hero.heroClass != HeroClass.DM3000) actions.add(AC_DRINK);
             actions.add(AC_EXTINGUISH);
         }
         return actions;
@@ -94,8 +95,18 @@ public class MedigelContainer extends KindofMisc {
     }
 
     @Override
+    public void execute(Hero hero) {
+        if (hero.heroClass == HeroClass.DM3000) execute(hero, AC_EXTINGUISH);
+        else super.execute(hero);
+    }
+
+    @Override
     public void execute(final Hero hero, String action) {
 
+        if (AC_DRINK.equals(action) && hero.heroClass == HeroClass.DM3000) {
+            GLog.w(Messages.get(this, "cannot_heal_dm3000"));
+            return;
+        }
         super.execute(hero, action);
 
         if (action.equals(AC_EXTINGUISH)) {
@@ -198,6 +209,12 @@ public class MedigelContainer extends KindofMisc {
     @Override
     public String status() {
         return Messages.format(TXT_STATUS, volume, MAX_VOLUME);
+    }
+
+    @Override
+    public String desc() {
+        return SpacebaseRun.hero != null && SpacebaseRun.hero.heroClass == HeroClass.DM3000
+                ? Messages.get(this, "dm3000_desc") : super.desc();
     }
 
 }

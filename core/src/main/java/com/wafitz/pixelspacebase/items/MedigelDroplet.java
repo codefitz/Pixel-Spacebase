@@ -23,6 +23,7 @@ package com.wafitz.pixelspacebase.items;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -44,7 +45,13 @@ public class MedigelDroplet extends Item {
 
         MedigelContainer vial = hero.belongings.getItem(MedigelContainer.class);
 
-        if (hero.HP < hero.HT || vial == null || vial.isFull()) {
+        if (hero.heroClass == HeroClass.DM3000) {
+            if (vial == null || vial.isFull()) {
+                GLog.i(Messages.get(this, vial == null ? "dm3000_container_needed" : "dm3000_container_full"));
+                return false;
+            }
+            vial.collectDew(this);
+        } else if (hero.HP < hero.HT || vial == null || vial.isFull()) {
 
             int value = 1 + (SpacebaseRun.depth - 1) / 5;
             if (hero.subClass == HeroSubClass.WARDEN) {

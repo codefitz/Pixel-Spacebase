@@ -80,7 +80,7 @@ public class AlienPod extends Food {
     @Override
     public void execute(Hero hero, String action) {
 
-        if (action.equals(AC_USE) && plasmidAttrib == null) {
+        if ((action.equals(AC_USE) || action.equals(AC_EXTRACT)) && plasmidAttrib == null) {
 
             GLog.w(Messages.get(this, "raw"));
             return;
@@ -89,7 +89,8 @@ public class AlienPod extends Food {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_USE) && plasmidAttrib != null) {
+        if (action.equals(AC_USE) && plasmidAttrib != null
+                && hero.heroClass != com.wafitz.pixelspacebase.actors.hero.HeroClass.DM3000) {
 
             if (plasmidAttrib instanceof CryoGrenade) {
                 GLog.i(Messages.get(this, "ice_msg"));

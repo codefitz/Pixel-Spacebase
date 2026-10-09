@@ -23,14 +23,13 @@ package com.wafitz.pixelspacebase.items.food;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
 import com.wafitz.pixelspacebase.Statistics;
-import com.wafitz.pixelspacebase.actors.buffs.Buff;
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
-import com.wafitz.pixelspacebase.actors.buffs.Recharging;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.EffectSprite;
 import com.wafitz.pixelspacebase.items.Item;
-import com.wafitz.pixelspacebase.items.upgrades.RechargeUpgrade;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -43,6 +42,7 @@ public class Food extends Item {
     private static final float TIME_TO_EAT = 3f;
 
     public static final String AC_USE = "EAT";
+    public static final String AC_EXTRACT = "EXTRACT";
 
     private Float eatTimeOverride = null;
 
@@ -61,7 +61,7 @@ public class Food extends Item {
     @Override
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
-        actions.add(AC_USE);
+        actions.add(hero.heroClass == HeroClass.DM3000 ? AC_EXTRACT : AC_USE);
         return actions;
     }
 
@@ -70,12 +70,15 @@ public class Food extends Item {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_USE)) {
+        boolean robot = hero.heroClass == HeroClass.DM3000;
+        if (action.equals(AC_USE) || robot && action.equals(AC_EXTRACT)) {
 
             detach(hero.belongings.backpack);
 
-            (hero.buff(Hunger.class)).satisfy(energy);
-            GLog.i(message);
+            if (!robot) {
+                (hero.buff(Hunger.class)).satisfy(energy);
+                GLog.i(message);
+            }
 
             switch (hero.heroClass) {
                 case COMMANDER:
@@ -85,9 +88,10 @@ public class Food extends Item {
                     }
                     break;
                 case DM3000:
-                    //1 charge
-                    Buff.affect(hero, Recharging.class, 4f);
-                    RechargeUpgrade.charge(hero);
+                    int repair = Math.min(5, Math.max(0, hero.HT - hero.HP));
+                    hero.HP += repair;
+                    if (repair > 0) hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+                    GLog.i(Messages.get(Food.class, "extract_msg", name(), repair));
                     break;
                 case SHAPESHIFTER:
                 case CAPTAIN:
@@ -96,8 +100,8 @@ public class Food extends Item {
 
             hero.sprite.operate(hero.pos);
             hero.busy();
-            EffectSprite.show(hero, EffectSprite.FOOD);
-            Sample.INSTANCE.play(Assets.SND_EAT);
+            if (!robot) EffectSprite.show(hero, EffectSprite.FOOD);
+            Sample.INSTANCE.play(robot ? Assets.SND_DRINK : Assets.SND_EAT);
 
             hero.spend(eatTimeOverride == null ? TIME_TO_EAT : eatTimeOverride);
 
@@ -114,6 +118,16 @@ public class Food extends Item {
         } finally {
             eatTimeOverride = null;
         }
+    }
+
+    @Override
+    public String info() {
+        return withWaterExtractionInfo(super.info());
+    }
+
+    protected String withWaterExtractionInfo(String info) {
+        return SpacebaseRun.hero != null && SpacebaseRun.hero.heroClass == HeroClass.DM3000
+                ? info + "\n\n" + Messages.get(Food.class, "extract_desc") : info;
     }
 
     @Override

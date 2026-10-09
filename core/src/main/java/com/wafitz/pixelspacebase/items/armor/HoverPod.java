@@ -20,9 +20,12 @@
  */
 package com.wafitz.pixelspacebase.items.armor;
 
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.blobs.Plasma;
+import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.RupturedCrewSuit;
 import com.wafitz.pixelspacebase.items.Bomb;
 import com.wafitz.pixelspacebase.items.Item;
@@ -35,14 +38,21 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.utils.Bundle;
 
+import java.util.ArrayList;
+
 public class HoverPod extends Armor {
 
     private static final int BASE_INTEGRITY = 15;
     private static final String INTEGRITY = "integrity";
     private static final String REINFORCEMENTS = "reinforcements";
+    private static final String TORCH_ON = "torchOn";
+    private static final String AC_TORCH_ON = "TORCH_ON";
+    private static final String AC_TORCH_OFF = "TORCH_OFF";
+    private static final float TIME_TO_SWITCH = 1f;
 
     private int integrity = BASE_INTEGRITY;
     private int reinforcements;
+    private boolean torchOn;
 
     {
         image = ItemSpriteSheet.HOVERPOD;
@@ -57,6 +67,7 @@ public class HoverPod extends Armor {
         super.storeInBundle(bundle);
         bundle.put(INTEGRITY, integrity);
         bundle.put(REINFORCEMENTS, reinforcements);
+        bundle.put(TORCH_ON, torchOn);
     }
 
     @Override
@@ -66,6 +77,7 @@ public class HoverPod extends Armor {
         integrity = bundle.contains(INTEGRITY)
                 ? Math.max(0, Math.min(bundle.getInt(INTEGRITY), maxIntegrity()))
                 : maxIntegrity();
+        torchOn = bundle.getBoolean(TORCH_ON);
     }
 
     @Override
@@ -73,6 +85,68 @@ public class HoverPod extends Armor {
         super.reset();
         reinforcements = 0;
         integrity = BASE_INTEGRITY;
+        torchOn = false;
+    }
+
+    @Override
+    public ArrayList<String> actions(Hero hero) {
+        ArrayList<String> actions = super.actions(hero);
+        if (isEquipped(hero) && integrity > 0) actions.add(torchOn ? AC_TORCH_OFF : AC_TORCH_ON);
+        return actions;
+    }
+
+    @Override
+    public void execute(Hero hero) {
+        if (isEquipped(hero)) execute(hero, torchOn ? AC_TORCH_OFF : AC_TORCH_ON);
+        else if (hero.heroClass == HeroClass.SHAPESHIFTER) super.execute(hero);
+        else execute(hero, AC_EQUIP);
+    }
+
+    @Override
+    public void executeQuickslot(Hero hero) {
+        if (isEquipped(hero)) execute(hero);
+        else super.executeQuickslot(hero);
+    }
+
+    @Override
+    public void execute(Hero hero, String action) {
+        super.execute(hero, action);
+        if (isEquipped(hero) && integrity > 0
+                && (AC_TORCH_ON.equals(action) || AC_TORCH_OFF.equals(action))) {
+            torchOn = AC_TORCH_ON.equals(action);
+            refreshSight(hero);
+            GLog.i(Messages.get(this, torchOn ? "torch_started" : "torch_stopped"));
+            hero.sprite.operate(hero.pos);
+            hero.spendAndNext(TIME_TO_SWITCH);
+            updateQuickslot();
+        }
+    }
+
+    @Override
+    public void activate(Char ch) {
+        super.activate(ch);
+        if (ch instanceof Hero) refreshSight((Hero) ch);
+    }
+
+    @Override
+    public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+        if (!super.doUnequip(hero, collect, single)) return false;
+        torchOn = false;
+        refreshSight(hero);
+        return true;
+    }
+
+    @Override
+    public void forceUnequip(Hero hero) {
+        super.forceUnequip(hero);
+        torchOn = false;
+        refreshSight(hero);
+    }
+
+    private static void refreshSight(Hero hero) {
+        if (SpacebaseRun.level == null || hero != SpacebaseRun.hero) return;
+        hero.viewDistance = SpacebaseRun.heroViewDistance();
+        SpacebaseRun.observe(Math.max(hero.viewDistance, Light.DISTANCE) + 1);
     }
 
     public int integrity() {
@@ -117,12 +191,18 @@ public class HoverPod extends Armor {
 
     @Override
     public String info() {
-        return super.info() + "\n\n" + Messages.get(this, "integrity", integrity, maxIntegrity());
+        return super.info() + "\n\n" + Messages.get(this, "integrity", integrity, maxIntegrity())
+                + "\n" + Messages.get(this, torchOn ? "torch_status_on" : "torch_status_off");
     }
 
     public static HoverPod equipped(Hero hero) {
         return hero != null && hero.belongings.armor instanceof HoverPod
                 ? (HoverPod) hero.belongings.armor : null;
+    }
+
+    public static boolean torchActive(Hero hero) {
+        HoverPod pod = equipped(hero);
+        return pod != null && pod.integrity > 0 && pod.torchOn;
     }
 
     public static boolean blocksImpact(Object source) {

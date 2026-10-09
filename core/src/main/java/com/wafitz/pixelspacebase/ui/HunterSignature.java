@@ -11,8 +11,6 @@ import com.watabou.noosa.Image;
 /** A character silhouette drawn above fog without changing the hero's sight. */
 public class HunterSignature extends Image {
 
-    private static final int SIGNATURE_RED = 0xFF3030;
-
     private final Mob mob;
     private final CharSprite source;
 
@@ -20,7 +18,7 @@ public class HunterSignature extends Image {
         super(mob.sprite);
         this.mob = mob;
         source = mob.sprite;
-        color(SIGNATURE_RED);
+        color(HunterSensorMarkers.BIO_SIGNAL);
         visible = false;
     }
 

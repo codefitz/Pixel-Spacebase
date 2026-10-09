@@ -26,6 +26,10 @@ public class DarkMazeLevel extends Level {
     public static final int SCAN_RADIUS = 4;
     public boolean[] hunterScanned;
     public volatile boolean exitReached;
+    // Navigation feedback is transient; it does not disclose maze geometry.
+    public String navigationMessage;
+    public volatile int navigationRevision;
+    private int stepsTaken;
 
     @Override public String tilesTex() { return Assets.TILES_MAINTENANCE; }
     @Override public String waterTex() { return Assets.WATER_MAINTENANCE; }
@@ -86,6 +90,20 @@ public class DarkMazeLevel extends Level {
                 + Math.abs(from / width - to / width) == 1;
     }
 
+    public void recordStep(int from, int to) {
+        if (from == to) return;
+        stepsTaken++;
+        String direction = Messages.get(this, to / width < from / width ? "north"
+                : to / width > from / width ? "south" : to % width < from % width ? "west" : "east");
+        navigationMessage = Messages.get(this, "step_feedback", direction, stepsTaken);
+        navigationRevision++;
+    }
+
+    public void recordBlockedStep() {
+        navigationMessage = Messages.get(this, "wall_feedback");
+        navigationRevision++;
+    }
+
     public boolean hunterMappingActive() {
         Armor armor = SpacebaseRun.hero == null ? null : SpacebaseRun.hero.belongings.armor;
         return armor != null && armor.hasHunterTracking();
@@ -105,7 +123,9 @@ public class DarkMazeLevel extends Level {
     @Override public void updateFieldOfView(Char ch, boolean[] sight) {
         Arrays.fill(sight, false);
         // Deliberately bypass room lighting, innate robot vision, awareness and mind vision.
-        if (ch.buff(Light.class) != null && ch.buff(Blindness.class) == null
+        boolean torchActive = ch.buff(Light.class) != null
+                || ch == SpacebaseRun.hero && com.wafitz.pixelspacebase.items.armor.HoverPod.torchActive(SpacebaseRun.hero);
+        if (torchActive && ch.buff(Blindness.class) == null
                 && ch.buff(Camoflaged.class) == null && ch.buff(TimeFolder.timeStasis.class) == null && ch.isAlive()) {
             ShadowCaster.castShadow(ch.pos % width, ch.pos / width, sight, Light.DISTANCE);
         }

@@ -1461,6 +1461,7 @@ public class Hero extends Char {
                 return false;
             }
             if (!Level.passable[cell]) {
+                maze.recordBlockedStep();
                 GLog.i(Messages.get(maze, "blocked"));
                 return false;
             }
@@ -1829,8 +1830,12 @@ public class Hero extends Char {
             SpacebaseRun.level.press(pos, this);
         }
         checkVacuumExposure(previousPos);
-        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel)
-            ((com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level).checkExit(pos);
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
+            com.wafitz.pixelspacebase.levels.DarkMazeLevel maze =
+                    (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level;
+            maze.recordStep(previousPos, pos);
+            maze.checkExit(pos);
+        }
     }
 
     private void checkVacuumExposure(int previousPos) {

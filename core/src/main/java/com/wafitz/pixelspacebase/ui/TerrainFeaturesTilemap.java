@@ -49,9 +49,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
     private SparseArray<Vent> vents;
 
     public TerrainFeaturesTilemap(SparseArray<Mine> mines, SparseArray<Vent> vents) {
-        super(com.wafitz.pixelspacebase.sprites.PixelDungeonSkins.active() ? Assets.PD_TILES : Assets.TERRAIN_FEATURES,
-                new TextureFilm(com.wafitz.pixelspacebase.sprites.PixelDungeonSkins.active()
-                        ? Assets.PD_TILES : Assets.TERRAIN_FEATURES, SIZE, SIZE));
+        super(tilesTexture(), new TextureFilm(tilesTexture(), SIZE, SIZE));
 
         this.mines = mines;
         this.vents = vents;
@@ -109,7 +107,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
             if (!vent.visible || !vent.active) {
                 return -1;
             } else {
-                return vent.color + (vent.shape * 16);
+                return trapVisual(vent);
             }
         }
 
@@ -136,6 +134,17 @@ public class TerrainFeaturesTilemap extends Tilemap {
         Image img = new Image(instance.texture);
         img.frame(instance.tileset.get(instance.getTileVisual(pos, tile)));
         return img;
+    }
+
+    public static String tilesTexture() {
+        return com.wafitz.pixelspacebase.sprites.PixelDungeonSkins.active()
+                ? Assets.PD_TILES : Assets.TERRAIN_FEATURES;
+    }
+
+    /** The scanner uses the same trap artwork without revealing or disarming it. */
+    public static int trapVisual(Vent vent) {
+        return com.wafitz.pixelspacebase.sprites.PixelDungeonSkins.active()
+                ? 17 : vent.color + vent.shape * 16;
     }
 
     public void growMine(final int pos) {

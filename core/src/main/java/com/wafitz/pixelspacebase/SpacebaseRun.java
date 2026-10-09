@@ -1037,7 +1037,8 @@ public class SpacebaseRun {
         if (hero != null && hero.heroClass == HeroClass.DM3000) {
             distance = Math.max(distance, Light.DISTANCE);
         }
-        if (hero != null && hero.buff(Light.class) != null) {
+        if (hero != null && (hero.buff(Light.class) != null
+                || com.wafitz.pixelspacebase.items.armor.HoverPod.torchActive(hero))) {
             distance = Math.max(distance, Light.DISTANCE);
         }
         return distance;

@@ -32,6 +32,7 @@ import com.wafitz.pixelspacebase.actors.buffs.TimeSink;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
 import com.wafitz.pixelspacebase.actors.buffs.Weakness;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
@@ -51,7 +52,7 @@ public class FrozenCarpaccio extends Food {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_USE)) {
+        if (action.equals(AC_USE) && hero.heroClass != HeroClass.DM3000) {
             effect(hero);
         }
     }
