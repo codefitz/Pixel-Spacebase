@@ -28,7 +28,6 @@ import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.Item;
 import com.wafitz.pixelspacebase.items.Parts;
 import com.wafitz.pixelspacebase.items.quest.Lazer;
-import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Room;
 import com.wafitz.pixelspacebase.levels.Terrain;
@@ -117,7 +116,9 @@ public class MassGravePainter extends Painter {
         {
             name = Messages.get(this, "name");
 
-            tx = Assets.HOLODECK_RETAINER_TILES;
+            // This abandoned quest room is inactive independently of the boss deck.
+            // Keep the persisted visual class and offsets so saved rooms use the grid too.
+            tx = Assets.HOLODECK_GRID;
             txX = 0;
             txY = 0;
         }
@@ -125,14 +126,6 @@ public class MassGravePainter extends Painter {
         void offset(int x, int y) {
             ofsX = x;
             ofsY = y;
-        }
-
-        @Override
-        public CustomTileVisual create() {
-            tx = Y.Quest.isHolodeckPoweredDown()
-                    ? Assets.HOLODECK_GRID
-                    : Assets.HOLODECK_RETAINER_TILES;
-            return super.create();
         }
 
         @Override

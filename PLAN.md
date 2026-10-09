@@ -14,7 +14,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [x] Convert all ordnance items to thrown grenades or planted mines and update sprites. Keep grenade self-use; Black Goo stays in the main inventory.
 - [x] Remove the Plasma Stabiliser and give its plasma-clearing function to the Freeze Blaster.
 - [x] Reduce Flamethrower spread to a single directional line.
-- [ ] Update the custom room and quest for the unstable holo-projector.
+- [x] Use deactivated Holodeck grid tiles for the unstable holo-projector quest room, independently of the boss Holodeck's power state. Applies to saved rooms too; update the room's inspection text. In-game confirmation pending.
 - [x] Shapeshifter quickslots retain special-item activation and equipment actions instead of forcing throws. Dynamic cache actions refresh first; ordinary weapons and blasters remain throwable. In-game confirmation pending.
 - [x] Opening an unknown cache applies its effect to the hero immediately, including both grenade families. Consume one item and the normal use time; remaining revealed grenades sort into ordnance. In-game confirmation pending.
 - [x] Add reusable emergency decontamination stations near the entrance of Command decks, including restored saves. A one-turn rinse removes acid and fire and leaves water on ordinary floors. Medigel now offers separate HEAL and EXTINGUISH actions; extinguishing spends one charge without healing. In-game confirmation pending.
@@ -60,7 +60,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [x] Enlarge the Hoverpod with dedicated 80×80 animation frames, a broad blue glass canopy and each hero visible behind the screen. Refreshed portraits and inventory icon. In-game confirmation pending.
 - [x] Give all 12 plasmid colours matching injector icons with a shared silhouette and coloured liquid reservoir. Updated splash colour sampling for the new artwork. In-game confirmation pending.
 - [x] Make Medigel, Adrenal and Forcefield Stims use the same injector silhouette as plasmids, with green, blue and purple reservoirs respectively. Includes items restored from existing saves. In-game confirmation pending.
-- [ ] Reskin hero Armor Kit suits.
+- [ ] Reskin hero class armors.
 - [x] Enlarge the Hunter suit proportionally to a 64px-tall frame, trimming transparent padding when displayed and preserving animation alignment. In-game confirmation pending.
 - [x] Shrink Roman Soldiers from 96×96 to a displayed 64×64 frame, preserving the artwork and animations. In-game confirmation pending.
 

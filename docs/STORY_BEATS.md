@@ -233,6 +233,7 @@ NPC: Quartermaster.
 Current variants:
 
 - Requests a lazer, a faulty core module, or a bio-charge core recovered from a mature bio-charge mine.
+- The unstable holo-projector is recovered from a deactivated Holodeck with exposed dark panels and a yellow grid, regardless of the boss Holodeck's power state.
 - Rewards new blaster options.
 
 Story role:
