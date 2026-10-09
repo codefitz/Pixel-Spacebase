@@ -1211,7 +1211,7 @@ public class GameScene extends PixelScene {
                 com.wafitz.pixelspacebase.levels.DarkMazeLevel maze =
                         (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level;
                 if (!mazeMovementReady(maze)) return;
-                target = maze.stepToward(SpacebaseRun.hero.pos, target);
+                target = maze.navigationTarget(SpacebaseRun.hero.pos, target);
             }
             if (SpacebaseRun.hero.handle(target)) {
                 SpacebaseRun.hero.next();

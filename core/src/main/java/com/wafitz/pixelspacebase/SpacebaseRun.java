@@ -1092,14 +1092,14 @@ public class SpacebaseRun {
 
     public static PathFinder.Path findPath(Char ch, int from, int to, boolean[] pass, boolean[] visible) {
 
-        if (ch == hero && level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) return null;
-
         setupPassable();
         if (ch.flying || ch.buff(Paranoid.class) != null) {
             BArray.or(pass, Level.avoid, passable);
         } else {
             System.arraycopy(pass, 0, passable, 0, SpacebaseRun.level.length());
         }
+
+        if (!restrictMazeRoute(ch, to)) return null;
 
         for (Char c : Actor.chars()) {
             if (visible[c.pos]) {
@@ -1114,7 +1114,8 @@ public class SpacebaseRun {
     public static int findStep(Char ch, int from, int to, boolean[] pass, boolean[] visible) {
 
         if (ch == hero && level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel
-                && !((com.wafitz.pixelspacebase.levels.DarkMazeLevel) level).canStep(from, to)) return -1;
+                && !((com.wafitz.pixelspacebase.levels.DarkMazeLevel) level).canStep(from, to)
+                && !((com.wafitz.pixelspacebase.levels.DarkMazeLevel) level).navigationVisible(to)) return -1;
 
         if (level.adjacent(from, to)) {
             return Actor.findChar(to) == null && (pass[to] || Level.avoid[to]) ? to : -1;
@@ -1127,6 +1128,8 @@ public class SpacebaseRun {
             System.arraycopy(pass, 0, passable, 0, SpacebaseRun.level.length());
         }
 
+        if (!restrictMazeRoute(ch, to)) return -1;
+
         for (Char c : Actor.chars()) {
             if (visible[c.pos]) {
                 passable[c.pos] = false;
@@ -1135,6 +1138,18 @@ public class SpacebaseRun {
 
         return PathFinder.getStep(from, to, passable);
 
+    }
+
+    /** Maze routes may use torch sight, never stored exploration or Hunter scans. */
+    private static boolean restrictMazeRoute(Char ch, int target) {
+        if (ch != hero || !(level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel)) return true;
+        com.wafitz.pixelspacebase.levels.DarkMazeLevel maze =
+                (com.wafitz.pixelspacebase.levels.DarkMazeLevel) level;
+        if (!maze.navigationVisible(target)) return false;
+        for (int i = 0; i < passable.length; i++) {
+            passable[i] &= maze.navigationVisible(i);
+        }
+        return true;
     }
 
     public static int flee(Char ch, int cur, int from, boolean[] pass, boolean[] visible) {

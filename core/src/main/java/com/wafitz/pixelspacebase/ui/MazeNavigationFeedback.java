@@ -6,7 +6,7 @@ import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.RenderedText;
 
-/** Movement and wall feedback for single-step map taps. */
+/** Movement and wall feedback for maze navigation. */
 public class MazeNavigationFeedback extends Group {
     private final DarkMazeLevel maze;
     private final RenderedText feedback;

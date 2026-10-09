@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
-/** An unlit, separately saved maze. Only torch sight and the Hunter hologram reveal geometry. */
+/** An unlit, separately saved maze with local tactile tiles, torch sight and Hunter mapping. */
 public class DarkMazeLevel extends Level {
     public static final int SCAN_RADIUS = 4;
     public boolean[] hunterScanned;
@@ -86,27 +86,34 @@ public class DarkMazeLevel extends Level {
     }
 
     public boolean canStep(int from, int to) {
-        return to >= 0 && to < length && Math.abs(from % width - to % width)
-                + Math.abs(from / width - to / width) == 1;
+        return from >= 0 && from < length && to >= 0 && to < length
+                && distance(from, to) == 1;
     }
 
-    /** Treat map taps as a direction, without plotting a route through hidden corridors. */
-    public int stepToward(int from, int target) {
+    public boolean navigationVisible(int cell) {
+        return cell >= 0 && cell < length && fieldOfView[cell];
+    }
+
+    /** Route to a lit destination; otherwise feel one step toward the tap. */
+    public int navigationTarget(int from, int target) {
         if (from < 0 || from >= length || target < 0 || target >= length) return -1;
+        if (navigationVisible(target)) return target;
         int dx = target % width - from % width;
         int dy = target / width - from / width;
         if (dx == 0 && dy == 0) return from;
-        // Diagonal taps favour the horizontal axis on ties, independently of hidden walls.
-        int step = Math.abs(dx) >= Math.abs(dy)
-                ? from + Integer.signum(dx) : from + Integer.signum(dy) * width;
+        int step = from + Integer.signum(dx) + Integer.signum(dy) * width;
         return canStep(from, step) ? step : -1;
     }
 
     public void recordStep(int from, int to) {
         if (from == to) return;
         stepsTaken++;
-        String direction = Messages.get(this, to / width < from / width ? "north"
-                : to / width > from / width ? "south" : to % width < from % width ? "west" : "east");
+        int dx = Integer.signum(to % width - from % width);
+        int dy = Integer.signum(to / width - from / width);
+        String key = dy < 0 ? (dx < 0 ? "northwest" : dx > 0 ? "northeast" : "north")
+                : dy > 0 ? (dx < 0 ? "southwest" : dx > 0 ? "southeast" : "south")
+                : dx < 0 ? "west" : "east";
+        String direction = Messages.get(this, key);
         navigationMessage = Messages.get(this, "step_feedback", direction, stepsTaken);
         navigationRevision++;
     }

@@ -1335,8 +1335,11 @@ public class Hero extends Char {
 
     private boolean getCloser(final int target) {
 
-        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel
-                && !((com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level).canStep(pos, target)) {
+        com.wafitz.pixelspacebase.levels.DarkMazeLevel maze =
+                SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel
+                        ? (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level : null;
+        if (maze != null && (!maze.canStep(pos, target) || path != null)
+                && !maze.navigationVisible(target)) {
             path = null;
             return false;
         }
@@ -1372,7 +1375,9 @@ public class Hero extends Char {
 
         } else {
 
-            boolean newPath = false;
+            // Maze visibility is transient: recalculate each step instead of retaining
+            // a route that may leave the torchlight after movement or light expiry.
+            boolean newPath = maze != null;
             if (path == null || path.isEmpty() || !SpacebaseRun.level.adjacent(pos, path.getFirst()))
                 newPath = true;
             else if (path.getLast() != target)
@@ -1456,7 +1461,7 @@ public class Hero extends Char {
 
         if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel && cell != pos) {
             com.wafitz.pixelspacebase.levels.DarkMazeLevel maze = (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level;
-            if (!maze.canStep(pos, cell)) {
+            if (!maze.canStep(pos, cell) && !maze.navigationVisible(cell)) {
                 GLog.i(Messages.get(maze, "one_step"));
                 return false;
             }
@@ -1465,6 +1470,7 @@ public class Hero extends Char {
                 GLog.i(Messages.get(maze, "blocked"));
                 return false;
             }
+            path = null;
         }
 
         Char ch;
