@@ -29,6 +29,12 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 
 ## Bosses
 
+Chasm falls onto boss decks land in the sealed doorless room and start the usual
+twenty-turn Y rescue countdown. A missing room is created in unused wall/space
+terrain before arrival, including saved layouts changed by boss phases and the
+final boss deck, which otherwise omits this room during generation. Deliberate Y
+boss detours still enter the encounter through their dedicated arena landing.
+
 | Boss | Floor | Current behavior |
 | --- | --- | --- |
 | Feral Shapeshifter | 5 | Shapeshifter crew colleague destabilized by repeated emergency shifts. Signals attack buildup, enrages, and thanks the player when restored/defeated. Unlocks Shapeshifter progression. |

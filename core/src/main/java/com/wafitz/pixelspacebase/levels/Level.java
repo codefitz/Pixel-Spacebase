@@ -507,6 +507,10 @@ public abstract class Level implements Bundlable {
     private void createDoorlessRoom() {
         // Also applies when loading older saves that do not contain a chamber.
         if (!needsDoorlessRoom()) return;
+        paintDoorlessRoom();
+    }
+
+    private void paintDoorlessRoom() {
         ArrayList<Integer> candidates = doorlessRoomCandidates(1);
         doorlessRoomRadius = 1;
         if (candidates.isEmpty()) {
@@ -527,6 +531,10 @@ public abstract class Level implements Bundlable {
                 int cell = (top + y) * width() + left + x;
                 boolean interior = x > 0 && y > 0 && x < size - 1 && y < size - 1;
                 map[cell] = interior ? Terrain.EMPTY : Terrain.WALL;
+                if (visited != null) visited[cell] = false;
+                if (mapped != null) mapped[cell] = false;
+                if (vacuum != null) vacuum[cell] = false;
+                if (pressurized != null) pressurized[cell] = false;
             }
         }
         doorlessRoomCenter = (top + size / 2) * width() + left + size / 2;
@@ -540,8 +548,12 @@ public abstract class Level implements Bundlable {
                 boolean clear = true;
                 for (int dy = 0; dy < size && clear; dy++) {
                     for (int dx = 0; dx < size; dx++) {
-                        int terrain = map[(y + dy) * width() + x + dx];
-                        if (terrain != Terrain.WALL && terrain != Terrain.CHASM) {
+                        int cell = (y + dy) * width() + x + dx;
+                        int terrain = map[cell];
+                        if ((terrain != Terrain.WALL && terrain != Terrain.CHASM)
+                                || findMob(cell) != null
+                                || heaps.get(cell) != null || mines.get(cell) != null
+                                || vents.get(cell) != null) {
                             clear = false;
                             break;
                         }
@@ -586,11 +598,38 @@ public abstract class Level implements Bundlable {
 
     public int fallLandingCell(boolean intoDoorlessRoom) {
         if (SpacebaseRun.bossLevel()) {
-            return bossFallLandingCell();
+            // Chasm arrivals use the stranded-room rescue, not the boss approach.
+            // Phase-swapping boss maps can retain a saved centre after erasing its room.
+            if (!hasIntactDoorlessRoom()) {
+                paintDoorlessRoom();
+                buildFlagMaps();
+                cleanWalls();
+            }
+            return doorlessRoomLandingCell();
         }
         int cell = intoDoorlessRoom || Random.Int(4) == 0
                 ? doorlessRoomLandingCell() : randomRespawnCell();
         return cell >= 0 ? cell : randomRespawnCell();
+    }
+
+    private boolean hasIntactDoorlessRoom() {
+        if (!insideMap(doorlessRoomCenter) || doorlessRoomRadius < 0
+                || doorlessRoomRadius > 1 || findMob(doorlessRoomCenter) != null) return false;
+        int cx = doorlessRoomCenter % width();
+        int cy = doorlessRoomCenter / width();
+        int border = doorlessRoomRadius + 1;
+        if (cx - border < 1 || cy - border < 1
+                || cx + border >= width() - 1 || cy + border >= height() - 1) return false;
+        for (int y = cy - border; y <= cy + border; y++) {
+            for (int x = cx - border; x <= cx + border; x++) {
+                int terrain = map[y * width() + x];
+                boolean interior = Math.abs(x - cx) <= doorlessRoomRadius
+                        && Math.abs(y - cy) <= doorlessRoomRadius;
+                if (interior ? terrain != Terrain.EMPTY
+                        : terrain != Terrain.WALL && terrain != Terrain.WALL_DECO) return false;
+            }
+        }
+        return true;
     }
 
     public int rescueBossLandingCell() { return bossFallLandingCell(); }

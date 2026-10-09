@@ -4,6 +4,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 
 ## Mechanics
 
+- [x] Route chasm falls onto boss decks into their sealed doorless room, enabling the usual twenty-turn Y rescue. Recreate missing rooms on saved phase-swapped boss maps; create a chamber on demand if a fall reaches the final boss deck. Keep deliberate Y boss detours at the arena approach. In-game confirmation pending.
 - [x] Standardise non-Maintenance entrances and exits as circular teleport pads: orange for the previous deck, blue for the next, with transparent centres showing the current floor artwork and dimmed locked departures. Add a brief hero beam effect, coloured signal transition during loading and arrival reconstruction. Keep Maintenance ladders and existing travel/save rules. In-game confirmation pending.
 - [x] Let the Shapeshifter quickslot any throwable item and use the quickslot to throw it.
 - [x] Convert all ordnance items to thrown grenades or planted mines and update sprites. Keep grenade self-use; Black Goo stays in the main inventory.
@@ -64,7 +65,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 These fixes are implemented in v1.0.4, but on-device confirmation remained outstanding in the previous plan. They are verification tasks, not unimplemented features.
 
 - [x] Check popup/button text fitting and checkbox alignment in game.
-- [x] Confirm falls onto boss decks land inside the arena on a usable tile.
+- [x] Previous arena landing was confirmed; superseded by the v1.0.5 doorless-room routing above. In-game confirmation of the new behavior pending.
 - [ ] Confirm enemies killed by a Shapeshifter's thrown blaster finish their death animations.
 - [x] Confirm revealed hull edges have no fog halos or stray exterior walls, while interiors retain fog of war.
 - [x] Confirm quantum chest contents remain single and persist across transitions, revisits, bosses and save/reload.
