@@ -55,7 +55,7 @@ public class KoltoPod extends Mine {
 
     public static class Device extends Mine.StimulantDevice {
         {
-            image = ItemSpriteSheet.HEALING_DEVICE;
+            image = ItemSpriteSheet.JADE_PLASMID;
 
             mineClass = KoltoPod.class;
             craftingClass = HealingPlasmid.class;

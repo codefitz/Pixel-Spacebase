@@ -32,6 +32,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 
 ## Issues
 
+- [x] Warn before a Repair Blaster beam hits a door, including doors along the beam's path. Explain the risk of trapping the hero and the need for fire, explosives or another escape option; offer Cancel shot or Fire anyway without ending the run. Cancellation spends no charge or turn. In-game confirmation pending.
 - [x] Count 20 hero actions in the stranded chamber before Y rescues; corrected world-tick counting and immediate landing tick. In-game confirmation pending.
 - [x] Keep skipped boss decks ready after Y rescues to later floors. Deck saves now identify their run, new games clear their own old decks, and travel from below enters unfinished arenas through their normal approach. Legacy completed decks at floors 5–20 require a victory badge from the current run. In-game confirmation pending.
 - [x] Items aren't appearing normally on level 6 and above. Reused explored decks from earlier games are a suspected cause. New runs now reject other-run and unmarked deck files; four save-ownership checks passed. Confirm loot in game; older unmarked ordinary decks are retained to preserve progress.
@@ -50,6 +51,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [ ] Reskin DM3000.
 - [x] Enlarge the Hoverpod with dedicated 80×80 animation frames, a broad blue glass canopy and each hero visible behind the screen. Refreshed portraits and inventory icon. In-game confirmation pending.
 - [x] Give all 12 plasmid colours matching injector icons with a shared silhouette and coloured liquid reservoir. Updated splash colour sampling for the new artwork. In-game confirmation pending.
+- [x] Make Medigel, Adrenal and Forcefield Stims use the same injector silhouette as plasmids, with green, blue and purple reservoirs respectively. Includes items restored from existing saves. In-game confirmation pending.
 - [ ] Reskin hero Armor Kit suits.
 - [x] Enlarge the Hunter suit proportionally to a 64px-tall frame, trimming transparent padding when displayed and preserving animation alignment. In-game confirmation pending.
 - [x] Shrink Roman Soldiers from 96×96 to a displayed 64×64 frame, preserving the artwork and animations. In-game confirmation pending.

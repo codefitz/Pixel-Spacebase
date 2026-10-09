@@ -39,6 +39,7 @@ import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
+import com.wafitz.pixelspacebase.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.ColorMath;
@@ -111,6 +112,27 @@ public class EMP extends Blaster {
         if (!repaired) {
             GLog.i("The repair beam finds nothing mechanical to fix.");
         }
+    }
+
+    @Override
+    protected void confirmZap(Ballistica shot, final Callback fire) {
+        for (int cell : beamCells(shot)) {
+            int terrain = SpacebaseRun.level.map[cell];
+            if (terrain == Terrain.DOOR || terrain == Terrain.OPEN_DOOR
+                    || terrain == Terrain.LOCKED_DOOR) {
+                GameScene.show(new WndOptions(Messages.get(this, "door_warning_title"),
+                        Messages.get(this, "door_warning"),
+                        Messages.get(this, "door_warning_cancel"),
+                        Messages.get(this, "door_warning_fire")) {
+                    @Override
+                    protected void onSelect(int index) {
+                        if (index == 1) fire.call();
+                    }
+                });
+                return;
+            }
+        }
+        fire.call();
     }
 
     private boolean repairTerrain(int cell) {
@@ -233,25 +255,31 @@ public class EMP extends Blaster {
     }
 
     protected void fx(Ballistica bolt, Callback callback) {
+        affectedCells = beamCells(bolt);
 
-        affectedCells = new HashSet<>();
+        int dist = Math.min(bolt.dist, Math.round(1.2f + chargesPerCast() * .8f));
+        EnergyBeam.whiteLight(curUser.sprite.parent, bolt.sourcePos, bolt.path.get(dist), callback);
+
+        Sample.INSTANCE.play(Assets.SND_ZAP);
+    }
+
+    private HashSet<Integer> beamCells(Ballistica bolt) {
+        HashSet<Integer> cells = new HashSet<>();
 
         int maxDist = Math.round(1.2f + chargesPerCast() * .8f);
         int dist = Math.min(bolt.dist, maxDist);
 
         for (int c : bolt.subPath(1, dist)) {
-            affectedCells.add(c);
+            cells.add(c);
         }
         if (bolt.dist < maxDist && bolt.dist + 1 < bolt.path.size()) {
             int blockedCell = bolt.path.get(bolt.dist + 1);
             if (isRepairableTerrain(blockedCell)) {
-                affectedCells.add(blockedCell);
+                cells.add(blockedCell);
             }
         }
 
-        EnergyBeam.whiteLight(curUser.sprite.parent, bolt.sourcePos, bolt.path.get(dist), callback);
-
-        Sample.INSTANCE.play(Assets.SND_ZAP);
+        return cells;
     }
 
     @Override

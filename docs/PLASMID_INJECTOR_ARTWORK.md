@@ -3,6 +3,12 @@
 The twelve plasmid slots in `core/src/main/assets/items.png` use one injector
 silhouette with their existing liquid colours. The icons occupy 64×64 atlas
 cells, using a 16×16 logical grid enlarged four times with hard pixel edges.
+Medigel Stims (`KoltoPod.Device`) use the jade variant and Adrenal Stims
+(`AdrenalBoost.Device`) use the azure variant from the same atlas row. Forcefield
+Stims (`WeakForcefield.Device`) use the magenta variant. All three previously
+referenced separate graphics in the device row. Their
+constructor image assignments also apply when items are restored from saves;
+their effects and saved class names are unchanged.
 The original atlas is preserved in
 `sprite-backups/items-before-plasmid-injectors.png`.
 

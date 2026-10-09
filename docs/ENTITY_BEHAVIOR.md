@@ -116,7 +116,7 @@ This catalogue summarizes the current player-facing behavior of NPCs, enemies, b
 | Dominator | Attempts to permanently dominate enemies; stronger against weakened targets and ineffective against bosses. |
 | Bio-Siphon Blaster (`VampiricBlaster`) | Former vampiric/hypnotise blaster. Now steals life from hostile living targets, healing the hero from actual HP removed. Still transfers hero life into allies or support effects, and disrupts unliving or projected targets without healing. |
 | Venom Blaster | Creates venom/toxic gas cloud at target area. |
-| Repair Blaster (`EMP`) | Internal class remains `EMP`. Repair beam fixes compatible terrain, forces locks with an open-or-jam roll, repairs allied machines, and damages hostile machine enemies. |
+| Repair Blaster (`EMP`) | Internal class remains `EMP`. Repair beam fixes compatible terrain, forces locks with an open-or-jam roll, repairs allied machines, and damages hostile machine enemies. Unlocked doors become locked or jammed. Before a working beam reaches any door, a popup warns that the hero could become trapped without fire, explosives or another escape option. Cancel shot spends no charge or turn; Fire anyway proceeds normally and never ends the run automatically. This is a preventative warning, not a definitive escape assessment. |
 | Malfunctioning Blaster | Chaotic blaster that can randomly produce many effects, including harmful ones. |
 
 ## Notable Artifacts and Utility Items
