@@ -77,9 +77,11 @@ These fixes are implemented in v1.0.4, but on-device confirmation remained outst
 - [x] Confirm blue item scanner pings and red trap scanner pings appear through fog under the intended Hunter suit/module conditions.
 - [ ] Investigate the two Eclipse Saber JVM tests that failed during initialization; rerun the full suite after correction.
 
-## Decisions
+## V1.0.6
 
 - [ ] Decide what should replace Yog Duza; a giant angel is one suggestion.
+- [ ] Map sprite directions (walking, standing, fighting)
+- [ ] Hoverpad should be able to activate traps/tiles with extra click whilst on top.
 
 ## Longer-term Backlog
 
