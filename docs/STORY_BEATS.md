@@ -144,6 +144,7 @@ Current beat:
 Resolved story note:
 
 - The floor 20 boss room is now framed as Holodeck Control. Some fantasy styling can remain as intentional simulation content, but player-facing text frames it as failed station tech.
+- Its existing fixed layout separates a physical arrival chamber from the simulation arena. The arrival chamber's floor, equipment, complete wall surround and arena doorway use Habitat artwork in both power states; Roman simulation styling begins beyond that threshold. This visual treatment also applies when saved floors are reopened, without moving rooms, actors or items.
 
 ### Floor 21: Final Workshop
 

@@ -194,6 +194,9 @@ public class ItemSpriteSheet {
     public static final int HOLOPAD_2 = ARTIFACTS + 21;
     public static final int HOLOPAD_3 = ARTIFACTS + 22;
     public static final int WORMHOLE_GENERATOR = ARTIFACTS + 23;
+    public static final int BIO_DETECTOR = ARTIFACTS + 24;
+    public static final int HUNTER_ITEM_DETECTOR = ARTIFACTS + 25;
+    public static final int HUNTER_TRAP_DETECTOR = ARTIFACTS + 26;
 
     //32 free slots
 

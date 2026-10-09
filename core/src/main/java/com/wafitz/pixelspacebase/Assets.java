@@ -123,6 +123,7 @@ public class Assets {
     public static final String BITH_ACOLYTE = "bith_acolyte.png";
 
     public static final String ITEMS = "items.png";
+    public static final String TELEPORT_PADS = "teleport_pads.png";
     public static final String TERRAIN_FEATURES = "terrain_features.png";
 
     public static final String TILES_MAINTENANCE = "tiles0.png";

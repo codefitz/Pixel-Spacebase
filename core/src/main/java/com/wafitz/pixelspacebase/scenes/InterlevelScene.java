@@ -30,6 +30,8 @@ import com.wafitz.pixelspacebase.actors.buffs.YRescueJourney;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.YRescuer;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.items.Generator;
+import com.wafitz.pixelspacebase.effects.TeleportTransition;
+import com.wafitz.pixelspacebase.ui.TeleporterPads;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.painters.Workshop;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -55,6 +57,9 @@ public class InterlevelScene extends PixelScene {
     }
 
     public static Mode mode;
+    // Presentation only: normal save/reload, falling and rescue travel use their existing flow.
+    public static boolean teleportTravel;
+    public static int teleportColor = TeleporterPads.BLUE;
 
     public static int returnDepth;
     public static int returnPos;
@@ -82,7 +87,11 @@ public class InterlevelScene extends PixelScene {
     public void create() {
         super.create();
 
-        String text = Messages.get(Mode.class, mode.name());
+        teleportTravel = teleportTravel && (mode == Mode.DESCEND || mode == Mode.ASCEND);
+        if (teleportTravel) {
+            add(new TeleportTransition(Camera.main, teleportColor, TeleportTransition.Stage.LOADING, null));
+        }
+        String text = teleportTravel ? Messages.get(this, "teleporting") : Messages.get(Mode.class, mode.name());
 
         message = PixelScene.renderText(text, 9);
         message.x = (Camera.main.width - message.width()) / 2;

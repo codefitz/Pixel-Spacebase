@@ -178,7 +178,7 @@ public class HolodeckBossLevel extends Level {
         if (Math.abs(cell % width() - exit % width()) > 1
                 || Math.abs(cell / width() - exit / width()) > 1) return -1;
 
-        if (cell == exit) return 58;
+        if (cell == exit) return 1;
         int dx = cell % width() - exit % width();
         int dy = cell / width() - exit / width();
         return 48 + (dy + 1) * 3 + dx + 1;
@@ -314,14 +314,14 @@ public class HolodeckBossLevel extends Level {
     @Override
     public Group addVisuals() {
         super.addVisuals();
-        if (!Y.Quest.isHolodeckPoweredDown()) {
-            TextureFilm spacebaseTiles = new TextureFilm(
-                    Assets.TILES_HABITATION_RING, SpacebaseTilemap.SIZE, SpacebaseTilemap.SIZE);
-            for (int y = TOP + HALL_HEIGHT + 1; y <= TOP + HALL_HEIGHT + CHAMBER_HEIGHT; y++) {
-                for (int x = LEFT; x < LEFT + HALL_WIDTH; x++) {
-                    int cell = x + y * width();
-                    visuals.add(new SpacebaseEntranceTile(cell, spacebaseTiles));
-                }
+        TextureFilm spacebaseTiles = new TextureFilm(
+                Assets.TILES_HABITATION_RING, SpacebaseTilemap.SIZE, SpacebaseTilemap.SIZE);
+        // The arrival chamber, its surrounding wall ring and the arena threshold
+        // are physical Habitat hardware in both holodeck power states.
+        for (int y = TOP + HALL_HEIGHT; y <= TOP + HALL_HEIGHT + CHAMBER_HEIGHT + 1; y++) {
+            for (int x = LEFT - 1; x <= LEFT + HALL_WIDTH; x++) {
+                int cell = x + y * width();
+                visuals.add(new SpacebaseEntranceTile(cell, spacebaseTiles));
             }
         }
         HabitationRingLevel.addHabitationVisuals(this, visuals);
@@ -355,16 +355,22 @@ public class HolodeckBossLevel extends Level {
             terrain = SpacebaseRun.level.map[cell];
             int visual;
             switch (terrain) {
+                case Terrain.ENTRANCE:
+                case Terrain.EXIT:
+                case Terrain.LOCKED_EXIT:
+                case Terrain.UNLOCKED_EXIT:
                 case Terrain.EMPTY:
                 case Terrain.EMPTY_DECO:
                 case Terrain.EMPTY_SP:
                     visual = HabitationRingLevel.TRANSPORTER_FLOOR_VISUAL;
                     break;
-                case Terrain.WALL:
-                case Terrain.WALL_DECO:
-                    visual = HabitationRingLevel.TRANSPORTER_WALL_VISUAL;
+                case Terrain.CHASM:
+                case Terrain.WATER:
+                    // Leave open space and the water layer unobscured.
+                    visual = -1;
                     break;
                 default:
+                    // Use normal Habitat walls and door states, not simulation masonry.
                     visual = SpacebaseTilemap.defaultVisuals.get(terrain, -1);
             }
             if (visual >= 0) {

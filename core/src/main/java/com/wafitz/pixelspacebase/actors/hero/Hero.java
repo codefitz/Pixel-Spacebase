@@ -1051,8 +1051,7 @@ public class Hero extends Char {
             for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
                 if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
-            InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
-            Game.switchScene(InterlevelScene.class);
+            GameScene.travelByPad(InterlevelScene.Mode.DESCEND);
     }
 
     private boolean actAscend(HeroAction.Ascend action) {
@@ -1085,8 +1084,7 @@ public class Hero extends Char {
                 for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
                     if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
-                InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
-                Game.switchScene(InterlevelScene.class);
+                GameScene.travelByPad(InterlevelScene.Mode.ASCEND);
             }
 
             return false;

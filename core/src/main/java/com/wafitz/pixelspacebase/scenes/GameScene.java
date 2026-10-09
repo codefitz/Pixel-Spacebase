@@ -46,6 +46,8 @@ import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
 import com.wafitz.pixelspacebase.items.containers.UtilityKit;
 import com.wafitz.pixelspacebase.items.containers.PlasmidKit;
 import com.wafitz.pixelspacebase.items.upgrades.PhaseShiftUpgrade;
+import com.wafitz.pixelspacebase.effects.TeleportEffect;
+import com.wafitz.pixelspacebase.effects.TeleportTransition;
 import com.wafitz.pixelspacebase.levels.SecurityBlockLevel;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
 import com.wafitz.pixelspacebase.levels.features.Chasm;
@@ -65,6 +67,7 @@ import com.wafitz.pixelspacebase.ui.GameLog;
 import com.wafitz.pixelspacebase.ui.HealthIndicator;
 import com.wafitz.pixelspacebase.ui.HunterSignature;
 import com.wafitz.pixelspacebase.ui.HunterSensorMarkers;
+import com.wafitz.pixelspacebase.ui.TeleporterPads;
 import com.wafitz.pixelspacebase.ui.LootIndicator;
 import com.wafitz.pixelspacebase.ui.QuickSlotButton;
 import com.wafitz.pixelspacebase.ui.ResumeIndicator;
@@ -127,6 +130,8 @@ public class GameScene extends PixelScene {
     private SpacebaseBackdrop spaceBackdrop;
     private Group customTiles;
     private Group levelVisuals;
+    private TeleporterPads teleporterPads;
+    private boolean teleporting;
     private Group ripples;
     private Group mines;
     private Group vents;
@@ -193,6 +198,9 @@ public class GameScene extends PixelScene {
 
         levelVisuals = SpacebaseRun.level.addVisuals();
         add(levelVisuals);
+
+        teleporterPads = new TeleporterPads(SpacebaseRun.level);
+        add(teleporterPads);
 
         heaps = new Group();
         add(heaps);
@@ -414,9 +422,19 @@ public class GameScene extends PixelScene {
 
             announceNowPlaying();
 
+            boolean teleportArrival = InterlevelScene.teleportTravel
+                    && TeleporterPads.enabled(SpacebaseRun.level);
             InterlevelScene.mode = InterlevelScene.Mode.NONE;
+            InterlevelScene.teleportTravel = false;
 
-            fadeIn();
+            if (teleportArrival) {
+                int color = TeleporterPads.color(SpacebaseRun.level.map[SpacebaseRun.hero.pos]);
+                hero.parent.add(new TeleportEffect(SpacebaseRun.hero, color, false, null));
+                addToFront(new TeleportTransition(uiCamera, color, TeleportTransition.Stage.ARRIVAL, null));
+                Sample.INSTANCE.play(Assets.SND_TELEPORT);
+            } else {
+                fadeIn();
+            }
         }
 
     }
@@ -795,6 +813,7 @@ public class GameScene extends PixelScene {
             scene.tiles.useTileset(SpacebaseRun.level.tilesTex());
             scene.tiles.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
             scene.terrainFeatures.map(SpacebaseRun.level.map, SpacebaseRun.level.width());
+            if (scene.teleporterPads != null) scene.teleporterPads.refresh();
         }
         updateFog();
     }
@@ -805,6 +824,7 @@ public class GameScene extends PixelScene {
             scene.water.updateMap();
             scene.tiles.updateMap();
             scene.terrainFeatures.updateMap();
+            if (scene.teleporterPads != null) scene.teleporterPads.refresh();
         }
     }
 
@@ -813,6 +833,7 @@ public class GameScene extends PixelScene {
             scene.water.updateMapCell(cell);
             scene.tiles.updateMapCell(cell);
             scene.terrainFeatures.updateMapCell(cell);
+            if (scene.teleporterPads != null) scene.teleporterPads.refresh();
         }
     }
 
@@ -855,6 +876,37 @@ public class GameScene extends PixelScene {
 
     public static void flash(int color) {
         scene.fadeIn(0xFF000000 | color, true);
+    }
+
+    public static void travelByPad(final InterlevelScene.Mode mode) {
+        final GameScene departingScene = scene;
+        final com.wafitz.pixelspacebase.actors.hero.Hero hero = SpacebaseRun.hero;
+        InterlevelScene.mode = mode;
+        InterlevelScene.teleportTravel = departingScene != null
+                && TeleporterPads.isPad(SpacebaseRun.level, SpacebaseRun.level.map[hero.pos]);
+        if (!InterlevelScene.teleportTravel) {
+            Game.switchScene(InterlevelScene.class);
+            return;
+        }
+        if (departingScene.teleporting) return;
+        departingScene.teleporting = true;
+        hero.busy();
+        final int color = TeleporterPads.color(SpacebaseRun.level.map[hero.pos]);
+        InterlevelScene.teleportColor = color;
+        Sample.INSTANCE.play(Assets.SND_TELEPORT);
+        hero.sprite.parent.add(new TeleportEffect(hero, color, true, new Callback() {
+            @Override
+            public void call() {
+                if (scene != departingScene) return;
+                departingScene.addToFront(new TeleportTransition(uiCamera, color,
+                        TeleportTransition.Stage.DEPARTURE, new Callback() {
+                    @Override
+                    public void call() {
+                        if (scene == departingScene) Game.switchScene(InterlevelScene.class);
+                    }
+                }));
+            }
+        }));
     }
 
     public static void flashThenShowMessage(int color, final String message) {

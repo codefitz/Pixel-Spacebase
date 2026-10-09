@@ -49,6 +49,9 @@ public final class PixelDungeonSkins {
         for (int i = 0; i < 3; i++) map(ItemSpriteSheet.FIRE_GRENADE + i, 124);
         for (int i = 0; i < 7; i++) map(ItemSpriteSheet.HUNTER_TRAPPER + i, 123);
         map(ItemSpriteSheet.HEALING_DEVICE, 120);
+        map(ItemSpriteSheet.BIO_DETECTOR, 64);
+        map(ItemSpriteSheet.HUNTER_ITEM_DETECTOR, 85);
+        map(ItemSpriteSheet.HUNTER_TRAP_DETECTOR, 123);
         int[] foods = {113, 114, 115, 116, 4, 4, 112, 112, 112};
         for (int i = 0; i < foods.length; i++) map(ItemSpriteSheet.MEAT + i, foods[i]);
         map(ItemSpriteSheet.SKULL, 103); map(ItemSpriteSheet.DUST, 121); map(ItemSpriteSheet.PICKAXE, 101);

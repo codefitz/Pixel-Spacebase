@@ -22,7 +22,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class HunterItemScanner extends EquippableModule {
 
     {
-        image = ItemSpriteSheet.SURVEYOR_MODULE;
+        image = ItemSpriteSheet.HUNTER_ITEM_DETECTOR;
     }
 
     @Override

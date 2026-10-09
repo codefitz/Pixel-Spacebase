@@ -4,6 +4,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 
 ## Mechanics
 
+- [x] Standardise non-Maintenance entrances and exits as circular teleport pads: orange for the previous deck, blue for the next, with transparent centres showing the current floor artwork and dimmed locked departures. Add a brief hero beam effect, coloured signal transition during loading and arrival reconstruction. Keep Maintenance ladders and existing travel/save rules. In-game confirmation pending.
 - [x] Let the Shapeshifter quickslot any throwable item and use the quickslot to throw it.
 - [x] Convert all ordnance items to thrown grenades or planted mines and update sprites. Keep grenade self-use; Black Goo stays in the main inventory.
 - [x] Remove the Plasma Stabiliser and give its plasma-clearing function to the Freeze Blaster.
@@ -16,6 +17,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 ## Rooms and Narrative
 
 - [x] Use spacebase tiles for the Holodeck boss entrance.
+- [x] Extend normal Habitat artwork around the Holodeck arrival chamber's complete wall surround and arena doorway in both power states. Keep the existing custom boss layout and apply the visual treatment to saved floors. In-game confirmation pending.
 - [x] Make jumping platforms look like exposed bridges rather than rooms enclosed by walls.
 - [x] Shorten newly generated exterior platforms to leave two tiles of open space between the tip and the map edge, avoiding unrevealable fog at the end. Existing saved layouts are retained. In-game confirmation pending.
 - [x] Revise Y's rescue dialogue: remove the advance "you'll have to find me" explanation and the option to stay; clicking rescue Y should lead to a reluctant return.
@@ -46,6 +48,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 
 ## Art
 
+- [x] Create distinct bio, item and trap detector icons with green life-sign, blue cargo and red hazard displays. Assign the item and trap icons to their Hunter modules; preserve existing saves and Pixel Dungeon visit artwork. Bio icon assignment awaits clarification because there is no separate bio-detector item. In-game confirmation pending.
 - [x] Match the Loader arm and equipment icons to the orange hydraulic chassis, refresh its cockpit portraits, and reduce the on-level sprite by about 29% to a similar overall size as the Hoverpod while preserving proportions and claw clearance. In-game confirmation pending.
 - [x] Reskin the Jeda Knight with an uncovered head, cream/tan robes and blue energy blade; give the shared Master variant a green blade. Repacked both into 64×64 animation frames. In-game confirmation pending.
 - [ ] Reskin DM3000.
