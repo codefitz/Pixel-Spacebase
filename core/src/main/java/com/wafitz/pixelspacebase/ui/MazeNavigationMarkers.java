@@ -10,7 +10,6 @@ import com.wafitz.pixelspacebase.sprites.HeroSprite;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.Game;
 
 /** An exit beacon and the hero remain visible above the maze fog; no route is exposed. */
 public class MazeNavigationMarkers extends Group {
@@ -19,9 +18,6 @@ public class MazeNavigationMarkers extends Group {
     private final Image hero;
     private final ColorBlock[] nearbyFloors = new ColorBlock[9];
     private final ColorBlock[] nearbyWalls = new ColorBlock[9];
-    private final ColorBlock[] position = new ColorBlock[4];
-    private int lastPos = -1;
-    private float pulse;
 
     public MazeNavigationMarkers(DarkMazeLevel maze, HeroSprite sprite) {
         this.maze = maze;
@@ -41,10 +37,6 @@ public class MazeNavigationMarkers extends Group {
         block(x + 13, y + 2, 1, 12);
         block(x + 5, y + 7, 6, 2);
         block(x + 9, y + 5, 2, 6);
-        for (int i = 0; i < position.length; i++) {
-            position[i] = new ColorBlock(i < 2 ? 10 : 1, i < 2 ? 1 : 10, 0xFFFFDD70);
-            add(position[i]);
-        }
         hero = new Image(sprite); add(hero);
     }
 
@@ -74,16 +66,6 @@ public class MazeNavigationMarkers extends Group {
             nearbyFloors[i].y = ty * SpacebaseTilemap.SIZE + 1;
             nearbyWalls[i].x = tx * SpacebaseTilemap.SIZE + 3;
             nearbyWalls[i].y = ty * SpacebaseTilemap.SIZE + 3;
-        }
-        if (lastPos != cell) { lastPos = cell; pulse = .35f; }
-        pulse = Math.max(0, pulse - Game.elapsed);
-        float x = source.x + source.width() / 2 - 5;
-        float y = source.y + source.height() - 8;
-        for (int i = 0; i < position.length; i++) {
-            position[i].x = x + (i == 3 ? 9 : 0);
-            position[i].y = y + (i == 1 ? 9 : 0);
-            position[i].alpha(.55f + .45f * pulse / .35f);
-            position[i].visible = source.alive;
         }
     }
 }
