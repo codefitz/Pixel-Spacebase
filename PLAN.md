@@ -17,6 +17,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 
 - [x] Use spacebase tiles for the Holodeck boss entrance.
 - [x] Make jumping platforms look like exposed bridges rather than rooms enclosed by walls.
+- [x] Shorten newly generated exterior platforms to leave two tiles of open space between the tip and the map edge, avoiding unrevealable fog at the end. Existing saved layouts are retained. In-game confirmation pending.
 - [x] Revise Y's rescue dialogue: remove the advance "you'll have to find me" explanation and the option to stay; clicking rescue Y should lead to a reluctant return.
 - [x] Expand Y rescues using [the staged rescue plan](docs/Y_RESCUE_PLAN.md); all stages implemented, in-game acceptance review pending.
   - [x] Stage 1: saved journey state, first-rescue guarantee, and return recovery implemented; in-game reload checks pending.
