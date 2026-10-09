@@ -90,6 +90,18 @@ public class DarkMazeLevel extends Level {
                 + Math.abs(from / width - to / width) == 1;
     }
 
+    /** Treat map taps as a direction, without plotting a route through hidden corridors. */
+    public int stepToward(int from, int target) {
+        if (from < 0 || from >= length || target < 0 || target >= length) return -1;
+        int dx = target % width - from % width;
+        int dy = target / width - from / width;
+        if (dx == 0 && dy == 0) return from;
+        // Diagonal taps favour the horizontal axis on ties, independently of hidden walls.
+        int step = Math.abs(dx) >= Math.abs(dy)
+                ? from + Integer.signum(dx) : from + Integer.signum(dy) * width;
+        return canStep(from, step) ? step : -1;
+    }
+
     public void recordStep(int from, int to) {
         if (from == to) return;
         stepsTaken++;

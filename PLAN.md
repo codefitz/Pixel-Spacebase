@@ -4,7 +4,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 
 ## Mechanics
 
-- [x] Make Y's dark maze usable without a torch: show the hero's tile and eight immediate neighbours as generic grey floor/wall shapes, with no deck artwork or retained exploration. Add fixed north/west/east/south step buttons, successful-step and wall feedback, and a pulsing marker under the hero. Keep farther corridors black and preserve single cardinal steps without automatic routing. Torch activation does not require equipment. In-game confirmation pending.
+- [x] Make Y's dark maze usable without a torch: show the hero's tile and eight immediate neighbours as generic grey floor/wall shapes, with no deck artwork or retained exploration. Use map taps for movement, successful-step and wall feedback, and a pulsing marker under the hero. Keep farther corridors black and preserve single cardinal steps without automatic routing. Torch activation does not require equipment. In-game confirmation pending.
 - [x] Add a Hoverpod TORCH ON/OFF action and worn-pod quickslot toggle. Its integrated light uses normal torch range without batteries, works in Y's dark maze, persists across saves/travel and switches off on removal/destruction. Old saves default to off. In-game confirmation pending.
 - [x] Give DM-3000 an EXTRACT WATER food action that repairs up to 5 HP per serving without restoring hunger, charging blasters or applying eating effects. Batteries retain their power role. Hide and block Medigel HEAL for DM-3000; quickslots extinguish instead, and droplets fill its container even while damaged. Update class/item messaging. In-game confirmation pending.
 - [x] Match Hunter detection colours to the modules: green biological signatures, blue item silhouettes and red trap silhouettes using each trap's own artwork. Keep darkness/module requirements and fog/activation state intact. In-game confirmation pending.
@@ -39,6 +39,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 
 ## Issues
 
+- [x] Make Y's dark-maze map taps take one cardinal step toward the tapped tile, including distant and diagonal taps with or without a torch. Remove the N/W/E/S buttons; retain step/wall feedback and prevent automatic routes through hidden corridors. In-game confirmation pending.
 - [x] Warn before a Repair Blaster beam hits a door, including doors along the beam's path. Explain the risk of trapping the hero and the need for fire, explosives or another escape option; offer Cancel shot or Fire anyway without ending the run. Cancellation spends no charge or turn. In-game confirmation pending.
 - [x] Count 20 hero actions in the stranded chamber before Y rescues; corrected world-tick counting and immediate landing tick. In-game confirmation pending.
 - [x] Keep skipped boss decks ready after Y rescues to later floors. Deck saves now identify their run, new games clear their own old decks, and travel from below enters unfinished arenas through their normal approach. Legacy completed decks at floors 5–20 require a victory badge from the current run. In-game confirmation pending.

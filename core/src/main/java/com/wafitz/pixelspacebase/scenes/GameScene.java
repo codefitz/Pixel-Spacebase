@@ -310,11 +310,10 @@ public class GameScene extends PixelScene {
         layoutTags();
 
         if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
-            boolean compactMovement = toolbar.top() - pane.bottom() < 104;
-            com.wafitz.pixelspacebase.ui.MazeMovementControls movement =
-                    new com.wafitz.pixelspacebase.ui.MazeMovementControls(
+            com.wafitz.pixelspacebase.ui.MazeNavigationFeedback movement =
+                    new com.wafitz.pixelspacebase.ui.MazeNavigationFeedback(
                             (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level,
-                            uiCamera.width / 2, toolbar.top() - (compactMovement ? 44 : 92), compactMovement);
+                            uiCamera.width / 2, toolbar.top() - 16);
             movement.camera = uiCamera;
             add(movement);
         }
@@ -1196,23 +1195,25 @@ public class GameScene extends PixelScene {
     }
 
 
-    public static boolean mazeMovementReady(com.wafitz.pixelspacebase.levels.DarkMazeLevel maze) {
+    private static boolean mazeMovementReady(com.wafitz.pixelspacebase.levels.DarkMazeLevel maze) {
         return scene != null && SpacebaseRun.level == maze && SpacebaseRun.hero != null
                 && SpacebaseRun.hero.isAlive() && SpacebaseRun.hero.ready
                 && SpacebaseRun.hero.paralysed == 0 && !maze.exitReached
                 && scene.cellSelector != null && scene.cellSelector.listener == defaultCellListener;
     }
 
-    public static void stepInMaze(com.wafitz.pixelspacebase.levels.DarkMazeLevel maze, int dx, int dy) {
-        if (!mazeMovementReady(maze) || Math.abs(dx) + Math.abs(dy) != 1) return;
-        int cell = SpacebaseRun.hero.pos + dx + dy * maze.width();
-        if (SpacebaseRun.hero.handle(cell)) SpacebaseRun.hero.next();
-    }
-
     private static final CellSelector.Listener defaultCellListener = new CellSelector.Listener() {
         @Override
         public void onSelect(Integer cell) {
-            if (SpacebaseRun.hero.handle(cell)) {
+            if (cell == null) return;
+            int target = cell;
+            if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
+                com.wafitz.pixelspacebase.levels.DarkMazeLevel maze =
+                        (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level;
+                if (!mazeMovementReady(maze)) return;
+                target = maze.stepToward(SpacebaseRun.hero.pos, target);
+            }
+            if (SpacebaseRun.hero.handle(target)) {
                 SpacebaseRun.hero.next();
             }
         }
