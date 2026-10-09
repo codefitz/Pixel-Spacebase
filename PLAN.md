@@ -82,6 +82,18 @@ These fixes are implemented in v1.0.4, but on-device confirmation remained outst
 - [ ] Decide what should replace Yog Duza; a giant angel is one suggestion.
 - [ ] Map sprite directions (walking, standing, fighting)
 - [ ] Hoverpad should be able to activate traps/tiles with extra click whilst on top.
+- [ ] Fill the inside of entrance and exit pads
+- [ ] Enemies should go after the cat when it's active (not sitting waiting to be petted), however bosses will kill the cat if it's in the same room regardless of status.
+- [ ] Inactive holodeck needs distinguishing walls.
+- [ ] Have a room in some levels that is only reachable by jetpack
+- [ ] A blind enemy but takes 50% health when it finds you
+- [ ] DM3000 should be able to use medigel to wipe acid off
+- [ ] On the prison boss, if you bring the cat then she is lost once the boss is defeated. Ideally she should just wander back to the previous level.
+- [ ] If you zap Y, he sends you to the blackout level and remarks "This will teach you a lesson". He should only do this once.
+- [ ] Randomly, 1% chance, Y will appear when you're trapped in the doorless room and simply tell you sorry but this is it, I'm not rescuing you. This should only activate after he's already done 1 rescue. This signifies the end unless the hero has some way of teleporting.
+- [ ] DM3000 and Shapeshifter should be immune to eggs and facehugger
+- [ ] Sparks in engineering should only be visible on the level with Leonard
+- [ ] Bug - an clicking on melt and then click on my the blaster actaully melts it down!
 
 ## Longer-term Backlog
 
