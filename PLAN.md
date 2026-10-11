@@ -57,13 +57,13 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [x] Create distinct bio, item and trap detector icons with green life-sign, blue cargo and red hazard displays. Assign the item and trap icons to their Hunter modules; preserve existing saves and Pixel Dungeon visit artwork. Bio icon assignment awaits clarification because there is no separate bio-detector item. In-game confirmation pending.
 - [x] Match the Loader arm and equipment icons to the orange hydraulic chassis, refresh its cockpit portraits, and reduce the on-level sprite by about 29% to a similar overall size as the Hoverpod while preserving proportions and claw clearance. In-game confirmation pending.
 - [x] Reskin the Jeda Knight with an uncovered head, cream/tan robes and blue energy blade; give the shared Master variant a green blade. Repacked both into 64×64 animation frames. In-game confirmation pending.
-- [ ] Reskin DM3000.
 - [x] Enlarge the Hoverpod with dedicated 80×80 animation frames, a broad blue glass canopy and each hero visible behind the screen. Refreshed portraits and inventory icon. In-game confirmation pending.
 - [x] Give all 12 plasmid colours matching injector icons with a shared silhouette and coloured liquid reservoir. Updated splash colour sampling for the new artwork. In-game confirmation pending.
 - [x] Make Medigel, Adrenal and Forcefield Stims use the same injector silhouette as plasmids, with green, blue and purple reservoirs respectively. Includes items restored from existing saves. In-game confirmation pending.
-- [ ] Reskin hero class armors.
 - [x] Enlarge the Hunter suit proportionally to a 64px-tall frame, trimming transparent padding when displayed and preserving animation alignment. In-game confirmation pending.
 - [x] Shrink Roman Soldiers from 96×96 to a displayed 64×64 frame, preserving the artwork and animations. In-game confirmation pending.
+- [ ] Reskin DM3000.
+- [ ] Reskin hero class armors.
 
 ## Carried-over Verification
 
@@ -71,11 +71,11 @@ These fixes are implemented in v1.0.4, but on-device confirmation remained outst
 
 - [x] Check popup/button text fitting and checkbox alignment in game.
 - [x] Previous arena landing was confirmed; superseded by the v1.0.5 doorless-room routing above. In-game confirmation of the new behavior pending.
-- [ ] Confirm enemies killed by a Shapeshifter's thrown blaster finish their death animations.
 - [x] Confirm revealed hull edges have no fog halos or stray exterior walls, while interiors retain fog of war.
 - [x] Confirm quantum chest contents remain single and persist across transitions, revisits, bosses and save/reload.
 - [x] Confirm blue item scanner pings and red trap scanner pings appear through fog under the intended Hunter suit/module conditions.
 - [ ] Investigate the two Eclipse Saber JVM tests that failed during initialization; rerun the full suite after correction.
+- [ ] Confirm enemies killed by a Shapeshifter's thrown blaster finish their death animations.
 
 ## V1.0.6
 
