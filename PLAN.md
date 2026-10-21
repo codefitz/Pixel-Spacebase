@@ -75,8 +75,8 @@ These fixes are implemented in v1.0.4, but on-device confirmation remained outst
 - [x] Confirm revealed hull edges have no fog halos or stray exterior walls, while interiors retain fog of war.
 - [x] Confirm quantum chest contents remain single and persist across transitions, revisits, bosses and save/reload.
 - [x] Confirm blue item scanner pings and red trap scanner pings appear through fog under the intended Hunter suit/module conditions.
-- [ ] Investigate the two Eclipse Saber JVM tests that failed during initialization; rerun the full suite after correction.
-- [ ] Confirm enemies killed by a Shapeshifter's thrown blaster finish their death animations.
+- [x] Investigate the two Eclipse Saber JVM tests that failed during initialization; rerun the full suite after correction.
+- [x] Confirm enemies killed by a Shapeshifter's thrown blaster finish their death animations.
 
 ## V1.0.6
 
