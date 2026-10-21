@@ -36,6 +36,20 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
     private static final String TXT_Update =
+            "_v1.0.5:_\n" +
+                    "_-_ Expanded Y's rescue journeys with saved returns, an alien colony and parts trader, boss detours, a dark maze and a rare original Pixel Dungeon visit.\n" +
+                    "_-_ Made the dark maze navigable without a torch using nearby grey shapes, map taps and movement feedback; visible routes support diagonal steps.\n" +
+                    "_-_ Added a switchable Hoverpod torch and orange/blue teleport pads with departure and arrival effects.\n" +
+                    "_-_ Matched Hunter detection colours to green characters, blue item silhouettes and red trap silhouettes.\n" +
+                    "_-_ Added DM-3000 water extraction for minor repairs, separate Medigel healing/extinguishing actions and reusable Command-deck decontamination stations.\n" +
+                    "_-_ Reworked grenades, mines, unknown-cache activation and Shapeshifter quickslots; moved plasma clearing to the Freeze Blaster and narrowed Flamethrower spread.\n" +
+                    "_-_ Replaced Spade and Drill with the Phase Cutter and Repulsor Baton.\n" +
+                    "_-_ Added detailed 64px Bulwark, Boarding Rig and Reactor Chassis class armour while retaining the Shapeshifter's Eldridge form.\n" +
+                    "_-_ Refreshed DM-3000's chassis progression and integrated launcher arm, Loader and Hoverpod presentation, Jeda Knights, injectors and detector icons.\n" +
+                    "_-_ Improved Holodeck arrival and projector rooms, Habitat sprinklers and changing rooms, and exterior platform layouts.\n" +
+                    "_-_ Fixed cross-run deck reuse, rescue timing, boss-deck falls, hull fog, egg placement, ordnance sorting and missing escape-pod ending text.\n" +
+                    "_-_ Restored normal starting strength, damage and death; removed invulnerability, the starter test chest and temporary test equipment.\n" +
+                    "\n" +
             "_v1.0.4:_\n" +
                     "_-_ Added a floating station backdrop with sparse stars, a large orbiting planet and revealed hull edges; removed stray exterior walls.\n" +
                     "_-_ Station cats wait until touched on each deck, bat one suitable item per room, eat raw meat when injured and scare away Signal Sirens.\n" +

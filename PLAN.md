@@ -1,6 +1,6 @@
 # Targeted Release: v1.0.5
 
-Working backlog for the next release. Completed v1.0.4 work is preserved in [the archived plan](docs/PLAN_v1.0.4_ARCHIVE.md) and the in-game changelog. Keep the game version at 1.0.4 (10004) until preparing the next release.
+Staging preparation for version 1.0.5 (10005). Completed v1.0.4 work is preserved in [the archived plan](docs/PLAN_v1.0.4_ARCHIVE.md) and the in-game changelog. Remaining device checks are recorded below.
 
 ## Mechanics
 
@@ -105,9 +105,9 @@ These fixes are implemented in v1.0.4, but on-device confirmation remained outst
 
 ## Release Prep
 
-- [ ] Remove the temporary debug starting loadout (identified Darksaber, Brightsaber and random working blaster) after item testing. Release builds retain their normal starting gear.
+- [x] Remove god/test mode: restore starting strength to 10, remove damage/death/ranking bypasses, the floor-one starter chest and temporary debug equipment. Existing saves retain their stored strength and items.
 - [ ] Complete selected 1.0.5 tasks and relevant playthrough checks.
 - [ ] Preserve save compatibility when changing item classes, quests and travel state.
-- [ ] Update Android version metadata, welcome summary and in-game changelog to 1.0.5.
-- [ ] Run regression tests and build the APK; document any outstanding failures.
+- [x] Update Android version metadata to 1.0.5 (10005), show the new update summary to 1.0.4 users and add the v1.0.5 in-game changelog.
+- [x] Run all 96 JVM regression tests successfully and build debug and release APKs for 1.0.5 (10005). Release APK is unsigned. Correct the Hoverpod frame expectations and Android-only Eclipse Saber/Y-rescue test fixtures. Class-armour pixel checks passed; on-device checks above remain pending.
 - [ ] Create the release and attach the APK, clearly identifying its signing/build type.

@@ -80,13 +80,16 @@ public class YRescueTest {
         private final HashMap<String, Integer> values = new HashMap<>();
         private final HashMap<String, String> strings = new HashMap<>();
         private final HashMap<String, Boolean> flags = new HashMap<>();
+        private final HashMap<String, int[]> arrays = new HashMap<>();
         @Override public void put(String key, String value) { strings.put(key, value); }
         @Override public String getString(String key) { return strings.get(key); }
         @Override public void put(String key, boolean value) { flags.put(key, value); }
         @Override public boolean getBoolean(String key) { return Boolean.TRUE.equals(flags.get(key)); }
         @Override public void put(String key, int value) { values.put(key, value); }
         @Override public int getInt(String key) { return values.containsKey(key) ? values.get(key) : 0; }
-        @Override public boolean contains(String key) { return values.containsKey(key) || strings.containsKey(key) || flags.containsKey(key); }
+        @Override public void put(String key, int[] value) { arrays.put(key, value.clone()); }
+        @Override public int[] getIntArray(String key) { return arrays.containsKey(key) ? arrays.get(key).clone() : new int[0]; }
+        @Override public boolean contains(String key) { return values.containsKey(key) || strings.containsKey(key) || flags.containsKey(key) || arrays.containsKey(key); }
         @Override public void put(String key, float value) { }
         @Override public float getFloat(String key) { return 0; }
     }
