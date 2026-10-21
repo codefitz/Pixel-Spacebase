@@ -41,9 +41,6 @@ public class Assets {
     public static final String ICONS = "icons.png";
     public static final String STATUS = "status_pane.png";
     public static final String MENU = "menu_button.png";
-    public static final String HP_BAR = "hp_bar.png";
-    public static final String SHLD_BAR = "shield_bar.png";
-    public static final String XP_BAR = "exp_bar.png";
     public static final String TOOLBAR = "toolbar.png";
     public static final String SHADOW = "shadow.png";
     public static final String BOSSHP = "boss_hp.png";
@@ -145,7 +142,6 @@ public class Assets {
     public static final String WEAK_FLOOR = "custom_tiles/weak_floor.png";
     public static final String SECURITY_QUEST = "custom_tiles/security_quests.png";
     public static final String SECURITY_EXIT = "custom_tiles/security_exit.png";
-    public static final String HOLODECK_RETAINER_TILES = "custom_tiles/holodeck_halls.png";
     public static final String HOLODECK_GRID = "custom_tiles/holodeck_grid.png";
     public static final String ALIEN_PLANET_TILES = "custom_tiles/alien_planet_tiles.png";
     public static final String TILES_SECURITY_ARENA = "tiles_security_arena.png";

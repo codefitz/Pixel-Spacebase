@@ -22,7 +22,8 @@ Work through release stability and reported bugs first, then equipment, companio
 
 ## Rooms and Artwork
 
-- [ ] **Fill the interiors of entrance and exit pads.** Retain the orange/blue travel directions, locked-pad indication and transition effects; review the result against each deck's floor artwork.
+- [x] **Archive unused packaged assets.** Moved 18 unreferenced soundtrack, HUD, terrain and alternate-sprite files into [the asset archive](art/archive/v1.0.6-unused-assets/README.md), preserving their bytes, original paths and SHA-256 checksums. Removed four unused `Assets` constants. Retained live assets, Pixel Dungeon rescue art and artwork-tool/test files. Debug and minified release builds passed; both APKs retain the same 200 asset files byte for byte and exclude the archive. The release APK is 37.86 MiB smaller (27.08%). Gameplay checks were not repeated for this change.
+- [x] **Fill the interiors of entrance and exit pads.** Added opaque metal centres to both frames of `teleport_pads.png`, preserving every original rim and exterior pixel, the orange/blue directions and transparent outer margins. Updated the artwork installer, generated source and six-background preview in [the pad artwork folder](art/teleport-pads/README.md). Pixel/grid checks and debug/minified release builds passed. Travel, locked-pad dimming, pulses and transition effects retain their existing behaviour; in-game visual confirmation remains under verification below.
 - [ ] **Give the inactive Holodeck distinguishing walls.** Make its powered-down walls readable alongside the grid floor, including the arena doorway and entrance surround. Preserve the independent inactive treatment of the unstable holo-projector quest room.
 - [ ] **Add an optional room reachable only by jetpack on some levels.** Keep the main route, mandatory quest items and level progression reachable without it. Check flight access, landing and return before choosing generation frequency.
 - [ ] **Map sprite directions and animation frames.** Document standing, walking and fighting directions for the relevant sprite sheets, including frame sizes and code mappings, to guide further art changes and avoid reversed or misaligned poses.
@@ -33,6 +34,7 @@ Use [the staged rescue design](docs/Y_RESCUE_PLAN.md) for the existing journey a
 
 - [ ] **Have Y punish being zapped once per run.** Send the hero to the blackout/dark-maze level with the remark, "This will teach you a lesson". Save the one-time flag and preserve the return journey so reloads cannot repeat the punishment or lose the origin.
 - [ ] **Add a 1% chance that Y refuses a later doorless-room rescue.** Enable this only after Y has already performed at least one rescue, preserving the first-rescue guarantee. He appears and tells the hero he will not rescue them; the hero remains stranded unless they have another escape, such as teleportation. Save the outcome so reloading cannot reroll the refusal. Keep this chamber event separate from the existing rescue-destination probabilities.
+- [ ] Do a test of all Y scenarios - alter logic to cycle through them.
 
 ## Decisions and Features to Scope
 
@@ -60,7 +62,7 @@ These changes are implemented in the v1.0.5 baseline but explicitly still awaite
 - [ ] Confirm boss-deck falls land in the sealed doorless chamber and Y arrives after 20 hero actions. Include restored phase-swapped boss maps, an on-demand final-boss chamber and deliberate boss detours entering through the normal arena approach.
 - [ ] Complete the [staged Y rescue acceptance checks](docs/Y_RESCUE_PLAN.md): first-rescue guarantee and origin recovery; alien-planet visits and purchases; boss victory/defeat/reset; maze visibility and Hunter mapping; and the 1% Pixel Dungeon visit. Include save/reload, cargo and cat transfers.
 - [ ] Confirm new runs reject unrelated deck files and produce normal loot from level 6 onward. Check legacy unmarked-deck handling, skipped unfinished bosses approached from below and current-run victory requirements for completed legacy boss decks.
-- [ ] Confirm teleport-pad departure/arrival effects, locked departures, colours and travel/save behaviour across deck types, with Maintenance ladders retained. Review pad interiors again after the v1.0.6 artwork change.
+- [ ] Confirm teleport-pad departure/arrival effects, locked departures, colours and travel/save behaviour across deck types, with Maintenance ladders retained. Confirm the implemented v1.0.6 filled centres in game, including dimmed locked pads and both Holodeck phases.
 - [ ] Confirm the escape-pod ending text, cat variant, launch and stay buttons resolve correctly.
 
 ### Rooms and Visuals

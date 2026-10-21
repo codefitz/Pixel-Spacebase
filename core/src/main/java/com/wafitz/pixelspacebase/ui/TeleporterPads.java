@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-/** Shared transparent pad overlays; terrain and saved floor connections stay intact. */
+/** Shared pads with filled centres and transparent outer corners; saved connections stay intact. */
 public class TeleporterPads extends Group {
     public static final int ORANGE = 0xFF9D36;
     public static final int BLUE = 0x38BEFF;

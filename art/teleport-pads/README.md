@@ -1,21 +1,25 @@
 # Shared teleport pads
 
-The built-in image-generation tool produced two circular, transparent floor
-overlays: orange for the previous deck and blue for the next deck. Neither uses
-arrows or chevrons. The open centre and outside margin preserve each environment's
-floor texture.
+The pads use orange for the previous deck and blue for the next deck. Both now
+have opaque dark-metal centres with subtle matching colour reflections and
+concentric panel detail. Their original illuminated rims are preserved exactly;
+the outside margin remains transparent so the deck floor shows around each pad.
+Neither uses arrows or chevrons.
 
 ## Artwork
 
-- Generated originals: `orange-source.png`, `blue-source.png`.
-- Installed 64×64 overlays: `orange-pad.png`, `blue-pad.png`.
+- Original generated rings: `orange-source.png`, `blue-source.png`.
+- Filled-centre reference from built-in imagegen: `filled-centres-source.png`.
+- Installed 64×64 pads: `orange-pad.png`, `blue-pad.png`.
 - Live two-frame strip: `core/src/main/assets/teleport_pads.png` (128×64).
 - Exact prompts: `PROMPTS.md`.
 - Artwork preview on six deck backgrounds: `deck-preview.png`.
 
 Each 64×64 frame has a 56px footprint, retaining crisp detail on a 32×32 artwork
-grid. The runtime retains the existing 16×16 logical tile size. Existing atlases
-are unchanged.
+grid. The runtime retains the existing 16×16 logical tile size. The installer
+fits the generated reference, then fills only the original ring's enclosed
+transparent centre. Every original rim and exterior pixel is retained, rather
+than replacing the rings with a newly generated design. Deck atlases are unchanged.
 
 Install and regenerate the preview from the repository root:
 
@@ -27,9 +31,9 @@ java -Djava.awt.headless=true scripts/InstallTeleportPadArtwork.java art/telepor
 
 `TeleporterPads` applies only to entrance, exit, locked-exit and unlocked-exit
 terrain. Maintenance and its boss deck keep their ladders. Floors are selected
-through the existing tile mapper before the rings are drawn, including Habitat
-arrival-room flooring and both Holodeck phases. The Holodeck arrival overlay also
-uses its floor beneath the new pads. Boss pads that appear, disappear or unlock
+through the existing tile mapper before the pads are drawn, including Habitat
+arrival-room flooring and both Holodeck phases. Their flooring remains visible
+outside the circular pad. Boss pads that appear, disappear or unlock
 are refreshed with map changes. Locked pads are dimmed; their movement and keycard
 rules remain intact.
 
@@ -51,7 +55,14 @@ changed, so the new treatment also applies to existing saves.
 
 ## Evidence
 
-The installed artwork preview was inspected, and a debug APK build completed.
+The filled pads were inspected on Security, Engineering, Habitat, Command and both
+Holodeck floor textures. Pixel checks confirmed that all 1,216 orange and 1,096
+blue centre pixels are now opaque, while every original rim and exterior pixel
+is unchanged. Both frames retain binary alpha and the 2× artwork grid, and the
+live strip matches the fitted pads exactly. Debug and minified release APK builds
+passed with the filled strip packaged.
+
 Phone playtesting of pad clicks, boss unlocks, both travel directions and the
-Maintenance boundary remains pending. The artwork preview is not a gameplay
-screenshot.
+Maintenance boundary remains pending, including visual confirmation of the new
+centres. The artwork preview is not a gameplay screenshot. The fill change does
+not alter travel, lock/dimming, pulse, beam or loading-effect code.

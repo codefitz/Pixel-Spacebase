@@ -221,7 +221,7 @@ public class SpacebaseTilemap extends Tilemap {
     }
 
     private int getTileVisual(int pos, int tile) {
-        // Pad graphics are transparent overlays; use this deck's own floor below them.
+        // Keep this deck's floor visible around the pads' transparent outer corners.
         if (TeleporterPads.isPad(SpacebaseRun.level, tile)) tile = Terrain.EMPTY;
         if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.PixelDungeonLevel) {
             return ((com.wafitz.pixelspacebase.levels.PixelDungeonLevel) SpacebaseRun.level).tileVisual(pos, tile);

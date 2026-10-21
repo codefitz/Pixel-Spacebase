@@ -29,6 +29,8 @@ Here is a small selection of current in-game art: the orbital backdrop, the powe
   </tr>
 </table>
 
+Unused packaged assets are preserved in [the v1.0.6 asset archive](art/archive/v1.0.6-unused-assets/README.md), with original paths, checksums and audit notes. The archive is kept outside the APK's asset folders.
+
 ## What's Different?
 
 The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/Escape RPG. The project is playable as an alpha, but expect unfinished content, rough edges, and ongoing balance changes.

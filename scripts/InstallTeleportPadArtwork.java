@@ -5,8 +5,9 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
+import java.util.ArrayDeque;
 
-/** Packs transparent circular overlays and previews them on the deck floor textures. */
+/** Fills the existing pad centres, packs the overlays and previews them on deck floors. */
 public class InstallTeleportPadArtwork {
     public static void main(String[] args) throws Exception {
         Path artwork = Path.of(args[0]);
@@ -14,8 +15,16 @@ public class InstallTeleportPadArtwork {
         BufferedImage strip = new BufferedImage(128, 64, BufferedImage.TYPE_INT_ARGB);
         BufferedImage[] icons = new BufferedImage[2];
         String[] names = {"orange", "blue"};
+        BufferedImage filledSource = ImageIO.read(artwork.resolve("filled-centres-source.png").toFile());
+        if (filledSource == null || filledSource.getWidth() % 2 != 0) {
+            throw new IllegalArgumentException("Expected two equal frames in the filled pad source");
+        }
+        int filledFrameWidth = filledSource.getWidth() / 2;
         for (int i = 0; i < names.length; i++) {
             icons[i] = fit(ImageIO.read(artwork.resolve(names[i] + "-source.png").toFile()));
+            BufferedImage filled = fit(filledSource.getSubimage(i * filledFrameWidth, 0,
+                    filledFrameWidth, filledSource.getHeight()));
+            fillCentre(icons[i], filled);
             for (int y = 0; y < 64; y++) {
                 for (int x = 0; x < 64; x++) strip.setRGB(i * 64 + x, y, icons[i].getRGB(x, y));
             }
@@ -48,6 +57,31 @@ public class InstallTeleportPadArtwork {
         }
         g.dispose();
         ImageIO.write(preview, "png", artwork.resolve("deck-preview.png").toFile());
+    }
+
+    /** Fill only the enclosed hole, preserving every existing rim and exterior pixel. */
+    private static void fillCentre(BufferedImage icon, BufferedImage filled) {
+        boolean[] seen = new boolean[64 * 64];
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
+        queue.add(32 * 64 + 32);
+        while (!queue.isEmpty()) {
+            int cell = queue.removeFirst();
+            int x = cell % 64, y = cell / 64;
+            if (seen[cell] || (icon.getRGB(x, y) >>> 24) != 0) continue;
+            seen[cell] = true;
+            if (x == 0 || x == 63 || y == 0 || y == 63) {
+                throw new IllegalArgumentException("Pad centre is not enclosed by its rim");
+            }
+            int pixel = filled.getRGB(x, y);
+            if ((pixel >>> 24) < 128) {
+                throw new IllegalArgumentException("Filled pad source has a transparent centre");
+            }
+            icon.setRGB(x, y, pixel | 0xFF000000);
+            queue.add(cell - 1);
+            queue.add(cell + 1);
+            queue.add(cell - 64);
+            queue.add(cell + 64);
+        }
     }
 
     private static BufferedImage fit(BufferedImage source) {

@@ -1,0 +1,156 @@
+{
+  "release_plan": "v1.0.6",
+  "audit_date": "2026-10-21",
+  "source_root": "core/src/main/assets",
+  "archived_files": [
+    {
+      "original_path": "core/src/main/assets/custom_tiles/holodeck_halls.png",
+      "archive_path": "art/archive/v1.0.6-unused-assets/custom_tiles/holodeck_halls.png",
+      "size_bytes": 3835,
+      "sha256": "8fd32a1c8b8bd483b0e6cf116bcba1ae972cc671a018cb7063d31aa40f7f2519",
+      "reason": "Unused former Holodeck custom sheet; Assets.HOLODECK_RETAINER_TILES has no caller."
+    },
+    {
+      "original_path": "core/src/main/assets/exp_bar.png",
+      "archive_path": "art/archive/v1.0.6-unused-assets/exp_bar.png",
+      "size_bytes": 81,
+      "sha256": "17643d138ce06c881483b3a3742ad178003e7caf0a46c60bc9c39e50de1bffd8",
+      "reason": "Superseded HUD strip; StatusPane draws the current experience bar directly and Assets.XP_BAR has no caller."
+    },
+    {
+      "original_path": "core/src/main/assets/hp_bar.png",
+      "archive_path": "art/archive/v1.0.6-unused-assets/hp_bar.png",
+      "size_bytes": 136,
+      "sha256": "4a1a42f78f98cbc8691ce8bc8b4f686fcdbd151e1337b5182efeea9d1c67adde",
+      "reason": "Superseded HUD strip; StatusPane draws the current HP bar directly and Assets.HP_BAR has no caller."
+    },
+    {
+      "original_path": "core/src/main/assets/items_old.png",
+      "archive_path": "art/archive/v1.0.6-unused-assets/items_old.png",
+      "size_bytes": 85121,
+      "sha256": "b31d07086bd1675c7930aa76fbf42e9e240ba832c3fe29c6f959e7f2d4d1e66d",
+      "reason": "Unreferenced backup of the item atlas; runtime uses items.png."
+    },
+    {
+      "original_path": "core/src/main/assets/shield_bar.png",
+      "archive_path": "art/archive/v1.0.6-unused-assets/shield_bar.png",
+      "size_bytes": 135,
+      "sha256": "c9f5cef64588962275d44b6c63c6ebf7469b50f6d2e2638560882e9c2f50d3e6",
+      "reason": "Superseded HUD strip; no caller of Assets.SHLD_BAR."
+    },
+    {
+      "original_path": "core/src/main/assets/soundtrack/air_supply.mp4",
+      "archive_path": "art/archive/v1.0.6-unused-assets/soundtrack/air_supply.mp4",
+      "size_bytes": 9716477,
+      "sha256": "de4fc0e679ee69e61b5ee7583d42c05277ebb331d4e596985641f34545a275ce",
+      "reason": "Not selected by Assets or any runtime/music loader; no artwork-tool reference."
+    },
+    {
+      "original_path": "core/src/main/assets/soundtrack/commons_in_ruin.mp4",
+      "archive_path": "art/archive/v1.0.6-unused-assets/soundtrack/commons_in_ruin.mp4",
+      "size_bytes": 6172202,
+      "sha256": "b2553c1b86afe52795e4f975363f26fba78f34b4c9b0471bf2ab0f6f1c0704c0",
+      "reason": "Not selected by Assets or any runtime/music loader; no artwork-tool reference."
+    },
+    {
+      "original_path": "core/src/main/assets/soundtrack/game.ogg",
+      "archive_path": "art/archive/v1.0.6-unused-assets/soundtrack/game.ogg",
+      "size_bytes": 504496,
+      "sha256": "6d933092ffa62f77f4d607545e7bd3803e2cc01f91742e7f54bcdeeb09c4dd2e",
+      "reason": "Not selected by Assets or any runtime/music loader; no artwork-tool reference."
+    },
+    {
+      "original_path": "core/src/main/assets/soundtrack/habitation_deck_echoes.mp4",
+      "archive_path": "art/archive/v1.0.6-unused-assets/soundtrack/habitation_deck_echoes.mp4",
+      "size_bytes": 7324239,
+      "sha256": "0fc40da0e89bbaeec5585afc8b0183d344550c613d92daf48790dc9d2877fe97",
+      "reason": "Not selected by Assets or any runtime/music loader; no artwork-tool reference."
+    },
+    {
+      "original_path": "core/src/main/assets/soundtrack/iron_gate_slam.mp4",
+      "archive_path": "art/archive/v1.0.6-unused-assets/soundtrack/iron_gate_slam.mp4",
+      "size_bytes": 3790449,
+      "sha256": "341022b1251039ef9a52e7baac03b21deb24a871a9c8d68f01a17499ab869244",
+      "reason": "Not selected by Assets or any runtime/music loader; no artwork-tool reference."
+    },
+    {
+      "original_path": "core/src/main/assets/soundtrack/sector_9_breach.mp4",
+      "archive_path": "art/archive/v1.0.6-unused-assets/soundtrack/sector_9_breach.mp4",
+      "size_bytes": 3777568,
+      "sha256": "e086604788e43dbcf047a4ac8ab91efe7267129ef2be65a4f507a46b1100fcf5",
+      "reason": "Not selected by Assets or any runtime/music loader; no artwork-tool reference."
+    },
+    {
+      "original_path": "core/src/main/assets/soundtrack/sleeping_sample.mp4",
+      "archive_path": "art/archive/v1.0.6-unused-assets/soundtrack/sleeping_sample.mp4",
+      "size_bytes": 3555287,
+      "sha256": "010e7a46d58694962ca63e6a92f39dc358a0172f7619b898e8ffc2afb6c250be",
+      "reason": "Not selected by Assets or any runtime/music loader; no artwork-tool reference."
+    },
+    {
+      "original_path": "core/src/main/assets/soundtrack/surface.ogg",
+      "archive_path": "art/archive/v1.0.6-unused-assets/soundtrack/surface.ogg",
+      "size_bytes": 334913,
+      "sha256": "d6f5e8d95e4b267d042cac895b8b58b7d8c06aba247a8d1fce8d8444f3b6b6c7",
+      "reason": "Not selected by Assets or any runtime/music loader; no artwork-tool reference."
+    },
+    {
+      "original_path": "core/src/main/assets/soundtrack/terminal_override.mp4",
+      "archive_path": "art/archive/v1.0.6-unused-assets/soundtrack/terminal_override.mp4",
+      "size_bytes": 3931382,
+      "sha256": "973d86d54f958c7e0e2935ddc6685430d883d517919115c9698b19e8c6e29151",
+      "reason": "Not selected by Assets or any runtime/music loader; no artwork-tool reference."
+    },
+    {
+      "original_path": "core/src/main/assets/soundtrack/theme.ogg",
+      "archive_path": "art/archive/v1.0.6-unused-assets/soundtrack/theme.ogg",
+      "size_bytes": 435493,
+      "sha256": "9e7bcc00a9173325f9471a7748f5f7d125b4045ac6c859d5e357a6905a88493c",
+      "reason": "Not selected by Assets or any runtime/music loader; no artwork-tool reference."
+    },
+    {
+      "original_path": "core/src/main/assets/terrain_features_old.png",
+      "archive_path": "art/archive/v1.0.6-unused-assets/terrain_features_old.png",
+      "size_bytes": 51717,
+      "sha256": "23799c92eca482d8b3617d7577a18581ac928a2c279a45904c20fbe7e0757826",
+      "reason": "Unreferenced backup of the terrain feature atlas; runtime uses terrain_features.png."
+    },
+    {
+      "original_path": "core/src/main/assets/tiles_decorators.png",
+      "archive_path": "art/archive/v1.0.6-unused-assets/tiles_decorators.png",
+      "size_bytes": 11045,
+      "sha256": "59ab9d606e26e1009a5038d018d75c7a91d0099815091c565e524223ae423e77",
+      "reason": "Unreferenced decorator sheet; no runtime or artwork-tool filename reference."
+    },
+    {
+      "original_path": "core/src/main/assets/xeno_queen_festive.png",
+      "archive_path": "art/archive/v1.0.6-unused-assets/xeno_queen_festive.png",
+      "size_bytes": 4211,
+      "sha256": "3ed4ae37feeb54b9bee1cdd02f4546a03fa129a7723138290f627c984c2e3f6e",
+      "reason": "Unreferenced alternate queen sheet; current queen sprite uses queen_xeno.png."
+    }
+  ],
+  "validation": {
+    "gradle_command": "./gradlew :core:assembleDebug :core:assembleRelease --offline",
+    "build_result": "passed",
+    "archive_sha256_verified": true,
+    "remaining_asset_constants_resolve": 178,
+    "before_release_apk_size_bytes": 146626503,
+    "after_apks": {
+      "debug": {
+        "size_bytes": 107986820,
+        "asset_count": 200,
+        "all_retained_asset_hashes_match": true,
+        "archived_assets_absent": true
+      },
+      "release": {
+        "size_bytes": 106925130,
+        "asset_count": 200,
+        "all_retained_asset_hashes_match": true,
+        "archived_assets_absent": true
+      }
+    },
+    "release_apk_reduction_bytes": 39701373,
+    "gameplay_checks": "Not repeated for this archive-only asset change; retained packaged assets match the previous APK byte for byte."
+  }
+}
