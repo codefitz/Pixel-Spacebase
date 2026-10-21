@@ -80,6 +80,7 @@ These fixes are implemented in v1.0.4, but on-device confirmation remained outst
 
 ## V1.0.6
 
+- [ ] Fix the release shrinker keep rule in `core/proguard-rules.pro`: replace the obsolete `wafitz.**` package with `com.wafitz.pixelspacebase.**` to preserve reflective scene construction, class-name-based text and saved objects. The v1.0.5 minified output strips `TitleScene` and `GameScene`; rebuild, inspect the R8 output and test a signed minified release APK, including save/reload. Deferred to v1.0.6; the player will test v1.0.5 before merge, and a debug APK does not exercise release shrinking.
 - [ ] Decide what should replace Yog Duza; a giant angel is one suggestion.
 - [ ] Map sprite directions (walking, standing, fighting)
 - [ ] Hoverpad should be able to activate traps/tiles with extra click whilst on top.
