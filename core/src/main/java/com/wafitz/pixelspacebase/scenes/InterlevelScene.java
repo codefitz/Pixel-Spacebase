@@ -30,6 +30,8 @@ import com.wafitz.pixelspacebase.actors.buffs.YRescueJourney;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.YRescuer;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.items.Generator;
+import com.wafitz.pixelspacebase.effects.TeleportTransition;
+import com.wafitz.pixelspacebase.ui.TeleporterPads;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.painters.Workshop;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -55,6 +57,9 @@ public class InterlevelScene extends PixelScene {
     }
 
     public static Mode mode;
+    // Presentation only: normal save/reload, falling and rescue travel use their existing flow.
+    public static boolean teleportTravel;
+    public static int teleportColor = TeleporterPads.BLUE;
 
     public static int returnDepth;
     public static int returnPos;
@@ -82,7 +87,11 @@ public class InterlevelScene extends PixelScene {
     public void create() {
         super.create();
 
-        String text = Messages.get(Mode.class, mode.name());
+        teleportTravel = teleportTravel && (mode == Mode.DESCEND || mode == Mode.ASCEND);
+        if (teleportTravel) {
+            add(new TeleportTransition(Camera.main, teleportColor, TeleportTransition.Stage.LOADING, null));
+        }
+        String text = teleportTravel ? Messages.get(this, "teleporting") : Messages.get(Mode.class, mode.name());
 
         message = PixelScene.renderText(text, 9);
         message.x = (Camera.main.width - message.width()) / 2;
@@ -209,6 +218,7 @@ public class InterlevelScene extends PixelScene {
     }
 
     private void descend() throws IOException {
+        if (returnFromSideLevel()) return;
 
         Actor.fixTime();
         if (SpacebaseRun.hero == null) {
@@ -236,10 +246,11 @@ public class InterlevelScene extends PixelScene {
     }
 
     private void fall() throws IOException {
+        if (returnFromSideLevel()) return;
 
         Actor.fixTime();
         int targetDepth = SpacebaseRun.fallTargetDepth();
-        Buff.affect(SpacebaseRun.hero, YRescueJourney.class).recordFall(SpacebaseRun.depth);
+        Buff.affect(SpacebaseRun.hero, YRescueJourney.class).recordFall(SpacebaseRun.depth, SpacebaseRun.hero.pos);
         Workshop.carryStockFrom(SpacebaseRun.level);
         StationCat.carryFollowerFrom(SpacebaseRun.level);
         SpacebaseRun.saveAll();
@@ -258,6 +269,7 @@ public class InterlevelScene extends PixelScene {
     }
 
     private void ascend() throws IOException {
+        if (returnFromSideLevel()) return;
         Actor.fixTime();
 
         Workshop.carryStockFrom(SpacebaseRun.level);
@@ -266,22 +278,71 @@ public class InterlevelScene extends PixelScene {
         SpacebaseRun.depth = SpacebaseRun.previousDepth(SpacebaseRun.depth);
         Level level = SpacebaseRun.loadOrCreateLevel(SpacebaseRun.depth);
         Workshop.deliverStorageTo(level);
-        SpacebaseRun.switchLevel(level, level.exit);
+        // A skipped boss deck may not even have an exit until its encounter ends.
+        // Enter undefeated arenas through their normal approach from either direction.
+        int landing = SpacebaseRun.bossLevel() && !level.rescueBossDefeated
+                ? level.entrance > 0 ? level.entrance : level.rescueBossLandingCell() : level.exit;
+        SpacebaseRun.switchLevel(level, landing);
+    }
+
+    private boolean returnFromSideLevel() throws IOException {
+        if (!SpacebaseRun.isRescueSideLevel() || SpacebaseRun.hero == null) return false;
+        YRescueJourney ticket = SpacebaseRun.hero.buff(YRescueJourney.class);
+        if (ticket == null) throw new IOException("Side journey has no return ticket");
+        ticket.prepareReturn();
+        returnTo();
+        return true;
     }
 
     private void returnTo() throws IOException {
 
         Actor.fixTime();
 
-        Workshop.carryStockFrom(SpacebaseRun.level);
-        StationCat.carryFollowerFrom(SpacebaseRun.level);
-        SpacebaseRun.saveAll();
-        SpacebaseRun.depth = returnDepth;
-        Level level = SpacebaseRun.loadOrCreateLevel(returnDepth);
+        YRescueJourney ticket = SpacebaseRun.hero.buff(YRescueJourney.class);
+        if (SpacebaseRun.isRescueSideLevel() && ticket != null && !ticket.pendingTravel()) ticket.prepareReturn();
+        boolean journeyTravel = ticket != null && ticket.pendingTravel();
+        boolean toPlanet = journeyTravel && ticket.phase == YRescueJourney.Phase.DEPARTING
+                && ticket.destination == YRescueJourney.Destination.ALIEN_PLANET;
+        boolean toBoss = journeyTravel && ticket.phase == YRescueJourney.Phase.DEPARTING
+                && ticket.destination == YRescueJourney.Destination.BOSS;
+        boolean toMaze = journeyTravel && ticket.phase == YRescueJourney.Phase.DEPARTING
+                && ticket.destination == YRescueJourney.Destination.DARK_MAZE;
+        boolean toDungeon = journeyTravel && ticket.phase == YRescueJourney.Phase.DEPARTING
+                && ticket.destination == YRescueJourney.Destination.PIXEL_DUNGEON;
+
+        if (journeyTravel) ticket.configureTravel();
+        if (!journeyTravel || !ticket.transferPrepared) {
+            Workshop.carryStockFrom(SpacebaseRun.level);
+            StationCat.carryFollowerFrom(SpacebaseRun.level);
+            if (journeyTravel && ticket.destination == YRescueJourney.Destination.BOSS
+                    && ticket.phase == YRescueJourney.Phase.RETURNING) ticket.commitBossArena();
+            if (journeyTravel) ticket.transferPrepared = true;
+            SpacebaseRun.saveAll();
+        }
+        Level level;
+        int landing;
+        if (journeyTravel && ticket.arrivalLevel != null) {
+            Actor.clear();
+            SpacebaseRun.depth = returnDepth;
+            SpacebaseRun.selectRescueLevel(toPlanet || toBoss || toMaze || toDungeon ? ticket.destinationIdentity : "");
+            level = ticket.arrivalLevel;
+            landing = ticket.landingPos;
+        } else {
+            SpacebaseRun.depth = returnDepth;
+            level = toPlanet || toBoss || toMaze || toDungeon ? SpacebaseRun.loadOrCreateRescueLevel(ticket.destinationIdentity)
+                    : SpacebaseRun.loadOrCreateLevel(returnDepth);
+            if (toBoss) ticket.captureBossBaseline(level);
+            landing = toBoss ? level.rescueBossLandingCell() : toPlanet || toMaze || toDungeon ? level.entrance : rescueScatter ? YRescuer.randomReachableCell(level, -1)
+                    : returnAtEntrance ? YRescuer.safeReturnCell(level, ticket == null ? -1 : ticket.sourcePos) : returnPos;
+            if (landing < 0 && journeyTravel) throw new IOException("No usable Y rescue landing cell");
+            if (journeyTravel) {
+                ticket.arrivalLevel = level;
+                ticket.landingPos = landing;
+                // Save an untouched destination before moving cargo or followers into it.
+                SpacebaseRun.saveJourneyCheckpoint();
+            }
+        }
         Workshop.deliverStorageTo(level);
-        int landing = rescueScatter
-                ? YRescuer.randomReachableCell(level, -1)
-                : returnAtEntrance ? level.entrance : returnPos;
         SpacebaseRun.switchLevel(level, landing);
         returnAtEntrance = false;
         rescueScatter = false;
@@ -294,6 +355,13 @@ public class InterlevelScene extends PixelScene {
         GameLog.wipe();
 
         SpacebaseRun.loadGame(StartScene.curClass);
+        YRescueJourney ticket = SpacebaseRun.hero.buff(YRescueJourney.class);
+        if (ticket != null && ticket.pendingTravel()) {
+            // Do not carry cargo twice when resuming a prepared departure/return.
+            if (ticket.arrivalLevel == null) SpacebaseRun.level = SpacebaseRun.loadLevel(StartScene.curClass);
+            returnTo();
+            return;
+        }
         if (SpacebaseRun.depth == -1) {
             SpacebaseRun.depth = Statistics.deepestFloor;
             SpacebaseRun.switchLevel(SpacebaseRun.loadLevel(StartScene.curClass), -1);
@@ -319,6 +387,7 @@ public class InterlevelScene extends PixelScene {
     }
 
     private void reset() throws IOException {
+        if (returnFromSideLevel()) return;
 
         Actor.fixTime();
 

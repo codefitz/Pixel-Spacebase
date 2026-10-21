@@ -49,13 +49,13 @@ public class FogOfWarTest {
     }
 
     @Test
-    public void hullInnerCornersStayClearEvenWhenTouchingFloor() {
+    public void hullInnerCornersRetainFogWhenTouchingFloor() {
         boolean[] discoverable = new boolean[25];
         int[] map = new int[25];
         discoverable[6] = discoverable[7] = discoverable[11] = discoverable[12] = true;
         map[6] = Terrain.WALL;
         map[7] = map[11] = map[12] = Terrain.EMPTY;
-        assertTrue(FogOfWar.touchesHullEdge(2, 2, 5, 5, discoverable, map));
+        assertFalse(FogOfWar.touchesHullEdge(2, 2, 5, 5, discoverable, map));
     }
 
     @Test

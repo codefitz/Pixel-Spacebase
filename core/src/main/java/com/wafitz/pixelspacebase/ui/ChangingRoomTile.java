@@ -1,13 +1,14 @@
 package com.wafitz.pixelspacebase.ui;
 
-import android.graphics.Bitmap;
-
+import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.levels.HabitationRingLevel;
 import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.watabou.utils.Bundle;
+import com.watabou.noosa.TextureFilm;
 
-/** Persisted room decoration with artwork cached through the game's texture cache. */
+/** Persisted room decoration using editable frames from the Habitat tile sheet. */
 public class ChangingRoomTile extends CustomTileVisual {
     public static final int FLOOR = 0;
     public static final int SHOWER = 1;
@@ -15,7 +16,6 @@ public class ChangingRoomTile extends CustomTileVisual {
     public static final int VENT = 3;
 
     private static final String KIND = "changingRoomTileKind";
-    private static Bitmap atlas;
     private int kind;
 
     public void setKind(int kind) {
@@ -26,18 +26,19 @@ public class ChangingRoomTile extends CustomTileVisual {
         return kind;
     }
 
-    private static synchronized Bitmap artwork() {
-        if (atlas == null) {
-            atlas = Bitmap.createBitmap(ChangingRoomArtwork.pixels(),
-                    ChangingRoomArtwork.WIDTH, ChangingRoomArtwork.HEIGHT, Bitmap.Config.ARGB_8888);
+    private int artworkFrame() {
+        switch (kind) {
+            case SHOWER: return 67;
+            case LOCKER: return 68;
+            case VENT: return 69;
+            default: return HabitationRingLevel.CHANGING_ROOM_FLOOR_VISUAL;
         }
-        return atlas;
     }
 
     @Override
     public CustomTileVisual create() {
-        texture(artwork());
-        frame(kind * TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
+        texture(Assets.TILES_HABITATION_RING);
+        frame(new TextureFilm(texture, TILE_SIZE, TILE_SIZE).get(artworkFrame()));
         x = tileX * TILE_SIZE;
         y = tileY * TILE_SIZE;
         name = Messages.get(this, "name_" + suffix());
@@ -50,7 +51,8 @@ public class ChangingRoomTile extends CustomTileVisual {
         int cell = tileX + tileY * SpacebaseRun.level.width();
         int terrain = SpacebaseRun.level.map[cell];
         // Keep exploded or otherwise altered terrain visible beneath decorations.
-        visible = kind == FLOOR ? terrain == Terrain.EMPTY_SP
+        // Old saves may contain floor overlays; let the deck floor show through.
+        visible = kind == FLOOR ? false
                 : kind == VENT ? terrain == Terrain.INACTIVE_VENT
                 : terrain == Terrain.WALL || terrain == Terrain.WALL_DECO;
     }

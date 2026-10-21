@@ -191,6 +191,11 @@ public class SecurityBossLevel extends Level {
         return pos;
     }
 
+    @Override public int rescueBossLandingCell() {
+        int cell = 5 + 27 * width();
+        return passable[cell] ? cell : super.rescueBossLandingCell();
+    }
+
     @Override
     public void press(int cell, Char ch) {
 

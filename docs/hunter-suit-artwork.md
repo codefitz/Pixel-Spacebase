@@ -1,5 +1,7 @@
 # Bounty-hunter suit artwork
 
+DM3000 now uses its own Borg-inspired Hunter variant; see [DM3000 armour progression](../art/dm3000-armour/README.md). The bounty-hunter design below remains the Hunter artwork for the captain, commander and shapeshifter.
+
 The Hunter suit is now enclosed charcoal/gunmetal armour with muted bronze plates, a black T-shaped visor, dark teal joints and a compact cyan-lit jetpack. The inventory icon and Hunter row (tier 3) in the captain, commander, shapeshifter and DM3000 sheets use matching artwork. Existing mechanics, class identities, item slots, atlas dimensions and animation indices are unchanged. Other suit rows and the separately packaged violet Psion sprite are untouched.
 
 The built-in image tool generated the animation artwork. Separate inventory-icon requests were rejected by the image service, so the final icon is derived from the generated idle pose. `scripts/InstallHunterSuitArtwork.java` fits the 21 poses to the native 12x15 pixel frames and fits the icon to a 16x16 pixel tile; both are enlarged four times using hard pixel blocks. The installer verifies every pixel outside the Hunter animation row and two Hunter inventory slots against the backups in `docs/sprite-backups/`.

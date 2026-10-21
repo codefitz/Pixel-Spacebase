@@ -46,7 +46,7 @@ public class ExteriorPlatformTest {
                 room(1, 1, 7, 7, Room.Type.STANDARD))));
     }
 
-    @Test public void everyDoorOrientationHasWalkableDeckAndJumpEdge() {
+    @Test public void everyDoorOrientationHasAnOpenVacuumBridge() {
         for (int side = 0; side < 4; side++) {
             TestLevel level = new TestLevel();
             Room room = room(2, 2, 8, 8, Room.Type.EXTERIOR_PLATFORM);
@@ -58,14 +58,22 @@ public class ExteriorPlatformTest {
             int dx = side == 1 ? -1 : side == 3 ? 1 : 0;
             int dy = side == 0 ? 1 : side == 2 ? -1 : 0;
             assertEquals(Room.Door.Type.UNLOCKED, door.type);
-            for (int step = 1; step <= 2; step++) {
-                int cell = door.x + dx * step + (door.y + dy * step) * level.width();
-                assertEquals(Terrain.EMPTY_SP, level.map[cell]);
-                assertTrue(level.isVacuum(cell));
+            int length = dx != 0 ? room.width() : room.height();
+            for (int step = 1; step <= length; step++) {
+                for (int sideOffset = -1; sideOffset <= 1; sideOffset++) {
+                    int x = door.x + dx * step + dy * sideOffset;
+                    int y = door.y + dy * step + dx * sideOffset;
+                    int cell = x + y * level.width();
+                    assertEquals(Terrain.EMPTY_SP, level.map[cell]);
+                    assertTrue(level.isVacuum(cell));
+                }
             }
-            int edge = door.x + dx * 3 + (door.y + dy * 3) * level.width();
-            assertEquals(Terrain.CHASM, level.map[edge]);
-            assertEquals(Terrain.WALL, level.map[room.left + room.top * level.width()]);
+            for (int y = room.top; y <= room.bottom; y++) {
+                for (int x = room.left; x <= room.right; x++) {
+                    assertNotEquals(Terrain.WALL, level.map[x + y * level.width()]);
+                }
+            }
+            assertEquals(Terrain.CHASM, level.map[room.left + room.top * level.width()]);
         }
     }
 

@@ -24,6 +24,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Hunger;
 import com.wafitz.pixelspacebase.actors.buffs.Recharging;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.upgrades.RechargeUpgrade;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -98,7 +99,7 @@ public class Pasty extends Food {
     public void execute(Hero hero, String action) {
         super.execute(hero, action);
 
-        if (action.equals(AC_USE)) {
+        if (action.equals(AC_USE) && hero.heroClass != HeroClass.DM3000) {
             switch (holiday) {
                 case NONE:
                     break; //do nothing extra
@@ -120,11 +121,11 @@ public class Pasty extends Food {
         switch (holiday) {
             case NONE:
             default:
-                return Messages.get(this, "pasty_desc");
+                return withWaterExtractionInfo(Messages.get(this, "pasty_desc"));
             case HWEEN:
-                return Messages.get(this, "pie_desc");
+                return withWaterExtractionInfo(Messages.get(this, "pie_desc"));
             case XMAS:
-                return Messages.get(this, "cane_desc");
+                return withWaterExtractionInfo(Messages.get(this, "cane_desc"));
         }
     }
 

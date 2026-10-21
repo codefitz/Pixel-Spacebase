@@ -45,7 +45,14 @@ public class CloneSprite extends MobSprite {
     }
 
     public void updateArmor(int tier) {
-        TextureFilm film = new TextureFilm(HeroSprite.tiers(), tier, FRAME_WIDTH, FRAME_HEIGHT);
+        TextureFilm film;
+        if (tier == 6 && !PixelDungeonSkins.active()) {
+            texture(ClassArmorArtwork.sheet(SpacebaseRun.hero.heroClass));
+            film = new TextureFilm(texture, ClassArmorArtwork.FRAME_SIZE, ClassArmorArtwork.FRAME_SIZE);
+        } else {
+            texture(SpacebaseRun.hero.heroClass.spritesheet());
+            film = new TextureFilm(HeroSprite.tiers(), tier, FRAME_WIDTH, FRAME_HEIGHT);
+        }
 
         idle = new Animation(1, true);
         idle.frames(film, 0, 0, 0, 1, 0, 0, 1, 1);

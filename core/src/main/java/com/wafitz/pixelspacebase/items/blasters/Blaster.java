@@ -163,6 +163,11 @@ public abstract class Blaster extends Item {
 
     protected abstract void onZap(Ballistica attack);
 
+    /** Allow a blaster to warn about a shot before animation, charges or time are spent. */
+    protected void confirmZap(Ballistica shot, Callback fire) {
+        fire.call();
+    }
+
     public abstract void onHit(DM3000Launcher launcher, Char attacker, Char defender, int damage);
 
     @Override
@@ -406,37 +411,17 @@ public abstract class Blaster extends Item {
                     return;
                 }
 
-                curUser.sprite.zap(cell);
-
-                //attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
-                Char aimed = Actor.findChar(target);
-                QuickSlotButton.aim(aimed != null ? aimed : Actor.findChar(cell));
-
-                if (curBlaster.curCharges >= (curBlaster.malfunctioning ? 1 : curBlaster.chargesPerCast())) {
-
-                    curUser.busy();
-
-                    if (curBlaster.malfunctioning) {
-                        MalfunctioningBlaster.malfunctioningZap(curBlaster, curUser, new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT));
-                        if (!curBlaster.malfunctioningKnown) {
-                            curBlaster.malfunctioningKnown = true;
-                            GLog.n(Messages.get(Blaster.class, "malfunction_discover", curBlaster.name()));
-                        }
-                    } else {
-                        curBlaster.fx(shot, new Callback() {
-                            public void call() {
-                                curBlaster.onZap(shot);
-                                curBlaster.blasterUsed();
-                            }
-                        });
+                final Hero user = curUser;
+                Callback fire = new Callback() {
+                    @Override
+                    public void call() {
+                        zapSelectedTarget(curBlaster, user, target, shot);
                     }
-
-                    Camoflage.dispel();
-
+                };
+                if (!curBlaster.malfunctioning && curBlaster.curCharges >= curBlaster.chargesPerCast()) {
+                    curBlaster.confirmZap(shot, fire);
                 } else {
-
-                    GLog.w(Messages.get(Blaster.class, "fizzles"));
-
+                    fire.call();
                 }
 
             }
@@ -447,6 +432,45 @@ public abstract class Blaster extends Item {
             return Messages.get(Blaster.class, "prompt");
         }
     };
+
+    private static void zapSelectedTarget(Blaster curBlaster, Hero user, int target, Ballistica shot) {
+        curUser = user;
+        curItem = curBlaster;
+        int cell = shot.collisionPos;
+        curUser.sprite.zap(cell);
+
+        //attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
+        Char aimed = Actor.findChar(target);
+        QuickSlotButton.aim(aimed != null ? aimed : Actor.findChar(cell));
+
+        if (curBlaster.curCharges >= (curBlaster.malfunctioning ? 1 : curBlaster.chargesPerCast())) {
+
+            curUser.busy();
+
+            if (curBlaster.malfunctioning) {
+                MalfunctioningBlaster.malfunctioningZap(curBlaster, curUser, new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT));
+                if (!curBlaster.malfunctioningKnown) {
+                    curBlaster.malfunctioningKnown = true;
+                    GLog.n(Messages.get(Blaster.class, "malfunction_discover", curBlaster.name()));
+                }
+            } else {
+                curBlaster.fx(shot, new Callback() {
+                    public void call() {
+                        curBlaster.onZap(shot);
+                        curBlaster.blasterUsed();
+                    }
+                });
+            }
+
+            Camoflage.dispel();
+
+        } else {
+
+            GLog.w(Messages.get(Blaster.class, "fizzles"));
+
+        }
+
+    }
 
     public class Charger extends Buff {
 

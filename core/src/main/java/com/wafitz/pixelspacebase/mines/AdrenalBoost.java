@@ -49,7 +49,7 @@ public class AdrenalBoost extends Mine {
     public static class Device extends Mine.StimulantDevice {
 
         {
-            image = ItemSpriteSheet.ADRENAL_BOOST;
+            image = ItemSpriteSheet.AZURE_PLASMID;
 
             mineClass = AdrenalBoost.class;
             craftingClass = ExperiencePlasmid.class;

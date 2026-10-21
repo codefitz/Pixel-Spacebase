@@ -89,12 +89,12 @@ public class ItemSpriteSheet {
     public static final int WRENCH = WEP_TIER2;
     public static final int PICK_AXE = WEP_TIER2 + 1;
     public static final int SPEAR = WEP_TIER2 + 2;
-    public static final int DRILL = WEP_TIER2 + 3;
+    public static final int REPULSOR_BATON = WEP_TIER2 + 3;
     public static final int DIRK = WEP_TIER2 + 4;
 
     private static final int WEP_TIER3 = xy(1, 8);   //8 slots
     public static final int LAZER_SWORD = WEP_TIER3;
-    public static final int SPADE = WEP_TIER3 + 1;
+    public static final int PHASE_CUTTER = WEP_TIER3 + 1;
     public static final int HOLO_SCIMITAR = WEP_TIER3 + 2;
     public static final int ULTON_SHIELD = WEP_TIER3 + 3;
     public static final int SAI = WEP_TIER3 + 4;
@@ -194,6 +194,9 @@ public class ItemSpriteSheet {
     public static final int HOLOPAD_2 = ARTIFACTS + 21;
     public static final int HOLOPAD_3 = ARTIFACTS + 22;
     public static final int WORMHOLE_GENERATOR = ARTIFACTS + 23;
+    public static final int BIO_DETECTOR = ARTIFACTS + 24;
+    public static final int HUNTER_ITEM_DETECTOR = ARTIFACTS + 25;
+    public static final int HUNTER_TRAP_DETECTOR = ARTIFACTS + 26;
 
     //32 free slots
 
@@ -230,6 +233,16 @@ public class ItemSpriteSheet {
     public static final int TOXIC_GRENADE_GENE_MOD = PLASMID + 13;
     public static final int PARALYSIS_GRENADE_GENE_MOD = PLASMID + 14;
 
+    // Reuse the existing round grenade silhouettes, with effect-specific glows.
+    public static final int FIRE_GRENADE = FIRE_GRENADE_GENE_MOD;
+    public static final int TOXIC_GRENADE = TOXIC_GRENADE_GENE_MOD;
+    public static final int PARALYSIS_GRENADE = PARALYSIS_GRENADE_GENE_MOD;
+    public static final int CRYO_GRENADE = PARALYSIS_GRENADE_GENE_MOD;
+    public static final int PANIC_GRENADE = FIRE_GRENADE_GENE_MOD;
+    public static final int KNOCKOUT_GRENADE = PARALYSIS_GRENADE_GENE_MOD;
+    public static final int PSIONIC_GRENADE = PARALYSIS_GRENADE_GENE_MOD;
+    public static final int ECHO_GRENADE = TOXIC_GRENADE_GENE_MOD;
+
     private static final int DEVICES = xy(1, 22);  //16 slots
     public static final int HUNTER_TRAPPER = DEVICES;
     public static final int EXPLOSIVE_COMPOUND = DEVICES + 1;
@@ -243,6 +256,7 @@ public class ItemSpriteSheet {
     public static final int FORCEFIELD_TECH = DEVICES + 9;
     public static final int TELEPORT_TECH = DEVICES + 10;
     public static final int DEAD_ALIEN = DEVICES + 11;
+    public static final int HUNTER_MINE_DEVICE = ICE;
 
     //32 free slots
 

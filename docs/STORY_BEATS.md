@@ -144,6 +144,7 @@ Current beat:
 Resolved story note:
 
 - The floor 20 boss room is now framed as Holodeck Control. Some fantasy styling can remain as intentional simulation content, but player-facing text frames it as failed station tech.
+- Its existing fixed layout separates a physical arrival chamber from the simulation arena. The arrival chamber's floor, equipment, complete wall surround and arena doorway use Habitat artwork in both power states; Roman simulation styling begins beyond that threshold. This visual treatment also applies when saved floors are reopened, without moving rooms, actors or items.
 
 ### Floor 21: Final Workshop
 
@@ -232,6 +233,7 @@ NPC: Quartermaster.
 Current variants:
 
 - Requests a lazer, a faulty core module, or a bio-charge core recovered from a mature bio-charge mine.
+- The unstable holo-projector is recovered from a deactivated Holodeck with exposed dark panels and a yellow grid, regardless of the boss Holodeck's power state.
 - Rewards new blaster options.
 
 Story role:

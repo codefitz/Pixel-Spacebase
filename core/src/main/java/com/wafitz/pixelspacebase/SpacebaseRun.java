@@ -28,6 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Light;
 import com.wafitz.pixelspacebase.actors.buffs.Paranoid;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.StrandedRoomRescue;
+import com.wafitz.pixelspacebase.actors.buffs.YRescueJourney;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
@@ -155,6 +156,7 @@ public class SpacebaseRun {
     public static int version;
 
     public static long seed;
+    private static boolean allowLegacyDecks;
 
     public static void init() {
 
@@ -164,6 +166,7 @@ public class SpacebaseRun {
         challenges = PixelSpacebase.challenges();
 
         seed = SpacebaseSeed.randomSeed();
+        allowLegacyDecks = false;
 
         Actor.clear();
         Actor.resetNextID();
@@ -187,6 +190,8 @@ public class SpacebaseRun {
         QuickSlotButton.reset();
 
         depth = 0;
+        rescueLevelIdentity = "";
+        restoredRescueLevel = null;
         parts = 0;
 
         droppedItems = new SparseArray<>();
@@ -210,6 +215,8 @@ public class SpacebaseRun {
         Badges.reset();
 
         StartScene.curClass.initHero(hero);
+        // A new run must not inherit decks left behind by an abandoned game.
+        deleteGame(hero.heroClass, true);
 
     }
 
@@ -297,6 +304,116 @@ public class SpacebaseRun {
         return level;
     }
 
+    /** Empty for station decks; future side journeys use a separate save namespace. */
+    private static String rescueLevelIdentity = "";
+    private static Level restoredRescueLevel;
+
+    public static void selectRescueLevel(String identity) {
+        if (identity == null || (!identity.isEmpty() && !identity.matches("(alien|maze|dungeon|boss)_[1-9][0-9]*"))) {
+            throw new IllegalArgumentException("Invalid rescue level identity");
+        }
+        rescueLevelIdentity = identity;
+    }
+
+    public static boolean isRescueSideLevel() { return !rescueLevelIdentity.isEmpty(); }
+
+    public static boolean matchesRescueLevel(String identity) {
+        return isRescueSideLevel() && rescueLevelIdentity.equals(identity);
+    }
+
+    /** Next undefeated arena ahead of the origin; never replace an encounter already underway. */
+    public static int nextRescueBoss(int origin) {
+        for (int candidate : new int[]{5, 10, 15, 20, 25}) {
+            if (candidate <= origin) continue;
+            if (candidate == 20 && Y.Quest.isHolodeckPoweredDown()) continue;
+            try {
+                Bundle saved = readCampaignDeck(candidate);
+                if (saved == null) return candidate;
+                Bundle arena = saved.getBundle(LEVEL);
+                if (arena.getBoolean("rescueBossDefeated") || arena.getBoolean("droppped")) continue;
+                if (candidate == 10) {
+                    String state = arena.getString("state");
+                    if ("WON".equals(state)) continue;
+                    return "START".equals(state) ? candidate : -1;
+                }
+                if (candidate == 5) {
+                    boolean bossPresent = false;
+                    for (Bundle mob : arena.getBundleArray("mobs")) {
+                        String type = mob.getString("__className");
+                        if (type != null && (type.endsWith(".XenoQueen") || type.endsWith(".FeralShapeshifter"))) {
+                            bossPresent = true;
+                            if (mob.getInt("HP") < mob.getInt("HT")) return -1;
+                        }
+                    }
+                    if (!bossPresent) continue;
+                }
+                return arena.getBoolean("locked") || arena.getBoolean("entered") ? -1 : candidate;
+            } catch (IOException error) {
+                PixelSpacebase.reportException(error);
+                return -1;
+            }
+        }
+        return -1;
+    }
+
+    /** Idempotent commit of a resolved detour to its real campaign deck. */
+    public static void saveRescueBossArena(int bossDepth, Level arena) throws IOException {
+        if (!bossLevel(bossDepth)) throw new IOException("Invalid boss arena");
+        Bundle saved = new Bundle(); saved.put(LEVEL, arena);
+        saved.put(SEED, seed);
+        writeBundleAtomically(Messages.format(depthFile(hero.heroClass), bossDepth), saved);
+    }
+
+    public static Level loadOrCreateRescueLevel(String identity) throws IOException {
+        selectRescueLevel(identity);
+        restoredRescueLevel = null;
+        if (Game.instance.getFileStreamPath(currentLevelFile(hero.heroClass)).exists()) {
+            return loadLevel(hero.heroClass);
+        }
+        if (identity.startsWith("boss_")) {
+            Actor.clear();
+            level = null;
+            Bundle saved = readCampaignDeck(depth);
+            if (saved != null) {
+                Level arena = (Level) saved.get(LEVEL);
+                resetVisibilityForLevel(arena);
+                return arena;
+            }
+            Level arena;
+            switch (depth) {
+                case 5: arena = new MaintenanceBossLevel(); break;
+                case 10: arena = new SecurityBossLevel(); break;
+                case 15: arena = new EngineeringBossLevel(); break;
+                case 20: arena = new HolodeckBossLevel(); break;
+                case 25: arena = new DeepContainmentCoreLevel(); break;
+                default: throw new IOException("Invalid boss destination");
+            }
+            resetVisibilityForLevel(arena);
+            arena.create();
+            return arena;
+        }
+        if (!identity.startsWith("alien_") && !identity.startsWith("maze_") && !identity.startsWith("dungeon_"))
+            throw new IOException("Rescue destination is not available");
+        Actor.clear();
+        level = null;
+        Level planet = identity.startsWith("maze_") ? new com.wafitz.pixelspacebase.levels.DarkMazeLevel()
+                : identity.startsWith("dungeon_") ? new com.wafitz.pixelspacebase.levels.PixelDungeonLevel()
+                : new com.wafitz.pixelspacebase.levels.AlienPlanetLevel();
+        resetVisibilityForLevel(planet);
+        planet.create();
+        return planet;
+    }
+
+    private static String currentLevelFile(HeroClass cl) {
+        return rescueLevelIdentity.isEmpty() ? Messages.format(depthFile(cl), depth)
+                : gameFile(cl) + ".rescue." + rescueLevelIdentity;
+    }
+
+    /** Persists a prepared arrival without writing it over the campaign's current deck. */
+    public static void saveJourneyCheckpoint() throws IOException {
+        saveGame(gameFile(hero.heroClass));
+    }
+
     public static void resetLevel() {
 
         Actor.clear();
@@ -320,7 +437,7 @@ public class SpacebaseRun {
 
     // wafitz.v1 - You get a shop, you get a shop, every level get's a shop!
     public static boolean workshopOnLevel() {
-        return !bossLevel();
+        return !isRescueSideLevel() && !bossLevel();
     }
 
     public static boolean bossLevel() {
@@ -363,6 +480,8 @@ public class SpacebaseRun {
         }
 
         hero.pos = pos != -1 ? pos : level.exit;
+        YRescueJourney journey = hero.buff(YRescueJourney.class);
+        if (journey != null) journey.arrived(depth);
         YRescuer.placeOn(level);
         if (level.isDoorlessRoomCell(hero.pos)) {
             Buff.affect(hero, StrandedRoomRescue.class);
@@ -376,6 +495,7 @@ public class SpacebaseRun {
         observe();
         try {
             saveAll();
+            if (journey != null && journey.phase == YRescueJourney.Phase.COMPLETE) journey.detach();
         } catch (IOException e) {
             PixelSpacebase.reportException(e);
             /*This only catches IO errors. Yes, this means things can go wrong, and they can go wrong catastrophically.
@@ -554,10 +674,17 @@ public class SpacebaseRun {
             version = Game.versionCode;
             bundle.put(VERSION, version);
             bundle.put(SEED, seed);
+            bundle.put("allowLegacyDecks", allowLegacyDecks);
             bundle.put(CHALLENGES, challenges);
             bundle.put(HERO, hero);
             bundle.put(PARTS, parts);
             bundle.put(DEPTH, depth);
+            bundle.put("rescueLevelIdentity", rescueLevelIdentity);
+            // The hero and current rescue deck are committed in the same atomic game file.
+            // This snapshot also repairs a partially written companion level file on reload.
+            if (hero.buff(YRescueJourney.class) != null && level != null) {
+                bundle.put("rescueCurrentLevel", level);
+            }
 
             for (int d : droppedItems.keyArray()) {
                 bundle.put(Messages.format(DROPPED, d), droppedItems.get(d));
@@ -619,8 +746,9 @@ public class SpacebaseRun {
     private static void saveLevel() throws IOException {
         Bundle bundle = new Bundle();
         bundle.put(LEVEL, level);
+        bundle.put(SEED, seed);
 
-        writeBundleAtomically(Messages.format(depthFile(hero.heroClass), depth), bundle);
+        writeBundleAtomically(currentLevelFile(hero.heroClass), bundle);
     }
 
     public static void saveAll() throws IOException {
@@ -655,6 +783,8 @@ public class SpacebaseRun {
         version = bundle.getInt(VERSION);
 
         seed = bundle.contains(SEED) ? bundle.getLong(SEED) : SpacebaseSeed.randomSeed();
+        // Only games predating run ownership may load unmarked deck files.
+        allowLegacyDecks = !bundle.contains("allowLegacyDecks") || bundle.getBoolean("allowLegacyDecks");
 
         Generator.reset();
 
@@ -667,6 +797,9 @@ public class SpacebaseRun {
 
         SpacebaseRun.level = null;
         SpacebaseRun.depth = -1;
+        rescueLevelIdentity = bundle.contains("rescueLevelIdentity") ? bundle.getString("rescueLevelIdentity") : "";
+        selectRescueLevel(rescueLevelIdentity);
+        restoredRescueLevel = null;
 
         Upgrade.restore(bundle);
         Plasmid.restore(bundle);
@@ -723,11 +856,16 @@ public class SpacebaseRun {
         depth = bundle.getInt(DEPTH);
 
         Statistics.restoreFromBundle(bundle);
-        if (fullLoad) {
+        YRescueJourney journey = hero.buff(YRescueJourney.class);
+        if (journey != null && journey.rescueDepth > 0) {
+            Statistics.yRescueDepartures = Math.max(1, Math.max(Statistics.yRescueDepartures, journey.journeyId));
+        }
+        if (fullLoad && !isRescueSideLevel()) {
             Y.Quest.reconcileHolodeckState(hero, depth, Statistics.deepestFloor);
         }
         Journal.restoreFromBundle(bundle);
         Generator.restoreFromBundle(bundle);
+        restoredRescueLevel = bundle.contains("rescueCurrentLevel") ? (Level) bundle.get("rescueCurrentLevel") : null;
 
         droppedItems = new SparseArray<>();
         droppedHeaps = new SparseArray<>();
@@ -757,9 +895,19 @@ public class SpacebaseRun {
         SpacebaseRun.level = null;
         Actor.clear();
 
-        InputStream input = Game.instance.openFileInput(Messages.format(depthFile(cl), depth));
+        if (restoredRescueLevel != null) {
+            Level restored = restoredRescueLevel;
+            restoredRescueLevel = null;
+            resetVisibilityForLevel(restored);
+            return restored;
+        }
+        InputStream input = Game.instance.openFileInput(currentLevelFile(cl));
         Bundle bundle = Bundle.read(input);
         input.close();
+
+        if (!deckBelongsToRun(bundle, seed, allowLegacyDecks)) {
+            throw new IOException("Saved deck belongs to another run: " + currentLevelFile(cl));
+        }
 
         Level level = (Level) bundle.get("level");
         resetVisibilityForLevel(level);
@@ -768,11 +916,58 @@ public class SpacebaseRun {
 
     /** Rescue travel can create gaps below deepestFloor; never overwrite an existing deck. */
     public static Level loadOrCreateLevel(int targetDepth) throws IOException {
+        rescueLevelIdentity = "";
+        restoredRescueLevel = null;
         depth = targetDepth;
-        if (Game.instance.getFileStreamPath(Messages.format(depthFile(hero.heroClass), depth)).exists()) {
-            return loadLevel(hero.heroClass);
+        Bundle saved = readCampaignDeck(targetDepth);
+        if (saved != null) {
+            level = null;
+            Actor.clear();
+            Level restored = (Level) saved.get(LEVEL);
+            resetVisibilityForLevel(restored);
+            return restored;
         }
         return newLevel(targetDepth);
+    }
+
+    /** Validate ownership before reusing a deck across gaps created by rescue travel. */
+    private static Bundle readCampaignDeck(int targetDepth) throws IOException {
+        String file = Messages.format(depthFile(hero.heroClass), targetDepth);
+        if (!Game.instance.getFileStreamPath(file).exists()) return null;
+        Bundle saved;
+        try (InputStream input = Game.instance.openFileInput(file)) {
+            saved = Bundle.read(input);
+        }
+        if (!deckBelongsToRun(saved, seed, allowLegacyDecks)) return null;
+        if (saved.contains(SEED)) return saved;
+
+        // Older saves have no run marker. Completed boss decks require evidence
+        // of victory in this run, rather than account-wide unlocked badges.
+        if (bossLevel(targetDepth)) {
+            Bundle arena = saved.getBundle(LEVEL);
+            boolean completed = arena.getBoolean("rescueBossDefeated")
+                    || arena.getBoolean("droppped") || "WON".equals(arena.getString("state"));
+            if (targetDepth == 5) {
+                boolean bossPresent = false;
+                for (Bundle mob : arena.getBundleArray("mobs")) {
+                    String type = mob.getString("__className");
+                    if (type != null && (type.endsWith(".XenoQueen") || type.endsWith(".FeralShapeshifter"))) bossPresent = true;
+                }
+                completed |= !bossPresent;
+            }
+            Badges.Badge victory = targetDepth == 5 ? Badges.Badge.BOSS_SLAIN_1
+                    : targetDepth == 10 ? Badges.Badge.BOSS_SLAIN_2
+                    : targetDepth == 15 ? Badges.Badge.BOSS_SLAIN_3
+                    : targetDepth == 20 ? Badges.Badge.BOSS_SLAIN_4 : Badges.Badge.VICTORY;
+            // The final boss has no local boss badge; preserve legacy victories there.
+            if (completed && targetDepth < 25 && !Badges.earnedInCurrentRun(victory)) return null;
+            if (completed) arena.put("rescueBossDefeated", true);
+        }
+        return saved;
+    }
+
+    static boolean deckBelongsToRun(Bundle saved, long runSeed, boolean acceptLegacy) {
+        return saved.contains(SEED) ? saved.getLong(SEED) == runSeed : acceptLegacy;
     }
 
     public static void deleteGame(HeroClass cl, boolean deleteLevels) {
@@ -780,6 +975,10 @@ public class SpacebaseRun {
         Game.instance.deleteFile(gameFile(cl));
 
         if (deleteLevels) {
+            File[] saves = Game.instance.getFileStreamPath(gameFile(cl)).getParentFile().listFiles();
+            if (saves != null) for (File save : saves) {
+                if (save.getName().startsWith(gameFile(cl) + ".rescue.")) Game.instance.deleteFile(save.getName());
+            }
             for (int depth = 1; depth <= 26; depth++) {
                 Game.instance.deleteFile(Messages.format(depthFile(cl), depth));
             }
@@ -807,6 +1006,12 @@ public class SpacebaseRun {
     }
 
     public static void fail(Class cause) {
+        if (Hero.devTestInvulnerable()) {
+            if (hero != null) {
+                hero.restoreDevTestHealth();
+            }
+            return;
+        }
         if (hero.belongings.getItem(Clone.class) == null) {
             Rankings.INSTANCE.submit(false, cause);
         }
@@ -832,7 +1037,8 @@ public class SpacebaseRun {
         if (hero != null && hero.heroClass == HeroClass.DM3000) {
             distance = Math.max(distance, Light.DISTANCE);
         }
-        if (hero != null && hero.buff(Light.class) != null) {
+        if (hero != null && (hero.buff(Light.class) != null
+                || com.wafitz.pixelspacebase.items.armor.HoverPod.torchActive(hero))) {
             distance = Math.max(distance, Light.DISTANCE);
         }
         return distance;
@@ -845,6 +1051,12 @@ public class SpacebaseRun {
         }
 
         level.updateFieldOfView(hero, visible);
+
+        if (level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
+            GameScene.updateFog();
+            GameScene.afterObserve();
+            return;
+        }
 
         int cx = hero.pos % level.width();
         int cy = hero.pos / level.width();
@@ -887,6 +1099,8 @@ public class SpacebaseRun {
             System.arraycopy(pass, 0, passable, 0, SpacebaseRun.level.length());
         }
 
+        if (!restrictMazeRoute(ch, to)) return null;
+
         for (Char c : Actor.chars()) {
             if (visible[c.pos]) {
                 passable[c.pos] = false;
@@ -899,6 +1113,10 @@ public class SpacebaseRun {
 
     public static int findStep(Char ch, int from, int to, boolean[] pass, boolean[] visible) {
 
+        if (ch == hero && level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel
+                && !((com.wafitz.pixelspacebase.levels.DarkMazeLevel) level).canStep(from, to)
+                && !((com.wafitz.pixelspacebase.levels.DarkMazeLevel) level).navigationVisible(to)) return -1;
+
         if (level.adjacent(from, to)) {
             return Actor.findChar(to) == null && (pass[to] || Level.avoid[to]) ? to : -1;
         }
@@ -910,6 +1128,8 @@ public class SpacebaseRun {
             System.arraycopy(pass, 0, passable, 0, SpacebaseRun.level.length());
         }
 
+        if (!restrictMazeRoute(ch, to)) return -1;
+
         for (Char c : Actor.chars()) {
             if (visible[c.pos]) {
                 passable[c.pos] = false;
@@ -918,6 +1138,18 @@ public class SpacebaseRun {
 
         return PathFinder.getStep(from, to, passable);
 
+    }
+
+    /** Maze routes may use torch sight, never stored exploration or Hunter scans. */
+    private static boolean restrictMazeRoute(Char ch, int target) {
+        if (ch != hero || !(level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel)) return true;
+        com.wafitz.pixelspacebase.levels.DarkMazeLevel maze =
+                (com.wafitz.pixelspacebase.levels.DarkMazeLevel) level;
+        if (!maze.navigationVisible(target)) return false;
+        for (int i = 0; i < passable.length; i++) {
+            passable[i] &= maze.navigationVisible(i);
+        }
+        return true;
     }
 
     public static int flee(Char ch, int cur, int from, boolean[] pass, boolean[] visible) {

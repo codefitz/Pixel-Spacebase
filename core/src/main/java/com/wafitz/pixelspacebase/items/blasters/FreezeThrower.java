@@ -56,7 +56,7 @@ public class FreezeThrower extends DamageBlaster {
     @Override
     protected void onZap(Ballistica bolt) {
 
-        // An ice shot seals the plasma tile it strikes, creating a safe crossing point.
+        // Freeze Blaster shots convert Command plasma on the impact tile into weak, walkable plating.
         SpacebaseRun.level.stabilisePlasma(bolt.collisionPos);
 
         Heap heap = SpacebaseRun.level.heaps.get(bolt.collisionPos);

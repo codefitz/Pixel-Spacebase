@@ -153,6 +153,8 @@ public abstract class Mob extends Char {
     }
 
     public CharSprite sprite() {
+        CharSprite dungeonSprite = com.wafitz.pixelspacebase.sprites.PixelDungeonMobSprite.forMob(this);
+        if (dungeonSprite != null) return dungeonSprite;
         CharSprite sprite = null;
         try {
             sprite = spriteClass.newInstance();

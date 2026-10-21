@@ -149,6 +149,7 @@ public class MaskedPrisoner extends Mob {
         }
 
         yell(Messages.get(this, "defeated"));
+        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.bossVictory();
     }
 
     @Override

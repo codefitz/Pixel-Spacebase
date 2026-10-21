@@ -278,7 +278,8 @@ public class DM3000Launcher extends MeleeWeapon {
     public Emitter emitter() {
         if (blaster == null) return null;
         Emitter emitter = new Emitter();
-        emitter.pos(12.5f, 3);
+        // The integrated muzzle sits on the upper forearm, just behind the fist.
+        emitter.pos(9.5f, 3.5f);
         emitter.fillTarget = false;
         emitter.pour(LauncherParticleFactory, 0.1f);
         return emitter;

@@ -160,7 +160,7 @@ public class StatusPane extends Component {
         level.hardlight(0xFFEBA4);
         add(level);
 
-        depth = new BitmapText(Integer.toString(SpacebaseRun.depth), PixelScene.pixelFont);
+        depth = new BitmapText(SpacebaseRun.isRescueSideLevel() ? "?" : Integer.toString(SpacebaseRun.depth), PixelScene.pixelFont);
         depth.hardlight(0xCACFC2);
         depth.measure();
         add(depth);
@@ -260,9 +260,7 @@ public class StatusPane extends Component {
             podText.measure();
         }
 
-        hpText.text(shield > 0 ?
-                (int) health + "+" + (int) shield + "/" + (int) max :
-                (int) health + "/" + (int) max);
+        hpText.text(Integer.toString((int) health));
         hpText.measure();
         layoutHealthText();
 
@@ -290,6 +288,7 @@ public class StatusPane extends Component {
         if (tier != lastTier) {
             lastTier = tier;
             avatar.copy(HeroSprite.avatar(SpacebaseRun.hero.heroClass, tier));
+            layout();
         }
     }
 

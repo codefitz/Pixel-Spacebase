@@ -23,6 +23,7 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Bones;
 import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
@@ -35,6 +36,8 @@ import com.wafitz.pixelspacebase.levels.painters.Painter;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -175,7 +178,7 @@ public class HolodeckBossLevel extends Level {
         if (Math.abs(cell % width() - exit % width()) > 1
                 || Math.abs(cell / width() - exit / width()) > 1) return -1;
 
-        if (cell == exit) return 58;
+        if (cell == exit) return 1;
         int dx = cell % width() - exit % width();
         int dy = cell / width() - exit / width();
         return 48 + (dy + 1) * 3 + dx + 1;
@@ -210,6 +213,13 @@ public class HolodeckBossLevel extends Level {
             cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
         }
         return cell;
+    }
+
+    @Override public int rescueBossLandingCell() {
+        for (int cell = 0; cell < length(); cell++) {
+            if (passable[cell] && outsideEntraceRoom(cell) && !isDoorlessRoomCell(cell)) return cell;
+        }
+        return super.rescueBossLandingCell();
     }
 
     @Override
@@ -304,7 +314,69 @@ public class HolodeckBossLevel extends Level {
     @Override
     public Group addVisuals() {
         super.addVisuals();
+        TextureFilm spacebaseTiles = new TextureFilm(
+                Assets.TILES_HABITATION_RING, SpacebaseTilemap.SIZE, SpacebaseTilemap.SIZE);
+        // The arrival chamber, its surrounding wall ring and the arena threshold
+        // are physical Habitat hardware in both holodeck power states.
+        for (int y = TOP + HALL_HEIGHT; y <= TOP + HALL_HEIGHT + CHAMBER_HEIGHT + 1; y++) {
+            for (int x = LEFT - 1; x <= LEFT + HALL_WIDTH; x++) {
+                int cell = x + y * width();
+                visuals.add(new SpacebaseEntranceTile(cell, spacebaseTiles));
+            }
+        }
         HabitationRingLevel.addHabitationVisuals(this, visuals);
         return visuals;
+    }
+
+    private static class SpacebaseEntranceTile extends Image {
+        private final int cell;
+        private final TextureFilm tileset;
+        private int terrain = Integer.MIN_VALUE;
+        private boolean hasVisual;
+
+        SpacebaseEntranceTile(int cell, TextureFilm tileset) {
+            super(Assets.TILES_HABITATION_RING);
+            this.cell = cell;
+            this.tileset = tileset;
+            x = cell % SpacebaseRun.level.width() * SpacebaseTilemap.SIZE;
+            y = cell / SpacebaseRun.level.width() * SpacebaseTilemap.SIZE;
+            updateTerrain();
+            visible = hasVisual && Level.discoverable[cell];
+        }
+
+        @Override
+        public void update() {
+            super.update();
+            if (SpacebaseRun.level.map[cell] != terrain) updateTerrain();
+            visible = hasVisual && Level.discoverable[cell];
+        }
+
+        private void updateTerrain() {
+            terrain = SpacebaseRun.level.map[cell];
+            int visual;
+            switch (terrain) {
+                case Terrain.ENTRANCE:
+                case Terrain.EXIT:
+                case Terrain.LOCKED_EXIT:
+                case Terrain.UNLOCKED_EXIT:
+                case Terrain.EMPTY:
+                case Terrain.EMPTY_DECO:
+                case Terrain.EMPTY_SP:
+                    visual = HabitationRingLevel.TRANSPORTER_FLOOR_VISUAL;
+                    break;
+                case Terrain.CHASM:
+                case Terrain.WATER:
+                    // Leave open space and the water layer unobscured.
+                    visual = -1;
+                    break;
+                default:
+                    // Use normal Habitat walls and door states, not simulation masonry.
+                    visual = SpacebaseTilemap.defaultVisuals.get(terrain, -1);
+            }
+            if (visual >= 0) {
+                frame(tileset.get(visual));
+            }
+            hasVisual = visual >= 0;
+        }
     }
 }
