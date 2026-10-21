@@ -25,10 +25,12 @@ import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.blobs.Blob;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
+import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.PixelScene;
 import com.wafitz.pixelspacebase.ui.CustomTileVisual;
 import com.wafitz.pixelspacebase.ui.RenderedTextMultiline;
 import com.wafitz.pixelspacebase.ui.Window;
+import com.wafitz.pixelspacebase.ui.TeleporterPads;
 import com.watabou.noosa.Image;
 
 public class WndInfoCell extends Window {
@@ -80,8 +82,23 @@ public class WndInfoCell extends Window {
             } else {*/
                 titlebar.icon(SpacebaseTilemap.tile(cell, tile));
             //}
-            titlebar.label(SpacebaseRun.level.tileName(tile));
-            desc += SpacebaseRun.level.tileDesc(tile);
+            if (TeleporterPads.isPad(SpacebaseRun.level, tile)) {
+                boolean entrance = tile == Terrain.ENTRANCE;
+                boolean locked = tile == Terrain.LOCKED_EXIT;
+                boolean returnPad = SpacebaseRun.isRescueSideLevel() && !locked;
+                titlebar.label(Messages.get(Level.class, returnPad ? "teleport_return_name"
+                        : entrance ? "teleport_previous_name"
+                        : locked ? "teleport_locked_name" : "teleport_next_name"));
+                desc += Messages.get(Level.class, returnPad ? "teleport_return_desc"
+                        : entrance ? "teleport_previous_desc"
+                        : locked ? "teleport_locked_desc" : "teleport_next_desc");
+            } else if (SpacebaseRun.level.isRinseWaterCell(cell)) {
+                titlebar.label(Messages.get(Level.class, "rinse_water_name"));
+                desc += Messages.get(Level.class, "rinse_water_desc");
+            } else {
+                titlebar.label(SpacebaseRun.level.tileName(tile));
+                desc += SpacebaseRun.level.tileDesc(tile);
+            }
 
         }
         titlebar.setRect(0, 0, WIDTH, 0);

@@ -19,8 +19,10 @@ import com.wafitz.pixelspacebase.items.equippablemodules.HunterItemScanner;
 import com.wafitz.pixelspacebase.items.equippablemodules.HunterTrapScanner;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.vents.Vent;
-import com.watabou.noosa.ColorBlock;
+import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.SparseArray;
 
 import java.util.HashMap;
@@ -29,13 +31,12 @@ import java.util.Map;
 /** Shows scanner pings above fog without revealing map cells or changing trap state. */
 public class HunterSensorMarkers extends Group {
 
-    // ColorBlock creates an ARGB texture: RGB-only values make the texture invisible.
+    static final int BIO_SIGNAL = 0xFF4DFF79;
     static final int ITEM_SIGNAL = 0xFF408CFF;
     static final int TRAP_SIGNAL = 0xFFFF5A4E;
-    private static final float MARKER_SIZE = 6f;
 
-    private final Map<Integer, ColorBlock> itemMarkers = new HashMap<>();
-    private final Map<Integer, ColorBlock> trapMarkers = new HashMap<>();
+    private final Map<Integer, ItemSprite> itemMarkers = new HashMap<>();
+    private final Map<Integer, TrapMarker> trapMarkers = new HashMap<>();
 
     @Override
     public void update() {
@@ -46,6 +47,7 @@ public class HunterSensorMarkers extends Group {
 
         Level level = SpacebaseRun.level;
         if (level == null || SpacebaseRun.visible == null) return;
+        if (level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) return;
 
         boolean itemScannerActive = HunterItemScanner.active();
         boolean trapScannerActive = HunterTrapScanner.active();
@@ -55,7 +57,7 @@ public class HunterSensorMarkers extends Group {
                 Heap heap = level.heaps.get(cell);
                 if (heap != null && heap.type == Heap.Type.HEAP && !heap.isEmpty()
                         && shouldDisplayMarker(itemScannerActive, isVisible(cell))) {
-                    showMarker(itemMarkers, cell, ITEM_SIGNAL);
+                    showItemMarker(heap, cell);
                 }
             }
         }
@@ -67,7 +69,7 @@ public class HunterSensorMarkers extends Group {
                 Vent vent = vents.get(cell);
                 if (vent != null && vent.active
                         && shouldDisplayMarker(trapScannerActive, isVisible(cell))) {
-                    showMarker(trapMarkers, cell, TRAP_SIGNAL);
+                    showTrapMarker(vent, cell);
                 }
             }
         }
@@ -81,21 +83,48 @@ public class HunterSensorMarkers extends Group {
         return cell >= 0 && cell < SpacebaseRun.visible.length && SpacebaseRun.visible[cell];
     }
 
-    private void setAllHidden(Map<Integer, ColorBlock> markers) {
-        for (ColorBlock marker : markers.values()) {
+    private void setAllHidden(Map<Integer, ? extends com.watabou.noosa.Visual> markers) {
+        for (com.watabou.noosa.Visual marker : markers.values()) {
             marker.visible = false;
         }
     }
 
-    private void showMarker(Map<Integer, ColorBlock> markers, int cell, int color) {
-        ColorBlock marker = markers.get(cell);
+    private void showItemMarker(Heap heap, int cell) {
+        ItemSprite marker = itemMarkers.get(cell);
         if (marker == null) {
-            marker = new ColorBlock(MARKER_SIZE, MARKER_SIZE, color);
-            marker.alpha(0.9f);
-            markers.put(cell, marker);
+            marker = new ItemSprite();
+            itemMarkers.put(cell, marker);
             add(marker);
         }
+        // Use the same frame as the heap, including unidentified caches and visit art.
+        // Solid blue retains its alpha silhouette without showing item colors or glows.
+        marker.view(heap.image(), null);
+        marker.color(ITEM_SIGNAL);
+        marker.alpha(0.9f);
         marker.center(SpacebaseTilemap.tileCenterToWorld(cell));
         marker.visible = true;
+    }
+
+    private void showTrapMarker(Vent vent, int cell) {
+        TrapMarker marker = trapMarkers.get(cell);
+        if (marker == null) {
+            marker = new TrapMarker();
+            trapMarkers.put(cell, marker);
+            add(marker);
+        }
+        marker.frame(marker.film.get(TerrainFeaturesTilemap.trapVisual(vent)));
+        marker.color(TRAP_SIGNAL);
+        marker.alpha(0.9f);
+        marker.point(SpacebaseTilemap.tileToWorld(cell));
+        marker.visible = true;
+    }
+
+    private static class TrapMarker extends Image {
+        final TextureFilm film;
+
+        TrapMarker() {
+            super(TerrainFeaturesTilemap.tilesTexture());
+            film = new TextureFilm(texture, TerrainFeaturesTilemap.SIZE, TerrainFeaturesTilemap.SIZE);
+        }
     }
 }

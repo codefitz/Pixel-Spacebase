@@ -27,6 +27,7 @@ import com.wafitz.pixelspacebase.levels.HolodeckBossLevel;
 import com.wafitz.pixelspacebase.levels.HabitationRingLevel;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.Terrain;
+import com.wafitz.pixelspacebase.ui.TeleporterPads;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
@@ -220,6 +221,18 @@ public class SpacebaseTilemap extends Tilemap {
     }
 
     private int getTileVisual(int pos, int tile) {
+        // Pad graphics are transparent overlays; use this deck's own floor below them.
+        if (TeleporterPads.isPad(SpacebaseRun.level, tile)) tile = Terrain.EMPTY;
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.PixelDungeonLevel) {
+            return ((com.wafitz.pixelspacebase.levels.PixelDungeonLevel) SpacebaseRun.level).tileVisual(pos, tile);
+        }
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.AlienPlanetLevel) {
+            return ((com.wafitz.pixelspacebase.levels.AlienPlanetLevel) SpacebaseRun.level).tileVisual(pos, tile);
+        }
+        if (SpacebaseRun.level instanceof HabitationRingLevel) {
+            int bathroomVisual = ((HabitationRingLevel) SpacebaseRun.level).changingRoomFloorVisual(pos, tile);
+            if (bathroomVisual >= 0) return bathroomVisual;
+        }
         int transporterVisual = HabitationRingLevel.transporterRoomVisual(SpacebaseRun.level, pos, tile);
         if (transporterVisual >= 0) return transporterVisual;
         if (SpacebaseRun.level instanceof HolodeckBossLevel
@@ -314,6 +327,7 @@ public class SpacebaseTilemap extends Tilemap {
     }
 
     public static Image tile(int pos, int tile) {
+        if (TeleporterPads.isPad(SpacebaseRun.level, tile)) return TeleporterPads.icon(tile);
         Image img = new Image(instance.texture);
         img.frame(instance.tileset.get(instance.getTileVisual(pos, tile)));
         return img;
@@ -330,16 +344,8 @@ public class SpacebaseTilemap extends Tilemap {
                 && ((com.wafitz.pixelspacebase.levels.RegularLevel) SpacebaseRun.level).isExteriorPlatformJump(pos)) {
             return false;
         }
-        if (Assets.TILES_ENGINEERING.equals(tilesTexturePath)) {
-            // Preserve the pre-backdrop tiles2 behavior. Engineering uses
-            // default-visual CHASM cells as part of its normal floor plan,
-            // including cells outside the discoverable mask.
-            return Level.discoverable[pos]
-                    || data[pos] == defaultVisuals.get(Terrain.CHASM);
-        }
-
-        // On the other level sets, chasm cells are open space; keep them
-        // transparent so the space backdrop remains visible.
+        // Chasm cells are open space on every station deck, including Engineering.
+        // Never draw the atlas's opaque chasm tile over the space backdrop.
         return map[pos] != Terrain.CHASM && Level.discoverable[pos];
     }
 }

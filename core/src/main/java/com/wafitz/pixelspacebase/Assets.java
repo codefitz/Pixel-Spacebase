@@ -21,6 +21,10 @@
 package com.wafitz.pixelspacebase;
 
 public class Assets {
+    public static final String PD_ART = "pixel_dungeon/";
+    public static final String PD_TILES = PD_ART + "tiles0.png";
+    public static final String PD_WATER = PD_ART + "water0.png";
+    public static final String PD_ITEMS = PD_ART + "items.png";
 
     public static final String ARCS_BG = "space1.png";
     public static final String ARCS_FG = "space2.png";
@@ -48,10 +52,18 @@ public class Assets {
     public static final String DM3000 = "dm3000.png";
     public static final String SHAPESHIFTER = "shapeshifter.png";
     public static final String CAPTAIN = "captain.png";
+    public static final String CLASS_ARMOR_COMMANDER = "class_armor_commander.png";
+    public static final String CLASS_ARMOR_CAPTAIN = "class_armor_captain.png";
+    public static final String CLASS_ARMOR_DM3000 = "class_armor_dm3000.png";
+    public static final String CLASS_ARMOR_SHAPESHIFTER = "class_armor_shapeshifter.png";
     public static final String LOADER_COMMANDER = "loader_commander.png";
     public static final String LOADER_DM3000 = "loader_dm3000.png";
     public static final String LOADER_SHAPESHIFTER = "loader_shapeshifter.png";
     public static final String LOADER_CAPTAIN = "loader_captain.png";
+    public static final String HOVERPOD_COMMANDER = "hoverpod_commander.png";
+    public static final String HOVERPOD_DM3000 = "hoverpod_dm3000.png";
+    public static final String HOVERPOD_SHAPESHIFTER = "hoverpod_shapeshifter.png";
+    public static final String HOVERPOD_CAPTAIN = "hoverpod_captain.png";
     public static final String AVATARS = "avatars.png";
     public static final String PET = "station_cat.png";
 
@@ -105,6 +117,8 @@ public class Assets {
     public static final String QUARTERMASTER = "quartermaster.png";
     public static final String LEONARD = "leonard.png";
     public static final String Y = "y.png";
+    public static final String ALIEN_COLONY_TILES = "alien_planet_tiles.png";
+    public static final String ALIEN_COLONIST = "alien_colonist.png";
     public static final String XQUEEN = "queen_xeno.png";
     public static final String DRONE = "drone.png";
     public static final String CONFUSEDSHAPESHIFTER = "confused_shapeshifter.png";
@@ -113,6 +127,7 @@ public class Assets {
     public static final String BITH_ACOLYTE = "bith_acolyte.png";
 
     public static final String ITEMS = "items.png";
+    public static final String TELEPORT_PADS = "teleport_pads.png";
     public static final String TERRAIN_FEATURES = "terrain_features.png";
 
     public static final String TILES_MAINTENANCE = "tiles0.png";

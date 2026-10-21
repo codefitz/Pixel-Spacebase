@@ -28,15 +28,7 @@ import com.wafitz.pixelspacebase.actors.mobs.npcs.Hologram;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.effects.Ripple;
 import com.wafitz.pixelspacebase.items.MedigelContainer;
-import com.wafitz.pixelspacebase.items.Generator;
-import com.wafitz.pixelspacebase.items.Heap;
 import com.wafitz.pixelspacebase.items.PetCarrier;
-import com.wafitz.pixelspacebase.items.WeakForcefield;
-import com.wafitz.pixelspacebase.items.armor.SpaceSuit;
-import com.wafitz.pixelspacebase.items.armor.Uniform;
-import com.wafitz.pixelspacebase.items.food.Food;
-import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
-import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
 import com.wafitz.pixelspacebase.levels.vents.AlarmVent;
 import com.wafitz.pixelspacebase.levels.vents.ChillingVent;
 import com.wafitz.pixelspacebase.levels.vents.FlockVent;
@@ -147,59 +139,6 @@ public class MaintenanceLevel extends RegularLevel {
             }
 
         placeSign();
-        placeStarterChest();
-    }
-
-    private void placeStarterChest() {
-        if (SpacebaseRun.depth != 1 || roomEntrance == null) {
-            return;
-        }
-
-        int pos = starterChestCell();
-        if (pos == -1) {
-            return;
-        }
-
-        drop(Generator.random(), pos).type = Heap.Type.CHEST;
-        drop(new Uniform().identify(), pos);
-        drop(new Food().identify(), pos);
-        drop(new MappingUpgrade().identify(), pos);
-        drop(new WeakForcefield().identify(), pos);
-        drop(new SpaceSuit().identify(), pos);
-        drop(new Wrench().identify(), pos);
-        drop(new Wrench().identify(), pos);
-    }
-
-    private int starterChestCell() {
-        // Prefer a varied position, but never let one unlucky random choice cancel
-        // this guaranteed floor-one feature.
-        for (int tries = 0; tries < 30; tries++) {
-            int pos = pointToCell(roomEntrance.random());
-            if (canPlaceStarterChest(pos)) {
-                return pos;
-            }
-        }
-
-        for (int y = roomEntrance.top + 1; y < roomEntrance.bottom; y++) {
-            for (int x = roomEntrance.left + 1; x < roomEntrance.right; x++) {
-                int pos = x + y * width();
-                if (canPlaceStarterChest(pos)) {
-                    return pos;
-                }
-            }
-        }
-
-        return -1;
-    }
-
-    private boolean canPlaceStarterChest(int pos) {
-        return pos != entrance
-                && insideMap(pos)
-                && (Terrain.flags[map[pos]] & Terrain.PASSABLE) != 0
-                && map[pos] != Terrain.SIGN
-                && vents.get(pos) == null
-                && findMob(pos) == null
-                && heaps.get(pos) == null;
     }
 
     @Override

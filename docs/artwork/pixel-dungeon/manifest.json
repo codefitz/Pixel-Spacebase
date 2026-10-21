@@ -1,0 +1,71 @@
+{
+  "repository": "https://github.com/watabou/pixel-dungeon",
+  "revision": "ca458a28f053612973d5d6059dae5f6f2ca4fcb7",
+  "files": [
+    {
+      "source": "assets/tiles0.png",
+      "destination": "core/src/main/assets/pixel_dungeon/tiles0.png",
+      "sha256": "c7ecc29c7c72895e0dc26066030dfe0f5f190ab42b5f0fe9b90b0f5f7aa93d8e"
+    },
+    {
+      "source": "assets/water0.png",
+      "destination": "core/src/main/assets/pixel_dungeon/water0.png",
+      "sha256": "b6db4a9473acb9354491afe9e9024d452e603c530863b4c15a5553dfa4839f06"
+    },
+    {
+      "source": "assets/items.png",
+      "destination": "core/src/main/assets/pixel_dungeon/items.png",
+      "sha256": "40c03e87a425278b42ad81c638503e436daca08c8b2e16c30fb67da084243c79"
+    },
+    {
+      "source": "assets/warrior.png",
+      "destination": "core/src/main/assets/pixel_dungeon/warrior.png",
+      "sha256": "857b236d6a0a7451525d1a7cb081449593c2a9cb8b81be0cb75465c7588d6812"
+    },
+    {
+      "source": "assets/mage.png",
+      "destination": "core/src/main/assets/pixel_dungeon/mage.png",
+      "sha256": "f62aa34153950aba1ffbd9a89e1c2fa7ddbb11e101cb11b2f9518b19da2de02d"
+    },
+    {
+      "source": "assets/rogue.png",
+      "destination": "core/src/main/assets/pixel_dungeon/rogue.png",
+      "sha256": "afd93da6294b96c9cac3d6d739ab4202006eb37a2d3b4b7eef6b395a8dddd88a"
+    },
+    {
+      "source": "assets/ranger.png",
+      "destination": "core/src/main/assets/pixel_dungeon/ranger.png",
+      "sha256": "42f4863ba55e5be6bc4fc7452315632cbc6c8cfb2a9ceec84d859a67aa3455a6"
+    },
+    {
+      "source": "assets/rat.png",
+      "destination": "core/src/main/assets/pixel_dungeon/rat.png",
+      "sha256": "47f16ac76e62ebc2f6e4283b65bc00d1032b620c8c3c64fc51ee549a90ba8155"
+    },
+    {
+      "source": "assets/gnoll.png",
+      "destination": "core/src/main/assets/pixel_dungeon/gnoll.png",
+      "sha256": "97e0f1792fcb1e1e60ade55c43a720252b3ef5e3e918d816f13e5eefb318fd71"
+    },
+    {
+      "source": "assets/crab.png",
+      "destination": "core/src/main/assets/pixel_dungeon/crab.png",
+      "sha256": "2f9606f161913812cec4d0a364c568c8dc0172e2ca3d42fbbe74736fa23d5387"
+    },
+    {
+      "source": "assets/shopkeeper.png",
+      "destination": "core/src/main/assets/pixel_dungeon/shopkeeper.png",
+      "sha256": "ee5fe4ae1cebc52c60dd547f9621cfa156e6a651fcf6853d4c0fbac341461183"
+    },
+    {
+      "source": "assets/pet.png",
+      "destination": "core/src/main/assets/pixel_dungeon/pet.png",
+      "sha256": "94b120414b8dc6768c4c20eeef85ff9188f8ce5a170de3ff677dd3ba7906bd1a"
+    },
+    {
+      "source": "assets/sheep.png",
+      "destination": "core/src/main/assets/pixel_dungeon/sheep.png",
+      "sha256": "deea98c18f89d8d2d67b4dac4adfa8ba65dcefe9b6c65795ae5a2aad9e6776ab"
+    }
+  ]
+}

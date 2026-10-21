@@ -42,6 +42,15 @@ public class MappingUpgrade extends Upgrade {
     @Override
     protected void doRead() {
 
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
+            GLog.i(Messages.get(SpacebaseRun.level, "mapping_blocked"));
+            Sample.INSTANCE.play(Assets.SND_READ);
+            Camoflage.dispel();
+            setKnown();
+            readAnimation();
+            return;
+        }
+
         int length = SpacebaseRun.level.length();
         int[] map = SpacebaseRun.level.map;
         boolean[] mapped = SpacebaseRun.level.mapped;

@@ -44,13 +44,12 @@ public class TerrainFeaturesTilemap extends Tilemap {
 
     private int[] map;
     private float[] tileVariance;
-    private int zoneFeatureVariant;
 
     private SparseArray<Mine> mines;
     private SparseArray<Vent> vents;
 
     public TerrainFeaturesTilemap(SparseArray<Mine> mines, SparseArray<Vent> vents) {
-        super(Assets.TERRAIN_FEATURES, new TextureFilm(Assets.TERRAIN_FEATURES, SIZE, SIZE));
+        super(tilesTexture(), new TextureFilm(tilesTexture(), SIZE, SIZE));
 
         this.mines = mines;
         this.vents = vents;
@@ -60,7 +59,6 @@ public class TerrainFeaturesTilemap extends Tilemap {
         for (int i = 0; i < tileVariance.length; i++)
             tileVariance[i] = Random.Float();
         Random.seed();
-        zoneFeatureVariant = (int) Math.floorMod(SpacebaseRun.seed + ((SpacebaseRun.depth - 1) / 5) * 31L, 2L);
 
         map(SpacebaseRun.level.map, SpacebaseRun.level.width());
 
@@ -99,12 +97,17 @@ public class TerrainFeaturesTilemap extends Tilemap {
     }
 
     private int getTileVisual(int pos, int tile) {
+        if (com.wafitz.pixelspacebase.sprites.PixelDungeonSkins.active()) {
+            Vent vent = vents.get(pos);
+            if (vent != null && vent.visible && vent.active || mines.get(pos) != null) return 17;
+            return tile == Terrain.SPENT_MINE ? 23 : -1;
+        }
         if (vents.get(pos) != null) {
             Vent vent = vents.get(pos);
             if (!vent.visible || !vent.active) {
                 return -1;
             } else {
-                return vent.color + (vent.shape * 16);
+                return trapVisual(vent);
             }
         }
 
@@ -131,6 +134,17 @@ public class TerrainFeaturesTilemap extends Tilemap {
         Image img = new Image(instance.texture);
         img.frame(instance.tileset.get(instance.getTileVisual(pos, tile)));
         return img;
+    }
+
+    public static String tilesTexture() {
+        return com.wafitz.pixelspacebase.sprites.PixelDungeonSkins.active()
+                ? Assets.PD_TILES : Assets.TERRAIN_FEATURES;
+    }
+
+    /** The scanner uses the same trap artwork without revealing or disarming it. */
+    public static int trapVisual(Vent vent) {
+        return com.wafitz.pixelspacebase.sprites.PixelDungeonSkins.active()
+                ? 17 : vent.color + vent.shape * 16;
     }
 
     public void growMine(final int pos) {

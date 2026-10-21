@@ -20,6 +20,7 @@
  */
 package com.wafitz.pixelspacebase.items;
 
+import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.effects.Speck;
@@ -95,6 +96,11 @@ public class ArmorKit extends Item {
             curUser.belongings.armor = classArmor;
             ((HeroSprite) curUser.sprite).updateArmor();
             classArmor.activate(curUser);
+            if (armor instanceof com.wafitz.pixelspacebase.items.armor.HoverPod) {
+                curUser.viewDistance = SpacebaseRun.heroViewDistance();
+                SpacebaseRun.observe(Math.max(curUser.viewDistance,
+                        com.wafitz.pixelspacebase.actors.buffs.Light.DISTANCE) + 1);
+            }
 
         } else {
 

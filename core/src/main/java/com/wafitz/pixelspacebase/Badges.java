@@ -919,6 +919,10 @@ public class Badges {
         return global.contains(badge);
     }
 
+    public static boolean earnedInCurrentRun(Badge badge) {
+        return local.contains(badge);
+    }
+
     public static void disown(Badge badge) {
         loadGlobal();
         global.remove(badge);

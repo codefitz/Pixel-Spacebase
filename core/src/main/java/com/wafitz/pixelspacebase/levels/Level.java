@@ -137,6 +137,8 @@ public abstract class Level implements Bundlable {
     public static boolean[] pit;
 
     public static boolean[] discoverable;
+    private static boolean[] hullFootprint;
+    private static boolean[] exteriorSpace;
 
     public Feeling feeling = Feeling.NONE;
     public boolean floorBreakerOn = true;
@@ -146,6 +148,7 @@ public abstract class Level implements Bundlable {
 
     //when a boss level has become locked.
     public boolean locked = false;
+    public boolean rescueBossDefeated;
 
     public HashSet<Mob> mobs;
     public SparseArray<Heap> heaps;
@@ -153,6 +156,7 @@ public abstract class Level implements Bundlable {
     public SparseArray<Mine> mines;
     public SparseArray<Vent> vents;
     public HashSet<CustomTileVisual> customTiles;
+    private final HashSet<Integer> rinseWaterCells = new HashSet<>();
 
     ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
@@ -187,6 +191,8 @@ public abstract class Level implements Bundlable {
     private int doorlessRoomRadius = 1;
 
     public void create() {
+
+        rinseWaterCells.clear();
 
         Random.seed(SpacebaseRun.seedCurDepth());
 
@@ -307,6 +313,8 @@ public abstract class Level implements Bundlable {
         createItems();
         createDoorlessRoomReward();
 
+        com.wafitz.pixelspacebase.actors.mobs.npcs.DecontaminationStation.install(this);
+
         Random.seed();
     }
 
@@ -355,6 +363,12 @@ public abstract class Level implements Bundlable {
         customTiles = new HashSet<>();
 
         map = bundle.getIntArray(MAP);
+        rinseWaterCells.clear();
+        if (bundle.contains("rinseWaterCells")) {
+            for (int cell : bundle.getIntArray("rinseWaterCells")) {
+                if (cell >= 0 && cell < length() && map[cell] == Terrain.WATER) rinseWaterCells.add(cell);
+            }
+        }
 
         visited = bundle.getBooleanArray(VISITED);
         mapped = bundle.getBooleanArray(MAPPED);
@@ -376,6 +390,7 @@ public abstract class Level implements Bundlable {
         exit = bundle.getInt(EXIT);
 
         locked = bundle.getBoolean(LOCKED);
+        rescueBossDefeated = bundle.getBoolean("rescueBossDefeated");
 
         //for pre-0.3.0c saves
         /*if (version < 44) {
@@ -451,6 +466,7 @@ public abstract class Level implements Bundlable {
         buildFlagMaps();
         Plasma.seed(this);
         cleanWalls();
+        com.wafitz.pixelspacebase.actors.mobs.npcs.DecontaminationStation.install(this);
     }
 
     @Override
@@ -459,6 +475,10 @@ public abstract class Level implements Bundlable {
         bundle.put("width", width);
         bundle.put("height", height);
         bundle.put(MAP, map);
+        int[] rinseCells = new int[rinseWaterCells.size()];
+        int rinseIndex = 0;
+        for (int cell : rinseWaterCells) rinseCells[rinseIndex++] = cell;
+        bundle.put("rinseWaterCells", rinseCells);
         bundle.put(VISITED, visited);
         bundle.put(MAPPED, mapped);
         bundle.put(VACUUM, vacuum);
@@ -466,6 +486,7 @@ public abstract class Level implements Bundlable {
         bundle.put(ENTRANCE, entrance);
         bundle.put(EXIT, exit);
         bundle.put(LOCKED, locked);
+        bundle.put("rescueBossDefeated", rescueBossDefeated);
         bundle.put(HEAPS, heaps.values());
         bundle.put(MINES, mines.values());
         bundle.put(VENTS, vents.values());
@@ -486,6 +507,10 @@ public abstract class Level implements Bundlable {
     private void createDoorlessRoom() {
         // Also applies when loading older saves that do not contain a chamber.
         if (!needsDoorlessRoom()) return;
+        paintDoorlessRoom();
+    }
+
+    private void paintDoorlessRoom() {
         ArrayList<Integer> candidates = doorlessRoomCandidates(1);
         doorlessRoomRadius = 1;
         if (candidates.isEmpty()) {
@@ -506,6 +531,10 @@ public abstract class Level implements Bundlable {
                 int cell = (top + y) * width() + left + x;
                 boolean interior = x > 0 && y > 0 && x < size - 1 && y < size - 1;
                 map[cell] = interior ? Terrain.EMPTY : Terrain.WALL;
+                if (visited != null) visited[cell] = false;
+                if (mapped != null) mapped[cell] = false;
+                if (vacuum != null) vacuum[cell] = false;
+                if (pressurized != null) pressurized[cell] = false;
             }
         }
         doorlessRoomCenter = (top + size / 2) * width() + left + size / 2;
@@ -519,8 +548,12 @@ public abstract class Level implements Bundlable {
                 boolean clear = true;
                 for (int dy = 0; dy < size && clear; dy++) {
                     for (int dx = 0; dx < size; dx++) {
-                        int terrain = map[(y + dy) * width() + x + dx];
-                        if (terrain != Terrain.WALL && terrain != Terrain.CHASM) {
+                        int cell = (y + dy) * width() + x + dx;
+                        int terrain = map[cell];
+                        if ((terrain != Terrain.WALL && terrain != Terrain.CHASM)
+                                || findMob(cell) != null
+                                || heaps.get(cell) != null || mines.get(cell) != null
+                                || vents.get(cell) != null) {
                             clear = false;
                             break;
                         }
@@ -565,12 +598,41 @@ public abstract class Level implements Bundlable {
 
     public int fallLandingCell(boolean intoDoorlessRoom) {
         if (SpacebaseRun.bossLevel()) {
-            return bossFallLandingCell();
+            // Chasm arrivals use the stranded-room rescue, not the boss approach.
+            // Phase-swapping boss maps can retain a saved centre after erasing its room.
+            if (!hasIntactDoorlessRoom()) {
+                paintDoorlessRoom();
+                buildFlagMaps();
+                cleanWalls();
+            }
+            return doorlessRoomLandingCell();
         }
         int cell = intoDoorlessRoom || Random.Int(4) == 0
                 ? doorlessRoomLandingCell() : randomRespawnCell();
         return cell >= 0 ? cell : randomRespawnCell();
     }
+
+    private boolean hasIntactDoorlessRoom() {
+        if (!insideMap(doorlessRoomCenter) || doorlessRoomRadius < 0
+                || doorlessRoomRadius > 1 || findMob(doorlessRoomCenter) != null) return false;
+        int cx = doorlessRoomCenter % width();
+        int cy = doorlessRoomCenter / width();
+        int border = doorlessRoomRadius + 1;
+        if (cx - border < 1 || cy - border < 1
+                || cx + border >= width() - 1 || cy + border >= height() - 1) return false;
+        for (int y = cy - border; y <= cy + border; y++) {
+            for (int x = cx - border; x <= cx + border; x++) {
+                int terrain = map[y * width() + x];
+                boolean interior = Math.abs(x - cx) <= doorlessRoomRadius
+                        && Math.abs(y - cy) <= doorlessRoomRadius;
+                if (interior ? terrain != Terrain.EMPTY
+                        : terrain != Terrain.WALL && terrain != Terrain.WALL_DECO) return false;
+            }
+        }
+        return true;
+    }
+
+    public int rescueBossLandingCell() { return bossFallLandingCell(); }
 
     private int bossFallLandingCell() {
         // Fall placement happens before switchLevel updates PathFinder's map
@@ -730,7 +792,19 @@ public abstract class Level implements Bundlable {
     public boolean isPlasmaCell(int cell) {
         return insideMap(cell)
                 && (this instanceof DeepContainmentDeckLevel || this instanceof DeepContainmentCoreLevel)
-                && map[cell] == Terrain.WATER;
+                && map[cell] == Terrain.WATER && !rinseWaterCells.contains(cell);
+    }
+
+    public boolean isRinseWaterCell(int cell) {
+        return insideMap(cell) && map[cell] == Terrain.WATER && rinseWaterCells.contains(cell);
+    }
+
+    public void makeRinsePuddle(int cell) {
+        if (!insideMap(cell)) return;
+        rinseWaterCells.add(cell);
+        set(cell, Terrain.WATER);
+        Plasma plasma = (Plasma) blobs.get(Plasma.class);
+        if (plasma != null) plasma.clear(cell);
     }
 
     /** Stabilises one Command plasma cell into weak, traversable, scorched plating. */
@@ -975,13 +1049,16 @@ public abstract class Level implements Bundlable {
             }
             discoverable[i] = touchesOpenCell && touchesGround && map[i] != Terrain.CHASM;
         }
+        hullFootprint = discoverable;
+        exteriorSpace = findExteriorSpace(width(), height(), discoverable);
         revealHull();
     }
 
     protected void revealHull() {
         if (mapped == null) return;
         for (int cell = 0; cell < length(); cell++) {
-            if (isHullCell(cell, width(), height(), discoverable)) mapped[cell] = true;
+            if ((map[cell] == Terrain.WALL || map[cell] == Terrain.WALL_DECO)
+                    && isHullCell(cell, width(), height(), discoverable)) mapped[cell] = true;
         }
     }
 
@@ -989,16 +1066,48 @@ public abstract class Level implements Bundlable {
         if (cell < 0 || cell >= footprint.length || !footprint[cell]) return false;
         int cx = cell % width;
         int cy = cell / width;
+        boolean[] exterior = footprint == hullFootprint ? exteriorSpace
+                : findExteriorSpace(width, height, footprint);
         for (int y = cy - 1; y <= cy + 1; y++) {
             for (int x = cx - 1; x <= cx + 1; x++) {
                 if (x < 0 || x >= width || y < 0 || y >= height
-                        || !footprint[x + y * width]) return true;
+                        || exterior[x + y * width]) return true;
             }
         }
         return false;
     }
 
+    /** Only unused cells reachable from the map border belong to outer space. */
+    private static boolean[] findExteriorSpace(int width, int height, boolean[] footprint) {
+        boolean[] exterior = new boolean[footprint.length];
+        int[] queue = new int[footprint.length];
+        int head = 0, tail = 0;
+        for (int cell = 0; cell < footprint.length; cell++) {
+            int x = cell % width, y = cell / width;
+            if (!footprint[cell] && (x == 0 || x == width - 1 || y == 0 || y == height - 1)) {
+                exterior[cell] = true;
+                queue[tail++] = cell;
+            }
+        }
+        while (head < tail) {
+            int cell = queue[head++];
+            int x = cell % width, y = cell / width;
+            for (int direction = 0; direction < 4; direction++) {
+                int nx = x + (direction == 0 ? -1 : direction == 1 ? 1 : 0);
+                int ny = y + (direction == 2 ? -1 : direction == 3 ? 1 : 0);
+                if (nx < 0 || nx >= width || ny < 0 || ny >= height) continue;
+                int next = nx + ny * width;
+                if (!footprint[next] && !exterior[next]) {
+                    exterior[next] = true;
+                    queue[tail++] = next;
+                }
+            }
+        }
+        return exterior;
+    }
+
     public static void set(int cell, int terrain) {
+        if (terrain != Terrain.WATER) SpacebaseRun.level.rinseWaterCells.remove(cell);
         Painter.set(SpacebaseRun.level, cell, terrain);
 
         if (SpacebaseRun.level.vents != null

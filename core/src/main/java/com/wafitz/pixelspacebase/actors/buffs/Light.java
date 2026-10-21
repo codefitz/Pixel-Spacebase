@@ -46,9 +46,9 @@ public class Light extends FlavourBuff {
 
     @Override
     public void detach() {
+        super.detach();
         target.viewDistance = target == SpacebaseRun.hero ? SpacebaseRun.heroViewDistance() : SpacebaseRun.level.viewDistance;
         SpacebaseRun.observe(DISTANCE + 1);
-        super.detach();
     }
 
     @Override

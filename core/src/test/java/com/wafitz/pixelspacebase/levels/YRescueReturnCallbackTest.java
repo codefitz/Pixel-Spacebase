@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 /** Checks the compiled callback target without constructing an Android/OpenGL dialogue. */
 public class YRescueReturnCallbackTest {
-    @Test public void returnCallbackDestroysYNotTheAlreadyClosedWindow() throws Exception {
+    @Test public void returnCallbackRequestsSavedTravelWithoutDestroyingTheClosedWindow() throws Exception {
         String owner = "com/wafitz/pixelspacebase/actors/mobs/npcs/YRescuer";
         InputStream resource = getClass().getClassLoader().getResourceAsStream(owner + "$1.class");
         assertNotNull(resource);
@@ -35,16 +35,21 @@ public class YRescueReturnCallbackTest {
                     default: fail("Unexpected constant-pool tag " + tag);
                 }
             }
-            boolean removesY = false;
+            boolean requestsReturn = false;
             for (int i = 1; i < count; i++) {
                 if (tags[i] != 10) continue;
                 String method = text[first[second[i]]];
-                if (!"destroy".equals(method)) continue;
                 String receiver = text[first[first[i]]];
-                assertEquals("Callback must not destroy its Window a second time", owner, receiver);
-                removesY = true;
+                if ("destroy".equals(method)) {
+                    assertEquals("Callback must not destroy its Window a second time", owner, receiver);
+                }
+                if ("requestReturn".equals(method)) {
+                    assertEquals("Return must use the saved rescue journey",
+                            "com/wafitz/pixelspacebase/actors/buffs/YRescueJourney", receiver);
+                    requestsReturn = true;
+                }
             }
-            assertTrue("Return callback must remove Y from the saved deck", removesY);
+            assertTrue("Return callback must request the saved return journey", requestsReturn);
         }
     }
 }

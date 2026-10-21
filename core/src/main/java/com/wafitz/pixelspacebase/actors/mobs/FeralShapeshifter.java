@@ -248,6 +248,7 @@ public class FeralShapeshifter extends Mob {
         SpacebaseRun.level.drop(new MasterKeycard(SpacebaseRun.depth), pos).sprite.drop();
 
         Badges.validateBossSlain();
+        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.bossVictory();
     }
 
     private void resolveBossFight() {

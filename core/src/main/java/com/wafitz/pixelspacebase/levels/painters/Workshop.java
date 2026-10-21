@@ -47,7 +47,7 @@ import com.wafitz.pixelspacebase.items.equippablemodules.HunterItemScanner;
 import com.wafitz.pixelspacebase.items.equippablemodules.HunterTrapScanner;
 import com.wafitz.pixelspacebase.items.equippablemodules.TimeFolder;
 import com.wafitz.pixelspacebase.items.blasters.Blaster;
-import com.wafitz.pixelspacebase.items.blasters.PlasmaStabiliser;
+import com.wafitz.pixelspacebase.items.blasters.FreezeThrower;
 import com.wafitz.pixelspacebase.items.containers.BlasterHolster;
 import com.wafitz.pixelspacebase.items.containers.OrdnanceKit;
 import com.wafitz.pixelspacebase.items.containers.UtilityKit;
@@ -63,7 +63,7 @@ import com.wafitz.pixelspacebase.items.weapon.melee.HoloAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.LazerSword;
 import com.wafitz.pixelspacebase.items.weapon.melee.MCPickAxe;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
-import com.wafitz.pixelspacebase.items.weapon.melee.Spade;
+import com.wafitz.pixelspacebase.items.weapon.melee.PhaseCutter;
 import com.wafitz.pixelspacebase.items.weapon.melee.Wrench;
 import com.wafitz.pixelspacebase.items.weapon.missiles.CurareDart;
 import com.wafitz.pixelspacebase.items.weapon.missiles.HunterJavelin;
@@ -105,9 +105,18 @@ public class Workshop extends Painter {
 
     public static void storeInBundle(Bundle bundle) {
         bundle.put(STORED_ITEMS, storedItems == null ? new ArrayList<Item>() : storedItems);
+        bundle.put("carriedWorkshopStock", carriedStock == null ? new ArrayList<Item>() : carriedStock);
+        bundle.put("carriedWorkshopStockArea", stockArea);
     }
 
     public static void restoreFromBundle(Bundle bundle) {
+        carriedStock = new ArrayList<>();
+        if (bundle.contains("carriedWorkshopStock")) for (Bundlable item : bundle.getCollection("carriedWorkshopStock")) {
+            if (item instanceof Item) carriedStock.add((Item) item);
+        }
+        stockArea = bundle.contains("carriedWorkshopStockArea") ? bundle.getInt("carriedWorkshopStockArea") : -1;
+        stockDepth = -1; // Rebuild stock when entering a newly generated workshop after reload.
+        itemsToSpawn = null;
         storedItems = new ArrayList<>();
         if (bundle.contains(STORED_ITEMS)) {
             for (Bundlable item : bundle.getCollection(STORED_ITEMS)) {
@@ -483,8 +492,8 @@ public class Workshop extends Painter {
             itemsToSpawn.add(rareWorkshopItem(false));
             itemsToSpawn.add(new TorchBattery().quantity(2));
             if (SpacebaseRun.depth == 22) {
-                // Give the player one dependable non-equipment route across Command plasma.
-                itemsToSpawn.add(new PlasmaStabiliser());
+                // Guarantee one Freeze Blaster for a dependable route across Command plasma.
+                itemsToSpawn.add(new FreezeThrower());
             }
         } else if (rareSurpriseChance(makerTier)) {
             itemsToSpawn.add(rareWorkshopItem(true));
@@ -510,7 +519,7 @@ public class Workshop extends Painter {
                         new CurareDart().quantity(Random.NormalIntRange(1, 3)));
                 break;
             case 2:
-                itemsToSpawn.add(scaleZoneItem(Random.Int(2) == 0 ? new LazerSword().identify() : new Spade().identify()));
+                itemsToSpawn.add(scaleZoneItem(Random.Int(2) == 0 ? new LazerSword().identify() : new PhaseCutter().identify()));
                 itemsToSpawn.add(Random.Int(2) == 0 ?
                         new CurareDart().quantity(Random.NormalIntRange(2, 5)) :
                         new Shuriken().quantity(Random.NormalIntRange(3, 6)));
@@ -788,7 +797,7 @@ public class Workshop extends Painter {
                 || item instanceof HunterSpaceSuit
                 || item instanceof HunterItemScanner
                 || item instanceof HunterTrapScanner
-                || item instanceof PlasmaStabiliser;
+                || item instanceof FreezeThrower;
     }
 
     private static boolean hasOwnedModule(Class<? extends Item> moduleClass) {

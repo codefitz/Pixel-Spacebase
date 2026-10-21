@@ -1,0 +1,158 @@
+# Targeted Release: v1.0.4
+
+Use this as the working backlog for the next sprint. Put rough ideas in Suggestions first, then move them into the relevant section once the direction is clear enough to implement and test.
+
+## Suggestions
+
+## Mechanics
+
+- [x] Station cat waits on every level until touched, letting the player choose whether it follows and takes risks.
+- [x] Following station cat bats one module, equippable module, or tech upgrade per regular room; it leaves ordinary loot alone and eats dropped raw meat to restore HP while the hero stays in the room.
+- [x] A following station cat can scare a nearby signal siren into fleeing.
+- [x] Alter torch to be equipped in quickslots to activate
+- [x] Wormhole generator: equip it and spend one utility battery to teleport to a random unoccupied location on the current level; the device has no recharge.
+- [x] A battery doused with medigel can explode (locked doors, blockage)
+- [x] Holodeck / Lazer quest shutdown sequence:
+    - [x] Use the attached legacy `old_tiles/tiles3.png` as the active boss-level holodeck atlas, enlarged 4x with nearest-neighbour scaling.
+    - [x] Re-theme the current corpse-room bodies and Lazer quest prop as convincing holodeck projections/equipment while preserving the room's reward and pickup flow.
+    - [x] Add Roman-style holographic patrol mobs to eligible habitation-ring levels while the holodeck remains active.
+    - [x] Treat collection of the sixth `HardLightEmitter` (Y's existing requirement) as the shutdown moment, independently of handing the emitters to Y.
+    - [x] At shutdown, stop future patrol spawns, remove patrol projections when their saved floors are revisited, and switch the holodeck to a black field with yellow grid boxes.
+    - [x] Persist the shutdown state across saves and make newly generated and already-generated holodeck areas show the correct phase.
+    - [x] Keep Y's existing six-emitter reward exchange available after shutdown.
+    - [x] Let roaming Roman holograms drop emitters on normal habitat levels.
+    - [x] Open Y's workshop floor only when six emitters were collected before the boss.
+    - [x] Give the boss a Caesar sprite and its summons Roman legionary sprites.
+    - [x] Verify the 5-to-6 emitter transition, save/restore in both phases, projection cleanup, reward exchange, and both visual states.
+- [x] Be able to render the drone controller.
+- [x] New Suit Mechanics:
+    - [x] Hunter Suit signature scanner shows moving red silhouettes for enemies and NPCs while floor lights are off, without revealing terrain or extending targeting sight.
+    - [x] Hunter Suit jetpack can be switched on or off for unlimited flight while equipped.
+    - [x] Hunter has +1 accuracy with ranged weapons.
+    - [x] Hoverpod absorbs hits and non-explosive traps, has visible integrity, and breaks down after 15 hits. Repair Blaster restores it; combining two strengthens it by one hit.
+    - [x] Heavy loader high HP, smash locked/damaged doors, can fire weapon but whilst wearing weapon slot is equipped with loader arm (upgradeable).
+      - [x] Create loader arm item
+    - [x] Space suit and Hunter Suit are immune to harmful gases.
+    - [x] Being unarmored grants 50% faster movement and 25% greater dodge.
+    - [x] Unprovoked robots ignore a hero in uniform; each remembers a hero attack across saves.
+    - [x] Only space suit, hunter, hoverpod and the special suit allow breathing in space.
+      - [x] Exception: DM3000 doesn't need to breath so can wear anything.
+  - [x] Repair blaster can lock doors as well as open locked ones.
+  - [x] Have a rare item (x2 per game) that will upgrade everything currently carried or equipped.
+- [x] Command coolant is hazardous plasma; loose items burn up, and generated drops, quest keys, and teleport destinations avoid it.
+  - [x] Plasma deals 25 damage per turn to grounded characters; Hunter flight, Hoverpod, Loader armor, the Frontier forcefield, teleportation, cryo effects, and the Plasma Stabiliser provide ways through or across it.
+  - [x] Bomb explosions can rupture plasma flooring into a chasm.
+  - [x] Put a Plasma Stabiliser in the depth 22 workshop and include it as a rare random blaster.
+  - [x] The floor itself has holes in places all over.
+  - [x] Playtest Command plasma routes and safe-spawn/drop edge cases.
+
+## Cosmetic / Narrative
+
+- [x] Chasms/black should have a subtle starry background, with potentially a planet and nearby star.
+- [x] Give Maintenance wall lamps a subtle flicker.
+- [x] Refresh Engineering's salvageable wall panels.
+- [x] Upgrade the Habitation Ring terrain tileset.
+- [x] Name the later area Command in documentation and player-facing chapter copy.
+- [x] Have an optional 'now playing' message for level music, controlled from Audio settings.
+- [x] Challenges Icon update
+- [x] Armor Kit needs icon sci-fi upgrade
+- [x] Rename of icon files
+- [x] Fix swarm sprite - crap
+- [x] Swap wall tiles in security
+- [x] Hero reacts when Y confiscates a weapon during the security maze and when it is recovered after the Masked Prisoner fight.
+- [x] Add room with no doors. These can be accessed by dropping into them, they may contain a high-value item or nothing. However there is no escape unless you have an item that can teleport you out.
+- [x] Show the initial Xeno infection reaction only once per run; retain the warning and burst reactions for later infections.
+- [x] Y's habitat and workshop sprites match his security boss appearance.
+- [x] A Shapeshifter throwing a blaster discharges an energy beam at every hostile target in the impact room, reducing each to 0 HP. The blaster is consumed.
+- [x] Torch battery indicator.
+- [x] Habitat entry/exit transporter disks, with cyan/down and amber/up markers and dedicated room floors and walls.
+- [x] Replace the duplicate workshop storage chests with one marked quantum chest and a two-way inventory transfer screen.
+- [x] Added expensive, workshop-only Hunter modules that mark unseen items or active traps through fog while the Hunter scanner is active.
+- [x] A Hunter suit upgraded with the Armor Kit keeps its jetpack toggle alongside the class-armor special ability.
+- [x] Each generated Habitat deck has one changing room with showers, lockers, harmless steaming vents and water patches; water is confined to that room.
+- [x] Each floor has a door leading to a small outer platform (can jump from).
+  - [x] Newly generated regular floors reserve a small exterior platform behind a door; jumping off uses the existing downward fall route and always lands in the destination deck's sealed room.
+  - [x] Playtest platform generation, vacuum exposure, jumping and save/restore; decide placement on fixed boss and workshop floors.
+- [x] Signal Leech: plasma/lava bug artwork and orange plasma spit that burns on a ranged hit, replacing the old weakness beam. Fire/plasma immunity; existing stats, melee and loot retained. Suit/shield protections apply; no permanent plasma terrain created.
+- [x] Signal Siren: floating alien jellyfish artwork; one-in-three successful hits teleport a surviving hero within their current room, including plasma/chasm tiles. Walls, occupied tiles and the current cell are excluded; landing hazards trigger normally. Cat scare-away behaviour retained; saved Sirens become flying too.
+- [x] Outer-colony psion uses Hunter animations with alien violet armour and acid-green accents.
+- [x] Ruptured crew suit uses spacesuit animations with a visorless, empty helmet; description identifies an unseen entity inhabiting it.
+- [x] Scorpio appears as a masked alien predator with armour, tendrils and a shoulder launcher; existing ranged combat is preserved.
+- [x] Retire the paired weak-floor chasm and locked pit reward rooms from new generation; falls no longer target legacy locked pit rooms. Preserve sealed rooms and exterior-platform jumps.
+- [x] After twenty turns stranded, Y sends the hero to a random entrance-connected position on any non-boss gameplay deck (including unexplored decks; secret workshop still requires unlock). Find rescue Y on that deck to request a reluctant return to the entrance of the deck last fallen from. Return ticket and Y persist across saves; skipped decks generate on demand.
+- [x] Quantum chest doesn't keep items after boss.
+- [x] Make it so shapeshifter can find hunters disk, but it does not break and returns.
+- [x] Darksaber and Brightsaber can be reforged into a tier-5 Eclipse Saber, retaining the stronger input's enhancement and weight conversion, adding one upgrade level, and keeping surprise-attack damage.
+- [x] Clicking a friendly drone swaps places, respecting movement hazards; hostile drones retain combat behaviour.
+- [x] Fix: Holodeck boss starts with holodeck black/yellow pattern rather than the hologram.
+- [x] The plasma stabiliser should do a small amount of damage on an enemy. It also should start by affecting only one tile at a time.
+- [x] ArmorKit retains inherited suit properties, including Hunter signatures in darkness and life support.
+- [x] Molton sparks from plasma should disappear when cleared by stabilizer.
+- [x] Floor tiling from plasma stabiser should be darkened and scorched (and weak)
+- [x] Final boss level no longer generates a sealed room (including older saves without one).
+
+## Art
+
+- [x] Hunter suit reskinned as charcoal/bronze bounty-hunter armour with a T-shaped visor and compact jetpack, across player animations and inventory icons.
+- [x] Heavy Loader uses larger orange industrial power-loader animations on the level, with the selected hero's head visible in the cockpit.
+- [x] Hoverpod refreshed as a silver/navy capsule with a blue canopy, cyan hover jets, orange hazard tabs and each hero visible inside; matching inventory icon.
+  - [x] Enlarge the existing on-level Hoverpod sprite by one third, keeping it smaller than the Heavy Loader and centred on its tile.
+- [x] Security alternate tiles are too abundant - security cameras could be joined and this should take one of those panels. The alternate tile should just have some scuff marks
+- [x] Update common tiles across sets
+- [x] Door in security blood spot is too ubiquitous, needs to be more subtle
+- [x] Habitation graphic overhaul
+- [x] Hologram emitter token replaced with a compact cyan-lens projector icon, preserving its quest behaviour and item slot.
+- [x] Facehugger reskin - live ivory creature matching the dead alien bug item, with crawling, lunging, and death poses
+- [x] Slow the Roman running animation to reduce jitter.
+- [x] Survivors use either NPC appearance, saved per character, and appear on a seed-selected regular floor in each chapter at a random safe position.
+
+## Issues
+
+- [x] Level 1 shouldn't have a jump off platform.
+- [x] Y return crashed.
+- [x] Menu popups are misaligned at the border
+- [x] Text spilling from popups and buttons — automatic button label fitting, icon spacing, and story padding implemented; awaiting visual confirmation.
+- [x] Falling down to boss level lands outside of arena and can't move — boss falls now use a walkable, unoccupied landing nearest the entrance and exclude sealed chambers; regression tests pass, awaiting playthrough confirmation.
+- [x] No Text Found for jetpack when upgrading hunter armor using armor kit (button works) — added inherited JETPACK ON/OFF labels for class armor and corrected the kit's retained-capabilities description.
+- [x] Main menu corner says v1.0.2 — updated Android package metadata to version 1.0.3 (10003); the menu reads the installed package version.
+- [x] When the shapeshifter throws a blaster, it kills the enemies but causes them to become part of the tile, and can be walked over whilst doing the standing still animation. — fixed dead sleeping mobs restarting idle animations; death clears pauses and stale callbacks. Three regression tests pass; awaiting playthrough confirmation.
+- [x] Game menu buttons appear to be off center or just odd. — replaced overwritten checkbox atlas slots with independent cyan-frame/yellow-tick graphics; fixed label and indicator padding. Build and artwork preview verified; awaiting in-game confirmation.
+- [x] Edge of spacebase still has odd shadows with random wall generation — hull edges mapped and cleared of fog, open space excluded from the fog footprint, unused exterior wall partitions removed on generation and saved-level load. Nineteen regression tests and debug build pass; awaiting visual confirmation.
+- [x] Quantum chest is duplicating items placed (after level transition) — fixed generated workshops retaining the already-delivered storage buffer; regression tested, awaiting playthrough confirmation.
+- [x] Hunter item module is not highlighting the items. Make the item overlay blue. — corrected transparent ARGB marker textures for both scanners and changed item pings to blue; awaiting in-game visual confirmation.
+
+## Decisions
+
+- [ ] What could replace Yog Duza? Maybe a giant angel.
+
+## Version 1.0.5
+
+- [ ] Jada Knight reskin
+- [ ] DM3000 reskin
+- [ ] Update the custom room/quest for the unstable holo-projector
+- [ ] Update all ordinace items to be grenades or mines - no consuming
+- [ ] Update all plasmids to have the injection style icon
+- [ ] Holodeck boss - the entrance should be the spacebase tileset
+- [ ] Plastma stabliser can just be taken out - give it's function to the freeze blaster
+- [ ] Update spade and drill for more attractive weapons
+- [ ] Reskin hero armorkit suits
+- [ ] The shapeshifter should be able to quickslot any item (for throwing)
+- [ ] Hunter armor reskin - a bit too small
+- [ ] Jumping platform should not be surrounded by walls (like a room) - more like a bridge
+- [ ] Y shouldn't say "you'll have to find me" after rescuing the hero. So the player has no idea what's going on. Y should not give an option to stay if the Hero clicks on him - should just be like oh alright then.
+- [ ] Expand on Y rescue - random throw into next boss fight, random alien planet, random completely black/white open space (wander around to reveal tiles and find the exit)
+- [ ] Reduce flamethrower spread to single directional line
+- [ ] Shrink Roman Soldier.
+
+## Future Paid Feature
+
+- [ ] Download/Upload save files.
+- [ ] Custom asset skins upload
+
+## Code Quality / Stability
+
+- [ ] Code cleanup, refactor and suggest improvements.
+
+## Release Prep
+
+- [x] Update release notes and version — Android version 1.0.4 (10004), welcome summary and in-game changelog updated for implemented changes; remaining visual/playthrough checks are still noted above.

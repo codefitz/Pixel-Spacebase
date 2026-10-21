@@ -26,39 +26,49 @@ import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Camoflage;
 import com.wafitz.pixelspacebase.actors.buffs.Knockout;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
+import com.wafitz.pixelspacebase.effects.CellEmitter;
 import com.wafitz.pixelspacebase.effects.Speck;
-import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.messages.Messages;
+import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
-public class KnockoutUpgrade extends Upgrade {
+public class KnockoutUpgrade extends GrenadeUpgrade {
 
     {
         initials = 1;
     }
 
     @Override
-    protected void doRead() {
+    protected void detonate(int cell) {
+        boolean[] affectedCells = blastArea(cell);
 
-        curUser.sprite.centerEmitter().start(Speck.factory(Speck.NOTE), 0.3f, 5);
+        if (SpacebaseRun.visible[cell]) {
+            CellEmitter.center(cell).burst(Speck.factory(Speck.NOTE), 5);
+        }
         Sample.INSTANCE.play(Assets.SND_LULLABY);
         Camoflage.dispel();
 
         for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0])) {
-            if (Level.fieldOfView[mob.pos]) {
+            if (affectedCells[mob.pos]) {
                 Buff.affect(mob, Knockout.class);
                 mob.sprite.centerEmitter().start(Speck.factory(Speck.NOTE), 0.3f, 5);
             }
         }
 
-        Buff.affect(curUser, Knockout.class);
+        if (affectedCells[curUser.pos]) Buff.affect(curUser, Knockout.class);
 
         GLog.i(Messages.get(this, "sooth"));
+    }
 
-        setKnown();
+    @Override
+    protected int grenadeImage() {
+        return ItemSpriteSheet.KNOCKOUT_GRENADE;
+    }
 
-        readAnimation();
+    @Override
+    protected int grenadeColor() {
+        return 0x6699FF;
     }
 
     @Override

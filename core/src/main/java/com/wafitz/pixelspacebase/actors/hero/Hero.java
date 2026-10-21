@@ -140,8 +140,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-import static com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid.heal;
-
 public class Hero extends Char {
 
     {
@@ -502,6 +500,11 @@ public class Hero extends Char {
     public void spend(float time) {
         boolean preserveShapeshift = preserveShapeshiftForNextSpend;
         preserveShapeshiftForNextSpend = false;
+        if (time > 0) {
+            com.wafitz.pixelspacebase.actors.buffs.StrandedRoomRescue rescue = buff(
+                    com.wafitz.pixelspacebase.actors.buffs.StrandedRoomRescue.class);
+            if (rescue != null) rescue.recordHeroTurn();
+        }
         TimeFolder.timeFreeze buff = buff(TimeFolder.timeFreeze.class);
         if (!(buff != null && buff.processTime(time))) {
             super.spend(time);
@@ -570,6 +573,11 @@ public class Hero extends Char {
 
     @Override
     public boolean act() {
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel
+                && ((com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level).exitReached) return false;
+        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney journey = buff(
+                com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+        if (journey != null && journey.phase == com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.Phase.RESOLVING) return false;
 
         super.act();
 
@@ -837,6 +845,9 @@ public class Hero extends Char {
             if (heap != null) {
                 Item item = heap.peek();
                 if (item.doPickUp(this)) {
+                    com.wafitz.pixelspacebase.actors.buffs.YRescueJourney journey = buff(
+                            com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+                    if (journey != null) journey.recordArenaLoot(item);
                     heap.pickUp();
 
                     if (item instanceof MedigelDroplet
@@ -1037,8 +1048,7 @@ public class Hero extends Char {
             for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
                 if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
-            InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
-            Game.switchScene(InterlevelScene.class);
+            GameScene.travelByPad(InterlevelScene.Mode.DESCEND);
     }
 
     private boolean actAscend(HeroAction.Ascend action) {
@@ -1071,8 +1081,7 @@ public class Hero extends Char {
                 for (Mob mob : SpacebaseRun.level.mobs.toArray(new Mob[0]))
                     if (mob instanceof HoloPad.HologramHero) mob.destroy();
 
-                InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
-                Game.switchScene(InterlevelScene.class);
+                GameScene.travelByPad(InterlevelScene.Mode.ASCEND);
             }
 
             return false;
@@ -1171,6 +1180,9 @@ public class Hero extends Char {
 
     @Override
     public void damage(int dmg, Object src) {
+        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney journey = buff(
+                com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+        if (journey != null && journey.phase == com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.Phase.RESOLVING) return;
         if (buff(TimeFolder.timeStasis.class) != null)
             return;
 
@@ -1310,6 +1322,15 @@ public class Hero extends Char {
 
     private boolean getCloser(final int target) {
 
+        com.wafitz.pixelspacebase.levels.DarkMazeLevel maze =
+                SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel
+                        ? (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level : null;
+        if (maze != null && (!maze.canStep(pos, target) || path != null)
+                && !maze.navigationVisible(target)) {
+            path = null;
+            return false;
+        }
+
         if (target == pos)
             return false;
 
@@ -1341,7 +1362,9 @@ public class Hero extends Char {
 
         } else {
 
-            boolean newPath = false;
+            // Maze visibility is transient: recalculate each step instead of retaining
+            // a route that may leave the torchlight after movement or light expiry.
+            boolean newPath = maze != null;
             if (path == null || path.isEmpty() || !SpacebaseRun.level.adjacent(pos, path.getFirst()))
                 newPath = true;
             else if (path.getLast() != target)
@@ -1423,6 +1446,20 @@ public class Hero extends Char {
             return false;
         }
 
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel && cell != pos) {
+            com.wafitz.pixelspacebase.levels.DarkMazeLevel maze = (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level;
+            if (!maze.canStep(pos, cell) && !maze.navigationVisible(cell)) {
+                GLog.i(Messages.get(maze, "one_step"));
+                return false;
+            }
+            if (!Level.passable[cell]) {
+                maze.recordBlockedStep();
+                GLog.i(Messages.get(maze, "blocked"));
+                return false;
+            }
+            path = null;
+        }
+
         Char ch;
         Heap heap;
 
@@ -1466,11 +1503,11 @@ public class Hero extends Char {
 
             curAction = new HeroAction.Unlock(cell);
 
-        } else if (cell == SpacebaseRun.level.exit && SpacebaseRun.depth < 26) {
+        } else if (!SpacebaseRun.isRescueSideLevel() && cell == SpacebaseRun.level.exit && SpacebaseRun.depth < 26) {
 
             curAction = new HeroAction.Descend(cell);
 
-        } else if (cell == SpacebaseRun.level.entrance) {
+        } else if (!SpacebaseRun.isRescueSideLevel() && cell == SpacebaseRun.level.entrance) {
 
             curAction = new HeroAction.Ascend(cell);
 
@@ -1625,6 +1662,9 @@ public class Hero extends Char {
     public void die(Object cause) {
 
         curAction = null;
+        com.wafitz.pixelspacebase.actors.buffs.YRescueJourney journey = buff(
+                com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+        if (journey != null && journey.rescueLethalDefeat()) return;
 
         Clone clone = null;
 
@@ -1759,6 +1799,12 @@ public class Hero extends Char {
             SpacebaseRun.level.press(pos, this);
         }
         checkVacuumExposure(previousPos);
+        if (SpacebaseRun.level instanceof com.wafitz.pixelspacebase.levels.DarkMazeLevel) {
+            com.wafitz.pixelspacebase.levels.DarkMazeLevel maze =
+                    (com.wafitz.pixelspacebase.levels.DarkMazeLevel) SpacebaseRun.level;
+            maze.recordStep(previousPos, pos);
+            maze.checkExit(pos);
+        }
     }
 
     private void checkVacuumExposure(int previousPos) {

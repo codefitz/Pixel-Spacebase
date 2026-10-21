@@ -28,6 +28,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Paralysis;
 import com.wafitz.pixelspacebase.actors.buffs.Poison;
 import com.wafitz.pixelspacebase.actors.buffs.TimeSink;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 import com.wafitz.pixelspacebase.utils.GLog;
@@ -46,7 +47,7 @@ public class MysteryMeat extends Food {
 
         super.execute(hero, action);
 
-        if (action.equals(AC_USE)) {
+        if (action.equals(AC_USE) && hero.heroClass != HeroClass.DM3000) {
             effect(hero);
         }
     }

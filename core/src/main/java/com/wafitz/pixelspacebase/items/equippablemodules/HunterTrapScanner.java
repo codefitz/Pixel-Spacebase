@@ -22,7 +22,7 @@ import com.wafitz.pixelspacebase.sprites.ItemSpriteSheet;
 public class HunterTrapScanner extends EquippableModule {
 
     {
-        image = ItemSpriteSheet.STEALTH_MODULE;
+        image = ItemSpriteSheet.HUNTER_TRAP_DETECTOR;
     }
 
     @Override

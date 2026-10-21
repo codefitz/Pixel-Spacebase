@@ -584,6 +584,7 @@ public class StationCat extends NPC {
             node.put(GONE, gone);
             node.put(CARRIED, carried);
             node.put(RESCUE_SPAWNED, rescueSpawned);
+            if (carriedCat != null) node.put("travellingCat", carriedCat);
             bundle.put(NODE, node);
         }
 
@@ -595,6 +596,7 @@ public class StationCat extends NPC {
                 gone = node.getBoolean(GONE);
                 carried = node.getBoolean(CARRIED);
                 rescueSpawned = node.getBoolean(RESCUE_SPAWNED);
+                carriedCat = node.contains("travellingCat") ? (StationCat) node.get("travellingCat") : null;
             } else {
                 reset();
             }

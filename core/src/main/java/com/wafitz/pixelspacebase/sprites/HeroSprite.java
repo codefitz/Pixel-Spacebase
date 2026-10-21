@@ -26,6 +26,7 @@ import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
+import com.wafitz.pixelspacebase.items.armor.ClassArmor;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.Loader;
@@ -43,20 +44,45 @@ public class HeroSprite extends CharSprite {
     private static final int FRAME_HEIGHT = 15;
 
     private static final int RUN_FRAMERATE = 20;
-    private static final float HOVERPOD_SCALE = 4f / 3f;
+    private static final int HOVERPOD_FRAME_SIZE = 20;
+    private static final float LOADER_FRAME_SCALE = 20f / 28f;
+    // Hunter frames have one logical pixel of transparent padding on each edge.
+    private static final float HUNTER_FRAME_SCALE = 16f / (FRAME_HEIGHT - 2);
 
     private static TextureFilm tiers;
 
     private Animation fly;
     private Animation read;
     private boolean itemForm;
+    private boolean restoringHeroForm;
+    private boolean hunterSuitForm;
+    private boolean loaderSuitForm;
+
+    @Override
+    public void frame(RectF frame) {
+        if (hunterSuitForm) {
+            RectF fittedFrame = new RectF(frame);
+            fittedFrame.inset(1f / texture.logicalWidth(), 1f / texture.logicalHeight());
+            super.frame(fittedFrame);
+            width *= HUNTER_FRAME_SCALE;
+            height *= HUNTER_FRAME_SCALE;
+            updateVertices();
+        } else {
+            super.frame(frame);
+            if (loaderSuitForm) {
+                width *= LOADER_FRAME_SCALE;
+                height *= LOADER_FRAME_SCALE;
+                updateVertices();
+            }
+        }
+    }
 
     public HeroSprite() {
         super();
 
         link(SpacebaseRun.hero);
 
-        texture(SpacebaseRun.hero.heroClass.spritesheet());
+        texture(PixelDungeonSkins.heroSheet(SpacebaseRun.hero.heroClass));
         updateArmor();
 
         if (HunterSpaceSuit.jetpackEnabled(SpacebaseRun.hero))
@@ -72,14 +98,57 @@ public class HeroSprite extends CharSprite {
         itemForm = false;
         resetSuitScale();
         Hero hero = (Hero) ch;
-        if (hero.belongings.armor instanceof Loader) {
-            updateLoader(hero.heroClass);
+        hunterSuitForm = !PixelDungeonSkins.active()
+                && hero.belongings.armor instanceof HunterSpaceSuit;
+        loaderSuitForm = !PixelDungeonSkins.active()
+                && hero.belongings.armor instanceof Loader;
+        if (!PixelDungeonSkins.active() && hero.belongings.armor instanceof ClassArmor) {
+            updateClassArmor(hero.heroClass);
+            applySavedItemForm(hero);
             return;
         }
-        texture(hero.heroClass.spritesheet());
+        if (loaderSuitForm) {
+            updateLoader(hero.heroClass);
+            applySavedItemForm(hero);
+            return;
+        }
+        if (!PixelDungeonSkins.active() && hero.belongings.armor instanceof HoverPod) {
+            updateHoverPod(hero.heroClass);
+            applySavedItemForm(hero);
+            return;
+        }
+        texture(PixelDungeonSkins.heroSheet(hero.heroClass));
 
-        TextureFilm film = new TextureFilm(tiers(), ((Hero) ch).tier(), FRAME_WIDTH, FRAME_HEIGHT);
+        TextureFilm tierAtlas = PixelDungeonSkins.active()
+                ? new TextureFilm(texture, texture.logicalWidth(), FRAME_HEIGHT) : tiers();
+        int armorTier = PixelDungeonSkins.active() ? Math.max(0, Math.min(6, hero.tier())) : hero.tier();
+        TextureFilm film = new TextureFilm(tierAtlas, armorTier, FRAME_WIDTH, FRAME_HEIGHT);
 
+        configureSuitAnimations(film);
+        applySavedItemForm(hero);
+        place(ch.pos);
+    }
+
+    private void updateClassArmor(HeroClass heroClass) {
+        texture(ClassArmorArtwork.sheet(heroClass));
+        configureSuitAnimations(new TextureFilm(texture,
+                ClassArmorArtwork.FRAME_SIZE, ClassArmorArtwork.FRAME_SIZE));
+        place(ch.pos);
+    }
+
+    private void updateHoverPod(HeroClass heroClass) {
+        switch (heroClass) {
+            case COMMANDER: texture(Assets.HOVERPOD_COMMANDER); break;
+            case DM3000: texture(Assets.HOVERPOD_DM3000); break;
+            case CAPTAIN: texture(Assets.HOVERPOD_CAPTAIN); break;
+            default: texture(Assets.HOVERPOD_SHAPESHIFTER); break;
+        }
+        // Dedicated 80px frames retain a readable pilot and canopy beyond the 64px tile.
+        configureSuitAnimations(new TextureFilm(texture, HOVERPOD_FRAME_SIZE, HOVERPOD_FRAME_SIZE));
+        place(ch.pos);
+    }
+
+    private void configureSuitAnimations(TextureFilm film) {
         idle = new Animation(1, true);
         idle.frames(film, 0, 0, 0, 1, 0, 0, 1, 1);
 
@@ -103,12 +172,13 @@ public class HeroSprite extends CharSprite {
         read = new Animation(20, false);
         read.frames(film, 19, 20, 20, 20, 20, 20, 20, 20, 20, 19);
         idle();
-        if (hero.belongings.armor instanceof HoverPod) {
-            // Grow around the bottom centre so the pod stays aligned with its map cell.
-            origin.set(width * 0.5f, height);
-            scale.set(HOVERPOD_SCALE);
-        }
-        place(ch.pos);
+    }
+
+    private void applySavedItemForm(Hero hero) {
+        if (restoringHeroForm) return;
+        com.wafitz.pixelspacebase.actors.buffs.Shapeshifted shifted = hero.buff(
+                com.wafitz.pixelspacebase.actors.buffs.Shapeshifted.class);
+        if (shifted != null) shifted.fx(true);
     }
 
     private void resetSuitScale() {
@@ -123,7 +193,7 @@ public class HeroSprite extends CharSprite {
             case CAPTAIN: texture(Assets.LOADER_CAPTAIN); break;
             default: texture(Assets.LOADER_SHAPESHIFTER); break;
         }
-        // The wide transparent frame leaves room for the claw extension; the chassis is ~24px wide.
+        // Keep the wide claw gutter; frame() scales the chassis to roughly the Hoverpod's size.
         TextureFilm film = new TextureFilm(texture, 48, 28);
         idle = new Animation(4, true);
         idle.frames(film, 0, 1);
@@ -145,13 +215,15 @@ public class HeroSprite extends CharSprite {
 
     public void shapeshiftToItem(int itemImage) {
         itemForm = true;
+        hunterSuitForm = false;
+        loaderSuitForm = false;
         resetSuitScale();
 
-        texture(Assets.ITEMS);
+        texture(PixelDungeonSkins.itemSheet());
         TextureFilm film = new TextureFilm(texture, ItemSprite.SIZE, ItemSprite.SIZE);
 
         idle = new Animation(1, true);
-        idle.frames(film, itemImage);
+        idle.frames(film, PixelDungeonSkins.itemFrame(itemImage));
 
         run = idle.clone();
         die = idle.clone();
@@ -167,8 +239,11 @@ public class HeroSprite extends CharSprite {
 
     public void restoreHeroForm() {
         if (itemForm) {
-            texture(SpacebaseRun.hero.heroClass.spritesheet());
-            updateArmor();
+            texture(PixelDungeonSkins.heroSheet(SpacebaseRun.hero.heroClass));
+            // Buff.detach removes the buff after fx(false); do not reapply it during this update.
+            restoringHeroForm = true;
+            try { updateArmor(); }
+            finally { restoringHeroForm = false; }
             idle();
         }
     }
@@ -239,6 +314,21 @@ public class HeroSprite extends CharSprite {
     }
 
     public static Image avatar(HeroClass cl, int armorTier) {
+
+        if (PixelDungeonSkins.active()) {
+            Image avatar = new Image(PixelDungeonSkins.heroSheet(cl));
+            TextureFilm rows = new TextureFilm(avatar.texture, avatar.texture.logicalWidth(), FRAME_HEIGHT);
+            RectF patch = rows.get(Math.max(0, Math.min(6, armorTier)));
+            RectF frame = avatar.texture.uvRect(1, 0, FRAME_WIDTH, FRAME_HEIGHT);
+            frame.offset(patch.left, patch.top); avatar.frame(frame);
+            return avatar;
+        }
+
+        if (armorTier == 6) {
+            Image avatar = new Image(ClassArmorArtwork.sheet(cl));
+            avatar.frame(0, 0, ClassArmorArtwork.FRAME_SIZE, ClassArmorArtwork.FRAME_SIZE);
+            return avatar;
+        }
 
         RectF patch = tiers().get(armorTier);
         Image avatar = new Image(cl.spritesheet());

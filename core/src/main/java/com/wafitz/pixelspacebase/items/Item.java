@@ -110,8 +110,14 @@ public class Item implements Bundlable {
         return actions;
     }
 
+    public int rescueLootJourney;
+    public int rescueLootId;
+
     public boolean doPickUp(Hero hero) {
         if (collect(hero.belongings.backpack)) {
+            com.wafitz.pixelspacebase.actors.buffs.YRescueJourney journey = hero.buff(
+                    com.wafitz.pixelspacebase.actors.buffs.YRescueJourney.class);
+            if (journey != null) journey.recordArenaLoot(this);
 
             GameScene.pickUp(this);
             Sample.INSTANCE.play(Assets.SND_ITEM);
@@ -171,6 +177,29 @@ public class Item implements Bundlable {
             action = AC_THROW;
         }
         execute(hero, action);
+    }
+
+    public boolean canBeThrown(Hero hero) {
+        return actions(hero).contains(AC_THROW);
+    }
+
+    public void executeQuickslot(Hero hero) {
+        if (hero.heroClass != HeroClass.SHAPESHIFTER) {
+            execute(hero);
+            return;
+        }
+        // Refresh dynamic cache/ability actions before deciding what the slot does.
+        ArrayList<String> available = actions(hero);
+        boolean specialAction = defaultAction != null && !AC_THROW.equals(defaultAction)
+                && !(this instanceof com.wafitz.pixelspacebase.items.blasters.Blaster);
+        if (specialAction) {
+            if (available.contains(defaultAction)) execute(hero, defaultAction);
+            else if (this instanceof EquipableItem && available.contains("EQUIP")) execute(hero, "EQUIP");
+        } else if (this instanceof EquipableItem && !(this instanceof Weapon)) {
+            if (available.contains("EQUIP")) execute(hero, "EQUIP");
+        } else if (available.contains(AC_THROW)) {
+            execute(hero, AC_THROW);
+        }
     }
 
     protected boolean shapeshifterThrowsByDefault(Hero hero) {
@@ -522,6 +551,10 @@ public class Item implements Bundlable {
         bundle.put(MALFUNCTIONING, malfunctioning);
         bundle.put(MALFUNCTIONING_KNOWN, malfunctioningKnown);
         bundle.put(TAKEN_BY_Y, takenByY);
+        if (rescueLootJourney > 0) {
+            bundle.put("rescueLootJourney", rescueLootJourney);
+            bundle.put("rescueLootId", rescueLootId);
+        }
         if (SpacebaseRun.quickslot.contains(this)) {
             bundle.put(QUICKSLOT, SpacebaseRun.quickslot.getSlot(this));
         }
@@ -542,6 +575,8 @@ public class Item implements Bundlable {
 
         malfunctioning = bundle.getBoolean(MALFUNCTIONING);
         takenByY = bundle.getBoolean(TAKEN_BY_Y);
+        rescueLootJourney = bundle.getInt("rescueLootJourney");
+        rescueLootId = bundle.getInt("rescueLootId");
 
         //only want to populate slot on first load.
         if (SpacebaseRun.hero == null) {

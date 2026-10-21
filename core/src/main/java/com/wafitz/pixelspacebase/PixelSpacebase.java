@@ -84,6 +84,10 @@ public class PixelSpacebase extends Game {
         com.watabou.utils.Bundle.addAlias(
                 FreezeThrower.class,
                 "com.wafitz.pixelspacebase.items.blasters.FreezeThrower");
+        // Existing Stabiliser items retain their charges and become Freeze Blasters in old saves.
+        com.watabou.utils.Bundle.addAlias(
+                FreezeThrower.class,
+                "com.wafitz.pixelspacebase.items.blasters.PlasmaStabiliser");
         com.watabou.utils.Bundle.addAlias(
                 FlameThrower.class,
                 "com.wafitz.pixelspacebase.items.blasters.FlameThrower");
@@ -316,7 +320,8 @@ public class PixelSpacebase extends Game {
                 {"items.weapon.melee.BrightSaber", "items.weapon.melee.RunicBlade"},
                 {"items.weapon.melee.DM3000Launcher", "items.weapon.melee.DM3000Staff"},
                 {"items.weapon.melee.DarkSaber", "items.weapon.melee.AssassinsBlade"},
-                {"items.weapon.melee.Drill", "items.weapon.melee.Quarterstaff"},
+                {"items.weapon.melee.RepulsorBaton", "items.weapon.melee.Quarterstaff"},
+                {"items.weapon.melee.RepulsorBaton", "items.weapon.melee.Drill"},
                 {"items.weapon.melee.DualBlade", "items.weapon.melee.Greatsword"},
                 {"items.weapon.melee.HoloAxe", "items.weapon.melee.BattleAxe"},
                 {"items.weapon.melee.HoloScimitar", "items.weapon.melee.Scimitar"},
@@ -325,7 +330,8 @@ public class PixelSpacebase extends Game {
                 {"items.weapon.melee.MCPickAxe", "items.weapon.melee.HandAxe"},
                 {"items.weapon.melee.OrbMelder", "items.weapon.melee.Glaive"},
                 {"items.weapon.melee.RaiderBlade", "items.weapon.melee.Longsword"},
-                {"items.weapon.melee.Spade", "items.weapon.melee.Mace"},
+                {"items.weapon.melee.PhaseCutter", "items.weapon.melee.Mace"},
+                {"items.weapon.melee.PhaseCutter", "items.weapon.melee.Spade"},
                 {"items.weapon.melee.Spanner", "items.weapon.melee.WornShortsword"},
                 {"items.weapon.melee.UltonAxe", "items.weapon.melee.Greataxe"},
                 {"items.weapon.melee.UltonShield", "items.weapon.melee.RoundShield"},

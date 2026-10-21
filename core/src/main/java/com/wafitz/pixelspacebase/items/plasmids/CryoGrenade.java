@@ -21,6 +21,7 @@
 package com.wafitz.pixelspacebase.items.plasmids;
 
 import com.wafitz.pixelspacebase.Assets;
+import com.wafitz.pixelspacebase.sprites.ItemSprite;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.blobs.Fire;
 import com.wafitz.pixelspacebase.actors.blobs.Freezing;
@@ -32,6 +33,7 @@ import com.watabou.utils.PathFinder;
 public class CryoGrenade extends Plasmid {
 
     private static final int DISTANCE = 2;
+    private static final ItemSprite.Glowing GLOW = new ItemSprite.Glowing(0x66CCFF);
 
     {
         initials = 1;
@@ -57,6 +59,11 @@ public class CryoGrenade extends Plasmid {
 
             setKnown();
         }
+    }
+
+    @Override
+    public ItemSprite.Glowing glowing() {
+        return isSealed() ? null : GLOW;
     }
 
     @Override

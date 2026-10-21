@@ -10,7 +10,10 @@ public class HoverpodArtworkTest {
     public void newArtworkKeepsTheExistingInventorySlotAndNativeAnimationGrid() throws Exception {
         assertEquals(163, ItemSpriteSheet.HOVERPOD);
         check("hoverpod.png", 64, 64);
-        check("hoverpod_animations.png", 1008, 60);
+        check("hoverpod_animations.png", 21 * 80, 80);
+        for (String hero : new String[]{"captain", "commander", "shapeshifter", "dm3000"}) {
+            check("hoverpod_" + hero + ".png", 21 * 80, 80);
+        }
         for (String hero : new String[]{"captain", "commander", "shapeshifter", "dm3000"}) {
             check(hero + ".png", 1024, 512);
         }
