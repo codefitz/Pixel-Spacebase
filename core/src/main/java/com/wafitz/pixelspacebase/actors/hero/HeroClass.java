@@ -22,7 +22,10 @@ package com.wafitz.pixelspacebase.actors.hero;
 
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.Badges;
+import com.wafitz.pixelspacebase.BuildConfig;
 import com.wafitz.pixelspacebase.SpacebaseRun;
+import com.wafitz.pixelspacebase.items.Generator;
+import com.wafitz.pixelspacebase.items.blasters.Blaster;
 import com.wafitz.pixelspacebase.items.plasmids.HealingPlasmid;
 import com.wafitz.pixelspacebase.items.plasmids.SecurityPlasmid;
 import com.wafitz.pixelspacebase.items.equippablemodules.StealthModule;
@@ -30,7 +33,9 @@ import com.wafitz.pixelspacebase.items.blasters.MissileBlaster;
 import com.wafitz.pixelspacebase.items.upgrades.MappingUpgrade;
 import com.wafitz.pixelspacebase.items.upgrades.UpgradePatch;
 import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
+import com.wafitz.pixelspacebase.items.weapon.melee.BrightSaber;
 import com.wafitz.pixelspacebase.items.weapon.melee.Dagger;
+import com.wafitz.pixelspacebase.items.weapon.melee.DarkSaber;
 import com.wafitz.pixelspacebase.items.weapon.melee.Knuckles;
 import com.wafitz.pixelspacebase.items.weapon.melee.Spanner;
 import com.wafitz.pixelspacebase.items.weapon.missiles.Dart;
@@ -75,7 +80,21 @@ public enum HeroClass {
                 break;
         }
 
+        if (BuildConfig.DEBUG) addTestItems(hero);
+
         hero.updateAwareness();
+    }
+
+    /** Temporary new-run test gear; release builds keep the normal loadout. */
+    private static void addTestItems(Hero hero) {
+        new DarkSaber().identify().collect(hero.belongings.backpack);
+        new BrightSaber().identify().collect(hero.belongings.backpack);
+
+        Blaster blaster = (Blaster) Generator.random(Generator.Category.BLASTER);
+        if (blaster == null) blaster = new MissileBlaster();
+        blaster.malfunctioning = false;
+        blaster.curCharges = blaster.maxCharges;
+        blaster.identify().collect(hero.belongings.backpack);
     }
 
     private static void initCommon(Hero hero) {

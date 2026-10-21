@@ -105,6 +105,7 @@ These fixes are implemented in v1.0.4, but on-device confirmation remained outst
 
 ## Release Prep
 
+- [ ] Remove the temporary debug starting loadout (identified Darksaber, Brightsaber and random working blaster) after item testing. Release builds retain their normal starting gear.
 - [ ] Complete selected 1.0.5 tasks and relevant playthrough checks.
 - [ ] Preserve save compatibility when changing item classes, quests and travel state.
 - [ ] Update Android version metadata, welcome summary and in-game changelog to 1.0.5.
