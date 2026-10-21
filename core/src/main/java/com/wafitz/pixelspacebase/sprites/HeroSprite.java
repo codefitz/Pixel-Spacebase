@@ -26,6 +26,7 @@ import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroClass;
+import com.wafitz.pixelspacebase.items.armor.ClassArmor;
 import com.wafitz.pixelspacebase.items.armor.HunterSpaceSuit;
 import com.wafitz.pixelspacebase.items.armor.HoverPod;
 import com.wafitz.pixelspacebase.items.armor.Loader;
@@ -101,6 +102,11 @@ public class HeroSprite extends CharSprite {
                 && hero.belongings.armor instanceof HunterSpaceSuit;
         loaderSuitForm = !PixelDungeonSkins.active()
                 && hero.belongings.armor instanceof Loader;
+        if (!PixelDungeonSkins.active() && hero.belongings.armor instanceof ClassArmor) {
+            updateClassArmor(hero.heroClass);
+            applySavedItemForm(hero);
+            return;
+        }
         if (loaderSuitForm) {
             updateLoader(hero.heroClass);
             applySavedItemForm(hero);
@@ -120,6 +126,13 @@ public class HeroSprite extends CharSprite {
 
         configureSuitAnimations(film);
         applySavedItemForm(hero);
+        place(ch.pos);
+    }
+
+    private void updateClassArmor(HeroClass heroClass) {
+        texture(ClassArmorArtwork.sheet(heroClass));
+        configureSuitAnimations(new TextureFilm(texture,
+                ClassArmorArtwork.FRAME_SIZE, ClassArmorArtwork.FRAME_SIZE));
         place(ch.pos);
     }
 
@@ -308,6 +321,12 @@ public class HeroSprite extends CharSprite {
             RectF patch = rows.get(Math.max(0, Math.min(6, armorTier)));
             RectF frame = avatar.texture.uvRect(1, 0, FRAME_WIDTH, FRAME_HEIGHT);
             frame.offset(patch.left, patch.top); avatar.frame(frame);
+            return avatar;
+        }
+
+        if (armorTier == 6) {
+            Image avatar = new Image(ClassArmorArtwork.sheet(cl));
+            avatar.frame(0, 0, ClassArmorArtwork.FRAME_SIZE, ClassArmorArtwork.FRAME_SIZE);
             return avatar;
         }
 

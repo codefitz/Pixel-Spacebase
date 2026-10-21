@@ -52,6 +52,10 @@ public class Assets {
     public static final String DM3000 = "dm3000.png";
     public static final String SHAPESHIFTER = "shapeshifter.png";
     public static final String CAPTAIN = "captain.png";
+    public static final String CLASS_ARMOR_COMMANDER = "class_armor_commander.png";
+    public static final String CLASS_ARMOR_CAPTAIN = "class_armor_captain.png";
+    public static final String CLASS_ARMOR_DM3000 = "class_armor_dm3000.png";
+    public static final String CLASS_ARMOR_SHAPESHIFTER = "class_armor_shapeshifter.png";
     public static final String LOADER_COMMANDER = "loader_commander.png";
     public static final String LOADER_DM3000 = "loader_dm3000.png";
     public static final String LOADER_SHAPESHIFTER = "loader_shapeshifter.png";

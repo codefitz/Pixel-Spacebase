@@ -64,7 +64,7 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [x] Shrink Roman Soldiers from 96×96 to a displayed 64×64 frame, preserving the artwork and animations. In-game confirmation pending.
 - [x] Use DM3000's original DM300-based tier-two artwork for its unarmoured look, retain Data-inspired tier-one armour, and replace tier-two armour with a gold astromech tribute and the Hunter tier with Borg-inspired black/gunmetal plating, cables and a green optical implant. Restored all 21 unarmoured frames; updated all 21 poses per new suit, portraits and both inventory icons. In-game confirmation pending.
 - [x] Replace DM3000's handheld launcher icon with an articulated mechanical arm, reinforced fist and built-in forearm launcher. Update blaster variant names, descriptions and muzzle effect placement to communicate its existing melee/ranged use. In-game confirmation pending.
-- [ ] Reskin hero class armors.
+- [x] Replace the Commander's Vader tribute with a crimson/white Bulwark Exosuit, the Captain's Metroid tribute with a white/purple Boarding Rig and DM3000's RoboCop tribute with a brass/steel Reactor Chassis. Use dedicated 64×64 frames with full-detail art, matching icons, portraits and clone appearances; retain the Shapeshifter's exact Cthulhu artwork in 64×64 frames. Archive original tribute animations and icons for future Easter eggs. Existing abilities and saves retained; in-game confirmation pending.
 
 ## Carried-over Verification
 
@@ -95,6 +95,7 @@ These fixes are implemented in v1.0.4, but on-device confirmation remained outst
 - [ ] DM3000 and Shapeshifter should be immune to eggs and facehugger
 - [ ] Sparks in engineering should only be visible on the level with Leonard
 - [ ] Bug - an clicking on melt and then click on my the blaster actaully melts it down!
+- [ ] Pixel art overhaul
 
 ## Longer-term Backlog
 

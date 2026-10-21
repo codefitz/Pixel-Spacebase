@@ -288,6 +288,7 @@ public class StatusPane extends Component {
         if (tier != lastTier) {
             lastTier = tier;
             avatar.copy(HeroSprite.avatar(SpacebaseRun.hero.heroClass, tier));
+            layout();
         }
     }
 
