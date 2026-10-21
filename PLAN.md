@@ -1,102 +1,77 @@
-# Targeted Release: v1.0.5
+# Targeted Release: v1.0.6
 
-Working backlog for the next release. Completed v1.0.4 work is preserved in [the archived plan](docs/PLAN_v1.0.4_ARCHIVE.md) and the in-game changelog. Keep the game version at 1.0.4 (10004) until preparing the next release.
+Active backlog for v1.0.6. The previous working plan is preserved unchanged in [the v1.0.5 archive](docs/PLAN_v1.0.5_ARCHIVE.md), including implementation notes and completed checks. Earlier work remains in [the v1.0.4 archive](docs/PLAN_v1.0.4_ARCHIVE.md).
 
-## Mechanics
+The Android manifest currently declares **1.0.4 (10004)**. Keep version changes for release preparation; the archived v1.0.5 work forms the implementation baseline for this plan, not evidence of a published release.
 
-- [x] Make Y's dark maze usable without a torch: show the hero's tile and eight immediate neighbours as generic grey floor/wall shapes, with no deck artwork or retained exploration. Use map taps for movement, successful-step and wall feedback, and a yellow movement pulse beside the feedback above the toolbar. Keep farther corridors black; allow single steps into darkness and normal routes through torch-visible tiles, including diagonal movement. Torch activation does not require equipment. In-game confirmation pending.
-- [x] Add a Hoverpod TORCH ON/OFF action and worn-pod quickslot toggle. Its integrated light uses normal torch range without batteries, works in Y's dark maze, persists across saves/travel and switches off on removal/destruction. Old saves default to off. In-game confirmation pending.
-- [x] Give DM-3000 an EXTRACT WATER food action that repairs up to 5 HP per serving without restoring hunger, charging blasters or applying eating effects. Batteries retain their power role. Hide and block Medigel HEAL for DM-3000; quickslots extinguish instead, and droplets fill its container even while damaged. Update class/item messaging. In-game confirmation pending.
-- [x] Match Hunter detection colours to the modules: green biological signatures, blue item silhouettes and red trap silhouettes using each trap's own artwork. Keep darkness/module requirements and fog/activation state intact. In-game confirmation pending.
-- [x] Route chasm falls onto boss decks into their sealed doorless room, enabling the usual twenty-turn Y rescue. Recreate missing rooms on saved phase-swapped boss maps; create a chamber on demand if a fall reaches the final boss deck. Keep deliberate Y boss detours at the arena approach. In-game confirmation pending.
-- [x] Standardise non-Maintenance entrances and exits as circular teleport pads: orange for the previous deck, blue for the next, with transparent centres showing the current floor artwork and dimmed locked departures. Add a brief hero beam effect, coloured signal transition during loading and arrival reconstruction. Keep Maintenance ladders and existing travel/save rules. In-game confirmation pending.
-- [x] Let the Shapeshifter quickslot any throwable item and use the quickslot to throw it.
-- [x] Convert all ordnance items to thrown grenades or planted mines and update sprites. Keep grenade self-use; Black Goo stays in the main inventory.
-- [x] Remove the Plasma Stabiliser and give its plasma-clearing function to the Freeze Blaster.
-- [x] Reduce Flamethrower spread to a single directional line.
-- [x] Use deactivated Holodeck grid tiles for the unstable holo-projector quest room, independently of the boss Holodeck's power state. Applies to saved rooms too; update the room's inspection text. In-game confirmation pending.
-- [x] Shapeshifter quickslots retain special-item activation and equipment actions instead of forcing throws. Dynamic cache actions refresh first; ordinary weapons and blasters remain throwable. In-game confirmation pending.
-- [x] Opening an unknown cache applies its effect to the hero immediately, including both grenade families. Consume one item and the normal use time; remaining revealed grenades sort into ordnance. In-game confirmation pending.
-- [x] Add reusable emergency decontamination stations near the entrance of Command decks, including restored saves. A one-turn rinse removes acid and fire and leaves water on ordinary floors. Medigel now offers separate HEAL and EXTINGUISH actions; extinguishing spends one charge without healing. In-game confirmation pending.
+Work through release stability and reported bugs first, then equipment, companions, rooms and narrative. Scope the decisions before implementing them. Unchecked work below is outstanding; the verification section contains implemented changes awaiting in-game acceptance, not features to rebuild. Mark those checks complete only when the stated behaviour has been confirmed.
 
-## Rooms and Narrative
+## Release Stability and Bug Fixes
 
-- [x] Use spacebase tiles for the Holodeck boss entrance.
-- [x] Extend normal Habitat artwork around the Holodeck arrival chamber's complete wall surround and arena doorway in both power states. Keep the existing custom boss layout and apply the visual treatment to saved floors. In-game confirmation pending.
-- [x] Make jumping platforms look like exposed bridges rather than rooms enclosed by walls.
-- [x] Shorten newly generated exterior platforms to leave two tiles of open space between the tip and the map edge, avoiding unrevealable fog at the end. Existing saved layouts are retained. In-game confirmation pending.
-- [x] Revise Y's rescue dialogue: remove the advance "you'll have to find me" explanation and the option to stay; clicking rescue Y should lead to a reluctant return.
-- [x] Expand Y rescues using [the staged rescue plan](docs/Y_RESCUE_PLAN.md); all stages implemented, in-game acceptance review pending.
-  - [x] Stage 1: saved journey state, first-rescue guarantee, and return recovery implemented; in-game reload checks pending.
-  - [x] Stage 2: alien planet, friendly NPCs, and a parts trader implemented; in-game visit and purchase checks pending.
-  - [x] Stage 3: next-boss detour, persistent victory, and reset after defeat implemented; in-game win, loss, and reload checks pending.
-  - [x] Stage 4: dark maze, visible exit, torch exploration, and Hunter mapping implemented; in-game visibility, equipment, and reload checks pending.
-  - [x] Stage 5: 1% Pixel Dungeon first-floor visit with original artwork implemented; in-game appearance, combat, and reload checks pending.
-- [x] On habitat level, if there's a fire, or the hero is on fire, have sprinklers trigger after 1 turn to put it out.
-- [x] Replace Spade with the accurate Phase Cutter and Drill with the defensive Repulsor Baton, with new sprites and save compatibility.
-- [x] In Habitat changing rooms, water always pools in the center.
-- [x] Make the Hunter blue item indicator use the detected heap item's sprite silhouette, including unidentified cache and Pixel Dungeon visit artwork. In-game confirmation pending.
+- [x] **Fix release shrinking.** Corrected the game-package keep rule in `core/proguard-rules.pro`, preserving reflective construction, class-name-based text and saved objects while leaving release minification and resource shrinking enabled. `:core:assembleRelease --offline` passed; R8 mapping and packaged DEX checks retained all 1,223 compiled game classes and 93 engine classes under their original names, scene constructors and all eight message bundles. Signed the same APK with a temporary test key and verified its content was unchanged. In a read-only Android 37 emulator, confirmed welcome/title text, a new Commander run, save/load after backgrounding and a cold process restart, normal descent to deck 2 and ascent to deck 1 with terrain and HP retained, and restoration of an upgraded legacy Spade as a Phase Cutter. No reflection or crash errors appeared in the checked output. This is a targeted release smoke test; broader save-compatibility/playthrough checks and production signing remain under Release Preparation.
+- [ ] **Investigate accidental MELT destruction.** Reproduce the reported sequence of choosing MELT and then clicking the blaster. Trace the item picker and launcher interactions, and prevent the blaster or integrated launcher from being consumed. Preserve deliberate melting of eligible ordinary melee weapons; cancelling or rejecting an item must consume neither an item nor a turn.
+- [ ] **Keep the cat after the prison boss.** Fix the cat disappearing when that boss is defeated. Have her wander back to the previous level, and confirm that revisiting and save/reload preserve her state without duplication.
+- [ ] **Let DM3000 wipe off acid with Medigel.** Extend its non-healing Medigel use to clear acid even when it is not burning. Keep the existing restriction on Medigel healing and check charge use, action text and quickslots.
+- [ ] **Give DM3000 and Shapeshifter immunity to alien eggs and facehuggers.** Cover both egg-triggered and direct facehugger encounters; check that other hero classes retain their existing behaviour.
+- [ ] **Restrict Engineering sparks to Leonard's level.** Use Leonard's actual quest/deck state rather than assuming a fixed floor. Check newly generated and restored Engineering decks, including levels without Leonard.
 
-## Issues
+## Equipment and Companions
 
-- [x] Restore normal tap-to-move routes through currently visible tiles in Y's dark maze and allow diagonal steps. Remove the N/W/E/S buttons; retain step/wall feedback and single steps toward taps into darkness. Recalculate routes as sight changes so they cannot cross hidden corridors or continue after torchlight expires. Immediate tile taps confirmed by the player; longer routes and diagonal movement need in-game confirmation.
-- [x] Warn before a Repair Blaster beam hits a door, including doors along the beam's path. Explain the risk of trapping the hero and the need for fire, explosives or another escape option; offer Cancel shot or Fire anyway without ending the run. Cancellation spends no charge or turn. In-game confirmation pending.
-- [x] Count 20 hero actions in the stranded chamber before Y rescues; corrected world-tick counting and immediate landing tick. In-game confirmation pending.
-- [x] Keep skipped boss decks ready after Y rescues to later floors. Deck saves now identify their run, new games clear their own old decks, and travel from below enters unfinished arenas through their normal approach. Legacy completed decks at floors 5–20 require a victory badge from the current run. In-game confirmation pending.
-- [x] Items aren't appearing normally on level 6 and above. Reused explored decks from earlier games are a suspected cause. New runs now reject other-run and unmarked deck files; four save-ownership checks passed. Confirm loot in game; older unmarked ordinary decks are retained to preserve progress.
-- [x] Fix missing escape pod ending text: dialogue, cat variant, launch and stay buttons now use the renamed EscapePodScene resource keys. In-game confirmation pending.
-- [x] Quantum chest duplication resolved; confirmed by the player.
-- [x] Correct hull fog coverage: keep interior floors covered at shared wall corners, reveal only hull walls, and exclude enclosed wall gaps from exterior space. Reviewed the supplied screenshots; in-game confirmation pending.
-- [x] Show only current HP on the life bar, removing the shield calculation and maximum-HP fraction. In-game confirmation pending.
-- [x] Keep level-5 queen eggs and xenomorph spawns on walkable ground. Removed chasm/avoid-cell eligibility and excluded the sealed rescue chamber. In-game confirmation pending.
-- [x] Remove black exterior rectangles on Engineering decks (the supplied screenshot shows floor 11). Removed the tiles2 exception that drew opaque chasm tiles outside the station. In-game confirmation pending.
-- [x] Sort revealed grenades into ordnance immediately when their cache type becomes known. Preserve quantities and quickslots, merge matching stacks, and leave items in place when the kit is full. Three focused sorting checks passed; in-game confirmation pending.
+- [ ] **Let the Hoverpod activate a trap or tile beneath it with an extra click.** Keep normal movement and hovering behaviour; make deliberate activation possible while already on the cell. Check traps and interactive terrain separately.
+- [ ] **Make enemies target the active cat.** Ordinary enemies should pursue her while she is active, but leave her alone while she is sitting and waiting to be petted. Bosses should kill her when she is in the same room regardless of that status. Check activation, waiting, room boundaries and level transitions alongside the prison-boss fix.
 
-## Art
+## Rooms and Artwork
 
-- [x] Create distinct bio, item and trap detector icons with green life-sign, blue cargo and red hazard displays. Assign the item and trap icons to their Hunter modules; preserve existing saves and Pixel Dungeon visit artwork. Bio icon assignment awaits clarification because there is no separate bio-detector item. In-game confirmation pending.
-- [x] Match the Loader arm and equipment icons to the orange hydraulic chassis, refresh its cockpit portraits, and reduce the on-level sprite by about 29% to a similar overall size as the Hoverpod while preserving proportions and claw clearance. In-game confirmation pending.
-- [x] Reskin the Jeda Knight with an uncovered head, cream/tan robes and blue energy blade; give the shared Master variant a green blade. Repacked both into 64×64 animation frames. In-game confirmation pending.
-- [x] Enlarge the Hoverpod with dedicated 80×80 animation frames, a broad blue glass canopy and each hero visible behind the screen. Refreshed portraits and inventory icon. In-game confirmation pending.
-- [x] Give all 12 plasmid colours matching injector icons with a shared silhouette and coloured liquid reservoir. Updated splash colour sampling for the new artwork. In-game confirmation pending.
-- [x] Make Medigel, Adrenal and Forcefield Stims use the same injector silhouette as plasmids, with green, blue and purple reservoirs respectively. Includes items restored from existing saves. In-game confirmation pending.
-- [x] Enlarge the Hunter suit proportionally to a 64px-tall frame, trimming transparent padding when displayed and preserving animation alignment. In-game confirmation pending.
-- [x] Shrink Roman Soldiers from 96×96 to a displayed 64×64 frame, preserving the artwork and animations. In-game confirmation pending.
-- [x] Use DM3000's original DM300-based tier-two artwork for its unarmoured look, retain Data-inspired tier-one armour, and replace tier-two armour with a gold astromech tribute and the Hunter tier with Borg-inspired black/gunmetal plating, cables and a green optical implant. Restored all 21 unarmoured frames; updated all 21 poses per new suit, portraits and both inventory icons. In-game confirmation pending.
-- [x] Replace DM3000's handheld launcher icon with an articulated mechanical arm, reinforced fist and built-in forearm launcher. Update blaster variant names, descriptions and muzzle effect placement to communicate its existing melee/ranged use. In-game confirmation pending.
-- [x] Replace the Commander's Vader tribute with a crimson/white Bulwark Exosuit, the Captain's Metroid tribute with a white/purple Boarding Rig and DM3000's RoboCop tribute with a brass/steel Reactor Chassis. Use dedicated 64×64 frames with full-detail art, matching icons, portraits and clone appearances; retain the Shapeshifter's exact Cthulhu artwork in 64×64 frames. Archive original tribute animations and icons for future Easter eggs. Existing abilities and saves retained; in-game confirmation pending.
+- [ ] **Fill the interiors of entrance and exit pads.** Retain the orange/blue travel directions, locked-pad indication and transition effects; review the result against each deck's floor artwork.
+- [ ] **Give the inactive Holodeck distinguishing walls.** Make its powered-down walls readable alongside the grid floor, including the arena doorway and entrance surround. Preserve the independent inactive treatment of the unstable holo-projector quest room.
+- [ ] **Add an optional room reachable only by jetpack on some levels.** Keep the main route, mandatory quest items and level progression reachable without it. Check flight access, landing and return before choosing generation frequency.
+- [ ] **Map sprite directions and animation frames.** Document standing, walking and fighting directions for the relevant sprite sheets, including frame sizes and code mappings, to guide further art changes and avoid reversed or misaligned poses.
 
-## Carried-over Verification
+## Y Encounters and Narrative
 
-These fixes are implemented in v1.0.4, but on-device confirmation remained outstanding in the previous plan. They are verification tasks, not unimplemented features.
+Use [the staged rescue design](docs/Y_RESCUE_PLAN.md) for the existing journey and save rules. The changes below extend that behaviour when implemented; they are not part of the completed stages in the archived plan.
 
-- [x] Check popup/button text fitting and checkbox alignment in game.
-- [x] Previous arena landing was confirmed; superseded by the v1.0.5 doorless-room routing above. In-game confirmation of the new behavior pending.
-- [x] Confirm revealed hull edges have no fog halos or stray exterior walls, while interiors retain fog of war.
-- [x] Confirm quantum chest contents remain single and persist across transitions, revisits, bosses and save/reload.
-- [x] Confirm blue item scanner pings and red trap scanner pings appear through fog under the intended Hunter suit/module conditions.
-- [x] Investigate the two Eclipse Saber JVM tests that failed during initialization; rerun the full suite after correction.
-- [x] Confirm enemies killed by a Shapeshifter's thrown blaster finish their death animations.
+- [ ] **Have Y punish being zapped once per run.** Send the hero to the blackout/dark-maze level with the remark, "This will teach you a lesson". Save the one-time flag and preserve the return journey so reloads cannot repeat the punishment or lose the origin.
+- [ ] **Add a 1% chance that Y refuses a later doorless-room rescue.** Enable this only after Y has already performed at least one rescue, preserving the first-rescue guarantee. He appears and tells the hero he will not rescue them; the hero remains stranded unless they have another escape, such as teleportation. Save the outcome so reloading cannot reroll the refusal. Keep this chamber event separate from the existing rescue-destination probabilities.
 
-## V1.0.6
+## Decisions and Features to Scope
 
-- [ ] Fix the release shrinker keep rule in `core/proguard-rules.pro`: replace the obsolete `wafitz.**` package with `com.wafitz.pixelspacebase.**` to preserve reflective scene construction, class-name-based text and saved objects. The v1.0.5 minified output strips `TitleScene` and `GameScene`; rebuild, inspect the R8 output and test a signed minified release APK, including save/reload. Deferred to v1.0.6; the player will test v1.0.5 before merge, and a debug APK does not exercise release shrinking.
-- [ ] Decide what should replace Yog Duza; a giant angel is one suggestion.
-- [ ] Map sprite directions (walking, standing, fighting)
-- [ ] Hoverpad should be able to activate traps/tiles with extra click whilst on top.
-- [ ] Fill the inside of entrance and exit pads
-- [ ] Enemies should go after the cat when it's active (not sitting waiting to be petted), however bosses will kill the cat if it's in the same room regardless of status.
-- [ ] Inactive holodeck needs distinguishing walls.
-- [ ] Have a room in some levels that is only reachable by jetpack
-- [ ] A blind enemy but takes 50% health when it finds you
-- [ ] DM3000 should be able to use medigel to wipe acid off
-- [ ] On the prison boss, if you bring the cat then she is lost once the boss is defeated. Ideally she should just wander back to the previous level.
-- [ ] If you zap Y, he sends you to the blackout level and remarks "This will teach you a lesson". He should only do this once.
-- [ ] Randomly, 1% chance, Y will appear when you're trapped in the doorless room and simply tell you sorry but this is it, I'm not rescuing you. This should only activate after he's already done 1 rescue. This signifies the end unless the hero has some way of teleporting.
-- [ ] DM3000 and Shapeshifter should be immune to eggs and facehugger
-- [ ] Sparks in engineering should only be visible on the level with Leonard
-- [ ] Bug - an clicking on melt and then click on my the blaster actaully melts it down!
-- [ ] Pixel art overhaul
+- [ ] **Choose a replacement for Yog Duza.** A giant angel is one suggestion; settle the concept, name, artwork and any encounter changes before implementation.
+- [ ] **Define the blind enemy.** It should take 50% of the hero's health when it finds them. Decide whether that means current or maximum HP, how it detects the hero, and where it belongs before implementing or balancing it.
+- [ ] **Scope the pixel-art overhaul.** List the assets to replace, agree the style and frame conventions, and split the work into reviewable batches using the sprite-direction map. Retain the original tribute artwork already archived for possible Easter eggs.
+- [ ] **Resolve the biological detector icon assignment.** The v1.0.5 artwork includes a biological icon, but there is no separate bio-detector item. Decide where it belongs before assigning it; item and trap module icons are already implemented.
+
+## Carried-over In-game Verification
+
+These changes are implemented in the v1.0.5 baseline but explicitly still awaited acceptance in that plan. Previously completed checks, including the confirmed quantum-chest fix and checked-off v1.0.4 verification, remain in the archive.
+
+### Equipment and Combat
+
+- [ ] Confirm the Hoverpod torch toggles through its action and worn-pod quickslot, uses normal torch range without batteries, survives saves/travel, and switches off on removal or destruction. Old saves should default to off.
+- [ ] Confirm DM3000's EXTRACT WATER repairs up to 5 HP per food serving without hunger, blaster charging or eating effects. Medigel must not heal it; quickslots extinguish and droplets fill the container even while damaged. Check the new acid action separately when implemented.
+- [ ] Confirm Shapeshifter quickslots preserve special-item and equipment actions while ordinary weapons/blasters remain throwable. Unknown caches must apply their effect immediately, consume one item and normal use time, and sort revealed grenades into ordnance without losing quantities, quickslots or stacks when the kit is full.
+- [ ] Confirm Command decontamination stations appear near the entrance on new and restored decks. Rinsing takes one turn, clears acid/fire and leaves water on ordinary floors; Medigel extinguishing uses one charge without healing.
+- [ ] Confirm Repair Blaster door warnings cover doors along the beam path. Cancel must spend no charge or turn; Fire anyway must remain available.
+- [ ] Confirm the life bar shows current HP only, and level-5 queen eggs/xenomorph spawns stay on walkable ground outside the sealed rescue chamber.
+
+### Travel, Rescues and Saved Games
+
+- [ ] Confirm maze routes through visible cells, diagonal movement, single steps into darkness, wall/step feedback and the yellow pulse beside the toolbar. Immediate tile taps were already confirmed; check that routes stop when visibility changes or torchlight expires, unlit terrain retains no exploration, and torch activation does not require equipment.
+- [ ] Confirm boss-deck falls land in the sealed doorless chamber and Y arrives after 20 hero actions. Include restored phase-swapped boss maps, an on-demand final-boss chamber and deliberate boss detours entering through the normal arena approach.
+- [ ] Complete the [staged Y rescue acceptance checks](docs/Y_RESCUE_PLAN.md): first-rescue guarantee and origin recovery; alien-planet visits and purchases; boss victory/defeat/reset; maze visibility and Hunter mapping; and the 1% Pixel Dungeon visit. Include save/reload, cargo and cat transfers.
+- [ ] Confirm new runs reject unrelated deck files and produce normal loot from level 6 onward. Check legacy unmarked-deck handling, skipped unfinished bosses approached from below and current-run victory requirements for completed legacy boss decks.
+- [ ] Confirm teleport-pad departure/arrival effects, locked departures, colours and travel/save behaviour across deck types, with Maintenance ladders retained. Review pad interiors again after the v1.0.6 artwork change.
+- [ ] Confirm the escape-pod ending text, cat variant, launch and stay buttons resolve correctly.
+
+### Rooms and Visuals
+
+- [ ] Confirm the Holodeck entrance surround and arena doorway use Habitat artwork in both power states, including restored floors. The unstable holo-projector quest room should use its own inactive grid and inspection text regardless of boss Holodeck power.
+- [ ] Confirm exterior platforms look like exposed bridges and new layouts leave two tiles of open space at the tip; existing saved layouts should remain intact.
+- [ ] Confirm shared hull corners retain interior fog while revealing only exterior hull walls; enclosed gaps stay covered. Check that Engineering decks, including floor 11, have no black exterior rectangles.
+- [ ] Confirm Hunter detection uses green biological signatures, blue heap-item silhouettes and red trap silhouettes with each trap's artwork. Include unidentified caches, Pixel Dungeon artwork and the intended darkness/module/activation conditions.
+- [ ] Review the refreshed Loader, Hoverpod, Jeda/Master, Hunter and Roman Soldier art in game: scale, canopy/occupant visibility, portraits, icons, animation alignment and weapon/claw clearance.
+- [ ] Review DM3000's unarmoured and suit variants, integrated launcher arm, muzzle placement and descriptions; review the Bulwark Exosuit, Boarding Rig, Reactor Chassis and retained Shapeshifter art, including clone appearances.
+- [ ] Confirm all 12 plasmid injectors and the green Medigel, blue Adrenal and purple Forcefield Stim icons, including splash colours and items restored from saves.
 
 ## Longer-term Backlog
 
@@ -104,11 +79,11 @@ These fixes are implemented in v1.0.4, but on-device confirmation remained outst
 - [ ] Custom asset skin uploads (future paid feature).
 - [ ] Audit code cleanup and refactoring opportunities, then scope concrete improvements.
 
-## Release Prep
+## Release Preparation
 
-- [ ] Remove the temporary debug starting loadout (identified Darksaber, Brightsaber and random working blaster) after item testing. Release builds retain their normal starting gear.
-- [ ] Complete selected 1.0.5 tasks and relevant playthrough checks.
-- [ ] Preserve save compatibility when changing item classes, quests and travel state.
-- [ ] Update Android version metadata, welcome summary and in-game changelog to 1.0.5.
-- [ ] Run regression tests and build the APK; document any outstanding failures.
-- [ ] Create the release and attach the APK, clearly identifying its signing/build type.
+- [ ] Finish the selected v1.0.6 scope and relevant acceptance checks above; explicitly defer any remaining work rather than marking it complete.
+- [ ] Remove the temporary debug starting loadout (identified Darksaber, Brightsaber and random working blaster) after item testing. Release builds already use their normal starting gear.
+- [ ] Review save compatibility for changed items, immunity rules, cat state, Y flags and travel. Retain serialized aliases and provide safe defaults for older saves where needed.
+- [ ] Update Android metadata to **1.0.6 (10006)**, the welcome summary and in-game changelog. Cover the archived v1.0.5 changes as well as new work if no intervening release shipped.
+- [ ] Run relevant regression tests and build the APKs; record actual results and outstanding failures separately from gameplay/visual confirmation. Complete the signed minified release checks under Release Stability before shipping.
+- [ ] Create the release and attach the tested APK, clearly identifying version, signing/build type and any remaining limitations.

@@ -50,14 +50,16 @@ The aim is to convert Pixel Dungeon into a fully fledged Spacebase Exploration/E
 
 ### Changes planned:
 
-The active v1.0.5 backlog is tracked in [`PLAN.md`](PLAN.md). Completed v1.0.4 work is preserved in the [archived plan](docs/PLAN_v1.0.4_ARCHIVE.md). Current work is sorted into:
+The active v1.0.6 backlog is tracked in [`PLAN.md`](PLAN.md). The previous working plan is preserved in the [v1.0.5 archive](docs/PLAN_v1.0.5_ARCHIVE.md), with earlier work in the [v1.0.4 archive](docs/PLAN_v1.0.4_ARCHIVE.md). Current work is sorted into:
 
-* Mechanics - equipment, combat and quest changes.
-* Rooms and Narrative - room layouts, rescue destinations and dialogue.
-* Art - character, enemy, item and equipment artwork.
-* Carried-over Verification - implemented fixes awaiting playthrough checks and outstanding test failures.
-* Decisions and Longer-term Backlog - unsettled ideas and future features.
-* Release Prep - compatibility, verification, versioning and release packaging.
+* Release Stability and Bug Fixes - release shrinking and reported gameplay issues, addressed first.
+* Equipment and Companions - Hoverpod interactions and cat behaviour.
+* Rooms and Artwork - pad interiors, Holodeck walls, jetpack access and sprite mappings.
+* Y Encounters and Narrative - one-time punishment and rare rescue refusal.
+* Decisions and Features to Scope - boss replacement, blind enemy, art overhaul and detector icon assignment.
+* Carried-over In-game Verification - implemented changes awaiting gameplay and visual acceptance.
+* Longer-term Backlog - future paid features and code cleanup.
+* Release Preparation - compatibility, testing, versioning and release packaging.
 
 When adding new work, put rough ideas in Decisions first. Once the direction is chosen, move the item into the relevant work category and keep implementation batches small enough to test and rebuild quickly.
 
