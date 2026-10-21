@@ -62,7 +62,8 @@ Working backlog for the next release. Completed v1.0.4 work is preserved in [the
 - [x] Make Medigel, Adrenal and Forcefield Stims use the same injector silhouette as plasmids, with green, blue and purple reservoirs respectively. Includes items restored from existing saves. In-game confirmation pending.
 - [x] Enlarge the Hunter suit proportionally to a 64px-tall frame, trimming transparent padding when displayed and preserving animation alignment. In-game confirmation pending.
 - [x] Shrink Roman Soldiers from 96×96 to a displayed 64×64 frame, preserving the artwork and animations. In-game confirmation pending.
-- [ ] Reskin DM3000.
+- [x] Use DM3000's original DM300-based tier-two artwork for its unarmoured look, retain Data-inspired tier-one armour, and replace tier-two armour with a gold astromech tribute and the Hunter tier with Borg-inspired black/gunmetal plating, cables and a green optical implant. Restored all 21 unarmoured frames; updated all 21 poses per new suit, portraits and both inventory icons. In-game confirmation pending.
+- [x] Replace DM3000's handheld launcher icon with an articulated mechanical arm, reinforced fist and built-in forearm launcher. Update blaster variant names, descriptions and muzzle effect placement to communicate its existing melee/ranged use. In-game confirmation pending.
 - [ ] Reskin hero class armors.
 
 ## Carried-over Verification
