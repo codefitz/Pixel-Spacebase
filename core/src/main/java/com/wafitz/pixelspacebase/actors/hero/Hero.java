@@ -51,6 +51,7 @@ import com.wafitz.pixelspacebase.actors.buffs.Targeted;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.buffs.CombatFocus;
 import com.wafitz.pixelspacebase.actors.buffs.Vertigo;
+import com.wafitz.pixelspacebase.actors.buffs.XenoInfection;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.Drone;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.NPC;
@@ -2097,6 +2098,10 @@ public class Hero extends Char {
         return resistances;
     }
 
+    public boolean isImmuneToXenoInfection() {
+        return heroClass == HeroClass.DM3000 || heroClass == HeroClass.SHAPESHIFTER;
+    }
+
     @Override
     public HashSet<Class<?>> immunities() {
         HashSet<Class<?>> immunities = new HashSet<>();
@@ -2124,6 +2129,9 @@ public class Hero extends Char {
             immunities.add(StenchGas.class);
             immunities.add(ToxicGas.class);
             immunities.add(VenomGas.class);
+        }
+        if (isImmuneToXenoInfection()) {
+            immunities.add(XenoInfection.class);
         }
         return immunities;
     }

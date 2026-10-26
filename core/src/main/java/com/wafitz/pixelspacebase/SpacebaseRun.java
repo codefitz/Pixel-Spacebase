@@ -489,6 +489,7 @@ public class SpacebaseRun {
             Buff.detach(hero, StrandedRoomRescue.class);
         }
         StationCat.placeFollowerOn(level);
+        StationCat.placeReturningOn(level);
 
         hero.viewDistance = heroViewDistance();
 

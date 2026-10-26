@@ -42,6 +42,7 @@ import com.wafitz.pixelspacebase.items.containers.PlasmidKit;
 import com.wafitz.pixelspacebase.items.food.Food;
 import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.items.weapon.Weapon;
+import com.wafitz.pixelspacebase.items.weapon.melee.DM3000Launcher;
 import com.wafitz.pixelspacebase.items.weapon.melee.MeleeWeapon;
 import com.wafitz.pixelspacebase.items.weapon.missiles.HunterDisc;
 import com.wafitz.pixelspacebase.messages.Messages;
@@ -69,6 +70,7 @@ public class WndContainer extends WndTabbed {
         QUICKSLOT,
         TO_MAKE,
         WEAPON,
+        MELTABLE_WEAPON,
         ARMOR,
         ENHANCEABLE,
         BLASTER,
@@ -368,6 +370,7 @@ public class WndContainer extends WndTabbed {
                                     mode == Mode.UNIDED_OR_MALFUNCTIONING && ((item instanceof EquipableItem || item instanceof Blaster) && (!item.isIdentified() || item.malfunctioning)) ||
                                     mode == Mode.QUICKSLOT && (item.defaultAction != null || SpacebaseRun.hero.heroClass == HeroClass.SHAPESHIFTER && item.canBeThrown(SpacebaseRun.hero)) ||
                                     mode == Mode.WEAPON && (item instanceof MeleeWeapon || item instanceof HunterDisc) ||
+                                    mode == Mode.MELTABLE_WEAPON && DM3000Launcher.canMelt(SpacebaseRun.hero, item) ||
                                     mode == Mode.ARMOR && (item instanceof Armor) ||
                                     mode == Mode.ENHANCEABLE && (item instanceof MeleeWeapon || item instanceof HunterDisc || item instanceof Armor) ||
                                     mode == Mode.BLASTER && (item instanceof Blaster) ||

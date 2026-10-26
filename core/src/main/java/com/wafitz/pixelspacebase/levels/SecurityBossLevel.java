@@ -31,6 +31,7 @@ import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.MaskedPrisoner;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.YInterlude;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.items.KindOfWeapon;
 import com.wafitz.pixelspacebase.items.Heap;
@@ -295,6 +296,9 @@ public class SecurityBossLevel extends Level {
     }
 
     private void clearEntities(Room safeArea) {
+        if (StationCat.retreatFrom(this)) {
+            GLog.i(Messages.get(StationCat.class, "retreat"));
+        }
         for (Heap heap : heaps.values()) {
             if (safeArea == null || !safeArea.inside(cellToPoint(heap.pos))) {
                 for (Item item : heap.items)

@@ -24,6 +24,7 @@ import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
+import com.wafitz.pixelspacebase.actors.buffs.YRescueJourney;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.SignalSiren;
@@ -38,6 +39,7 @@ import com.wafitz.pixelspacebase.items.upgrades.Upgrade;
 import com.wafitz.pixelspacebase.levels.Level;
 import com.wafitz.pixelspacebase.levels.RegularLevel;
 import com.wafitz.pixelspacebase.levels.Room;
+import com.wafitz.pixelspacebase.levels.Terrain;
 import com.wafitz.pixelspacebase.messages.Messages;
 import com.wafitz.pixelspacebase.scenes.GameScene;
 import com.wafitz.pixelspacebase.sprites.StationCatSprite;
@@ -86,6 +88,7 @@ public class StationCat extends NPC {
             rummagedRooms = new int[0];
         }
         ally = following;
+        Quest.spawned = true;
         Quest.following = Quest.following || following;
     }
 
@@ -351,6 +354,8 @@ public class StationCat extends NPC {
         Quest.gone = false;
         Quest.carried = false;
         carriedCat = null;
+        Quest.returningCat = null;
+        Quest.returnDepth = -1;
         super.die(src);
     }
 
@@ -367,10 +372,11 @@ public class StationCat extends NPC {
         }
 
         if (!following) {
-            following = true;
-            ally = true;
+            follow();
             Quest.following = true;
             Quest.carried = false;
+            Quest.returningCat = null;
+            Quest.returnDepth = -1;
             yell(Messages.get(this, "petted"));
         } else {
             int oldPos = pos;
@@ -399,6 +405,58 @@ public class StationCat extends NPC {
         HP = Math.max(1, HP);
     }
 
+    public boolean isActiveFollower() {
+        return following && ally && isAlive();
+    }
+
+    /** Bosses can kill a waiting cat too, but cannot reach through room boundaries. */
+    public static void killInBossRoom(Mob boss) {
+        Level level = SpacebaseRun.level;
+        if (level == null || !boss.hostile || boss.ally || !boss.properties().contains(Char.Property.BOSS)
+                || !boss.isAlive()) return;
+
+        for (Mob mob : level.mobs.toArray(new Mob[0])) {
+            if (mob instanceof StationCat && mob.isAlive() && sharesRoom(level, boss.pos, mob.pos)) {
+                mob.die(boss);
+            }
+        }
+    }
+
+    private static boolean sharesRoom(Level level, int first, int second) {
+        if (!roomFloor(level, first) || !roomFloor(level, second)) return false;
+        if (level instanceof RegularLevel) {
+            Room room = ((RegularLevel) level).room(first);
+            return room != null && room == ((RegularLevel) level).room(second);
+        }
+
+        // Fixed boss maps have no room metadata. Doors divide their connected floor areas.
+        boolean[] seen = new boolean[level.length()];
+        int[] queue = new int[level.length()];
+        int head = 0, tail = 0;
+        queue[tail++] = first;
+        seen[first] = true;
+        int[] offsets = {-level.width(), -1, 1, level.width()};
+        while (head < tail) {
+            int cell = queue[head++];
+            if (cell == second) return true;
+            for (int offset : offsets) {
+                int next = cell + offset;
+                if (roomFloor(level, next) && !seen[next]) {
+                    seen[next] = true;
+                    queue[tail++] = next;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean roomFloor(Level level, int cell) {
+        if (!level.insideMap(cell)) return false;
+        int tile = level.map[cell];
+        return tile != Terrain.DOOR && tile != Terrain.OPEN_DOOR && tile != Terrain.LOCKED_DOOR
+                && tile != Terrain.CHASM && (Level.passable[cell] || Level.avoid[cell]);
+    }
+
     public static boolean isFollowing() {
         return Quest.following && !Quest.dead && !Quest.gone && !Quest.carried;
     }
@@ -414,6 +472,8 @@ public class StationCat extends NPC {
         Quest.following = false;
         Quest.gone = false;
         Quest.carried = true;
+        Quest.returningCat = null;
+        Quest.returnDepth = -1;
         carriedCat = null;
         if (SpacebaseRun.level != null && SpacebaseRun.level.mobs != null) {
             SpacebaseRun.level.mobs.remove(this);
@@ -442,6 +502,8 @@ public class StationCat extends NPC {
         Quest.carried = false;
         Quest.following = false;
         Quest.gone = false;
+        Quest.returningCat = null;
+        Quest.returnDepth = -1;
         GameScene.add(cat);
         return true;
     }
@@ -485,6 +547,71 @@ public class StationCat extends NPC {
         Actor.add(cat);
     }
 
+    /** Retain the actual cat instead of destroying it during prison map replacement. */
+    public static boolean retreatFrom(Level level) {
+        StationCat survivor = null;
+        for (Mob mob : level.mobs.toArray(new Mob[0])) {
+            if (!(mob instanceof StationCat) || !mob.isAlive()) continue;
+            if (survivor == null) survivor = (StationCat) mob;
+            ((StationCat) mob).waitHere();
+            level.mobs.remove(mob);
+            Actor.remove(mob);
+            if (mob.sprite != null) mob.sprite.killAndErase();
+        }
+        if (survivor == null) return false;
+
+        survivor.waitHere();
+        Quest.spawned = true;
+        Quest.returningCat = survivor;
+        YRescueJourney journey = SpacebaseRun.hero.buff(YRescueJourney.class);
+        Quest.returnDepth = journey != null && journey.destination == YRescueJourney.Destination.BOSS
+                && SpacebaseRun.matchesRescueLevel(journey.destinationIdentity) && journey.sourceDepth > 0
+                ? journey.sourceDepth : SpacebaseRun.previousDepth(SpacebaseRun.depth);
+        carriedCat = null;
+        Quest.following = false;
+        Quest.gone = false;
+        Quest.carried = false;
+        return true;
+    }
+
+    public static void placeReturningOn(Level level) {
+        if (Quest.returningCat == null) return;
+        Quest.following = false;
+        // The game snapshot can be newer than a deck file after an interrupted save.
+        // The queued cat is authoritative; remove any stale physical copy before actors run.
+        for (Mob mob : level.mobs.toArray(new Mob[0])) {
+            if (mob instanceof StationCat) {
+                ((StationCat) mob).waitHere();
+                level.mobs.remove(mob);
+                Actor.remove(mob);
+                if (mob.sprite != null) mob.sprite.killAndErase();
+            }
+        }
+        if (Quest.returnDepth != SpacebaseRun.depth || SpacebaseRun.isRescueSideLevel()
+                || Quest.dead || Quest.carried) return;
+
+        int anchor = level.exit > 0 ? level.exit : level.entrance;
+        int cell = -1;
+        for (int offset : PathFinder.NEIGHBOURS8) {
+            int candidate = anchor + offset;
+            if (level.insideMap(candidate) && Level.passable[candidate]
+                    && Actor.findChar(candidate) == null) {
+                cell = candidate;
+                break;
+            }
+        }
+        if (cell == -1) cell = level.randomRespawnCell();
+        if (cell == -1) return; // Keep the saved return pending until there is a free landing cell.
+
+        StationCat cat = Quest.returningCat;
+        Quest.returningCat = null;
+        Quest.returnDepth = -1;
+        cat.waitHere();
+        cat.pos = cell;
+        level.mobs.add(cat);
+        Actor.add(cat);
+    }
+
     public static void abandonFollower(Level level) {
         if (level != null && level.mobs != null) {
             for (com.wafitz.pixelspacebase.actors.mobs.Mob mob : level.mobs) {
@@ -500,11 +627,12 @@ public class StationCat extends NPC {
     }
 
     public static boolean canSpawnOnFirstLevel() {
-        return SpacebaseRun.depth == 1 && !Quest.following && !Quest.dead && !Quest.gone && !Quest.carried;
+        return !Quest.spawned && SpacebaseRun.depth == 1
+                && !Quest.following && !Quest.dead && !Quest.gone && !Quest.carried;
     }
 
     public static boolean canSpawnInMaintenanceLevel() {
-        if (Quest.following || Quest.dead || Quest.carried) {
+        if (Quest.returnDepth >= 0 || Quest.following || Quest.dead || Quest.carried) {
             return false;
         }
         if (canSpawnOnFirstLevel()) {
@@ -541,11 +669,14 @@ public class StationCat extends NPC {
 
     public static class Quest {
 
+        private static boolean spawned;
         private static boolean following;
         private static boolean dead;
         private static boolean gone;
         private static boolean carried;
         private static boolean rescueSpawned;
+        private static StationCat returningCat;
+        private static int returnDepth = -1;
 
         private static final String NODE = "stationCat";
         private static final String FOLLOWING = "following";
@@ -555,23 +686,30 @@ public class StationCat extends NPC {
         private static final String RESCUE_SPAWNED = "rescueSpawned";
 
         public static void reset() {
+            spawned = false;
             following = false;
             dead = false;
             gone = false;
             carried = false;
             rescueSpawned = false;
             carriedCat = null;
+            returningCat = null;
+            returnDepth = -1;
         }
 
         public static void markCarried() {
             if (!dead) {
+                spawned = true;
                 carried = true;
                 following = false;
                 gone = false;
+                returningCat = null;
+                returnDepth = -1;
             }
         }
 
         public static void markSpawnedInMaintenanceLevel() {
+            spawned = true;
             if (gone && PetCarrier.carriedBy(SpacebaseRun.hero) != null) {
                 rescueSpawned = true;
             }
@@ -579,24 +717,31 @@ public class StationCat extends NPC {
 
         public static void storeInBundle(Bundle bundle) {
             Bundle node = new Bundle();
+            node.put("spawned", spawned);
             node.put(FOLLOWING, following);
             node.put(DEAD, dead);
             node.put(GONE, gone);
             node.put(CARRIED, carried);
             node.put(RESCUE_SPAWNED, rescueSpawned);
             if (carriedCat != null) node.put("travellingCat", carriedCat);
+            if (returningCat != null) node.put("returningCat", returningCat);
+            if (returnDepth >= 0) node.put("returnDepth", returnDepth);
             bundle.put(NODE, node);
         }
 
         public static void restoreFromBundle(Bundle bundle) {
             Bundle node = bundle.getBundle(NODE);
             if (!node.isNull()) {
+                // A legacy stationCat quest node already represents this run's single cat.
+                spawned = !node.contains("spawned") || node.getBoolean("spawned");
                 following = node.getBoolean(FOLLOWING);
                 dead = node.getBoolean(DEAD);
                 gone = node.getBoolean(GONE);
                 carried = node.getBoolean(CARRIED);
                 rescueSpawned = node.getBoolean(RESCUE_SPAWNED);
                 carriedCat = node.contains("travellingCat") ? (StationCat) node.get("travellingCat") : null;
+                returnDepth = node.contains("returnDepth") ? node.getInt("returnDepth") : -1;
+                returningCat = node.contains("returningCat") ? (StationCat) node.get("returningCat") : null;
             } else {
                 reset();
             }

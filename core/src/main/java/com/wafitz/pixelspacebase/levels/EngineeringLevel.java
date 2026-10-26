@@ -23,6 +23,7 @@ package com.wafitz.pixelspacebase.levels;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.SpacebaseTilemap;
+import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Leonard;
 import com.wafitz.pixelspacebase.effects.particles.SparkParticle;
 import com.wafitz.pixelspacebase.levels.Room.Type;
@@ -261,11 +262,31 @@ public class EngineeringLevel extends RegularLevel {
     }
 
     public static void addCavesVisuals(Level level, Group group) {
+        if (!hasLeonardQuest(level)) return;
+
         for (int i = 0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WALL_DECO) {
                 group.add(new Vein(i));
             }
         }
+    }
+
+    private static boolean hasLeonardQuest(Level level) {
+        if (!(level instanceof EngineeringLevel)) return false;
+
+        EngineeringLevel engineering = (EngineeringLevel) level;
+        if (engineering.rooms != null) {
+            for (Room room : engineering.rooms) {
+                if (room.type == Type.LEONARD) return true;
+            }
+        }
+        // Older or partially restored layouts may retain the NPC without its room marker.
+        if (level.mobs != null) {
+            for (Mob mob : level.mobs) {
+                if (mob instanceof Leonard) return true;
+            }
+        }
+        return false;
     }
 
     private static class Vein extends Group {

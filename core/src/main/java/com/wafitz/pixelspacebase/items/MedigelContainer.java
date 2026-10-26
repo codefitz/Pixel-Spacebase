@@ -23,6 +23,7 @@ package com.wafitz.pixelspacebase.items;
 import com.wafitz.pixelspacebase.Assets;
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.blobs.Fire;
+import com.wafitz.pixelspacebase.actors.buffs.Acid;
 import com.wafitz.pixelspacebase.actors.buffs.Buff;
 import com.wafitz.pixelspacebase.actors.buffs.Burning;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
@@ -43,6 +44,7 @@ public class MedigelContainer extends KindofMisc {
 
     private static final String AC_DRINK = "DRINK";
     private static final String AC_EXTINGUISH = "EXTINGUISH";
+    private static final String AC_CLEANSE = "CLEANSE";
 
     private static final float TIME_TO_DRINK = 1f;
 
@@ -74,11 +76,11 @@ public class MedigelContainer extends KindofMisc {
 
     @Override
     public ArrayList<String> actions(Hero hero) {
-        defaultAction = hero.heroClass == HeroClass.DM3000 ? AC_EXTINGUISH : AC_DRINK;
+        defaultAction = hero.heroClass == HeroClass.DM3000 ? AC_CLEANSE : AC_DRINK;
         ArrayList<String> actions = super.actions(hero);
         if (volume > 0) {
             if (hero.heroClass != HeroClass.DM3000) actions.add(AC_DRINK);
-            actions.add(AC_EXTINGUISH);
+            actions.add(hero.heroClass == HeroClass.DM3000 ? AC_CLEANSE : AC_EXTINGUISH);
         }
         return actions;
     }
@@ -96,7 +98,7 @@ public class MedigelContainer extends KindofMisc {
 
     @Override
     public void execute(Hero hero) {
-        if (hero.heroClass == HeroClass.DM3000) execute(hero, AC_EXTINGUISH);
+        if (hero.heroClass == HeroClass.DM3000) execute(hero, AC_CLEANSE);
         else super.execute(hero);
     }
 
@@ -109,17 +111,15 @@ public class MedigelContainer extends KindofMisc {
         }
         super.execute(hero, action);
 
-        if (action.equals(AC_EXTINGUISH)) {
+        if (action.equals(AC_EXTINGUISH) || action.equals(AC_CLEANSE)) {
             if (volume <= 0) {
                 GLog.w(Messages.get(this, "empty"));
-            } else if (hero.buff(Burning.class) == null) {
-                GLog.i(Messages.get(this, "not_burning"));
+            } else if (!cleanse(hero)) {
+                GLog.i(Messages.get(this, hero.heroClass == HeroClass.DM3000
+                        ? "not_contaminated" : "not_burning"));
             } else {
-                volume--;
-                Buff.detach(hero, Burning.class);
-                Fire fire = (Fire) SpacebaseRun.level.blobs.get(Fire.class);
-                if (fire != null) fire.clear(hero.pos);
-                GLog.i(Messages.get(this, "extinguished"));
+                GLog.i(Messages.get(this, hero.heroClass == HeroClass.DM3000
+                        ? "cleansed" : "extinguished"));
                 hero.spend(TIME_TO_DRINK);
                 hero.busy();
                 Sample.INSTANCE.play(Assets.SND_MEDIGEL);
@@ -161,6 +161,22 @@ public class MedigelContainer extends KindofMisc {
             }
 
         }
+    }
+
+    /** Apply the non-healing effect; failed uses leave both gel and status effects untouched. */
+    boolean cleanse(Hero hero) {
+        boolean cleanAcid = hero.heroClass == HeroClass.DM3000;
+        if (volume <= 0 || (hero.buff(Burning.class) == null
+                && (!cleanAcid || hero.buff(Acid.class) == null))) {
+            return false;
+        }
+
+        volume--;
+        Buff.detach(hero, Burning.class);
+        if (cleanAcid) Buff.detach(hero, Acid.class);
+        Fire fire = (Fire) SpacebaseRun.level.blobs.get(Fire.class);
+        if (fire != null) fire.clear(hero.pos);
+        return true;
     }
 
     public void empty() {

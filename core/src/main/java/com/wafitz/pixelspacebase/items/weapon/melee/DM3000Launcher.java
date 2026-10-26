@@ -120,8 +120,7 @@ public class DM3000Launcher extends MeleeWeapon {
 
         } else if (action.equals(AC_MELT)) {
 
-            curUser = hero;
-            GameScene.selectItem(meltSelector, WndContainer.Mode.WEAPON, Messages.get(this, "melt_prompt"));
+            GameScene.selectItem(meltSelector(hero), WndContainer.Mode.MELTABLE_WEAPON, Messages.get(this, "melt_prompt"));
 
         } else if (action.equals(AC_FIRE)) {
 
@@ -364,47 +363,60 @@ public class DM3000Launcher extends MeleeWeapon {
         }
     };
 
-    private final WndContainer.Listener meltSelector = new WndContainer.Listener() {
-        @Override
-        public void onSelect(final Item item) {
-            if (item == null) {
-                return;
-            }
+    /** Shared by the picker and callback so protected items cannot be selected or consumed. */
+    public static boolean canMelt(Hero hero, Item item) {
+        return item != null && meltRejection(hero, item) == null;
+    }
 
-            if (!(item instanceof MeleeWeapon) || item instanceof DM3000Launcher) {
-                GLog.w(Messages.get(DM3000Launcher.class, "melt_not_weapon"));
-                return;
-            }
-            if (item.isEquipped(curUser) || item.unique) {
-                GLog.w(Messages.get(DM3000Launcher.class, "melt_unique"));
-                return;
-            }
-            if (!item.isIdentified()) {
-                GLog.w(Messages.get(DM3000Launcher.class, "id_first"));
-                return;
-            }
-            if (item.malfunctioning) {
-                GLog.w(Messages.get(DM3000Launcher.class, "malfunctioning"));
-                return;
-            }
-
-            MeleeWeapon weapon = (MeleeWeapon) item;
-            int bolts = Math.max(1, weapon.tier * 2 + Math.max(0, weapon.level()) * 2);
-            Dart result = new Dart(bolts);
-
-            item.detach(curUser.belongings.backpack);
-            if (!result.collect(curUser.belongings.backpack)) {
-                SpacebaseRun.level.drop(result, curUser.pos).sprite.drop();
-            }
-
-            Sample.INSTANCE.play(Assets.SND_BURNING);
-            curUser.sprite.emitter().burst(ElmoParticle.FACTORY, 8);
-            evoke(curUser);
-            curUser.spendAndNext(TIME_TO_EQUIP);
-
-            GLog.p(Messages.get(DM3000Launcher.class, "melt", item.name(), bolts, result.name()));
+    private static String meltRejection(Hero hero, Item item) {
+        if (!(item instanceof MeleeWeapon) || item instanceof DM3000Launcher) {
+            return "melt_not_weapon";
         }
-    };
+        if (item.isEquipped(hero) || item.unique) {
+            return "melt_unique";
+        }
+        if (!item.isIdentified()) {
+            return "id_first";
+        }
+        if (item.malfunctioning) {
+            return "malfunctioning";
+        }
+        return null;
+    }
+
+    WndContainer.Listener meltSelector(final Hero hero) {
+        return new WndContainer.Listener() {
+            @Override
+            public void onSelect(final Item item) {
+                // Keep this request bound to its hero, and reject stale inventory selections.
+                if (item == null || !hero.belongings.backpack.contains(item)) {
+                    return;
+                }
+
+                String rejection = meltRejection(hero, item);
+                if (rejection != null) {
+                    GLog.w(Messages.get(DM3000Launcher.class, rejection));
+                    return;
+                }
+
+                MeleeWeapon weapon = (MeleeWeapon) item;
+                int bolts = Math.max(1, weapon.tier * 2 + Math.max(0, weapon.level()) * 2);
+                Dart result = new Dart(bolts);
+
+                item.detach(hero.belongings.backpack);
+                if (!result.collect(hero.belongings.backpack)) {
+                    SpacebaseRun.level.drop(result, hero.pos).sprite.drop();
+                }
+
+                Sample.INSTANCE.play(Assets.SND_BURNING);
+                hero.sprite.emitter().burst(ElmoParticle.FACTORY, 8);
+                evoke(hero);
+                hero.spendAndNext(TIME_TO_EQUIP);
+
+                GLog.p(Messages.get(DM3000Launcher.class, "melt", item.name(), bolts, result.name()));
+            }
+        };
+    }
 
     private final Emitter.Factory LauncherParticleFactory = new Emitter.Factory() {
         @Override

@@ -33,7 +33,7 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-class Facehugger extends Mob {
+public class Facehugger extends Mob {
 
     {
         spriteClass = FacehuggerSprite.class;
@@ -78,6 +78,9 @@ class Facehugger extends Mob {
 
     @Override
     public int attackProc(Char enemy, int damage) {
+        if (enemy instanceof Hero && ((Hero) enemy).isImmuneToXenoInfection()) {
+            return damage;
+        }
         if (Random.Int(2) == 0) {
             if (enemy instanceof Hero) {
                 if (XenoInfection.infectStrong((Hero) enemy)) {

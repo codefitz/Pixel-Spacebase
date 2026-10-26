@@ -49,8 +49,11 @@ public class XenoInfection extends Buff {
     }
 
     private static boolean infect(Hero hero, boolean strongSpawn) {
+        if (hero.immunities().contains(XenoInfection.class)) return false;
+
         if (hero.buff(XenoInfection.class) == null) {
             XenoInfection infection = Buff.affect(hero, XenoInfection.class);
+            if (infection == null || infection.target != hero) return false;
             infection.turns = 0;
             infection.strongSpawn = strongSpawn;
             infection.spend(TICK);
@@ -68,7 +71,7 @@ public class XenoInfection extends Buff {
 
     @Override
     public boolean act() {
-        if (!(target instanceof Hero)) {
+        if (!(target instanceof Hero) || target.immunities().contains(XenoInfection.class)) {
             detach();
             return true;
         }

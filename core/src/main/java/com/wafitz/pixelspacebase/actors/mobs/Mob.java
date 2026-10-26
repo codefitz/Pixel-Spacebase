@@ -36,6 +36,7 @@ import com.wafitz.pixelspacebase.actors.buffs.SoulMark;
 import com.wafitz.pixelspacebase.actors.buffs.Terror;
 import com.wafitz.pixelspacebase.actors.hero.Hero;
 import com.wafitz.pixelspacebase.actors.hero.HeroSubClass;
+import com.wafitz.pixelspacebase.actors.mobs.npcs.StationCat;
 import com.wafitz.pixelspacebase.effects.Speck;
 import com.wafitz.pixelspacebase.effects.Surprise;
 import com.wafitz.pixelspacebase.effects.Wound;
@@ -169,6 +170,8 @@ public abstract class Mob extends Char {
 
         super.act();
 
+        StationCat.killInBossRoom(this);
+
         boolean justAlerted = alerted;
         alerted = false;
 
@@ -195,6 +198,7 @@ public abstract class Mob extends Char {
 
     protected boolean seesEnemy(Char enemy) {
         return enemy != null && !(enemy == SpacebaseRun.hero && ignoresUniformedHero())
+                && (!(enemy instanceof StationCat) || ((StationCat) enemy).isActiveFollower())
                 && enemy.isAlive() && Level.fieldOfView[enemy.pos] && enemy.invisible <= 0;
     }
 
@@ -227,10 +231,16 @@ public abstract class Mob extends Char {
             }
         }
 
+        if (hostile && !ally && buff(Domination.class) == null && buff(Paranoid.class) == null) {
+            StationCat cat = preferredCat();
+            if (cat != null) return cat;
+        }
+
         //find a new enemy if..
         boolean newEnemy = false;
         //we have no enemy, or the current one is dead
         if (enemy == null || !enemy.isAlive() || state == WANDERING
+                || (enemy instanceof StationCat && !((StationCat) enemy).isActiveFollower())
                 || (enemy == SpacebaseRun.hero && ignoresUniformedHero()))
             newEnemy = true;
             //We are corrupted, and current enemy is either the hero or another corrupted character.
@@ -291,6 +301,22 @@ public abstract class Mob extends Char {
 
         } else
             return enemy;
+    }
+
+    private StationCat preferredCat() {
+        if (SpacebaseRun.level == null || SpacebaseRun.level.mobs == null) return null;
+        StationCat closest = null;
+        int distance = Integer.MAX_VALUE;
+        for (Mob mob : SpacebaseRun.level.mobs) {
+            if (mob instanceof StationCat && ((StationCat) mob).isActiveFollower() && seesEnemy(mob)) {
+                int candidateDistance = SpacebaseRun.level.distance(pos, mob.pos);
+                if (candidateDistance < distance) {
+                    closest = (StationCat) mob;
+                    distance = candidateDistance;
+                }
+            }
+        }
+        return closest;
     }
 
     protected boolean moveSprite(int from, int to) {
