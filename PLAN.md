@@ -18,7 +18,7 @@ Work through release stability and reported bugs first, then equipment, companio
 
 ## Equipment and Companions
 
-- [ ] **Let the Hoverpod activate a trap or tile beneath it with an extra click.** Keep normal movement and hovering behaviour; make deliberate activation possible while already on the cell. Check traps and interactive terrain separately.
+- [ ] **Let the Hoverpod or any flying character activate a trap or tile beneath it with an extra click.** Keep normal movement and hovering behaviour; make deliberate activation possible while already on the cell. Check traps and interactive terrain separately.
 - [x] **Make enemies target the active cat.** Ordinary hostile enemies now prioritize a visible following cat even when already targeting a closer hero, and release her as a target when she waits. Fear and mind-control rules retain their existing precedence. Bosses kill a loose cat in their room whether following or waiting; room metadata or door-separated floor areas keep that rule from reaching into another room. Updated the boss-travel warning. Eleven cat regression tests passed, and Android 37 fixtures confirmed cat-first attacks, ignored waiting cats, boss-room death, doorway protection, reactivation by petting and travel/reload without duplication. Debug and minified release builds passed; the full suite ran 133 tests with the same five pre-existing failures recorded above.
 
 ## Rooms and Artwork
@@ -27,6 +27,7 @@ Work through release stability and reported bugs first, then equipment, companio
 - [x] **Fill the interiors of entrance and exit pads.** Added opaque metal centres to both frames of `teleport_pads.png`, preserving every original rim and exterior pixel, the orange/blue directions and transparent outer margins. Updated the artwork installer, generated source and six-background preview in [the pad artwork folder](art/teleport-pads/README.md). Pixel/grid checks and debug/minified release builds passed. Travel, locked-pad dimming, pulses and transition effects retain their existing behaviour; in-game visual confirmation remains under verification below.
 - [ ] **Give the inactive Holodeck distinguishing walls.** Make its powered-down walls readable alongside the grid floor, including the arena doorway and entrance surround. Preserve the independent inactive treatment of the unstable holo-projector quest room.
 - [ ] **Add an optional room reachable only by jetpack on some levels.** Keep the main route, mandatory quest items and level progression reachable without it. Check flight access, landing and return before choosing generation frequency.
+- [ ] Have an optional floor that requires jetting between sections, but ensure that entrance and exit are in the same section in case players don't have any method of flying.
 - [ ] **Map sprite directions and animation frames.** Document standing, walking and fighting directions for the relevant sprite sheets, including frame sizes and code mappings, to guide further art changes and avoid reversed or misaligned poses.
 
 ## Y Encounters and Narrative
@@ -36,6 +37,28 @@ Use [the staged rescue design](docs/Y_RESCUE_PLAN.md) for the existing journey a
 - [ ] **Have Y punish being zapped once per run.** Send the hero to the blackout/dark-maze level with the remark, "This will teach you a lesson". Save the one-time flag and preserve the return journey so reloads cannot repeat the punishment or lose the origin.
 - [ ] **Add a 1% chance that Y refuses a later doorless-room rescue.** Enable this only after Y has already performed at least one rescue, preserving the first-rescue guarantee. He appears and tells the hero he will not rescue them; the hero remains stranded unless they have another escape, such as teleportation. Save the outcome so reloading cannot reroll the refusal. Keep this chamber event separate from the existing rescue-destination probabilities.
 - [ ] Do a test of all Y scenarios - alter logic to cycle through them.
+- [ ] Unstable holo-projector mentioned containment dust still in the description.
+- [ ] Make the Hunter scanners worth a decent amount secondhand in parts.
+- [ ] The player name seems to be messed up in some places in the log e.g. "Welcome back to floor x, launcher tech"
+- [ ] The room which now has the robot arms quest - is a little confusing becaues the floor tiles all convert to wires and the arms cannot be seen. The arms should maybe be on a stable tile, and don't have every tile be unstable.
+- [ ] Batteries need to be as common as food for DM3000 to consume. Also maybe have a different type of battery powercell that is bigger health restore.
+- [ ] On the player profile, the Health still reports a calculation e.g. 70+2/70 rather than just a health number.
+- [ ] The Y rescue which sends back into old Pixel Dungeon, several icons are missing/blank, also the backpack containers are all just a coin bag. These icons could be updated or just remain matched to the Pixel Spacebase Icon.
+- [ ] The portal tunneler no longer teleports the player after it has been set. There should be an option to unset and use freely.
+- [ ] The Hologram boss room was locked on a previous playthrough, no keys.
+- [ ] The R2D2 armor for DM3000 wobbles as it moves and is small.
+- [ ] The Hunter armor is small for the character.
+- [ ] Shapeshifter relies on his arm (like DM3000 has a launcher arm), so weapons either have the option to throw or add an option to 'study' the weapon and mirror its properties. This would destroy/consume the weapon, but the shapeshifter's attack would take on it's form and strength. He won't be able to do this for blasters, so he will still throw these.
+- [ ] DM3000 melting should form different types of missile weapon depending on the weapon melted.
+- [ ] Y's alien planet - the trader should operate an actual shop (room) with lots of different items. Add an alien doctor who will heal for parts. Add an alien who will dispense knowledge of items for parts. Add aliens with other specialisms which can be traded.
+- [ ] Command floor needs an overhaul - it's too bright and confusing.
+- [ ] Predator enemy needs a bit of polish and smoothing - it's too bitty.
+- [ ] Make Yog Duza hands into giant angels. The Yog Duza eye can be like the star child from 2001. The grubs can be replaced by some other mechanic I haven't thought of yet.
+- [ ] The very first level where the exit triggers a dialogue looking at the escape pod. Let's actaully make that entrance go right to the Yog Duza boss fight - a kind of fun challenge/easter egg. Rather than blocking the hero, it's like you have the option of going right into the final fight!
+  - [ ] Let's make sure that door exists on the boss level, but if you exit back to level 1, then something happens (like one of the angels melts it) So you can't go back through again to the boss level (unless you fully defeated the angels first).
+  - [ ] Put the workbenches along with the infinity chest next to each other in the workshop.
+    - [ ] Have an item screen for building rather than items spread on the floor. Have up to 3 free low-value items on the floor for pickup (and occasional powerful item), but then if the hero wants to craft - he goes to the workbench where a draw opens with items there to click on with parts listed.
+  - [ ] Allow the hero to upgrade and combine different weapon classes (like the sabers). The most powerful weapon is the one that persists with a strenght bonus. We can add some new suprise weapons from combining certain types. Melee > Melee, Blaster > Blaster.
 
 ## Decisions and Features to Scope
 
@@ -57,6 +80,9 @@ These changes are implemented in the v1.0.5 baseline but explicitly still awaite
 - [ ] Confirm Command decontamination stations appear near the entrance on new and restored decks. Rinsing takes one turn, clears acid/fire and leaves water on ordinary floors; Medigel extinguishing uses one charge without healing.
 - [ ] Confirm Repair Blaster door warnings cover doors along the beam path. Cancel must spend no charge or turn; Fire anyway must remain available.
 - [ ] Confirm the life bar shows current HP only, and level-5 queen eggs/xenomorph spawns stay on walkable ground outside the sealed rescue chamber.
+- [ ] DM3000 should have a torch built in that automatically activates on a dark level, including the Y rescue level. It should just be automatic.
+- [ ] Add another quickslot.
+- [ ] Add buttons for special actions - e.g. jetpack, suit special, extinguish, consume food/battery, equipped items. Add these to the right side of the screen.
 
 ### Travel, Rescues and Saved Games
 
