@@ -56,6 +56,7 @@ public class PortableMaker extends EquippableModule {
     private static final String AC_ZAP = "ZAP";
     private static final String AC_SET = "SET";
     private static final String AC_RETURN = "RETURN";
+    private static final String AC_UNSET = "UNSET";
 
     public int returnDepth = -1;
     private int returnPos;
@@ -87,7 +88,7 @@ public class PortableMaker extends EquippableModule {
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        returnDepth = bundle.getInt(DEPTH);
+        returnDepth = bundle.contains(DEPTH) ? bundle.getInt(DEPTH) : -1;
         returnPos = bundle.getInt(POS);
     }
 
@@ -98,6 +99,7 @@ public class PortableMaker extends EquippableModule {
         actions.add(AC_SET);
         if (returnDepth != -1) {
             actions.add(AC_RETURN);
+            actions.add(AC_UNSET);
         }
         return actions;
     }
@@ -107,7 +109,16 @@ public class PortableMaker extends EquippableModule {
 
         super.execute(hero, action);
 
-        if (action == AC_SET || action == AC_RETURN) {
+        if (AC_UNSET.equals(action)) {
+            returnDepth = -1;
+            returnPos = 0;
+            updateQuickslot();
+            return;
+        }
+
+        if (AC_RETURN.equals(action) && returnDepth == -1) return;
+
+        if (AC_SET.equals(action) || AC_RETURN.equals(action)) {
 
             if (SpacebaseRun.bossLevel()) {
                 hero.spend(PortableMaker.TIME_TO_USE);
@@ -123,7 +134,7 @@ public class PortableMaker extends EquippableModule {
             }
         }
 
-        if (action == AC_ZAP) {
+        if (AC_ZAP.equals(action)) {
 
             curUser = hero;
             int chargesToUse = SpacebaseRun.depth > 20 ? 2 : 1;
@@ -140,7 +151,7 @@ public class PortableMaker extends EquippableModule {
                 GameScene.selectCell(zapper);
             }
 
-        } else if (action == AC_SET) {
+        } else if (AC_SET.equals(action)) {
 
             returnDepth = SpacebaseRun.depth;
             returnPos = hero.pos;
@@ -153,7 +164,7 @@ public class PortableMaker extends EquippableModule {
 
             GLog.i(Messages.get(this, "return"));
 
-        } else if (action == AC_RETURN) {
+        } else if (AC_RETURN.equals(action)) {
 
             if (SpacebaseRun.isRescueSideLevel()) {
                 com.wafitz.pixelspacebase.actors.buffs.YRescueJourney ticket = hero.buff(

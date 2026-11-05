@@ -220,6 +220,9 @@ public abstract class Level implements Bundlable {
 
         if (!(SpacebaseRun.bossLevel() || SpacebaseRun.depth == 21) /*final shop floor*/) {
             addItemToSpawn(Generator.random(Generator.Category.FOOD));
+            if (SpacebaseRun.hero.heroClass == HeroClass.DM3000) {
+                addItemToSpawn(new TorchBattery());
+            }
 
             int bonus = TechModule.getBonus(SpacebaseRun.hero, TechModule.Wealth.class);
 

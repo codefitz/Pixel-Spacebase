@@ -27,6 +27,7 @@ import com.wafitz.pixelspacebase.SpacebaseTilemap;
 import com.wafitz.pixelspacebase.actors.Actor;
 import com.wafitz.pixelspacebase.actors.Char;
 import com.wafitz.pixelspacebase.actors.mobs.Bestiary;
+import com.wafitz.pixelspacebase.actors.mobs.HolodeckMonarch;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.Y;
 import com.wafitz.pixelspacebase.items.Heap;
@@ -94,6 +95,30 @@ public class HolodeckBossLevel extends Level {
         arenaDoor = bundle.getInt(DOOR);
         enteredArena = bundle.getBoolean(ENTERED);
         keyDropped = bundle.getBoolean(DROPPED);
+        restoreArenaState();
+    }
+
+    void restoreArenaState() {
+        // Older saves could spawn the Monarch in the sealed rescue chamber.
+        for (Mob mob : mobs) {
+            if (mob instanceof HolodeckMonarch && isDoorlessRoomCell(mob.pos)) {
+                for (int cell = 0; cell < length(); cell++) {
+                    if (passable[cell] && outsideEntraceRoom(cell) && findMob(cell) == null
+                            && (SpacebaseRun.hero == null || cell != SpacebaseRun.hero.pos)) {
+                        mob.pos = cell;
+                        break;
+                    }
+                }
+            }
+        }
+        if (keyDropped || rescueBossDefeated) {
+            enteredArena = true;
+            unseal();
+            if (map[arenaDoor] == Terrain.LOCKED_DOOR) {
+                map[arenaDoor] = Terrain.DOOR;
+                buildFlagMaps();
+            }
+        }
     }
 
     @Override
@@ -227,7 +252,7 @@ public class HolodeckBossLevel extends Level {
 
         super.press(cell, hero);
 
-        if (!enteredArena && outsideEntraceRoom(cell) && hero == SpacebaseRun.hero) {
+        if (!enteredArena && !keyDropped && !rescueBossDefeated && outsideEntraceRoom(cell) && hero == SpacebaseRun.hero) {
 
             enteredArena = true;
             seal();
@@ -272,7 +297,8 @@ public class HolodeckBossLevel extends Level {
     }
 
     private boolean outsideEntraceRoom(int cell) {
-        return cell / width() < arenaDoor / width();
+        return insideMap(cell) && !isDoorlessRoomCell(cell)
+                && cell / width() < arenaDoor / width();
     }
 
     @Override

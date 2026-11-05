@@ -22,6 +22,7 @@ package com.wafitz.pixelspacebase.levels.painters;
 
 import com.wafitz.pixelspacebase.SpacebaseRun;
 import com.wafitz.pixelspacebase.actors.hero.Belongings;
+import com.wafitz.pixelspacebase.actors.hero.HeroClass;
 import com.wafitz.pixelspacebase.actors.mobs.Mob;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.YTrader;
 import com.wafitz.pixelspacebase.actors.mobs.npcs.MakerBot;
@@ -423,7 +424,8 @@ public class Workshop extends Painter {
         itemsToSpawn.add(new SynthesizedFood());
         itemsToSpawn.add(new SynthesizedFood());
         itemsToSpawn.add(new Torch());
-        itemsToSpawn.add(new TorchBattery());
+        itemsToSpawn.add(new TorchBattery().quantity(
+                SpacebaseRun.hero.heroClass == HeroClass.DM3000 ? 2 : 1));
 
         if (makerTier >= 1) {
             itemsToSpawn.add(new RepairUpgrade());

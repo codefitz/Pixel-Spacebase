@@ -283,6 +283,7 @@ public class EngineeringBossLevel extends Level {
     }
 
     private boolean outsideEntraceRoom(int cell) {
+        if (!insideMap(cell) || isDoorlessRoomCell(cell)) return false;
         int cx = cell % width();
         int cy = cell / width();
         return cx < ROOM_LEFT - 1 || cx > ROOM_RIGHT + 1 || cy < ROOM_TOP - 1 || cy > ROOM_BOTTOM + 1;
